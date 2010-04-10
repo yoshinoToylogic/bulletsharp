@@ -5,7 +5,7 @@
 
 
 *Q*: How do I use `BulletSharp` with double precision?<br>
-*A*: Compile Bullet with BT_USE_DOUBLE_PRECISION defined at the top of btScalar.h, then compile BulletSharp.
+*A*: Compile Bullet with BT_USE_DOUBLE_PRECISION defined at the top of btScalar.h, then compile `BulletSharp`.
 
 
 *Q*: When compiling, I get the error "cannot open file 'MSCOREE.lib'", what's wrong?<br>
