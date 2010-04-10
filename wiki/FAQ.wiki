@@ -1,10 +1,10 @@
 #summary Frequently asked questions.
 
-*Q*: Is there a way to reduce the size of BulletSharp.dll?<br>
-*A*: Yes. It is possible to remove parts of the library by disabling components you don't need. The appropriate flags can be found in StdAfx.h.
+*Q*: Is there a way to reduce the size of `BulletSharp`.dll?<br>
+*A*: Yes. It is possible to remove parts of the library by disabling components you don't need. The appropriate flags can be found in `StdAfx.h`.
 
 
-*Q*: How do I use BulletSharp with double precision?<br>
+*Q*: How do I use `BulletSharp` with double precision?<br>
 *A*: Compile Bullet with BT_USE_DOUBLE_PRECISION defined at the top of btScalar.h, then compile BulletSharp.
 
 
