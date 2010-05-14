@@ -1,5 +1,8 @@
 #summary Frequently asked questions.
 
+*Q*: What version of Bullet is `BulletSharp` compiled against?<br>
+*A*: Currently the latest trunk version on the SVN is used. Once the wrapper is complete (at version 1.0), then it will be compiled against release versions of Bullet.
+
 *Q*: Is there a way to reduce the size of `BulletSharp`.dll?<br>
 *A*: Yes. It is possible to remove parts of the library by disabling components you don't need. The appropriate flags can be found in `StdAfx.h`.
 
