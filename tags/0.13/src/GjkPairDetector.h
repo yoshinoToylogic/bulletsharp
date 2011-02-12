@@ -1,0 +1,77 @@
+#pragma once
+
+// Fully implemented as of 30 Jun 2010
+
+#include "DiscreteCollisionDetectorInterface.h"
+#include "SimplexSolverInterface.h"
+
+namespace BulletSharp
+{
+	ref class ConvexPenetrationDepthSolver;
+	ref class ConvexShape;
+	ref class DebugDraw;
+
+	public ref class GjkPairDetector : DiscreteCollisionDetectorInterface
+	{
+	internal:
+		GjkPairDetector(btGjkPairDetector* detector);
+
+	public:
+		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
+			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver);
+		GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB,
+			BroadphaseNativeType shapeTypeA, BroadphaseNativeType shapeTypeB,
+			btScalar marginA, btScalar marginB,
+			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver);
+
+#ifndef DISABLE_DEBUGDRAW
+		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output, DebugDraw^ debugDraw);
+#else
+		void GetClosestPointsNonVirtual(ClosestPointInput^ input, Result^ output);
+#endif
+		void SetMinkowskiA(ConvexShape^ minkA);
+		void SetMinkowskiB(ConvexShape^ minkB);
+		void SetPenetrationDepthSolver(ConvexPenetrationDepthSolver^ penetrationDepthSolver);
+
+		property Vector3 CachedSeparatingAxis
+		{
+			Vector3 get();
+			void set(Vector3 value);
+		}
+
+		property btScalar CachedSeparatingDistance
+		{
+			btScalar get();
+		}
+
+		property int CatchDegeneracies
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int CurIter
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int DegenerateSimplex
+		{
+			int get();
+			void set(int value);
+		}
+
+		property int LastUsedMethod
+		{
+			int get();
+			void set(int value);
+		}
+
+	internal:
+		property btGjkPairDetector* UnmanagedPointer
+		{
+			virtual btGjkPairDetector* get() new;
+		}
+	};
+};
