@@ -1,0 +1,138 @@
+# based on [http://bulletphysics.org/mediawiki-1.5.8/index.php/Collision_Callbacks_and_Triggers]
+
+= Contact Information =
+
+The best way to determine if collisions happened between existing objects in the world, is to iterate over all contact manifolds. This should be done during a simulation tick (substep) callback, because contacts might be added and removed during several substeps of a single stepSimulation call.
+
+A contact manifold is a cache that contains all contact points between pairs of collision objects. A good way is to iterate over all pairs of objects in the entire collision/dynamics world
+
+{{{
+//Assume world->stepSimulation or world->performDiscreteCollisionDetection has been called
+
+int numManifolds = World.Dispatcher.NumManifolds;
+for (int i = 0; i < numManifolds; i++)
+{
+    PersistentManifold contactManifold = World.Dispatcher.GetManifoldByIndexInternal(i);
+    CollisionObject obA = contactManifold.Body0 as CollisionObject;
+    CollisionObject obB = contactManifold.Body1 as CollisionObject;
+
+    int numContacts = contactManifold.NumContacts;
+    for (int j = 0; j < numContacts; j++)
+    {
+        ManifoldPoint pt = contactManifold.GetContactPoint(j);
+        if (pt.Distance < 0.0f)
+        {
+            Vector3 ptA = pt.PositionWorldOnA;
+            Vector3 ptB = pt.PositionWorldOnB;
+            Vector3 normalOnB = pt.NormalWorldOnB;
+        }
+    }
+}
+}}}
+<wiki:comment>See Bullet/Demos/CollisionInterfaceDemo for a sample implementation.</wiki:comment>
+
+= GhostObject =
+
+A more efficient way is to iterate only over the pairs of objects that you are interested in. This can be done using a GhostObject. A GhostObject keeps track of its own overlapping pairs:
+
+{{{
+AlignedManifoldArray manifoldArray;
+AlignedBroadphasePairArray pairArray = ghostObject.OverlappingPairCache.OverlappingPairArray;
+int numPairs = pairArray.Count;
+
+for (int i = 0; i < numPairs; i++)
+{
+    manifoldArray.Clear();
+
+    BroadphasePair pair = pairArray[i];
+
+    //unless we manually perform collision detection on this pair, the contacts are in the dynamics world paircache:
+    BroadphasePair collisionPair = World.PairCache.FindPair(pair.Proxy0, pair.Proxy1);
+    if (collisionPair == null)
+        continue;
+
+    if (collisionPair.Algorithm != null)
+        collisionPair.Algorithm.GetAllContactManifolds(manifoldArray);
+
+    for (int j = 0; j < manifoldArray.Count; j++)
+    {
+        PersistentManifold manifold = manifoldArray[j];
+        float directionSign = manifold.Body0 == ghostObject ? -1.0f : 1.0f;
+        for (int p = 0; p < manifold.NumContacts; p++)
+        {
+            ManifoldPoint pt = manifold.GetContactPoint(p);
+            if (pt.Distance < 0.0f)
+            {
+                Vector3 ptA = pt.PositionWorldOnA;
+                Vector3 ptB = pt.PositionWorldOnB;
+                Vector3 normalOnB = pt.NormalWorldOnB;
+                /// work here
+            }
+        }
+    }
+}
+}}}
+
+= ContactTest =
+
+Bullet 2.76 onwards let you perform an instant query on the world (CollisionWorld or DiscreteDynamicsWorld) using the contactTest query. The contactTest query will peform a collision test against all overlapping objects in the world, and produces the results using a callback. The query object doesn't need to be part of the world. In order for an efficient query on large worlds, it is important that the broadphase aabbTest is accelerated, for example using the DbvtBroadphase or AxisSweep3 broadphase.
+
+An advantage of this method is that you can perform collision tests at a reduced temporal resolution if you do not need collision tests at every physics tic. It is also convenient to use with a pre-existing object in the world, whereas GhostObject would require synchronizing with the target object. However, a downside is that collision detection is being duplicated for the target object (if it already exists in the world), so frequent or widespread collision tests may become less efficient than iterating over previously generated collision pairs.
+
+Usage example:
+
+{{{
+class ContactSensorCallback : CollisionWorld.ContactResultCallback
+{
+    //! Constructor, pass whatever context you want to have available when processing contacts
+    /*! You may also want to set CollisionFilterGroups and CollisionFilterMask
+     *  (supplied by the superclass) for NeedsCollision() */
+    public ContactSensorCallback(RigidBody tgtBody , object context /*, ... */)
+    {
+        body = tgtBody;
+        ctxt = context;
+    }
+	
+    private RigidBody body; //!< The body the sensor is monitoring
+    private object ctxt; //!< External information for contact processing
+	
+    //! If you don't want to consider collisions where the bodies are joined by a constraint, override NeedsCollision:
+    /*! However, if you use a CollisionObject for #body instead of a RigidBody,
+     *  then this is unnecessary—CheckCollideWithOverride isn't available */
+    public override bool NeedsCollision(BroadphaseProxy proxy)
+    {
+	    // superclass will check m_collisionFilterGroup and m_collisionFilterMask
+	    if(!base.NeedsCollision(proxy))
+		    return false;
+
+	    // if passed filters, may also want to avoid contacts between constraints
+	    return body.CheckCollideWithOverride(proxy.ClientObject as CollisionObject);
+    }
+	
+    //! Called with each contact for your own processing (e.g. test if contacts fall in within sensor parameters)
+    public override float AddSingleResult(ManifoldPoint cp,
+        CollisionObject colObj0, int partId0, int index0,
+        CollisionObject colObj1, int partId1, int index1)
+    {
+	    Vector3 pt; // will be set to point of collision relative to body
+	    if(colObj0==body) {
+		    pt = cp.LocalPointA;
+	    } else {
+		    System.Diagnostics.Debug.Assert(colObj1==body);
+		    pt = cp.LocalPointB;
+	    }
+	    // do stuff with the collision point
+	    return 0; // not actually sure if return value is used for anything...?
+    }
+}
+
+///USAGE:
+RigidBody tgtBody /* = ... */;
+object context = "your context";
+ContactSensorCallback callback = new ContactSensorCallback(tgtBody, context);
+World.ContactTest(tgtBody,callback);
+}}}
+
+= ContactPairTest =
+
+Bullet 2.76 onwards provides the contactPairTest to perform collision detection between two specific collision objects only. Contact results are passed on using the provided callback. They don't need to be inserted in the world. See btCollisionWorld::contactPairTest in Bullet/src/BulletCollision/CollisionDispatch/btCollisionWorld.h for implementation details.
