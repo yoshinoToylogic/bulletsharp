@@ -10,6 +10,8 @@
 *Q*: Where is the documentation?<br>
 *A*: There is none. Since Bullet is not yet well documented, I won't be inventing anything myself either. Efforts are being made to remedy the issue, so hopefully inline documentation can be added to the wrapper once Bullet itself becomes reasonably well documented. See [http://bulletphysics.org/Bullet/phpBB3/viewtopic.php?f=9&t=2490 here] for more info.
 
+Some of Bullet's demos have been converted to `BulletSharp` (see Downloads or trunk/demos on SVN). You may find these helpful.
+
 *Q*: Is there a way to reduce the size of `BulletSharp`.dll?<br>
 *A*: Yes. It is possible to remove parts of the library by disabling components you don't need. The appropriate flags can be found in `StdAfx.h`.
 
