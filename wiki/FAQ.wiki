@@ -4,9 +4,6 @@
 *Q*: Can `BulletSharp` be used with <insert graphics framework library>?<br>
 *A*: Probably yes. If the library has Vector, Matrix and Quaternion types, then the wrapper can be configured to use them. Otherwise, use the platform-agnostic NoGfx release, which has these classes.
 
-*Q*: What version of Bullet is `BulletSharp` compiled against?<br>
-*A*: Currently the latest trunk version on the SVN is used. Once the wrapper is complete (at version 1.0), then it will be compiled against release versions of Bullet.
-
 *Q*: Where is the documentation?<br>
 *A*: There is none. Since Bullet is not yet well documented, I won't be inventing anything myself either. Efforts are being made to remedy the issue, so hopefully inline documentation can be added to the wrapper once Bullet itself becomes reasonably well documented. See [http://bulletphysics.org/Bullet/phpBB3/viewtopic.php?f=9&t=2490 here] for more info.
 
