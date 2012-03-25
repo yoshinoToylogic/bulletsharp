@@ -36,7 +36,7 @@ for (int i = 0; i < numManifolds; i++)
 A more efficient way is to iterate only over the pairs of objects that you are interested in. This can be done using a GhostObject. A GhostObject keeps track of its own overlapping pairs:
 
 {{{
-AlignedManifoldArray manifoldArray;
+AlignedManifoldArray manifoldArray = new AlignedManifoldArray();
 AlignedBroadphasePairArray pairArray = ghostObject.OverlappingPairCache.OverlappingPairArray;
 int numPairs = pairArray.Count;
 
