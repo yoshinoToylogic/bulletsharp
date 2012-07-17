@@ -1,0 +1,19 @@
+#summary Instructions for compiling BulletSharp.
+#labels Featured
+
+= Prerequisites =
+  * CMake
+  * Microsoft Visual C++ 2008 or 2010 (2010 is recommended)
+
+= Instructions =
+
+1. Fetch Bullet and `BulletSharp` from SVN trunk:
+  * svn checkout *`http://bullet.googlecode.com/svn/trunk/`* bullet
+  * svn checkout *`http://bulletsharp.googlecode.com/svn/trunk/`* bulletsharp
+
+2. Use CMake-gui to generate VS solution files into *`bullet/msvc/2010`* for "Visual Studio 10" (or bullet/msvc/2008 for "Visual Studio 9 2008"). If you select USE_DOUBLE_PRECISION in CMake, then go to bulletsharp/src/Stdaxh.h and uncomment the following line:
+  `//#define BT_USE_DOUBLE_PRECISION`
+
+3. Open *`bullet/msvc/2010/BULLET_PHYSICS.sln`* (or bullet/msvc/2008/BULLET_PHYSICS.sln) and build the *`MinSizeRel`* configuration.
+
+4. Open *`bulletsharp/BulletSharp.sln`* (or `bulletsharp/vs2008/BulletSharp.sln`) and select the build configuration for your graphics framework. `BulletSharp` will use the Vector and Matrix classes from it. If the framework is not listed or you do not need one, then select the Generic configuration, which includes its own Vector/Matrix classes. Build the solution.
