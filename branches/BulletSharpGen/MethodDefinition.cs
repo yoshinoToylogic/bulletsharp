@@ -7,8 +7,7 @@ namespace BulletSharpGen
         public string Name { get; private set; }
         public ClassDefinition Parent { get; private set; }
         public TypeRefDefinition ReturnType { get; set; }
-        public string[] Parameters { get; private set; }
-        public TypeRefDefinition[] ParameterTypes { get; private set; }
+        public ParameterDefinition[] Parameters { get; private set; }
         public bool IsStatic { get; set; }
         public bool IsAbstract { get; set; }
         public bool IsConstructor { get; set; }
@@ -17,8 +16,7 @@ namespace BulletSharpGen
         {
             Name = name;
             Parent = parent;
-            Parameters = new string[numArgs];
-            ParameterTypes = new TypeRefDefinition[numArgs];
+            Parameters = new ParameterDefinition[numArgs];
 
             parent.Methods.Add(this);
         }
@@ -46,9 +44,16 @@ namespace BulletSharpGen
                 return false;
             }
 
-            // TODO: check that parameters match also
+            for (int i = 0; i < Parameters.Length; i++)
+            {
+                // Parameter names can vary, but types must match
+                if (!m.Parameters[i].Type.Equals(Parameters[i].Type))
+                {
+                    return false;
+                }
+            }
 
-            return true;
+            return m.IsStatic == IsStatic;
         }
 
         public override int GetHashCode()

@@ -37,9 +37,9 @@ namespace BulletSharpGen
                 foreach (MethodDefinition method in c.Methods)
                 {
                     ResolveTypeRef(method.ReturnType);
-                    foreach (TypeRefDefinition typeRef in method.ParameterTypes)
+                    foreach (ParameterDefinition param in method.Parameters)
                     {
-                        ResolveTypeRef(typeRef);
+                        ResolveTypeRef(param.Type);
                     }
                 }
 
