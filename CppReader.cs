@@ -233,8 +233,17 @@ namespace BulletSharpGen
                         {
                             parameterName = "__unnamed";
                         }
-                        currentMethod.Parameters[i] = parameterName;
-                        currentMethod.ParameterTypes[i] = new TypeRefDefinition(arg.Type);
+                        currentMethod.Parameters[i] = new ParameterDefinition(parameterName, new TypeRefDefinition(arg.Type));
+
+                        // Check if it's an optional parameter
+                        IList<Token> argTokens = currentTU.Tokenize(arg.Extent);
+                        foreach (Token token in argTokens)
+                        {
+                            if (token.Spelling == "=")
+                            {
+                                currentMethod.Parameters[i].IsOptional = true;
+                            }
+                        }
                     }
 
                     currentMethod = null;

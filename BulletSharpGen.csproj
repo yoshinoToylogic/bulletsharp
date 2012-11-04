@@ -49,6 +49,7 @@
     <Compile Include="FieldDefinition.cs" />
     <Compile Include="HeaderDefinition.cs" />
     <Compile Include="MethodDefinition.cs" />
+    <Compile Include="ParameterDefinition.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="PropertyDefinition.cs" />
     <Compile Include="TypeRefDefinition.cs" />

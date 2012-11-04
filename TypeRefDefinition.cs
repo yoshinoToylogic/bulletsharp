@@ -28,6 +28,24 @@ namespace BulletSharpGen
                 return Target.ManagedName;
             }
         }
+        public string ManagedTypeRefName
+        {
+            get
+            {
+                if (IsPointer || IsReference)
+                {
+                    if (IsBasic)
+                    {
+                        return ManagedName + '*';
+                    }
+                    else
+                    {
+                        return ManagedName + '^';
+                    }
+                }
+                return ManagedName;
+            }
+        }
 
         public TypeRefDefinition(ClangSharp.Type type)
         {
@@ -130,7 +148,10 @@ namespace BulletSharpGen
                 return false;
             }
 
-            return t.Name.Equals(Name);
+            return t.Name.Equals(Name) &&
+                t.IsConstantArray == IsConstantArray &&
+                t.IsPointer == IsPointer &&
+                t.IsReference == IsReference;
         }
 
         public override int GetHashCode()
