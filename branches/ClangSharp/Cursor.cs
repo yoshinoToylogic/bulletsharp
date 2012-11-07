@@ -123,6 +123,22 @@ namespace ClangSharp {
         public bool IsStaticCxxMethod {
             get { return Interop.clang_CXXMethod_isStatic(Native) != 0; }
         }
+        public bool IsVirtualCxxMethod
+        {
+            get { return Interop.clang_CXXMethod_isVirtual(Native) != 0; }
+        }
+        public CursorKind TemplateCursorKind
+        {
+            get { return Interop.clang_getTemplateCursorKind(Native); }
+        }
+        public Cursor SpecializedCursorTemplate
+        {
+            get { return new Cursor(Interop.clang_getSpecializedCursorTemplate(Native)); }
+        }
+        public SourceRange CursorReferenceNameRange
+        {
+            get { return new SourceRange(Interop.clang_getCursorReferenceNameRange(Native)); }
+        }
 
         public AccessSpecifier AccessSpecifier
         {

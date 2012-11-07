@@ -14,6 +14,7 @@ namespace BulletSharpGen
         public List<FieldDefinition> Fields { get; private set; }
         public bool IsAbstract { get; set; }
         public bool IsStruct { get; set; }
+        public bool IsTemplate { get; set; }
 
         public string ManagedName { get; set; }
 

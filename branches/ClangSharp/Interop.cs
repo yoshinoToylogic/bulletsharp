@@ -335,6 +335,18 @@ namespace ClangSharp {
         internal static extern uint clang_CXXMethod_isStatic(Cursor c);
 
         [DllImport("libclang.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern uint clang_CXXMethod_isVirtual(Cursor c);
+
+        [DllImport("libclang.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern CursorKind clang_getTemplateCursorKind(Cursor c);
+
+        [DllImport("libclang.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern Cursor clang_getSpecializedCursorTemplate(Cursor c);
+
+        [DllImport("libclang.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        internal static extern SourceRange clang_getCursorReferenceNameRange(Cursor c);
+
+        [DllImport("libclang.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         internal static extern AccessSpecifier clang_getCXXAccessSpecifier(Cursor c);
 
         [DllImport("libclang.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]

@@ -123,7 +123,7 @@ namespace BulletSharpGen
         {
             // TODO: Write forward references
 
-            hasWhiteSpace = true;
+            EnsureWhiteSpace();
 
             // Write access modifier
             OutputTabs(level);
@@ -143,6 +143,7 @@ namespace BulletSharpGen
             writer.WriteLine();
             OutputTabs(level);
             writer.WriteLine("{");
+            hasWhiteSpace = true;
 
             // Default access for ref class
             var currentAccess = RefAccessSpecifier.Private;
@@ -157,11 +158,6 @@ namespace BulletSharpGen
                         EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
                     }
                     OutputClass(cl, level + 1);
-
-                    if (cl != c.Classes[c.Classes.Count - 1])
-                    {
-                        writer.WriteLine();
-                    }
                 }
                 currentAccess = RefAccessSpecifier.Public;
             }
@@ -267,6 +263,7 @@ namespace BulletSharpGen
 
             OutputTabs(level);
             writer.WriteLine("};");
+            hasWhiteSpace = false;
         }
 
         public void Output()
@@ -299,7 +296,7 @@ namespace BulletSharpGen
                     writer.WriteLine();
                 }
 
-                // Write classes
+                // Write namespace
                 writer.Write("namespace ");
                 writer.WriteLine(namespaceName);
                 writer.WriteLine("{");
@@ -321,15 +318,10 @@ namespace BulletSharpGen
                     writer.WriteLine(";");
                 }
 
+                // Write classes
                 foreach (ClassDefinition c in header.Classes)
                 {
-                    EnsureWhiteSpace();
                     OutputClass(c, 1);
-
-                    if (c != header.Classes[header.Classes.Count - 1])
-                    {
-                        writer.WriteLine();
-                    }
                 }
 
                 writer.WriteLine("};");
