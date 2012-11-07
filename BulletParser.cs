@@ -177,7 +177,7 @@ namespace BulletSharpGen
 
         void ResolveTypeRef(TypeRefDefinition typeRef)
         {
-            if (!typeRef.IsBasic)
+            if (!typeRef.IsBasic && !typeRef.HasTemplateTypeParameter)
             {
                 if (!classDefinitions.ContainsKey(typeRef.Name))
                 {

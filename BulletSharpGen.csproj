@@ -38,9 +38,13 @@
     <Reference Include="ClangSharp">
       <HintPath>.\ClangSharp.dll</HintPath>
     </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>.\Mono.Cecil.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblySubset.cs" />
     <Compile Include="BulletParser.cs" />
     <Compile Include="CppReader.cs" />
     <Compile Include="CppWriter.cs" />

@@ -11,13 +11,15 @@ namespace BulletSharpGen
         Index index;
         List<string> headerQueue = new List<string>();
         List<string> clangOptions = new List<string>();
-        Dictionary<string, string> excludedClasses = new Dictionary<string, string>();
         Dictionary<string, string> excludedMethods = new Dictionary<string, string>();
         AccessSpecifier currentMemberAccess;
         HeaderDefinition currentHeader;
         ClassDefinition currentClass;
         MethodDefinition currentMethod;
+        ParameterDefinition currentParameter;
         EnumDefinition currentEnum;
+        FieldDefinition currentField;
+        bool currentFieldHasSpecializedParameter;
         TranslationUnit currentTU;
 
         public Dictionary<string, ClassDefinition> ClassDefinitions = new Dictionary<string, ClassDefinition>();
@@ -41,10 +43,6 @@ namespace BulletSharpGen
             // Specify C++ headers, not C ones
             clangOptions.Add("-x");
             clangOptions.Add("c++-header");
-
-            // Exclude serialization classes
-            excludedClasses.Add("btCylinderShapeData", null);
-            excludedClasses.Add("btTypedConstraintData", null);
 
             // Exclude irrelevant methods
             excludedMethods.Add("operator new", null);
@@ -108,15 +106,11 @@ namespace BulletSharpGen
                 headerQueue.Remove(filename);
             }
 
-            if ((cursor.Kind == CursorKind.ClassDecl || cursor.Kind == CursorKind.StructDecl) && cursor.IsDefinition)
+            if ((cursor.Kind == CursorKind.ClassDecl || cursor.Kind == CursorKind.StructDecl ||
+                cursor.Kind == CursorKind.ClassTemplate || cursor.Kind == CursorKind.TypedefDecl) && cursor.IsDefinition)
             {
                 ParseClassCursor(cursor);
                 return Cursor.ChildVisitResult.Continue;
-            }
-            else if (cursor.Kind == CursorKind.TypedefDecl)
-            {
-                //var underlying = GetTypeRef(cursor.TypedefDeclUnderlyingType);
-                ParseClassCursor(cursor);
             }
             else if (cursor.Kind == CursorKind.EnumDecl)
             {
@@ -148,7 +142,7 @@ namespace BulletSharpGen
         void ParseClassCursor(Cursor cursor)
         {
             string className = cursor.Spelling;
-            if (ClassDefinitions.ContainsKey(className) || excludedClasses.ContainsKey(className))
+            if (ClassDefinitions.ContainsKey(className))
             {
                 return;
             }
@@ -161,11 +155,24 @@ namespace BulletSharpGen
             {
                 currentMemberAccess = AccessSpecifier.Private; // default class access specifier
             }
-            else
+            else if (cursor.Kind == CursorKind.StructDecl)
             {
                 currentClass.IsStruct = true;
                 currentMemberAccess = AccessSpecifier.Public; // default struct access specifier
             }
+            else if (cursor.Kind == CursorKind.ClassTemplate)
+            {
+                currentClass.IsTemplate = true;
+                if (cursor.TemplateCursorKind != CursorKind.ClassDecl)
+                {
+                    currentMemberAccess = AccessSpecifier.Private; // default class access specifier
+                }
+                else
+                {
+                    currentMemberAccess = AccessSpecifier.Public; // default struct access specifier
+                }
+            }
+
             if (parentClass != null)
             {
                 parentClass.Classes.Add(currentClass);
@@ -174,11 +181,69 @@ namespace BulletSharpGen
             {
                 currentHeader.Classes.Add(currentClass);
             }
-            cursor.VisitChildren(ClassVisitor);
+
+            if (cursor.Kind != CursorKind.TypedefDecl)
+            {
+                cursor.VisitChildren(ClassVisitor);
+            }
 
             // Restore parent state
             currentClass = parentClass;
             currentMemberAccess = parentMemberAccess;
+        }
+
+        Cursor.ChildVisitResult MethodTemplateTypeVisitor(Cursor cursor, Cursor parent)
+        {
+            if (cursor.Kind == CursorKind.TypeRef)
+            {
+                if (cursor.Referenced.Kind == CursorKind.TemplateTypeParameter)
+                {
+                    if (currentParameter != null)
+                    {
+                        currentParameter.Type.HasTemplateTypeParameter = true;
+                    }
+                    else
+                    {
+                        currentMethod.ReturnType.HasTemplateTypeParameter = true;
+                    }
+                    return Cursor.ChildVisitResult.Break;
+                }
+            }
+            else if (cursor.Kind == CursorKind.TemplateRef)
+            {
+                return Cursor.ChildVisitResult.Recurse;
+            }
+            return Cursor.ChildVisitResult.Continue;
+        }
+
+        Cursor.ChildVisitResult FieldTemplateTypeVisitor(Cursor cursor, Cursor parent)
+        {
+            if (cursor.Kind == CursorKind.TypeRef)
+            {
+                if (cursor.Referenced.Kind == CursorKind.TemplateTypeParameter)
+                {
+                    currentField.Type.HasTemplateTypeParameter = true;
+                }
+                else if (currentFieldHasSpecializedParameter)
+                {
+                    currentField.Type.SpecializedTemplateType = new TypeRefDefinition(cursor.Definition.Spelling);
+                }
+                return Cursor.ChildVisitResult.Break;
+            }
+            else if (cursor.Kind == CursorKind.TemplateRef)
+            {
+                if (!parent.Type.Declaration.SpecializedCursorTemplate.IsInvalid)
+                {
+                    currentFieldHasSpecializedParameter = true;
+                    return Cursor.ChildVisitResult.Continue;
+                }
+                else if (parent.Type.Declaration.Kind == CursorKind.ClassTemplate)
+                {
+                    currentField.Type.HasTemplateTypeParameter = true;
+                    return Cursor.ChildVisitResult.Break;
+                }
+            }
+            return Cursor.ChildVisitResult.Continue;
         }
 
         Cursor.ChildVisitResult ClassVisitor(Cursor cursor, Cursor parent)
@@ -193,7 +258,8 @@ namespace BulletSharpGen
             }
             else if (currentMemberAccess == AccessSpecifier.Public)
             {
-                if ((cursor.Kind == CursorKind.ClassDecl || cursor.Kind == CursorKind.StructDecl) && cursor.IsDefinition)
+                if ((cursor.Kind == CursorKind.ClassDecl || cursor.Kind == CursorKind.StructDecl ||
+                    cursor.Kind == CursorKind.ClassTemplate || cursor.Kind == CursorKind.TypedefDecl) && cursor.IsDefinition)
                 {
                     ParseClassCursor(cursor);
                 }
@@ -209,6 +275,9 @@ namespace BulletSharpGen
                     currentMethod.ReturnType = new TypeRefDefinition(cursor.ResultType);
                     currentMethod.IsStatic = cursor.IsStaticCxxMethod;
                     currentMethod.IsConstructor = cursor.Kind == CursorKind.Constructor;
+
+                    // Check if the return type is a template
+                    cursor.VisitChildren(MethodTemplateTypeVisitor);
 
                     // Check if the method is abstract (no clang_isAbstract available, so look at tokens)
                     IList<Token> tokens = currentTU.Tokenize(cursor.Extent);
@@ -233,7 +302,10 @@ namespace BulletSharpGen
                         {
                             parameterName = "__unnamed";
                         }
-                        currentMethod.Parameters[i] = new ParameterDefinition(parameterName, new TypeRefDefinition(arg.Type));
+                        currentParameter = new ParameterDefinition(parameterName, new TypeRefDefinition(arg.Type));
+                        currentMethod.Parameters[i] = currentParameter;
+                        arg.VisitChildren(MethodTemplateTypeVisitor);
+                        currentParameter = null;
 
                         // Check if it's an optional parameter
                         IList<Token> argTokens = currentTU.Tokenize(arg.Extent);
@@ -250,8 +322,11 @@ namespace BulletSharpGen
                 }
                 else if (cursor.Kind == CursorKind.FieldDecl)
                 {
-                    var field = new FieldDefinition(cursor.Spelling, currentClass);
-                    field.Type = new TypeRefDefinition(cursor.Type);
+                    currentField = new FieldDefinition(cursor.Spelling, currentClass);
+                    currentField.Type = new TypeRefDefinition(cursor.Type);
+                    currentFieldHasSpecializedParameter = false;
+                    cursor.VisitChildren(FieldTemplateTypeVisitor);
+                    currentField = null;
                 }
                 else if (cursor.Kind == CursorKind.EnumDecl)
                 {

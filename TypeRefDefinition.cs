@@ -10,6 +10,8 @@ namespace BulletSharpGen
         public bool IsReference { get; set; }
         public bool IsBasic { get; set; }
         public bool IsConstantArray { get; set; }
+        public bool HasTemplateTypeParameter { get; set; }
+        public TypeRefDefinition SpecializedTemplateType { get; set; }
 
         public ClassDefinition Target { get; set; }
         public string ManagedName
@@ -20,10 +22,18 @@ namespace BulletSharpGen
                 {
                     return Name;
                 }
+                if (HasTemplateTypeParameter)
+                {
+                    return "T";
+                }
                 if (Target == null)
                 {
                     Console.WriteLine("Unresolved reference to " + Name);
                     return Name;
+                }
+                if (SpecializedTemplateType != null)
+                {
+                    return Target.ManagedName + "<" + SpecializedTemplateType.ManagedName + ">";
                 }
                 return Target.ManagedName;
             }
