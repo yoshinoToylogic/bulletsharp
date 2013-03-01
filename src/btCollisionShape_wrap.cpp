@@ -2,17 +2,17 @@
 
 void btCollisionShape_delete(btCollisionShape* obj)
 {
-    delete obj;
+	delete obj;
 }
 
 void btCollisionShape_calculateLocalInertia(btCollisionShape* obj, float mass, btVector3* inertia)
 {
-    obj->calculateLocalInertia(mass, *inertia);
+	obj->calculateLocalInertia(mass, *inertia);
 }
 
 float btCollisionShape_getAngularMotionDisk(btCollisionShape* obj)
 {
-    return obj->getAngularMotionDisc();
+	return obj->getAngularMotionDisc();
 }
 
 void btCollisionShape_getLocalScaling(btCollisionShape* obj, btScalar* scaling)
@@ -22,61 +22,61 @@ void btCollisionShape_getLocalScaling(btCollisionShape* obj, btScalar* scaling)
 
 float btCollisionShape_getContactBreakingThreshold(btCollisionShape* obj, btScalar defaultContactThresholdFactor)
 {
-    return obj->getContactBreakingThreshold(defaultContactThresholdFactor);
+	return obj->getContactBreakingThreshold(defaultContactThresholdFactor);
 }
 
 float btCollisionShape_getMargin(btCollisionShape* obj)
 {
-    return obj->getMargin();
+	return obj->getMargin();
 }
 
 int btCollisionShape_getShapeType(btCollisionShape* obj)
 {
-    return obj->getShapeType();
+	return obj->getShapeType();
 }
 
 void* btCollisionShape_getUserPointer(btCollisionShape* obj)
 {
-    return obj->getUserPointer();
+	return obj->getUserPointer();
 }
 
 bool btCollisionShape_isCompound(btCollisionShape* obj)
 {
-    return obj->isCompound();
+	return obj->isCompound();
 }
 
 bool btCollisionShape_isConcave(btCollisionShape* obj)
 {
-    return obj->isConcave();
+	return obj->isConcave();
 }
 
 bool btCollisionShape_isConvex(btCollisionShape* obj)
 {
-    return obj->isConvex();
+	return obj->isConvex();
 }
 
 bool btCollisionShape_isInfinite(btCollisionShape* obj)
 {
-    return obj->isInfinite();
+	return obj->isInfinite();
 }
 
 bool btCollisionShape_isPolyhedral(btCollisionShape* obj)
 {
-    return obj->isPolyhedral();
+	return obj->isPolyhedral();
 }
 
 void btCollisionShape_setLocalScaling(btCollisionShape* obj, btScalar* scaling)
 {
 	VECTOR3_CONV(scaling);
-    obj->setLocalScaling(VECTOR3_USE(scaling));
+	obj->setLocalScaling(VECTOR3_USE(scaling));
 }
 
 void btCollisionShape_setMargin(btCollisionShape* obj, float margin)
 {
-    obj->setMargin(margin);
+	obj->setMargin(margin);
 }
 
 void btCollisionShape_setUserPointer(btCollisionShape* obj, void* ptr)
 {
-    obj->setUserPointer(ptr);
+	obj->setUserPointer(ptr);
 }
