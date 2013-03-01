@@ -83,6 +83,7 @@
   <ItemGroup>
     <ClInclude Include="src\btAlignedCollisionObjectArray_wrap.h" />
     <ClInclude Include="src\btBoxShape_wrap.h" />
+    <ClInclude Include="src\btCapsuleShape_wrap.h" />
     <ClInclude Include="src\btCollisionConfiguration_wrap.h" />
     <ClInclude Include="src\btCollisionDispatcher_wrap.h" />
     <ClInclude Include="src\btCollisionObject_wrap.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h" />
     <ClInclude Include="src\btRigidBody_wrap.h" />
+    <ClInclude Include="src\btSphereShape_wrap.h" />
     <ClInclude Include="src\conversion.h" />
     <ClInclude Include="src\main.h" />
   </ItemGroup>
@@ -110,6 +112,7 @@
     </ClCompile>
     <ClCompile Include="src\btAlignedCollisionObjectArray_wrap.cpp" />
     <ClCompile Include="src\btBoxShape_wrap.cpp" />
+    <ClCompile Include="src\btCapsuleShape_wrap.cpp" />
     <ClCompile Include="src\btCollisionConfiguration_wrap.cpp" />
     <ClCompile Include="src\btCollisionDispatcher_wrap.cpp" />
     <ClCompile Include="src\btCollisionObject_wrap.cpp" />
@@ -123,6 +126,7 @@
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp" />
     <ClCompile Include="src\btRigidBody_wrap.cpp" />
+    <ClCompile Include="src\btSphereShape_wrap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
