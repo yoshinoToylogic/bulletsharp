@@ -39,6 +39,8 @@
     <Compile Include="Collision\BroadphaseProxy.cs" />
     <Compile Include="Collision\CollisionShape.cs" />
     <Compile Include="Collision\CollisionWorld.cs" />
+    <Compile Include="Collision\CapsuleShape.cs" />
+    <Compile Include="Collision\SphereShape.cs" />
     <Compile Include="Collision\DbvtBroadphase.cs" />
     <Compile Include="Collision\Dispatcher.cs" />
     <Compile Include="Collision\PolyhedralConvexShape.cs" />

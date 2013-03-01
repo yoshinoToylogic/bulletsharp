@@ -56,7 +56,5 @@ namespace BulletSharp
         static extern void btBoxShape_getHalfExtentsWithMargin(IntPtr obj, [Out] out Vector3 extents);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btBoxShape_getHalfExtentsWithoutMargin(IntPtr obj, [Out] out Vector3 extents);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr BtBoxShape_getVertex(IntPtr obj, int i);
     }
 }
