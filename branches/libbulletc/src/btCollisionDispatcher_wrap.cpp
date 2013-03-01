@@ -2,12 +2,12 @@
 
 btCollisionDispatcher* btCollisionDispatcher_new(btCollisionConfiguration* config)
 {
-    return new btCollisionDispatcher(config);
+	return new btCollisionDispatcher(config);
 }
 
 void btCollisionDispatcher_delete(btCollisionDispatcher* obj)
 {
-    delete obj;
+	delete obj;
 }
 
 EXPORT int btCollisionDispatcher_getDispatcherFlags(btCollisionDispatcher* obj)

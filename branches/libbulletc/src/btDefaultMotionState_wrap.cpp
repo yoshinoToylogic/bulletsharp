@@ -2,7 +2,7 @@
 
 btDefaultMotionState* btDefaultMotionState_new()
 {
-    return ALIGNED_NEW(btDefaultMotionState) ();
+	return ALIGNED_NEW(btDefaultMotionState) ();
 }
 
 btDefaultMotionState* btDefaultMotionState_new2(btScalar* startTrans)
@@ -15,12 +15,12 @@ btDefaultMotionState* btDefaultMotionState_new3(btScalar* startTrans, btScalar* 
 {
 	TRANSFORM_CONV(startTrans);
 	TRANSFORM_CONV(centerOfMassOffset);
-    return ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), TRANSFORM_USE(centerOfMassOffset));
+	return ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), TRANSFORM_USE(centerOfMassOffset));
 }
 
 void btMotionState_delete(btMotionState* obj)
 {
-    ALIGNED_FREE(obj);
+	ALIGNED_FREE(obj);
 }
 
 void btMotionState_getWorldTransform(btMotionState* obj, btScalar* outTransform)
@@ -33,5 +33,5 @@ void btMotionState_getWorldTransform(btMotionState* obj, btScalar* outTransform)
 void btMotionState_setWorldTransform(btMotionState* obj, btScalar* transform)
 {
 	TRANSFORM_CONV(transform);
-    obj->setWorldTransform(TRANSFORM_USE(transform));
+	obj->setWorldTransform(TRANSFORM_USE(transform));
 }

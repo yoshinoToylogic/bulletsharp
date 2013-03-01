@@ -2,5 +2,5 @@
 
 void btDispatcher_delete(btDispatcher* obj)
 {
-    delete obj;
+	delete obj;
 }

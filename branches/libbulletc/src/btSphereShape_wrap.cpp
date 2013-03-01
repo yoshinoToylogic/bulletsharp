@@ -2,7 +2,7 @@
 
 btSphereShape* btSphereShape_new(btScalar radius)
 {
-    return new btSphereShape(radius);
+	return new btSphereShape(radius);
 }
 
 btScalar btSphereShape_getRadius(btSphereShape* obj)

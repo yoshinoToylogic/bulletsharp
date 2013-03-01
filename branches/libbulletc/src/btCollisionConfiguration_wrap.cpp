@@ -2,7 +2,7 @@
 
 void btCollisionConfiguration_delete(btCollisionConfiguration* obj)
 {
-    delete obj;
+	delete obj;
 }
 
 btPoolAllocator* btCollisionConfiguration_getPersistentManifoldPool(btCollisionConfiguration* obj)
