@@ -16,9 +16,19 @@ void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body)
 	obj->addRigidBody(body);
 }
 
+btTypedConstraint* btDynamicsWorld_getConstraint(btDynamicsWorld* obj, int index)
+{
+	return obj->getConstraint(index);
+}
+
 void btDynamicsWorld_getGravity(btDynamicsWorld* obj, btScalar* gravity)
 {
 	VECTOR3_OUT(&obj->getGravity(), gravity);
+}
+
+int btDynamicsWorld_getNumConstraints(btDynamicsWorld* obj)
+{
+	return obj->getNumConstraints();
 }
 
 void btDynamicsWorld_removeConstraint(btDynamicsWorld* obj, btTypedConstraint* constraint)

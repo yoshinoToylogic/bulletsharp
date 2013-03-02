@@ -98,6 +98,7 @@
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h" />
     <ClInclude Include="src\btRigidBody_wrap.h" />
     <ClInclude Include="src\btSphereShape_wrap.h" />
+    <ClInclude Include="src\btTypedConstraint_wrap.h" />
     <ClInclude Include="src\conversion.h" />
     <ClInclude Include="src\main.h" />
   </ItemGroup>
@@ -127,6 +128,7 @@
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp" />
     <ClCompile Include="src\btRigidBody_wrap.cpp" />
     <ClCompile Include="src\btSphereShape_wrap.cpp" />
+    <ClCompile Include="src\btTypedConstraint_wrap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
