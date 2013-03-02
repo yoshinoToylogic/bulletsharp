@@ -232,9 +232,8 @@ void btRigidBody_setSleepingThresholds(btRigidBody* obj, float linear, float ang
 
 void btRigidBody_translate(btRigidBody* obj, btScalar* v)
 {
-	ATTRIBUTE_ALIGNED16(btVector3) vTemp;
-	Vector3TobtVector3(v, &vTemp);
-	obj->translate(vTemp);
+	VECTOR3_CONV(v);
+	obj->translate(VECTOR3_USE(v));
 }
 
 void btRigidBody_updateDeactivation(btRigidBody* obj, float timeStep)

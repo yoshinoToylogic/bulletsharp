@@ -100,22 +100,22 @@ void btCollisionWorld_ClosestRayResultCallback_getRayToWorld(btCollisionWorld::C
 
 void btCollisionWorld_ClosestRayResultCallback_setHitNormalWorld(btCollisionWorld::ClosestRayResultCallback* obj, btScalar* hitNormalWorld)
 {
-	Vector3TobtVector3(hitNormalWorld, &obj->m_hitNormalWorld);
+	VECTOR3_IN(hitNormalWorld, &obj->m_hitNormalWorld);
 }
 
 void btCollisionWorld_ClosestRayResultCallback_setHitPointWorld(btCollisionWorld::ClosestRayResultCallback* obj, btScalar* hitPointWorld)
 {
-	Vector3TobtVector3(hitPointWorld, &obj->m_hitPointWorld);
+	VECTOR3_IN(hitPointWorld, &obj->m_hitPointWorld);
 }
 
 void btCollisionWorld_ClosestRayResultCallback_setRayFromWorld(btCollisionWorld::ClosestRayResultCallback* obj, btScalar* rayFromWorld)
 {
-	Vector3TobtVector3(rayFromWorld, &obj->m_rayFromWorld);
+	VECTOR3_IN(rayFromWorld, &obj->m_rayFromWorld);
 }
 
 void btCollisionWorld_ClosestRayResultCallback_setRayToWorld(btCollisionWorld::ClosestRayResultCallback* obj, btScalar* rayToWorld)
 {
-	Vector3TobtVector3(rayToWorld, &obj->m_rayToWorld);
+	VECTOR3_IN(rayToWorld, &obj->m_rayToWorld);
 }
 
 
