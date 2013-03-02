@@ -12,6 +12,14 @@ namespace BulletSharpGen
         public bool IsAbstract { get; set; }
         public bool IsConstructor { get; set; }
 
+        public string ManagedName
+        {
+            get
+            {
+                return Name.Substring(0, 1).ToUpper() + Name.Substring(1);
+            }
+        }
+
         public MethodDefinition(string name, ClassDefinition parent, int numArgs)
         {
             Name = name;

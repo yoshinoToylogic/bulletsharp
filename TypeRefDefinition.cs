@@ -6,10 +6,11 @@ namespace BulletSharpGen
     class TypeRefDefinition
     {
         public string Name { get; private set; }
+        public bool IsBasic { get; set; }
         public bool IsPointer { get; set; }
         public bool IsReference { get; set; }
-        public bool IsBasic { get; set; }
         public bool IsConstantArray { get; set; }
+        public TypeRefDefinition Referenced { get; set; }
         public bool HasTemplateTypeParameter { get; set; }
         public TypeRefDefinition SpecializedTemplateType { get; set; }
 
@@ -25,6 +26,10 @@ namespace BulletSharpGen
                 if (HasTemplateTypeParameter)
                 {
                     return "T";
+                }
+                if (IsPointer || IsReference || IsConstantArray)
+                {
+                    return Referenced.ManagedName;
                 }
                 if (Target == null)
                 {
@@ -42,7 +47,7 @@ namespace BulletSharpGen
         {
             get
             {
-                if (IsPointer || IsReference)
+                if (IsPointer || IsReference || IsConstantArray)
                 {
                     if (IsBasic)
                     {
@@ -113,27 +118,21 @@ namespace BulletSharpGen
                     Name = type.Declaration.Spelling;
                     break;
                 case TypeKind.Pointer:
-                    var pp = new TypeRefDefinition(type.Pointee);
-                    Name = pp.Name;
-                    IsBasic = pp.IsBasic;
+                    Referenced = new TypeRefDefinition(type.Pointee);
                     IsPointer = true;
                     break;
                 case TypeKind.LValueReference:
-                    var rp = new TypeRefDefinition(type.Pointee);
-                    Name = rp.Name;
-                    IsBasic = rp.IsBasic;
+                    Referenced = new TypeRefDefinition(type.Pointee);
                     IsReference = true;
+                    break;
+                case TypeKind.ConstantArray:
+                    Referenced = new TypeRefDefinition(type.ArrayElementType);
+                    IsConstantArray = true;
                     break;
                 case TypeKind.Enum:
                 case TypeKind.Record:
                 case TypeKind.Unexposed:
-                    Name = type.Declaration.Spelling;
-                    break;
-                case TypeKind.ConstantArray:
-                    var ca = new TypeRefDefinition(type.ArrayElementType);
-                    Name = ca.Name;
-                    IsBasic = ca.IsBasic;
-                    IsConstantArray = true;
+                    Name = type.Canonical.Declaration.Spelling;
                     break;
                 default:
                     throw new NotImplementedException();
@@ -158,15 +157,30 @@ namespace BulletSharpGen
                 return false;
             }
 
-            return t.Name.Equals(Name) &&
-                t.IsConstantArray == IsConstantArray &&
-                t.IsPointer == IsPointer &&
-                t.IsReference == IsReference;
+            if (t.IsBasic != t.IsBasic ||
+                t.IsConstantArray != IsConstantArray ||
+                t.IsPointer != IsPointer ||
+                t.IsReference != IsReference)
+            {
+                return false;
+            }
+
+            if (IsPointer || IsReference || IsConstantArray)
+            {
+                return t.Referenced.Equals(Referenced);
+            }
+
+            return t.Name.Equals(Name);
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return ManagedName;
         }
     }
 }
