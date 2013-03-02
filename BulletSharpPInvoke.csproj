@@ -51,6 +51,7 @@
     <Compile Include="Dynamics\DefaultCollisionConfiguration.cs" />
     <Compile Include="Dynamics\DiscreteDynamicsWorld.cs" />
     <Compile Include="Dynamics\DynamicsWorld.cs" />
+    <Compile Include="Dynamics\Generic6DofConstraint.cs" />
     <Compile Include="Dynamics\RigidBody.cs" />
     <Compile Include="Dynamics\RigidBodyConstructionInfo.cs" />
     <Compile Include="Dynamics\TypedConstraint.cs" />
