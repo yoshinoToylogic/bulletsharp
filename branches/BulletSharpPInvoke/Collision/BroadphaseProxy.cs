@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace BulletSharp
 {
     public enum BroadphaseNativeType
@@ -55,7 +56,8 @@ namespace BulletSharp
 
     };
 
-    class BroadphaseProxy
+    public class BroadphaseProxy
     {
+        internal IntPtr _native;
     }
 }
