@@ -14,7 +14,7 @@ namespace BulletSharpGen
     class CppWriter
     {
         Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
-        StreamWriter writer;
+        StreamWriter headerWriter, sourceWriter;
         bool hasWhiteSpace;
         string namespaceName;
 
@@ -24,12 +24,26 @@ namespace BulletSharpGen
             this.namespaceName = namespaceName;
         }
 
-        void OutputTabs(int n)
+        void OutputTabs(int n, bool source = false)
         {
             for (int i = 0; i < n; i++)
             {
-                writer.Write("\t");
+                (source ? sourceWriter : headerWriter).Write("\t");
             }
+        }
+
+        /// <summary>Writes to both the header and the source file</summary>
+        void Write(string s)
+        {
+            headerWriter.Write(s);
+            sourceWriter.Write(s);
+        }
+
+        /// <summary>Writes to both the header and the source file</summary>
+        void Write(char s)
+        {
+            headerWriter.Write(s);
+            sourceWriter.Write(s);
         }
 
         void EnsureAccess(int level, ref RefAccessSpecifier current, RefAccessSpecifier required, bool withWhiteSpace = true)
@@ -44,15 +58,15 @@ namespace BulletSharpGen
                 OutputTabs(level);
                 if (required == RefAccessSpecifier.Internal)
                 {
-                    writer.WriteLine("internal:");
+                    headerWriter.WriteLine("internal:");
                 }
                 else if (required == RefAccessSpecifier.Private)
                 {
-                    writer.WriteLine("private:");
+                    headerWriter.WriteLine("private:");
                 }
                 else if (required == RefAccessSpecifier.Public)
                 {
-                    writer.WriteLine("public:");
+                    headerWriter.WriteLine("public:");
                 }
                 current = required;
             }
@@ -62,7 +76,7 @@ namespace BulletSharpGen
         {
             if (!hasWhiteSpace)
             {
-                writer.WriteLine();
+                headerWriter.WriteLine();
                 hasWhiteSpace = true;
             }
         }
@@ -70,34 +84,43 @@ namespace BulletSharpGen
         void OutputMethod(MethodDefinition method, int level, int numOptionalParams = 0)
         {
             OutputTabs(level + 1);
+
+            // "static"
             if (method.IsStatic)
             {
-                writer.Write("static ");
+                headerWriter.Write("static ");
             }
+
+            // Return type
+            if (!method.IsConstructor)
+            {
+                var returnType = method.ReturnType;
+                Write(returnType.ManagedTypeRefName);
+                Write(' ');
+            }
+
+            // Name
+            sourceWriter.Write(method.Parent.ManagedName);
+            sourceWriter.Write("::");
             if (method.IsConstructor)
             {
-                writer.Write(method.Parent.ManagedName);
+                Write(method.Parent.ManagedName);
             }
             else
             {
-                var returnType = method.ReturnType;
-                writer.Write(returnType.ManagedTypeRefName);
-                writer.Write(' ');
-                string name = method.Name;
-                name = name.Substring(0, 1).ToUpper() + name.Substring(1);
-                writer.Write(name);
+                Write(method.ManagedName);
             }
-            writer.Write('(');
+            Write('(');
 
-            // Write parameters
+            // Parameters
             int numParameters = method.Parameters.Length - numOptionalParams;
             bool hasOptionalParam = false;
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                writer.Write(param.Type.ManagedTypeRefName);
-                writer.Write(' ');
-                writer.Write(param.Name);
+                Write(param.Type.ManagedTypeRefName);
+                Write(' ');
+                Write(param.Name);
 
                 if (param.IsOptional)
                 {
@@ -106,10 +129,40 @@ namespace BulletSharpGen
 
                 if (i != numParameters - 1)
                 {
-                    writer.Write(", ");
+                    Write(", ");
                 }
             }
-            writer.WriteLine(");");
+            headerWriter.WriteLine(");");
+            sourceWriter.WriteLine(')');
+
+            // Method definition
+            sourceWriter.WriteLine('{');
+            OutputTabs(1, true);
+            sourceWriter.Write("_native->");
+            sourceWriter.Write(method.Name);
+            sourceWriter.Write('(');
+            for (int i = 0; i < numParameters; i++)
+            {
+                var param = method.Parameters[i];
+                sourceWriter.Write(param.Name);
+                if (!param.Type.IsBasic)
+                {
+                    sourceWriter.Write("->_native");
+                }
+
+                if (param.IsOptional)
+                {
+                    hasOptionalParam = true;
+                }
+
+                if (i != numParameters - 1)
+                {
+                    sourceWriter.Write(", ");
+                }
+            }
+            sourceWriter.WriteLine(");");
+            sourceWriter.WriteLine('}');
+            sourceWriter.WriteLine();
             hasWhiteSpace = false;
 
             // If there are optional parameters, then output all possible combinations of calls
@@ -121,7 +174,10 @@ namespace BulletSharpGen
 
         void OutputClass(ClassDefinition c, int level)
         {
-            // TODO: Write forward references
+            if (c.IsTypedef)
+            {
+                return;
+            }
 
             EnsureWhiteSpace();
 
@@ -129,20 +185,20 @@ namespace BulletSharpGen
             OutputTabs(level);
             if (level == 1)
             {
-                writer.Write("public ");
+                headerWriter.Write("public ");
             }
 
             // Write class definition
-            writer.Write("ref class ");
-            writer.Write(c.ManagedName);
+            headerWriter.Write("ref class ");
+            headerWriter.Write(c.ManagedName);
             if (c.BaseClass != null)
             {
-                writer.Write(" : ");
-                writer.Write(c.BaseClass.ManagedName);
+                headerWriter.Write(" : ");
+                headerWriter.Write(c.BaseClass.ManagedName);
             }
-            writer.WriteLine();
+            headerWriter.WriteLine();
             OutputTabs(level);
-            writer.WriteLine("{");
+            headerWriter.WriteLine("{");
             hasWhiteSpace = true;
 
             // Default access for ref class
@@ -167,13 +223,13 @@ namespace BulletSharpGen
             {
                 if (c.Classes.Count != 0)
                 {
-                    writer.WriteLine();
+                    headerWriter.WriteLine();
                 }
                 EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
                 OutputTabs(level + 1);
-                writer.Write(c.Name);
-                writer.WriteLine("* _native;");
+                headerWriter.Write(c.Name);
+                headerWriter.WriteLine("* _native;");
             }
 
             // TODO: Write constructor from unmanaged pointer only if the class is ever instantiated in this way.
@@ -182,11 +238,20 @@ namespace BulletSharpGen
             EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
             OutputTabs(level + 1);
-            writer.Write(c.ManagedName);
-            writer.Write('(');
-            writer.Write(c.Name);
-            writer.WriteLine("* native);");
+            sourceWriter.Write(c.ManagedName);
+            sourceWriter.Write("::");
+            Write(c.ManagedName);
+            Write('(');
+            Write(c.Name);
+            Write("* native)");
+            headerWriter.WriteLine(';');
             hasWhiteSpace = false;
+            sourceWriter.WriteLine();
+            sourceWriter.WriteLine('{');
+            OutputTabs(1, true);
+            sourceWriter.WriteLine("_native = native;");
+            sourceWriter.WriteLine('}');
+            sourceWriter.WriteLine();
 
             // TODO: write destructor & finalizer
 
@@ -234,35 +299,35 @@ namespace BulletSharpGen
                 EnsureWhiteSpace();
 
                 OutputTabs(level + 1);
-                writer.Write("property ");
-                writer.Write(prop.Type.ManagedTypeRefName);
-                writer.Write(" ");
-                writer.WriteLine(prop.Name);
+                headerWriter.Write("property ");
+                headerWriter.Write(prop.Type.ManagedTypeRefName);
+                headerWriter.Write(" ");
+                headerWriter.WriteLine(prop.Name);
                 OutputTabs(level + 1);
-                writer.WriteLine("{");
+                headerWriter.WriteLine("{");
                 
                 // Getter
                 OutputTabs(level + 2);
-                writer.Write(prop.Type.ManagedTypeRefName);
-                writer.WriteLine(" get();");
+                headerWriter.Write(prop.Type.ManagedTypeRefName);
+                headerWriter.WriteLine(" get();");
                 
                 // Setter
                 if (prop.Setter != null || prop.Field != null)
                 {
                     OutputTabs(level + 2);
-                    writer.Write("void set(");
-                    writer.Write(prop.Type.ManagedTypeRefName);
-                    writer.WriteLine(" value);");
+                    headerWriter.Write("void set(");
+                    headerWriter.Write(prop.Type.ManagedTypeRefName);
+                    headerWriter.WriteLine(" value);");
                 }
 
                 OutputTabs(level + 1);
-                writer.WriteLine("}");
+                headerWriter.WriteLine("}");
 
                 hasWhiteSpace = false;
             }
 
             OutputTabs(level);
-            writer.WriteLine("};");
+            headerWriter.WriteLine("};");
             hasWhiteSpace = false;
         }
 
@@ -278,28 +343,33 @@ namespace BulletSharpGen
                 }
 
                 Directory.CreateDirectory(outDirectory);
-                FileStream f = new FileStream(outDirectory + "\\" + header.Name + ".h", FileMode.Create, FileAccess.Write);
-                writer = new StreamWriter(f);
-                //s.WriteLine("#include \"StdAfx.h\"");
-                writer.WriteLine("#pragma once");
-                writer.WriteLine();
+                FileStream headerFile = new FileStream(outDirectory + "\\" + header.Name + ".h", FileMode.Create, FileAccess.Write);
+                headerWriter = new StreamWriter(headerFile);
+                headerWriter.WriteLine("#pragma once");
+                headerWriter.WriteLine();
+
+                FileStream sourceFile = new FileStream(outDirectory + "\\" + header.Name + ".cpp", FileMode.Create, FileAccess.Write);
+                sourceWriter = new StreamWriter(sourceFile);
+                sourceWriter.WriteLine("#include \"StdAfx.h\"");
+                sourceWriter.WriteLine();
 
                 // Write includes
                 if (header.Includes.Count != 0)
                 {
                     foreach (HeaderDefinition include in header.Includes)
                     {
-                        writer.Write("#include \"");
-                        writer.Write(include.Name);
-                        writer.WriteLine(".h\"");
+                        headerWriter.Write("#include \"");
+                        headerWriter.Write(include.Name);
+                        headerWriter.WriteLine(".h\"");
                     }
-                    writer.WriteLine();
+                    headerWriter.WriteLine();
                 }
 
                 // Write namespace
-                writer.Write("namespace ");
-                writer.WriteLine(namespaceName);
-                writer.WriteLine("{");
+                headerWriter.Write("namespace ");
+                headerWriter.WriteLine(namespaceName);
+                headerWriter.WriteLine("{");
+                hasWhiteSpace = true;
 
                 // Find forward references
                 List<ClassDefinition> forwardRefs = new List<ClassDefinition>();
@@ -310,12 +380,32 @@ namespace BulletSharpGen
                 forwardRefs.Sort((r1, r2) => r1.ManagedName.CompareTo(r2.ManagedName));
 
                 // Write forward references
+                List<HeaderDefinition> forwardRefHeaders = new List<HeaderDefinition>();
                 foreach (ClassDefinition c in forwardRefs)
                 {
                     OutputTabs(1);
-                    writer.Write("ref class ");
-                    writer.Write(c.ManagedName);
-                    writer.WriteLine(";");
+                    headerWriter.Write("ref class ");
+                    headerWriter.Write(c.ManagedName);
+                    headerWriter.WriteLine(";");
+                    if (!forwardRefHeaders.Contains(c.Header))
+                    {
+                        forwardRefHeaders.Add(c.Header);
+                    }
+                    hasWhiteSpace = false;
+                }
+                forwardRefHeaders.Add(header);
+                forwardRefHeaders.Sort((r1, r2) => r1.Name.CompareTo(r2.Name));
+
+                // Write statements to include forward referenced types
+                if (forwardRefHeaders.Count != 0)
+                {
+                    foreach (HeaderDefinition h in forwardRefHeaders)
+                    {
+                        sourceWriter.Write("#include \"");
+                        sourceWriter.Write(h.Name);
+                        sourceWriter.WriteLine(".h\"");
+                    }
+                    sourceWriter.WriteLine();
                 }
 
                 // Write classes
@@ -324,9 +414,11 @@ namespace BulletSharpGen
                     OutputClass(c, 1);
                 }
 
-                writer.WriteLine("};");
-                writer.Dispose();
-                f.Dispose();
+                headerWriter.WriteLine("};");
+                headerWriter.Dispose();
+                headerFile.Dispose();
+                sourceWriter.Dispose();
+                sourceFile.Dispose();
             }
 
             Console.WriteLine("Write complete");

@@ -182,7 +182,15 @@ namespace BulletSharpGen
                 currentHeader.Classes.Add(currentClass);
             }
 
-            if (cursor.Kind != CursorKind.TypedefDecl)
+            if (cursor.Kind == CursorKind.TypedefDecl)
+            {
+                currentClass.IsTypedef = true;
+                if (cursor.TypedefDeclUnderlyingType.Canonical.Kind != TypeKind.FunctionProto)
+                {
+                    currentClass.TypedefUnderlyingType = new TypeRefDefinition(cursor.TypedefDeclUnderlyingType);
+                }
+            }
+            else
             {
                 cursor.VisitChildren(ClassVisitor);
             }

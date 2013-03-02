@@ -33,6 +33,12 @@ namespace BulletSharpGen
                     }
                 }
 
+                // Resolve typedef
+                if (c.TypedefUnderlyingType != null)
+                {
+                    ResolveTypeRef(c.TypedefUnderlyingType);
+                }
+
                 // Resolve method return type and parameter types
                 foreach (MethodDefinition method in c.Methods)
                 {
@@ -171,7 +177,17 @@ namespace BulletSharpGen
                     c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
                 }
             }
-
+            /*
+            // Apply transformations
+            ClassDefinition transformClass;
+            if (classDefinitions.TryGetValue("btScalar", out transformClass))
+            {
+                classDefinitions.Remove("btScalar");
+                ClassDefinition replacementClass = new ClassDefinition("btScalar", transformClass.Header);
+                //replacementClass.IsBasic = true;
+                classDefinitions.Add("btScalar", replacementClass);
+            }
+            */
             Console.WriteLine("Parsing complete");
         }
 
@@ -179,7 +195,11 @@ namespace BulletSharpGen
         {
             if (!typeRef.IsBasic && !typeRef.HasTemplateTypeParameter)
             {
-                if (!classDefinitions.ContainsKey(typeRef.Name))
+                if (typeRef.IsPointer || typeRef.IsReference || typeRef.IsConstantArray)
+                {
+                    ResolveTypeRef(typeRef.Referenced);
+                }
+                else if (!classDefinitions.ContainsKey(typeRef.Name))
                 {
                     Console.WriteLine("Class " + typeRef.Name + " not found!");
                 }

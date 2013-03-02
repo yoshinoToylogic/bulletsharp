@@ -15,6 +15,8 @@ namespace BulletSharpGen
         public bool IsAbstract { get; set; }
         public bool IsStruct { get; set; }
         public bool IsTemplate { get; set; }
+        public bool IsTypedef { get; set; }
+        public TypeRefDefinition TypedefUnderlyingType { get; set; }
 
         public string ManagedName { get; set; }
 
