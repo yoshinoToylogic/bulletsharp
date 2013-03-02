@@ -177,7 +177,8 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 #define TEMP(var) var ## Temp
 #if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
 #define VECTOR3_DEF(vec) ATTRIBUTE_ALIGNED16(btVector3) TEMP(vec)
-#define VECTOR3_CONV(vec) VECTOR3_DEF(vec); Vector3TobtVector3(vec, &TEMP(vec))
+#define VECTOR3_IN(invec, vec) Vector3TobtVector3(invec, vec)
+#define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
 #define VECTOR3_USE(vec) TEMP(vec)
 #define VECTOR3_OUT(vec, outvec) btVector3ToVector3(vec, outvec)
 #define VECTOR3_DEF_OUT(vec) VECTOR3_OUT(&TEMP(vec), vec)
@@ -185,12 +186,13 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 #define MATRIX3X3_DEF(tr) ATTRIBUTE_ALIGNED16(btMatrix3x3) TEMP(tr)
 #else
 #define VECTOR3_DEF(vec)
+#define VECTOR3_IN(invec, vec) *vec = *(btVector3*)invec
 #define VECTOR3_CONV(vec)
 #define VECTOR3_USE(vec) *(btVector3*)vec
 #define VECTOR3_OUT(vec, outvec) *(btVector3*)outvec = *vec
 #define VECTOR3_DEF_OUT
 #define TRANSFORM_DEF(tr) btTransform TEMP(tr)
-#define MATRIX3X3_DEF(tr) MATRIX3X3_TEMP(tr)
+#define MATRIX3X3_DEF(tr) btMatrix3x3 TEMP(tr)
 #endif
 #define TRANSFORM_CONV(tr) TRANSFORM_DEF(tr); MatrixTobtTransform(tr, &TEMP(tr))
 #define TRANSFORM_USE(tr) TEMP(tr)
