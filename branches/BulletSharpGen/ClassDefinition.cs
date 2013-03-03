@@ -23,16 +23,22 @@ namespace BulletSharpGen
 
         public string ManagedName { get; set; }
 
-        public ClassDefinition(string name, ClassDefinition parent)
+        public string FullName
         {
-            Name = name;
-            Header = parent.Header;
-            Parent = parent;
+            get
+            {
+                if (Parent != null)
+                {
+                    return Parent.FullName + "::" + Name;
+                }
+                return Name;
+            }
+        }
 
-            Classes = new List<ClassDefinition>();
-            Methods = new List<MethodDefinition>();
-            Properties = new List<PropertyDefinition>();
-            Fields = new List<FieldDefinition>();
+        public ClassDefinition(string name, ClassDefinition parent)
+            : this(name, parent.Header)
+        {
+            Parent = parent;
         }
 
         public ClassDefinition(string name, HeaderDefinition header)
