@@ -147,9 +147,15 @@ namespace BulletSharpGen
                 return;
             }
 
-            ClassDefinition parentClass = currentClass;
             AccessSpecifier parentMemberAccess = currentMemberAccess;
-            currentClass = new ClassDefinition(className, currentHeader);
+            if (currentClass != null)
+            {
+                currentClass = new ClassDefinition(className, currentClass);
+            }
+            else
+            {
+                currentClass = new ClassDefinition(className, currentHeader);
+            }
             ClassDefinitions.Add(className, currentClass);
             if (cursor.Kind == CursorKind.ClassDecl)
             {
@@ -173,9 +179,9 @@ namespace BulletSharpGen
                 }
             }
 
-            if (parentClass != null)
+            if (currentClass.Parent != null)
             {
-                parentClass.Classes.Add(currentClass);
+                currentClass.Parent.Classes.Add(currentClass);
             }
             else
             {
@@ -196,7 +202,7 @@ namespace BulletSharpGen
             }
 
             // Restore parent state
-            currentClass = parentClass;
+            currentClass = currentClass.Parent;
             currentMemberAccess = parentMemberAccess;
         }
 

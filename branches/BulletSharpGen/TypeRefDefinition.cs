@@ -135,6 +135,9 @@ namespace BulletSharpGen
                     // ??
                     break;
                 case TypeKind.Enum:
+                    Name = type.Canonical.Declaration.Spelling;
+                    IsBasic = true;
+                    break;
                 case TypeKind.Record:
                 case TypeKind.Unexposed:
                     Name = type.Canonical.Declaration.Spelling;
