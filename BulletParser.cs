@@ -89,6 +89,39 @@ namespace BulletSharpGen
                 }
             }
 
+            // Turn fields into getters/setters
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                foreach (FieldDefinition field in c.Fields)
+                {/*
+                    ResolveTypeRef(field.Type);
+                    string name = field.Name;
+                    if (name.StartsWith("m_"))
+                    {
+                        name = name.Substring(2);
+                    }
+                    field.ManagedName = name;
+                    new PropertyDefinition(field);*/
+                }
+            }
+            /*
+            // Turn fields into properties
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                foreach (FieldDefinition field in c.Fields)
+                {
+                    ResolveTypeRef(field.Type);
+                    string name = field.Name;
+                    if (name.StartsWith("m_"))
+                    {
+                        name = name.Substring(2);
+                    }
+                    field.ManagedName = name;
+                    new PropertyDefinition(field);
+                }
+            }
+            */
+            /*
             // Turn getters/setters into properties
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -126,34 +159,18 @@ namespace BulletSharpGen
                     }
                 }
             }
-
-            // Turn fields into properties
-            foreach (ClassDefinition c in classDefinitions.Values)
-            {
-                foreach (FieldDefinition field in c.Fields)
-                {
-                    ResolveTypeRef(field.Type);
-                    string name = field.Name;
-                    if (name.StartsWith("m_"))
-                    {
-                        name = name.Substring(2);
-                    }
-                    field.ManagedName = name;
-                    new PropertyDefinition(field);
-                }
-            }
-
+            */
             // Get managed header/class/method names
             foreach (HeaderDefinition header in HeaderDefinitions.Values)
             {
                 string name = header.Name;
                 if (name.StartsWith("bt"))
                 {
-                    name = name.Substring(2);
+                    header.ManagedName = name.Substring(2);
                 }
-                header.Name = name;
             }
 
+            // Apply some transformations
             foreach (ClassDefinition c in classDefinitions.Values)
             {
                 string name = c.Name;

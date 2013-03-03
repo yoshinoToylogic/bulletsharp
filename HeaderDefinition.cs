@@ -10,6 +10,13 @@ namespace BulletSharpGen
         public List<HeaderDefinition> Includes { get; set; }
         public List<EnumDefinition> Enums { get; set; }
 
+        string managedName;
+        public string ManagedName
+        {
+            get { return managedName != null ? managedName : Name; }
+            set { managedName = value; }
+        }
+
         public HeaderDefinition(string filename)
         {
             Name = Path.GetFileNameWithoutExtension(filename);
