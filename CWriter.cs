@@ -9,6 +9,7 @@ namespace BulletSharpGen
         Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
         StreamWriter headerWriter, sourceWriter;
         bool hasWhiteSpace;
+        bool hasSourceWhiteSpace;
         string namespaceName;
 
         public CWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
@@ -48,10 +49,30 @@ namespace BulletSharpGen
             }
         }
 
-        void OutputMethod(MethodDefinition method, int numOptionalParams = 0)
+        void EnsureSourceWhiteSpace()
         {
-            OutputTabs(1);
+            if (!hasSourceWhiteSpace)
+            {
+                sourceWriter.WriteLine();
+                hasSourceWhiteSpace = true;
+            }
+        }
 
+        string GetFullClassName(ClassDefinition cl)
+        {
+            string name = cl.Name;
+            if (cl.Parent != null)
+            {
+                return GetFullClassName(cl.Parent) + "_" + name;
+            }
+            return name;
+        }
+
+        void OutputMethod(MethodDefinition method, ref int constructorIndex, int numOptionalParams = 0)
+        {
+            EnsureSourceWhiteSpace();
+
+            OutputTabs(1);
             headerWriter.Write("EXPORT ");
 
             // Return type
@@ -62,9 +83,14 @@ namespace BulletSharpGen
             }
             else
             {
-                if (method.ReturnType.IsBasic || method.ReturnType.IsPointer || method.ReturnType.IsReference)
+                if (method.ReturnType.IsBasic)
                 {
-                    Write(method.ReturnType.ManagedTypeRefName);
+                    Write(method.ReturnType.Name);
+                }
+                else if (method.ReturnType.Referenced != null)
+                {
+                    Write(method.ReturnType.Referenced.Name);
+                    Write('*');
                 }
                 else
                 {
@@ -75,11 +101,16 @@ namespace BulletSharpGen
             }
 
             // Name
-            Write(method.Parent.Name);
+            Write(GetFullClassName(method.Parent));
             Write("_");
             if (method.IsConstructor)
             {
                 Write("new");
+                if (constructorIndex != 0)
+                {
+                    Write((constructorIndex + 1).ToString());
+                }
+                constructorIndex++;
             }
             else
             {
@@ -131,6 +162,7 @@ namespace BulletSharpGen
             }
             headerWriter.WriteLine(");");
             sourceWriter.WriteLine(')');
+            hasWhiteSpace = false;
 
             // Method definition
             sourceWriter.WriteLine('{');
@@ -145,7 +177,15 @@ namespace BulletSharpGen
                 {
                     sourceWriter.Write("return ");
                 }
-                sourceWriter.Write("obj->");
+                if (method.IsStatic)
+                {
+                    sourceWriter.Write(method.Parent.Name);
+                    sourceWriter.Write("::");
+                }
+                else
+                {
+                    sourceWriter.Write("obj->");
+                }
             }
             sourceWriter.Write(method.Name);
             sourceWriter.Write('(');
@@ -166,13 +206,13 @@ namespace BulletSharpGen
             }
             sourceWriter.WriteLine(");");
             sourceWriter.WriteLine('}');
-            sourceWriter.WriteLine();
-            hasWhiteSpace = false;
+            //sourceWriter.WriteLine();
+            hasSourceWhiteSpace = false;
 
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
             {
-                OutputMethod(method, numOptionalParams + 1);
+                OutputMethod(method, ref constructorIndex, numOptionalParams + 1);
             }
         }
 
@@ -200,11 +240,12 @@ namespace BulletSharpGen
 
             // Write constructors
             int constructorCount = 0;
+            int constructorIndex = 0;
             foreach (MethodDefinition method in c.Methods)
             {
                 if (method.IsConstructor)
                 {
-                    OutputMethod(method);
+                    OutputMethod(method, ref constructorIndex);
                     constructorCount++;
                 }
             }
@@ -214,20 +255,21 @@ namespace BulletSharpGen
             {
                 MethodDefinition constructor = new MethodDefinition(c.Name, c, 0);
                 constructor.IsConstructor = true;
-                OutputMethod(constructor);
+                OutputMethod(constructor, ref constructorIndex, constructorCount);
                 constructorCount++;
             }
 
             // Write methods
             if (c.Methods.Count - constructorCount != 0)
             {
-                EnsureWhiteSpace();
+                //EnsureWhiteSpace();
 
                 foreach (MethodDefinition method in c.Methods)
                 {
                     if (!method.IsConstructor)
                     {
-                        OutputMethod(method);
+                        int dummy = 0;
+                        OutputMethod(method, ref dummy, 0);
                     }
                 }
             }
@@ -258,7 +300,6 @@ namespace BulletSharpGen
                 sourceWriter.Write("#include \"");
                 sourceWriter.Write(headerFilename);
                 sourceWriter.WriteLine("\"");
-                sourceWriter.WriteLine();
 
                 // Write namespace
                 headerWriter.Write("extern \"C\"");
@@ -280,44 +321,6 @@ namespace BulletSharpGen
             }
 
             Console.WriteLine("Write complete");
-        }
-
-        static void AddForwardReference(List<ClassDefinition> forwardRefs, TypeRefDefinition type, HeaderDefinition header)
-        {
-            if (type.Target != null)
-            {
-                if (!forwardRefs.Contains(type.Target))
-                {
-                    if (type.Target.Header != header)
-                    {
-                        // Forward ref to class in another header
-                        forwardRefs.Add(type.Target);
-                    }
-                }
-            }
-        }
-
-        static void FindForwardReferences(List<ClassDefinition> forwardRefs, ClassDefinition c)
-        {
-            foreach (PropertyDefinition prop in c.Properties)
-            {
-                AddForwardReference(forwardRefs, prop.Type, c.Header);
-            }
-
-            foreach (MethodDefinition method in c.Methods)
-            {
-                AddForwardReference(forwardRefs, method.ReturnType, c.Header);
-
-                foreach (ParameterDefinition param in method.Parameters)
-                {
-                    AddForwardReference(forwardRefs, param.Type, c.Header);
-                }
-            }
-
-            foreach (ClassDefinition cl in c.Classes)
-            {
-                FindForwardReferences(forwardRefs, cl);
-            }
         }
     }
 }

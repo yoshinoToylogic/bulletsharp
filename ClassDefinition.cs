@@ -8,6 +8,7 @@ namespace BulletSharpGen
         public string Name { get; private set; }
         public List<ClassDefinition> Classes { get; private set; }
         public TypeRefDefinition BaseClass { get; set; }
+        public ClassDefinition Parent { get; private set; }
         public HeaderDefinition Header { get; private set; }
         public List<MethodDefinition> Methods { get; private set; }
         public List<PropertyDefinition> Properties { get; private set; }
@@ -21,6 +22,18 @@ namespace BulletSharpGen
         public TypeRefDefinition TypedefUnderlyingType { get; set; }
 
         public string ManagedName { get; set; }
+
+        public ClassDefinition(string name, ClassDefinition parent)
+        {
+            Name = name;
+            Header = parent.Header;
+            Parent = parent;
+
+            Classes = new List<ClassDefinition>();
+            Methods = new List<MethodDefinition>();
+            Properties = new List<PropertyDefinition>();
+            Fields = new List<FieldDefinition>();
+        }
 
         public ClassDefinition(string name, HeaderDefinition header)
         {
