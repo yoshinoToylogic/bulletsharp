@@ -10,7 +10,7 @@ btScalar btSphereShape_getRadius(btSphereShape* obj)
 	return obj->getRadius();
 }
 
-void btSphereShape_setUnscaledRadius(btSphereShape* obj, float radius)
+void btSphereShape_setUnscaledRadius(btSphereShape* obj, btScalar radius)
 {
 	obj->setUnscaledRadius(radius);
 }

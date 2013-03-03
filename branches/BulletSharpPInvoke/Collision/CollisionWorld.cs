@@ -183,7 +183,7 @@ namespace BulletSharp
 
     public class CollisionWorld : IDisposable
     {
-        protected IntPtr _native;
+        internal IntPtr _native;
         AlignedCollisionObjectArray _collisionObjectArray;
 
         protected CollisionConfiguration _collisionConfiguration;
