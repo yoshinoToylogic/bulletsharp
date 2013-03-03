@@ -68,7 +68,7 @@ namespace BulletSharpGen
             return name;
         }
 
-        void OutputMethod(MethodDefinition method, ref int constructorIndex, int numOptionalParams = 0)
+        void OutputMethod(MethodDefinition method, ref int overloadIndex, int numOptionalParams = 0)
         {
             EnsureSourceWhiteSpace();
 
@@ -78,7 +78,7 @@ namespace BulletSharpGen
             // Return type
             if (method.IsConstructor)
             {
-                Write(method.Name);
+                Write(method.Parent.FullName);
                 Write("* ");
             }
             else
@@ -89,12 +89,12 @@ namespace BulletSharpGen
                 }
                 else if (method.ReturnType.Referenced != null)
                 {
-                    Write(method.ReturnType.Referenced.Name);
+                    Write(method.ReturnType.Referenced.FullName);
                     Write('*');
                 }
                 else
                 {
-                    // Return structs to an additional out parameter, not immediately
+                    // Return structures to an additional out parameter, not immediately
                     Write("void");
                 }
                 Write(' ');
@@ -106,16 +106,16 @@ namespace BulletSharpGen
             if (method.IsConstructor)
             {
                 Write("new");
-                if (constructorIndex != 0)
-                {
-                    Write((constructorIndex + 1).ToString());
-                }
-                constructorIndex++;
             }
             else
             {
                 Write(method.Name);
             }
+            if (overloadIndex != 0)
+            {
+                Write((overloadIndex + 1).ToString());
+            }
+            overloadIndex++;
             Write('(');
 
             // Parameters
@@ -124,7 +124,7 @@ namespace BulletSharpGen
             // The first parameter is the instance pointer (if not constructor or static)
             if (!method.IsConstructor && !method.IsStatic)
             {
-                Write(method.Parent.Name);
+                Write(method.Parent.FullName);
                 Write("* obj");
 
                 if (numParameters != 0)
@@ -137,10 +137,9 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                //Write(param.Type.ManagedTypeRefName);
                 if (param.Type.Referenced != null && !param.Type.IsBasic)
                 {
-                    Write(param.Type.Referenced.Name);
+                    Write(param.Type.Referenced.FullName);
                     Write("*");
                 }
                 else
@@ -167,44 +166,66 @@ namespace BulletSharpGen
             // Method definition
             sourceWriter.WriteLine('{');
             OutputTabs(1, true);
-            if (method.IsConstructor)
+            if (method.Name == "delete")
             {
-                sourceWriter.Write("return new ");
+                sourceWriter.WriteLine("delete obj;");
             }
             else
             {
-                if (method.ReturnType.IsBasic && method.ReturnType.Name != "void")
+                if (method.IsConstructor)
                 {
-                    sourceWriter.Write("return ");
-                }
-                if (method.IsStatic)
-                {
-                    sourceWriter.Write(method.Parent.Name);
-                    sourceWriter.Write("::");
+                    sourceWriter.Write("return new ");
+                    sourceWriter.Write(method.Parent.FullName);
                 }
                 else
                 {
-                    sourceWriter.Write("obj->");
-                }
-            }
-            sourceWriter.Write(method.Name);
-            sourceWriter.Write('(');
-            for (int i = 0; i < numParameters; i++)
-            {
-                var param = method.Parameters[i];
-                sourceWriter.Write(param.Name);
+                    //if (method.ReturnType.IsBasic && method.ReturnType.Name != "void")
+                    if (!(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
+                    {
+                        if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
+                        {
+                            sourceWriter.Write("return ");
 
-                if (param.IsOptional)
-                {
-                    hasOptionalParam = true;
-                }
+                            if (method.ReturnType.IsReference)
+                            {
+                                sourceWriter.Write('&');
+                            }
+                        }
+                    }
 
-                if (i != numParameters - 1)
-                {
-                    sourceWriter.Write(", ");
+                    if (method.IsStatic)
+                    {
+                        sourceWriter.Write(method.Parent.Name);
+                        sourceWriter.Write("::");
+                    }
+                    else
+                    {
+                        sourceWriter.Write("obj->");
+                    }
+                    sourceWriter.Write(method.Name);
                 }
+                sourceWriter.Write('(');
+                for (int i = 0; i < numParameters; i++)
+                {
+                    var param = method.Parameters[i];
+                    if (param.Type.IsReference)
+                    {
+                        sourceWriter.Write('*');
+                    }
+                    sourceWriter.Write(param.Name);
+
+                    if (param.IsOptional)
+                    {
+                        hasOptionalParam = true;
+                    }
+
+                    if (i != numParameters - 1)
+                    {
+                        sourceWriter.Write(", ");
+                    }
+                }
+                sourceWriter.WriteLine(");");
             }
-            sourceWriter.WriteLine(");");
             sourceWriter.WriteLine('}');
             //sourceWriter.WriteLine();
             hasSourceWhiteSpace = false;
@@ -212,7 +233,7 @@ namespace BulletSharpGen
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
             {
-                OutputMethod(method, ref constructorIndex, numOptionalParams + 1);
+                OutputMethod(method, ref overloadIndex, numOptionalParams + 1);
             }
         }
 
@@ -234,29 +255,42 @@ namespace BulletSharpGen
                 }
             }
 
-            // TODO: Write constructor from unmanaged pointer only if the class is ever instantiated in this way.
-
-            // TODO: write destructor & finalizer
+            // Write methods
+            int overloadIndex = 0;
 
             // Write constructors
             int constructorCount = 0;
-            int constructorIndex = 0;
-            foreach (MethodDefinition method in c.Methods)
+            if (!c.IsAbstract)
             {
-                if (method.IsConstructor)
+                foreach (MethodDefinition method in c.Methods)
                 {
-                    OutputMethod(method, ref constructorIndex);
+                    if (method.IsConstructor)
+                    {
+                        OutputMethod(method, ref overloadIndex);
+                        constructorCount++;
+                    }
+                }
+
+                // Write default constructor
+                if (constructorCount == 0 && !c.IsAbstract)
+                {
+                    MethodDefinition constructor = new MethodDefinition(c.Name, c, 0);
+                    constructor.IsConstructor = true;
+                    OutputMethod(constructor, ref overloadIndex, constructorCount);
                     constructorCount++;
                 }
+                overloadIndex = 0;
             }
 
-            // Write default constructor
-            if (constructorCount == 0 && !c.IsAbstract)
+            // Write delete method
+            if (c.BaseClass == null)
             {
-                MethodDefinition constructor = new MethodDefinition(c.Name, c, 0);
-                constructor.IsConstructor = true;
-                OutputMethod(constructor, ref constructorIndex, constructorCount);
-                constructorCount++;
+                MethodDefinition del = new MethodDefinition("delete", c, 0);
+                del.ReturnType = new TypeRefDefinition("void");
+                del.ReturnType.IsBasic = true;
+                OutputMethod(del, ref overloadIndex, 0);
+                c.Methods.Remove(del);
+                overloadIndex = 0;
             }
 
             // Write methods
@@ -264,13 +298,19 @@ namespace BulletSharpGen
             {
                 //EnsureWhiteSpace();
 
+                MethodDefinition previousMethod = null;
                 foreach (MethodDefinition method in c.Methods)
                 {
+                    if (previousMethod != null && previousMethod.Name != method.Name)
+                    {
+                        overloadIndex = 0;
+                    }
+
                     if (!method.IsConstructor)
                     {
-                        int dummy = 0;
-                        OutputMethod(method, ref dummy, 0);
+                        OutputMethod(method, ref overloadIndex, 0);
                     }
+                    previousMethod = method;
                 }
             }
 

@@ -15,6 +15,19 @@ namespace BulletSharpGen
         public TypeRefDefinition SpecializedTemplateType { get; set; }
 
         public ClassDefinition Target { get; set; }
+
+        public string FullName
+        {
+            get
+            {
+                if (Target != null)
+                {
+                    return Target.FullName;
+                }
+                return Name;
+            }
+        }
+
         public string ManagedName
         {
             get
