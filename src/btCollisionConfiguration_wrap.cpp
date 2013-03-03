@@ -5,9 +5,9 @@ void btCollisionConfiguration_delete(btCollisionConfiguration* obj)
 	delete obj;
 }
 
-btPoolAllocator* btCollisionConfiguration_getPersistentManifoldPool(btCollisionConfiguration* obj)
+btCollisionAlgorithmCreateFunc* btCollisionConfiguration_getCollisionAlgorithmCreateFunc2(btCollisionConfiguration* obj, int proxyType0, int proxyType1)
 {
-	return obj->getPersistentManifoldPool();
+	return obj->getCollisionAlgorithmCreateFunc(proxyType0, proxyType1);
 }
 
 btPoolAllocator* btCollisionConfiguration_getCollisionAlgorithmPool(btCollisionConfiguration* obj)
@@ -15,12 +15,12 @@ btPoolAllocator* btCollisionConfiguration_getCollisionAlgorithmPool(btCollisionC
 	return obj->getCollisionAlgorithmPool();
 }
 
+btPoolAllocator* btCollisionConfiguration_getPersistentManifoldPool(btCollisionConfiguration* obj)
+{
+	return obj->getPersistentManifoldPool();
+}
+
 btStackAlloc* btCollisionConfiguration_getStackAllocator(btCollisionConfiguration* obj)
 {
 	return obj->getStackAllocator();
-}
-
-btCollisionAlgorithmCreateFunc* btCollisionConfiguration_getCollisionAlgorithmCreateFunc(btCollisionConfiguration* obj, int proxyType0, int proxyType1)
-{
-	return obj->getCollisionAlgorithmCreateFunc(proxyType0, proxyType1);
 }
