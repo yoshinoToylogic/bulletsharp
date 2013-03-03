@@ -48,6 +48,7 @@
     <Compile Include="Dynamics\CollisionDispatcher.cs" />
     <Compile Include="Dynamics\CollisionObject.cs" />
     <Compile Include="Dynamics\ConstraintSolver.cs" />
+    <Compile Include="Dynamics\ActionInterface.cs" />
     <Compile Include="Dynamics\DefaultCollisionConfiguration.cs" />
     <Compile Include="Dynamics\DiscreteDynamicsWorld.cs" />
     <Compile Include="Dynamics\DynamicsWorld.cs" />
