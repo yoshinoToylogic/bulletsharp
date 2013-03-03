@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AssemblySubset.cs" />
     <Compile Include="BulletParser.cs" />
+    <Compile Include="CWriter.cs" />
     <Compile Include="CppReader.cs" />
     <Compile Include="CppWriter.cs" />
     <Compile Include="ClassDefinition.cs" />

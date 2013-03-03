@@ -359,7 +359,7 @@ namespace BulletSharpGen
                     foreach (HeaderDefinition include in header.Includes)
                     {
                         headerWriter.Write("#include \"");
-                        headerWriter.Write(include.Name);
+                        headerWriter.Write(include.ManagedName);
                         headerWriter.WriteLine(".h\"");
                     }
                     headerWriter.WriteLine();
@@ -394,7 +394,7 @@ namespace BulletSharpGen
                     hasWhiteSpace = false;
                 }
                 forwardRefHeaders.Add(header);
-                forwardRefHeaders.Sort((r1, r2) => r1.Name.CompareTo(r2.Name));
+                forwardRefHeaders.Sort((r1, r2) => r1.ManagedName.CompareTo(r2.ManagedName));
 
                 // Write statements to include forward referenced types
                 if (forwardRefHeaders.Count != 0)
@@ -402,7 +402,7 @@ namespace BulletSharpGen
                     foreach (HeaderDefinition h in forwardRefHeaders)
                     {
                         sourceWriter.Write("#include \"");
-                        sourceWriter.Write(h.Name);
+                        sourceWriter.Write(h.ManagedName);
                         sourceWriter.WriteLine(".h\"");
                     }
                     sourceWriter.WriteLine();

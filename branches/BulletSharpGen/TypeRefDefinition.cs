@@ -116,6 +116,8 @@ namespace BulletSharpGen
                     break;
                 case TypeKind.Typedef:
                     Name = type.Declaration.Spelling;
+                    Referenced = new TypeRefDefinition(type.Canonical);
+                    IsBasic = Referenced.IsBasic;
                     break;
                 case TypeKind.Pointer:
                     Referenced = new TypeRefDefinition(type.Pointee);
@@ -128,6 +130,9 @@ namespace BulletSharpGen
                 case TypeKind.ConstantArray:
                     Referenced = new TypeRefDefinition(type.ArrayElementType);
                     IsConstantArray = true;
+                    break;
+                case TypeKind.FunctionProto:
+                    // ??
                     break;
                 case TypeKind.Enum:
                 case TypeKind.Record:
