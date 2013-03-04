@@ -4,61 +4,14 @@ using System.IO;
 
 namespace BulletSharpGen
 {
-    class CWriter
+    class CWriter : WrapperWriter
     {
-        Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
-        StreamWriter headerWriter, sourceWriter;
-        bool hasWhiteSpace;
-        bool hasSourceWhiteSpace;
-        string namespaceName;
-
         public CWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+            : base(headerDefinitions, namespaceName)
         {
-            this.headerDefinitions = headerDefinitions;
-            this.namespaceName = namespaceName;
         }
 
-        void OutputTabs(int n, bool source = false)
-        {
-            for (int i = 0; i < n; i++)
-            {
-                (source ? sourceWriter : headerWriter).Write("\t");
-            }
-        }
-
-        /// <summary>Writes to both the header and the source file</summary>
-        void Write(string s)
-        {
-            headerWriter.Write(s);
-            sourceWriter.Write(s);
-        }
-
-        /// <summary>Writes to both the header and the source file</summary>
-        void Write(char s)
-        {
-            headerWriter.Write(s);
-            sourceWriter.Write(s);
-        }
-
-        void EnsureWhiteSpace()
-        {
-            if (!hasWhiteSpace)
-            {
-                headerWriter.WriteLine();
-                hasWhiteSpace = true;
-            }
-        }
-
-        void EnsureSourceWhiteSpace()
-        {
-            if (!hasSourceWhiteSpace)
-            {
-                sourceWriter.WriteLine();
-                hasSourceWhiteSpace = true;
-            }
-        }
-
-        string GetFullClassName(ClassDefinition cl)
+        static string GetFullClassName(ClassDefinition cl)
         {
             string name = cl.Name;
             if (cl.Parent != null)
@@ -68,18 +21,23 @@ namespace BulletSharpGen
             return name;
         }
 
-        void OutputMethod(MethodDefinition method, ref int overloadIndex, int numOptionalParams = 0)
+        void OutputMethod(MethodDefinition method, int level, ref int overloadIndex, int numOptionalParams = 0)
         {
-            EnsureSourceWhiteSpace();
+            EnsureWhiteSpace(WriteTo.Source);
 
             OutputTabs(1);
-            headerWriter.Write("EXPORT ");
+            Write("EXPORT ", WriteTo.Header);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine("[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            Write("static extern ", WriteTo.CS);
 
             // Return type
             if (method.IsConstructor)
             {
-                Write(method.Parent.FullName);
-                Write("* ");
+                Write(method.Parent.FullName, WriteTo.Header | WriteTo.Source);
+                Write("* ", WriteTo.Header | WriteTo.Source);
+                Write("IntPtr ", WriteTo.CS);
             }
             else
             {
@@ -89,8 +47,9 @@ namespace BulletSharpGen
                 }
                 else if (method.ReturnType.Referenced != null)
                 {
-                    Write(method.ReturnType.Referenced.FullName);
-                    Write('*');
+                    Write(method.ReturnType.Referenced.FullName, WriteTo.Header | WriteTo.Source);
+                    Write('*', WriteTo.Header | WriteTo.Source);
+                    Write("IntPtr", WriteTo.CS);
                 }
                 else
                 {
@@ -124,8 +83,9 @@ namespace BulletSharpGen
             // The first parameter is the instance pointer (if not constructor or static)
             if (!method.IsConstructor && !method.IsStatic)
             {
-                Write(method.Parent.FullName);
-                Write("* obj");
+                Write(method.Parent.FullName, WriteTo.Header | WriteTo.Source);
+                Write("* obj", WriteTo.Header | WriteTo.Source);
+                Write("IntPtr obj", WriteTo.CS);
 
                 if (numParameters != 0)
                 {
@@ -139,8 +99,9 @@ namespace BulletSharpGen
                 var param = method.Parameters[i];
                 if (param.Type.Referenced != null && !param.Type.IsBasic)
                 {
-                    Write(param.Type.Referenced.FullName);
-                    Write("*");
+                    Write(param.Type.Referenced.FullName, WriteTo.Header | WriteTo.Source);
+                    Write('*', WriteTo.Header | WriteTo.Source);
+                    Write("IntPtr", WriteTo.CS);
                 }
                 else
                 {
@@ -159,23 +120,23 @@ namespace BulletSharpGen
                     Write(", ");
                 }
             }
-            headerWriter.WriteLine(");");
-            sourceWriter.WriteLine(')');
-            hasWhiteSpace = false;
+            WriteLine(");", WriteTo.Header | WriteTo.CS);
+            WriteLine(')', WriteTo.Source);
+            hasHeaderWhiteSpace = false;
 
             // Method definition
-            sourceWriter.WriteLine('{');
-            OutputTabs(1, true);
+            WriteLine('{', WriteTo.Source);
+            OutputTabs(1, WriteTo.Source);
             if (method.Name == "delete")
             {
-                sourceWriter.WriteLine("delete obj;");
+                WriteLine("delete obj;", WriteTo.Source);
             }
             else
             {
                 if (method.IsConstructor)
                 {
-                    sourceWriter.Write("return new ");
-                    sourceWriter.Write(method.Parent.FullName);
+                    Write("return new ", WriteTo.Source);
+                    Write(method.Parent.FullName, WriteTo.Source);
                 }
                 else
                 {
@@ -184,35 +145,35 @@ namespace BulletSharpGen
                     {
                         if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
                         {
-                            sourceWriter.Write("return ");
+                            Write("return ", WriteTo.Source);
 
                             if (method.ReturnType.IsReference)
                             {
-                                sourceWriter.Write('&');
+                                Write('&', WriteTo.Source);
                             }
                         }
                     }
 
                     if (method.IsStatic)
                     {
-                        sourceWriter.Write(method.Parent.Name);
-                        sourceWriter.Write("::");
+                        Write(method.Parent.Name, WriteTo.Source);
+                        Write("::", WriteTo.Source);
                     }
                     else
                     {
-                        sourceWriter.Write("obj->");
+                        Write("obj->", WriteTo.Source);
                     }
-                    sourceWriter.Write(method.Name);
+                    Write(method.Name, WriteTo.Source);
                 }
-                sourceWriter.Write('(');
+                Write('(', WriteTo.Source);
                 for (int i = 0; i < numParameters; i++)
                 {
                     var param = method.Parameters[i];
                     if (param.Type.IsReference)
                     {
-                        sourceWriter.Write('*');
+                        Write('*', WriteTo.Source);
                     }
-                    sourceWriter.Write(param.Name);
+                    Write(param.Name, WriteTo.Source);
 
                     if (param.IsOptional)
                     {
@@ -221,37 +182,51 @@ namespace BulletSharpGen
 
                     if (i != numParameters - 1)
                     {
-                        sourceWriter.Write(", ");
+                        Write(", ", WriteTo.Source);
                     }
                 }
-                sourceWriter.WriteLine(");");
+                WriteLine(");", WriteTo.Source);
             }
-            sourceWriter.WriteLine('}');
-            //sourceWriter.WriteLine();
+            WriteLine('}', WriteTo.Source);
+            //WriteLine(WriteTo.Source);
             hasSourceWhiteSpace = false;
 
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
             {
-                OutputMethod(method, ref overloadIndex, numOptionalParams + 1);
+                OutputMethod(method, level, ref overloadIndex, numOptionalParams + 1);
             }
         }
 
-        void OutputClass(ClassDefinition c)
+        void OutputClass(ClassDefinition c, int level)
         {
             if (c.IsTypedef)
             {
                 return;
             }
 
-            EnsureWhiteSpace();
+            EnsureWhiteSpace(WriteTo.Header | WriteTo.CS);
+
+            // Write class definition
+            OutputTabs(level, WriteTo.CS);
+            Write("public class ", WriteTo.CS);
+            Write(c.ManagedName, WriteTo.CS);
+            if (c.BaseClass != null)
+            {
+                Write(" : ", WriteTo.CS);
+                Write(c.BaseClass.ManagedName, WriteTo.CS);
+            }
+            WriteLine(WriteTo.CS);
+            OutputTabs(level, WriteTo.CS);
+            WriteLine("{", WriteTo.CS);
+            hasCSWhiteSpace = true;
 
             // Write child classes
             if (c.Classes.Count != 0)
             {
                 foreach (ClassDefinition cl in c.Classes)
                 {
-                    OutputClass(cl);
+                    OutputClass(cl, level + 1);
                 }
             }
 
@@ -266,7 +241,7 @@ namespace BulletSharpGen
                 {
                     if (method.IsConstructor)
                     {
-                        OutputMethod(method, ref overloadIndex);
+                        OutputMethod(method, level, ref overloadIndex);
                         constructorCount++;
                     }
                 }
@@ -276,7 +251,7 @@ namespace BulletSharpGen
                 {
                     MethodDefinition constructor = new MethodDefinition(c.Name, c, 0);
                     constructor.IsConstructor = true;
-                    OutputMethod(constructor, ref overloadIndex, constructorCount);
+                    OutputMethod(constructor, level, ref overloadIndex, constructorCount);
                     constructorCount++;
                 }
                 overloadIndex = 0;
@@ -288,7 +263,7 @@ namespace BulletSharpGen
                 MethodDefinition del = new MethodDefinition("delete", c, 0);
                 del.ReturnType = new TypeRefDefinition("void");
                 del.ReturnType.IsBasic = true;
-                OutputMethod(del, ref overloadIndex, 0);
+                OutputMethod(del, level, ref overloadIndex, 0);
                 c.Methods.Remove(del);
                 overloadIndex = 0;
             }
@@ -308,13 +283,16 @@ namespace BulletSharpGen
 
                     if (!method.IsConstructor)
                     {
-                        OutputMethod(method, ref overloadIndex, 0);
+                        OutputMethod(method, level, ref overloadIndex, 0);
                     }
                     previousMethod = method;
                 }
             }
 
-            hasWhiteSpace = false;
+            OutputTabs(level, WriteTo.CS);
+            WriteLine("}", WriteTo.CS);
+            hasCSWhiteSpace = false;
+            hasHeaderWhiteSpace = false;
         }
 
         public void Output()
@@ -329,35 +307,51 @@ namespace BulletSharpGen
                 }
 
                 Directory.CreateDirectory(outDirectory);
+
+                // Header file
                 string headerFilename = header.Name + "_wrap.h";
                 FileStream headerFile = new FileStream(outDirectory + "\\" + headerFilename, FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#include \"main.h\"");
                 headerWriter.WriteLine();
+                headerWriter.Write("extern \"C\"");
+                headerWriter.WriteLine();
+                headerWriter.WriteLine("{");
+                hasHeaderWhiteSpace = true;
 
+                // C++ source file
                 FileStream sourceFile = new FileStream(outDirectory + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
                 sourceWriter.Write("#include \"");
                 sourceWriter.Write(headerFilename);
                 sourceWriter.WriteLine("\"");
 
-                // Write namespace
-                headerWriter.Write("extern \"C\"");
-                headerWriter.WriteLine();
-                headerWriter.WriteLine("{");
-                hasWhiteSpace = true;
+                // C# source file
+                FileStream csFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cs", FileMode.Create, FileAccess.Write);
+                csWriter = new StreamWriter(csFile);
+                csWriter.WriteLine("using System;");
+                csWriter.WriteLine("using System.Runtime.InteropServices;");
+                csWriter.WriteLine("using System.Security;");
+                csWriter.WriteLine();
+                csWriter.Write("namespace ");
+                csWriter.WriteLine(NamespaceName);
+                csWriter.WriteLine("{");
+                hasCSWhiteSpace = true;
 
                 // Write classes
                 foreach (ClassDefinition c in header.Classes)
                 {
-                    OutputClass(c);
+                    OutputClass(c, 1);
                 }
-
                 headerWriter.WriteLine('}');
+                csWriter.WriteLine("}");
+
                 headerWriter.Dispose();
                 headerFile.Dispose();
                 sourceWriter.Dispose();
                 sourceFile.Dispose();
+                csWriter.Dispose();
+                csFile.Dispose();
             }
 
             Console.WriteLine("Write complete");
