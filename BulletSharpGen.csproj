@@ -58,6 +58,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="PropertyDefinition.cs" />
     <Compile Include="TypeRefDefinition.cs" />
+    <Compile Include="WrapperWriter.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="libclang.dll">
