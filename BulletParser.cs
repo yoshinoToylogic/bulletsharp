@@ -93,15 +93,21 @@ namespace BulletSharpGen
             foreach (ClassDefinition c in classDefinitions.Values)
             {
                 foreach (FieldDefinition field in c.Fields)
-                {/*
+                {
                     ResolveTypeRef(field.Type);
+
+                    // Resolve native and managed name
                     string name = field.Name;
-                    if (name.StartsWith("m_"))
+                    string managedName = name;
+                    if (managedName.StartsWith("m_"))
                     {
-                        name = name.Substring(2);
+                        managedName = managedName.Substring(2);
                     }
-                    field.ManagedName = name;
-                    new PropertyDefinition(field);*/
+                    managedName = name.Substring(0, 1).ToUpper() + name.Substring(1);
+
+                    MethodDefinition getter = new MethodDefinition("get" + name, field.Parent, 0);
+                    getter.ReturnType = field.Type;
+                    getter.Field = field;
                 }
             }
             /*

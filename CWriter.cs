@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace BulletSharpGen
 {
@@ -21,75 +22,164 @@ namespace BulletSharpGen
             return name;
         }
 
+        void WriteType(TypeRefDefinition type)
+        {
+            if (type.IsBasic)
+            {
+                Write(type.Name, WriteTo.Header | WriteTo.Source);
+                Write(type.ManagedName, WriteTo.CS);
+            }
+            else if (type.Referenced != null)
+            {
+                Write(type.Referenced.FullName, WriteTo.Header | WriteTo.Source);
+                Write('*', WriteTo.Header | WriteTo.Source);
+                Write("IntPtr", WriteTo.CS);
+            }
+            else
+            {
+                // Return structures to an additional out parameter, not immediately
+                Write("void");
+            }
+        }
+
+        void OutputDeleteMethod(MethodDefinition method, int level)
+        {
+            // public void Dispose()
+            WriteLine("Dispose()", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('{', WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+            WriteLine("Dispose(true);", WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+            WriteLine("GC.SuppressFinalize(this);", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('}', WriteTo.CS);
+
+            // protected virtual void Dispose(bool disposing)
+            WriteLine(WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine("protected virtual void Dispose(bool disposing)", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine("{", WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+            WriteLine("if (_native != IntPtr.Zero)", WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+            WriteLine('{', WriteTo.CS);
+            OutputTabs(level + 3, WriteTo.CS);
+            Write(method.Parent.FullName, WriteTo.CS);
+            WriteLine("_delete(_native);", WriteTo.CS);
+            OutputTabs(level + 3, WriteTo.CS);
+            WriteLine("_native = IntPtr.Zero;", WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+            WriteLine('}', WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('}', WriteTo.CS);
+
+            // C# Destructor
+            WriteLine(WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            Write('~', WriteTo.CS);
+            Write(method.Parent.ManagedName, WriteTo.CS);
+            WriteLine("()", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('{', WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+            WriteLine("Dispose(false);", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('}', WriteTo.CS);
+        }
+
         void OutputMethod(MethodDefinition method, int level, ref int overloadIndex, int numOptionalParams = 0)
         {
-            EnsureWhiteSpace(WriteTo.Source);
+            EnsureWhiteSpace(WriteTo.Source | WriteTo.CS);
 
             OutputTabs(1);
             Write("EXPORT ", WriteTo.Header);
+
             OutputTabs(level + 1, WriteTo.CS);
-            WriteLine("[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]", WriteTo.CS);
-            OutputTabs(level + 1, WriteTo.CS);
-            Write("static extern ", WriteTo.CS);
+            Write("public ", WriteTo.CS);
+
+            // DllImport clause
+            OutputTabs(level + 1, WriteTo.DllImport);
+            WriteLine("[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]", WriteTo.DllImport);
+            OutputTabs(level + 1, WriteTo.DllImport);
+            Write("static extern ", WriteTo.DllImport);
 
             // Return type
             if (method.IsConstructor)
             {
                 Write(method.Parent.FullName, WriteTo.Header | WriteTo.Source);
                 Write("* ", WriteTo.Header | WriteTo.Source);
-                Write("IntPtr ", WriteTo.CS);
+                Write("IntPtr ", WriteTo.DllImport);
             }
             else
             {
+                WriteType(method.ReturnType);
+                Write(' ');
                 if (method.ReturnType.IsBasic)
                 {
-                    Write(method.ReturnType.Name);
+                    Write(method.ReturnType.ManagedName, WriteTo.DllImport);
                 }
                 else if (method.ReturnType.Referenced != null)
                 {
-                    Write(method.ReturnType.Referenced.FullName, WriteTo.Header | WriteTo.Source);
-                    Write('*', WriteTo.Header | WriteTo.Source);
-                    Write("IntPtr", WriteTo.CS);
+                    Write("IntPtr", WriteTo.DllImport);
                 }
                 else
                 {
                     // Return structures to an additional out parameter, not immediately
-                    Write("void");
+                    Write("void", WriteTo.DllImport);
                 }
-                Write(' ');
+                Write(' ', WriteTo.DllImport);
             }
 
             // Name
-            Write(GetFullClassName(method.Parent));
-            Write("_");
+            Write(GetFullClassName(method.Parent), WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
+            Write('_', WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
             if (method.IsConstructor)
             {
-                Write("new");
+                Write("new", WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
+                Write(method.Parent.ManagedName, WriteTo.CS);
             }
             else
             {
-                Write(method.Name);
+                Write(method.Name, WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
+                if (method.Name == "delete")
+                {
+                    OutputDeleteMethod(method, level);
+                }
+                else
+                {
+                    Write(method.ManagedName, WriteTo.CS);
+                }
             }
+
+            // Index number for overloaded methods
             if (overloadIndex != 0)
             {
-                Write((overloadIndex + 1).ToString());
+                Write((overloadIndex + 1).ToString(), WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
             }
             overloadIndex++;
-            Write('(');
+
 
             // Parameters
+            if (method.Name != "delete")
+            {
+                Write('(', WriteTo.CS);
+            }
+            Write('(', WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
+
             int numParameters = method.Parameters.Length - numOptionalParams;
 
-            // The first parameter is the instance pointer (if not constructor or static)
+            // The first parameter is the instance pointer (if not constructor or static method)
             if (!method.IsConstructor && !method.IsStatic)
             {
                 Write(method.Parent.FullName, WriteTo.Header | WriteTo.Source);
                 Write("* obj", WriteTo.Header | WriteTo.Source);
-                Write("IntPtr obj", WriteTo.CS);
+                Write("IntPtr obj", WriteTo.DllImport);
 
                 if (numParameters != 0)
                 {
-                    Write(", ");
+                    Write(", ", WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
                 }
             }
 
@@ -97,18 +187,21 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
+                WriteType(param.Type);
+
                 if (param.Type.Referenced != null && !param.Type.IsBasic)
                 {
-                    Write(param.Type.Referenced.FullName, WriteTo.Header | WriteTo.Source);
-                    Write('*', WriteTo.Header | WriteTo.Source);
-                    Write("IntPtr", WriteTo.CS);
+                    Write("IntPtr", WriteTo.DllImport);
                 }
                 else
                 {
-                    Write(param.Type.Name);
+                    Write(param.Type.ManagedName, WriteTo.DllImport);
                 }
+
                 Write(' ');
                 Write(param.Name);
+                dllImport.Append(' ');
+                dllImport.Append(param.Name);
 
                 if (param.IsOptional)
                 {
@@ -118,78 +211,108 @@ namespace BulletSharpGen
                 if (i != numParameters - 1)
                 {
                     Write(", ");
+                    dllImport.Append(", ");
                 }
             }
-            WriteLine(");", WriteTo.Header | WriteTo.CS);
+            WriteLine(");", WriteTo.Header | WriteTo.DllImport);
+            if (method.Name != "delete")
+            {
+                WriteLine(')', WriteTo.CS);
+            }
+            //WriteLine(")", WriteTo.CS);
             WriteLine(')', WriteTo.Source);
             hasHeaderWhiteSpace = false;
 
-            // Method definition
-            WriteLine('{', WriteTo.Source);
-            OutputTabs(1, WriteTo.Source);
             if (method.Name == "delete")
             {
+                WriteLine('{', WriteTo.Source);
+                OutputTabs(1, WriteTo.Source);
                 WriteLine("delete obj;", WriteTo.Source);
+                WriteLine(");", WriteTo.Source);
+                hasSourceWhiteSpace = false;
+                hasCSWhiteSpace = false;
+                return;
+            }
+
+            // Method definition
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('{', WriteTo.Source | WriteTo.CS);
+            OutputTabs(1, WriteTo.Source);
+            OutputTabs(level + 2, WriteTo.CS);
+
+            if (method.IsConstructor)
+            {
+                Write("return new ", WriteTo.Source);
+                Write(method.Parent.FullName, WriteTo.Source);
+                Write("_native = ", WriteTo.CS);
+                Write(GetFullClassName(method.Parent), WriteTo.CS);
+                Write("_new", WriteTo.CS);
             }
             else
             {
-                if (method.IsConstructor)
+                //if (method.ReturnType.IsBasic && method.ReturnType.Name != "void")
+                if (!(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
                 {
-                    Write("return new ", WriteTo.Source);
-                    Write(method.Parent.FullName, WriteTo.Source);
+                    if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
+                    {
+                        Write("return ", WriteTo.Source | WriteTo.CS);
+
+                        if (method.ReturnType.IsReference)
+                        {
+                            Write('&', WriteTo.Source);
+                        }
+                    }
+                }
+
+                if (method.IsStatic)
+                {
+                    Write(method.Parent.Name, WriteTo.Source);
+                    Write("::", WriteTo.Source);
                 }
                 else
                 {
-                    //if (method.ReturnType.IsBasic && method.ReturnType.Name != "void")
-                    if (!(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
-                    {
-                        if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
-                        {
-                            Write("return ", WriteTo.Source);
-
-                            if (method.ReturnType.IsReference)
-                            {
-                                Write('&', WriteTo.Source);
-                            }
-                        }
-                    }
-
-                    if (method.IsStatic)
-                    {
-                        Write(method.Parent.Name, WriteTo.Source);
-                        Write("::", WriteTo.Source);
-                    }
-                    else
-                    {
-                        Write("obj->", WriteTo.Source);
-                    }
-                    Write(method.Name, WriteTo.Source);
+                    Write("obj->", WriteTo.Source);
                 }
-                Write('(', WriteTo.Source);
-                for (int i = 0; i < numParameters; i++)
-                {
-                    var param = method.Parameters[i];
-                    if (param.Type.IsReference)
-                    {
-                        Write('*', WriteTo.Source);
-                    }
-                    Write(param.Name, WriteTo.Source);
-
-                    if (param.IsOptional)
-                    {
-                        hasOptionalParam = true;
-                    }
-
-                    if (i != numParameters - 1)
-                    {
-                        Write(", ", WriteTo.Source);
-                    }
-                }
-                WriteLine(");", WriteTo.Source);
+                Write(GetFullClassName(method.Parent), WriteTo.CS);
+                Write('_', WriteTo.CS);
+                Write(method.Name, WriteTo.Source | WriteTo.CS);
             }
-            WriteLine('}', WriteTo.Source);
-            //WriteLine(WriteTo.Source);
+
+            // Call parameters
+            Write('(', WriteTo.Source | WriteTo.CS);
+            if (!method.IsConstructor && !method.IsStatic)
+            {
+                Write("obj", WriteTo.CS);
+                if (numParameters != 0)
+                {
+                    Write(", ", WriteTo.CS);
+                }
+            }
+            for (int i = 0; i < numParameters; i++)
+            {
+                var param = method.Parameters[i];
+                if (param.Type.IsReference)
+                {
+                    Write('*', WriteTo.Source);
+                }
+                Write(param.Name, WriteTo.Source | WriteTo.CS);
+
+                if (param.IsOptional)
+                {
+                    hasOptionalParam = true;
+                }
+
+                if (i != numParameters - 1)
+                {
+                    Write(", ", WriteTo.Source | WriteTo.CS);
+                }
+            }
+            WriteLine(");", WriteTo.Source | WriteTo.CS);
+
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('}', WriteTo.Source | WriteTo.CS);
             hasSourceWhiteSpace = false;
+            hasCSWhiteSpace = false;
 
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
@@ -230,8 +353,18 @@ namespace BulletSharpGen
                 }
             }
 
+            // Write native pointer
+            if (c.BaseClass == null)
+            {
+                EnsureWhiteSpace(WriteTo.CS);
+                OutputTabs(level + 1, WriteTo.CS);
+                WriteLine("internal IntPtr _native;", WriteTo.CS);
+                hasCSWhiteSpace = false;
+            }
+
             // Write methods
             int overloadIndex = 0;
+            dllImport = new StringBuilder();
 
             // Write constructors
             int constructorCount = 0;
@@ -288,6 +421,10 @@ namespace BulletSharpGen
                     previousMethod = method;
                 }
             }
+
+            // Write DllImport clauses
+            EnsureWhiteSpace(WriteTo.CS);
+            Write(dllImport.ToString(), WriteTo.CS);
 
             OutputTabs(level, WriteTo.CS);
             WriteLine("}", WriteTo.CS);

@@ -11,6 +11,7 @@ namespace BulletSharpGen
         public bool IsStatic { get; set; }
         public bool IsAbstract { get; set; }
         public bool IsConstructor { get; set; }
+        public FieldDefinition Field { get; set; } // get/set method target
 
         public string ManagedName
         {

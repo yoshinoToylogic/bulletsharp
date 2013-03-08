@@ -34,6 +34,22 @@ namespace BulletSharpGen
             {
                 if (IsBasic)
                 {
+                    if (Name.Equals("unsigned short"))
+                    {
+                        return "ushort";
+                    }
+                    else if (Name.Equals("unsigned int"))
+                    {
+                        return "uint";
+                    }
+                    else if (Name.Equals("unsigned long"))
+                    {
+                        return "ulong";
+                    }
+                    if (Referenced != null)
+                    {
+                        return Referenced.ManagedName;
+                    }
                     return Name;
                 }
                 if (HasTemplateTypeParameter)
@@ -153,7 +169,14 @@ namespace BulletSharpGen
                     break;
                 case TypeKind.Record:
                 case TypeKind.Unexposed:
-                    Name = type.Canonical.Declaration.Spelling;
+                    if (type.Canonical.Declaration.IsInvalid)
+                    {
+                        Name = "[unexposed type]";
+                    }
+                    else
+                    {
+                        Name = type.Canonical.Declaration.Spelling;
+                    }
                     break;
                 default:
                     throw new NotImplementedException();
@@ -178,7 +201,7 @@ namespace BulletSharpGen
                 return false;
             }
 
-            if (t.IsBasic != t.IsBasic ||
+            if (t.IsBasic != IsBasic ||
                 t.IsConstantArray != IsConstantArray ||
                 t.IsPointer != IsPointer ||
                 t.IsReference != IsReference)
