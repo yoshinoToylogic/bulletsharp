@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace BulletSharpGen
 {
@@ -11,6 +12,7 @@ namespace BulletSharpGen
         Header = 1,
         Source = 2,
         CS = 4,
+        DllImport = 8,
         All = WriteTo.Header | WriteTo.Source | WriteTo.CS
     }
 
@@ -20,6 +22,7 @@ namespace BulletSharpGen
         protected string NamespaceName { get; private set; }
 
         protected StreamWriter headerWriter, sourceWriter, csWriter;
+        protected StringBuilder dllImport;
         protected bool hasHeaderWhiteSpace;
         protected bool hasSourceWhiteSpace;
         protected bool hasCSWhiteSpace;
@@ -43,6 +46,10 @@ namespace BulletSharpGen
             if ((to & WriteTo.CS) == WriteTo.CS)
             {
                 csWriter.Write(s);
+            }
+            if ((to & WriteTo.DllImport) == WriteTo.DllImport)
+            {
+                dllImport.Append(s);
             }
         }
 
