@@ -22,7 +22,7 @@ namespace BulletSharpGen
         protected string NamespaceName { get; private set; }
 
         protected StreamWriter headerWriter, sourceWriter, csWriter;
-        protected StringBuilder dllImport;
+        protected StringBuilder dllImport = new StringBuilder();
         protected bool hasHeaderWhiteSpace;
         protected bool hasSourceWhiteSpace;
         protected bool hasCSWhiteSpace;

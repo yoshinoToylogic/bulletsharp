@@ -33,7 +33,7 @@ namespace BulletSharpGen
             {
                 Write(type.Referenced.FullName, WriteTo.Header | WriteTo.Source);
                 Write('*', WriteTo.Header | WriteTo.Source);
-                Write("IntPtr", WriteTo.CS);
+                Write(type.Referenced.ManagedName, WriteTo.CS);
             }
             else
             {
@@ -66,7 +66,7 @@ namespace BulletSharpGen
             OutputTabs(level + 2, WriteTo.CS);
             WriteLine('{', WriteTo.CS);
             OutputTabs(level + 3, WriteTo.CS);
-            Write(method.Parent.FullName, WriteTo.CS);
+            Write(GetFullClassName(method.Parent), WriteTo.CS);
             WriteLine("_delete(_native);", WriteTo.CS);
             OutputTabs(level + 3, WriteTo.CS);
             WriteLine("_native = IntPtr.Zero;", WriteTo.CS);
@@ -158,7 +158,6 @@ namespace BulletSharpGen
             {
                 Write((overloadIndex + 1).ToString(), WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
             }
-            overloadIndex++;
 
 
             // Parameters
@@ -219,7 +218,6 @@ namespace BulletSharpGen
             {
                 WriteLine(')', WriteTo.CS);
             }
-            //WriteLine(")", WriteTo.CS);
             WriteLine(')', WriteTo.Source);
             hasHeaderWhiteSpace = false;
 
@@ -228,18 +226,30 @@ namespace BulletSharpGen
                 WriteLine('{', WriteTo.Source);
                 OutputTabs(1, WriteTo.Source);
                 WriteLine("delete obj;", WriteTo.Source);
-                WriteLine(");", WriteTo.Source);
+                WriteLine('}', WriteTo.Source);
                 hasSourceWhiteSpace = false;
                 hasCSWhiteSpace = false;
                 return;
             }
 
-            // Method definition
+            // Method body
             OutputTabs(level + 1, WriteTo.CS);
             WriteLine('{', WriteTo.Source | WriteTo.CS);
-            OutputTabs(1, WriteTo.Source);
             OutputTabs(level + 2, WriteTo.CS);
 
+            // Type marshalling prologue
+            for (int i = 0; i < numParameters; i++)
+            {
+                var param = method.Parameters[i];
+                string prologue = BulletParser.GetTypeMarshalPrologue(param);
+                if (!string.IsNullOrEmpty(prologue))
+                {
+                    OutputTabs(1, WriteTo.Source);
+                    WriteLine(prologue, WriteTo.Source);
+                }
+            }
+
+            OutputTabs(1, WriteTo.Source);
             if (method.IsConstructor)
             {
                 Write("return new ", WriteTo.Source);
@@ -277,12 +287,17 @@ namespace BulletSharpGen
                 Write('_', WriteTo.CS);
                 Write(method.Name, WriteTo.Source | WriteTo.CS);
             }
+            if (overloadIndex != 0)
+            {
+                Write((overloadIndex + 1).ToString(), WriteTo.CS);
+            }
+            overloadIndex++;
 
             // Call parameters
             Write('(', WriteTo.Source | WriteTo.CS);
             if (!method.IsConstructor && !method.IsStatic)
             {
-                Write("obj", WriteTo.CS);
+                Write("_native", WriteTo.CS);
                 if (numParameters != 0)
                 {
                     Write(", ", WriteTo.CS);
@@ -296,6 +311,10 @@ namespace BulletSharpGen
                     Write('*', WriteTo.Source);
                 }
                 Write(param.Name, WriteTo.Source | WriteTo.CS);
+                if (!param.Type.IsBasic)
+                {
+                    Write("._native", WriteTo.CS);
+                }
 
                 if (param.IsOptional)
                 {
@@ -364,7 +383,7 @@ namespace BulletSharpGen
 
             // Write methods
             int overloadIndex = 0;
-            dllImport = new StringBuilder();
+            dllImport.Clear();
 
             // Write constructors
             int constructorCount = 0;
@@ -401,24 +420,67 @@ namespace BulletSharpGen
                 overloadIndex = 0;
             }
 
-            // Write methods
+            // Write methods and properties
             if (c.Methods.Count - constructorCount != 0)
             {
-                //EnsureWhiteSpace();
-
+                // Methods
                 MethodDefinition previousMethod = null;
                 foreach (MethodDefinition method in c.Methods)
                 {
+                    if (method.Field != null || method.IsConstructor)
+                    {
+                        continue;
+                    }
+
                     if (previousMethod != null && previousMethod.Name != method.Name)
                     {
                         overloadIndex = 0;
                     }
 
-                    if (!method.IsConstructor)
-                    {
-                        OutputMethod(method, level, ref overloadIndex, 0);
-                    }
+                    OutputMethod(method, level, ref overloadIndex, 0);
                     previousMethod = method;
+                }
+
+                // Properties
+                foreach (MethodDefinition method in c.Methods)
+                {
+                    if (method.Field != null)
+                    {
+                        MethodDefinition getter = null;
+                        MethodDefinition setter = null;
+                        if (method.Name.StartsWith("get"))
+                        {
+                            getter = method;
+                            setter = method.Parent.Methods.Find((m) => m.Name == "set" + method.Name.Substring(3));
+                        }
+                        else if (method.Name.StartsWith("set"))
+                        {
+                            setter = method;
+                            getter = method.Parent.Methods.Find((m) => m.Name == "get" + method.Name.Substring(3));
+                        }
+                        getter.ToString();
+                    }
+                }
+            }
+
+            // Write properties
+            foreach (MethodDefinition method in c.Methods)
+            {
+                if (method.Field != null)
+                {
+                    MethodDefinition getter = null;
+                    MethodDefinition setter = null;
+                    if (method.Name.StartsWith("get"))
+                    {
+                        getter = method;
+                        setter = method.Parent.Methods.Find((m) => m.Name == "set" + method.Name.Substring(3));
+                    }
+                    else if (method.Name.StartsWith("set"))
+                    {
+                        setter = method;
+                        getter = method.Parent.Methods.Find((m) => m.Name == "get" + method.Name.Substring(3));
+                    }
+                    getter.ToString();
                 }
             }
 

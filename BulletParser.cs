@@ -232,5 +232,14 @@ namespace BulletSharpGen
                 }
             }
         }
+
+        public static string GetTypeMarshalPrologue(ParameterDefinition parameter)
+        {
+            if (parameter.Type.ManagedName.Equals("Vector3"))
+            {
+                return "VECTOR3_CONV(" + parameter.Name + ");";
+            }
+            return null;
+        }
     }
 }
