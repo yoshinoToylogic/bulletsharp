@@ -40,6 +40,8 @@
     <Compile Include="Collision\CollisionShape.cs" />
     <Compile Include="Collision\CollisionWorld.cs" />
     <Compile Include="Collision\CapsuleShape.cs" />
+    <Compile Include="Collision\OverlappingPairCache.cs" />
+    <Compile Include="Collision\OverlappingPairCallback.cs" />
     <Compile Include="Collision\SphereShape.cs" />
     <Compile Include="Collision\DbvtBroadphase.cs" />
     <Compile Include="Collision\Dispatcher.cs" />
