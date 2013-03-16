@@ -12,5 +12,10 @@
             Type = type;
             IsOptional = isOptional;
         }
+
+        public override string ToString()
+        {
+            return Type.ToString() + ' ' + Name;
+        }
     }
 }
