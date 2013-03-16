@@ -97,6 +97,8 @@
     <ClInclude Include="src\btDispatcher_wrap.h" />
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btGeneric6DofConstraint_wrap.h" />
+    <ClInclude Include="src\btOverlappingPairCache_wrap.h" />
+    <ClInclude Include="src\btOverlappingPairCallback_wrap.h" />
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h" />
     <ClInclude Include="src\btRigidBody_wrap.h" />
     <ClInclude Include="src\btSphereShape_wrap.h" />
@@ -129,6 +131,8 @@
     <ClCompile Include="src\btDispatcher_wrap.cpp" />
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofConstraint_wrap.cpp" />
+    <ClCompile Include="src\btOverlappingPairCache_wrap.cpp" />
+    <ClCompile Include="src\btOverlappingPairCallback_wrap.cpp" />
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp" />
     <ClCompile Include="src\btRigidBody_wrap.cpp" />
     <ClCompile Include="src\btSphereShape_wrap.cpp" />
