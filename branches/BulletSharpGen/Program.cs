@@ -16,6 +16,7 @@ namespace BulletSharpGen
             var writer = new CWriter(parser.HeaderDefinitions, "BulletSharp");
             //var writer = new CppWriter(parser.HeaderDefinitions, "BulletSharp");
             writer.Output();
+            Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
     }
