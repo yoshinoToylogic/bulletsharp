@@ -89,6 +89,7 @@ namespace BulletSharpGen
                 }
             }
 
+            /*
             // Turn fields into getters/setters
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -109,7 +110,7 @@ namespace BulletSharpGen
                     getter.ReturnType = field.Type;
                     getter.Field = field;
                 }
-            }
+            }*/
             /*
             // Turn fields into properties
             foreach (ClassDefinition c in classDefinitions.Values)
@@ -127,7 +128,7 @@ namespace BulletSharpGen
                 }
             }
             */
-            /*
+
             // Turn getters/setters into properties
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -140,9 +141,10 @@ namespace BulletSharpGen
                         method.Name.StartsWith("has") ||
                         method.Name.StartsWith("is")))
                     {
-                        c.Methods.Remove(method);
-                        new PropertyDefinition(method);
-                        i--;
+                        var prop = new PropertyDefinition(method);
+                        c.Properties.Add(prop);
+                        //c.Methods.Remove(method);
+                        //i--;
                     }
                 }
                 for (i = 0; i < c.Methods.Count; i++)
@@ -154,18 +156,19 @@ namespace BulletSharpGen
                         // Find the property with the matching getter
                         foreach (PropertyDefinition prop in c.Properties)
                         {
-                            if (prop.Name == name)
+                            if (prop.VerblessName == name)
                             {
-                                c.Methods.Remove(method);
                                 prop.Setter = method;
-                                i--;
+                                method.Property = prop;
+                                //c.Methods.Remove(method);
+                                //i--;
                                 break;
                             }
                         }
                     }
                 }
             }
-            */
+
             // Get managed header/class/method names
             foreach (HeaderDefinition header in HeaderDefinitions.Values)
             {

@@ -314,7 +314,7 @@ namespace BulletSharpGen
                         string parameterName = arg.Spelling;
                         if (parameterName == "")
                         {
-                            parameterName = "__unnamed";
+                            parameterName = "__unnamed" + i;
                         }
                         currentParameter = new ParameterDefinition(parameterName, new TypeRefDefinition(arg.Type));
                         currentMethod.Parameters[i] = currentParameter;

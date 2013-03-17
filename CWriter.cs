@@ -22,23 +22,30 @@ namespace BulletSharpGen
             return name;
         }
 
-        void WriteType(TypeRefDefinition type)
+        void WriteType(TypeRefDefinition type, WriteTo to = WriteTo.All)
         {
             if (type.IsBasic)
             {
-                Write(type.Name, WriteTo.Header | WriteTo.Source);
-                Write(type.ManagedName, WriteTo.CS);
+                Write(type.Name, (WriteTo.Header | WriteTo.Source) & to);
+                Write(type.ManagedName, WriteTo.CS & to);
             }
             else if (type.Referenced != null)
             {
-                Write(type.Referenced.FullName, WriteTo.Header | WriteTo.Source);
-                Write('*', WriteTo.Header | WriteTo.Source);
-                Write(type.Referenced.ManagedName, WriteTo.CS);
+                Write(type.Referenced.FullName, (WriteTo.Header | WriteTo.Source) & to);
+                Write('*', (WriteTo.Header | WriteTo.Source) & to);
+                if (type.IsPointer && type.Referenced.ManagedName.Equals("void")) // void*
+                {
+                    Write("IntPtr", WriteTo.CS & to);
+                }
+                else
+                {
+                    Write(type.Referenced.ManagedName, WriteTo.CS & to);
+                }
             }
             else
             {
                 // Return structures to an additional out parameter, not immediately
-                Write("void");
+                Write("void", to);
             }
         }
 
@@ -93,11 +100,14 @@ namespace BulletSharpGen
         {
             EnsureWhiteSpace(WriteTo.Source | WriteTo.CS);
 
+            // Skip methods wrapped by C# properties
+            WriteTo propertyTo = WriteTo.Header | WriteTo.Source | ((method.Property == null) ? WriteTo.CS : 0);
+
             OutputTabs(1);
             Write("EXPORT ", WriteTo.Header);
 
-            OutputTabs(level + 1, WriteTo.CS);
-            Write("public ", WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS & propertyTo);
+            Write("public ", WriteTo.CS & propertyTo);
 
             // DllImport clause
             OutputTabs(level + 1, WriteTo.DllImport);
@@ -114,8 +124,8 @@ namespace BulletSharpGen
             }
             else
             {
-                WriteType(method.ReturnType);
-                Write(' ');
+                WriteType(method.ReturnType, propertyTo);
+                Write(' ', propertyTo);
                 if (method.ReturnType.IsBasic)
                 {
                     Write(method.ReturnType.ManagedName, WriteTo.DllImport);
@@ -149,7 +159,7 @@ namespace BulletSharpGen
                 }
                 else
                 {
-                    Write(method.ManagedName, WriteTo.CS);
+                    Write(method.ManagedName, WriteTo.CS & propertyTo);
                 }
             }
 
@@ -163,7 +173,7 @@ namespace BulletSharpGen
             // Parameters
             if (method.Name != "delete")
             {
-                Write('(', WriteTo.CS);
+                Write('(', WriteTo.CS & propertyTo);
             }
             Write('(', WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
 
@@ -186,7 +196,7 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                WriteType(param.Type);
+                WriteType(param.Type, propertyTo);
 
                 if (param.Type.Referenced != null && !param.Type.IsBasic)
                 {
@@ -197,8 +207,8 @@ namespace BulletSharpGen
                     Write(param.Type.ManagedName, WriteTo.DllImport);
                 }
 
-                Write(' ');
-                Write(param.Name);
+                Write(' ', propertyTo);
+                Write(param.Name, propertyTo);
                 dllImport.Append(' ');
                 dllImport.Append(param.Name);
 
@@ -216,7 +226,7 @@ namespace BulletSharpGen
             WriteLine(");", WriteTo.Header | WriteTo.DllImport);
             if (method.Name != "delete")
             {
-                WriteLine(')', WriteTo.CS);
+                WriteLine(')', WriteTo.CS & propertyTo);
             }
             WriteLine(')', WriteTo.Source);
             hasHeaderWhiteSpace = false;
@@ -233,9 +243,9 @@ namespace BulletSharpGen
             }
 
             // Method body
-            OutputTabs(level + 1, WriteTo.CS);
-            WriteLine('{', WriteTo.Source | WriteTo.CS);
-            OutputTabs(level + 2, WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS & propertyTo);
+            WriteLine('{', WriteTo.Source | WriteTo.CS & propertyTo);
+            OutputTabs(level + 2, WriteTo.CS & propertyTo);
 
             // Type marshalling prologue
             for (int i = 0; i < numParameters; i++)
@@ -265,7 +275,7 @@ namespace BulletSharpGen
                 {
                     if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
                     {
-                        Write("return ", WriteTo.Source | WriteTo.CS);
+                        Write("return ", WriteTo.Source | WriteTo.CS & propertyTo);
 
                         if (method.ReturnType.IsReference)
                         {
@@ -283,24 +293,24 @@ namespace BulletSharpGen
                 {
                     Write("obj->", WriteTo.Source);
                 }
-                Write(GetFullClassName(method.Parent), WriteTo.CS);
-                Write('_', WriteTo.CS);
-                Write(method.Name, WriteTo.Source | WriteTo.CS);
+                Write(GetFullClassName(method.Parent), WriteTo.CS & propertyTo);
+                Write('_', WriteTo.CS & propertyTo);
+                Write(method.Name, WriteTo.Source | WriteTo.CS & propertyTo);
             }
             if (overloadIndex != 0)
             {
-                Write((overloadIndex + 1).ToString(), WriteTo.CS);
+                Write((overloadIndex + 1).ToString(), WriteTo.CS & propertyTo);
             }
             overloadIndex++;
 
             // Call parameters
-            Write('(', WriteTo.Source | WriteTo.CS);
+            Write('(', WriteTo.Source | WriteTo.CS & propertyTo);
             if (!method.IsConstructor && !method.IsStatic)
             {
-                Write("_native", WriteTo.CS);
+                Write("_native", WriteTo.CS & propertyTo);
                 if (numParameters != 0)
                 {
-                    Write(", ", WriteTo.CS);
+                    Write(", ", WriteTo.CS & propertyTo);
                 }
             }
             for (int i = 0; i < numParameters; i++)
@@ -310,10 +320,10 @@ namespace BulletSharpGen
                 {
                     Write('*', WriteTo.Source);
                 }
-                Write(param.Name, WriteTo.Source | WriteTo.CS);
+                Write(param.Name, WriteTo.Source | WriteTo.CS & propertyTo);
                 if (!param.Type.IsBasic)
                 {
-                    Write("._native", WriteTo.CS);
+                    Write("._native", WriteTo.CS & propertyTo);
                 }
 
                 if (param.IsOptional)
@@ -323,21 +333,104 @@ namespace BulletSharpGen
 
                 if (i != numParameters - 1)
                 {
-                    Write(", ", WriteTo.Source | WriteTo.CS);
+                    Write(", ", WriteTo.Source | WriteTo.CS & propertyTo);
                 }
             }
-            WriteLine(");", WriteTo.Source | WriteTo.CS);
+            WriteLine(");", WriteTo.Source | WriteTo.CS & propertyTo);
 
-            OutputTabs(level + 1, WriteTo.CS);
-            WriteLine('}', WriteTo.Source | WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS & propertyTo);
+            WriteLine('}', WriteTo.Source | WriteTo.CS & propertyTo);
             hasSourceWhiteSpace = false;
-            hasCSWhiteSpace = false;
+            if (method.Property == null)
+            {
+                hasCSWhiteSpace = false;
+            }
 
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
             {
                 OutputMethod(method, level, ref overloadIndex, numOptionalParams + 1);
             }
+        }
+
+        void OutputProperty(PropertyDefinition prop, int level)
+        {
+            EnsureWhiteSpace(WriteTo.CS);
+
+            bool singleLine = true;
+
+            OutputTabs(level + 1, WriteTo.CS);
+            Write("public ", WriteTo.CS);
+            WriteType(prop.Type, WriteTo.CS);
+            Write(' ', WriteTo.CS);
+            WriteLine(prop.Name, WriteTo.CS);
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('{', WriteTo.CS);
+            OutputTabs(level + 2, WriteTo.CS);
+
+            if (singleLine)
+            {
+                Write("get { ", WriteTo.CS);
+            }
+            else
+            {
+                WriteLine("get", WriteTo.CS);
+                OutputTabs(level + 2, WriteTo.CS);
+                WriteLine('{', WriteTo.CS);
+                OutputTabs(level + 3, WriteTo.CS);
+            }
+
+            Write("return ", WriteTo.CS);
+            Write(GetFullClassName(prop.Parent), WriteTo.CS);
+            Write('_', WriteTo.CS);
+            Write(prop.Getter.Name, WriteTo.CS);
+
+            if (singleLine)
+            {
+                WriteLine("(_native); }", WriteTo.CS);
+            }
+            else
+            {
+                WriteLine("(_native);", WriteTo.CS);
+                OutputTabs(level + 2, WriteTo.CS);
+                WriteLine('}', WriteTo.CS);
+            }
+
+            if (prop.Setter != null)
+            {
+                OutputTabs(level + 2, WriteTo.CS);
+                if (singleLine)
+                {
+                    Write("set { ", WriteTo.CS);
+                }
+                else
+                {
+                    WriteLine("set", WriteTo.CS);
+                    OutputTabs(level + 2, WriteTo.CS);
+                    WriteLine('{', WriteTo.CS);
+                    OutputTabs(level + 3, WriteTo.CS);
+                }
+
+                Write(GetFullClassName(prop.Parent), WriteTo.CS);
+                Write('_', WriteTo.CS);
+                Write(prop.Setter.Name, WriteTo.CS);
+
+                if (singleLine)
+                {
+                    WriteLine("(_native, value); }", WriteTo.CS);
+                }
+                else
+                {
+                    WriteLine("(_native, value);", WriteTo.CS);
+                    OutputTabs(level + 2, WriteTo.CS);
+                    WriteLine('}', WriteTo.CS);
+                }
+            }
+
+            OutputTabs(level + 1, WriteTo.CS);
+            WriteLine('}', WriteTo.CS);
+
+            hasCSWhiteSpace = false;
         }
 
         void OutputClass(ClassDefinition c, int level)
@@ -440,8 +533,14 @@ namespace BulletSharpGen
                     OutputMethod(method, level, ref overloadIndex, 0);
                     previousMethod = method;
                 }
-
+                
                 // Properties
+                foreach (PropertyDefinition prop in c.Properties)
+                {
+                    OutputProperty(prop, level);
+                }
+
+                /*
                 foreach (MethodDefinition method in c.Methods)
                 {
                     if (method.Field != null)
@@ -460,9 +559,9 @@ namespace BulletSharpGen
                         }
                         getter.ToString();
                     }
-                }
+                }*/
             }
-
+            /*
             // Write properties
             foreach (MethodDefinition method in c.Methods)
             {
@@ -482,7 +581,7 @@ namespace BulletSharpGen
                     }
                     getter.ToString();
                 }
-            }
+            }*/
 
             // Write DllImport clauses
             EnsureWhiteSpace(WriteTo.CS);
