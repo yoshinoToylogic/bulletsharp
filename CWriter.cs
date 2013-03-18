@@ -316,14 +316,25 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                if (param.Type.IsReference)
-                {
-                    Write('*', WriteTo.Source);
-                }
-                Write(param.Name, WriteTo.Source | WriteTo.CS & propertyTo);
+                
+                Write(param.Name, WriteTo.CS & propertyTo);
                 if (!param.Type.IsBasic)
                 {
                     Write("._native", WriteTo.CS & propertyTo);
+                }
+
+                string marshal = BulletParser.GetTypeMarshal(param);
+                if (string.IsNullOrEmpty(marshal))
+                {
+                    if (param.Type.IsReference)
+                    {
+                        Write('*', WriteTo.Source);
+                    }
+                    Write(param.Name, WriteTo.Source);
+                }
+                else
+                {
+                    Write(marshal, WriteTo.Source);
                 }
 
                 if (param.IsOptional)
@@ -414,14 +425,19 @@ namespace BulletSharpGen
                 Write(GetFullClassName(prop.Parent), WriteTo.CS);
                 Write('_', WriteTo.CS);
                 Write(prop.Setter.Name, WriteTo.CS);
+                Write("(_native, value", WriteTo.CS);
+                if (!prop.Type.IsBasic)
+                {
+                    Write("._native", WriteTo.CS);
+                }
 
                 if (singleLine)
                 {
-                    WriteLine("(_native, value); }", WriteTo.CS);
+                    WriteLine("); }", WriteTo.CS);
                 }
                 else
                 {
-                    WriteLine("(_native, value);", WriteTo.CS);
+                    WriteLine(");", WriteTo.CS);
                     OutputTabs(level + 2, WriteTo.CS);
                     WriteLine('}', WriteTo.CS);
                 }
@@ -502,17 +518,6 @@ namespace BulletSharpGen
                 overloadIndex = 0;
             }
 
-            // Write delete method
-            if (c.BaseClass == null)
-            {
-                MethodDefinition del = new MethodDefinition("delete", c, 0);
-                del.ReturnType = new TypeRefDefinition("void");
-                del.ReturnType.IsBasic = true;
-                OutputMethod(del, level, ref overloadIndex, 0);
-                c.Methods.Remove(del);
-                overloadIndex = 0;
-            }
-
             // Write methods and properties
             if (c.Methods.Count - constructorCount != 0)
             {
@@ -533,6 +538,7 @@ namespace BulletSharpGen
                     OutputMethod(method, level, ref overloadIndex, 0);
                     previousMethod = method;
                 }
+                overloadIndex = 0;
                 
                 // Properties
                 foreach (PropertyDefinition prop in c.Properties)
@@ -561,6 +567,18 @@ namespace BulletSharpGen
                     }
                 }*/
             }
+
+            // Write delete method
+            if (c.BaseClass == null)
+            {
+                MethodDefinition del = new MethodDefinition("delete", c, 0);
+                del.ReturnType = new TypeRefDefinition("void");
+                del.ReturnType.IsBasic = true;
+                OutputMethod(del, level, ref overloadIndex, 0);
+                c.Methods.Remove(del);
+                overloadIndex = 0;
+            }
+
             /*
             // Write properties
             foreach (MethodDefinition method in c.Methods)
