@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -11,29 +11,65 @@ namespace BulletSharp
         DisableContactPoolDynamicAllocation = 4
     }
 
-    public class CollisionDispatcher : Dispatcher
-    {
+	public class CollisionDispatcher : Dispatcher
+	{
         internal CollisionDispatcher(IntPtr native)
             : base(native)
         {
         }
 
-        public CollisionDispatcher(CollisionConfiguration config)
-            : base(btCollisionDispatcher_new(config._native))
-        {
-        }
+		public CollisionDispatcher(CollisionConfiguration collisionConfiguration)
+            : base(btCollisionDispatcher_new(collisionConfiguration._native))
+		{
+		}
+        /*
+		public void DefaultNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo)
+		{
+			btCollisionDispatcher_defaultNearCallback(collisionPair._native, dispatcher._native, dispatchInfo._native);
+		}
+
+		public void RegisterCollisionCreateFunc(int proxyType0, int proxyType1, CollisionAlgorithmCreateFunc createFunc)
+		{
+			btCollisionDispatcher_registerCollisionCreateFunc(_native, proxyType0, proxyType1, createFunc._native);
+		}
+        */
+		public CollisionConfiguration CollisionConfiguration
+		{
+            get { return new CollisionConfiguration(btCollisionDispatcher_getCollisionConfiguration(_native)); }
+			set { btCollisionDispatcher_setCollisionConfiguration(_native, value._native); }
+		}
 
         public DispatcherFlags DispatcherFlags
-        {
-            get { return btCollisionDispatcher_getDispatcherFlags(_native); }
-            set { btCollisionDispatcher_setDispatcherFlags(_native, value); }
-        }
-
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btCollisionDispatcher_new(IntPtr config);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		{
+			get { return btCollisionDispatcher_getDispatcherFlags(_native); }
+			set { btCollisionDispatcher_setDispatcherFlags(_native, value); }
+		}
+        /*
+		public  NearCallback
+		{
+			get { return btCollisionDispatcher_getNearCallback(_native); }
+			set { btCollisionDispatcher_setNearCallback(_native, value); }
+		}
+        */
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btCollisionDispatcher_new(IntPtr collisionConfiguration);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCollisionDispatcher_defaultNearCallback(IntPtr collisionPair, IntPtr dispatcher, IntPtr dispatchInfo);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btCollisionDispatcher_getCollisionConfiguration(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btCollisionDispatcher_getCollisionConfiguration2(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern DispatcherFlags btCollisionDispatcher_getDispatcherFlags(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btCollisionDispatcher_getNearCallback(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCollisionDispatcher_registerCollisionCreateFunc(IntPtr obj, int proxyType0, int proxyType1, IntPtr createFunc);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCollisionDispatcher_setCollisionConfiguration(IntPtr obj, IntPtr config);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionDispatcher_setDispatcherFlags(IntPtr obj, DispatcherFlags flags);
-    }
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCollisionDispatcher_setNearCallback(IntPtr obj, IntPtr nearCallback);
+	}
 }

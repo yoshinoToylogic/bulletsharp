@@ -8,25 +8,10 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btConstraintSolver_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~ConstraintSolver()
-		{
-			Dispose(false);
-		}
+        internal ConstraintSolver(IntPtr native)
+        {
+            _native = native;
+        }
         /*
 		public void AllSolved(ContactSolverInfo __unnamed0, IDebugDraw __unnamed1, StackAlloc __unnamed2)
 		{
@@ -48,8 +33,26 @@ namespace BulletSharp
 			return btConstraintSolver_solveGroup(_native, bodies._native, numBodies, manifold._native, numManifolds, constraints._native, numConstraints, info._native, debugDrawer._native, stackAlloc._native, dispatcher._native);
 		}
         */
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btConstraintSolver_delete(IntPtr obj);
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btConstraintSolver_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~ConstraintSolver()
+		{
+			Dispose(false);
+		}
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConstraintSolver_allSolved(IntPtr obj, IntPtr __unnamed0, IntPtr __unnamed1, IntPtr __unnamed2);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -58,5 +61,7 @@ namespace BulletSharp
 		static extern void btConstraintSolver_reset(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btConstraintSolver_solveGroup(IntPtr obj, IntPtr bodies, int numBodies, IntPtr manifold, int numManifolds, IntPtr constraints, int numConstraints, IntPtr info, IntPtr debugDrawer, IntPtr stackAlloc, IntPtr dispatcher);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btConstraintSolver_delete(IntPtr obj);
 	}
 }

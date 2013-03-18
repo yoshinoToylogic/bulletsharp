@@ -5,19 +5,24 @@ btCollisionObject* btCollisionObject_new()
 	return new btCollisionObject();
 }
 
-void btCollisionObject_delete(btCollisionObject* obj)
+void btCollisionObject_activate(btCollisionObject* obj, bool forceActivation)
 {
-	delete obj;
+	obj->activate(forceActivation);
 }
 
-void btCollisionObject_activate(btCollisionObject* obj, bool forceActivate)
+void btCollisionObject_activate2(btCollisionObject* obj)
 {
-	obj->activate(forceActivate);
+	obj->activate();
 }
 
-bool btCollisionObject_checkCollideWith(btCollisionObject* obj, btCollisionObject* collisionObject)
+int btCollisionObject_calculateSerializeBufferSize(btCollisionObject* obj)
 {
-	return obj->checkCollideWith(collisionObject);
+	return obj->calculateSerializeBufferSize();
+}
+
+bool btCollisionObject_checkCollideWith(btCollisionObject* obj, btCollisionObject* co)
+{
+	return obj->checkCollideWith(co);
 }
 
 void btCollisionObject_forceActivationState(btCollisionObject* obj, int newState)
@@ -42,17 +47,17 @@ btBroadphaseProxy* btCollisionObject_getBroadphaseHandle(btCollisionObject* obj)
 	return obj->getBroadphaseHandle();
 }
 
-float btCollisionObject_getCcdMotionThreshold(btCollisionObject* obj)
+btScalar btCollisionObject_getCcdMotionThreshold(btCollisionObject* obj)
 {
 	return obj->getCcdMotionThreshold();
 }
 
-float btCollisionObject_getCcdSquareMotionThreshold(btCollisionObject* obj)
+btScalar btCollisionObject_getCcdSquareMotionThreshold(btCollisionObject* obj)
 {
 	return obj->getCcdSquareMotionThreshold();
 }
 
-float btCollisionObject_getCcdSweptSphereRadius(btCollisionObject* obj)
+btScalar btCollisionObject_getCcdSweptSphereRadius(btCollisionObject* obj)
 {
 	return obj->getCcdSweptSphereRadius();
 }
@@ -72,24 +77,29 @@ int btCollisionObject_getCompanionId(btCollisionObject* obj)
 	return obj->getCompanionId();
 }
 
-float btCollisionObject_getContactProcessingThreshold(btCollisionObject* obj)
+btScalar btCollisionObject_getContactProcessingThreshold(btCollisionObject* obj)
 {
 	return obj->getContactProcessingThreshold();
 }
 
-float btCollisionObject_getDeactivationTime(btCollisionObject* obj)
+btScalar btCollisionObject_getDeactivationTime(btCollisionObject* obj)
 {
 	return obj->getDeactivationTime();
 }
 
-float btCollisionObject_getFriction(btCollisionObject* obj)
+btScalar btCollisionObject_getFriction(btCollisionObject* obj)
 {
 	return obj->getFriction();
 }
 
-float btCollisionObject_getHitFraction(btCollisionObject* obj)
+btScalar btCollisionObject_getHitFraction(btCollisionObject* obj)
 {
 	return obj->getHitFraction();
+}
+
+int btCollisionObject_getInternalType(btCollisionObject* obj)
+{
+	return obj->getInternalType();
 }
 
 void btCollisionObject_getInterpolationAngularVelocity(btCollisionObject* obj, btScalar* velocity)
@@ -116,9 +126,14 @@ int btCollisionObject_getIslandTag(btCollisionObject* obj)
 	return obj->getIslandTag();
 }
 
-float btCollisionObject_getRestitution(btCollisionObject* obj)
+btScalar btCollisionObject_getRestitution(btCollisionObject* obj)
 {
 	return obj->getRestitution();
+}
+
+btScalar btCollisionObject_getRollingFriction(btCollisionObject* obj)
+{
+	return obj->getRollingFriction();
 }
 
 void* btCollisionObject_getUserPointer(btCollisionObject* obj)
@@ -131,7 +146,12 @@ void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* trans
 	btTransfromToMatrix(&obj->getWorldTransform(), transform);
 }
 
-bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj)
+bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj, int frictionMode)
+{
+	return obj->hasAnisotropicFriction(frictionMode);
+}
+
+bool btCollisionObject_hasAnisotropicFriction2(btCollisionObject* obj)
 {
 	return obj->hasAnisotropicFriction();
 }
@@ -139,6 +159,16 @@ bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj)
 bool btCollisionObject_hasContactResponse(btCollisionObject* obj)
 {
 	return obj->hasContactResponse();
+}
+
+void* btCollisionObject_internalGetExtensionPointer(btCollisionObject* obj)
+{
+	return obj->internalGetExtensionPointer();
+}
+
+void btCollisionObject_internalSetExtensionPointer(btCollisionObject* obj, void* pointer)
+{
+	obj->internalSetExtensionPointer(pointer);
 }
 
 bool btCollisionObject_isActive(btCollisionObject* obj)
@@ -165,13 +195,29 @@ bool btCollisionObject_mergesSimulationIslands(btCollisionObject* obj)
 {
 	return obj->mergesSimulationIslands();
 }
+/*
+char* btCollisionObject_serialize(btCollisionObject* obj, void* dataBuffer, btSerializer* serializer)
+{
+	return obj->serialize(dataBuffer, serializer);
+}
+*/
+void btCollisionObject_serializeSingleObject(btCollisionObject* obj, btSerializer* serializer)
+{
+	obj->serializeSingleObject(serializer);
+}
 
 void btCollisionObject_setActivationState(btCollisionObject* obj, int newState)
 {
 	obj->setActivationState(newState);
 }
 
-void btCollisionObject_setAnisotropicFriction(btCollisionObject* obj, btScalar* anisotropicFriction)
+void btCollisionObject_setAnisotropicFriction(btCollisionObject* obj, btScalar* anisotropicFriction, int frictionMode)
+{
+	VECTOR3_CONV(anisotropicFriction);
+	obj->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), frictionMode);
+}
+
+void btCollisionObject_setAnisotropicFriction2(btCollisionObject* obj, btScalar* anisotropicFriction)
 {
 	VECTOR3_CONV(anisotropicFriction);
 	obj->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
@@ -182,12 +228,12 @@ void btCollisionObject_setBroadphaseHandle(btCollisionObject* obj, btBroadphaseP
 	obj->setBroadphaseHandle(handle);
 }
 
-void btCollisionObject_setCcdMotionThreshold(btCollisionObject* obj, float ccdMotionThreshold)
+void btCollisionObject_setCcdMotionThreshold(btCollisionObject* obj, btScalar ccdMotionThreshold)
 {
 	obj->setCcdMotionThreshold(ccdMotionThreshold);
 }
 
-void btCollisionObject_setCcdSweptSphereRadius(btCollisionObject* obj, float radius)
+void btCollisionObject_setCcdSweptSphereRadius(btCollisionObject* obj, btScalar radius)
 {
 	obj->setCcdSweptSphereRadius(radius);
 }
@@ -207,22 +253,22 @@ void btCollisionObject_setCompanionId(btCollisionObject* obj, int id)
 	obj->setCompanionId(id);
 }
 
-void btCollisionObject_setContactProcessingThreshold(btCollisionObject* obj, float contactProcessingThreshold)
+void btCollisionObject_setContactProcessingThreshold(btCollisionObject* obj, btScalar contactProcessingThreshold)
 {
 	obj->setContactProcessingThreshold(contactProcessingThreshold);
 }
 
-void btCollisionObject_setDeactivationTime(btCollisionObject* obj, float time)
+void btCollisionObject_setDeactivationTime(btCollisionObject* obj, btScalar time)
 {
 	obj->setDeactivationTime(time);
 }
 
-void btCollisionObject_setFriction(btCollisionObject* obj, float frict)
+void btCollisionObject_setFriction(btCollisionObject* obj, btScalar frict)
 {
 	obj->setFriction(frict);
 }
 
-void btCollisionObject_setHitFraction(btCollisionObject* obj, float hitFraction)
+void btCollisionObject_setHitFraction(btCollisionObject* obj, btScalar hitFraction)
 {
 	obj->setHitFraction(hitFraction);
 }
@@ -250,9 +296,14 @@ void btCollisionObject_setIslandTag(btCollisionObject* obj, int tag)
 	obj->setIslandTag(tag);
 }
 
-void btCollisionObject_setRestitution(btCollisionObject* obj, float rest)
+void btCollisionObject_setRestitution(btCollisionObject* obj, btScalar rest)
 {
 	obj->setRestitution(rest);
+}
+
+void btCollisionObject_setRollingFriction(btCollisionObject* obj, btScalar frict)
+{
+	obj->setRollingFriction(frict);
 }
 
 void btCollisionObject_setUserPointer(btCollisionObject* obj, void* userPointer)
@@ -264,4 +315,9 @@ void btCollisionObject_setWorldTransform(btCollisionObject* obj, btScalar* world
 {
 	TRANSFORM_CONV(worldTrans);
 	obj->setWorldTransform(TRANSFORM_USE(worldTrans));
+}
+
+void btCollisionObject_delete(btCollisionObject* obj)
+{
+	delete obj;
 }

@@ -1,11 +1,6 @@
 #include "btCollisionConfiguration_wrap.h"
 
-void btCollisionConfiguration_delete(btCollisionConfiguration* obj)
-{
-	delete obj;
-}
-
-btCollisionAlgorithmCreateFunc* btCollisionConfiguration_getCollisionAlgorithmCreateFunc2(btCollisionConfiguration* obj, int proxyType0, int proxyType1)
+btCollisionAlgorithmCreateFunc* btCollisionConfiguration_getCollisionAlgorithmCreateFunc(btCollisionConfiguration* obj, int proxyType0, int proxyType1)
 {
 	return obj->getCollisionAlgorithmCreateFunc(proxyType0, proxyType1);
 }
@@ -23,4 +18,9 @@ btPoolAllocator* btCollisionConfiguration_getPersistentManifoldPool(btCollisionC
 btStackAlloc* btCollisionConfiguration_getStackAllocator(btCollisionConfiguration* obj)
 {
 	return obj->getStackAllocator();
+}
+
+void btCollisionConfiguration_delete(btCollisionConfiguration* obj)
+{
+	delete obj;
 }

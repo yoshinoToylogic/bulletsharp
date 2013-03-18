@@ -27,15 +27,15 @@ namespace BulletSharp
 		{
 			Dispose(false);
 		}
-
-		public void DebugDraw(IntPtr debugDrawer)
+        /*
+		public void DebugDraw(IDebugDraw debugDrawer)
 		{
-			btActionInterface_debugDraw(_native, debugDrawer);
+			btActionInterface_debugDraw(_native, debugDrawer._native);
 		}
-
-		public void UpdateAction(IntPtr collisionWorld, float deltaTimeStep)
+        */
+		public void UpdateAction(CollisionWorld collisionWorld, float deltaTimeStep)
 		{
-			btActionInterface_updateAction(_native, collisionWorld, deltaTimeStep);
+			btActionInterface_updateAction(_native, collisionWorld._native, deltaTimeStep);
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
