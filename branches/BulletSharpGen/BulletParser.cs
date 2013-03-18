@@ -156,7 +156,7 @@ namespace BulletSharpGen
                         // Find the property with the matching getter
                         foreach (PropertyDefinition prop in c.Properties)
                         {
-                            if (prop.VerblessName == name)
+                            if (prop.VerblessName.Equals(name))
                             {
                                 prop.Setter = method;
                                 method.Property = prop;
@@ -241,6 +241,15 @@ namespace BulletSharpGen
             if (parameter.Type.ManagedName.Equals("Vector3"))
             {
                 return "VECTOR3_CONV(" + parameter.Name + ");";
+            }
+            return null;
+        }
+
+        public static string GetTypeMarshal(ParameterDefinition parameter)
+        {
+            if (parameter.Type.ManagedName.Equals("Vector3"))
+            {
+                return "VECTOR3_USE(" + parameter.Name + ")";
             }
             return null;
         }
