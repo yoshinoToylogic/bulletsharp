@@ -7,8 +7,8 @@ namespace BulletSharp
 	public class SequentialImpulseConstraintSolver : ConstraintSolver
 	{
 		public SequentialImpulseConstraintSolver()
+            : base(btSequentialImpulseConstraintSolver_new())
 		{
-			_native = btSequentialImpulseConstraintSolver_new();
 		}
 
 		public ulong BtRand2()
