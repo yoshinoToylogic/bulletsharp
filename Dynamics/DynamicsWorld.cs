@@ -137,12 +137,12 @@ namespace BulletSharp
 		{
 			get { return btDynamicsWorld_getNumConstraints(_native); }
 		}
-        /*
+
 		public ContactSolverInfo SolverInfo
 		{
-			get { return btDynamicsWorld_getSolverInfo(_native); }
+            get { return new ContactSolverInfo(btDynamicsWorld_getSolverInfo(_native)); }
 		}
-
+        /*
 		public btDynamicsWorldType WorldType
 		{
 			get { return btDynamicsWorld_getWorldType(_native); }

@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-    public class PolyhedralConvexShape : CollisionShape
+    public class PolyhedralConvexShape : ConvexShape
     {
         internal PolyhedralConvexShape(IntPtr native)
             : base(native)

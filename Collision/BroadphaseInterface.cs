@@ -92,6 +92,8 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
+        protected OverlappingPairCache _pairCache;
+
 		internal BroadphaseInterface (IntPtr native)
 		{
 			_native = native;
@@ -159,7 +161,14 @@ namespace BulletSharp
 
 		public OverlappingPairCache OverlappingPairCache
 		{
-			get { return new OverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native)); }
+            get
+            {
+                if (_pairCache == null)
+                {
+                    _pairCache = new OverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native));
+                }
+                return _pairCache;
+            }
 		}
 
 		public void Dispose()

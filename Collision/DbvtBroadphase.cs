@@ -20,6 +20,7 @@ namespace BulletSharp
 		public DbvtBroadphase(OverlappingPairCache paircache)
             : base(btDbvtBroadphase_new(paircache._native))
 		{
+            _pairCache = paircache;
 		}
 
 		public DbvtBroadphase()
