@@ -5,6 +5,13 @@ extern "C"
 	EXPORT bool btBroadphaseAabbCallback_process(btBroadphaseAabbCallback* obj, btBroadphaseProxy* proxy);
 	EXPORT void btBroadphaseAabbCallback_delete(btBroadphaseAabbCallback* obj);
 
+	EXPORT btScalar btBroadphaseRayCallback_getLambda_max(btBroadphaseRayCallback* obj);
+	EXPORT void btBroadphaseRayCallback_getRayDirectionInverse(btBroadphaseRayCallback* obj, btScalar* value);
+	EXPORT unsigned int* btBroadphaseRayCallback_getSigns(btBroadphaseRayCallback* obj);
+	EXPORT void btBroadphaseRayCallback_setLambda_max(btBroadphaseRayCallback* obj, btScalar value);
+	EXPORT void btBroadphaseRayCallback_setRayDirectionInverse(btBroadphaseRayCallback* obj, btScalar* value);
+	EXPORT void btBroadphaseRayCallback_setSigns(btBroadphaseRayCallback* obj, unsigned int* value);
+
 	EXPORT void btBroadphaseInterface_aabbTest(btBroadphaseInterface* obj, btScalar* aabbMin, btScalar* aabbMax, btBroadphaseAabbCallback* callback);
 	EXPORT void btBroadphaseInterface_calculateOverlappingPairs(btBroadphaseInterface* obj, btDispatcher* dispatcher);
 	EXPORT btBroadphaseProxy* btBroadphaseInterface_createProxy(btBroadphaseInterface* obj, btScalar* aabbMin, btScalar* aabbMax, int shapeType, void* userPtr, short collisionFilterGroup, short collisionFilterMask, btDispatcher* dispatcher, void* multiSapProxy);

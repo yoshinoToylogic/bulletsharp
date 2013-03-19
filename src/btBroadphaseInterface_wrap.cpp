@@ -10,6 +10,36 @@ void btBroadphaseAabbCallback_delete(btBroadphaseAabbCallback* obj)
 	delete obj;
 }
 
+btScalar btBroadphaseRayCallback_getLambda_max(btBroadphaseRayCallback* obj)
+{
+	return obj->m_lambda_max;
+}
+
+void btBroadphaseRayCallback_getRayDirectionInverse(btBroadphaseRayCallback* obj, btScalar* value)
+{
+	VECTOR3_OUT(&obj->m_rayDirectionInverse, value);
+}
+
+unsigned int* btBroadphaseRayCallback_getSigns(btBroadphaseRayCallback* obj)
+{
+	return obj->m_signs;
+}
+
+void btBroadphaseRayCallback_setLambda_max(btBroadphaseRayCallback* obj, btScalar value)
+{
+	obj->m_lambda_max = value;
+}
+
+void btBroadphaseRayCallback_setRayDirectionInverse(btBroadphaseRayCallback* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_rayDirectionInverse);
+}
+/*
+void btBroadphaseRayCallback_setSigns(btBroadphaseRayCallback* obj, unsigned int* value)
+{
+	obj->m_signs = value;
+}
+*/
 void btBroadphaseInterface_aabbTest(btBroadphaseInterface* obj, btScalar* aabbMin, btScalar* aabbMax, btBroadphaseAabbCallback* callback)
 {
 	VECTOR3_CONV(aabbMin);
