@@ -312,7 +312,7 @@ namespace BulletSharpGen
                 headerWriter.WriteLine(" get();");
                 
                 // Setter
-                if (prop.Setter != null || prop.Field != null)
+                if (prop.Setter != null)
                 {
                     OutputTabs(level + 2);
                     headerWriter.Write("void set(");

@@ -9,10 +9,20 @@
 
         public FieldDefinition(string name, ClassDefinition parent)
         {
-            Name = name;
             Parent = parent;
+            Name = name;
+            if (name.StartsWith("m_"))
+            {
+                name = name.Substring(2);
+            }
+            ManagedName = name;
 
             parent.Fields.Add(this);
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }

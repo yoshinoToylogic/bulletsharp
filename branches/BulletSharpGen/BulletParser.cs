@@ -111,23 +111,6 @@ namespace BulletSharpGen
                     getter.Field = field;
                 }
             }*/
-            /*
-            // Turn fields into properties
-            foreach (ClassDefinition c in classDefinitions.Values)
-            {
-                foreach (FieldDefinition field in c.Fields)
-                {
-                    ResolveTypeRef(field.Type);
-                    string name = field.Name;
-                    if (name.StartsWith("m_"))
-                    {
-                        name = name.Substring(2);
-                    }
-                    field.ManagedName = name;
-                    new PropertyDefinition(field);
-                }
-            }
-            */
 
             // Exclude duplicate methods (e.g. with const/non-const return value)
             foreach (ClassDefinition c in classDefinitions.Values)
@@ -165,8 +148,7 @@ namespace BulletSharpGen
                         method.Name.StartsWith("has") ||
                         method.Name.StartsWith("is")))
                     {
-                        var prop = new PropertyDefinition(method);
-                        c.Properties.Add(prop);
+                        new PropertyDefinition(method);
                         //c.Methods.Remove(method);
                         //i--;
                     }
@@ -190,6 +172,16 @@ namespace BulletSharpGen
                             }
                         }
                     }
+                }
+            }
+
+            // Turn fields into properties
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                foreach (FieldDefinition field in c.Fields)
+                {
+                    ResolveTypeRef(field.Type);
+                    new PropertyDefinition(field);
                 }
             }
 
