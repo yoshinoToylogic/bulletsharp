@@ -8,10 +8,10 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-        internal ConstraintSolver(IntPtr native)
-        {
-            _native = native;
-        }
+		internal ConstraintSolver(IntPtr native)
+		{
+			_native = native;
+		}
         /*
 		public void AllSolved(ContactSolverInfo __unnamed0, IDebugDraw __unnamed1, StackAlloc __unnamed2)
 		{

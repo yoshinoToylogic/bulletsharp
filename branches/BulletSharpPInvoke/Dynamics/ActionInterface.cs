@@ -8,6 +8,21 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
+		internal ActionInterface(IntPtr native)
+		{
+			_native = native;
+		}
+        /*
+		public void DebugDraw(IDebugDraw debugDrawer)
+		{
+			btActionInterface_debugDraw(_native, debugDrawer._native);
+		}
+        */
+		public void UpdateAction(CollisionWorld collisionWorld, float deltaTimeStep)
+		{
+			btActionInterface_updateAction(_native, collisionWorld._native, deltaTimeStep);
+		}
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -27,22 +42,12 @@ namespace BulletSharp
 		{
 			Dispose(false);
 		}
-        /*
-		public void DebugDraw(IDebugDraw debugDrawer)
-		{
-			btActionInterface_debugDraw(_native, debugDrawer._native);
-		}
-        */
-		public void UpdateAction(CollisionWorld collisionWorld, float deltaTimeStep)
-		{
-			btActionInterface_updateAction(_native, collisionWorld._native, deltaTimeStep);
-		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btActionInterface_delete(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btActionInterface_debugDraw(IntPtr obj, IntPtr debugDrawer);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btActionInterface_updateAction(IntPtr obj, IntPtr collisionWorld, float deltaTimeStep);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btActionInterface_delete(IntPtr obj);
 	}
 }

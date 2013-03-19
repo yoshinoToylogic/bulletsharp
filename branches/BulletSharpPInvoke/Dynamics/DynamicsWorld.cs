@@ -6,10 +6,10 @@ namespace BulletSharp
 {
 	public class DynamicsWorld : CollisionWorld
 	{
-        internal DynamicsWorld(IntPtr native)
-            : base(native)
-        {
-        }
+		internal DynamicsWorld(IntPtr native)
+			: base(native)
+		{
+		}
 
 		public void AddAction(ActionInterface action)
 		{

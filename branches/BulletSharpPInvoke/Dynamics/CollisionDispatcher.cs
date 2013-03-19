@@ -13,21 +13,21 @@ namespace BulletSharp
 
 	public class CollisionDispatcher : Dispatcher
 	{
-        internal CollisionDispatcher(IntPtr native)
-            : base(native)
-        {
-        }
+		internal CollisionDispatcher(IntPtr native)
+			: base(native)
+		{
+		}
 
 		public CollisionDispatcher(CollisionConfiguration collisionConfiguration)
             : base(btCollisionDispatcher_new(collisionConfiguration._native))
 		{
 		}
-        /*
+
 		public void DefaultNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo)
 		{
 			btCollisionDispatcher_defaultNearCallback(collisionPair._native, dispatcher._native, dispatchInfo._native);
 		}
-
+        /*
 		public void RegisterCollisionCreateFunc(int proxyType0, int proxyType1, CollisionAlgorithmCreateFunc createFunc)
 		{
 			btCollisionDispatcher_registerCollisionCreateFunc(_native, proxyType0, proxyType1, createFunc._native);

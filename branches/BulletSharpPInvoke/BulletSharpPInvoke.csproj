@@ -34,6 +34,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collision\AxisSweep3.cs" />
     <Compile Include="Collision\BoxShape.cs" />
     <Compile Include="Collision\BroadphaseInterface.cs" />
     <Compile Include="Collision\BroadphaseProxy.cs" />
