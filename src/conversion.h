@@ -34,7 +34,7 @@ inline void Vector3TobtVector3(const btScalar* s, btVector3* v)
 	v->setZ(s[2]);
 }
 
-inline void btTransfromToMatrix(const btTransform* t, btScalar* m)
+inline void btTransformToMatrix(const btTransform* t, btScalar* m)
 {
 #ifdef BTTRANSFORM_TO4X4
 #ifdef BTTRANSFORM_TRANSPOSE
@@ -196,5 +196,5 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 #endif
 #define TRANSFORM_CONV(tr) TRANSFORM_DEF(tr); MatrixTobtTransform(tr, &TEMP(tr))
 #define TRANSFORM_USE(tr) TEMP(tr)
-#define TRANSFORM_DEF_OUT(tr) btTransfromToMatrix(&TEMP(tr), tr)
+#define TRANSFORM_DEF_OUT(tr) btTransformToMatrix(&TEMP(tr), tr)
 #define MATRIX3X3_DEF_OUT(tr) btMatrix3x3ToMatrix(&TEMP(tr), tr)
