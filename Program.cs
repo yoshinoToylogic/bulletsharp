@@ -6,6 +6,10 @@ namespace BulletSharpGen
     {
         static void Main(string[] args)
         {
+            // If true, outputs C++/CLI wrapper,
+            // if false, outputs C wrapper with C# code.
+            bool cppCliMode = false;
+
             //var subset = new AssemblySubset();
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\BasicDemo.exe", "BulletSharp");
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\DemoFramework.dll", "BulletSharp");
@@ -13,9 +17,16 @@ namespace BulletSharpGen
             //var parser = new CppReader("D:\\src\\bullet\\src\\");
             var reader = new CppReader("..\\..\\..\\bullet\\src\\");
             var parser = new BulletParser(reader.ClassDefinitions, reader.HeaderDefinitions);
-            var writer = new CWriter(parser.HeaderDefinitions, "BulletSharp");
-            //var writer = new CppWriter(parser.HeaderDefinitions, "BulletSharp");
-            writer.Output();
+            if (cppCliMode)
+            {
+                var writer = new CppWriter(parser.HeaderDefinitions, "BulletSharp");
+                writer.Output();
+            }
+            else
+            {
+                var writer = new CWriter(parser.HeaderDefinitions, "BulletSharp");
+                writer.Output();
+            }
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }

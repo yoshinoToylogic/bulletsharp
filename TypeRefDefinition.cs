@@ -189,6 +189,12 @@ namespace BulletSharpGen
             Name = name;
         }
 
+        public TypeRefDefinition()
+        {
+            Name = "void";
+            IsBasic = true;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)
