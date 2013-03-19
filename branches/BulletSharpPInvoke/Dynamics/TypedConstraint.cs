@@ -29,7 +29,7 @@ namespace BulletSharp
     {
         internal IntPtr _native;
 
-        public TypedConstraint(IntPtr native)
+        internal TypedConstraint(IntPtr native)
         {
             _native = native;
         }

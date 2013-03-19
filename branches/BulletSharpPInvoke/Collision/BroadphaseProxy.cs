@@ -61,7 +61,7 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-        public BroadphaseProxy(IntPtr native)
+        internal BroadphaseProxy(IntPtr native)
         {
             _native = native;
         }

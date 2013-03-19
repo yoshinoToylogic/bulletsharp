@@ -6,7 +6,7 @@ namespace BulletSharp
 {
     public class DefaultMotionState : MotionState
     {
-        public DefaultMotionState(IntPtr native)
+        internal DefaultMotionState(IntPtr native)
             : base(native)
         {
             _native = native;

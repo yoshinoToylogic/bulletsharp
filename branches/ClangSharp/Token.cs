@@ -33,5 +33,10 @@ namespace ClangSharp {
                 Interop.clang_disposeTokens(_parent.Native, (IntPtr)(&native), 1);
             }
         }
+
+        public override string ToString()
+        {
+            return Spelling;
+        }
     }
 }

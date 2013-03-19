@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	public class DiscreteDynamicsWorld : DynamicsWorld
 	{
-        public DiscreteDynamicsWorld(IntPtr native)
+        internal DiscreteDynamicsWorld(IntPtr native)
             : base(native)
         {
         }
