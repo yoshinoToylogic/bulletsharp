@@ -497,6 +497,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btTranslationalLimitMotor_setNormalCFM(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btTranslationalLimitMotor_setNormalCFM(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTranslationalLimitMotor_setRestitution(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btTranslationalLimitMotor_setStopCFM(IntPtr obj, [In] ref Vector3 value);
@@ -522,14 +524,14 @@ namespace BulletSharp
 		}
 
         public Generic6DofConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
-            : base(btGeneric6DofConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
-        {
-        }
+			: base(btGeneric6DofConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+		{
+		}
 
-        public Generic6DofConstraint(RigidBody rbA, Matrix frameInA, bool useLinearReferenceFrameB)
-            : base(btGeneric6DofConstraint_new2(rbA._native, ref frameInA, useLinearReferenceFrameB))
-        {
-        }
+        public Generic6DofConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameB)
+			: base(btGeneric6DofConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameB))
+		{
+		}
 
 		public void CalcAnchorPos()
 		{
@@ -561,41 +563,16 @@ namespace BulletSharp
 			return btGeneric6DofConstraint_getAngle(_native, axis_index);
 		}
 
-		public void GetAngularLowerLimit(out Vector3 angularLower)
-		{
-			btGeneric6DofConstraint_getAngularLowerLimit(_native, out angularLower);
-		}
-
-        public void GetAngularUpperLimit(out Vector3 angularUpper)
-		{
-			btGeneric6DofConstraint_getAngularUpperLimit(_native, out angularUpper);
-		}
-
 		public void GetAxis(int axis_index)
 		{
 			btGeneric6DofConstraint_getAxis(_native, axis_index);
 		}
         /*
-		public void GetInfo1NonVirtual(ConstraintInfo1 info)
-		{
-			btGeneric6DofConstraint_getInfo1NonVirtual(_native, info._native);
-		}
-
         public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB)
 		{
-			btGeneric6DofConstraint_getInfo2NonVirtual(_native, info._native, transA._native, transB._native, linVelA._native, linVelB._native, angVelA._native, angVelB._native);
+			btGeneric6DofConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB);
 		}
         */
-		public void GetLinearLowerLimit(out Vector3 linearLower)
-		{
-            btGeneric6DofConstraint_getLinearLowerLimit(_native, out linearLower);
-		}
-
-        public void GetLinearUpperLimit(out Vector3 linearUpper)
-		{
-            btGeneric6DofConstraint_getLinearUpperLimit(_native, out linearUpper);
-		}
-
 		public float GetRelativePivotPosition(int axis_index)
 		{
 			return btGeneric6DofConstraint_getRelativePivotPosition(_native, axis_index);
@@ -609,16 +586,6 @@ namespace BulletSharp
 		public bool IsLimited(int limitIndex)
 		{
 			return btGeneric6DofConstraint_isLimited(_native, limitIndex);
-		}
-
-		public void SetAngularLowerLimit(Vector3 angularLower)
-		{
-			btGeneric6DofConstraint_setAngularLowerLimit(_native, ref angularLower);
-		}
-
-		public void SetAngularUpperLimit(Vector3 angularUpper)
-		{
-			btGeneric6DofConstraint_setAngularUpperLimit(_native, ref angularUpper);
 		}
 
 		public void SetAxis(Vector3 axis1, Vector3 axis2)
@@ -636,16 +603,6 @@ namespace BulletSharp
 			btGeneric6DofConstraint_setLimit(_native, axis, lo, hi);
 		}
 
-		public void SetLinearLowerLimit(Vector3 linearLower)
-		{
-			btGeneric6DofConstraint_setLinearLowerLimit(_native, ref linearLower);
-		}
-
-		public void SetLinearUpperLimit(Vector3 linearUpper)
-		{
-			btGeneric6DofConstraint_setLinearUpperLimit(_native, ref linearUpper);
-		}
-
 		public bool TestAngularLimitMotor(int axis_index)
 		{
 			return btGeneric6DofConstraint_testAngularLimitMotor(_native, axis_index);
@@ -655,6 +612,28 @@ namespace BulletSharp
 		{
 			btGeneric6DofConstraint_updateRHS(_native, timeStep);
 		}
+
+        public Vector3 AngularLowerLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getAngularLowerLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setAngularLowerLimit(_native, ref value); }
+        }
+
+        public Vector3 AngularUpperLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getAngularUpperLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setAngularUpperLimit(_native, ref value); }
+        }
 
         public Matrix CalculatedTransformA
 		{
@@ -695,6 +674,34 @@ namespace BulletSharp
                 return value;
             }
         }
+        /*
+		public void Info1NonVirtual
+		{
+			get { return btGeneric6DofConstraint_getInfo1NonVirtual(_native); }
+		}
+        */
+
+        public Vector3 LinearLowerLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getLinearLowerLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setLinearLowerLimit(_native, ref value); }
+        }
+
+		public Vector3 LinearUpperLimit
+		{
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getLinearUpperLimit(_native, out value);
+                return value;
+            }
+			set { btGeneric6DofConstraint_setLinearUpperLimit(_native, ref value); }
+		}
 
 		public TranslationalLimitMotor TranslationalLimitMotor
 		{

@@ -465,22 +465,22 @@ void btGeneric6DofConstraint_getAxis(btGeneric6DofConstraint* obj, int axis_inde
 
 void btGeneric6DofConstraint_getCalculatedTransformA(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	btTransfromToMatrix(&obj->getCalculatedTransformA(), value);
+	btTransformToMatrix(&obj->getCalculatedTransformA(), value);
 }
 
 void btGeneric6DofConstraint_getCalculatedTransformB(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	btTransfromToMatrix(&obj->getCalculatedTransformB(), value);
+	btTransformToMatrix(&obj->getCalculatedTransformB(), value);
 }
 
-btTransform* btGeneric6DofConstraint_getFrameOffsetA(btGeneric6DofConstraint* obj)
+void btGeneric6DofConstraint_getFrameOffsetA(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	return &obj->getFrameOffsetA();
+	btTransformToMatrix(&obj->getFrameOffsetA(), value);
 }
 
-btTransform* btGeneric6DofConstraint_getFrameOffsetB(btGeneric6DofConstraint* obj)
+void btGeneric6DofConstraint_getFrameOffsetB(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	return &obj->getFrameOffsetB();
+	btTransformToMatrix(&obj->getFrameOffsetB(), value);
 }
 
 void btGeneric6DofConstraint_getInfo1NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint::btConstraintInfo1* info)

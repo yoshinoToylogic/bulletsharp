@@ -118,7 +118,7 @@ void btCollisionObject_getInterpolationLinearVelocity(btCollisionObject* obj, bt
 
 void btCollisionObject_getInterpolationWorldTransform(btCollisionObject* obj, btScalar* transform)
 {
-	btTransfromToMatrix(&obj->getInterpolationWorldTransform(), transform);
+	btTransformToMatrix(&obj->getInterpolationWorldTransform(), transform);
 }
 
 int btCollisionObject_getIslandTag(btCollisionObject* obj)
@@ -143,7 +143,7 @@ void* btCollisionObject_getUserPointer(btCollisionObject* obj)
 
 void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* transform)
 {
-	btTransfromToMatrix(&obj->getWorldTransform(), transform);
+	btTransformToMatrix(&obj->getWorldTransform(), transform);
 }
 
 bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj, int frictionMode)

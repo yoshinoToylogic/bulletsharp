@@ -9,11 +9,13 @@ namespace BulletSharp
 		public AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, ushort maxHandles, OverlappingPairCache pairCache, bool disableRaycastAccelerator)
             : base(btAxisSweep3_new(ref worldAabbMin, ref worldAabbMax, maxHandles, pairCache._native, disableRaycastAccelerator))
 		{
+            _pairCache = pairCache;
 		}
 
 		public AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, ushort maxHandles, OverlappingPairCache pairCache)
             : base(btAxisSweep3_new2(ref worldAabbMin, ref worldAabbMax, maxHandles, pairCache._native))
 		{
+            _pairCache = pairCache;
 		}
 
 		public AxisSweep3(Vector3 worldAabbMin, Vector3 worldAabbMax, ushort maxHandles)

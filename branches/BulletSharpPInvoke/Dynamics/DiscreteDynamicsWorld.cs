@@ -58,12 +58,12 @@ namespace BulletSharp
 		{
 			get { return btDiscreteDynamicsWorld_getCollisionWorld(_native); }
 		}
-
-		public btSimulationIslandManager SimulationIslandManager
-		{
-			get { return btDiscreteDynamicsWorld_getSimulationIslandManager(_native); }
-		}
         */
+		public SimulationIslandManager SimulationIslandManager
+		{
+			get { return new SimulationIslandManager(btDiscreteDynamicsWorld_getSimulationIslandManager(_native)); }
+		}
+
 		public bool SynchronizeAllMotionStates
 		{
 			get { return btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(_native); }

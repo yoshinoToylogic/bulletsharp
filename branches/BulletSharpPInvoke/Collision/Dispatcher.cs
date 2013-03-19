@@ -8,14 +8,94 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-        internal DispatcherInfo(IntPtr native)
-        {
-            _native = native;
-        }
+		internal DispatcherInfo(IntPtr native)
+		{
+			_native = native;
+		}
 
 		public DispatcherInfo()
 		{
 			_native = btDispatcherInfo_new();
+		}
+
+		public float AllowedCcdPenetration
+		{
+			get { return btDispatcherInfo_getAllowedCcdPenetration(_native); }
+			set { btDispatcherInfo_setAllowedCcdPenetration(_native, value); }
+		}
+
+		public float ConvexConservativeDistanceThreshold
+		{
+			get { return btDispatcherInfo_getConvexConservativeDistanceThreshold(_native); }
+			set { btDispatcherInfo_setConvexConservativeDistanceThreshold(_native, value); }
+		}
+
+		public IDebugDraw DebugDraw
+		{
+            get { return null; }
+            set { }
+			//get { return btDispatcherInfo_getDebugDraw(_native); }
+			//set { btDispatcherInfo_setDebugDraw(_native, value._native); }
+		}
+
+		public int DispatchFunc
+		{
+			get { return btDispatcherInfo_getDispatchFunc(_native); }
+			set { btDispatcherInfo_setDispatchFunc(_native, value); }
+		}
+
+		public bool EnableSatConvex
+		{
+			get { return btDispatcherInfo_getEnableSatConvex(_native); }
+			set { btDispatcherInfo_setEnableSatConvex(_native, value); }
+		}
+
+		public bool EnableSPU
+		{
+			get { return btDispatcherInfo_getEnableSPU(_native); }
+			set { btDispatcherInfo_setEnableSPU(_native, value); }
+		}
+        /*
+		public StackAlloc StackAllocator
+		{
+			get { return btDispatcherInfo_getStackAllocator(_native); }
+			set { btDispatcherInfo_setStackAllocator(_native, value._native); }
+		}
+        */
+		public int StepCount
+		{
+			get { return btDispatcherInfo_getStepCount(_native); }
+			set { btDispatcherInfo_setStepCount(_native, value); }
+		}
+
+		public float TimeOfImpact
+		{
+			get { return btDispatcherInfo_getTimeOfImpact(_native); }
+			set { btDispatcherInfo_setTimeOfImpact(_native, value); }
+		}
+
+		public float TimeStep
+		{
+			get { return btDispatcherInfo_getTimeStep(_native); }
+			set { btDispatcherInfo_setTimeStep(_native, value); }
+		}
+
+		public bool UseContinuous
+		{
+			get { return btDispatcherInfo_getUseContinuous(_native); }
+			set { btDispatcherInfo_setUseContinuous(_native, value); }
+		}
+
+		public bool UseConvexConservativeDistanceUtil
+		{
+			get { return btDispatcherInfo_getUseConvexConservativeDistanceUtil(_native); }
+			set { btDispatcherInfo_setUseConvexConservativeDistanceUtil(_native, value); }
+		}
+
+		public bool UseEpa
+		{
+			get { return btDispatcherInfo_getUseEpa(_native); }
+			set { btDispatcherInfo_setUseEpa(_native, value); }
 		}
 
 		public void Dispose()
@@ -41,6 +121,58 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDispatcherInfo_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btDispatcherInfo_getAllowedCcdPenetration(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btDispatcherInfo_getConvexConservativeDistanceThreshold(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btDispatcherInfo_getDebugDraw(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDispatcherInfo_getDispatchFunc(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btDispatcherInfo_getEnableSatConvex(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btDispatcherInfo_getEnableSPU(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btDispatcherInfo_getStackAllocator(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDispatcherInfo_getStepCount(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btDispatcherInfo_getTimeOfImpact(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btDispatcherInfo_getTimeStep(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btDispatcherInfo_getUseContinuous(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btDispatcherInfo_getUseConvexConservativeDistanceUtil(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btDispatcherInfo_getUseEpa(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setAllowedCcdPenetration(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setConvexConservativeDistanceThreshold(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setDebugDraw(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setDispatchFunc(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setEnableSatConvex(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setEnableSPU(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setStackAllocator(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setStepCount(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setTimeOfImpact(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setTimeStep(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setUseContinuous(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setUseConvexConservativeDistanceUtil(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDispatcherInfo_setUseEpa(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcherInfo_delete(IntPtr obj);
 	}
 
@@ -48,10 +180,10 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-        internal Dispatcher(IntPtr native)
-        {
-            _native = native;
-        }
+		internal Dispatcher(IntPtr native)
+		{
+			_native = native;
+		}
 
 		public IntPtr AllocateCollisionAlgorithm(int size)
 		{
