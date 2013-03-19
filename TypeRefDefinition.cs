@@ -10,6 +10,7 @@ namespace BulletSharpGen
         public bool IsPointer { get; set; }
         public bool IsReference { get; set; }
         public bool IsConstantArray { get; set; }
+        public bool IsConst { get; set; }
         public TypeRefDefinition Referenced { get; set; }
         public bool HasTemplateTypeParameter { get; set; }
         public TypeRefDefinition SpecializedTemplateType { get; set; }
