@@ -129,6 +129,30 @@ namespace BulletSharpGen
             }
             */
 
+            // Exclude duplicate methods (e.g. with const/non-const return value)
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                for (int i = 0; i < c.Methods.Count; i++)
+                {
+                    for (int j = 0; j < c.Methods.Count; j++)
+                    {
+                        if (i != j && c.Methods[i].Equals(c.Methods[j]))
+                        {
+                            if (c.Methods[i].ReturnType.IsConst)
+                            {
+                                c.Methods.Remove(c.Methods[i]);
+                            }
+                            else
+                            {
+                                c.Methods.Remove(c.Methods[j]);
+                            }
+                            i--;
+                            break;
+                        }
+                    }
+                }
+            }
+
             // Turn getters/setters into properties
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -238,20 +262,28 @@ namespace BulletSharpGen
 
         public static string GetTypeMarshalPrologue(ParameterDefinition parameter)
         {
-            if (parameter.Type.ManagedName.Equals("Vector3"))
+            switch (parameter.Type.ManagedName)
             {
-                return "VECTOR3_CONV(" + parameter.Name + ");";
+                case "Vector3":
+                    return "VECTOR3_CONV(" + parameter.Name + ");";
+                case "Transform":
+                    return "TRANSFORM_CONV(" + parameter.Name + ");";
+                default:
+                    return null;
             }
-            return null;
         }
 
         public static string GetTypeMarshal(ParameterDefinition parameter)
         {
-            if (parameter.Type.ManagedName.Equals("Vector3"))
+            switch (parameter.Type.ManagedName)
             {
-                return "VECTOR3_USE(" + parameter.Name + ")";
+                case "Vector3":
+                    return "VECTOR3_USE(" + parameter.Name + ")";
+                case "Transform":
+                    return "TRANSFORM_USE(" + parameter.Name + ")";
+                default:
+                    return null;
             }
-            return null;
         }
     }
 }

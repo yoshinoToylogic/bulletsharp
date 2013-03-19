@@ -293,13 +293,20 @@ namespace BulletSharpGen
                     // Check if the return type is a template
                     cursor.VisitChildren(MethodTemplateTypeVisitor);
 
-                    // Check if the method is abstract (no clang_isAbstract available, so look at tokens)
                     IList<Token> tokens = currentTU.Tokenize(cursor.Extent);
+                    
+                    // Check if the return type is const (no clang_isConst available, so look at tokens)
+                    if (tokens.Count > 0 && tokens[0].Spelling.Equals("const"))
+                    {
+                        currentMethod.ReturnType.IsConst = true;
+                    }
+
+                    // Check if the method is abstract (no clang_isAbstract available, so look at tokens)
                     if (tokens.Count > 3)
                     {
-                        if (tokens[tokens.Count - 3].Spelling == "=" &&
-                            tokens[tokens.Count - 2].Spelling == "0" &&
-                            tokens[tokens.Count - 1].Spelling == ";")
+                        if (tokens[tokens.Count - 3].Spelling.Equals("=") &&
+                            tokens[tokens.Count - 2].Spelling.Equals("0") &&
+                            tokens[tokens.Count - 1].Spelling.Equals(";"))
                         {
                             currentMethod.IsAbstract = true;
                             currentClass.IsAbstract = true;
@@ -321,11 +328,15 @@ namespace BulletSharpGen
                         arg.VisitChildren(MethodTemplateTypeVisitor);
                         currentParameter = null;
 
-                        // Check if it's an optional parameter
+                        // Check if it's a const or optional parameter
                         IList<Token> argTokens = currentTU.Tokenize(arg.Extent);
                         foreach (Token token in argTokens)
                         {
-                            if (token.Spelling == "=")
+                            if (token.Spelling.Equals("const"))
+                            {
+                                currentMethod.Parameters[i].Type.IsConst = true;
+                            }
+                            else if (token.Spelling.Equals("="))
                             {
                                 currentMethod.Parameters[i].IsOptional = true;
                             }
