@@ -84,6 +84,7 @@
     <ClInclude Include="src\btActionInterface_wrap.h" />
     <ClInclude Include="src\btAlignedCollisionObjectArray_wrap.h" />
     <ClInclude Include="src\btBoxShape_wrap.h" />
+    <ClInclude Include="src\btBroadphaseInterface_wrap.h" />
     <ClInclude Include="src\btCapsuleShape_wrap.h" />
     <ClInclude Include="src\btCollisionConfiguration_wrap.h" />
     <ClInclude Include="src\btCollisionDispatcher_wrap.h" />
@@ -120,6 +121,7 @@
     <ClCompile Include="src\btActionInterface_wrap.cpp" />
     <ClCompile Include="src\btAlignedCollisionObjectArray_wrap.cpp" />
     <ClCompile Include="src\btBoxShape_wrap.cpp" />
+    <ClCompile Include="src\btBroadphaseInterface_wrap.cpp" />
     <ClCompile Include="src\btCapsuleShape_wrap.cpp" />
     <ClCompile Include="src\btCollisionConfiguration_wrap.cpp" />
     <ClCompile Include="src\btCollisionDispatcher_wrap.cpp" />
