@@ -6,10 +6,10 @@ namespace BulletSharp
 {
 	public class DiscreteDynamicsWorld : DynamicsWorld
 	{
-        internal DiscreteDynamicsWorld(IntPtr native)
-            : base(native)
-        {
-        }
+		internal DiscreteDynamicsWorld(IntPtr native)
+			: base(native)
+		{
+		}
 
         public DiscreteDynamicsWorld(Dispatcher dispatcher, BroadphaseInterface pairCache, ConstraintSolver solver, CollisionConfiguration collisionConfiguration)
             : base(btDiscreteDynamicsWorld_new(
@@ -82,8 +82,6 @@ namespace BulletSharp
 		static extern IntPtr btDiscreteDynamicsWorld_getCollisionWorld(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDiscreteDynamicsWorld_getSimulationIslandManager(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDiscreteDynamicsWorld_getSimulationIslandManager2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

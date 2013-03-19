@@ -8,10 +8,10 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-        internal CollisionConfiguration(IntPtr native)
-        {
-            _native = native;
-        }
+		internal CollisionConfiguration(IntPtr native)
+		{
+			_native = native;
+		}
         /*
 		public CollisionAlgorithmCreateFunc GetCollisionAlgorithmCreateFunc(int proxyType0, int proxyType1)
 		{

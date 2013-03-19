@@ -8,9 +8,62 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
+		internal DefaultCollisionConstructionInfo (IntPtr native)
+		{
+			_native = native;
+		}
+
 		public DefaultCollisionConstructionInfo()
 		{
 			_native = btDefaultCollisionConstructionInfo_new();
+		}
+        /*
+		public btPoolAllocator CollisionAlgorithmPool
+		{
+			get { return btDefaultCollisionConstructionInfo_getCollisionAlgorithmPool(_native); }
+			set { btDefaultCollisionConstructionInfo_setCollisionAlgorithmPool(_native, value._native); }
+		}
+        */
+		public int CustomCollisionAlgorithmMaxElementSize
+		{
+			get { return btDefaultCollisionConstructionInfo_getCustomCollisionAlgorithmMaxElementSize(_native); }
+			set { btDefaultCollisionConstructionInfo_setCustomCollisionAlgorithmMaxElementSize(_native, value); }
+		}
+
+		public int DefaultMaxCollisionAlgorithmPoolSize
+		{
+			get { return btDefaultCollisionConstructionInfo_getDefaultMaxCollisionAlgorithmPoolSize(_native); }
+			set { btDefaultCollisionConstructionInfo_setDefaultMaxCollisionAlgorithmPoolSize(_native, value); }
+		}
+
+		public int DefaultMaxPersistentManifoldPoolSize
+		{
+			get { return btDefaultCollisionConstructionInfo_getDefaultMaxPersistentManifoldPoolSize(_native); }
+			set { btDefaultCollisionConstructionInfo_setDefaultMaxPersistentManifoldPoolSize(_native, value); }
+		}
+
+		public int DefaultStackAllocatorSize
+		{
+			get { return btDefaultCollisionConstructionInfo_getDefaultStackAllocatorSize(_native); }
+			set { btDefaultCollisionConstructionInfo_setDefaultStackAllocatorSize(_native, value); }
+		}
+        /*
+		public btPoolAllocator PersistentManifoldPool
+		{
+			get { return btDefaultCollisionConstructionInfo_getPersistentManifoldPool(_native); }
+			set { btDefaultCollisionConstructionInfo_setPersistentManifoldPool(_native, value._native); }
+		}
+
+		public StackAlloc StackAlloc
+		{
+			get { return btDefaultCollisionConstructionInfo_getStackAlloc(_native); }
+			set { btDefaultCollisionConstructionInfo_setStackAlloc(_native, value._native); }
+		}
+        */
+		public int UseEpaPenetrationAlgorithm
+		{
+			get { return btDefaultCollisionConstructionInfo_getUseEpaPenetrationAlgorithm(_native); }
+			set { btDefaultCollisionConstructionInfo_setUseEpaPenetrationAlgorithm(_native, value); }
 		}
 
 		public void Dispose()
@@ -36,11 +89,48 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDefaultCollisionConstructionInfo_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btDefaultCollisionConstructionInfo_getCollisionAlgorithmPool(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDefaultCollisionConstructionInfo_getCustomCollisionAlgorithmMaxElementSize(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDefaultCollisionConstructionInfo_getDefaultMaxCollisionAlgorithmPoolSize(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDefaultCollisionConstructionInfo_getDefaultMaxPersistentManifoldPoolSize(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDefaultCollisionConstructionInfo_getDefaultStackAllocatorSize(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btDefaultCollisionConstructionInfo_getPersistentManifoldPool(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btDefaultCollisionConstructionInfo_getStackAlloc(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btDefaultCollisionConstructionInfo_getUseEpaPenetrationAlgorithm(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setCollisionAlgorithmPool(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setCustomCollisionAlgorithmMaxElementSize(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setDefaultMaxCollisionAlgorithmPoolSize(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setDefaultMaxPersistentManifoldPoolSize(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setDefaultStackAllocatorSize(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setPersistentManifoldPool(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setStackAlloc(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDefaultCollisionConstructionInfo_setUseEpaPenetrationAlgorithm(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultCollisionConstructionInfo_delete(IntPtr obj);
 	}
 
 	public class DefaultCollisionConfiguration : CollisionConfiguration
 	{
+		internal DefaultCollisionConfiguration (IntPtr native)
+			: base(native)
+		{
+		}
+
 		public DefaultCollisionConfiguration(DefaultCollisionConstructionInfo constructionInfo)
             : base(btDefaultCollisionConfiguration_new(constructionInfo._native))
 		{
@@ -49,6 +139,7 @@ namespace BulletSharp
 		public DefaultCollisionConfiguration()
             : base(btDefaultCollisionConfiguration_new2())
 		{
+			_native = btDefaultCollisionConfiguration_new2();
 		}
 
 		public void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold)
