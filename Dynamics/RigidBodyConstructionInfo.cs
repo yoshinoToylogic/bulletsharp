@@ -21,7 +21,7 @@ namespace BulletSharp
             _motionState = motionState;
         }
 
-        public RigidBodyConstructionInfo(IntPtr native)
+        internal RigidBodyConstructionInfo(IntPtr native)
         {
             _native = native;
         }

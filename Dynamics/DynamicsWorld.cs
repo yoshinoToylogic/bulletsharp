@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	public class DynamicsWorld : CollisionWorld
 	{
-        public DynamicsWorld(IntPtr native)
+        internal DynamicsWorld(IntPtr native)
             : base(native)
         {
         }

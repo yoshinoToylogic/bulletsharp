@@ -76,6 +76,11 @@ namespace BulletSharp
 
 	public class OverlappingPairCache : OverlappingPairCallback
 	{
+        internal OverlappingPairCache(IntPtr native)
+        {
+            _native = native;
+        }
+
 		public void CleanOverlappingPair(BroadphasePair pair, Dispatcher dispatcher)
 		{
 			btOverlappingPairCache_cleanOverlappingPair(_native, pair._native, dispatcher._native);
@@ -160,8 +165,8 @@ namespace BulletSharp
 	public class HashedOverlappingPairCache : OverlappingPairCache
 	{
 		public HashedOverlappingPairCache()
+            : base(btHashedOverlappingPairCache_new())
 		{
-			_native = btHashedOverlappingPairCache_new();
 		}
 
 		public int GetCount()
@@ -192,8 +197,8 @@ namespace BulletSharp
 	public class SortedOverlappingPairCache : OverlappingPairCache
 	{
 		public SortedOverlappingPairCache()
+            : base(btSortedOverlappingPairCache_new())
 		{
-			_native = btSortedOverlappingPairCache_new();
 		}
 
 		public bool NeedsBroadphaseCollision(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
@@ -217,8 +222,8 @@ namespace BulletSharp
 	public class NullPairCache : OverlappingPairCache
 	{
 		public NullPairCache()
+            : base(btNullPairCache_new())
 		{
-			_native = btNullPairCache_new();
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
