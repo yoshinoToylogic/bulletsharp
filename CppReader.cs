@@ -68,8 +68,9 @@ namespace BulletSharpGen
                 }
             }
 
-            // Parse the common headers
             index = new Index();
+
+            // Parse the common headers
             commonHeaders = new[] { src + "btBulletCollisionCommon.h", src + "btBulletDynamicsCommon.h" };
             foreach (string commonHeader in commonHeaders)
             {
@@ -80,6 +81,10 @@ namespace BulletSharpGen
                 }
                 readHeader(commonHeader);
             }
+
+            readHeader(src + "\\BulletCollision\\CollisionDispatch\\btSimulationIslandManager.h");
+            readHeader(src + "\\BulletCollision\\CollisionShapes\\btConvex2dShape.h");
+
             index.Dispose();
 
             Console.WriteLine("Read complete - headers: " + HeaderDefinitions.Count + ", classes: " + ClassDefinitions.Count);
