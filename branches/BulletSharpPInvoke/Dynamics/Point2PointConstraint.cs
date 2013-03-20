@@ -12,12 +12,12 @@ namespace BulletSharp
 		{
 			_native = native;
 		}
-
+        /*
 		public ConstraintSetting()
 		{
 			_native = btConstraintSetting_new();
 		}
-
+        */
 		public float Damping
 		{
 			get { return btConstraintSetting_getDamping(_native); }
@@ -35,7 +35,7 @@ namespace BulletSharp
 			get { return btConstraintSetting_getTau(_native); }
 			set { btConstraintSetting_setTau(_native, value); }
 		}
-
+        /*
 		public void Dispose()
 		{
 			Dispose(true);
@@ -55,7 +55,7 @@ namespace BulletSharp
 		{
 			Dispose(false);
 		}
-
+        */
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btConstraintSetting_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

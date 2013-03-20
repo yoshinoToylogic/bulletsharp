@@ -182,7 +182,7 @@ btCollisionWorld::ClosestConvexResultCallback* btCollisionWorld_ClosestConvexRes
 {
 	VECTOR3_CONV(convexFromWorld);
 	VECTOR3_CONV(convexToWorld);
-	return new btCollisionWorld::ClosestConvexResultCallback(VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
+	return ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 }
 
 bool btCollisionWorld_ContactResultCallback_needsCollision(btCollisionWorld::ContactResultCallback* obj, btBroadphaseProxy* proxy0)
