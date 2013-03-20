@@ -243,9 +243,20 @@ namespace BulletSharpGen
             }
 
             // Method body
-            OutputTabs(level + 1, WriteTo.CS & propertyTo);
-            WriteLine('{', WriteTo.Source | WriteTo.CS & propertyTo);
-            OutputTabs(level + 2, WriteTo.CS & propertyTo);
+            WriteLine('{', WriteTo.Source);
+
+            // Constructor base call
+            if (method.IsConstructor && method.Parent.BaseClass != null)
+            {
+                OutputTabs(level + 2, WriteTo.CS & propertyTo);
+                Write(": base(", WriteTo.CS & propertyTo);
+            }
+            else
+            {
+                OutputTabs(level + 1, WriteTo.CS & propertyTo);
+                WriteLine('{', WriteTo.CS & propertyTo);
+                OutputTabs(level + 2, WriteTo.CS & propertyTo);
+            }
 
             // Type marshalling prologue
             for (int i = 0; i < numParameters; i++)
@@ -264,7 +275,10 @@ namespace BulletSharpGen
             {
                 Write("return new ", WriteTo.Source);
                 Write(method.Parent.FullName, WriteTo.Source);
-                Write("_native = ", WriteTo.CS);
+                if (method.Parent.BaseClass == null)
+                {
+                    Write("_native = ", WriteTo.CS);
+                }
                 Write(GetFullClassName(method.Parent), WriteTo.CS);
                 Write("_new", WriteTo.CS);
             }
@@ -361,7 +375,17 @@ namespace BulletSharpGen
                     Write(", ", WriteTo.Source | WriteTo.CS & propertyTo);
                 }
             }
-            WriteLine(");", WriteTo.CS & propertyTo);
+
+            if (method.IsConstructor && method.Parent.BaseClass != null)
+            {
+                WriteLine("))", WriteTo.CS & propertyTo);
+                OutputTabs(level + 1, WriteTo.CS & propertyTo);
+                WriteLine('{', WriteTo.CS & propertyTo);
+            }
+            else
+            {
+                WriteLine(");", WriteTo.CS & propertyTo);
+            }
             if (method.Field != null)
             {
                 if (method == method.Property.Getter)

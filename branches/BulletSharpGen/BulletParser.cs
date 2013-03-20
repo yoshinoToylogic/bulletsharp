@@ -152,6 +152,13 @@ namespace BulletSharpGen
                         //c.Methods.Remove(method);
                         //i--;
                     }
+                    else if (method.Parameters.Length == 1 && method.Name.StartsWith("get") &&
+                        method.ReturnType.IsBasic && method.ReturnType.ManagedName == "void")
+                    {
+                        new PropertyDefinition(method);
+                        //c.Methods.Remove(method);
+                        //i--;
+                    }
                 }
                 for (i = 0; i < c.Methods.Count; i++)
                 {
@@ -204,20 +211,13 @@ namespace BulletSharpGen
                     name = name.Substring(2);
                 }
                 c.ManagedName = name;
-
-                foreach (MethodDefinition method in c.Methods)
-                {
-                }
             }
 
             // Sort methods and properties alphabetically
-            foreach (HeaderDefinition header in HeaderDefinitions.Values)
+            foreach (ClassDefinition c in classDefinitions.Values)
             {
-                foreach (ClassDefinition c in header.Classes)
-                {
-                    c.Methods.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
-                    c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
-                }
+                c.Methods.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
+                c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
             }
             /*
             // Apply transformations
