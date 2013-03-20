@@ -18,7 +18,7 @@ extern "C"
 	EXPORT bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj);
 	EXPORT void btHingeConstraint_getFrameOffsetA(btHingeConstraint* obj, btScalar* value);
 	EXPORT void btHingeConstraint_getFrameOffsetB(btHingeConstraint* obj, btScalar* value);
-	EXPORT btScalar btHingeConstraint_getHingeAngle(btHingeConstraint* obj, btTransform* transA, btTransform* transB);
+	EXPORT btScalar btHingeConstraint_getHingeAngle(btHingeConstraint* obj, btScalar* transA, btScalar* transB);
 	EXPORT btScalar btHingeConstraint_getHingeAngle2(btHingeConstraint* obj);
 	EXPORT void btHingeConstraint_getInfo1NonVirtual(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo1* info);
 	EXPORT void btHingeConstraint_getInfo2Internal(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
@@ -42,6 +42,6 @@ extern "C"
 	EXPORT void btHingeConstraint_setMotorTarget(btHingeConstraint* obj, btScalar targetAngle, btScalar dt);
 	EXPORT void btHingeConstraint_setMotorTarget2(btHingeConstraint* obj, btQuaternion* qAinB, btScalar dt);
 	EXPORT void btHingeConstraint_setUseFrameOffset(btHingeConstraint* obj, bool frameOffsetOnOff);
-	EXPORT void btHingeConstraint_testLimit(btHingeConstraint* obj, btTransform* transA, btTransform* transB);
+	EXPORT void btHingeConstraint_testLimit(btHingeConstraint* obj, btScalar* transA, btScalar* transB);
 	EXPORT void btHingeConstraint_updateRHS(btHingeConstraint* obj, btScalar timeStep);
 }

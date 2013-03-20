@@ -2,7 +2,7 @@
 
 btSequentialImpulseConstraintSolver* btSequentialImpulseConstraintSolver_new()
 {
-	return new btSequentialImpulseConstraintSolver();
+	return ALIGNED_NEW(btSequentialImpulseConstraintSolver) ();
 }
 
 unsigned long btSequentialImpulseConstraintSolver_btRand2(btSequentialImpulseConstraintSolver* obj)

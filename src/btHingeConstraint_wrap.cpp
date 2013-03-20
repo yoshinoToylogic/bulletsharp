@@ -78,9 +78,9 @@ bool btHingeConstraint_getAngularOnly(btHingeConstraint* obj)
 	return obj->getAngularOnly();
 }
 
-btTransform* btHingeConstraint_getBFrame(btHingeConstraint* obj)
+void btHingeConstraint_getBFrame(btHingeConstraint* obj, btScalar* value)
 {
-	return &obj->getBFrame();
+	btTransformToMatrix(&obj->getBFrame(), value);
 }
 
 bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj)
@@ -88,14 +88,14 @@ bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj)
 	return obj->getEnableAngularMotor();
 }
 
-btTransform* btHingeConstraint_getFrameOffsetA(btHingeConstraint* obj)
+void btHingeConstraint_getFrameOffsetA(btHingeConstraint* obj, btScalar* value)
 {
-	return &obj->getFrameOffsetA();
+	btTransformToMatrix(&obj->getFrameOffsetA(), value);
 }
 
-btTransform* btHingeConstraint_getFrameOffsetB(btHingeConstraint* obj)
+void btHingeConstraint_getFrameOffsetB(btHingeConstraint* obj, btScalar* value)
 {
-	return &obj->getFrameOffsetB();
+	btTransformToMatrix(&obj->getFrameOffsetB(), value);
 }
 
 btScalar btHingeConstraint_getHingeAngle(btHingeConstraint* obj, btScalar* transA, btScalar* transB)

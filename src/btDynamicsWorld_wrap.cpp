@@ -55,9 +55,9 @@ btConstraintSolver* btDynamicsWorld_getConstraintSolver(btDynamicsWorld* obj)
 	return obj->getConstraintSolver();
 }
 
-void btDynamicsWorld_getGravity(btDynamicsWorld* obj)
+void btDynamicsWorld_getGravity(btDynamicsWorld* obj, btScalar* value)
 {
-	obj->getGravity();
+	VECTOR3_OUT(&obj->getGravity(), value);
 }
 
 int btDynamicsWorld_getNumConstraints(btDynamicsWorld* obj)

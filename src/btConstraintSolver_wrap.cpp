@@ -2,7 +2,7 @@
 
 void btConstraintSolver_delete(btConstraintSolver* obj)
 {
-	delete obj;
+	ALIGNED_FREE(obj);
 }
 
 void btConstraintSolver_allSolved(btConstraintSolver* obj, btContactSolverInfo* __unnamed0, btIDebugDraw* __unnamed1, btStackAlloc* __unnamed2)
