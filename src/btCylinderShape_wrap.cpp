@@ -8,7 +8,7 @@ btCylinderShape* btCylinderShape_new(btScalar* halfExtents)
 
 void btCylinderShape_getHalfExtentsWithMargin(btCylinderShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getHalfExtentsWithMargin(), value);
+	VECTOR3_OUT2(obj->getHalfExtentsWithMargin(), value);
 }
 
 void btCylinderShape_getHalfExtentsWithoutMargin(btCylinderShape* obj, btScalar* value)

@@ -36,7 +36,7 @@ extern "C"
 	EXPORT void btTypedConstraint_setOverrideNumSolverIterations(btTypedConstraint* obj, int overideNumIterations);
 	EXPORT void btTypedConstraint_setParam(btTypedConstraint* obj, int num, btScalar value, int axis);
 	EXPORT void btTypedConstraint_setParam2(btTypedConstraint* obj, int num, btScalar value);
-	EXPORT const char* btTypedConstraint_serialize(btTypedConstraint* obj, void* dataBuffer, btSerializer* serializer);
+	//EXPORT const char* btTypedConstraint_serialize(btTypedConstraint* obj, void* dataBuffer, btSerializer* serializer);
 	EXPORT void btTypedConstraint_setUserConstraintId(btTypedConstraint* obj, int uid);
 	EXPORT void btTypedConstraint_setUserConstraintPtr(btTypedConstraint* obj, void* ptr);
 	EXPORT void btTypedConstraint_setUserConstraintType(btTypedConstraint* obj, int userConstraintType);
