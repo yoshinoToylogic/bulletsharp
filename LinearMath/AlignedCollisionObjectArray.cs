@@ -86,12 +86,13 @@ namespace BulletSharp
             throw new NotImplementedException();
         }
 
-        public CollisionObject this[int index]
+        public override CollisionObject this[int index]
         {
             get
             {
                 if (index < 0 || index >= Count)
-		            throw new ArgumentOutOfRangeException("index");
+
+                    throw new ArgumentOutOfRangeException("index");
 
                 return CollisionObject.GetManaged(btAlignedCollisionObjectArray_at(_native, index));
             }
@@ -121,7 +122,7 @@ namespace BulletSharp
             throw new NotImplementedException();
         }
 
-        public int Count
+        public override int Count
         {
             get { return btAlignedCollisionObjectArray_size(_native); }
         }
@@ -143,7 +144,7 @@ namespace BulletSharp
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new AlignedObjectArrayEnumerator(this);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
