@@ -5,6 +5,45 @@ using System.Security;
 
 namespace BulletSharp
 {
+    public class AlignedCollisionObjectArrayEnumerator : IEnumerator<CollisionObject>
+    {
+        int _i;
+        int _count;
+        AlignedCollisionObjectArray _array;
+
+        public AlignedCollisionObjectArrayEnumerator(AlignedCollisionObjectArray array)
+        {
+            _array = array;
+            _count = array.Count;
+            _i = -1;
+        }
+
+        public CollisionObject Current
+        {
+            get { return _array[_i]; }
+        }
+
+        public void Dispose()
+        {
+        }
+
+        object System.Collections.IEnumerator.Current
+        {
+            get { return _array[_i]; }
+        }
+
+        public bool MoveNext()
+        {
+            _i++;
+            return _i != _count;
+        }
+
+        public void Reset()
+        {
+            _i = 0;
+        }
+    }
+
     public class AlignedCollisionObjectArray : AlignedObjectArray, IList<CollisionObject>, IDisposable
     {
         internal AlignedCollisionObjectArray(IntPtr native)
@@ -99,7 +138,7 @@ namespace BulletSharp
 
         public IEnumerator<CollisionObject> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return new AlignedCollisionObjectArrayEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
