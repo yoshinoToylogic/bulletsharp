@@ -397,7 +397,7 @@ int btRigidBody_getNumConstraintRefs(btRigidBody* obj)
 
 void btRigidBody_getOrientation(btRigidBody* obj, btScalar* value)
 {
-	btQuaternionToQuaternion(&obj->getOrientation(), value);
+	btQuaternionToQuaternion2(obj->getOrientation(), value);
 }
 
 void btRigidBody_getTotalForce(btRigidBody* obj, btScalar* value)
@@ -413,7 +413,7 @@ void btRigidBody_getTotalTorque(btRigidBody* obj, btScalar* value)
 void btRigidBody_getVelocityInLocalPoint(btRigidBody* obj, btScalar* rel_pos, btScalar* value)
 {
 	VECTOR3_CONV(rel_pos);
-	VECTOR3_OUT(&obj->getVelocityInLocalPoint(VECTOR3_USE(rel_pos)), value);
+	VECTOR3_OUT2(obj->getVelocityInLocalPoint(VECTOR3_USE(rel_pos)), value);
 }
 
 void btRigidBody_integrateVelocities(btRigidBody* obj, btScalar step)

@@ -17,7 +17,11 @@
 #ifdef _MSC_VER
 #define EXPORT __declspec(dllexport)
 #else
-#define EXPORT
+#if __GNUC__ >= 4
+	#define EXPORT __attribute__ ((visibility("default")))
+#else
+	#define EXPORT
+#endif
 #endif
 
 inline void btVector3ToVector3(const btVector3* v, btScalar* s)
@@ -40,6 +44,14 @@ inline void btQuaternionToQuaternion(const btQuaternion* v, btScalar* s)
 	s[1] = v->getY();
 	s[2] = v->getZ();
 	s[3] = v->getW();
+}
+
+inline void btQuaternionToQuaternion2(btQuaternion& v, btScalar* s)
+{
+	s[0] = v.getX();
+	s[1] = v.getY();
+	s[2] = v.getZ();
+	s[3] = v.getW();
 }
 
 inline void btTransformToMatrix(const btTransform* t, btScalar* m)
@@ -189,6 +201,7 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 #define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
 #define VECTOR3_USE(vec) TEMP(vec)
 #define VECTOR3_OUT(vec, outvec) btVector3ToVector3(vec, outvec)
+#define VECTOR3_OUT2(vec, outvec) btVector3ToVector3(&vec, outvec)
 #define VECTOR3_DEF_OUT(vec) VECTOR3_OUT(&TEMP(vec), vec)
 #define TRANSFORM_DEF(tr) ATTRIBUTE_ALIGNED16(btTransform) TEMP(tr)
 #define MATRIX3X3_DEF(tr) ATTRIBUTE_ALIGNED16(btMatrix3x3) TEMP(tr)
@@ -198,6 +211,7 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 #define VECTOR3_CONV(vec)
 #define VECTOR3_USE(vec) *(btVector3*)vec
 #define VECTOR3_OUT(vec, outvec) *(btVector3*)outvec = *vec
+#define VECTOR3_OUT2(vec, outvec) *(btVector3*)outvec = vec
 #define VECTOR3_DEF_OUT
 #define TRANSFORM_DEF(tr) btTransform TEMP(tr)
 #define MATRIX3X3_DEF(tr) btMatrix3x3 TEMP(tr)

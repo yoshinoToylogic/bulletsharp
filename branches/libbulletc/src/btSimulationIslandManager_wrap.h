@@ -1,6 +1,6 @@
 #include "main.h"
 
-#include "BulletCollision\CollisionDispatch\btSimulationIslandManager.h"
+#include <BulletCollision/CollisionDispatch/btSimulationIslandManager.h>
 
 extern "C"
 {

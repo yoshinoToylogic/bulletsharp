@@ -18,7 +18,7 @@ btBoxShape* btBoxShape_new3(btScalar boxHalfExtentX, btScalar boxHalfExtentY, bt
 
 void btBoxShape_getHalfExtentsWithMargin(btBoxShape* obj, btScalar* extents)
 {
-	VECTOR3_OUT(&obj->getHalfExtentsWithMargin(), extents);
+	VECTOR3_OUT2(obj->getHalfExtentsWithMargin(), extents);
 }
 
 void btBoxShape_getHalfExtentsWithoutMargin(btBoxShape* obj, btScalar* extents)
