@@ -19,13 +19,13 @@ namespace BulletSharp
 
 			public RigidBodyConstructionInfo(float mass, MotionState motionState, CollisionShape collisionShape, Vector3 localInertia)
 			{
-				_native = btRigidBody_btRigidBodyConstructionInfo_new(mass, motionState._native, collisionShape._native, ref localInertia);
+                _native = btRigidBody_btRigidBodyConstructionInfo_new(mass, (motionState != null) ? motionState._native : IntPtr.Zero, collisionShape._native, ref localInertia);
                 _motionState = motionState;
 			}
 
 			public RigidBodyConstructionInfo(float mass, MotionState motionState, CollisionShape collisionShape)
 			{
-				_native = btRigidBody_btRigidBodyConstructionInfo_new2(mass, motionState._native, collisionShape._native);
+                _native = btRigidBody_btRigidBodyConstructionInfo_new2(mass, (motionState != null) ? motionState._native : IntPtr.Zero, collisionShape._native);
                 _motionState = motionState;
 			}
 
