@@ -37,6 +37,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     dllmain.cpp
     src/conversion.h
     src/main.h
+    src/collections.cpp
+    src/collections.h
     src/btActionInterface_wrap.cpp
     src/btActionInterface_wrap.h
     src/btAlignedCollisionObjectArray_wrap.cpp
@@ -51,6 +53,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btBroadphaseProxy_wrap.h
     src/btCapsuleShape_wrap.cpp
     src/btCapsuleShape_wrap.h
+    src/btCharacterControllerInterface_wrap.cpp
+    src/btCharacterControllerInterface_wrap.h
     src/btCollisionConfiguration_wrap.cpp
     src/btCollisionConfiguration_wrap.h
     src/btCollisionDispatcher_wrap.cpp
@@ -75,6 +79,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btConvexHullShape_wrap.h
     src/btConvexPenetrationDepthSolver_wrap.cpp
     src/btConvexPenetrationDepthSolver_wrap.h
+    src/btConvexPolyhedron_wrap.cpp
+    src/btConvexPolyhedron_wrap.h
     src/btConvexShape_wrap.cpp
     src/btConvexShape_wrap.h
     src/btCylinderShape_wrap.cpp
@@ -93,8 +99,14 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDynamicsWorld_wrap.h
     src/btGeneric6DofConstraint_wrap.cpp
     src/btGeneric6DofConstraint_wrap.h
+    src/btGeometryUtil_wrap.cpp
+    src/btGeometryUtil_wrap.h
+    src/btGhostObject_wrap.cpp
+    src/btGhostObject_wrap.h
     src/btHingeConstraint_wrap.cpp
     src/btHingeConstraint_wrap.h
+    src/btKinematicCharacterController_wrap.cpp
+    src/btKinematicCharacterController_wrap.h
     src/btMinkowskiPenetrationDepthSolver_wrap.cpp
     src/btMinkowskiPenetrationDepthSolver_wrap.h
     src/btOverlappingPairCache_wrap.cpp
@@ -109,6 +121,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btRigidBody_wrap.h
     src/btSequentialImpulseConstraintSolver_wrap.cpp
     src/btSequentialImpulseConstraintSolver_wrap.h
+    src/btShapeHull_wrap.cpp
+    src/btShapeHull_wrap.h
     src/btSimulationIslandManager_wrap.cpp
     src/btSimulationIslandManager_wrap.h
     src/btSphereShape_wrap.cpp
