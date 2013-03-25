@@ -99,6 +99,7 @@
     <ClInclude Include="src\btContactSolverInfo_wrap.h" />
     <ClInclude Include="src\btConvex2dShape_wrap.h" />
     <ClInclude Include="src\btConvexHullShape_wrap.h" />
+    <ClInclude Include="src\btConvexPenetrationDepthSolver_wrap.h" />
     <ClInclude Include="src\btConvexShape_wrap.h" />
     <ClInclude Include="src\btCylinderShape_wrap.h" />
     <ClInclude Include="src\btDbvtBroadphase_wrap.h" />
@@ -109,6 +110,7 @@
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btGeneric6DofConstraint_wrap.h" />
     <ClInclude Include="src\btHingeConstraint_wrap.h" />
+    <ClInclude Include="src\btMinkowskiPenetrationDepthSolver_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCache_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCallback_wrap.h" />
     <ClInclude Include="src\btPoint2PointConstraint_wrap.h" />
@@ -118,6 +120,7 @@
     <ClInclude Include="src\btSimulationIslandManager_wrap.h" />
     <ClInclude Include="src\btSphereShape_wrap.h" />
     <ClInclude Include="src\btTypedConstraint_wrap.h" />
+    <ClInclude Include="src\btVoronoiSimplexSolver_wrap.h" />
     <ClInclude Include="src\conversion.h" />
     <ClInclude Include="src\main.h" />
   </ItemGroup>
@@ -148,6 +151,7 @@
     <ClCompile Include="src\btContactSolverInfo_wrap.cpp" />
     <ClCompile Include="src\btConvex2dShape_wrap.cpp" />
     <ClCompile Include="src\btConvexHullShape_wrap.cpp" />
+    <ClCompile Include="src\btConvexPenetrationDepthSolver_wrap.cpp" />
     <ClCompile Include="src\btConvexShape_wrap.cpp" />
     <ClCompile Include="src\btCylinderShape_wrap.cpp" />
     <ClCompile Include="src\btDbvtBroadphase_wrap.cpp" />
@@ -158,6 +162,7 @@
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofConstraint_wrap.cpp" />
     <ClCompile Include="src\btHingeConstraint_wrap.cpp" />
+    <ClCompile Include="src\btMinkowskiPenetrationDepthSolver_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCache_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCallback_wrap.cpp" />
     <ClCompile Include="src\btPoint2PointConstraint_wrap.cpp" />
@@ -167,6 +172,7 @@
     <ClCompile Include="src\btSimulationIslandManager_wrap.cpp" />
     <ClCompile Include="src\btSphereShape_wrap.cpp" />
     <ClCompile Include="src\btTypedConstraint_wrap.cpp" />
+    <ClCompile Include="src\btVoronoiSimplexSolver_wrap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

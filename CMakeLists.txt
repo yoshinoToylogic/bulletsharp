@@ -73,6 +73,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btConvex2dShape_wrap.h
     src/btConvexHullShape_wrap.cpp
     src/btConvexHullShape_wrap.h
+    src/btConvexPenetrationDepthSolver_wrap.cpp
+    src/btConvexPenetrationDepthSolver_wrap.h
     src/btConvexShape_wrap.cpp
     src/btConvexShape_wrap.h
     src/btCylinderShape_wrap.cpp
@@ -93,6 +95,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btGeneric6DofConstraint_wrap.h
     src/btHingeConstraint_wrap.cpp
     src/btHingeConstraint_wrap.h
+    src/btMinkowskiPenetrationDepthSolver_wrap.cpp
+    src/btMinkowskiPenetrationDepthSolver_wrap.h
     src/btOverlappingPairCache_wrap.cpp
     src/btOverlappingPairCache_wrap.h
     src/btOverlappingPairCallback_wrap.cpp
@@ -110,6 +114,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSphereShape_wrap.cpp
     src/btTypedConstraint_wrap.cpp
     src/btTypedConstraint_wrap.h
+    src/btVoronoiSimplexSolver_wrap.cpp
+    src/btVoronoiSimplexSolver_wrap.h
 )
 
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletCollision${LIB_SUFFIX})
