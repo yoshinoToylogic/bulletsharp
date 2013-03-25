@@ -6,6 +6,8 @@ namespace BulletSharp
 {
     public class PolyhedralConvexShape : ConvexShape
     {
+        ConvexPolyhedron _convexPolyhedron;
+
         internal PolyhedralConvexShape(IntPtr native)
             : base(native)
         {
@@ -40,12 +42,24 @@ namespace BulletSharp
         {
             return btPolyhedralConvexShape_isInside(_native, ref pt, tolerance);
         }
-        /*
+
         public ConvexPolyhedron ConvexPolyhedron
         {
-            get { return new ConvexPolyhedron(btPolyhedralConvexShape_getConvexPolyhedron(_native)); }
+            get
+            {
+                if (_convexPolyhedron == null)
+                {
+                    IntPtr ptr = btPolyhedralConvexShape_getConvexPolyhedron(_native);
+                    if (ptr == IntPtr.Zero)
+                    {
+                        return null;
+                    }
+                    _convexPolyhedron = new ConvexPolyhedron();
+                }
+                return _convexPolyhedron;
+            }
         }
-        */
+
         public int NumEdges
         {
             get { return btPolyhedralConvexShape_getNumEdges(_native); }

@@ -5,48 +5,9 @@ using System.Security;
 
 namespace BulletSharp
 {
-    public class AlignedCollisionObjectArrayEnumerator : IEnumerator<CollisionObject>
+    public class AlignedVector3Array : AlignedObjectArray, IList<Vector3>, IDisposable
     {
-        int _i;
-        int _count;
-        AlignedCollisionObjectArray _array;
-
-        public AlignedCollisionObjectArrayEnumerator(AlignedCollisionObjectArray array)
-        {
-            _array = array;
-            _count = array.Count;
-            _i = -1;
-        }
-
-        public CollisionObject Current
-        {
-            get { return _array[_i]; }
-        }
-
-        public void Dispose()
-        {
-        }
-
-        object System.Collections.IEnumerator.Current
-        {
-            get { return _array[_i]; }
-        }
-
-        public bool MoveNext()
-        {
-            _i++;
-            return _i != _count;
-        }
-
-        public void Reset()
-        {
-            _i = 0;
-        }
-    }
-
-    public class AlignedCollisionObjectArray : AlignedObjectArray, IList<CollisionObject>, IDisposable
-    {
-        internal AlignedCollisionObjectArray(IntPtr native)
+        internal AlignedVector3Array(IntPtr native)
             : base(native)
         {
         }
@@ -66,17 +27,17 @@ namespace BulletSharp
             }
         }
 
-        ~AlignedCollisionObjectArray()
+        ~AlignedVector3Array()
         {
             Dispose(false);
         }
 
-        public int IndexOf(CollisionObject item)
+        public int IndexOf(Vector3 item)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(int index, CollisionObject item)
+        public void Insert(int index, Vector3 item)
         {
             throw new NotImplementedException();
         }
@@ -86,7 +47,7 @@ namespace BulletSharp
             throw new NotImplementedException();
         }
 
-        public CollisionObject this[int index]
+        public Vector3 this[int index]
         {
             get
             {
@@ -94,7 +55,9 @@ namespace BulletSharp
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return CollisionObject.GetManaged(btAlignedCollisionObjectArray_at(_native, index));
+                Vector3 value;
+                btAlignedVector3Array_at(_native, index, out value);
+                return value;
             }
             set
             {
@@ -102,7 +65,7 @@ namespace BulletSharp
             }
         }
 
-        public void Add(CollisionObject item)
+        public void Add(Vector3 item)
         {
             throw new NotImplementedException();
         }
@@ -112,19 +75,19 @@ namespace BulletSharp
             throw new NotImplementedException();
         }
 
-        public bool Contains(CollisionObject item)
+        public bool Contains(Vector3 item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(CollisionObject[] array, int arrayIndex)
+        public void CopyTo(Vector3[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
         public int Count
         {
-            get { return btAlignedCollisionObjectArray_size(_native); }
+            get { return btAlignedVector3Array_size(_native); }
         }
 
         public bool IsReadOnly
@@ -132,24 +95,24 @@ namespace BulletSharp
             get { return false; }
         }
 
-        public bool Remove(CollisionObject item)
+        public bool Remove(Vector3 item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<CollisionObject> GetEnumerator()
+        public IEnumerator<Vector3> GetEnumerator()
         {
-            return new AlignedCollisionObjectArrayEnumerator(this);
+            return new Vector3ArrayEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new AlignedCollisionObjectArrayEnumerator(this);
+            return new Vector3ArrayEnumerator(this);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
+        protected static extern int btAlignedVector3Array_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedCollisionObjectArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btAlignedVector3Array_at(IntPtr obj, int n, [Out] out Vector3 value);
     }
 }
