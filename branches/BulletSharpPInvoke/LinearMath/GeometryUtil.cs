@@ -1,0 +1,81 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Security;
+
+namespace BulletSharp
+{
+	public class GeometryUtil
+	{
+		internal IntPtr _native;
+
+		internal GeometryUtil(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public GeometryUtil()
+		{
+			_native = btGeometryUtil_new();
+		}
+
+		public bool AreVerticesBehindPlane(Vector3 planeNormal, AlignedVector3Array vertices, float margin)
+		{
+			return btGeometryUtil_areVerticesBehindPlane(ref planeNormal, vertices._native, margin);
+		}
+
+        public void GetPlaneEquationsFromVertices(AlignedVector3Array vertices, AlignedVector3Array planeEquationsOut)
+		{
+			btGeometryUtil_getPlaneEquationsFromVertices(vertices._native, planeEquationsOut._native);
+		}
+
+        public void GetVerticesFromPlaneEquations(AlignedVector3Array planeEquations, AlignedVector3Array verticesOut)
+		{
+			btGeometryUtil_getVerticesFromPlaneEquations(planeEquations._native, verticesOut._native);
+		}
+        /*
+		public bool IsInside(AlignedVector3Array vertices, Vector3 planeNormal, float margin)
+		{
+			return btGeometryUtil_isInside(vertices._native, ref planeNormal, margin);
+		}
+        */
+        public bool IsPointInsidePlanes(AlignedVector3Array planeEquations, Vector3 point, float margin)
+		{
+			return btGeometryUtil_isPointInsidePlanes(planeEquations._native, ref point, margin);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btGeometryUtil_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~GeometryUtil()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btGeometryUtil_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btGeometryUtil_areVerticesBehindPlane([In] ref Vector3 planeNormal, IntPtr vertices, float margin);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btGeometryUtil_getPlaneEquationsFromVertices(IntPtr vertices, IntPtr planeEquationsOut);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btGeometryUtil_getVerticesFromPlaneEquations(IntPtr planeEquations, IntPtr verticesOut);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btGeometryUtil_isInside(IntPtr vertices, IntPtr planeNormal, float margin);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btGeometryUtil_isPointInsidePlanes(IntPtr planeEquations, [In] ref Vector3 point, float margin);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btGeometryUtil_delete(IntPtr obj);
+	}
+}

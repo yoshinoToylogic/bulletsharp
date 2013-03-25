@@ -419,14 +419,14 @@ namespace BulletSharp
             _collisionConfiguration = collisionConfiguration;
 		}
 
-		public void AddCollisionObject(CollisionObject collisionObject, short collisionFilterGroup, short collisionFilterMask)
+        public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 		{
-			btCollisionWorld_addCollisionObject(_native, collisionObject._native, collisionFilterGroup, collisionFilterMask);
+            btCollisionWorld_addCollisionObject(_native, collisionObject._native, (short)collisionFilterGroup, (short)collisionFilterMask);
 		}
 
-		public void AddCollisionObject(CollisionObject collisionObject, short collisionFilterGroup)
+        public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup)
 		{
-			btCollisionWorld_addCollisionObject2(_native, collisionObject._native, collisionFilterGroup);
+			btCollisionWorld_addCollisionObject2(_native, collisionObject._native, (short)collisionFilterGroup);
 		}
 
 		public void AddCollisionObject(CollisionObject collisionObject)

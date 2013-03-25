@@ -88,6 +88,7 @@
     <ClInclude Include="src\btBroadphaseInterface_wrap.h" />
     <ClInclude Include="src\btBroadphaseProxy_wrap.h" />
     <ClInclude Include="src\btCapsuleShape_wrap.h" />
+    <ClInclude Include="src\btCharacterControllerInterface_wrap.h" />
     <ClInclude Include="src\btCollisionConfiguration_wrap.h" />
     <ClInclude Include="src\btCollisionDispatcher_wrap.h" />
     <ClInclude Include="src\btCollisionObject_wrap.h" />
@@ -100,6 +101,7 @@
     <ClInclude Include="src\btConvex2dShape_wrap.h" />
     <ClInclude Include="src\btConvexHullShape_wrap.h" />
     <ClInclude Include="src\btConvexPenetrationDepthSolver_wrap.h" />
+    <ClInclude Include="src\btConvexPolyhedron_wrap.h" />
     <ClInclude Include="src\btConvexShape_wrap.h" />
     <ClInclude Include="src\btCylinderShape_wrap.h" />
     <ClInclude Include="src\btDbvtBroadphase_wrap.h" />
@@ -109,7 +111,10 @@
     <ClInclude Include="src\btDispatcher_wrap.h" />
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btGeneric6DofConstraint_wrap.h" />
+    <ClInclude Include="src\btGeometryUtil_wrap.h" />
+    <ClInclude Include="src\btGhostObject_wrap.h" />
     <ClInclude Include="src\btHingeConstraint_wrap.h" />
+    <ClInclude Include="src\btKinematicCharacterController_wrap.h" />
     <ClInclude Include="src\btMinkowskiPenetrationDepthSolver_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCache_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCallback_wrap.h" />
@@ -117,10 +122,12 @@
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h" />
     <ClInclude Include="src\btRigidBody_wrap.h" />
     <ClInclude Include="src\btSequentialImpulseConstraintSolver_wrap.h" />
+    <ClInclude Include="src\btShapeHull_wrap.h" />
     <ClInclude Include="src\btSimulationIslandManager_wrap.h" />
     <ClInclude Include="src\btSphereShape_wrap.h" />
     <ClInclude Include="src\btTypedConstraint_wrap.h" />
     <ClInclude Include="src\btVoronoiSimplexSolver_wrap.h" />
+    <ClInclude Include="src\collections.h" />
     <ClInclude Include="src\conversion.h" />
     <ClInclude Include="src\main.h" />
   </ItemGroup>
@@ -140,6 +147,7 @@
     <ClCompile Include="src\btBroadphaseInterface_wrap.cpp" />
     <ClCompile Include="src\btBroadphaseProxy_wrap.cpp" />
     <ClCompile Include="src\btCapsuleShape_wrap.cpp" />
+    <ClCompile Include="src\btCharacterControllerInterface_wrap.cpp" />
     <ClCompile Include="src\btCollisionConfiguration_wrap.cpp" />
     <ClCompile Include="src\btCollisionDispatcher_wrap.cpp" />
     <ClCompile Include="src\btCollisionObject_wrap.cpp" />
@@ -152,6 +160,7 @@
     <ClCompile Include="src\btConvex2dShape_wrap.cpp" />
     <ClCompile Include="src\btConvexHullShape_wrap.cpp" />
     <ClCompile Include="src\btConvexPenetrationDepthSolver_wrap.cpp" />
+    <ClCompile Include="src\btConvexPolyhedron_wrap.cpp" />
     <ClCompile Include="src\btConvexShape_wrap.cpp" />
     <ClCompile Include="src\btCylinderShape_wrap.cpp" />
     <ClCompile Include="src\btDbvtBroadphase_wrap.cpp" />
@@ -161,7 +170,10 @@
     <ClCompile Include="src\btDispatcher_wrap.cpp" />
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofConstraint_wrap.cpp" />
+    <ClCompile Include="src\btGeometryUtil_wrap.cpp" />
+    <ClCompile Include="src\btGhostObject_wrap.cpp" />
     <ClCompile Include="src\btHingeConstraint_wrap.cpp" />
+    <ClCompile Include="src\btKinematicCharacterController_wrap.cpp" />
     <ClCompile Include="src\btMinkowskiPenetrationDepthSolver_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCache_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCallback_wrap.cpp" />
@@ -169,10 +181,12 @@
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp" />
     <ClCompile Include="src\btRigidBody_wrap.cpp" />
     <ClCompile Include="src\btSequentialImpulseConstraintSolver_wrap.cpp" />
+    <ClCompile Include="src\btShapeHull_wrap.cpp" />
     <ClCompile Include="src\btSimulationIslandManager_wrap.cpp" />
     <ClCompile Include="src\btSphereShape_wrap.cpp" />
     <ClCompile Include="src\btTypedConstraint_wrap.cpp" />
     <ClCompile Include="src\btVoronoiSimplexSolver_wrap.cpp" />
+    <ClCompile Include="src\collections.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
