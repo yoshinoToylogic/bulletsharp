@@ -44,8 +44,10 @@
     <Compile Include="Collision\ConeShape.cs" />
     <Compile Include="Collision\Convex2DShape.cs" />
     <Compile Include="Collision\ConvexHullShape.cs" />
+    <Compile Include="Collision\ConvexPenetrationDepthSolver.cs" />
     <Compile Include="Collision\ConvexShape.cs" />
     <Compile Include="Collision\CylinderShape.cs" />
+    <Compile Include="Collision\MinkowskiPenetrationDepthSolver.cs" />
     <Compile Include="Collision\OverlappingPairCache.cs" />
     <Compile Include="Collision\OverlappingPairCallback.cs" />
     <Compile Include="Collision\SimulationIslandManager.cs" />
@@ -53,6 +55,7 @@
     <Compile Include="Collision\DbvtBroadphase.cs" />
     <Compile Include="Collision\Dispatcher.cs" />
     <Compile Include="Collision\PolyhedralConvexShape.cs" />
+    <Compile Include="Collision\VoronoiSimplexSolver.cs" />
     <Compile Include="Dynamics\CollisionConfiguration.cs" />
     <Compile Include="Dynamics\CollisionDispatcher.cs" />
     <Compile Include="Dynamics\CollisionObject.cs" />

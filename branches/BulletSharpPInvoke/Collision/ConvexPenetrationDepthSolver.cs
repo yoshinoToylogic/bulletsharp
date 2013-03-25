@@ -1,0 +1,46 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Security;
+
+namespace BulletSharp
+{
+	public class ConvexPenetrationDepthSolver
+	{
+		internal IntPtr _native;
+
+		internal ConvexPenetrationDepthSolver(IntPtr native)
+		{
+			_native = native;
+		}
+        /*
+        public bool CalcPenDepth(VoronoiSimplexSolver simplexSolver, ConvexShape convexA, ConvexShape convexB, Matrix transA, Matrix transB, Vector3 v, Vector3 pa, Vector3 pb, IDebugDraw debugDraw, StackAlloc stackAlloc)
+		{
+			return btConvexPenetrationDepthSolver_calcPenDepth(_native, simplexSolver._native, convexA._native, convexB._native, transA._native, transB._native, v._native, pa._native, pb._native, debugDraw._native, stackAlloc._native);
+		}
+        */
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btConvexPenetrationDepthSolver_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~ConvexPenetrationDepthSolver()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern bool btConvexPenetrationDepthSolver_calcPenDepth(IntPtr obj, IntPtr simplexSolver, IntPtr convexA, IntPtr convexB, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 v, [In] ref Vector3 pa, [In] ref Vector3 pb, IntPtr debugDraw, IntPtr stackAlloc);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btConvexPenetrationDepthSolver_delete(IntPtr obj);
+	}
+}
