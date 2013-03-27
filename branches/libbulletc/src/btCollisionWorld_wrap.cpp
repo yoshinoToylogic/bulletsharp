@@ -1,5 +1,29 @@
 #include "btCollisionWorld_wrap.h"
 
+btCollisionWorld_ContactResultCallbackWrapper::btCollisionWorld_ContactResultCallbackWrapper(pAddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
+{
+	_addSingleResultCallback = addSingleResultCallback;
+	_needsCollisionCallback = needsCollisionCallback;
+}
+
+bool btCollisionWorld_ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
+{
+	return _needsCollisionCallback(proxy0);
+}
+
+btScalar btCollisionWorld_ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
+	const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
+	const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
+{
+	return _addSingleResultCallback(cp, colObj0Wrap, partId0, index0, colObj1Wrap, partId1, index1);
+}
+
+bool btCollisionWorld_ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
+{
+	return btCollisionWorld::ContactResultCallback::needsCollision(proxy0);
+}
+
+
 btCollisionWorld::LocalShapeInfo* btCollisionWorld_LocalShapeInfo_new()
 {
 	return new btCollisionWorld::LocalShapeInfo();
@@ -457,6 +481,16 @@ void btCollisionWorld_ContactResultCallback_setCollisionFilterMask(btCollisionWo
 void btCollisionWorld_ContactResultCallback_delete(btCollisionWorld::ContactResultCallback* obj)
 {
 	delete obj;
+}
+
+btCollisionWorld_ContactResultCallbackWrapper* btCollisionWorld_ContactResultCallbackWrapper_new(pAddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
+{
+	return new btCollisionWorld_ContactResultCallbackWrapper(addSingleResultCallback, needsCollisionCallback);
+}
+
+bool btCollisionWorld_ContactResultCallbackWrapper_needsCollision(btCollisionWorld_ContactResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
+{
+	return obj->baseNeedsCollision(proxy0);
 }
 
 btCollisionWorld* btCollisionWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* broadphasePairCache, btCollisionConfiguration* collisionConfiguration)

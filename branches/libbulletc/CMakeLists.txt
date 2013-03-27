@@ -61,6 +61,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btCollisionDispatcher_wrap.h
     src/btCollisionObject_wrap.cpp
     src/btCollisionObject_wrap.h
+    src/btCollisionObjectWrapper_wrap.cpp
+    src/btCollisionObjectWrapper_wrap.h
     src/btCollisionShape_wrap.cpp
     src/btCollisionShape_wrap.h
     src/btCollisionWorld_wrap.cpp
@@ -107,6 +109,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btHingeConstraint_wrap.h
     src/btKinematicCharacterController_wrap.cpp
     src/btKinematicCharacterController_wrap.h
+    src/btManifoldPoint_wrap.cpp
+    src/btManifoldPoint_wrap.h
     src/btMinkowskiPenetrationDepthSolver_wrap.cpp
     src/btMinkowskiPenetrationDepthSolver_wrap.h
     src/btOverlappingPairCache_wrap.cpp

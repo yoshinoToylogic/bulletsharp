@@ -38,6 +38,7 @@
     <Compile Include="Collision\BoxShape.cs" />
     <Compile Include="Collision\BroadphaseInterface.cs" />
     <Compile Include="Collision\BroadphaseProxy.cs" />
+    <Compile Include="Collision\CollisionObjectWrapper.cs" />
     <Compile Include="Collision\CollisionShape.cs" />
     <Compile Include="Collision\CollisionWorld.cs" />
     <Compile Include="Collision\CapsuleShape.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Collision\CylinderShape.cs" />
     <Compile Include="Collision\DefaultCollisionConfiguration.cs" />
     <Compile Include="Collision\GhostObject.cs" />
+    <Compile Include="Collision\ManifoldPoint.cs" />
     <Compile Include="Collision\MinkowskiPenetrationDepthSolver.cs" />
     <Compile Include="Collision\OverlappingPairCache.cs" />
     <Compile Include="Collision\OverlappingPairCallback.cs" />

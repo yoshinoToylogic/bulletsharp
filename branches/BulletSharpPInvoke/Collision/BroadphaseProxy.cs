@@ -72,10 +72,12 @@ namespace BulletSharp
 	public class BroadphaseProxy
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal BroadphaseProxy(IntPtr native)
+		internal BroadphaseProxy(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public BroadphaseProxy()
@@ -200,7 +202,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btBroadphaseProxy_delete(_native);
+                if (!_preventDelete)
+                {
+                    btBroadphaseProxy_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -298,13 +303,13 @@ namespace BulletSharp
         */
 		public BroadphaseProxy PProxy0
 		{
-            get { return new BroadphaseProxy(btBroadphasePair_getPProxy0(_native)); }
+            get { return new BroadphaseProxy(btBroadphasePair_getPProxy0(_native), true); }
 			set { btBroadphasePair_setPProxy0(_native, value._native); }
 		}
 
 		public BroadphaseProxy PProxy1
 		{
-			get { return new BroadphaseProxy(btBroadphasePair_getPProxy1(_native)); }
+			get { return new BroadphaseProxy(btBroadphasePair_getPProxy1(_native), true); }
 			set { btBroadphasePair_setPProxy1(_native, value._native); }
 		}
 

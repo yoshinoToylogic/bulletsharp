@@ -1,5 +1,27 @@
 #include "main.h"
 
+typedef bool (__stdcall *pNeedsCollision)(btBroadphaseProxy* proxy0);
+typedef bool (__stdcall *pAddSingleResult)(btManifoldPoint& cp,
+		const btCollisionObjectWrapper* colObj0, int partId0, int index0,
+		const btCollisionObjectWrapper* colObj1, int partId1, int index1);
+
+class btCollisionWorld_ContactResultCallbackWrapper : public btCollisionWorld::ContactResultCallback
+{
+private:
+	pNeedsCollision _needsCollisionCallback;
+	pAddSingleResult _addSingleResultCallback;
+
+public:
+	btCollisionWorld_ContactResultCallbackWrapper(pAddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback);
+
+	virtual bool needsCollision(btBroadphaseProxy* proxy0) const;
+	virtual btScalar addSingleResult(btManifoldPoint& cp,
+		const btCollisionObjectWrapper* colObj0, int partId0, int index0,
+		const btCollisionObjectWrapper* colObj1, int partId1, int index1);
+
+	virtual bool baseNeedsCollision(btBroadphaseProxy* proxy0) const;
+};
+
 extern "C"
 {
 	EXPORT btCollisionWorld::LocalShapeInfo* btCollisionWorld_LocalShapeInfo_new();
@@ -100,6 +122,10 @@ extern "C"
 	EXPORT void btCollisionWorld_ContactResultCallback_setCollisionFilterGroup(btCollisionWorld::ContactResultCallback* obj, short value);
 	EXPORT void btCollisionWorld_ContactResultCallback_setCollisionFilterMask(btCollisionWorld::ContactResultCallback* obj, short value);
 	EXPORT void btCollisionWorld_ContactResultCallback_delete(btCollisionWorld::ContactResultCallback* obj);
+
+	EXPORT btCollisionWorld_ContactResultCallbackWrapper* btCollisionWorld_ContactResultCallbackWrapper_new(pAddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback);
+	EXPORT bool btCollisionWorld_ContactResultCallbackWrapper_needsCollision(btCollisionWorld_ContactResultCallbackWrapper* obj, btBroadphaseProxy* proxy0);
+
 	EXPORT btCollisionWorld* btCollisionWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* broadphasePairCache, btCollisionConfiguration* collisionConfiguration);
 	EXPORT void btCollisionWorld_addCollisionObject(btCollisionWorld* obj, btCollisionObject* collisionObject, short collisionFilterGroup, short collisionFilterMask);
 	EXPORT void btCollisionWorld_addCollisionObject2(btCollisionWorld* obj, btCollisionObject* collisionObject, short collisionFilterGroup);

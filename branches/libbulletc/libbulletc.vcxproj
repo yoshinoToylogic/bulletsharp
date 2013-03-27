@@ -93,6 +93,7 @@
     <ClInclude Include="src\btCharacterControllerInterface_wrap.h" />
     <ClInclude Include="src\btCollisionConfiguration_wrap.h" />
     <ClInclude Include="src\btCollisionDispatcher_wrap.h" />
+    <ClInclude Include="src\btCollisionObjectWrapper_wrap.h" />
     <ClInclude Include="src\btCollisionObject_wrap.h" />
     <ClInclude Include="src\btCollisionShape_wrap.h" />
     <ClInclude Include="src\btCollisionWorld_wrap.h" />
@@ -117,6 +118,7 @@
     <ClInclude Include="src\btGhostObject_wrap.h" />
     <ClInclude Include="src\btHingeConstraint_wrap.h" />
     <ClInclude Include="src\btKinematicCharacterController_wrap.h" />
+    <ClInclude Include="src\btManifoldPoint_wrap.h" />
     <ClInclude Include="src\btMinkowskiPenetrationDepthSolver_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCache_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCallback_wrap.h" />
@@ -152,6 +154,7 @@
     <ClCompile Include="src\btCharacterControllerInterface_wrap.cpp" />
     <ClCompile Include="src\btCollisionConfiguration_wrap.cpp" />
     <ClCompile Include="src\btCollisionDispatcher_wrap.cpp" />
+    <ClCompile Include="src\btCollisionObjectWrapper_wrap.cpp" />
     <ClCompile Include="src\btCollisionObject_wrap.cpp" />
     <ClCompile Include="src\btCollisionShape_wrap.cpp" />
     <ClCompile Include="src\btCollisionWorld_wrap.cpp" />
@@ -176,6 +179,7 @@
     <ClCompile Include="src\btGhostObject_wrap.cpp" />
     <ClCompile Include="src\btHingeConstraint_wrap.cpp" />
     <ClCompile Include="src\btKinematicCharacterController_wrap.cpp" />
+    <ClCompile Include="src\btManifoldPoint_wrap.cpp" />
     <ClCompile Include="src\btMinkowskiPenetrationDepthSolver_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCache_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCallback_wrap.cpp" />

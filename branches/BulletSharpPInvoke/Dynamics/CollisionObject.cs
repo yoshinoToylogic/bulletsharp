@@ -155,7 +155,7 @@ namespace BulletSharp
 
 		public BroadphaseProxy BroadphaseHandle
 		{
-            get { return new BroadphaseProxy(btCollisionObject_getBroadphaseHandle(_native)); }
+            get { return new BroadphaseProxy(btCollisionObject_getBroadphaseHandle(_native), true); }
 			set { btCollisionObject_setBroadphaseHandle(_native, value._native); }
 		}
 
