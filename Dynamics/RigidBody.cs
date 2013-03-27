@@ -460,7 +460,7 @@ namespace BulletSharp
 
 		public BroadphaseProxy BroadphaseProxy
 		{
-            get { return new BroadphaseProxy(btRigidBody_getBroadphaseProxy(_native)); }
+            get { return new BroadphaseProxy(btRigidBody_getBroadphaseProxy(_native), true); }
 		}
 
         public Vector3 CenterOfMassPosition

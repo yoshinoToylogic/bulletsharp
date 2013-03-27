@@ -705,23 +705,42 @@ namespace BulletSharp
 			static extern void btCollisionWorld_ClosestConvexResultCallback_setHitPointWorld(IntPtr obj, [In] ref Vector3 value);
 		}
 
-		public class ContactResultCallback
+		public abstract class ContactResultCallback
 		{
+            delegate float AddSingleResultUnmanagedDelegate(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1);
+            delegate bool NeedsCollisionUnmanagedDelegate(IntPtr proxy0);
+
 			internal IntPtr _native;
 
 			internal ContactResultCallback(IntPtr native)
 			{
 				_native = native;
 			}
-            /*
-			public float AddSingleResult(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
+
+            public ContactResultCallback()
+            {
+                IntPtr addSingleResult = Marshal.GetFunctionPointerForDelegate(new AddSingleResultUnmanagedDelegate(AddSingleResultUnmanaged));
+                IntPtr needsCollision = Marshal.GetFunctionPointerForDelegate(new NeedsCollisionUnmanagedDelegate(NeedsCollisionUnmanaged));
+                _native = btCollisionWorld_ContactResultCallbackWrapper_new(addSingleResult, needsCollision);
+            }
+
+            float AddSingleResultUnmanaged(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1)
+            {
+                return AddSingleResult(new ManifoldPoint(cp),
+                    new CollisionObjectWrapper(colObj0Wrap), partId0, index0,
+                    new CollisionObjectWrapper(colObj1Wrap), partId1, index1);
+            }
+
+            public abstract float AddSingleResult(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1);
+
+            bool NeedsCollisionUnmanaged(IntPtr proxy0)
+            {
+                return NeedsCollision(new BroadphaseProxy(proxy0, true));
+            }
+
+			public virtual bool NeedsCollision(BroadphaseProxy proxy0)
 			{
-				return btCollisionWorld_ContactResultCallback_addSingleResult(_native, cp._native, colObj0Wrap._native, partId0, index0, colObj1Wrap._native, partId1, index1);
-			}
-            */
-			public bool NeedsCollision(BroadphaseProxy proxy0)
-			{
-				return btCollisionWorld_ContactResultCallback_needsCollision(_native, proxy0._native);
+				return btCollisionWorld_ContactResultCallbackWrapper_needsCollision(_native, proxy0._native);
 			}
 
 			public short CollisionFilterGroup
@@ -770,6 +789,11 @@ namespace BulletSharp
 			static extern void btCollisionWorld_ContactResultCallback_setCollisionFilterMask(IntPtr obj, short value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern void btCollisionWorld_ContactResultCallback_delete(IntPtr obj);
+
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern IntPtr btCollisionWorld_ContactResultCallbackWrapper_new(IntPtr addSingleResult, IntPtr needsCollision);
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern bool btCollisionWorld_ContactResultCallbackWrapper_needsCollision(IntPtr obj, IntPtr proxy0);
 		}
 
 		internal IntPtr _native;
