@@ -50,11 +50,6 @@ btBroadphasePair* btOverlappingPairCache_getOverlappingPairArrayPtr(btOverlappin
 	return obj->getOverlappingPairArrayPtr();
 }
 
-btBroadphasePair* btOverlappingPairCache_getOverlappingPairArrayPtr2(btOverlappingPairCache* obj)
-{
-	return obj->getOverlappingPairArrayPtr();
-}
-
 bool btOverlappingPairCache_hasDeferredRemoval(btOverlappingPairCache* obj)
 {
 	return obj->hasDeferredRemoval();

@@ -320,7 +320,7 @@ btVector3* btVoronoiSimplexSolver_getSimplexVectorW(btVoronoiSimplexSolver* obj)
 	return obj->m_simplexVectorW;
 }
 
-bool btVoronoiSimplexSolver_inSimplex(btVoronoiSimplexSolver* obj, btVector3* w)
+bool btVoronoiSimplexSolver_inSimplex(btVoronoiSimplexSolver* obj, btScalar* w)
 {
 	VECTOR3_CONV(w);
 	return obj->inSimplex(VECTOR3_USE(w));
@@ -336,7 +336,7 @@ int btVoronoiSimplexSolver_numVertices(btVoronoiSimplexSolver* obj)
 	return obj->numVertices();
 }
 
-int btVoronoiSimplexSolver_pointOutsideOfPlane(btVoronoiSimplexSolver* obj, btVector3* p, btVector3* a, btVector3* b, btVector3* c, btVector3* d)
+int btVoronoiSimplexSolver_pointOutsideOfPlane(btVoronoiSimplexSolver* obj, btScalar* p, btScalar* a, btScalar* b, btScalar* c, btScalar* d)
 {
 	VECTOR3_CONV(p);
 	VECTOR3_CONV(a);

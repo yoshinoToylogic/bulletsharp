@@ -65,10 +65,10 @@ extern "C"
 	EXPORT btVector3* btVoronoiSimplexSolver_getSimplexPointsP(btVoronoiSimplexSolver* obj);
 	EXPORT btVector3* btVoronoiSimplexSolver_getSimplexPointsQ(btVoronoiSimplexSolver* obj);
 	EXPORT btVector3* btVoronoiSimplexSolver_getSimplexVectorW(btVoronoiSimplexSolver* obj);
-	EXPORT bool btVoronoiSimplexSolver_inSimplex(btVoronoiSimplexSolver* obj, btVector3* w);
+	EXPORT bool btVoronoiSimplexSolver_inSimplex(btVoronoiSimplexSolver* obj, btScalar* w);
 	EXPORT btScalar btVoronoiSimplexSolver_maxVertex(btVoronoiSimplexSolver* obj);
 	EXPORT int btVoronoiSimplexSolver_numVertices(btVoronoiSimplexSolver* obj);
-	EXPORT int btVoronoiSimplexSolver_pointOutsideOfPlane(btVoronoiSimplexSolver* obj, btVector3* p, btVector3* a, btVector3* b, btVector3* c, btVector3* d);
+	EXPORT int btVoronoiSimplexSolver_pointOutsideOfPlane(btVoronoiSimplexSolver* obj, btScalar* p, btScalar* a, btScalar* b, btScalar* c, btScalar* d);
 	EXPORT void btVoronoiSimplexSolver_reduceVertices(btVoronoiSimplexSolver* obj, btUsageBitfield* usedVerts);
 	EXPORT void btVoronoiSimplexSolver_removeVertex(btVoronoiSimplexSolver* obj, int index);
 	EXPORT void btVoronoiSimplexSolver_reset(btVoronoiSimplexSolver* obj);
