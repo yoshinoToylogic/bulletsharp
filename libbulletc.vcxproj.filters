@@ -162,6 +162,12 @@
     <ClInclude Include="src\btCharacterControllerInterface_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\btManifoldPoint_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btCollisionObjectWrapper_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -306,6 +312,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btCharacterControllerInterface_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btManifoldPoint_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btCollisionObjectWrapper_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

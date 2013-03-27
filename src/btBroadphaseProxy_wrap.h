@@ -5,8 +5,8 @@ extern "C"
 	EXPORT btBroadphaseProxy* btBroadphaseProxy_new();
 	EXPORT btBroadphaseProxy* btBroadphaseProxy_new2(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask, void* multiSapParentProxy);
 	EXPORT btBroadphaseProxy* btBroadphaseProxy_new3(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask);
-	EXPORT void btBroadphaseProxy_getAabbMax(btBroadphaseProxy* obj);
-	EXPORT void btBroadphaseProxy_getAabbMin(btBroadphaseProxy* obj);
+	EXPORT void btBroadphaseProxy_getAabbMax(btBroadphaseProxy* obj, btScalar* value);
+	EXPORT void btBroadphaseProxy_getAabbMin(btBroadphaseProxy* obj, btScalar* value);
 	EXPORT void* btBroadphaseProxy_getClientObject(btBroadphaseProxy* obj);
 	EXPORT short btBroadphaseProxy_getCollisionFilterGroup(btBroadphaseProxy* obj);
 	EXPORT short btBroadphaseProxy_getCollisionFilterMask(btBroadphaseProxy* obj);
