@@ -8,7 +8,7 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		internal DefaultCollisionConstructionInfo (IntPtr native)
+		internal DefaultCollisionConstructionInfo(IntPtr native)
 		{
 			_native = native;
 		}
@@ -18,7 +18,7 @@ namespace BulletSharp
 			_native = btDefaultCollisionConstructionInfo_new();
 		}
         /*
-		public btPoolAllocator CollisionAlgorithmPool
+		public PoolAllocator CollisionAlgorithmPool
 		{
 			get { return btDefaultCollisionConstructionInfo_getCollisionAlgorithmPool(_native); }
 			set { btDefaultCollisionConstructionInfo_setCollisionAlgorithmPool(_native, value._native); }
@@ -48,12 +48,12 @@ namespace BulletSharp
 			set { btDefaultCollisionConstructionInfo_setDefaultStackAllocatorSize(_native, value); }
 		}
         /*
-		public btPoolAllocator PersistentManifoldPool
+		public PoolAllocator PersistentManifoldPool
 		{
 			get { return btDefaultCollisionConstructionInfo_getPersistentManifoldPool(_native); }
 			set { btDefaultCollisionConstructionInfo_setPersistentManifoldPool(_native, value._native); }
 		}
-
+        
 		public StackAlloc StackAlloc
 		{
 			get { return btDefaultCollisionConstructionInfo_getStackAlloc(_native); }
@@ -126,20 +126,19 @@ namespace BulletSharp
 
 	public class DefaultCollisionConfiguration : CollisionConfiguration
 	{
-		internal DefaultCollisionConfiguration (IntPtr native)
+		internal DefaultCollisionConfiguration(IntPtr native)
 			: base(native)
 		{
 		}
 
 		public DefaultCollisionConfiguration(DefaultCollisionConstructionInfo constructionInfo)
-            : base(btDefaultCollisionConfiguration_new(constructionInfo._native))
+			: base(btDefaultCollisionConfiguration_new(constructionInfo._native))
 		{
 		}
 
 		public DefaultCollisionConfiguration()
-            : base(btDefaultCollisionConfiguration_new2())
+			: base(btDefaultCollisionConfiguration_new2())
 		{
-			_native = btDefaultCollisionConfiguration_new2();
 		}
 
 		public void SetConvexConvexMultipointIterations(int numPerturbationIterations, int minimumPointsPerturbationThreshold)
@@ -171,12 +170,12 @@ namespace BulletSharp
 		{
 			btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations3(_native);
 		}
-        /*
-		public btVoronoiSimplexSolver SimplexSolver
+
+		public VoronoiSimplexSolver SimplexSolver
 		{
-			get { return btDefaultCollisionConfiguration_getSimplexSolver(_native); }
+			get { return new VoronoiSimplexSolver(btDefaultCollisionConfiguration_getSimplexSolver(_native)); }
 		}
-        */
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDefaultCollisionConfiguration_new(IntPtr constructionInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

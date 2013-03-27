@@ -7,10 +7,12 @@ namespace BulletSharp
 	public class OverlappingPairCallback
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal OverlappingPairCallback(IntPtr native)
+		internal OverlappingPairCallback(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public BroadphasePair AddOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
@@ -38,7 +40,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btOverlappingPairCallback_delete(_native);
+                if (!_preventDelete)
+                {
+                    btOverlappingPairCallback_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

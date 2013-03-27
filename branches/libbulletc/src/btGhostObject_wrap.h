@@ -13,7 +13,7 @@ extern "C"
 	EXPORT btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, int index);
 	EXPORT btAlignedObjectArray<btCollisionObject*>* btGhostObject_getOverlappingPairs(btGhostObject* obj);
 	EXPORT void btGhostObject_getOverlappingPairs2(btGhostObject* obj);
-	EXPORT void btGhostObject_rayTest(btGhostObject* obj, btVector3* rayFromWorld, btVector3* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback);
+	EXPORT void btGhostObject_rayTest(btGhostObject* obj, btScalar* rayFromWorld, btScalar* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback);
 	EXPORT void btGhostObject_removeOverlappingObjectInternal(btGhostObject* obj, btBroadphaseProxy* otherProxy, btDispatcher* dispatcher, btBroadphaseProxy* thisProxy);
 	EXPORT void btGhostObject_removeOverlappingObjectInternal2(btGhostObject* obj, btBroadphaseProxy* otherProxy, btDispatcher* dispatcher);
 	EXPORT btGhostObject* btGhostObject_upcast(btCollisionObject* colObj);

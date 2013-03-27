@@ -49,7 +49,7 @@ void btGhostObject_getOverlappingPairs2(btGhostObject* obj)
 	obj->getOverlappingPairs();
 }
 
-void btGhostObject_rayTest(btGhostObject* obj, btVector3* rayFromWorld, btVector3* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback)
+void btGhostObject_rayTest(btGhostObject* obj, btScalar* rayFromWorld, btScalar* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback)
 {
 	VECTOR3_CONV(rayFromWorld);
 	VECTOR3_CONV(rayToWorld);

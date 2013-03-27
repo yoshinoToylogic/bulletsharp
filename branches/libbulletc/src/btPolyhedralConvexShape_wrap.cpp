@@ -38,11 +38,10 @@ void btPolyhedralConvexShape_getPlane(btPolyhedralConvexShape* obj, btScalar* pl
 	VECTOR3_DEF_OUT(planeSupport);
 }
 
-void btPolyhedralConvexShape_getVertex(btPolyhedralConvexShape* obj, int i, btScalar* vertex)
+void btPolyhedralConvexShape_getVertex(btPolyhedralConvexShape* obj, int i, btScalar* vtx)
 {
-	VECTOR3_DEF(vertex);
-	obj->getVertex(i, VECTOR3_USE(vertex));
-	VECTOR3_DEF_OUT(vertex);
+	VECTOR3_CONV(vtx);
+	obj->getVertex(i, VECTOR3_USE(vtx));
 }
 
 bool btPolyhedralConvexShape_initializePolyhedralFeatures(btPolyhedralConvexShape* obj, int shiftVerticesByMargin)
@@ -55,8 +54,23 @@ bool btPolyhedralConvexShape_initializePolyhedralFeatures2(btPolyhedralConvexSha
 	return obj->initializePolyhedralFeatures();
 }
 
-bool btPolyhedralConvexShape_isInside(btPolyhedralConvexShape* obj, btScalar* pt, float tolerance)
+bool btPolyhedralConvexShape_isInside(btPolyhedralConvexShape* obj, btScalar* pt, btScalar tolerance)
 {
 	VECTOR3_CONV(pt);
 	return obj->isInside(VECTOR3_USE(pt), tolerance);
+}
+
+void btPolyhedralConvexAabbCachingShape_getNonvirtualAabb(btPolyhedralConvexAabbCachingShape* obj, btScalar* trans, btScalar* aabbMin, btScalar* aabbMax, btScalar margin)
+{
+	TRANSFORM_CONV(trans);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	obj->getNonvirtualAabb(TRANSFORM_USE(trans), VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), margin);
+	VECTOR3_DEF_OUT(aabbMin);
+	VECTOR3_DEF_OUT(aabbMax);
+}
+
+void btPolyhedralConvexAabbCachingShape_recalcLocalAabb(btPolyhedralConvexAabbCachingShape* obj)
+{
+	obj->recalcLocalAabb();
 }

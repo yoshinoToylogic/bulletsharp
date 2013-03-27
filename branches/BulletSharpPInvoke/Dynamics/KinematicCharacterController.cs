@@ -6,8 +6,6 @@ namespace BulletSharp
 {
 	public class KinematicCharacterController : CharacterControllerInterface
 	{
-        PairCachingGhostObject _ghostObject;
-
 		internal KinematicCharacterController(IntPtr native)
 			: base(native)
 		{
@@ -50,14 +48,7 @@ namespace BulletSharp
 
 		public PairCachingGhostObject GhostObject
 		{
-            get
-            {
-                if (_ghostObject == null)
-                {
-                    _ghostObject = new PairCachingGhostObject(btKinematicCharacterController_getGhostObject(_native));
-                }
-                return _ghostObject;
-            }
+            get { return CollisionObject.GetManaged(btKinematicCharacterController_getGhostObject(_native)) as PairCachingGhostObject; }
 		}
 
 		public float Gravity

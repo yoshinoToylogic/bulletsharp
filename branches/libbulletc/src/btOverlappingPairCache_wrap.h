@@ -14,7 +14,6 @@ extern "C"
 	EXPORT int btOverlappingPairCache_getNumOverlappingPairs(btOverlappingPairCache* obj);
 	EXPORT btBroadphasePairArray* btOverlappingPairCache_getOverlappingPairArray(btOverlappingPairCache* obj);
 	EXPORT btBroadphasePair* btOverlappingPairCache_getOverlappingPairArrayPtr(btOverlappingPairCache* obj);
-	EXPORT btBroadphasePair* btOverlappingPairCache_getOverlappingPairArrayPtr2(btOverlappingPairCache* obj);
 	EXPORT bool btOverlappingPairCache_hasDeferredRemoval(btOverlappingPairCache* obj);
 	EXPORT void btOverlappingPairCache_processAllOverlappingPairs(btOverlappingPairCache* obj, btOverlapCallback* __unnamed, btDispatcher* dispatcher);
 	EXPORT void btOverlappingPairCache_setInternalGhostPairCallback(btOverlappingPairCache* obj, btOverlappingPairCallback* ghostPairCallback);
