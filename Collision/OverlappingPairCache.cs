@@ -86,8 +86,10 @@ namespace BulletSharp
 
 	public class OverlappingPairCache : OverlappingPairCallback
 	{
-		internal OverlappingPairCache(IntPtr native)
-			: base(native)
+        OverlappingPairCallback _ghostPairCallback;
+
+		internal OverlappingPairCache(IntPtr native, bool preventDelete = false)
+            : base(native, preventDelete)
 		{
 		}
 
@@ -113,6 +115,7 @@ namespace BulletSharp
 
 		public void SetInternalGhostPairCallback(OverlappingPairCallback ghostPairCallback)
 		{
+            _ghostPairCallback = ghostPairCallback;
 			btOverlappingPairCache_setInternalGhostPairCallback(_native, ghostPairCallback._native);
 		}
 
@@ -136,15 +139,11 @@ namespace BulletSharp
 			get { return btOverlappingPairCache_getNumOverlappingPairs(_native); }
 		}
         /*
-		public BroadphasePairArray OverlappingPairArray
+		public AlignedBroadphasePairArray OverlappingPairArray
 		{
 			get { return btOverlappingPairCache_getOverlappingPairArray(_native); }
 		}
         */
-		public BroadphasePair OverlappingPairArrayPtr
-		{
-            get { return new BroadphasePair(btOverlappingPairCache_getOverlappingPairArrayPtr(_native)); }
-		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOverlappingPairCache_cleanOverlappingPair(IntPtr obj, IntPtr pair, IntPtr dispatcher);

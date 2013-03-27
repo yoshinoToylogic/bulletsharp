@@ -26,7 +26,7 @@ namespace BulletSharp
                 case BroadphaseNativeType.BoxShape:
                     return new BoxShape(obj);
             }
-
+            throw new NotImplementedException();
             return new CollisionShape(obj);
         }
 

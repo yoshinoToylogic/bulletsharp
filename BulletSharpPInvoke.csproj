@@ -48,6 +48,7 @@
     <Compile Include="Collision\ConvexPolyhedron.cs" />
     <Compile Include="Collision\ConvexShape.cs" />
     <Compile Include="Collision\CylinderShape.cs" />
+    <Compile Include="Collision\DefaultCollisionConfiguration.cs" />
     <Compile Include="Collision\GhostObject.cs" />
     <Compile Include="Collision\MinkowskiPenetrationDepthSolver.cs" />
     <Compile Include="Collision\OverlappingPairCache.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="Dynamics\ConstraintSolver.cs" />
     <Compile Include="Dynamics\ActionInterface.cs" />
     <Compile Include="Dynamics\ContactSolverInfo.cs" />
-    <Compile Include="Dynamics\DefaultCollisionConfiguration.cs" />
     <Compile Include="Dynamics\DiscreteDynamicsWorld.cs" />
     <Compile Include="Dynamics\DynamicsWorld.cs" />
     <Compile Include="Dynamics\Generic6DofConstraint.cs" />

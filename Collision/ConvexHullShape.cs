@@ -1,10 +1,11 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Collections.Generic;
 
 namespace BulletSharp
 {
-    public class ConvexHullShape : PolyhedralConvexShape
+    public class ConvexHullShape : PolyhedralConvexAabbCachingShape
 	{
 		internal ConvexHullShape(IntPtr native)
 			: base(native)
@@ -16,14 +17,33 @@ namespace BulletSharp
 		{
 		}
 
-        public ConvexHullShape(Vector3[] points, int numPoints)
-            : base(btConvexHullShape_new(points, numPoints, Marshal.SizeOf(typeof(Vector3))))
+        public ConvexHullShape(IEnumerable<Vector3> points, int numPoints)
+            : base(btConvexHullShape_new4())
 		{
+            int i = 0;
+            foreach (Vector3 v in points)
+            {
+                Vector3 viter = v;
+                btConvexHullShape_addPoint2(_native, ref viter);
+                i++;
+                if (i == numPoints)
+                {
+                    break;
+                }
+            }
+            RecalcLocalAabb();
 		}
 
-		public ConvexHullShape(Vector3[] points)
-            : base(btConvexHullShape_new(points, points.Length, Marshal.SizeOf(typeof(Vector3))))
+		public ConvexHullShape(IEnumerable<Vector3> points)
+            : base(btConvexHullShape_new4())
 		{
+            Vector3 viter;
+            foreach (Vector3 v in points)
+            {
+                viter = v;
+                btConvexHullShape_addPoint2(_native, ref viter);
+            }
+            RecalcLocalAabb();
 		}
 
 		public ConvexHullShape()

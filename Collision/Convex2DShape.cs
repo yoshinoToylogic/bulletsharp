@@ -6,8 +6,6 @@ namespace BulletSharp
 {
 	public class Convex2DShape : ConvexShape
 	{
-        ConvexShape _childShape;
-
 		internal Convex2DShape(IntPtr native)
 			: base(native)
 		{
@@ -16,19 +14,11 @@ namespace BulletSharp
         public Convex2DShape(ConvexShape convexChildShape)
 			: base(btConvex2dShape_new(convexChildShape._native))
 		{
-            _childShape = convexChildShape;
 		}
 
 		public ConvexShape ChildShape
 		{
-            get
-            {
-                if (_childShape == null)
-                {
-                    _childShape = new ConvexShape(btConvex2dShape_getChildShape(_native));
-                }
-                return _childShape;
-            }
+            get { return CollisionShape.GetManaged(btConvex2dShape_getChildShape(_native)) as ConvexShape; }
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
