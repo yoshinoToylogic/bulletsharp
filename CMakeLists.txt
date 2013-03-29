@@ -20,6 +20,7 @@ IF(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletDynamics)
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletSoftBody)
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/LinearMath)
+	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletFileLoader)
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletWorldImporter)
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletXmlWorldImporter)
 	SET(BULLETC_LIB bulletc)
@@ -54,6 +55,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btBroadphaseInterface_wrap.h
     src/btBroadphaseProxy_wrap.cpp
     src/btBroadphaseProxy_wrap.h
+    src/btBulletWorldImporter_wrap.cpp
+    src/btBulletWorldImporter_wrap.h
     src/btBulletXmlWorldImporter_wrap.cpp
     src/btBulletXmlWorldImporter_wrap.h
     src/btCapsuleShape_wrap.cpp
@@ -140,19 +143,27 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btRigidBody_wrap.h
     src/btSequentialImpulseConstraintSolver_wrap.cpp
     src/btSequentialImpulseConstraintSolver_wrap.h
+    src/btSerializer_wrap.cpp
+    src/btSerializer_wrap.h
     src/btShapeHull_wrap.cpp
     src/btShapeHull_wrap.h
     src/btSimulationIslandManager_wrap.cpp
     src/btSimulationIslandManager_wrap.h
     src/btSphereShape_wrap.cpp
+    src/btSphereShape_wrap.h
+    src/btStaticPlaneShape_wrap.cpp
+    src/btStaticPlaneShape_wrap.h
     src/btTypedConstraint_wrap.cpp
     src/btTypedConstraint_wrap.h
     src/btVoronoiSimplexSolver_wrap.cpp
     src/btVoronoiSimplexSolver_wrap.h
+    src/btWorldImporter_wrap.cpp
+    src/btWorldImporter_wrap.h
 )
 
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletCollision${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletDynamics${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} LinearMath${LIB_SUFFIX})
+TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletFileLoader${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletWorldImporter${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletXmlWorldImporter${LIB_SUFFIX})

@@ -1,7 +1,6 @@
 #include "main.h"
 
-#include <..\Extras\Serialize\BulletWorldImporter\btBulletWorldImporter.h>
-#include <..\Extras\Serialize\BulletXmlWorldImporter\btBulletXmlWorldImporter.h>
+#include <../Extras/Serialize/BulletXmlWorldImporter/btBulletXmlWorldImporter.h>
 
 extern "C"
 {

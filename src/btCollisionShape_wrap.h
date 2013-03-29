@@ -12,7 +12,7 @@ extern "C"
 	EXPORT btScalar btCollisionShape_getContactBreakingThreshold(btCollisionShape* obj, btScalar defaultContactThresholdFactor);
 	EXPORT void btCollisionShape_getLocalScaling(btCollisionShape* obj, btScalar* scaling);
 	EXPORT btScalar btCollisionShape_getMargin(btCollisionShape* obj);
-	EXPORT char* btCollisionShape_getName(btCollisionShape* obj);
+	EXPORT const char* btCollisionShape_getName(btCollisionShape* obj);
 	EXPORT int btCollisionShape_getShapeType(btCollisionShape* obj);
 	EXPORT void* btCollisionShape_getUserPointer(btCollisionShape* obj);
 	EXPORT bool btCollisionShape_isCompound(btCollisionShape* obj);

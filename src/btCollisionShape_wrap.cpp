@@ -65,12 +65,12 @@ btScalar btCollisionShape_getMargin(btCollisionShape* obj)
 {
 	return obj->getMargin();
 }
-/*
-char* btCollisionShape_getName(btCollisionShape* obj)
+
+const char* btCollisionShape_getName(btCollisionShape* obj)
 {
 	return obj->getName();
 }
-*/
+
 int btCollisionShape_getShapeType(btCollisionShape* obj)
 {
 	return obj->getShapeType();

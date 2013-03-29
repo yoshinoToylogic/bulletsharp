@@ -3,6 +3,7 @@
 typedef void (STDCALL pDrawBox)(const btVector3& bbMin, const btVector3& bbMax, const btScalar* trans, const btVector3& color);
 typedef void (STDCALL pDrawCapsule)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btVector3& color);
 typedef void (STDCALL pDrawLine)(const btVector3& from, const btVector3& to, const btVector3& color);
+typedef void (STDCALL pDrawPlane)(const btVector3& planeNormal, btScalar planeConst, const btScalar* transform, const btVector3& color);
 typedef void (STDCALL pDrawSphere)(btScalar radius, const btScalar* transform, const btVector3& color);
 typedef void (STDCALL pDrawTransform)(const btScalar* transform, btScalar orthoLen);
 typedef int (STDCALL pGetDebugMode)();
@@ -12,8 +13,9 @@ class btIDebugDrawWrapper : public btIDebugDraw
 {
 private:
 	pDrawBox _drawBoxCallback;
-	pDrawCapsule _drawCapsule;
+	pDrawCapsule _drawCapsuleCallback;
 	pDrawLine _drawLineCallback;
+	pDrawPlane _drawPlaneCallback;
 	pDrawSphere _drawSphereCallback;
 	pDrawTransform _drawTransformCallback;
 	pGetDebugMode _getDebugModeCallback;
@@ -23,8 +25,8 @@ public:
 	
 	pSimpleCallback _cb;
 
-	btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawBox drawBoxCallback, pDrawCapsule drawCapsule, pDrawLine drawLineCallback,
-		pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb);
+	btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawBox drawBoxCallback, pDrawCapsule drawCapsuleCallback, pDrawLine drawLineCallback,
+		pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb);
 
 	virtual void draw3dText(const btVector3& location, const char* textString);
 	virtual void drawAabb(const btVector3& from, const btVector3& to, const btVector3& color);
@@ -65,7 +67,6 @@ public:
 	virtual void baseDrawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color);
 	virtual void baseDrawCylinder(btScalar radius, btScalar halfHeight, int upAxis, const btTransform& transform, const btVector3& color);
 	virtual void baseDrawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor);
-	virtual void baseDrawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color);
 	virtual void baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color);
 	virtual void baseDrawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 		btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color, btScalar stepDegrees);
@@ -84,7 +85,7 @@ public:
 extern "C"
 {
 	EXPORT btIDebugDrawWrapper* btIDebugDrawWrapper_new(void* debugDrawGCHandle, pDrawBox drawBoxCallback, pDrawCapsule drawCapsule,
-		pDrawLine drawLineCallback, pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb);
+		pDrawLine drawLineCallback, pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb);
 	EXPORT void* btIDebugDrawWrapper_getDebugDrawGCHandle(btIDebugDrawWrapper* obj);
 
 	EXPORT void btIDebugDraw_draw3dText(btIDebugDraw* obj, btVector3* location, char* textString);
