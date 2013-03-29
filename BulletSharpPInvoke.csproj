@@ -83,6 +83,7 @@
     <Compile Include="Dynamics\RigidBody.cs" />
     <Compile Include="Dynamics\SequentialImpulseConstraintSolver.cs" />
     <Compile Include="Dynamics\TypedConstraint.cs" />
+    <Compile Include="Extras\BulletXmlWorldImporter.cs" />
     <Compile Include="LinearMath\AlignedCollisionObjectArray.cs" />
     <Compile Include="LinearMath\AlignedObjectArray.cs" />
     <Compile Include="LinearMath\AlignedVector3Array.cs" />
