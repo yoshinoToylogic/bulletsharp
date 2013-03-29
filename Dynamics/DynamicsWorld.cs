@@ -6,6 +6,8 @@ namespace BulletSharp
 {
 	public class DynamicsWorld : CollisionWorld
 	{
+        protected ConstraintSolver _solver;
+
 		internal DynamicsWorld(IntPtr native)
 			: base(native)
 		{
@@ -118,8 +120,19 @@ namespace BulletSharp
 
 		public ConstraintSolver ConstraintSolver
 		{
-            get { return new ConstraintSolver(btDynamicsWorld_getConstraintSolver(_native)); }
-			set { btDynamicsWorld_setConstraintSolver(_native, value._native); }
+            get
+            {
+                if (_solver == null)
+                {
+                    _solver = new ConstraintSolver(btDynamicsWorld_getConstraintSolver(_native), true);
+                }
+                return _solver;
+            }
+            set
+            {
+                _solver = value;
+                btDynamicsWorld_setConstraintSolver(_native, value._native);
+            }
 		}
 
         public Vector3 Gravity

@@ -4,6 +4,13 @@ using System.Security;
 
 namespace BulletSharp
 {
+    public enum RigidBodyFlags
+	{
+		None = 0,
+		DisableWorldGravity = 1,
+		EnableGyroscopicForce = 2
+	}
+
 	public class RigidBody : CollisionObject
 	{
 		public class RigidBodyConstructionInfo
@@ -481,6 +488,7 @@ namespace BulletSharp
                 btRigidBody_getCenterOfMassTransform(_native, out transform);
                 return transform;
             }
+            set { btRigidBody_setCenterOfMassTransform(_native, ref value); }
         }
 
 		public int ContactSolverType
@@ -489,7 +497,7 @@ namespace BulletSharp
 			set { btRigidBody_setContactSolverType(_native, value); }
 		}
 
-		public int Flags
+        public RigidBodyFlags Flags
 		{
 			get { return btRigidBody_getFlags(_native); }
 			set { btRigidBody_setFlags(_native, value); }
@@ -674,7 +682,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btRigidBody_getContactSolverType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btRigidBody_getFlags(IntPtr obj);
+        static extern RigidBodyFlags btRigidBody_getFlags(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btRigidBody_getFrictionSolverType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -724,13 +732,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btRigidBody_setAngularVelocity(IntPtr obj, [In] ref Vector3 ang_vel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_setCenterOfMassTransform(IntPtr obj, IntPtr xform);
+		static extern void btRigidBody_setCenterOfMassTransform(IntPtr obj, [In] ref Matrix xform);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_setContactSolverType(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_setDamping(IntPtr obj, float lin_damping, float ang_damping);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_setFlags(IntPtr obj, int flags);
+        static extern void btRigidBody_setFlags(IntPtr obj, RigidBodyFlags flags);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_setFrictionSolverType(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

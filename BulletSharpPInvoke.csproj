@@ -42,6 +42,7 @@
     <Compile Include="Collision\CollisionShape.cs" />
     <Compile Include="Collision\CollisionWorld.cs" />
     <Compile Include="Collision\CapsuleShape.cs" />
+    <Compile Include="Collision\CompoundShape.cs" />
     <Compile Include="Collision\ConeShape.cs" />
     <Compile Include="Collision\Convex2DShape.cs" />
     <Compile Include="Collision\ConvexHullShape.cs" />
@@ -50,11 +51,14 @@
     <Compile Include="Collision\ConvexShape.cs" />
     <Compile Include="Collision\CylinderShape.cs" />
     <Compile Include="Collision\DefaultCollisionConfiguration.cs" />
+    <Compile Include="Collision\DiscreteCollisionDetectorInterface.cs" />
     <Compile Include="Collision\GhostObject.cs" />
+    <Compile Include="Collision\GjkPairDetector.cs" />
     <Compile Include="Collision\ManifoldPoint.cs" />
     <Compile Include="Collision\MinkowskiPenetrationDepthSolver.cs" />
     <Compile Include="Collision\OverlappingPairCache.cs" />
     <Compile Include="Collision\OverlappingPairCallback.cs" />
+    <Compile Include="Collision\PointCollector.cs" />
     <Compile Include="Collision\ShapeHull.cs" />
     <Compile Include="Collision\SimulationIslandManager.cs" />
     <Compile Include="Collision\SphereShape.cs" />
