@@ -67,6 +67,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btCollisionShape_wrap.h
     src/btCollisionWorld_wrap.cpp
     src/btCollisionWorld_wrap.h
+    src/btCompoundShape_wrap.cpp
+    src/btCompoundShape_wrap.h
     src/btConeShape_wrap.cpp
     src/btConeShape_wrap.h
     src/btConeTwistConstraint_wrap.cpp
@@ -93,6 +95,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDefaultCollisionConfiguration_wrap.h
     src/btDefaultMotionState_wrap.cpp
     src/btDefaultMotionState_wrap.h
+    src/btDiscreteCollisionDetectorInterface_wrap.cpp
+    src/btDiscreteCollisionDetectorInterface_wrap.h
     src/btDiscreteDynamicsWorld_wrap.cpp
     src/btDiscreteDynamicsWorld_wrap.h
     src/btDispatcher_wrap.cpp
@@ -105,8 +109,12 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btGeometryUtil_wrap.h
     src/btGhostObject_wrap.cpp
     src/btGhostObject_wrap.h
+    src/btGjkPairDetector_wrap.cpp
+    src/btGjkPairDetector_wrap.h
     src/btHingeConstraint_wrap.cpp
     src/btHingeConstraint_wrap.h
+    src/btIDebugDraw_wrap.cpp
+    src/btIDebugDraw_wrap.h
     src/btKinematicCharacterController_wrap.cpp
     src/btKinematicCharacterController_wrap.h
     src/btManifoldPoint_wrap.cpp
@@ -119,6 +127,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btOverlappingPairCallback_wrap.h
     src/btPoint2PointConstraint_wrap.cpp
     src/btPoint2PointConstraint_wrap.h
+    src/btPointCollector_wrap.cpp
+    src/btPointCollector_wrap.h
     src/btPolyhedralConvexShape_wrap.cpp
     src/btPolyhedralConvexShape_wrap.h
     src/btRigidBody_wrap.cpp

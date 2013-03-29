@@ -107,10 +107,12 @@ namespace BulletSharp
 	public class ManifoldPoint
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal ManifoldPoint(IntPtr native)
+        internal ManifoldPoint(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public ManifoldPoint()
@@ -324,7 +326,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btManifoldPoint_delete(_native);
+                if (!_preventDelete)
+                {
+                    btManifoldPoint_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

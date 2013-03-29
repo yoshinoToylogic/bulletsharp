@@ -70,6 +70,9 @@ inline void btTransformToMatrix(const btTransform* t, btScalar* m)
 	m[9] = t->getBasis().getRow(2).getY();
 	m[10] = t->getBasis().getRow(2).getZ();
 #endif
+	m[3] = 0;
+	m[7] = 0;
+	m[11] = 0;
 	m[12] = t->getOrigin().getX();
 	m[13] = t->getOrigin().getY();
 	m[14] = t->getOrigin().getZ();

@@ -707,26 +707,26 @@ namespace BulletSharp
 
 		public abstract class ContactResultCallback
 		{
+            internal IntPtr _native;
+
             delegate float AddSingleResultUnmanagedDelegate(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1);
             delegate bool NeedsCollisionUnmanagedDelegate(IntPtr proxy0);
 
-			internal IntPtr _native;
-
-			internal ContactResultCallback(IntPtr native)
-			{
-				_native = native;
-			}
+            AddSingleResultUnmanagedDelegate _addSingleResult;
+            NeedsCollisionUnmanagedDelegate _needsCollision;
 
             public ContactResultCallback()
             {
-                IntPtr addSingleResult = Marshal.GetFunctionPointerForDelegate(new AddSingleResultUnmanagedDelegate(AddSingleResultUnmanaged));
-                IntPtr needsCollision = Marshal.GetFunctionPointerForDelegate(new NeedsCollisionUnmanagedDelegate(NeedsCollisionUnmanaged));
-                _native = btCollisionWorld_ContactResultCallbackWrapper_new(addSingleResult, needsCollision);
+                _addSingleResult = new AddSingleResultUnmanagedDelegate(AddSingleResultUnmanaged);
+                _needsCollision = new NeedsCollisionUnmanagedDelegate(NeedsCollisionUnmanaged);
+                _native = btCollisionWorld_ContactResultCallbackWrapper_new(
+                    Marshal.GetFunctionPointerForDelegate(_addSingleResult),
+                    Marshal.GetFunctionPointerForDelegate(_needsCollision));
             }
 
             float AddSingleResultUnmanaged(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1)
             {
-                return AddSingleResult(new ManifoldPoint(cp),
+                return AddSingleResult(new ManifoldPoint(cp, true),
                     new CollisionObjectWrapper(colObj0Wrap), partId0, index0,
                     new CollisionObjectWrapper(colObj1Wrap), partId1, index1);
             }
@@ -940,10 +940,14 @@ namespace BulletSharp
 
 		public IDebugDraw DebugDrawer
 		{
-            get { return null; }
-            set { }
-			//get { return btCollisionWorld_getDebugDrawer(_native); }
-			//set { btCollisionWorld_setDebugDrawer(_native, value._native); }
+            get
+            {
+                return DebugDraw.GetManaged(btCollisionWorld_getDebugDrawer(_native));
+            }
+            set
+            {
+                btCollisionWorld_setDebugDrawer(_native, DebugDraw.GetUnmanaged(value));
+            }
 		}
 
 		public Dispatcher Dispatcher

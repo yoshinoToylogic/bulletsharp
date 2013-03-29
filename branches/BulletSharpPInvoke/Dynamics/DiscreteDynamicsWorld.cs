@@ -21,6 +21,7 @@ namespace BulletSharp
             _collisionConfiguration = collisionConfiguration;
             _dispatcher = dispatcher;
             _broadphase = pairCache;
+            _solver = solver;
         }
 
 		public void ApplyGravity()

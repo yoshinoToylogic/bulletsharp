@@ -7,10 +7,12 @@ namespace BulletSharp
 	public class ConstraintSolver
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal ConstraintSolver(IntPtr native)
+		internal ConstraintSolver(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
         /*
 		public void AllSolved(ContactSolverInfo __unnamed0, IDebugDraw __unnamed1, StackAlloc __unnamed2)
@@ -43,7 +45,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btConstraintSolver_delete(_native);
+                if (!_preventDelete)
+                {
+                    btConstraintSolver_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

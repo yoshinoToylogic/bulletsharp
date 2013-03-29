@@ -168,6 +168,21 @@
     <ClInclude Include="src\btCollisionObjectWrapper_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\btIDebugDraw_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btCompoundShape_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btGjkPairDetector_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btDiscreteCollisionDetectorInterface_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btPointCollector_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -318,6 +333,21 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btCollisionObjectWrapper_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btIDebugDraw_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btCompoundShape_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btGjkPairDetector_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btDiscreteCollisionDetectorInterface_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btPointCollector_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

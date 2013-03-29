@@ -22,11 +22,95 @@
  */
 
 using System;
+using System.Security;
+using System.Runtime.InteropServices;
 
 namespace BulletSharp
 {
     public abstract class DebugDraw : IDebugDraw
     {
+        internal IntPtr _native;
+
+        delegate void DrawBoxUnmanagedDelegate([In] ref Vector3 bbMin, [In] ref Vector3 bbMax, [In] ref Matrix trans, [In] ref Vector3 color);
+        delegate void DrawLineUnmanagedDelegate([In] ref Vector3 from, [In] ref Vector3 to, [In] ref Vector3 color);
+        delegate void DrawSphereUnmanagedDelegate(float radius, [In] ref Matrix transform, [In] ref Vector3 color);
+        delegate void DrawTransformUnmanagedDelegate([In] ref Matrix transform, float orthoLen);
+        delegate void SimpleCallback(int x);
+        delegate DebugDrawModes GetDebugModeUnmanagedDelegate();
+
+        DrawBoxUnmanagedDelegate _drawBox;
+        DrawLineUnmanagedDelegate _drawLine;
+        DrawSphereUnmanagedDelegate _drawSphere;
+        DrawTransformUnmanagedDelegate _drawTransform;
+        GetDebugModeUnmanagedDelegate _getDebugMode;
+        SimpleCallback _cb;
+
+        internal static IntPtr GetUnmanaged(IDebugDraw debugDrawer)
+        {
+            if (debugDrawer == null)
+            {
+                return IntPtr.Zero;
+            }
+
+            if (debugDrawer is DebugDraw)
+            {
+                return (debugDrawer as DebugDraw)._native;
+            }
+
+            //if (ObjectTable.Contains(debugDraw))
+		    //    return ObjectTable.GetUnmanagedObject(debugDraw);
+
+            throw new NotImplementedException();
+            //GCHandle handle = GCHandle.Alloc(debugDrawer);
+            //IntPtr wrapper = btIDebugDrawWrapper_new(GCHandle.ToIntPtr(handle), IntPtr.Zero);
+            //ObjectTable.Add(debugDraw, wrapper);
+            //return wrapper;
+        }
+
+        internal static IDebugDraw GetManaged(IntPtr debugDrawer)
+        {
+            if (debugDrawer == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            //if (ObjectTable.Contains(debugDrawer)
+		    //    return ObjectTable.GetObject<IDebugDraw^>(debugDrawer);
+
+            IntPtr handle = btIDebugDrawWrapper_getDebugDrawGCHandle(debugDrawer);
+            return GCHandle.FromIntPtr(handle).Target as IDebugDraw;
+        }
+        
+        void SimpleCallbackUnmanaged(int x)
+        {
+            //System.Diagnostics.Debugger.Break();
+            "".ToString();
+        }
+
+        DebugDrawModes GetDebugModeUnmanaged()
+        {
+            return DebugMode;
+        }
+
+        public DebugDraw()
+        {
+            _drawBox = new DrawBoxUnmanagedDelegate(DrawBox);
+            _drawLine = new DrawLineUnmanagedDelegate(DrawLine);
+            _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphere);
+            _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransform);
+            _getDebugMode = new GetDebugModeUnmanagedDelegate(GetDebugModeUnmanaged);
+            _cb = new SimpleCallback(SimpleCallbackUnmanaged);
+
+            _native = btIDebugDrawWrapper_new(
+                GCHandle.ToIntPtr(GCHandle.Alloc(this)),
+                Marshal.GetFunctionPointerForDelegate(_drawBox),
+                Marshal.GetFunctionPointerForDelegate(_drawLine),
+                Marshal.GetFunctionPointerForDelegate(_drawSphere),
+                Marshal.GetFunctionPointerForDelegate(_drawTransform),
+                Marshal.GetFunctionPointerForDelegate(_getDebugMode),
+                Marshal.GetFunctionPointerForDelegate(_cb));
+        }
+
         public abstract void DrawLine(Vector3 from, Vector3 to, Vector3 color);
         public abstract void DrawLine(ref Vector3 from, ref Vector3 to, ref Vector3 color);
         public abstract void Draw3dText(ref Vector3 location, String textString);
@@ -58,28 +142,38 @@ namespace BulletSharp
 
         public virtual void DrawBox(ref Vector3 bbMin, ref Vector3 bbMax, ref Matrix trans, ref Vector3 color)
         {
-            /*
-            DrawLine(trans * bbMin, trans * new Vector3(bbMax.X, bbMin.Y, bbMin.Z), color);
-            DrawLine(trans * new Vector3(bbMax.X, bbMin.Y, bbMin.Z), trans * new Vector3(bbMax.X, bbMax.Y, bbMin.Z), color);
-            DrawLine(trans * new Vector3(bbMax.X, bbMax.Y, bbMin.Z), trans * new Vector3(bbMin.X, bbMax.Y, bbMin.Z), color);
-            DrawLine(trans * new Vector3(bbMin.X, bbMax.Y, bbMin.Z), trans * bbMin, color);
-            DrawLine(trans * bbMin, trans * new Vector3(bbMin.X, bbMin.Y, bbMax.Z), color);
-            DrawLine(trans * new Vector3(bbMax.X, bbMin.Y, bbMin.Z), trans * new Vector3(bbMax.X, bbMin.Y, bbMax.Z), color);
-            DrawLine(trans * new Vector3(bbMax.X, bbMax.Y, bbMin.Z), trans * bbMax, color);
-            DrawLine(trans * new Vector3(bbMin.X, bbMax.Y, bbMin.Z), trans * new Vector3(bbMin.X, bbMax.Y, bbMax.Z), color);
-            DrawLine(trans * new Vector3(bbMin.X, bbMin.Y, bbMax.Z), trans * new Vector3(bbMax.X, bbMin.Y, bbMax.Z), color);
-            DrawLine(trans * new Vector3(bbMax.X, bbMin.Y, bbMax.Z), trans * bbMax, color);
-            DrawLine(trans * bbMax, trans * new Vector3(bbMin.X, bbMax.Y, bbMax.Z), color);
-            DrawLine(trans * new Vector3(bbMin.X, bbMax.Y, bbMax.Z), trans * new Vector3(bbMin.X, bbMin.Y, bbMax.Z), color);*/
+            var p1 = Vector3.TransformCoordinate(bbMin, trans);
+            var p2 = Vector3.TransformCoordinate(new Vector3(bbMax.X, bbMin.Y, bbMin.Z), trans);
+            var p3 = Vector3.TransformCoordinate(new Vector3(bbMax.X, bbMax.Y, bbMin.Z), trans);
+            var p4 = Vector3.TransformCoordinate(new Vector3(bbMin.X, bbMax.Y, bbMin.Z), trans);
+            var p5 = Vector3.TransformCoordinate(new Vector3(bbMin.X, bbMin.Y, bbMax.Z), trans);
+            var p6 = Vector3.TransformCoordinate(new Vector3(bbMax.X, bbMin.Y, bbMax.Z), trans);
+            var p7 = Vector3.TransformCoordinate(bbMax, trans);
+            var p8 = Vector3.TransformCoordinate(new Vector3(bbMin.X, bbMax.Y, bbMax.Z), trans);
+
+            DrawLine(ref p1, ref p2, ref color);
+            DrawLine(ref p2, ref p3, ref color);
+            DrawLine(ref p3, ref p4, ref color);
+            DrawLine(ref p4, ref p1, ref color);
+
+            DrawLine(ref p1, ref p5, ref color);
+            DrawLine(ref p2, ref p6, ref color);
+            DrawLine(ref p3, ref p7, ref color);
+            DrawLine(ref p4, ref p8, ref color);
+
+            DrawLine(ref p5, ref p6, ref color);
+            DrawLine(ref p6, ref p7, ref color);
+            DrawLine(ref p7, ref p8, ref color);
+            DrawLine(ref p8, ref p5, ref color);
         }
 
         public virtual void DrawSphere(float radius, ref Matrix transform, ref Vector3 color)
-        {/*
+        {
             Vector3 start = transform.TranslationVector;
 
-            Vector3 xoffs = transform * new Vector3(radius, 0, 0);
-            Vector3 yoffs = transform * new Vector3(0, radius, 0);
-            Vector3 zoffs = transform * new Vector3(0, 0, radius);
+            Vector3 xoffs = Vector3.TransformCoordinate(new Vector3(radius, 0, 0), transform);
+            Vector3 yoffs = Vector3.TransformCoordinate(new Vector3(0, radius, 0), transform);
+            Vector3 zoffs = Vector3.TransformCoordinate(new Vector3(0, 0, radius), transform);
 
             // XY 
             DrawLine(start - xoffs, start + yoffs, color);
@@ -97,7 +191,7 @@ namespace BulletSharp
             DrawLine(start - yoffs, start + zoffs, color);
             DrawLine(start + zoffs, start + yoffs, color);
             DrawLine(start + yoffs, start - zoffs, color);
-            DrawLine(start - zoffs, start - yoffs, color);*/
+            DrawLine(start - zoffs, start - yoffs, color);
         }
 
         public virtual void DrawSphere(Vector3 p, float radius, Vector3 color)
@@ -162,18 +256,16 @@ namespace BulletSharp
 
         public virtual void DrawTransform(ref Matrix transform, float orthoLen)
         {
-            /*
             Vector3 start = transform.TranslationVector;
-            Vector3 temp = start + transform * new Vector3(orthoLen, 0, 0);
+            Vector3 temp = start + Vector3.TransformCoordinate(new Vector3(orthoLen, 0, 0), transform);
             Vector3 colour = new Vector3(0.7f, 0, 0);
             DrawLine(ref start, ref temp, ref colour);
-            temp = start + transform * new Vector3(0, orthoLen, 0);
+            temp = start + Vector3.TransformCoordinate(new Vector3(0, orthoLen, 0), transform);
             colour = new Vector3(0, 0.7f, 0);
             DrawLine(ref start, ref temp, ref colour);
-            temp = start + transform * new Vector3(0, 0, orthoLen);
+            temp = start + Vector3.TransformCoordinate(new Vector3(0, 0, orthoLen), transform);
             colour = new Vector3(0, 0, 0.7f);
             DrawLine(ref start, ref temp, ref colour);
-            */
         }
 
         public virtual void DrawArc(ref Vector3 center, ref Vector3 normal, ref Vector3 axis, float radiusA, float radiusB, float minAngle, float maxAngle,
@@ -412,5 +504,11 @@ namespace BulletSharp
             DrawLine(transform * pt0, transform * pt1, color);
             DrawLine(transform * pt2, transform * pt3, color);*/
         }
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btIDebugDrawWrapper_new(IntPtr debugDrawGCHandle, IntPtr drawBoxCallback, IntPtr drawLineCallback,
+            IntPtr drawSphereCallback, IntPtr drawTransformCallback, IntPtr getDebugModeCallback, IntPtr cb);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btIDebugDrawWrapper_getDebugDrawGCHandle(IntPtr obj);
     }
 }
