@@ -1,7 +1,7 @@
 #include "main.h"
 
-typedef bool (__stdcall *pNeedsCollision)(btBroadphaseProxy* proxy0);
-typedef bool (__stdcall *pAddSingleResult)(btManifoldPoint& cp,
+typedef bool (STDCALL pNeedsCollision)(btBroadphaseProxy* proxy0);
+typedef bool (STDCALL pAddSingleResult)(btManifoldPoint& cp,
 		const btCollisionObjectWrapper* colObj0, int partId0, int index0,
 		const btCollisionObjectWrapper* colObj1, int partId1, int index1);
 

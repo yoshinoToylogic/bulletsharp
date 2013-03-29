@@ -12,6 +12,7 @@ FIND_PATH(BULLET_INCLUDE_DIR NAMES btBulletCollisionCommon.h
   NO_DEFAULT_PATH
 )
 INCLUDE_DIRECTORIES(${BULLET_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${BULLET_INCLUDE_DIR}/../Extras/Serialize/BulletWorldImporter/)
 
 IF(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
 	SET(BULLET_LIB_DIR ${BULLET_INCLUDE_DIR}/..)
@@ -19,6 +20,8 @@ IF(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletDynamics)
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletSoftBody)
 	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/LinearMath)
+	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletWorldImporter)
+	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletXmlWorldImporter)
 	SET(BULLETC_LIB bulletc)
 ELSE()
 	IF(${CMAKE_GENERATOR} MATCHES "Visual Studio 9 2008")
@@ -51,6 +54,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btBroadphaseInterface_wrap.h
     src/btBroadphaseProxy_wrap.cpp
     src/btBroadphaseProxy_wrap.h
+    src/btBulletXmlWorldImporter_wrap.cpp
+    src/btBulletXmlWorldImporter_wrap.h
     src/btCapsuleShape_wrap.cpp
     src/btCapsuleShape_wrap.h
     src/btCharacterControllerInterface_wrap.cpp
@@ -149,3 +154,5 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletCollision${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletDynamics${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} LinearMath${LIB_SUFFIX})
+TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletWorldImporter${LIB_SUFFIX})
+TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletXmlWorldImporter${LIB_SUFFIX})

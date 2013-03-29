@@ -50,7 +50,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBBULLETNET_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\bullet\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\bullet\src\;..\..\bullet\Extras\Serialize\BulletWorldImporter</AdditionalIncludeDirectories>
       <CallingConvention>Cdecl</CallingConvention>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -58,7 +58,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>..\..\bullet\msvc\2010\lib\Debug</AdditionalLibraryDirectories>
-      <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;BulletWorldImporter_Debug.lib;BulletXmlWorldImporter_Debug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -69,7 +69,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBBULLETNET_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\..\bullet\src\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\..\bullet\src\;..\..\bullet\Extras\Serialize\BulletWorldImporter</AdditionalIncludeDirectories>
       <CallingConvention>Cdecl</CallingConvention>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions</EnableEnhancedInstructionSet>
     </ClCompile>
@@ -78,7 +78,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib;BulletWorldImporter_MinsizeRel.lib;BulletXmlWorldImporter_MinsizeRel.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\bullet\msvc\2010\lib\MinSizeRel</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -89,6 +89,7 @@
     <ClInclude Include="src\btBoxShape_wrap.h" />
     <ClInclude Include="src\btBroadphaseInterface_wrap.h" />
     <ClInclude Include="src\btBroadphaseProxy_wrap.h" />
+    <ClInclude Include="src\btBulletXmlWorldImporter_wrap.h" />
     <ClInclude Include="src\btCapsuleShape_wrap.h" />
     <ClInclude Include="src\btCharacterControllerInterface_wrap.h" />
     <ClInclude Include="src\btCollisionConfiguration_wrap.h" />
@@ -155,6 +156,7 @@
     <ClCompile Include="src\btBoxShape_wrap.cpp" />
     <ClCompile Include="src\btBroadphaseInterface_wrap.cpp" />
     <ClCompile Include="src\btBroadphaseProxy_wrap.cpp" />
+    <ClCompile Include="src\btBulletXmlWorldImporter_wrap.cpp" />
     <ClCompile Include="src\btCapsuleShape_wrap.cpp" />
     <ClCompile Include="src\btCharacterControllerInterface_wrap.cpp" />
     <ClCompile Include="src\btCollisionConfiguration_wrap.cpp" />
