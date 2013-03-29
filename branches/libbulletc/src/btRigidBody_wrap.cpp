@@ -397,7 +397,7 @@ int btRigidBody_getNumConstraintRefs(btRigidBody* obj)
 
 void btRigidBody_getOrientation(btRigidBody* obj, btScalar* value)
 {
-	QUATERNION_OUT(obj->getOrientation(), value);
+	QUATERNION_OUT2(obj->getOrientation(), value);
 }
 
 void btRigidBody_getTotalForce(btRigidBody* obj, btScalar* value)

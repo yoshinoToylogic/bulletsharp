@@ -55,7 +55,7 @@ namespace BulletSharp
 
 		public TypedConstraint GetConstraint(int index)
 		{
-            return new TypedConstraint(btDynamicsWorld_getConstraint(_native, index));
+            return TypedConstraint.GetManaged(btDynamicsWorld_getConstraint(_native, index));
 		}
 
 		public void RemoveAction(ActionInterface action)

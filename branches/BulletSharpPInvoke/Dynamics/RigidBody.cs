@@ -353,7 +353,7 @@ namespace BulletSharp
 
 		public TypedConstraint GetConstraintRef(int index)
 		{
-			return new TypedConstraint(btRigidBody_getConstraintRef(_native, index));
+			return TypedConstraint.GetManaged(btRigidBody_getConstraintRef(_native, index));
 		}
 
         public Vector3 GetVelocityInLocalPoint(Vector3 rel_pos)

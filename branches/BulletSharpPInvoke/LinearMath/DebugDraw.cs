@@ -32,6 +32,7 @@ namespace BulletSharp
         internal IntPtr _native;
 
         delegate void DrawBoxUnmanagedDelegate([In] ref Vector3 bbMin, [In] ref Vector3 bbMax, [In] ref Matrix trans, [In] ref Vector3 color);
+        delegate void DrawCapsuleUnmanagedDelegate(float radius, float halfHeight, int upAxis, [In] ref Matrix transform, [In] ref Vector3 color);
         delegate void DrawLineUnmanagedDelegate([In] ref Vector3 from, [In] ref Vector3 to, [In] ref Vector3 color);
         delegate void DrawSphereUnmanagedDelegate(float radius, [In] ref Matrix transform, [In] ref Vector3 color);
         delegate void DrawTransformUnmanagedDelegate([In] ref Matrix transform, float orthoLen);
@@ -39,6 +40,7 @@ namespace BulletSharp
         delegate DebugDrawModes GetDebugModeUnmanagedDelegate();
 
         DrawBoxUnmanagedDelegate _drawBox;
+        DrawCapsuleUnmanagedDelegate _drawCapsule;
         DrawLineUnmanagedDelegate _drawLine;
         DrawSphereUnmanagedDelegate _drawSphere;
         DrawTransformUnmanagedDelegate _drawTransform;
@@ -95,6 +97,7 @@ namespace BulletSharp
         public DebugDraw()
         {
             _drawBox = new DrawBoxUnmanagedDelegate(DrawBox);
+            _drawCapsule = new DrawCapsuleUnmanagedDelegate(DrawCapsule);
             _drawLine = new DrawLineUnmanagedDelegate(DrawLine);
             _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphere);
             _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransform);
@@ -104,6 +107,7 @@ namespace BulletSharp
             _native = btIDebugDrawWrapper_new(
                 GCHandle.ToIntPtr(GCHandle.Alloc(this)),
                 Marshal.GetFunctionPointerForDelegate(_drawBox),
+                Marshal.GetFunctionPointerForDelegate(_drawCapsule),
                 Marshal.GetFunctionPointerForDelegate(_drawLine),
                 Marshal.GetFunctionPointerForDelegate(_drawSphere),
                 Marshal.GetFunctionPointerForDelegate(_drawTransform),
@@ -170,10 +174,12 @@ namespace BulletSharp
         public virtual void DrawSphere(float radius, ref Matrix transform, ref Vector3 color)
         {
             Vector3 start = transform.TranslationVector;
+            Matrix basis = transform;
+            basis.TranslationVector = Vector3.Zero;
 
-            Vector3 xoffs = Vector3.TransformCoordinate(new Vector3(radius, 0, 0), transform);
-            Vector3 yoffs = Vector3.TransformCoordinate(new Vector3(0, radius, 0), transform);
-            Vector3 zoffs = Vector3.TransformCoordinate(new Vector3(0, 0, radius), transform);
+            Vector3 xoffs = Vector3.TransformCoordinate(new Vector3(radius, 0, 0), basis);
+            Vector3 yoffs = Vector3.TransformCoordinate(new Vector3(0, radius, 0), basis);
+            Vector3 zoffs = Vector3.TransformCoordinate(new Vector3(0, 0, radius), basis);
 
             // XY 
             DrawLine(start - xoffs, start + yoffs, color);
@@ -418,7 +424,7 @@ namespace BulletSharp
         }
 
         public virtual void DrawCapsule(float radius, float halfHeight, int upAxis, ref Matrix transform, ref Vector3 color)
-        {/*
+        {
             Vector3 capStart = Vector3.Zero; ;
             capStart[upAxis] = -halfHeight;
 
@@ -428,37 +434,36 @@ namespace BulletSharp
             // Draw the ends
             {
                 Matrix childTransform = transform;
-                childTransform.Translation = transform * capStart;
+                childTransform.TranslationVector = Vector3.TransformCoordinate(capStart, transform);
                 DrawSphere(radius, ref childTransform, ref color);
             }
 
             {
                 Matrix childTransform = transform;
-                childTransform.Translation = transform * capEnd;
+                childTransform.TranslationVector = Vector3.TransformCoordinate(capEnd, transform);
                 DrawSphere(radius, ref childTransform, ref color);
             }
 
             // Draw some additional lines
             Vector3 start = transform.TranslationVector;
+            Matrix basis = transform;
+            basis.TranslationVector = Vector3.Zero;
 
             capStart[(upAxis + 1) % 3] = radius;
             capEnd[(upAxis + 1) % 3] = radius;
-
-            DrawLine(start + transform * capStart, start + transform * capEnd, color);
+            DrawLine(start + Vector3.TransformCoordinate(capStart, basis), start + Vector3.TransformCoordinate(capEnd, basis), color);
 
             capStart[(upAxis + 1) % 3] = -radius;
             capEnd[(upAxis + 1) % 3] = -radius;
-            DrawLine(start + transform * capStart, start + transform * capEnd, color);
-
+            DrawLine(start + Vector3.TransformCoordinate(capStart, basis), start + Vector3.TransformCoordinate(capEnd, basis), color);
 
             capStart[(upAxis + 2) % 3] = radius;
             capEnd[(upAxis + 2) % 3] = radius;
-            DrawLine(start + transform * capStart, start + transform * capEnd, color);
-
+            DrawLine(start + Vector3.TransformCoordinate(capStart, basis), start + Vector3.TransformCoordinate(capEnd, basis), color);
 
             capStart[(upAxis + 2) % 3] = -radius;
             capEnd[(upAxis + 2) % 3] = -radius;
-            DrawLine(start + transform * capStart, start + transform * capEnd, color);*/
+            DrawLine(start + Vector3.TransformCoordinate(capStart, basis), start + Vector3.TransformCoordinate(capEnd, basis), color);
         }
 
         public virtual void DrawCylinder(float radius, float halfHeight, int upAxis, ref Matrix transform, ref Vector3 color)
@@ -506,8 +511,8 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btIDebugDrawWrapper_new(IntPtr debugDrawGCHandle, IntPtr drawBoxCallback, IntPtr drawLineCallback,
-            IntPtr drawSphereCallback, IntPtr drawTransformCallback, IntPtr getDebugModeCallback, IntPtr cb);
+        static extern IntPtr btIDebugDrawWrapper_new(IntPtr debugDrawGCHandle, IntPtr drawBoxCallback, IntPtr drawCapsuleCallback,
+            IntPtr drawLineCallback, IntPtr drawSphereCallback, IntPtr drawTransformCallback, IntPtr getDebugModeCallback, IntPtr cb);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btIDebugDrawWrapper_getDebugDrawGCHandle(IntPtr obj);
     }

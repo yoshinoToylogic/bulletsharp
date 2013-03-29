@@ -29,9 +29,29 @@ namespace BulletSharp
     {
         internal IntPtr _native;
 
+        internal static TypedConstraint GetManaged(IntPtr native)
+        {
+            IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(native);
+            if (handlePtr.ToInt64() != -1)
+            {
+                GCHandle handle = GCHandle.FromIntPtr(handlePtr);
+                return handle.Target as TypedConstraint;
+            }
+
+            throw new NotImplementedException();
+        }
+
         internal TypedConstraint(IntPtr native)
         {
             _native = native;
+
+            if (btTypedConstraint_getUserConstraintPtr(_native).ToInt64() != -1)
+            {
+                throw new InvalidOperationException();
+            }
+
+            GCHandle handle = GCHandle.Alloc(this);
+            btTypedConstraint_setUserConstraintPtr(_native, GCHandle.ToIntPtr(handle));
         }
 
         public int CalculateSerializeBufferSize()
@@ -150,17 +170,13 @@ namespace BulletSharp
             set { btTypedConstraint_setUserConstraintId(_native, value); }
         }
 
-        public IntPtr UserConstraintPtr
-        {
-            get { return btTypedConstraint_getUserConstraintPtr(_native); }
-            set { btTypedConstraint_setUserConstraintPtr(_native, value); }
-        }
-
         public TypedConstraintType UseConstraintType
         {
             get { return btTypedConstraint_getUserConstraintType(_native); }
             set { btTypedConstraint_setUserConstraintType(_native, value); }
         }
+
+        public Object Userobject { get; set; }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btTypedConstraint_delete(IntPtr obj);
@@ -240,9 +256,13 @@ namespace BulletSharp
         {
             if (_native != IntPtr.Zero)
             {
-                btTypedConstraint_delete(_native);
+                IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(_native);
+                if (handlePtr.ToInt64() != -1)
+                {
+                    GCHandle.FromIntPtr(handlePtr).Free();
+                    btTypedConstraint_delete(_native);
+                }
                 _native = IntPtr.Zero;
-
             }
         }
 
