@@ -1,12 +1,14 @@
 #include "btIDebugDraw_wrap.h"
 
-btIDebugDrawWrapper::btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawBox drawBoxCallback, pDrawCapsule drawCapsule, pDrawLine drawLineCallback,
+btIDebugDrawWrapper::btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawBox drawBoxCallback,
+	pDrawCapsule drawCapsuleCallback, pDrawLine drawLineCallback, pDrawPlane drawPlaneCallback,
 	pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
 {
 	_debugDrawGCHandle = debugDrawGCHandle;
 	_drawBoxCallback = drawBoxCallback;
-	_drawCapsule = drawCapsule;
+	_drawCapsuleCallback = drawCapsuleCallback;
 	_drawLineCallback = drawLineCallback;
+	_drawPlaneCallback = drawPlaneCallback;
 	_drawSphereCallback = drawSphereCallback;
 	_drawTransformCallback = drawTransformCallback;
 	_getDebugModeCallback = getDebugModeCallback;
@@ -62,7 +64,7 @@ void btIDebugDrawWrapper::drawCapsule(btScalar radius, btScalar halfHeight, int 
 {
 	ATTRIBUTE_ALIGNED16(btScalar) transformTemp[16];
 	btTransformToMatrix(&transform, transformTemp);
-	_drawCapsule(radius, halfHeight, upAxis, transformTemp, color);
+	_drawCapsuleCallback(radius, halfHeight, upAxis, transformTemp, color);
 }
 
 void btIDebugDrawWrapper::drawCone(btScalar radius, btScalar height, int upAxis, const btTransform& transform, const btVector3& color)
@@ -98,8 +100,9 @@ void btIDebugDrawWrapper::drawLine(const btVector3& from, const btVector3& to, c
 
 void btIDebugDrawWrapper::drawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color)
 {
-	_cb(9);
-	//_debugDraw->DrawPlane(Math::BtVector3ToVector3(&planeNormal), planeConst, Math::BtTransformToMatrix(&transform), BtVectorToBtColor(color));
+	ATTRIBUTE_ALIGNED16(btScalar) transformTemp[16];
+	btTransformToMatrix(&transform, transformTemp);
+	_drawPlaneCallback(planeNormal, planeConst, transformTemp, color);
 }
 
 void btIDebugDrawWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
@@ -192,11 +195,6 @@ void btIDebugDrawWrapper::baseDrawLine(const btVector3& from, const btVector3& t
 	btIDebugDraw::drawLine(from, to, fromColor, toColor);
 }
 
-void btIDebugDrawWrapper::baseDrawPlane(const btVector3& planeNormal, btScalar planeConst, const btTransform& transform, const btVector3& color)
-{
-	btIDebugDraw::drawPlane(planeNormal, planeConst, transform, color);
-}
-
 void btIDebugDrawWrapper::baseDrawSphere(const btVector3& p, btScalar radius, const btVector3& color)
 {
 	btIDebugDraw::drawSphere(p, radius, color);
@@ -241,9 +239,9 @@ int	btIDebugDrawWrapper::getDebugMode() const
 }
 
 btIDebugDrawWrapper* btIDebugDrawWrapper_new(void* debugDrawGCHandle, pDrawBox drawBoxCallback, pDrawCapsule drawCapsule, pDrawLine drawLineCallback,
-	pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
+	pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
 {
-	return new btIDebugDrawWrapper(debugDrawGCHandle, drawBoxCallback, drawCapsule, drawLineCallback, drawSphereCallback, drawTransformCallback, getDebugModeCallback, cb);
+	return new btIDebugDrawWrapper(debugDrawGCHandle, drawBoxCallback, drawCapsule, drawLineCallback, drawPlaneCallback, drawSphereCallback, drawTransformCallback, getDebugModeCallback, cb);
 }
 
 void* btIDebugDrawWrapper_getDebugDrawGCHandle(btIDebugDrawWrapper* obj)

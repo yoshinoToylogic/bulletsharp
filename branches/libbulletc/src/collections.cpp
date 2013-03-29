@@ -1,5 +1,10 @@
 #include "collections.h"
 
+btCompoundShapeChild* btCompoundShapeChild_array_at(btCompoundShapeChild* a, int n)
+{
+	return &a[n];
+}
+
 unsigned int uint_array_at(const unsigned int* a, int n)
 {
 	return a[n];
