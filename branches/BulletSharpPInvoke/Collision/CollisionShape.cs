@@ -25,6 +25,12 @@ namespace BulletSharp
             {
                 case BroadphaseNativeType.BoxShape:
                     return new BoxShape(obj);
+                case BroadphaseNativeType.CompoundShape:
+                    return new CompoundShape(obj);
+                case BroadphaseNativeType.ConvexHullShape:
+                    return new ConvexHullShape(obj);
+                case BroadphaseNativeType.StaticPlane:
+                    return new StaticPlaneShape(obj);
             }
             throw new NotImplementedException();
             return new CollisionShape(obj);
@@ -79,7 +85,7 @@ namespace BulletSharp
         /*
 		public char Serialize(IntPtr dataBuffer, Serializer serializer)
 		{
-			return btCollisionShape_serialize(_native, dataBuffer._native, serializer._native);
+			return btCollisionShape_serialize(_native, dataBuffer, serializer._native);
 		}
 
 		public void SerializeSingleShape(Serializer serializer)
@@ -154,7 +160,7 @@ namespace BulletSharp
 			set { btCollisionShape_setMargin(_native, value); }
 		}
         /*
-		public char Name
+		public string Name
 		{
 			get { return btCollisionShape_getName(_native); }
 		}
@@ -205,7 +211,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionShape_getMargin(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCollisionShape_getName(IntPtr obj);
+        [return: MarshalAs(UnmanagedType.LPStr)]
+		static extern string btCollisionShape_getName(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern BroadphaseNativeType btCollisionShape_getShapeType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

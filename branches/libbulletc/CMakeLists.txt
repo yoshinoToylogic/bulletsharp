@@ -111,6 +111,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDispatcher_wrap.h
     src/btDynamicsWorld_wrap.cpp
     src/btDynamicsWorld_wrap.h
+    src/btGearConstraint_wrap.cpp
+    src/btGearConstraint_wrap.h
     src/btGeneric6DofConstraint_wrap.cpp
     src/btGeneric6DofConstraint_wrap.h
     src/btGeometryUtil_wrap.cpp

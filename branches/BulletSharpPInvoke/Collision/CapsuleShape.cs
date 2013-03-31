@@ -43,6 +43,11 @@ namespace BulletSharp
 
 	public class CapsuleShapeX : CapsuleShape
 	{
+        internal CapsuleShapeX(IntPtr native)
+            : base(native)
+        {
+        }
+
 		public CapsuleShapeX(float radius, float height)
             : base(btCapsuleShapeX_new(radius, height))
 		{
@@ -54,6 +59,11 @@ namespace BulletSharp
 
 	public class CapsuleShapeZ : CapsuleShape
 	{
+        internal CapsuleShapeZ(IntPtr native)
+            : base(native)
+        {
+        }
+
 		public CapsuleShapeZ(float radius, float height)
             : base(btCapsuleShapeZ_new(radius, height))
 		{

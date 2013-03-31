@@ -65,6 +65,7 @@
     <Compile Include="Collision\DbvtBroadphase.cs" />
     <Compile Include="Collision\Dispatcher.cs" />
     <Compile Include="Collision\PolyhedralConvexShape.cs" />
+    <Compile Include="Collision\StaticPlaneShape.cs" />
     <Compile Include="Collision\VoronoiSimplexSolver.cs" />
     <Compile Include="Dynamics\CharacterControllerInterface.cs" />
     <Compile Include="Dynamics\CollisionConfiguration.cs" />
@@ -76,6 +77,7 @@
     <Compile Include="Dynamics\ContactSolverInfo.cs" />
     <Compile Include="Dynamics\DiscreteDynamicsWorld.cs" />
     <Compile Include="Dynamics\DynamicsWorld.cs" />
+    <Compile Include="Dynamics\GearConstraint.cs" />
     <Compile Include="Dynamics\Generic6DofConstraint.cs" />
     <Compile Include="Dynamics\HingeConstraint.cs" />
     <Compile Include="Dynamics\KinematicCharacterController.cs" />
@@ -83,7 +85,9 @@
     <Compile Include="Dynamics\RigidBody.cs" />
     <Compile Include="Dynamics\SequentialImpulseConstraintSolver.cs" />
     <Compile Include="Dynamics\TypedConstraint.cs" />
+    <Compile Include="Extras\BulletWorldImporter.cs" />
     <Compile Include="Extras\BulletXmlWorldImporter.cs" />
+    <Compile Include="Extras\WorldImporter.cs" />
     <Compile Include="LinearMath\AlignedCollisionObjectArray.cs" />
     <Compile Include="LinearMath\AlignedObjectArray.cs" />
     <Compile Include="LinearMath\AlignedVector3Array.cs" />
@@ -95,6 +99,7 @@
     <Compile Include="LinearMath\Matrix.cs" />
     <Compile Include="LinearMath\MotionState.cs" />
     <Compile Include="LinearMath\Quaternion.cs" />
+    <Compile Include="LinearMath\Serializer.cs" />
     <Compile Include="LinearMath\Vector3.cs" />
     <Compile Include="LinearMath\Vector4.cs" />
     <Compile Include="MathUtil.cs">
