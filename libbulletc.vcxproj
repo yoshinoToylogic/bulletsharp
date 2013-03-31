@@ -117,6 +117,7 @@
     <ClInclude Include="src\btDiscreteDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btDispatcher_wrap.h" />
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
+    <ClInclude Include="src\btGearConstraint_wrap.h" />
     <ClInclude Include="src\btGeneric6DofConstraint_wrap.h" />
     <ClInclude Include="src\btGeometryUtil_wrap.h" />
     <ClInclude Include="src\btGhostObject_wrap.h" />
@@ -187,6 +188,7 @@
     <ClCompile Include="src\btDiscreteDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btDispatcher_wrap.cpp" />
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
+    <ClCompile Include="src\btGearConstraint_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofConstraint_wrap.cpp" />
     <ClCompile Include="src\btGeometryUtil_wrap.cpp" />
     <ClCompile Include="src\btGhostObject_wrap.cpp" />
