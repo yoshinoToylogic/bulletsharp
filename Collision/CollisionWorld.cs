@@ -870,12 +870,12 @@ namespace BulletSharp
 		{
 			btCollisionWorld_objectQuerySingle(castShape._native, ref rayFromTrans, ref rayToTrans, collisionObject._native, collisionShape._native, ref colObjWorldTransform, resultCallback._native, allowedPenetration);
 		}
-        /*
+
         public void ObjectQuerySingleInternal(ConvexShape castShape, Matrix convexFromTrans, Matrix convexToTrans, CollisionObjectWrapper colObjWrap, ConvexResultCallback resultCallback, float allowedPenetration)
 		{
 			btCollisionWorld_objectQuerySingleInternal(castShape._native, ref convexFromTrans, ref convexToTrans, colObjWrap._native, resultCallback._native, allowedPenetration);
 		}
-        */
+
 		public void PerformDiscreteCollisionDetection()
 		{
 			btCollisionWorld_performDiscreteCollisionDetection(_native);
@@ -890,22 +890,22 @@ namespace BulletSharp
 		{
 			btCollisionWorld_rayTestSingle(ref rayFromTrans, ref rayToTrans, collisionObject._native, collisionShape._native, ref colObjWorldTransform, resultCallback._native);
 		}
-        /*
+
         public void RayTestSingleInternal(Matrix rayFromTrans, Matrix rayToTrans, CollisionObjectWrapper collisionObjectWrap, RayResultCallback resultCallback)
 		{
 			btCollisionWorld_rayTestSingleInternal(ref rayFromTrans, ref rayToTrans, collisionObjectWrap._native, resultCallback._native);
 		}
-        */
+
 		public void RemoveCollisionObject(CollisionObject collisionObject)
 		{
 			btCollisionWorld_removeCollisionObject(_native, collisionObject._native);
 		}
-        /*
+
 		public void Serialize(Serializer serializer)
 		{
 			btCollisionWorld_serialize(_native, serializer._native);
 		}
-        */
+
 		public void UpdateAabbs()
 		{
 			btCollisionWorld_updateAabbs(_native);
@@ -1037,7 +1037,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_objectQuerySingle(IntPtr castShape, [In] ref Matrix rayFromTrans, [In] ref Matrix rayToTrans, IntPtr collisionObject, IntPtr collisionShape, [In] ref Matrix colObjWorldTransform, IntPtr resultCallback, float allowedPenetration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_objectQuerySingleInternal(IntPtr castShape, IntPtr convexFromTrans, IntPtr convexToTrans, IntPtr colObjWrap, IntPtr resultCallback, float allowedPenetration);
+        static extern void btCollisionWorld_objectQuerySingleInternal(IntPtr castShape, [In] ref Matrix convexFromTrans, [In] ref Matrix convexToTrans, IntPtr colObjWrap, IntPtr resultCallback, float allowedPenetration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_performDiscreteCollisionDetection(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

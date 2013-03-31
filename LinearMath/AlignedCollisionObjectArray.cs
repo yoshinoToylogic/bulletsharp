@@ -2,9 +2,34 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Diagnostics;
 
 namespace BulletSharp
 {
+    public class AlignedCollisionObjectArrayDebugView
+    {
+        private AlignedCollisionObjectArray _array;
+
+        public AlignedCollisionObjectArrayDebugView(AlignedCollisionObjectArray array)
+        {
+            _array = array;
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
+        public CollisionObject[] Items
+        {
+            get
+            {
+                CollisionObject[] array = new CollisionObject[_array.Count];
+                for (int i = 0; i < _array.Count; i++)
+                {
+                    array[i] = _array[i];
+                }
+                return array;
+            }
+        }
+    }
+
     public class AlignedCollisionObjectArrayEnumerator : IEnumerator<CollisionObject>
     {
         int _i;
@@ -44,6 +69,7 @@ namespace BulletSharp
         }
     }
 
+    [Serializable, DebuggerTypeProxy(typeof(AlignedCollisionObjectArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedCollisionObjectArray : AlignedObjectArray, IList<CollisionObject>, IDisposable
     {
         internal AlignedCollisionObjectArray(IntPtr native)

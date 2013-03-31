@@ -38,6 +38,14 @@ namespace BulletSharp
                 return handle.Target as TypedConstraint;
             }
 
+            TypedConstraintType type = btTypedConstraint_getConstraintType(native);
+            switch (type)
+            {
+                case TypedConstraintType.D6:
+                    return new Generic6DofConstraint(native);
+                default:
+                    throw new NotImplementedException();
+            }
             throw new NotImplementedException();
         }
 

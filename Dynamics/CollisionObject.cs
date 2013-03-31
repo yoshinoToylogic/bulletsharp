@@ -26,6 +26,17 @@ namespace BulletSharp
         DisableSpuCollisionProcessing = 64
     }
 
+    [Flags]
+    public enum CollisionObjectTypes
+    {
+        CollisionObject = 1,
+        RigidBody = 2,
+        GhostObject = 4,
+        SoftBody = 8,
+        HFFluid = 16,
+        UserType = 32
+    }
+
 	public class CollisionObject
 	{
 		internal IntPtr _native;
@@ -43,6 +54,13 @@ namespace BulletSharp
                 return GCHandle.FromIntPtr(userPtr).Target as CollisionObject;
             }
 
+            CollisionObjectTypes types = btCollisionObject_getInternalType(obj);
+            if ((types & CollisionObjectTypes.RigidBody) == CollisionObjectTypes.RigidBody)
+            {
+                return new RigidBody(obj);
+            }
+
+            throw new NotImplementedException();
             return new CollisionObject(obj);
         }
 
@@ -223,7 +241,7 @@ namespace BulletSharp
 			set { btCollisionObject_setHitFraction(_native, value); }
 		}
 
-		public int InternalType
+        public CollisionObjectTypes InternalType
 		{
 			get { return btCollisionObject_getInternalType(_native); }
 		}
@@ -377,7 +395,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionObject_getHitFraction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btCollisionObject_getInternalType(IntPtr obj);
+        static extern CollisionObjectTypes btCollisionObject_getInternalType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionObject_getInterpolationAngularVelocity(IntPtr obj, [Out] out Vector3 velocity);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

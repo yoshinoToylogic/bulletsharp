@@ -7,10 +7,12 @@ namespace BulletSharp
 	public class CompoundShapeChild
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal CompoundShapeChild(IntPtr native)
+		internal CompoundShapeChild(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public CompoundShapeChild()
@@ -63,7 +65,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btCompoundShapeChild_delete(_native);
+                if (!_preventDelete)
+                {
+                    btCompoundShapeChild_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -101,7 +106,7 @@ namespace BulletSharp
 
 	public class CompoundShape : CollisionShape
 	{
-        CompoundShapeChild _childList;
+        CompoundShapeChildArray _childList;
 
 		internal CompoundShape(IntPtr native)
 			: base(native)
@@ -170,13 +175,13 @@ namespace BulletSharp
 			btCompoundShape_updateChildTransform2(_native, childIndex, ref newChildTransform);
 		}
 
-		public CompoundShapeChild ChildList
+		public CompoundShapeChildArray ChildList
 		{
             get
             {
                 if (_childList == null)
                 {
-                    _childList = new CompoundShapeChild(btCompoundShape_getChildList(_native));
+                    _childList = new CompoundShapeChildArray(btCompoundShape_getChildList(_native), NumChildShapes);
                 }
                 return _childList;
             }

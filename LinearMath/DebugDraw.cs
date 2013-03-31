@@ -34,6 +34,7 @@ namespace BulletSharp
         delegate void DrawBoxUnmanagedDelegate([In] ref Vector3 bbMin, [In] ref Vector3 bbMax, [In] ref Matrix trans, [In] ref Vector3 color);
         delegate void DrawCapsuleUnmanagedDelegate(float radius, float halfHeight, int upAxis, [In] ref Matrix transform, [In] ref Vector3 color);
         delegate void DrawLineUnmanagedDelegate([In] ref Vector3 from, [In] ref Vector3 to, [In] ref Vector3 color);
+        delegate void DrawPlaneUnmanagedDelegate([In] ref Vector3 planeNormal, float planeConst, [In] ref Matrix transform, [In] ref Vector3 color);
         delegate void DrawSphereUnmanagedDelegate(float radius, [In] ref Matrix transform, [In] ref Vector3 color);
         delegate void DrawTransformUnmanagedDelegate([In] ref Matrix transform, float orthoLen);
         delegate void SimpleCallback(int x);
@@ -42,6 +43,7 @@ namespace BulletSharp
         DrawBoxUnmanagedDelegate _drawBox;
         DrawCapsuleUnmanagedDelegate _drawCapsule;
         DrawLineUnmanagedDelegate _drawLine;
+        DrawPlaneUnmanagedDelegate _drawPlane;
         DrawSphereUnmanagedDelegate _drawSphere;
         DrawTransformUnmanagedDelegate _drawTransform;
         GetDebugModeUnmanagedDelegate _getDebugMode;
@@ -99,6 +101,7 @@ namespace BulletSharp
             _drawBox = new DrawBoxUnmanagedDelegate(DrawBox);
             _drawCapsule = new DrawCapsuleUnmanagedDelegate(DrawCapsule);
             _drawLine = new DrawLineUnmanagedDelegate(DrawLine);
+            _drawPlane = new DrawPlaneUnmanagedDelegate(DrawPlane);
             _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphere);
             _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransform);
             _getDebugMode = new GetDebugModeUnmanagedDelegate(GetDebugModeUnmanaged);
@@ -109,6 +112,7 @@ namespace BulletSharp
                 Marshal.GetFunctionPointerForDelegate(_drawBox),
                 Marshal.GetFunctionPointerForDelegate(_drawCapsule),
                 Marshal.GetFunctionPointerForDelegate(_drawLine),
+                Marshal.GetFunctionPointerForDelegate(_drawPlane),
                 Marshal.GetFunctionPointerForDelegate(_drawSphere),
                 Marshal.GetFunctionPointerForDelegate(_drawTransform),
                 Marshal.GetFunctionPointerForDelegate(_getDebugMode),
@@ -495,24 +499,45 @@ namespace BulletSharp
             DrawLine(start + transform._basis * offsetHeight, start + transform._basis * -offsetHeight - offset2Radius, color);*/
         }
 
+        public static void PlaneSpace1(ref Vector3 n, out Vector3 p, out Vector3 q)
+        {
+            if (Math.Abs(n.Z) > MathUtil.SIMDSQRT12)
+            {
+                // choose p in y-z plane
+                float a = n.Y * n.Y + n.Z * n.Z;
+                float k = MathUtil.RecipSqrt(a);
+                p = new Vector3(0, -n.Z * k, n.Y * k);
+                // set q = n x p
+                q = new Vector3(a * k, -n.X * p.Z, n.X * p.Y);
+            }
+            else
+            {
+                // choose p in x-y plane
+                float a = n.X * n.X + n.Y * n.Y;
+                float k = MathUtil.RecipSqrt(a);
+                p = new Vector3(-n.Y * k, n.X * k, 0);
+                // set q = n x p
+                q = new Vector3(-n.Z * p.Y, n.Z * p.X, a * k);
+            }
+        }
+
         public virtual void DrawPlane(ref Vector3 planeNormal, float planeConst, ref Matrix transform, ref Vector3 color)
         {
-            /*
             Vector3 planeOrigin = planeNormal * planeConst;
             Vector3 vec0, vec1;
-            TransformUtil.PlaneSpace1(ref planeNormal, out vec0, out vec1);
+            PlaneSpace1(ref planeNormal, out vec0, out vec1);
             float vecLen = 100f;
             Vector3 pt0 = planeOrigin + vec0 * vecLen;
             Vector3 pt1 = planeOrigin - vec0 * vecLen;
             Vector3 pt2 = planeOrigin + vec1 * vecLen;
             Vector3 pt3 = planeOrigin - vec1 * vecLen;
-            DrawLine(transform * pt0, transform * pt1, color);
-            DrawLine(transform * pt2, transform * pt3, color);*/
+            DrawLine(Vector3.TransformCoordinate(pt0, transform), Vector3.TransformCoordinate(pt1, transform), color);
+            DrawLine(Vector3.TransformCoordinate(pt2, transform), Vector3.TransformCoordinate(pt3, transform), color);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btIDebugDrawWrapper_new(IntPtr debugDrawGCHandle, IntPtr drawBoxCallback, IntPtr drawCapsuleCallback,
-            IntPtr drawLineCallback, IntPtr drawSphereCallback, IntPtr drawTransformCallback, IntPtr getDebugModeCallback, IntPtr cb);
+            IntPtr drawLineCallback, IntPtr drawPlaneCallback, IntPtr drawSphereCallback, IntPtr drawTransformCallback, IntPtr getDebugModeCallback, IntPtr cb);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btIDebugDrawWrapper_getDebugDrawGCHandle(IntPtr obj);
     }
