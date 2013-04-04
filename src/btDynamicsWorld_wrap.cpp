@@ -20,14 +20,14 @@ void btDynamicsWorld_addConstraint2(btDynamicsWorld* obj, btTypedConstraint* con
 	obj->addConstraint(constraint);
 }
 
-void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body, short group, short mask)
-{
-	obj->addRigidBody(body, group, mask);
-}
-
-void btDynamicsWorld_addRigidBody2(btDynamicsWorld* obj, btRigidBody* body)
+void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body)
 {
 	obj->addRigidBody(body);
+}
+
+void btDynamicsWorld_addRigidBody2(btDynamicsWorld* obj, btRigidBody* body, short group, short mask)
+{
+	obj->addRigidBody(body, group, mask);
 }
 
 void btDynamicsWorld_addVehicle(btDynamicsWorld* obj, btActionInterface* vehicle)

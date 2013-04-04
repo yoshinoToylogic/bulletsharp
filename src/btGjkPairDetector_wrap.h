@@ -12,11 +12,13 @@ extern "C"
 	EXPORT void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, btDiscreteCollisionDetectorInterface::ClosestPointInput* input, btDiscreteCollisionDetectorInterface::Result* output, btIDebugDraw* debugDraw);
 	EXPORT int btGjkPairDetector_getCurIter(btGjkPairDetector* obj);
 	EXPORT int btGjkPairDetector_getDegenerateSimplex(btGjkPairDetector* obj);
+	EXPORT int btGjkPairDetector_getFixContactNormalDirection(btGjkPairDetector* obj);
 	EXPORT int btGjkPairDetector_getLastUsedMethod(btGjkPairDetector* obj);
 	EXPORT void btGjkPairDetector_setCachedSeparatingAxis(btGjkPairDetector* obj, btScalar* seperatingAxis);
 	EXPORT void btGjkPairDetector_setCatchDegeneracies(btGjkPairDetector* obj, int value);
 	EXPORT void btGjkPairDetector_setCurIter(btGjkPairDetector* obj, int value);
 	EXPORT void btGjkPairDetector_setDegenerateSimplex(btGjkPairDetector* obj, int value);
+	EXPORT void btGjkPairDetector_setFixContactNormalDirection(btGjkPairDetector* obj, int value);
 	EXPORT void btGjkPairDetector_setIgnoreMargin(btGjkPairDetector* obj, bool ignoreMargin);
 	EXPORT void btGjkPairDetector_setLastUsedMethod(btGjkPairDetector* obj, int value);
 	EXPORT void btGjkPairDetector_setMinkowskiA(btGjkPairDetector* obj, btConvexShape* minkA);

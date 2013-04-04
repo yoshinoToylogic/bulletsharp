@@ -106,6 +106,7 @@
     <ClInclude Include="src\btContactSolverInfo_wrap.h" />
     <ClInclude Include="src\btConvex2dShape_wrap.h" />
     <ClInclude Include="src\btConvexHullShape_wrap.h" />
+    <ClInclude Include="src\btConvexInternalShape_wrap.h" />
     <ClInclude Include="src\btConvexPenetrationDepthSolver_wrap.h" />
     <ClInclude Include="src\btConvexPolyhedron_wrap.h" />
     <ClInclude Include="src\btConvexShape_wrap.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="src\btContactSolverInfo_wrap.cpp" />
     <ClCompile Include="src\btConvex2dShape_wrap.cpp" />
     <ClCompile Include="src\btConvexHullShape_wrap.cpp" />
+    <ClCompile Include="src\btConvexInternalShape_wrap.cpp" />
     <ClCompile Include="src\btConvexPenetrationDepthSolver_wrap.cpp" />
     <ClCompile Include="src\btConvexPolyhedron_wrap.cpp" />
     <ClCompile Include="src\btConvexShape_wrap.cpp" />

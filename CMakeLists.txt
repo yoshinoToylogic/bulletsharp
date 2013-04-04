@@ -89,6 +89,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btConvex2dShape_wrap.h
     src/btConvexHullShape_wrap.cpp
     src/btConvexHullShape_wrap.h
+    src/btConvexInternalShape_wrap.cpp
+    src/btConvexInternalShape_wrap.h
     src/btConvexPenetrationDepthSolver_wrap.cpp
     src/btConvexPenetrationDepthSolver_wrap.h
     src/btConvexPolyhedron_wrap.cpp
