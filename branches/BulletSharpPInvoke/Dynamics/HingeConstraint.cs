@@ -12,7 +12,7 @@ namespace BulletSharp
 		}
 
 		public HingeConstraint(RigidBody rbA, RigidBody rbB, Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
-            : base(btHingeConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB, useReferenceFrameA))
+			: base(btHingeConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB, useReferenceFrameA))
 		{
 		}
 
@@ -31,22 +31,22 @@ namespace BulletSharp
 		{
 		}
 
-        public HingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
+		public HingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
 			: base(btHingeConstraint_new5(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame, useReferenceFrameA))
 		{
 		}
 
-        public HingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
+		public HingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
 			: base(btHingeConstraint_new6(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
 		{
 		}
 
-        public HingeConstraint(RigidBody rbA, Matrix rbAFrame, bool useReferenceFrameA)
+		public HingeConstraint(RigidBody rbA, Matrix rbAFrame, bool useReferenceFrameA)
 			: base(btHingeConstraint_new7(rbA._native, ref rbAFrame, useReferenceFrameA))
 		{
 		}
 
-        public HingeConstraint(RigidBody rbA, Matrix rbAFrame)
+		public HingeConstraint(RigidBody rbA, Matrix rbAFrame)
 			: base(btHingeConstraint_new8(rbA._native, ref rbAFrame))
 		{
 		}
@@ -66,22 +66,22 @@ namespace BulletSharp
             return btHingeConstraint_getEnableAngularMotor(_native);
         }
 
-        public float GetHingeAngle(Matrix transA, Matrix transB)
+		public float GetHingeAngle(Matrix transA, Matrix transB)
 		{
 			return btHingeConstraint_getHingeAngle(_native, ref transA, ref transB);
 		}
         /*
-        public void GetInfo2Internal(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 angVelA, Vector3 angVelB)
+		public void GetInfo2Internal(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 angVelA, Vector3 angVelB)
 		{
 			btHingeConstraint_getInfo2Internal(_native, info._native, ref transA, ref transB, ref angVelA, ref angVelB);
 		}
 
-        public void GetInfo2InternalUsingFrameOffset(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 angVelA, Vector3 angVelB)
+		public void GetInfo2InternalUsingFrameOffset(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 angVelA, Vector3 angVelB)
 		{
 			btHingeConstraint_getInfo2InternalUsingFrameOffset(_native, info._native, ref transA, ref transB, ref angVelA, ref angVelB);
 		}
 
-        public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 angVelA, Vector3 angVelB)
+		public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 angVelA, Vector3 angVelB)
 		{
 			btHingeConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref angVelA, ref angVelB);
 		}
@@ -91,7 +91,7 @@ namespace BulletSharp
 			btHingeConstraint_setAxis(_native, ref axisInA);
 		}
 
-        public void SetFrames(Matrix frameA, Matrix frameB)
+		public void SetFrames(Matrix frameA, Matrix frameB)
 		{
 			btHingeConstraint_setFrames(_native, ref frameA, ref frameB);
 		}
@@ -126,7 +126,7 @@ namespace BulletSharp
 			btHingeConstraint_setMotorTarget2(_native, ref qAinB, dt);
 		}
 
-        public void TestLimit(Matrix transA, Matrix transB)
+		public void TestLimit(Matrix transA, Matrix transB)
 		{
 			btHingeConstraint_testLimit(_native, ref transA, ref transB);
 		}
@@ -138,12 +138,12 @@ namespace BulletSharp
 
 		public Matrix AFrame
 		{
-            get
-            {
-                Matrix value;
-                btHingeConstraint_getAFrame(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				btHingeConstraint_getAFrame(_native, out value);
+				return value;
+			}
 		}
 
 		public bool AngularOnly
@@ -152,35 +152,35 @@ namespace BulletSharp
 			set { btHingeConstraint_setAngularOnly(_native, value); }
 		}
 
-        public Matrix BFrame
-        {
-            get
-            {
-                Matrix value;
-                btHingeConstraint_getBFrame(_native, out value);
-                return value;
-            }
-        }
+		public Matrix BFrame
+		{
+			get
+			{
+				Matrix value;
+				btHingeConstraint_getBFrame(_native, out value);
+				return value;
+			}
+		}
 
-        public Matrix FrameOffsetA
-        {
-            get
-            {
-                Matrix value;
-                btHingeConstraint_getFrameOffsetA(_native, out value);
-                return value;
-            }
-        }
+		public Matrix FrameOffsetA
+		{
+			get
+			{
+				Matrix value;
+				btHingeConstraint_getFrameOffsetA(_native, out value);
+				return value;
+			}
+		}
 
-        public Matrix FrameOffsetB
-        {
-            get
-            {
-                Matrix value;
-                btHingeConstraint_getFrameOffsetB(_native, out value);
-                return value;
-            }
-        }
+		public Matrix FrameOffsetB
+		{
+			get
+			{
+				Matrix value;
+				btHingeConstraint_getFrameOffsetB(_native, out value);
+				return value;
+			}
+		}
 
 		public float HingeAngle
 		{
@@ -230,21 +230,21 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB, [In] ref Vector3 axisInA, [In] ref Vector3 axisInB, bool useReferenceFrameA);
+		static extern IntPtr btHingeConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB, [In] ref Vector3 axisInA, [In] ref Vector3 axisInB, bool useReferenceFrameA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new2(IntPtr rbA, IntPtr rbB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB, [In] ref Vector3 axisInA, [In] ref Vector3 axisInB);
+		static extern IntPtr btHingeConstraint_new2(IntPtr rbA, IntPtr rbB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB, [In] ref Vector3 axisInA, [In] ref Vector3 axisInB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new3(IntPtr rbA, [In] ref Vector3 pivotInA, [In] ref Vector3 axisInA, bool useReferenceFrameA);
+		static extern IntPtr btHingeConstraint_new3(IntPtr rbA, [In] ref Vector3 pivotInA, [In] ref Vector3 axisInA, bool useReferenceFrameA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new4(IntPtr rbA, [In] ref Vector3 pivotInA, [In] ref Vector3 axisInA);
+		static extern IntPtr btHingeConstraint_new4(IntPtr rbA, [In] ref Vector3 pivotInA, [In] ref Vector3 axisInA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new5(IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame, bool useReferenceFrameA);
+		static extern IntPtr btHingeConstraint_new5(IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame, bool useReferenceFrameA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new6(IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame);
+		static extern IntPtr btHingeConstraint_new6(IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new7(IntPtr rbA, [In] ref Matrix rbAFrame, bool useReferenceFrameA);
+		static extern IntPtr btHingeConstraint_new7(IntPtr rbA, [In] ref Matrix rbAFrame, bool useReferenceFrameA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btHingeConstraint_new8(IntPtr rbA, [In] ref Matrix rbAFrame);
+		static extern IntPtr btHingeConstraint_new8(IntPtr rbA, [In] ref Matrix rbAFrame);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_enableAngularMotor(IntPtr obj, bool enableMotor, float targetVelocity, float maxMotorImpulse);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -252,7 +252,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btHingeConstraint_getAFrame(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btHingeConstraint_getAngularOnly(IntPtr obj);
+		static extern bool btHingeConstraint_getAngularOnly(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btHingeConstraint_getBFrame(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -262,17 +262,17 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_getFrameOffsetB(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern float btHingeConstraint_getHingeAngle(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
+		static extern float btHingeConstraint_getHingeAngle(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btHingeConstraint_getHingeAngle2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_getInfo1NonVirtual(IntPtr obj, IntPtr info);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btHingeConstraint_getInfo2Internal(IntPtr obj, IntPtr info, IntPtr transA, IntPtr transB, IntPtr angVelA, IntPtr angVelB);
+		static extern void btHingeConstraint_getInfo2Internal(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btHingeConstraint_getInfo2InternalUsingFrameOffset(IntPtr obj, IntPtr info, IntPtr transA, IntPtr transB, IntPtr angVelA, IntPtr angVelB);
+		static extern void btHingeConstraint_getInfo2InternalUsingFrameOffset(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btHingeConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, IntPtr transA, IntPtr transB, IntPtr angVelA, IntPtr angVelB);
+		static extern void btHingeConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btHingeConstraint_getLimitSign(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -290,9 +290,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_setAngularOnly(IntPtr obj, bool angularOnly);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btHingeConstraint_setAxis(IntPtr obj, [In] ref Vector3 axisInA);
+		static extern void btHingeConstraint_setAxis(IntPtr obj, [In] ref Vector3 axisInA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btHingeConstraint_setFrames(IntPtr obj, [In] ref Matrix frameA, [In] ref Matrix frameB);
+		static extern void btHingeConstraint_setFrames(IntPtr obj, [In] ref Matrix frameA, [In] ref Matrix frameB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_setLimit(IntPtr obj, float low, float high, float _softness, float _biasFactor, float _relaxationFactor);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -310,7 +310,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_setUseFrameOffset(IntPtr obj, bool frameOffsetOnOff);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btHingeConstraint_testLimit(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
+		static extern void btHingeConstraint_testLimit(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btHingeConstraint_updateRHS(IntPtr obj, float timeStep);
 	}

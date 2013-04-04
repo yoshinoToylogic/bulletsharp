@@ -15,6 +15,14 @@ namespace BulletSharp
     }
 
     [Flags]
+    public enum AnisotropicFrictionFlags
+    {
+        AnisotropicFrictionDisabled = 0,
+        AnisotropicFriction = 1,
+        AnisotropicRollingFriction = 2
+    }
+
+    [Flags]
     public enum CollisionFlags
     {
         StaticObject = 1,
@@ -109,7 +117,7 @@ namespace BulletSharp
             btCollisionObject_getWorldTransform(_native, out transform);
         }
 
-		public bool HasAnisotropicFriction(int frictionMode)
+        public bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode)
 		{
 			return btCollisionObject_hasAnisotropicFriction(_native, frictionMode);
 		}
@@ -136,15 +144,15 @@ namespace BulletSharp
         /*
 		public char Serialize(IntPtr dataBuffer, Serializer serializer)
 		{
-			return btCollisionObject_serialize(_native, dataBuffer._native, serializer._native);
+			return btCollisionObject_serialize(_native, dataBuffer, serializer._native);
 		}
-
+        */
 		public void SerializeSingleObject(Serializer serializer)
 		{
 			btCollisionObject_serializeSingleObject(_native, serializer._native);
 		}
-        */
-		public void SetAnisotropicFriction(Vector3 anisotropicFriction, int frictionMode)
+
+        public void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
 		{
 			btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction, frictionMode);
 		}
@@ -160,16 +168,16 @@ namespace BulletSharp
 			set { btCollisionObject_setActivationState(_native, value); }
 		}
 
-        public Vector3 AnisotropicFriction
-        {
-            get
-            {
-                Vector3 friction;
-                btCollisionObject_getAnisotropicFriction(_native, out friction);
-                return friction;
-            }
+		public Vector3 AnisotropicFriction
+		{
+			get
+			{
+				Vector3 value;
+				btCollisionObject_getAnisotropicFriction(_native, out value);
+				return value;
+			}
             set { btCollisionObject_setAnisotropicFriction2(_native, ref value); }
-        }
+		}
 
 		public BroadphaseProxy BroadphaseHandle
 		{
@@ -246,44 +254,38 @@ namespace BulletSharp
 			get { return btCollisionObject_getInternalType(_native); }
 		}
 
-        public Vector3 InterpolationAngularVelocity
-        {
-            get
-            {
-                Vector3 velocity;
-                btCollisionObject_getInterpolationAngularVelocity(_native, out velocity);
-                return velocity;
-            }
-            set
-            {
-                btCollisionObject_setInterpolationAngularVelocity(_native, ref value);
-            }
-        }
+		public Vector3 InterpolationAngularVelocity
+		{
+			get
+			{
+				Vector3 value;
+				btCollisionObject_getInterpolationAngularVelocity(_native, out value);
+				return value;
+			}
+			set { btCollisionObject_setInterpolationAngularVelocity(_native, ref value); }
+		}
 
-        public Vector3 InterpolationLinearVelocity
-        {
-            get
-            {
-                Vector3 velocity;
-                btCollisionObject_getInterpolationLinearVelocity(_native, out velocity);
-                return velocity;
-            }
-            set
-            {
-                btCollisionObject_setInterpolationLinearVelocity(_native, ref value);
-            }
-        }
+		public Vector3 InterpolationLinearVelocity
+		{
+			get
+			{
+				Vector3 value;
+				btCollisionObject_getInterpolationLinearVelocity(_native, out value);
+				return value;
+			}
+			set { btCollisionObject_setInterpolationLinearVelocity(_native, ref value); }
+		}
 
-        public Matrix InterpolationWorldTransform
-        {
-            get
-            {
-                Matrix transform;
-                btCollisionObject_getInterpolationWorldTransform(_native, out transform);
-                return transform;
-            }
-            set { btCollisionObject_setInterpolationWorldTransform(_native, ref value); }
-        }
+		public Matrix InterpolationWorldTransform
+		{
+			get
+			{
+				Matrix value;
+				btCollisionObject_getInterpolationWorldTransform(_native, out value);
+				return value;
+			}
+			set { btCollisionObject_setInterpolationWorldTransform(_native, ref value); }
+		}
 
 		public bool IsActive
 		{
@@ -325,16 +327,16 @@ namespace BulletSharp
 
         public object UserObject { get; set; }
 
-        public Matrix WorldTransform
-        {
-            get
-            {
-                Matrix transform;
-                btCollisionObject_getWorldTransform(_native, out transform);
-                return transform;
-            }
-            set { btCollisionObject_setWorldTransform(_native, ref value); }
-        }
+		public Matrix WorldTransform
+		{
+			get
+			{
+				Matrix value;
+				btCollisionObject_getWorldTransform(_native, out value);
+				return value;
+			}
+			set { btCollisionObject_setWorldTransform(_native, ref value); }
+		}
 
 		public void Dispose()
 		{
@@ -413,7 +415,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionObject_getWorldTransform(IntPtr obj, [Out] out Matrix transform);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btCollisionObject_hasAnisotropicFriction(IntPtr obj, int frictionMode);
+        static extern bool btCollisionObject_hasAnisotropicFriction(IntPtr obj, AnisotropicFrictionFlags frictionMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btCollisionObject_hasAnisotropicFriction2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -439,9 +441,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionObject_setActivationState(IntPtr obj, ActivationState newState);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionObject_setAnisotropicFriction(IntPtr obj, [In] ref Vector3 anisotropicFriction, int frictionMode);
+        static extern void btCollisionObject_setAnisotropicFriction(IntPtr obj, [In] ref Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_setAnisotropicFriction2(IntPtr obj, [In] ref Vector3 anisotropicFriction);
+		static extern void btCollisionObject_setAnisotropicFriction2(IntPtr obj, [In] ref Vector3 anisotropicFriction);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_setBroadphaseHandle(IntPtr obj, IntPtr handle);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -465,9 +467,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_setInterpolationAngularVelocity(IntPtr obj, [In] ref Vector3 angvel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_setInterpolationLinearVelocity(IntPtr obj, [In] ref Vector3 linvel);
+		static extern void btCollisionObject_setInterpolationLinearVelocity(IntPtr obj, [In] ref Vector3 linvel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_setInterpolationWorldTransform(IntPtr obj, [In] ref Matrix trans);
+		static extern void btCollisionObject_setInterpolationWorldTransform(IntPtr obj, [In] ref Matrix trans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_setIslandTag(IntPtr obj, int tag);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

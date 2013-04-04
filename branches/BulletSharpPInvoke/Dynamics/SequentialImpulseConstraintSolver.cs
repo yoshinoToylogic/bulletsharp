@@ -6,8 +6,13 @@ namespace BulletSharp
 {
 	public class SequentialImpulseConstraintSolver : ConstraintSolver
 	{
+		internal SequentialImpulseConstraintSolver(IntPtr native)
+			: base(native)
+		{
+		}
+
 		public SequentialImpulseConstraintSolver()
-            : base(btSequentialImpulseConstraintSolver_new())
+			: base(btSequentialImpulseConstraintSolver_new())
 		{
 		}
 

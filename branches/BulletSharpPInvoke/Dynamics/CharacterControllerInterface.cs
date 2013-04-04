@@ -69,10 +69,10 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCharacterControllerInterface_reset(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCharacterControllerInterface_setWalkDirection(IntPtr obj, [In] ref Vector3 walkDirection);
+		static extern void btCharacterControllerInterface_setWalkDirection(IntPtr obj, [In] ref Vector3 walkDirection);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCharacterControllerInterface_setVelocityForTimeInterval(IntPtr obj, [In] ref Vector3 velocity, float timeInterval);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCharacterControllerInterface_warp(IntPtr obj, [In] ref Vector3 origin);
+		static extern void btCharacterControllerInterface_warp(IntPtr obj, [In] ref Vector3 origin);
 	}
 }

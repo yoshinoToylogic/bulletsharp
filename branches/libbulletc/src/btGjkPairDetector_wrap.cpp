@@ -40,6 +40,11 @@ int btGjkPairDetector_getDegenerateSimplex(btGjkPairDetector* obj)
 	return obj->m_degenerateSimplex;
 }
 
+int btGjkPairDetector_getFixContactNormalDirection(btGjkPairDetector* obj)
+{
+	return obj->m_fixContactNormalDirection;
+}
+
 int btGjkPairDetector_getLastUsedMethod(btGjkPairDetector* obj)
 {
 	return obj->m_lastUsedMethod;
@@ -64,6 +69,11 @@ void btGjkPairDetector_setCurIter(btGjkPairDetector* obj, int value)
 void btGjkPairDetector_setDegenerateSimplex(btGjkPairDetector* obj, int value)
 {
 	obj->m_degenerateSimplex = value;
+}
+
+void btGjkPairDetector_setFixContactNormalDirection(btGjkPairDetector* obj, int value)
+{
+	obj->m_fixContactNormalDirection = value;
 }
 
 void btGjkPairDetector_setIgnoreMargin(btGjkPairDetector* obj, bool ignoreMargin)

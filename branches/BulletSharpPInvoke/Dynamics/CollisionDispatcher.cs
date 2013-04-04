@@ -19,7 +19,7 @@ namespace BulletSharp
 		}
 
 		public CollisionDispatcher(CollisionConfiguration collisionConfiguration)
-            : base(btCollisionDispatcher_new(collisionConfiguration._native))
+			: base(btCollisionDispatcher_new(collisionConfiguration._native))
 		{
 		}
 

@@ -87,6 +87,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(IntPtr obj, [Out] out Vector3 vec);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btConvexShape_project(IntPtr obj, IntPtr trans, IntPtr dir, IntPtr min, IntPtr max);
+		static extern void btConvexShape_project(IntPtr obj, [In] ref Matrix trans, [In] ref Vector3 dir, IntPtr min, IntPtr max);
 	}
 }

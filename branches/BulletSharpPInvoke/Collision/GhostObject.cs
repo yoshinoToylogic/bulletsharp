@@ -30,12 +30,12 @@ namespace BulletSharp
 
         public void ConvexSweepTest(ConvexShape castShape, Matrix convexFromWorld, Matrix convexToWorld, CollisionWorld.ConvexResultCallback resultCallback, float allowedCcdPenetration)
 		{
-            btGhostObject_convexSweepTest(_native, castShape._native, ref convexFromWorld, ref convexToWorld, resultCallback._native, allowedCcdPenetration);
+			btGhostObject_convexSweepTest(_native, castShape._native, ref convexFromWorld, ref convexToWorld, resultCallback._native, allowedCcdPenetration);
 		}
 
         public void ConvexSweepTest(ConvexShape castShape, Matrix convexFromWorld, Matrix convexToWorld, CollisionWorld.ConvexResultCallback resultCallback)
 		{
-            btGhostObject_convexSweepTest2(_native, castShape._native, ref convexFromWorld, ref convexToWorld, resultCallback._native);
+			btGhostObject_convexSweepTest2(_native, castShape._native, ref convexFromWorld, ref convexToWorld, resultCallback._native);
 		}
 
 		public CollisionObject GetOverlappingObject(int index)
@@ -87,9 +87,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGhostObject_addOverlappingObjectInternal2(IntPtr obj, IntPtr otherProxy);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGhostObject_convexSweepTest(IntPtr obj, IntPtr castShape, [In] ref Matrix convexFromWorld, [In] ref Matrix convexToWorld, IntPtr resultCallback, float allowedCcdPenetration);
+		static extern void btGhostObject_convexSweepTest(IntPtr obj, IntPtr castShape, [In] ref Matrix convexFromWorld, [In] ref Matrix convexToWorld, IntPtr resultCallback, float allowedCcdPenetration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGhostObject_convexSweepTest2(IntPtr obj, IntPtr castShape, [In] ref Matrix convexFromWorld, [In] ref Matrix convexToWorld, IntPtr resultCallback);
+		static extern void btGhostObject_convexSweepTest2(IntPtr obj, IntPtr castShape, [In] ref Matrix convexFromWorld, [In] ref Matrix convexToWorld, IntPtr resultCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btGhostObject_getNumOverlappingObjects(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -99,7 +99,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGhostObject_getOverlappingPairs2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGhostObject_rayTest(IntPtr obj, [In] ref Vector3 rayFromWorld, [In] ref Vector3 rayToWorld, IntPtr resultCallback);
+		static extern void btGhostObject_rayTest(IntPtr obj, [In] ref Vector3 rayFromWorld, [In] ref Vector3 rayToWorld, IntPtr resultCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGhostObject_removeOverlappingObjectInternal(IntPtr obj, IntPtr otherProxy, IntPtr dispatcher, IntPtr thisProxy);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

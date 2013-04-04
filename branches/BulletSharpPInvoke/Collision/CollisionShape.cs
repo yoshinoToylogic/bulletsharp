@@ -87,12 +87,12 @@ namespace BulletSharp
 		{
 			return btCollisionShape_serialize(_native, dataBuffer, serializer._native);
 		}
-
+        */
 		public void SerializeSingleShape(Serializer serializer)
 		{
 			btCollisionShape_serializeSingleShape(_native, serializer._native);
 		}
-        */
+
 		public float AngularMotionDisc
 		{
 			get { return btCollisionShape_getAngularMotionDisc(_native); }

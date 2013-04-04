@@ -6,8 +6,8 @@ extern "C"
 	EXPORT void btDynamicsWorld_addCharacter(btDynamicsWorld* obj, btActionInterface* character);
 	EXPORT void btDynamicsWorld_addConstraint(btDynamicsWorld* obj, btTypedConstraint* constraint, bool disableCollisionsBetweenLinkedBodies);
 	EXPORT void btDynamicsWorld_addConstraint2(btDynamicsWorld* obj, btTypedConstraint* constraint);
-	EXPORT void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body, short group, short mask);
-	EXPORT void btDynamicsWorld_addRigidBody2(btDynamicsWorld* obj, btRigidBody* body);
+	EXPORT void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body);
+	EXPORT void btDynamicsWorld_addRigidBody2(btDynamicsWorld* obj, btRigidBody* body, short group, short mask);
 	EXPORT void btDynamicsWorld_addVehicle(btDynamicsWorld* obj, btActionInterface* vehicle);
 	EXPORT void btDynamicsWorld_clearForces(btDynamicsWorld* obj);
 	EXPORT btTypedConstraint* btDynamicsWorld_getConstraint(btDynamicsWorld* obj, int index);

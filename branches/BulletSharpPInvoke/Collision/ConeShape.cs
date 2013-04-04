@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class ConeShape : ConvexShape
+	public class ConeShape : ConvexInternalShape
 	{
 		internal ConeShape(IntPtr native)
 			: base(native)

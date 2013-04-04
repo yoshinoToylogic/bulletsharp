@@ -11,7 +11,7 @@ namespace BulletSharp
 		{
 		}
 
-        public Convex2DShape(ConvexShape convexChildShape)
+		public Convex2DShape(ConvexShape convexChildShape)
 			: base(btConvex2dShape_new(convexChildShape._native))
 		{
 		}

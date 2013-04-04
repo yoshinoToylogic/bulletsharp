@@ -18,12 +18,12 @@ namespace BulletSharp
 			return btCollisionConfiguration_getCollisionAlgorithmCreateFunc(_native, proxyType0, proxyType1);
 		}
 
-		public btPoolAllocator CollisionAlgorithmPool
+		public PoolAllocator CollisionAlgorithmPool
 		{
 			get { return btCollisionConfiguration_getCollisionAlgorithmPool(_native); }
 		}
 
-		public btPoolAllocator PersistentManifoldPool
+		public PoolAllocator PersistentManifoldPool
 		{
 			get { return btCollisionConfiguration_getPersistentManifoldPool(_native); }
 		}

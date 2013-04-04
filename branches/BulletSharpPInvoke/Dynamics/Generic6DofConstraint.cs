@@ -523,12 +523,12 @@ namespace BulletSharp
 		{
 		}
 
-        public Generic6DofConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
+		public Generic6DofConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 			: base(btGeneric6DofConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
 		{
 		}
 
-        public Generic6DofConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameB)
+		public Generic6DofConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameB)
 			: base(btGeneric6DofConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameB))
 		{
 		}
@@ -538,7 +538,7 @@ namespace BulletSharp
 			btGeneric6DofConstraint_calcAnchorPos(_native);
 		}
 
-        public void CalculateTransforms(Matrix transA, Matrix transB)
+		public void CalculateTransforms(Matrix transA, Matrix transB)
 		{
 			btGeneric6DofConstraint_calculateTransforms(_native, ref transA, ref transB);
 		}
@@ -548,14 +548,14 @@ namespace BulletSharp
 			btGeneric6DofConstraint_calculateTransforms2(_native);
 		}
         /*
-        public int Get_limit_motor_info2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational, int rotAllowed)
+		public int Get_limit_motor_info2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational, int rotAllowed)
 		{
-			return btGeneric6DofConstraint_get_limit_motor_info2(_native, limot._native, transA._native, transB._native, linVelA._native, linVelB._native, angVelA._native, angVelB._native, info._native, row, ax1._native, rotational, rotAllowed);
+			return btGeneric6DofConstraint_get_limit_motor_info2(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, ref ax1, rotational, rotAllowed);
 		}
 
-        public int Get_limit_motor_info2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational)
+		public int Get_limit_motor_info2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational)
 		{
-			return btGeneric6DofConstraint_get_limit_motor_info22(_native, limot._native, transA._native, transB._native, linVelA._native, linVelB._native, angVelA._native, angVelB._native, info._native, row, ax1._native, rotational);
+			return btGeneric6DofConstraint_get_limit_motor_info22(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, ref ax1, rotational);
 		}
         */
 		public float GetAngle(int axis_index)
@@ -568,7 +568,7 @@ namespace BulletSharp
 			btGeneric6DofConstraint_getAxis(_native, axis_index);
 		}
         /*
-        public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB)
+		public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB)
 		{
 			btGeneric6DofConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB);
 		}
@@ -593,7 +593,7 @@ namespace BulletSharp
 			btGeneric6DofConstraint_setAxis(_native, ref axis1, ref axis2);
 		}
 
-        public void SetFrames(Matrix frameA, Matrix frameB)
+		public void SetFrames(Matrix frameA, Matrix frameB)
 		{
 			btGeneric6DofConstraint_setFrames(_native, ref frameA, ref frameB);
 		}
@@ -635,45 +635,45 @@ namespace BulletSharp
             set { btGeneric6DofConstraint_setAngularUpperLimit(_native, ref value); }
         }
 
-        public Matrix CalculatedTransformA
+		public Matrix CalculatedTransformA
 		{
-            get
-            {
-                Matrix value;
-                btGeneric6DofConstraint_getCalculatedTransformA(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				btGeneric6DofConstraint_getCalculatedTransformA(_native, out value);
+				return value;
+			}
 		}
 
-        public Matrix CalculatedTransformB
-        {
-            get
-            {
-                Matrix value;
-                btGeneric6DofConstraint_getCalculatedTransformB(_native, out value);
-                return value;
-            }
-        }
+		public Matrix CalculatedTransformB
+		{
+			get
+			{
+				Matrix value;
+				btGeneric6DofConstraint_getCalculatedTransformB(_native, out value);
+				return value;
+			}
+		}
 
-        public Matrix FrameOffsetA
-        {
-            get
-            {
-                Matrix value;
-                btGeneric6DofConstraint_getFrameOffsetA(_native, out value);
-                return value;
-            }
-        }
+		public Matrix FrameOffsetA
+		{
+			get
+			{
+				Matrix value;
+				btGeneric6DofConstraint_getFrameOffsetA(_native, out value);
+				return value;
+			}
+		}
 
-        public Matrix FrameOffsetB
-        {
-            get
-            {
-                Matrix value;
-                btGeneric6DofConstraint_getFrameOffsetB(_native, out value);
-                return value;
-            }
-        }
+		public Matrix FrameOffsetB
+		{
+			get
+			{
+				Matrix value;
+				btGeneric6DofConstraint_getFrameOffsetB(_native, out value);
+				return value;
+			}
+		}
         /*
 		public void Info1NonVirtual
 		{
@@ -721,19 +721,19 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btGeneric6DofConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Matrix frameInA, [In] ref Matrix frameInB, bool useLinearReferenceFrameA);
+		static extern IntPtr btGeneric6DofConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Matrix frameInA, [In] ref Matrix frameInB, bool useLinearReferenceFrameA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btGeneric6DofConstraint_new2(IntPtr rbB, [In] ref Matrix frameInB, bool useLinearReferenceFrameB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_calcAnchorPos(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGeneric6DofConstraint_calculateTransforms(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
+		static extern void btGeneric6DofConstraint_calculateTransforms(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_calculateTransforms2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btGeneric6DofConstraint_get_limit_motor_info2(IntPtr obj, IntPtr limot, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 linVelA, [In] ref Vector3 linVelB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB, IntPtr info, int row, IntPtr ax1, int rotational, int rotAllowed);
+		static extern int btGeneric6DofConstraint_get_limit_motor_info2(IntPtr obj, IntPtr limot, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 linVelA, [In] ref Vector3 linVelB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB, IntPtr info, int row, [In] ref Vector3 ax1, int rotational, int rotAllowed);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btGeneric6DofConstraint_get_limit_motor_info22(IntPtr obj, IntPtr limot, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 linVelA, [In] ref Vector3 linVelB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB, IntPtr info, int row, IntPtr ax1, int rotational);
+		static extern int btGeneric6DofConstraint_get_limit_motor_info22(IntPtr obj, IntPtr limot, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 linVelA, [In] ref Vector3 linVelB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB, IntPtr info, int row, [In] ref Vector3 ax1, int rotational);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btGeneric6DofConstraint_getAngle(IntPtr obj, int axis_index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -753,7 +753,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_getInfo1NonVirtual(IntPtr obj, IntPtr info);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, IntPtr transA, IntPtr transB, IntPtr linVelA, IntPtr linVelB, IntPtr angVelA, IntPtr angVelB);
+		static extern void btGeneric6DofConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Vector3 linVelA, [In] ref Vector3 linVelB, [In] ref Vector3 angVelA, [In] ref Vector3 angVelB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btGeneric6DofConstraint_getLinearLowerLimit(IntPtr obj, [Out] out Vector3 linearLower);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -773,17 +773,17 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_setAngularLowerLimit(IntPtr obj, [In] ref Vector3 angularLower);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGeneric6DofConstraint_setAngularUpperLimit(IntPtr obj, [In] ref Vector3 angularUpper);
+		static extern void btGeneric6DofConstraint_setAngularUpperLimit(IntPtr obj, [In] ref Vector3 angularUpper);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGeneric6DofConstraint_setAxis(IntPtr obj, [In] ref Vector3 axis1, [In] ref Vector3 axis2);
+		static extern void btGeneric6DofConstraint_setAxis(IntPtr obj, [In] ref Vector3 axis1, [In] ref Vector3 axis2);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGeneric6DofConstraint_setFrames(IntPtr obj, [In] ref Matrix frameA, [In] ref Matrix frameB);
+		static extern void btGeneric6DofConstraint_setFrames(IntPtr obj, [In] ref Matrix frameA, [In] ref Matrix frameB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_setLimit(IntPtr obj, int axis, float lo, float hi);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGeneric6DofConstraint_setLinearLowerLimit(IntPtr obj, [In] ref Vector3 linearLower);
+		static extern void btGeneric6DofConstraint_setLinearLowerLimit(IntPtr obj, [In] ref Vector3 linearLower);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btGeneric6DofConstraint_setLinearUpperLimit(IntPtr obj, [In] ref Vector3 linearUpper);
+		static extern void btGeneric6DofConstraint_setLinearUpperLimit(IntPtr obj, [In] ref Vector3 linearUpper);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_setUseFrameOffset(IntPtr obj, bool frameOffsetOnOff);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

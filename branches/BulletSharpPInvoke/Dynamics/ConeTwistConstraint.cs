@@ -11,12 +11,12 @@ namespace BulletSharp
 		{
 		}
 
-        public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
+		public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
 			: base(btConeTwistConstraint_new(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
 		{
 		}
 
-        public ConeTwistConstraint(RigidBody rbA, Matrix rbAFrame)
+		public ConeTwistConstraint(RigidBody rbA, Matrix rbAFrame)
 			: base(btConeTwistConstraint_new2(rbA._native, ref rbAFrame))
 		{
 		}
@@ -26,7 +26,7 @@ namespace BulletSharp
 			btConeTwistConstraint_calcAngleInfo(_native);
 		}
 
-        public void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
+		public void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 		{
 			btConeTwistConstraint_calcAngleInfo2(_native, ref transA, ref transB, ref invInertiaWorldA, ref invInertiaWorldB);
 		}
@@ -36,7 +36,7 @@ namespace BulletSharp
 			btConeTwistConstraint_enableMotor(_native, b);
 		}
         /*
-        public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
+		public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 		{
 			btConeTwistConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref invInertiaWorldA, ref invInertiaWorldB);
 		}
@@ -56,7 +56,7 @@ namespace BulletSharp
 			btConeTwistConstraint_setDamping(_native, damping);
 		}
 
-        public void SetFrames(Matrix frameA, Matrix frameB)
+		public void SetFrames(Matrix frameA, Matrix frameB)
 		{
 			btConeTwistConstraint_setFrames(_native, ref frameA, ref frameB);
 		}
@@ -113,23 +113,23 @@ namespace BulletSharp
 
 		public Matrix AFrame
 		{
-            get
-            {
-                Matrix value;
-                btConeTwistConstraint_getAFrame(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				btConeTwistConstraint_getAFrame(_native, out value);
+				return value;
+			}
 		}
 
-        public Matrix BFrame
-        {
-            get
-            {
-                Matrix value;
-                btConeTwistConstraint_getBFrame(_native, out value);
-                return value;
-            }
-        }
+		public Matrix BFrame
+		{
+			get
+			{
+				Matrix value;
+				btConeTwistConstraint_getBFrame(_native, out value);
+				return value;
+			}
+		}
 
 		public float FixThresh
 		{
@@ -137,25 +137,25 @@ namespace BulletSharp
 			set { btConeTwistConstraint_setFixThresh(_native, value); }
 		}
 
-        public Matrix FrameOffsetA
-        {
-            get
-            {
-                Matrix value;
-                btConeTwistConstraint_getFrameOffsetA(_native, out value);
-                return value;
-            }
-        }
+		public Matrix FrameOffsetA
+		{
+			get
+			{
+				Matrix value;
+				btConeTwistConstraint_getFrameOffsetA(_native, out value);
+				return value;
+			}
+		}
 
-        public Matrix FrameOffsetB
-        {
-            get
-            {
-                Matrix value;
-                btConeTwistConstraint_getFrameOffsetB(_native, out value);
-                return value;
-            }
-        }
+		public Matrix FrameOffsetB
+		{
+			get
+			{
+				Matrix value;
+				btConeTwistConstraint_getFrameOffsetB(_native, out value);
+				return value;
+			}
+		}
         /*
 		public void Info1NonVirtual
 		{
@@ -203,13 +203,13 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btConeTwistConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame);
+		static extern IntPtr btConeTwistConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btConeTwistConstraint_new2(IntPtr rbA, [In] ref Matrix rbAFrame);
+		static extern IntPtr btConeTwistConstraint_new2(IntPtr rbA, [In] ref Matrix rbAFrame);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_calcAngleInfo(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConeTwistConstraint_calcAngleInfo2(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Matrix invInertiaWorldA, [In] ref Matrix invInertiaWorldB);
+		static extern void btConeTwistConstraint_calcAngleInfo2(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Matrix invInertiaWorldA, [In] ref Matrix invInertiaWorldB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_enableMotor(IntPtr obj, bool b);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -225,7 +225,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_getInfo1NonVirtual(IntPtr obj, IntPtr info);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConeTwistConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Matrix invInertiaWorldA, [In] ref Matrix invInertiaWorldB);
+		static extern void btConeTwistConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Matrix invInertiaWorldA, [In] ref Matrix invInertiaWorldB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_GetPointForAngle(IntPtr obj, float fAngleInRadians, float fLength);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -251,7 +251,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_setFixThresh(IntPtr obj, float fixThresh);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConeTwistConstraint_setFrames(IntPtr obj, [In] ref Matrix frameA, [In] ref Matrix frameB);
+		static extern void btConeTwistConstraint_setFrames(IntPtr obj, [In] ref Matrix frameA, [In] ref Matrix frameB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_setLimit(IntPtr obj, float _swingSpan1, float _swingSpan2, float _twistSpan, float _softness, float _biasFactor, float _relaxationFactor);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -269,7 +269,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_setMotorTarget(IntPtr obj, [In] ref Quaternion q);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConeTwistConstraint_setMotorTargetInConstraintSpace(IntPtr obj, [In] ref Quaternion q);
+		static extern void btConeTwistConstraint_setMotorTargetInConstraintSpace(IntPtr obj, [In] ref Quaternion q);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_updateRHS(IntPtr obj, float timeStep);
 	}

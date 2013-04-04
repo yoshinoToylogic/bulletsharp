@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class PolyhedralConvexShape : ConvexShape
+	public class PolyhedralConvexShape : ConvexInternalShape
 	{
         ConvexPolyhedron _convexPolyhedron;
 
@@ -94,7 +94,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btPolyhedralConvexShape_initializePolyhedralFeatures2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btPolyhedralConvexShape_isInside(IntPtr obj, [In] ref Vector3 pt, float tolerance);
+		static extern bool btPolyhedralConvexShape_isInside(IntPtr obj, [In] ref Vector3 pt, float tolerance);
 	}
 
 	public class PolyhedralConvexAabbCachingShape : PolyhedralConvexShape

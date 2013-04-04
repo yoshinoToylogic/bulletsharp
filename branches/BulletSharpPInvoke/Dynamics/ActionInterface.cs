@@ -12,12 +12,12 @@ namespace BulletSharp
 		{
 			_native = native;
 		}
-        /*
+
 		public void DebugDraw(IDebugDraw debugDrawer)
 		{
-			btActionInterface_debugDraw(_native, debugDrawer._native);
+			btActionInterface_debugDraw(_native, BulletSharp.DebugDraw.GetUnmanaged(debugDrawer));
 		}
-        */
+
 		public void UpdateAction(CollisionWorld collisionWorld, float deltaTimeStep)
 		{
 			btActionInterface_updateAction(_native, collisionWorld._native, deltaTimeStep);

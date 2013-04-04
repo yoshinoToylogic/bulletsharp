@@ -128,9 +128,9 @@ namespace BulletSharp
 			btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
 		}
         /*
-		public void CalculatePrincipalAxisTransform(float masses, Transform principal, Vector3 inertia)
+		public void CalculatePrincipalAxisTransform(float masses, Matrix principal, Vector3 inertia)
 		{
-			btCompoundShape_calculatePrincipalAxisTransform(_native, masses._native, principal._native, inertia._native);
+			btCompoundShape_calculatePrincipalAxisTransform(_native, masses._native, ref principal, ref inertia);
 		}
         */
 		public void CreateAabbTreeFromChildren()
@@ -208,8 +208,8 @@ namespace BulletSharp
 		static extern IntPtr btCompoundShape_new2();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_addChildShape(IntPtr obj, [In] ref Matrix localTransform, IntPtr shape);
-		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		//static extern void btCompoundShape_calculatePrincipalAxisTransform(IntPtr obj, IntPtr masses, IntPtr principal, IntPtr inertia);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCompoundShape_calculatePrincipalAxisTransform(IntPtr obj, IntPtr masses, [In] ref Matrix principal, [In] ref Vector3 inertia);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_createAabbTreeFromChildren(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -233,6 +233,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_updateChildTransform(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform, bool shouldRecalculateLocalAabb);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCompoundShape_updateChildTransform2(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform);
+		static extern void btCompoundShape_updateChildTransform2(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform);
 	}
 }

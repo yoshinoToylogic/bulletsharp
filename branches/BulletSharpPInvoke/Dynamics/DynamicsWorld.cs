@@ -33,14 +33,14 @@ namespace BulletSharp
 			btDynamicsWorld_addConstraint2(_native, constraint._native);
 		}
 
-		public void AddRigidBody(RigidBody body, short group, short mask)
-		{
-			btDynamicsWorld_addRigidBody(_native, body._native, group, mask);
-		}
-
 		public void AddRigidBody(RigidBody body)
 		{
-			btDynamicsWorld_addRigidBody2(_native, body._native);
+			btDynamicsWorld_addRigidBody(_native, body._native);
+		}
+
+		public void AddRigidBody(RigidBody body, short group, short mask)
+		{
+			btDynamicsWorld_addRigidBody2(_native, body._native, group, mask);
 		}
 
 		public void AddVehicle(ActionInterface vehicle)
@@ -83,17 +83,17 @@ namespace BulletSharp
 			btDynamicsWorld_removeVehicle(_native, vehicle._native);
 		}
         /*
-		public void SetInternalTickCallback( cb, IntPtr worldUserInfo, bool isPreTick)
+		public void SetInternalTickCallback(InternalTickCallback cb, IntPtr worldUserInfo, bool isPreTick)
 		{
 			btDynamicsWorld_setInternalTickCallback(_native, cb._native, worldUserInfo._native, isPreTick);
 		}
 
-		public void SetInternalTickCallback( cb, IntPtr worldUserInfo)
+		public void SetInternalTickCallback(InternalTickCallback cb, IntPtr worldUserInfo)
 		{
 			btDynamicsWorld_setInternalTickCallback2(_native, cb._native, worldUserInfo._native);
 		}
 
-		public void SetInternalTickCallback( cb)
+		public void SetInternalTickCallback(InternalTickCallback cb)
 		{
 			btDynamicsWorld_setInternalTickCallback3(_native, cb._native);
 		}
@@ -176,9 +176,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body, short group, short mask);
+		static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body);
+		static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, short group, short mask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addVehicle(IntPtr obj, IntPtr vehicle);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
