@@ -4,15 +4,15 @@ using System.Security;
 
 namespace BulletSharp
 {
-    public class CapsuleShape : ConvexShape
+	public class CapsuleShape : ConvexInternalShape
 	{
-        internal CapsuleShape(IntPtr native)
-            : base(native)
-        {
-        }
+		internal CapsuleShape(IntPtr native)
+			: base(native)
+		{
+		}
 
 		public CapsuleShape(float radius, float height)
-            : base(btCapsuleShape_new(radius, height))
+			: base(btCapsuleShape_new(radius, height))
 		{
 		}
 
@@ -43,13 +43,13 @@ namespace BulletSharp
 
 	public class CapsuleShapeX : CapsuleShape
 	{
-        internal CapsuleShapeX(IntPtr native)
-            : base(native)
-        {
-        }
+		internal CapsuleShapeX(IntPtr native)
+			: base(native)
+		{
+		}
 
 		public CapsuleShapeX(float radius, float height)
-            : base(btCapsuleShapeX_new(radius, height))
+			: base(btCapsuleShapeX_new(radius, height))
 		{
 		}
 
@@ -59,13 +59,13 @@ namespace BulletSharp
 
 	public class CapsuleShapeZ : CapsuleShape
 	{
-        internal CapsuleShapeZ(IntPtr native)
-            : base(native)
-        {
-        }
+		internal CapsuleShapeZ(IntPtr native)
+			: base(native)
+		{
+		}
 
 		public CapsuleShapeZ(float radius, float height)
-            : base(btCapsuleShapeZ_new(radius, height))
+			: base(btCapsuleShapeZ_new(radius, height))
 		{
 		}
 

@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class CylinderShape : ConvexShape
+	public class CylinderShape : ConvexInternalShape
 	{
 		internal CylinderShape(IntPtr native)
 			: base(native)
@@ -28,12 +28,12 @@ namespace BulletSharp
 
 		public Vector3 HalfExtentsWithoutMargin
 		{
-            get
-            {
-                Vector3 value;
-                btCylinderShape_getHalfExtentsWithoutMargin(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btCylinderShape_getHalfExtentsWithoutMargin(_native, out value);
+				return value;
+			}
 		}
 
 		public float Radius
@@ -71,7 +71,7 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btCylinderShapeX_new([In] ref Vector3 halfExtents);
+		static extern IntPtr btCylinderShapeX_new([In] ref Vector3 halfExtents);
 	}
 
 	public class CylinderShapeZ : CylinderShape
@@ -87,6 +87,6 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btCylinderShapeZ_new([In] ref Vector3 halfExtents);
+		static extern IntPtr btCylinderShapeZ_new([In] ref Vector3 halfExtents);
 	}
 }

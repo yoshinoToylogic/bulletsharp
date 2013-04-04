@@ -17,7 +17,7 @@ namespace BulletSharp
         /*
 		public void AllSolved(ContactSolverInfo __unnamed0, IDebugDraw __unnamed1, StackAlloc __unnamed2)
 		{
-			btConstraintSolver_allSolved(_native, __unnamed0._native, __unnamed1._native, __unnamed2._native);
+			btConstraintSolver_allSolved(_native, __unnamed0._native, DebugDraw.GetUnmanaged(__unnamed1), __unnamed2._native);
 		}
         */
 		public void PrepareSolve(int __unnamed0, int __unnamed1)
@@ -32,7 +32,7 @@ namespace BulletSharp
         /*
 		public float SolveGroup(CollisionObject bodies, int numBodies, PersistentManifold manifold, int numManifolds, TypedConstraint constraints, int numConstraints, ContactSolverInfo info, IDebugDraw debugDrawer, StackAlloc stackAlloc, Dispatcher dispatcher)
 		{
-			return btConstraintSolver_solveGroup(_native, bodies._native, numBodies, manifold._native, numManifolds, constraints._native, numConstraints, info._native, debugDrawer._native, stackAlloc._native, dispatcher._native);
+			return btConstraintSolver_solveGroup(_native, bodies._native, numBodies, manifold._native, numManifolds, constraints._native, numConstraints, info._native, DebugDraw.GetUnmanaged(debugDrawer), stackAlloc._native, dispatcher._native);
 		}
         */
 		public void Dispose()

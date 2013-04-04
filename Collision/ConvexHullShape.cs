@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace BulletSharp
 {
-    public class ConvexHullShape : PolyhedralConvexAabbCachingShape
+	public class ConvexHullShape : PolyhedralConvexAabbCachingShape
 	{
 		internal ConvexHullShape(IntPtr native)
 			: base(native)
@@ -68,7 +68,7 @@ namespace BulletSharp
         /*
 		public void Project(Matrix trans, Vector3 dir, float minProj, float maxProj, Vector3 witnesPtMin, Vector3 witnesPtMax)
 		{
-			btConvexHullShape_project(_native, ref trans, dir._native, minProj._native, maxProj._native, ref witnesPtMin, ref witnesPtMax);
+			btConvexHullShape_project(_native, ref trans, ref dir, minProj._native, maxProj._native, ref witnesPtMin, ref witnesPtMax);
 		}
         */
 		public int NumPoints
@@ -99,7 +99,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConvexHullShape_addPoint(IntPtr obj, [In] ref Vector3 point, bool recalculateLocalAabb);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConvexHullShape_addPoint2(IntPtr obj, [In] ref Vector3 point);
+		static extern void btConvexHullShape_addPoint2(IntPtr obj, [In] ref Vector3 point);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btConvexHullShape_getNumPoints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -109,6 +109,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btConvexHullShape_getUnscaledPoints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btConvexHullShape_project(IntPtr obj, IntPtr trans, IntPtr dir, IntPtr minProj, IntPtr maxProj, IntPtr witnesPtMin, IntPtr witnesPtMax);
+		static extern void btConvexHullShape_project(IntPtr obj, [In] ref Matrix trans, [In] ref Vector3 dir, IntPtr minProj, IntPtr maxProj, [In] ref Vector3 witnesPtMin, [In] ref Vector3 witnesPtMax);
 	}
 }

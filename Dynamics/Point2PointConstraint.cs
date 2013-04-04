@@ -118,23 +118,23 @@ namespace BulletSharp
         */
 		public Vector3 PivotInA
 		{
-            get
-            {
-                Vector3 value;
-                btPoint2PointConstraint_getPivotInA(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btPoint2PointConstraint_getPivotInA(_native, out value);
+				return value;
+			}
 		}
 
-        public Vector3 PivotInB
-        {
-            get
-            {
-                Vector3 value;
-                btPoint2PointConstraint_getPivotInB(_native, out value);
-                return value;
-            }
-        }
+		public Vector3 PivotInB
+		{
+			get
+			{
+				Vector3 value;
+				btPoint2PointConstraint_getPivotInB(_native, out value);
+				return value;
+			}
+		}
 
         public ConstraintSetting Setting
 		{
@@ -149,13 +149,13 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btPoint2PointConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB);
+		static extern IntPtr btPoint2PointConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btPoint2PointConstraint_new2(IntPtr rbA, [In] ref Vector3 pivotInA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPoint2PointConstraint_getInfo1NonVirtual(IntPtr obj, IntPtr info);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPoint2PointConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, IntPtr body0_trans, IntPtr body1_trans);
+		static extern void btPoint2PointConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, [In] ref Matrix body0_trans, [In] ref Matrix body1_trans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPoint2PointConstraint_getPivotInA(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -167,7 +167,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPoint2PointConstraint_setPivotA(IntPtr obj, [In] ref Vector3 pivotA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btPoint2PointConstraint_setPivotB(IntPtr obj, [In] ref Vector3 pivotB);
+		static extern void btPoint2PointConstraint_setPivotB(IntPtr obj, [In] ref Vector3 pivotB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPoint2PointConstraint_setSetting(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

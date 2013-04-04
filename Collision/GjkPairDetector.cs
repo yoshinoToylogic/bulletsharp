@@ -80,6 +80,12 @@ namespace BulletSharp
 			set { btGjkPairDetector_setDegenerateSimplex(_native, value); }
 		}
 
+		public int FixContactNormalDirection
+		{
+			get { return btGjkPairDetector_getFixContactNormalDirection(_native); }
+			set { btGjkPairDetector_setFixContactNormalDirection(_native, value); }
+		}
+
 		public int LastUsedMethod
 		{
 			get { return btGjkPairDetector_getLastUsedMethod(_native); }
@@ -103,6 +109,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btGjkPairDetector_getDegenerateSimplex(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btGjkPairDetector_getFixContactNormalDirection(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btGjkPairDetector_getLastUsedMethod(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGjkPairDetector_setCachedSeparatingAxis(IntPtr obj, [In] ref Vector3 seperatingAxis);
@@ -112,6 +120,8 @@ namespace BulletSharp
 		static extern void btGjkPairDetector_setCurIter(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGjkPairDetector_setDegenerateSimplex(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btGjkPairDetector_setFixContactNormalDirection(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGjkPairDetector_setIgnoreMargin(IntPtr obj, bool ignoreMargin);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

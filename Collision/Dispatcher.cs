@@ -32,10 +32,8 @@ namespace BulletSharp
 
 		public IDebugDraw DebugDraw
 		{
-            get { return null; }
-            set { }
-			//get { return btDispatcherInfo_getDebugDraw(_native); }
-			//set { btDispatcherInfo_setDebugDraw(_native, value._native); }
+			get { return BulletSharp.DebugDraw.GetManaged(btDispatcherInfo_getDebugDraw(_native)); }
+            set { btDispatcherInfo_setDebugDraw(_native, BulletSharp.DebugDraw.GetUnmanaged(value)); }
 		}
 
 		public int DispatchFunc

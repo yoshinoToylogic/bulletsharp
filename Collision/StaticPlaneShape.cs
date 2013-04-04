@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class StaticPlaneShape : CollisionShape
+	public class StaticPlaneShape : ConcaveShape
 	{
 		internal StaticPlaneShape(IntPtr native)
 			: base(native)

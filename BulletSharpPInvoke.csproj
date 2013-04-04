@@ -43,9 +43,11 @@
     <Compile Include="Collision\CollisionWorld.cs" />
     <Compile Include="Collision\CapsuleShape.cs" />
     <Compile Include="Collision\CompoundShape.cs" />
+    <Compile Include="Collision\ConcaveShape.cs" />
     <Compile Include="Collision\ConeShape.cs" />
     <Compile Include="Collision\Convex2DShape.cs" />
     <Compile Include="Collision\ConvexHullShape.cs" />
+    <Compile Include="Collision\ConvexInternalShape.cs" />
     <Compile Include="Collision\ConvexPenetrationDepthSolver.cs" />
     <Compile Include="Collision\ConvexPolyhedron.cs" />
     <Compile Include="Collision\ConvexShape.cs" />
@@ -83,6 +85,7 @@
     <Compile Include="Dynamics\KinematicCharacterController.cs" />
     <Compile Include="Dynamics\Point2PointConstraint.cs" />
     <Compile Include="Dynamics\RigidBody.cs" />
+    <Compile Include="Dynamics\RigidBodyConstructionInfo.cs" />
     <Compile Include="Dynamics\SequentialImpulseConstraintSolver.cs" />
     <Compile Include="Dynamics\TypedConstraint.cs" />
     <Compile Include="Extras\BulletWorldImporter.cs" />
