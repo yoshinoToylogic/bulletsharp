@@ -12,16 +12,6 @@ namespace BulletSharpGen
         {
         }
 
-        static string GetFullClassName(ClassDefinition cl)
-        {
-            string name = cl.Name;
-            if (cl.Parent != null)
-            {
-                return GetFullClassName(cl.Parent) + "_" + name;
-            }
-            return name;
-        }
-
         void WriteType(TypeRefDefinition type, WriteTo to = WriteTo.All)
         {
             if (type.IsBasic)
@@ -31,7 +21,7 @@ namespace BulletSharpGen
             }
             else if (type.Referenced != null)
             {
-                Write(type.Referenced.FullName, (WriteTo.Header | WriteTo.Source) & to);
+                Write(BulletParser.GetTypeName(type.Referenced), (WriteTo.Header | WriteTo.Source) & to);
                 Write('*', (WriteTo.Header | WriteTo.Source) & to);
                 if (type.IsPointer && type.Referenced.ManagedName.Equals("void")) // void*
                 {
@@ -39,7 +29,7 @@ namespace BulletSharpGen
                 }
                 else
                 {
-                    Write(type.Referenced.ManagedName, WriteTo.CS & to);
+                    Write(BulletParser.GetTypeNameCS(type), WriteTo.CS & to);
                 }
             }
             else
@@ -73,7 +63,7 @@ namespace BulletSharpGen
             OutputTabs(level + 2, WriteTo.CS);
             WriteLine('{', WriteTo.CS);
             OutputTabs(level + 3, WriteTo.CS);
-            Write(GetFullClassName(method.Parent), WriteTo.CS);
+            Write(method.Parent.FullNameCS, WriteTo.CS);
             WriteLine("_delete(_native);", WriteTo.CS);
             OutputTabs(level + 3, WriteTo.CS);
             WriteLine("_native = IntPtr.Zero;", WriteTo.CS);
@@ -143,7 +133,7 @@ namespace BulletSharpGen
             }
 
             // Name
-            Write(GetFullClassName(method.Parent), WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
+            Write(method.Parent.FullNameCS, WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
             Write('_', WriteTo.Header | WriteTo.Source | WriteTo.DllImport);
             if (method.IsConstructor)
             {
@@ -197,20 +187,12 @@ namespace BulletSharpGen
             {
                 var param = method.Parameters[i];
                 WriteType(param.Type, propertyTo);
-
-                if (param.Type.Referenced != null && !param.Type.IsBasic)
-                {
-                    Write("IntPtr", WriteTo.DllImport);
-                }
-                else
-                {
-                    Write(param.Type.ManagedName, WriteTo.DllImport);
-                }
+                Write(BulletParser.GetTypeDllImport(param.Type), WriteTo.DllImport);
 
                 Write(' ', propertyTo);
                 Write(param.Name, propertyTo);
-                dllImport.Append(' ');
-                dllImport.Append(param.Name);
+                Write(' ', WriteTo.DllImport);
+                Write(param.Name, WriteTo.DllImport);
 
                 if (param.IsOptional)
                 {
@@ -220,7 +202,7 @@ namespace BulletSharpGen
                 if (i != numParameters - 1)
                 {
                     Write(", ");
-                    dllImport.Append(", ");
+                    Write(", ", WriteTo.DllImport);
                 }
             }
             WriteLine(");", WriteTo.Header | WriteTo.DllImport);
@@ -279,7 +261,7 @@ namespace BulletSharpGen
                 {
                     Write("_native = ", WriteTo.CS);
                 }
-                Write(GetFullClassName(method.Parent), WriteTo.CS);
+                Write(method.Parent.FullNameCS, WriteTo.CS);
                 Write("_new", WriteTo.CS);
             }
             else
@@ -306,7 +288,7 @@ namespace BulletSharpGen
                 {
                     Write("obj->", WriteTo.Source);
                 }
-                Write(GetFullClassName(method.Parent), WriteTo.CS & propertyTo);
+                Write(method.Parent.FullNameCS, WriteTo.CS & propertyTo);
                 Write('_', WriteTo.CS & propertyTo);
                 Write(method.Name, WriteTo.CS & propertyTo);
                 if (method.Field == null)
@@ -341,12 +323,8 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                
-                Write(param.Name, WriteTo.CS & propertyTo);
-                if (!param.Type.IsBasic)
-                {
-                    Write("._native", WriteTo.CS & propertyTo);
-                }
+
+                Write(BulletParser.GetTypeCSMarshal(param), WriteTo.CS & propertyTo);
 
                 if (method.Field == null)
                 {
@@ -421,8 +399,6 @@ namespace BulletSharpGen
         {
             EnsureWhiteSpace(WriteTo.CS);
 
-            bool singleLine = true;
-
             OutputTabs(level + 1, WriteTo.CS);
             Write("public ", WriteTo.CS);
             WriteType(prop.Type, WriteTo.CS);
@@ -430,70 +406,19 @@ namespace BulletSharpGen
             WriteLine(prop.Name, WriteTo.CS);
             OutputTabs(level + 1, WriteTo.CS);
             WriteLine('{', WriteTo.CS);
-            OutputTabs(level + 2, WriteTo.CS);
 
-            if (singleLine)
-            {
-                Write("get { ", WriteTo.CS);
-            }
-            else
-            {
-                WriteLine("get", WriteTo.CS);
-                OutputTabs(level + 2, WriteTo.CS);
-                WriteLine('{', WriteTo.CS);
-                OutputTabs(level + 3, WriteTo.CS);
-            }
-
-            Write("return ", WriteTo.CS);
-            Write(GetFullClassName(prop.Parent), WriteTo.CS);
-            Write('_', WriteTo.CS);
-            Write(prop.Getter.Name, WriteTo.CS);
-
-            if (singleLine)
-            {
-                WriteLine("(_native); }", WriteTo.CS);
-            }
-            else
-            {
-                WriteLine("(_native);", WriteTo.CS);
-                OutputTabs(level + 2, WriteTo.CS);
-                WriteLine('}', WriteTo.CS);
-            }
+            Write(BulletParser.GetTypeGetterCSMarshal(prop, level), WriteTo.CS);
 
             if (prop.Setter != null)
             {
                 OutputTabs(level + 2, WriteTo.CS);
-                if (singleLine)
-                {
-                    Write("set { ", WriteTo.CS);
-                }
-                else
-                {
-                    WriteLine("set", WriteTo.CS);
-                    OutputTabs(level + 2, WriteTo.CS);
-                    WriteLine('{', WriteTo.CS);
-                    OutputTabs(level + 3, WriteTo.CS);
-                }
-
-                Write(GetFullClassName(prop.Parent), WriteTo.CS);
+                Write("set { ", WriteTo.CS);
+                Write(prop.Parent.FullNameCS, WriteTo.CS);
                 Write('_', WriteTo.CS);
                 Write(prop.Setter.Name, WriteTo.CS);
-                Write("(_native, value", WriteTo.CS);
-                if (!prop.Type.IsBasic)
-                {
-                    Write("._native", WriteTo.CS);
-                }
-
-                if (singleLine)
-                {
-                    WriteLine("); }", WriteTo.CS);
-                }
-                else
-                {
-                    WriteLine(");", WriteTo.CS);
-                    OutputTabs(level + 2, WriteTo.CS);
-                    WriteLine('}', WriteTo.CS);
-                }
+                Write("(_native, ", WriteTo.CS);
+                Write(BulletParser.GetTypeSetterCSMarshal(prop.Type), WriteTo.CS);
+                WriteLine("); }", WriteTo.CS);
             }
 
             OutputTabs(level + 1, WriteTo.CS);
@@ -504,7 +429,7 @@ namespace BulletSharpGen
 
         void OutputClass(ClassDefinition c, int level)
         {
-            if (c.IsTypedef)
+            if (BulletParser.IsExcludedClass(c) || c.IsTypedef)
             {
                 return;
             }
@@ -620,27 +545,6 @@ namespace BulletSharpGen
                 {
                     OutputProperty(prop, level);
                 }
-
-                /*
-                foreach (MethodDefinition method in c.Methods)
-                {
-                    if (method.Field != null)
-                    {
-                        MethodDefinition getter = null;
-                        MethodDefinition setter = null;
-                        if (method.Name.StartsWith("get"))
-                        {
-                            getter = method;
-                            setter = method.Parent.Methods.Find((m) => m.Name == "set" + method.Name.Substring(3));
-                        }
-                        else if (method.Name.StartsWith("set"))
-                        {
-                            setter = method;
-                            getter = method.Parent.Methods.Find((m) => m.Name == "get" + method.Name.Substring(3));
-                        }
-                        getter.ToString();
-                    }
-                }*/
             }
 
             // Write delete method
@@ -652,28 +556,6 @@ namespace BulletSharpGen
                 c.Methods.Remove(del);
                 overloadIndex = 0;
             }
-
-            /*
-            // Write properties
-            foreach (MethodDefinition method in c.Methods)
-            {
-                if (method.Field != null)
-                {
-                    MethodDefinition getter = null;
-                    MethodDefinition setter = null;
-                    if (method.Name.StartsWith("get"))
-                    {
-                        getter = method;
-                        setter = method.Parent.Methods.Find((m) => m.Name == "set" + method.Name.Substring(3));
-                    }
-                    else if (method.Name.StartsWith("set"))
-                    {
-                        setter = method;
-                        getter = method.Parent.Methods.Find((m) => m.Name == "get" + method.Name.Substring(3));
-                    }
-                    getter.ToString();
-                }
-            }*/
 
             // Write DllImport clauses
             EnsureWhiteSpace(WriteTo.CS);

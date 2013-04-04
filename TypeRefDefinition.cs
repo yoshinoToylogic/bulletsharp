@@ -35,6 +35,10 @@ namespace BulletSharpGen
             {
                 if (IsBasic)
                 {
+                    if (Name.Equals("unsigned char"))
+                    {
+                        return "byte";
+                    }
                     if (Name.Equals("unsigned short"))
                     {
                         return "ushort";

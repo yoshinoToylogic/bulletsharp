@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace BulletSharpGen
 {
@@ -252,6 +253,40 @@ namespace BulletSharpGen
             }
         }
 
+        static string GetTabs(int n)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < n; i++)
+            {
+                builder.Append('\t');
+            }
+            return builder.ToString();
+        }
+
+        public static string GetTypeName(TypeRefDefinition type)
+        {
+            switch (type.ManagedName)
+            {
+                case "Vector3":
+                case "Transform":
+                    return "btScalar";
+                default:
+                    return type.FullName;
+            }
+        }
+
+        public static string GetTypeNameCS(TypeRefDefinition type)
+        {
+            switch (type.ManagedName)
+            {
+                case "Matrix3x3":
+                case "Transform":
+                    return "Matrix";
+                default:
+                    return type.ManagedName;
+            }
+        }
+
         public static string GetTypeMarshalPrologue(ParameterDefinition parameter)
         {
             switch (parameter.Type.ManagedName)
@@ -276,6 +311,101 @@ namespace BulletSharpGen
                 default:
                     return null;
             }
+        }
+
+        public static string GetTypeDllImport(TypeRefDefinition type)
+        {
+            if (type.Referenced != null && !type.IsBasic)
+            {
+                switch (type.ManagedName)
+                {
+                    case "Matrix3x3":
+                    case "Quaternion":
+                    case "Transform":
+                    case "Vector3":
+                        return "[In] ref " + GetTypeNameCS(type);
+                    default:
+                        return "IntPtr";
+                }
+            }
+
+            return type.ManagedName;
+        }
+
+        public static string GetTypeCSMarshal(ParameterDefinition parameter)
+        {
+            var type = parameter.Type;
+
+            if (type.Referenced != null && !type.IsBasic)
+            {
+                switch (type.ManagedName)
+                {
+                    case "Matrix3x3":
+                    case "Quaternion":
+                    case "Transform":
+                    case "Vector3":
+                        return "ref " + parameter.Name;
+                    case "IDebugDraw":
+                        return "DebugDraw.GetUnmanaged(" + parameter.Name + ')';
+                }
+            }
+
+            string output = parameter.Name;
+            if (!type.IsBasic)
+            {
+                return parameter.Name + "._native";
+            }
+            return parameter.Name;
+        }
+
+        public static string GetTypeGetterCSMarshal(PropertyDefinition prop, int level)
+        {
+            StringBuilder output = new StringBuilder();
+            TypeRefDefinition type = prop.Type;
+
+            if (type.Referenced != null && !type.IsBasic)
+            {
+                switch (type.ManagedName)
+                {
+                    case "Transform":
+                    case "Vector3":
+                        output.AppendLine(GetTabs(level + 2) + "get");
+                        output.AppendLine(GetTabs(level + 2) + "{");
+                        output.AppendLine(GetTabs(level + 3) + GetTypeNameCS(type) + " value;");
+                        output.AppendLine(GetTabs(level + 3) + prop.Parent.FullNameCS + '_' + prop.Getter.Name + "(_native, out value);");
+                        output.AppendLine(GetTabs(level + 3) + "return value;");
+                        output.AppendLine(GetTabs(level + 2) + '}');
+                        return output.ToString();
+                }
+            }
+
+            output.AppendLine(GetTabs(level + 2) + "get { return " + prop.Parent.FullNameCS + '_' + prop.Getter.Name + "(_native); }");
+            return output.ToString();
+        }
+
+        public static string GetTypeSetterCSMarshal(TypeRefDefinition type)
+        {
+            if (type.Referenced != null && !type.IsBasic)
+            {
+                switch (type.ManagedName)
+                {
+                    case "Transform":
+                    case "Vector3":
+                        return "ref value";
+                }
+            }
+
+            if (!type.IsBasic)
+            {
+                return "value._native";
+            }
+            return "value";
+        }
+
+        public static bool IsExcludedClass(ClassDefinition cl)
+        {
+            // Exclude all "FloatData/DoubleData" serialization classes
+            return cl.Name.EndsWith("Data") && !cl.ManagedName.Equals("ContactSolverInfoData");
         }
     }
 }
