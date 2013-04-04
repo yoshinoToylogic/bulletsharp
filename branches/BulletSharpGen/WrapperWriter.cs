@@ -79,7 +79,7 @@ namespace BulletSharpGen
         {
             for (int i = 0; i < n; i++)
             {
-                Write("\t", to);
+                Write('\t', to);
             }
         }
 

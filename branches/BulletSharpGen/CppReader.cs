@@ -82,8 +82,15 @@ namespace BulletSharpGen
                 readHeader(commonHeader);
             }
 
-            readHeader(src + "\\BulletCollision\\CollisionDispatch\\btSimulationIslandManager.h");
-            readHeader(src + "\\BulletCollision\\CollisionShapes\\btConvex2dShape.h");
+            while (headerQueue.Count != 0)
+            {
+                readHeader(headerQueue[0]);
+            }
+
+            readHeader(src + "..\\Extras\\Serialize\\BulletFileLoader\\btBulletFile.h");
+            readHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btBulletWorldImporter.h");
+            readHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btWorldImporter.h");
+            readHeader(src + "..\\Extras\\Serialize\\BulletXmlWorldImporter\\btBulletXmlWorldImporter.h");
 
             index.Dispose();
 
