@@ -5,9 +5,64 @@ btChunk* btChunk_new()
 	return new btChunk();
 }
 
+int btChunk_getChunkCode(btChunk* obj)
+{
+	return obj->m_chunkCode;
+}
+
+int btChunk_getDna_nr(btChunk* obj)
+{
+	return obj->m_dna_nr;
+}
+
+int btChunk_getLength(btChunk* obj)
+{
+	return obj->m_length;
+}
+
+int btChunk_getNumber(btChunk* obj)
+{
+	return obj->m_number;
+}
+
+void* btChunk_getOldPtr(btChunk* obj)
+{
+	return obj->m_oldPtr;
+}
+
+void btChunk_setChunkCode(btChunk* obj, int value)
+{
+	obj->m_chunkCode = value;
+}
+
+void btChunk_setDna_nr(btChunk* obj, int value)
+{
+	obj->m_dna_nr = value;
+}
+
+void btChunk_setLength(btChunk* obj, int value)
+{
+	obj->m_length = value;
+}
+
+void btChunk_setNumber(btChunk* obj, int value)
+{
+	obj->m_number = value;
+}
+
+void btChunk_setOldPtr(btChunk* obj, void* value)
+{
+	obj->m_oldPtr = value;
+}
+
+void btChunk_delete(btChunk* obj)
+{
+	delete obj;
+}
+
 btChunk* btSerializer_allocate(btSerializer* obj, size_t size, int numElements)
 {
-	obj->allocate(size, numElements);
+	return obj->allocate(size, numElements);
 }
 
 void btSerializer_finalizeChunk(btSerializer* obj, btChunk* chunk, char* structType, int chunkCode, void* oldPtr)
@@ -15,14 +70,14 @@ void btSerializer_finalizeChunk(btSerializer* obj, btChunk* chunk, char* structT
 	obj->finalizeChunk(chunk, structType, chunkCode, oldPtr);
 }
 
-char* btSerializer_findNameForPointer(btSerializer* obj, void* ptr)
+const char* btSerializer_findNameForPointer(btSerializer* obj, void* ptr)
 {
-	obj->findNameForPointer(ptr);
+	return obj->findNameForPointer(ptr);
 }
 
 void* btSerializer_findPointer(btSerializer* obj, void* oldPtr)
 {
-	obj->findPointer(oldPtr);
+	return obj->findPointer(oldPtr);
 }
 
 void btSerializer_finishSerialization(btSerializer* obj)
@@ -30,9 +85,9 @@ void btSerializer_finishSerialization(btSerializer* obj)
 	obj->finishSerialization();
 }
 
-unsigned char* btSerializer_getBufferPointer(btSerializer* obj)
+const unsigned char* btSerializer_getBufferPointer(btSerializer* obj)
 {
-	obj->getBufferPointer();
+	return obj->getBufferPointer();
 }
 
 int btSerializer_getCurrentBufferSize(btSerializer* obj)
@@ -47,7 +102,7 @@ int btSerializer_getSerializationFlags(btSerializer* obj)
 
 void* btSerializer_getUniquePointer(btSerializer* obj, void* oldPtr)
 {
-	obj->getUniquePointer(oldPtr);
+	return obj->getUniquePointer(oldPtr);
 }
 
 void btSerializer_registerNameForPointer(btSerializer* obj, void* ptr, char* name)
@@ -70,9 +125,19 @@ void btSerializer_startSerialization(btSerializer* obj)
 	obj->startSerialization();
 }
 
+void btSerializer_delete(btSerializer* obj)
+{
+	delete obj;
+}
+
 btPointerUid* btPointerUid_new()
 {
 	return new btPointerUid();
+}
+
+void btPointerUid_delete(btPointerUid* obj)
+{
+	delete obj;
 }
 
 btDefaultSerializer* btDefaultSerializer_new(int totalSize)
@@ -87,7 +152,7 @@ btDefaultSerializer* btDefaultSerializer_new2()
 
 unsigned char* btDefaultSerializer_internalAlloc(btDefaultSerializer* obj, size_t size)
 {
-	obj->internalAlloc(size);
+	return obj->internalAlloc(size);
 }
 
 void btDefaultSerializer_writeHeader(btDefaultSerializer* obj, unsigned char* buffer)
