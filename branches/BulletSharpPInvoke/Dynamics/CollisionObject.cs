@@ -83,8 +83,8 @@ namespace BulletSharp
         }
 
 		public CollisionObject()
+            : this(btCollisionObject_new())
 		{
-			_native = btCollisionObject_new();
 		}
 
 		public void Activate(bool forceActivation)

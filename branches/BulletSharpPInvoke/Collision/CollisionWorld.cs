@@ -4,9 +4,9 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class CollisionWorld
+    public class CollisionWorld : IDisposable
 	{
-		public class LocalShapeInfo
+        public class LocalShapeInfo : IDisposable
 		{
 			internal IntPtr _native;
 
@@ -151,7 +151,7 @@ namespace BulletSharp
 			static extern void btCollisionWorld_LocalRayResult_delete(IntPtr obj);
 		}
 
-		public class RayResultCallback
+		public class RayResultCallback : IDisposable
 		{
 			internal IntPtr _native;
 
@@ -435,7 +435,7 @@ namespace BulletSharp
 			static extern void btCollisionWorld_AllHitsRayResultCallback_setRayToWorld(IntPtr obj, [In] ref Vector3 value);
 		}
 
-		public class LocalConvexResult
+		public class LocalConvexResult : IDisposable
 		{
 			internal IntPtr _native;
 
@@ -535,7 +535,7 @@ namespace BulletSharp
 			static extern void btCollisionWorld_LocalConvexResult_delete(IntPtr obj);
 		}
 
-		public class ConvexResultCallback
+		public class ConvexResultCallback : IDisposable
 		{
 			internal IntPtr _native;
 
@@ -625,6 +625,11 @@ namespace BulletSharp
 				: base(native)
 			{
 			}
+
+            public ClosestConvexResultCallback(ref Vector3 convexFromWorld, ref Vector3 convexToWorld)
+                : base(btCollisionWorld_ClosestConvexResultCallback_new(ref convexFromWorld, ref convexToWorld))
+            {
+            }
 
 			public ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld)
 				: base(btCollisionWorld_ClosestConvexResultCallback_new(ref convexFromWorld, ref convexToWorld))
