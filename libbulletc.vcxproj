@@ -91,6 +91,7 @@
     <ClInclude Include="src\btBroadphaseProxy_wrap.h" />
     <ClInclude Include="src\btBulletWorldImporter_wrap.h" />
     <ClInclude Include="src\btBulletXmlWorldImporter_wrap.h" />
+    <ClInclude Include="src\btBvhTriangleMeshShape_wrap.h" />
     <ClInclude Include="src\btCapsuleShape_wrap.h" />
     <ClInclude Include="src\btCharacterControllerInterface_wrap.h" />
     <ClInclude Include="src\btCollisionConfiguration_wrap.h" />
@@ -120,9 +121,11 @@
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btGearConstraint_wrap.h" />
     <ClInclude Include="src\btGeneric6DofConstraint_wrap.h" />
+    <ClInclude Include="src\btGeneric6DofSpringConstraint_wrap.h" />
     <ClInclude Include="src\btGeometryUtil_wrap.h" />
     <ClInclude Include="src\btGhostObject_wrap.h" />
     <ClInclude Include="src\btGjkPairDetector_wrap.h" />
+    <ClInclude Include="src\btHinge2Constraint_wrap.h" />
     <ClInclude Include="src\btHingeConstraint_wrap.h" />
     <ClInclude Include="src\btIDebugDraw_wrap.h" />
     <ClInclude Include="src\btKinematicCharacterController_wrap.h" />
@@ -139,7 +142,12 @@
     <ClInclude Include="src\btSimulationIslandManager_wrap.h" />
     <ClInclude Include="src\btSphereShape_wrap.h" />
     <ClInclude Include="src\btStaticPlaneShape_wrap.h" />
+    <ClInclude Include="src\btStridingMeshInterface_wrap.h" />
+    <ClInclude Include="src\btTriangleIndexVertexArray_wrap.h" />
+    <ClInclude Include="src\btTriangleMeshShape_wrap.h" />
+    <ClInclude Include="src\btTriangleMesh_wrap.h" />
     <ClInclude Include="src\btTypedConstraint_wrap.h" />
+    <ClInclude Include="src\btUniversalConstraint_wrap.h" />
     <ClInclude Include="src\btVoronoiSimplexSolver_wrap.h" />
     <ClInclude Include="src\btWorldImporter_wrap.h" />
     <ClInclude Include="src\collections.h" />
@@ -163,6 +171,7 @@
     <ClCompile Include="src\btBroadphaseProxy_wrap.cpp" />
     <ClCompile Include="src\btBulletWorldImporter_wrap.cpp" />
     <ClCompile Include="src\btBulletXmlWorldImporter_wrap.cpp" />
+    <ClCompile Include="src\btBvhTriangleMeshShape_wrap.cpp" />
     <ClCompile Include="src\btCapsuleShape_wrap.cpp" />
     <ClCompile Include="src\btCharacterControllerInterface_wrap.cpp" />
     <ClCompile Include="src\btCollisionConfiguration_wrap.cpp" />
@@ -192,9 +201,11 @@
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btGearConstraint_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofConstraint_wrap.cpp" />
+    <ClCompile Include="src\btGeneric6DofSpringConstraint_wrap.cpp" />
     <ClCompile Include="src\btGeometryUtil_wrap.cpp" />
     <ClCompile Include="src\btGhostObject_wrap.cpp" />
     <ClCompile Include="src\btGjkPairDetector_wrap.cpp" />
+    <ClCompile Include="src\btHinge2Constraint_wrap.cpp" />
     <ClCompile Include="src\btHingeConstraint_wrap.cpp" />
     <ClCompile Include="src\btIDebugDraw_wrap.cpp" />
     <ClCompile Include="src\btKinematicCharacterController_wrap.cpp" />
@@ -211,7 +222,12 @@
     <ClCompile Include="src\btSimulationIslandManager_wrap.cpp" />
     <ClCompile Include="src\btSphereShape_wrap.cpp" />
     <ClCompile Include="src\btStaticPlaneShape_wrap.cpp" />
+    <ClCompile Include="src\btStridingMeshInterface_wrap.cpp" />
+    <ClCompile Include="src\btTriangleIndexVertexArray_wrap.cpp" />
+    <ClCompile Include="src\btTriangleMeshShape_wrap.cpp" />
+    <ClCompile Include="src\btTriangleMesh_wrap.cpp" />
     <ClCompile Include="src\btTypedConstraint_wrap.cpp" />
+    <ClCompile Include="src\btUniversalConstraint_wrap.cpp" />
     <ClCompile Include="src\btVoronoiSimplexSolver_wrap.cpp" />
     <ClCompile Include="src\btWorldImporter_wrap.cpp" />
     <ClCompile Include="src\collections.cpp" />

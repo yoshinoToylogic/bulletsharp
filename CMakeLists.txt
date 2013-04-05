@@ -59,6 +59,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btBulletWorldImporter_wrap.h
     src/btBulletXmlWorldImporter_wrap.cpp
     src/btBulletXmlWorldImporter_wrap.h
+    src/btBvhTriangleMeshShape_wrap.cpp
+    src/btBvhTriangleMeshShape_wrap.h
     src/btCapsuleShape_wrap.cpp
     src/btCapsuleShape_wrap.h
     src/btCharacterControllerInterface_wrap.cpp
@@ -117,12 +119,16 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btGearConstraint_wrap.h
     src/btGeneric6DofConstraint_wrap.cpp
     src/btGeneric6DofConstraint_wrap.h
+    src/btGeneric6DofSpringConstraint_wrap.cpp
+    src/btGeneric6DofSpringConstraint_wrap.h
     src/btGeometryUtil_wrap.cpp
     src/btGeometryUtil_wrap.h
     src/btGhostObject_wrap.cpp
     src/btGhostObject_wrap.h
     src/btGjkPairDetector_wrap.cpp
     src/btGjkPairDetector_wrap.h
+    src/btHinge2Constraint_wrap.cpp
+    src/btHinge2Constraint_wrap.h
     src/btHingeConstraint_wrap.cpp
     src/btHingeConstraint_wrap.h
     src/btIDebugDraw_wrap.cpp
@@ -157,8 +163,18 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSphereShape_wrap.h
     src/btStaticPlaneShape_wrap.cpp
     src/btStaticPlaneShape_wrap.h
+    src/btStridingMeshInterface_wrap.cpp
+    src/btStridingMeshInterface_wrap.h
+    src/btTriangleIndexVertexArray_wrap.cpp
+    src/btTriangleIndexVertexArray_wrap.h
+    src/btTriangleMesh_wrap.cpp
+    src/btTriangleMesh_wrap.h
+    src/btTriangleMeshShape_wrap.cpp
+    src/btTriangleMeshShape_wrap.h
     src/btTypedConstraint_wrap.cpp
     src/btTypedConstraint_wrap.h
+    src/btUniversalConstraint_wrap.cpp
+    src/btUniversalConstraint_wrap.h
     src/btVoronoiSimplexSolver_wrap.cpp
     src/btVoronoiSimplexSolver_wrap.h
     src/btWorldImporter_wrap.cpp
