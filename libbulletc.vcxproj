@@ -89,6 +89,7 @@
     <ClInclude Include="src\btBoxShape_wrap.h" />
     <ClInclude Include="src\btBroadphaseInterface_wrap.h" />
     <ClInclude Include="src\btBroadphaseProxy_wrap.h" />
+    <ClInclude Include="src\btBulletFile_wrap.h" />
     <ClInclude Include="src\btBulletWorldImporter_wrap.h" />
     <ClInclude Include="src\btBulletXmlWorldImporter_wrap.h" />
     <ClInclude Include="src\btBvhTriangleMeshShape_wrap.h" />
@@ -169,6 +170,7 @@
     <ClCompile Include="src\btBoxShape_wrap.cpp" />
     <ClCompile Include="src\btBroadphaseInterface_wrap.cpp" />
     <ClCompile Include="src\btBroadphaseProxy_wrap.cpp" />
+    <ClCompile Include="src\btBulletFile_wrap.cpp" />
     <ClCompile Include="src\btBulletWorldImporter_wrap.cpp" />
     <ClCompile Include="src\btBulletXmlWorldImporter_wrap.cpp" />
     <ClCompile Include="src\btBvhTriangleMeshShape_wrap.cpp" />

@@ -55,6 +55,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btBroadphaseInterface_wrap.h
     src/btBroadphaseProxy_wrap.cpp
     src/btBroadphaseProxy_wrap.h
+    src/btBulletFile_wrap.cpp
+    src/btBulletFile_wrap.h
     src/btBulletWorldImporter_wrap.cpp
     src/btBulletWorldImporter_wrap.h
     src/btBulletXmlWorldImporter_wrap.cpp
