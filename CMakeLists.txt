@@ -153,6 +153,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btPolyhedralConvexShape_wrap.h
     src/btRigidBody_wrap.cpp
     src/btRigidBody_wrap.h
+    src/btScaledBvhTriangleMeshShape_wrap.cpp
+    src/btScaledBvhTriangleMeshShape_wrap.h
     src/btSequentialImpulseConstraintSolver_wrap.cpp
     src/btSequentialImpulseConstraintSolver_wrap.h
     src/btSerializer_wrap.cpp
@@ -161,6 +163,12 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btShapeHull_wrap.h
     src/btSimulationIslandManager_wrap.cpp
     src/btSimulationIslandManager_wrap.h
+    src/btSoftBody_wrap.cpp
+    src/btSoftBody_wrap.h
+    src/btSoftBodyHelpers_wrap.cpp
+    src/btSoftBodyHelpers_wrap.h
+    src/btSoftRigidDynamicsWorld_wrap.cpp
+    src/btSoftRigidDynamicsWorld_wrap.h
     src/btSphereShape_wrap.cpp
     src/btSphereShape_wrap.h
     src/btStaticPlaneShape_wrap.cpp
@@ -187,5 +195,6 @@ TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletCollision${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletDynamics${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} LinearMath${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletFileLoader${LIB_SUFFIX})
+TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletSoftBody${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletWorldImporter${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletXmlWorldImporter${LIB_SUFFIX})
