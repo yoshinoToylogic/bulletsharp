@@ -6,6 +6,13 @@ namespace BulletSharp
 {
 	public class DynamicsWorld : CollisionWorld
 	{
+        public delegate void InternalTickCallback(DynamicsWorld world, float timeStep);
+
+        void InternalTickDelegate(DynamicsWorld world, float timeStep)
+        {
+        }
+
+        internal InternalTickCallback _callback;
         protected ConstraintSolver _solver;
 
 		internal DynamicsWorld(IntPtr native)
@@ -82,22 +89,37 @@ namespace BulletSharp
 		{
 			btDynamicsWorld_removeVehicle(_native, vehicle._native);
 		}
-        /*
-		public void SetInternalTickCallback(InternalTickCallback cb, IntPtr worldUserInfo, bool isPreTick)
+
+		public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo, bool isPreTick)
 		{
-			btDynamicsWorld_setInternalTickCallback(_native, cb._native, worldUserInfo._native, isPreTick);
+            _callback = cb;
+	        WorldUserInfo = worldUserInfo;
+
+            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
+	        if (cb != null) {
+		        if (nativeUserInfo == IntPtr.Zero) {
+			        GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
+			        nativeUserInfo = GCHandle.ToIntPtr(handle);
+		        }
+                btDynamicsWorld_setInternalTickCallback(_native, Marshal.GetFunctionPointerForDelegate(cb), nativeUserInfo, isPreTick);
+	        } else {
+		        if (nativeUserInfo != IntPtr.Zero) {
+                    GCHandle.FromIntPtr(nativeUserInfo).Free();
+		        }
+                btDynamicsWorld_setInternalTickCallback(_native, IntPtr.Zero, IntPtr.Zero, isPreTick);
+	        }
 		}
 
-		public void SetInternalTickCallback(InternalTickCallback cb, IntPtr worldUserInfo)
+		public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo)
 		{
-			btDynamicsWorld_setInternalTickCallback2(_native, cb._native, worldUserInfo._native);
+            SetInternalTickCallback(cb, worldUserInfo, false);
 		}
 
 		public void SetInternalTickCallback(InternalTickCallback cb)
 		{
-			btDynamicsWorld_setInternalTickCallback3(_native, cb._native);
+            SetInternalTickCallback(cb, WorldUserInfo, false);
 		}
-        */
+
 		public int StepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep)
 		{
 			return btDynamicsWorld_stepSimulation(_native, timeStep, maxSubSteps, fixedTimeStep);
@@ -161,11 +183,7 @@ namespace BulletSharp
 			get { return btDynamicsWorld_getWorldType(_native); }
 		}
         */
-		public IntPtr WorldUserInfo
-		{
-			get { return btDynamicsWorld_getWorldUserInfo(_native); }
-			set { btDynamicsWorld_setWorldUserInfo(_native, value); }
-		}
+        public Object WorldUserInfo { get; set; }
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addAction(IntPtr obj, IntPtr action);

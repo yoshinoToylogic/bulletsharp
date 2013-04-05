@@ -27,7 +27,6 @@ namespace BulletSharp
 {
     public interface IDebugDraw
     {
-        void DrawLine(Vector3 from, Vector3 to, Vector3 color);
         void DrawLine(ref Vector3 from, ref Vector3 to, ref Vector3 fromColor);
         void DrawLine(ref Vector3 from, ref Vector3 to, ref Vector3 fromColor, ref Vector3 toColor);
         void DrawBox(ref Vector3 bbMin, ref Vector3 bbMax, ref Vector3 color);
@@ -37,14 +36,12 @@ namespace BulletSharp
         void DrawSphere(float radius, ref Matrix transform, ref Vector3 color);
         void DrawTriangle(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, ref Vector3 n0, ref Vector3 n1, ref Vector3 n2, ref Vector3 color, float alpha);
         void DrawTriangle(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, ref Vector3 color, float alpha);
-        void DrawContactPoint(Vector3 pointOnB, Vector3 normalOnB, float distance, int lifeTime, Vector3 color);
         void DrawContactPoint(ref Vector3 pointOnB, ref Vector3 normalOnB, float distance, int lifeTime, ref Vector3 color);
         void ReportErrorWarning(String warningString);
         void Draw3dText(ref Vector3 location, String textString);
 
         DebugDrawModes DebugMode { get; set; }
 
-        void DrawAabb(Vector3 from, Vector3 to, Vector3 color);
         void DrawAabb(ref Vector3 from, ref Vector3 to, ref Vector3 color);
         void DrawTransform(ref Matrix transform, float orthoLen);
         void DrawArc(ref Vector3 center, ref Vector3 normal, ref Vector3 axis, float radiusA, float radiusB, float minAngle, float maxAngle,

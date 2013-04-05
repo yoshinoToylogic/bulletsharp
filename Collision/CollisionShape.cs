@@ -170,6 +170,8 @@ namespace BulletSharp
 			get { return btCollisionShape_getShapeType(_native); }
 		}
 
+        public Object UserObject { get; set; }
+
 		public void Dispose()
 		{
 			Dispose(true);
