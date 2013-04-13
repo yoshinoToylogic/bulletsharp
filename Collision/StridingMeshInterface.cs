@@ -5,7 +5,7 @@ using System.IO;
 
 namespace BulletSharp
 {
-	public class StridingMeshInterface
+	public class StridingMeshInterface : IDisposable
 	{
 		internal IntPtr _native;
 
