@@ -2226,7 +2226,7 @@ int btSoftBody_RayFromToCaster_getTests(btSoftBody::RayFromToCaster* obj)
 {
 	return obj->m_tests;
 }
-
+/*
 btScalar btSoftBody_RayFromToCaster_rayFromToTriangle(btScalar* rayFrom, btScalar* rayTo, btScalar* rayNormalizedDirection, btScalar* a, btScalar* b, btScalar* c, btScalar maxt)
 {
 	VECTOR3_CONV(rayFrom);
@@ -2248,7 +2248,7 @@ btScalar btSoftBody_RayFromToCaster_rayFromToTriangle2(btScalar* rayFrom, btScal
 	VECTOR3_CONV(c);
 	return btSoftBody::RayFromToCaster::rayFromToTriangle(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), VECTOR3_USE(rayNormalizedDirection), VECTOR3_USE(a), VECTOR3_USE(b), VECTOR3_USE(c));
 }
-
+*/
 void btSoftBody_RayFromToCaster_setFace(btSoftBody::RayFromToCaster* obj, btSoftBody::Face* value)
 {
 	obj->m_face = value;
