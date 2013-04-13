@@ -1,6 +1,6 @@
 #include "main.h"
 
-#include <BulletCollision/GImpact/btGImpactShape.h>
+#include <BulletCollision/Gimpact/btGImpactShape.h>
 
 extern "C"
 {
