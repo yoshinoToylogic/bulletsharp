@@ -49,6 +49,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btAlignedCollisionObjectArray_wrap.h
     src/btAxisSweep3_wrap.cpp
     src/btAxisSweep3_wrap.h
+    src/btBoxCollision_wrap.cpp
+    src/btBoxCollision_wrap.h
     src/btBoxShape_wrap.cpp
     src/btBoxShape_wrap.h
     src/btBroadphaseInterface_wrap.cpp
@@ -67,6 +69,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btCapsuleShape_wrap.h
     src/btCharacterControllerInterface_wrap.cpp
     src/btCharacterControllerInterface_wrap.h
+    src/btCollisionAlgorithm_wrap.cpp
+    src/btCollisionAlgorithm_wrap.h
     src/btCollisionConfiguration_wrap.cpp
     src/btCollisionConfiguration_wrap.h
     src/btCollisionDispatcher_wrap.cpp
@@ -127,6 +131,10 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btGeometryUtil_wrap.h
     src/btGhostObject_wrap.cpp
     src/btGhostObject_wrap.h
+    src/btGImpactCollisionAlgorithm_wrap.cpp
+    src/btGImpactCollisionAlgorithm_wrap.h
+    src/btGImpactShape_wrap.cpp
+    src/btGImpactShape_wrap.h
     src/btGjkPairDetector_wrap.cpp
     src/btGjkPairDetector_wrap.h
     src/btHinge2Constraint_wrap.cpp
@@ -141,6 +149,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btManifoldPoint_wrap.h
     src/btMinkowskiPenetrationDepthSolver_wrap.cpp
     src/btMinkowskiPenetrationDepthSolver_wrap.h
+    src/btMultiSphereShape_wrap.cpp
+    src/btMultiSphereShape_wrap.h
     src/btOverlappingPairCache_wrap.cpp
     src/btOverlappingPairCache_wrap.h
     src/btOverlappingPairCallback_wrap.cpp
@@ -149,6 +159,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btPoint2PointConstraint_wrap.h
     src/btPointCollector_wrap.cpp
     src/btPointCollector_wrap.h
+    src/btPolarDecomposition_wrap.cpp
+    src/btPolarDecomposition_wrap.h
     src/btPolyhedralConvexShape_wrap.cpp
     src/btPolyhedralConvexShape_wrap.h
     src/btRigidBody_wrap.cpp
@@ -163,6 +175,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btShapeHull_wrap.h
     src/btSimulationIslandManager_wrap.cpp
     src/btSimulationIslandManager_wrap.h
+    src/btSliderConstraint_wrap.cpp
+    src/btSliderConstraint_wrap.h
     src/btSoftBody_wrap.cpp
     src/btSoftBody_wrap.h
     src/btSoftBodyHelpers_wrap.cpp

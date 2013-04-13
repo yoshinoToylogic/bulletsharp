@@ -143,7 +143,10 @@ namespace BulletSharp
             {
                 btSerializer_registerNameForPointer(_native, (obj as CollisionObject)._native, name);
             }
-            throw new NotImplementedException();
+            else
+            {
+                throw new NotImplementedException();
+            }
 		}
         /*
 		public void SerializeName(char ptr)
