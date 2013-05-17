@@ -35,11 +35,6 @@ bool btDispatcherInfo_getEnableSPU(btDispatcherInfo* obj)
 	return obj->m_enableSPU;
 }
 
-btStackAlloc* btDispatcherInfo_getStackAllocator(btDispatcherInfo* obj)
-{
-	return obj->m_stackAllocator;
-}
-
 int btDispatcherInfo_getStepCount(btDispatcherInfo* obj)
 {
 	return obj->m_stepCount;
@@ -98,11 +93,6 @@ void btDispatcherInfo_setEnableSatConvex(btDispatcherInfo* obj, bool value)
 void btDispatcherInfo_setEnableSPU(btDispatcherInfo* obj, bool value)
 {
 	obj->m_enableSPU = value;
-}
-
-void btDispatcherInfo_setStackAllocator(btDispatcherInfo* obj, btStackAlloc* value)
-{
-	obj->m_stackAllocator = value;
 }
 
 void btDispatcherInfo_setStepCount(btDispatcherInfo* obj, int value)
