@@ -79,14 +79,8 @@ namespace BulletSharp
 				get { return btDiscreteCollisionDetectorInterface_ClosestPointInput_getMaximumDistanceSquared(_native); }
 				set { btDiscreteCollisionDetectorInterface_ClosestPointInput_setMaximumDistanceSquared(_native, value); }
 			}
-            /*
-			public StackAlloc StackAlloc
-			{
-				get { return btDiscreteCollisionDetectorInterface_ClosestPointInput_getStackAlloc(_native); }
-				set { btDiscreteCollisionDetectorInterface_ClosestPointInput_setStackAlloc(_native, value._native); }
-			}
-            */
-			public Matrix TransformA
+
+            public Matrix TransformA
 			{
                 get
                 {
@@ -133,15 +127,11 @@ namespace BulletSharp
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern float btDiscreteCollisionDetectorInterface_ClosestPointInput_getMaximumDistanceSquared(IntPtr obj);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btDiscreteCollisionDetectorInterface_ClosestPointInput_getStackAlloc(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformA(IntPtr obj, [Out] out Matrix value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
             static extern void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformB(IntPtr obj, [Out] out Matrix value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern void btDiscreteCollisionDetectorInterface_ClosestPointInput_setMaximumDistanceSquared(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btDiscreteCollisionDetectorInterface_ClosestPointInput_setStackAlloc(IntPtr obj, IntPtr value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
             static extern void btDiscreteCollisionDetectorInterface_ClosestPointInput_setTransformA(IntPtr obj, [In] ref Matrix value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

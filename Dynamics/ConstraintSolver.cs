@@ -15,9 +15,9 @@ namespace BulletSharp
             _preventDelete = preventDelete;
 		}
         /*
-		public void AllSolved(ContactSolverInfo __unnamed0, IDebugDraw __unnamed1, StackAlloc __unnamed2)
+		public void AllSolved(ContactSolverInfo __unnamed0, IDebugDraw __unnamed1)
 		{
-			btConstraintSolver_allSolved(_native, __unnamed0._native, DebugDraw.GetUnmanaged(__unnamed1), __unnamed2._native);
+			btConstraintSolver_allSolved(_native, __unnamed0._native, DebugDraw.GetUnmanaged(__unnamed1));
 		}
         */
 		public void PrepareSolve(int __unnamed0, int __unnamed1)
@@ -30,9 +30,9 @@ namespace BulletSharp
 			btConstraintSolver_reset(_native);
 		}
         /*
-		public float SolveGroup(CollisionObject bodies, int numBodies, PersistentManifold manifold, int numManifolds, TypedConstraint constraints, int numConstraints, ContactSolverInfo info, IDebugDraw debugDrawer, StackAlloc stackAlloc, Dispatcher dispatcher)
+		public float SolveGroup(CollisionObject bodies, int numBodies, PersistentManifold manifold, int numManifolds, TypedConstraint constraints, int numConstraints, ContactSolverInfo info, IDebugDraw debugDrawer, Dispatcher dispatcher)
 		{
-			return btConstraintSolver_solveGroup(_native, bodies._native, numBodies, manifold._native, numManifolds, constraints._native, numConstraints, info._native, DebugDraw.GetUnmanaged(debugDrawer), stackAlloc._native, dispatcher._native);
+			return btConstraintSolver_solveGroup(_native, bodies._native, numBodies, manifold._native, numManifolds, constraints._native, numConstraints, info._native, DebugDraw.GetUnmanaged(debugDrawer), dispatcher._native);
 		}
         */
 		public void Dispose()
@@ -65,7 +65,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConstraintSolver_reset(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btConstraintSolver_solveGroup(IntPtr obj, IntPtr bodies, int numBodies, IntPtr manifold, int numManifolds, IntPtr constraints, int numConstraints, IntPtr info, IntPtr debugDrawer, IntPtr stackAlloc, IntPtr dispatcher);
+		static extern float btConstraintSolver_solveGroup(IntPtr obj, IntPtr bodies, int numBodies, IntPtr manifold, int numManifolds, IntPtr constraints, int numConstraints, IntPtr info, IntPtr debugDrawer, IntPtr dispatcher);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConstraintSolver_delete(IntPtr obj);
 	}

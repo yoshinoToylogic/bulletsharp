@@ -27,11 +27,6 @@ namespace BulletSharp
 		{
 			get { return btCollisionConfiguration_getPersistentManifoldPool(_native); }
 		}
-
-		public StackAlloc StackAllocator
-		{
-			get { return btCollisionConfiguration_getStackAllocator(_native); }
-		}
         */
 		public void Dispose()
 		{
@@ -59,8 +54,6 @@ namespace BulletSharp
 		static extern IntPtr btCollisionConfiguration_getCollisionAlgorithmPool(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionConfiguration_getPersistentManifoldPool(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCollisionConfiguration_getStackAllocator(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionConfiguration_delete(IntPtr obj);
 	}

@@ -53,13 +53,7 @@ namespace BulletSharp
 			get { return btDispatcherInfo_getEnableSPU(_native); }
 			set { btDispatcherInfo_setEnableSPU(_native, value); }
 		}
-        /*
-		public StackAlloc StackAllocator
-		{
-			get { return btDispatcherInfo_getStackAllocator(_native); }
-			set { btDispatcherInfo_setStackAllocator(_native, value._native); }
-		}
-        */
+
 		public int StepCount
 		{
 			get { return btDispatcherInfo_getStepCount(_native); }
@@ -131,8 +125,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btDispatcherInfo_getEnableSPU(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDispatcherInfo_getStackAllocator(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDispatcherInfo_getStepCount(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btDispatcherInfo_getTimeOfImpact(IntPtr obj);
@@ -156,8 +148,6 @@ namespace BulletSharp
 		static extern void btDispatcherInfo_setEnableSatConvex(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcherInfo_setEnableSPU(IntPtr obj, bool value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDispatcherInfo_setStackAllocator(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcherInfo_setStepCount(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -41,23 +41,11 @@ namespace BulletSharp
 			get { return btDefaultCollisionConstructionInfo_getDefaultMaxPersistentManifoldPoolSize(_native); }
 			set { btDefaultCollisionConstructionInfo_setDefaultMaxPersistentManifoldPoolSize(_native, value); }
 		}
-
-		public int DefaultStackAllocatorSize
-		{
-			get { return btDefaultCollisionConstructionInfo_getDefaultStackAllocatorSize(_native); }
-			set { btDefaultCollisionConstructionInfo_setDefaultStackAllocatorSize(_native, value); }
-		}
         /*
 		public PoolAllocator PersistentManifoldPool
 		{
 			get { return btDefaultCollisionConstructionInfo_getPersistentManifoldPool(_native); }
 			set { btDefaultCollisionConstructionInfo_setPersistentManifoldPool(_native, value._native); }
-		}
-        
-		public StackAlloc StackAlloc
-		{
-			get { return btDefaultCollisionConstructionInfo_getStackAlloc(_native); }
-			set { btDefaultCollisionConstructionInfo_setStackAlloc(_native, value._native); }
 		}
         */
 		public int UseEpaPenetrationAlgorithm
@@ -97,11 +85,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDefaultCollisionConstructionInfo_getDefaultMaxPersistentManifoldPoolSize(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btDefaultCollisionConstructionInfo_getDefaultStackAllocatorSize(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDefaultCollisionConstructionInfo_getPersistentManifoldPool(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDefaultCollisionConstructionInfo_getStackAlloc(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDefaultCollisionConstructionInfo_getUseEpaPenetrationAlgorithm(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -113,11 +97,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultCollisionConstructionInfo_setDefaultMaxPersistentManifoldPoolSize(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDefaultCollisionConstructionInfo_setDefaultStackAllocatorSize(IntPtr obj, int value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultCollisionConstructionInfo_setPersistentManifoldPool(IntPtr obj, IntPtr value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDefaultCollisionConstructionInfo_setStackAlloc(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultCollisionConstructionInfo_setUseEpaPenetrationAlgorithm(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
