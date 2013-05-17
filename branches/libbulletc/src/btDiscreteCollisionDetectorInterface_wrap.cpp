@@ -32,11 +32,6 @@ btScalar btDiscreteCollisionDetectorInterface_ClosestPointInput_getMaximumDistan
 	return obj->m_maximumDistanceSquared;
 }
 
-btStackAlloc* btDiscreteCollisionDetectorInterface_ClosestPointInput_getStackAlloc(btDiscreteCollisionDetectorInterface::ClosestPointInput* obj)
-{
-	return obj->m_stackAlloc;
-}
-
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformA(btDiscreteCollisionDetectorInterface::ClosestPointInput* obj)
 {
 	obj->m_transformA;
@@ -50,11 +45,6 @@ void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformB(btDisc
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_setMaximumDistanceSquared(btDiscreteCollisionDetectorInterface::ClosestPointInput* obj, btScalar value)
 {
 	obj->m_maximumDistanceSquared = value;
-}
-
-void btDiscreteCollisionDetectorInterface_ClosestPointInput_setStackAlloc(btDiscreteCollisionDetectorInterface::ClosestPointInput* obj, btStackAlloc* value)
-{
-	obj->m_stackAlloc = value;
 }
 
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_setTransformA(btDiscreteCollisionDetectorInterface::ClosestPointInput* obj, btScalar* value)

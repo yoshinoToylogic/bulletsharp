@@ -25,19 +25,9 @@ int btDefaultCollisionConstructionInfo_getDefaultMaxPersistentManifoldPoolSize(b
 	return obj->m_defaultMaxPersistentManifoldPoolSize;
 }
 
-int btDefaultCollisionConstructionInfo_getDefaultStackAllocatorSize(btDefaultCollisionConstructionInfo* obj)
-{
-	return obj->m_defaultStackAllocatorSize;
-}
-
 btPoolAllocator* btDefaultCollisionConstructionInfo_getPersistentManifoldPool(btDefaultCollisionConstructionInfo* obj)
 {
 	return obj->m_persistentManifoldPool;
-}
-
-btStackAlloc* btDefaultCollisionConstructionInfo_getStackAlloc(btDefaultCollisionConstructionInfo* obj)
-{
-	return obj->m_stackAlloc;
 }
 
 int btDefaultCollisionConstructionInfo_getUseEpaPenetrationAlgorithm(btDefaultCollisionConstructionInfo* obj)
@@ -65,19 +55,9 @@ void btDefaultCollisionConstructionInfo_setDefaultMaxPersistentManifoldPoolSize(
 	obj->m_defaultMaxPersistentManifoldPoolSize = value;
 }
 
-void btDefaultCollisionConstructionInfo_setDefaultStackAllocatorSize(btDefaultCollisionConstructionInfo* obj, int value)
-{
-	obj->m_defaultStackAllocatorSize = value;
-}
-
 void btDefaultCollisionConstructionInfo_setPersistentManifoldPool(btDefaultCollisionConstructionInfo* obj, btPoolAllocator* value)
 {
 	obj->m_persistentManifoldPool = value;
-}
-
-void btDefaultCollisionConstructionInfo_setStackAlloc(btDefaultCollisionConstructionInfo* obj, btStackAlloc* value)
-{
-	obj->m_stackAlloc = value;
 }
 
 void btDefaultCollisionConstructionInfo_setUseEpaPenetrationAlgorithm(btDefaultCollisionConstructionInfo* obj, int value)

@@ -15,11 +15,6 @@ btPoolAllocator* btCollisionConfiguration_getPersistentManifoldPool(btCollisionC
 	return obj->getPersistentManifoldPool();
 }
 
-btStackAlloc* btCollisionConfiguration_getStackAllocator(btCollisionConfiguration* obj)
-{
-	return obj->getStackAllocator();
-}
-
 void btCollisionConfiguration_delete(btCollisionConfiguration* obj)
 {
 	delete obj;

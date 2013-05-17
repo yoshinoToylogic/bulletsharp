@@ -4,6 +4,15 @@ using System.Security;
 
 namespace BulletSharp
 {
+    public enum DynamicsWorldType
+    {
+        Simple = 1,
+        Discrete = 2,
+        Continuous = 3,
+        SoftRigid = 4,
+        Gpu = 5
+    }
+
 	public class DynamicsWorld : CollisionWorld
 	{
         public delegate void InternalTickCallback(DynamicsWorld world, float timeStep);
@@ -177,12 +186,12 @@ namespace BulletSharp
 		{
             get { return new ContactSolverInfo(btDynamicsWorld_getSolverInfo(_native)); }
 		}
-        /*
-		public btDynamicsWorldType WorldType
+
+		public DynamicsWorldType WorldType
 		{
 			get { return btDynamicsWorld_getWorldType(_native); }
 		}
-        */
+
         public Object WorldUserInfo { get; set; }
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -212,7 +221,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDynamicsWorld_getSolverInfo(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btDynamicsWorld_getWorldType(IntPtr obj);
+        static extern DynamicsWorldType btDynamicsWorld_getWorldType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDynamicsWorld_getWorldUserInfo(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

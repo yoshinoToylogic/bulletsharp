@@ -9,7 +9,6 @@ extern "C"
 	EXPORT int btDispatcherInfo_getDispatchFunc(btDispatcherInfo* obj);
 	EXPORT bool btDispatcherInfo_getEnableSatConvex(btDispatcherInfo* obj);
 	EXPORT bool btDispatcherInfo_getEnableSPU(btDispatcherInfo* obj);
-	EXPORT btStackAlloc* btDispatcherInfo_getStackAllocator(btDispatcherInfo* obj);
 	EXPORT int btDispatcherInfo_getStepCount(btDispatcherInfo* obj);
 	EXPORT btScalar btDispatcherInfo_getTimeOfImpact(btDispatcherInfo* obj);
 	EXPORT btScalar btDispatcherInfo_getTimeStep(btDispatcherInfo* obj);
@@ -22,7 +21,6 @@ extern "C"
 	EXPORT void btDispatcherInfo_setDispatchFunc(btDispatcherInfo* obj, int value);
 	EXPORT void btDispatcherInfo_setEnableSatConvex(btDispatcherInfo* obj, bool value);
 	EXPORT void btDispatcherInfo_setEnableSPU(btDispatcherInfo* obj, bool value);
-	EXPORT void btDispatcherInfo_setStackAllocator(btDispatcherInfo* obj, btStackAlloc* value);
 	EXPORT void btDispatcherInfo_setStepCount(btDispatcherInfo* obj, int value);
 	EXPORT void btDispatcherInfo_setTimeOfImpact(btDispatcherInfo* obj, btScalar value);
 	EXPORT void btDispatcherInfo_setTimeStep(btDispatcherInfo* obj, btScalar value);
