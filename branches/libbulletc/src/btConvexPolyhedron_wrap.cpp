@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionShapes/btConvexPolyhedron.h>
+
+#include "conversion.h"
 #include "btConvexPolyhedron_wrap.h"
 
 btFace* btFace_new()
@@ -5,7 +8,7 @@ btFace* btFace_new()
 	return new btFace();
 }
 
-btAlignedObjectArray<int>* btFace_getIndices(btFace* obj)
+btAlignedIntArray* btFace_getIndices(btFace* obj)
 {
 	return &obj->m_indices;
 }
@@ -30,7 +33,7 @@ void btConvexPolyhedron_getExtents(btConvexPolyhedron* obj, btScalar* value)
 	VECTOR3_OUT(&obj->m_extents, value);
 }
 
-btAlignedObjectArray<btFace>* btConvexPolyhedron_getFaces(btConvexPolyhedron* obj)
+btAlignedFaceArray* btConvexPolyhedron_getFaces(btConvexPolyhedron* obj)
 {
 	return &obj->m_faces;
 }
@@ -55,12 +58,12 @@ btScalar btConvexPolyhedron_getRadius(btConvexPolyhedron* obj)
 	return obj->m_radius;
 }
 
-btAlignedObjectArray<btVector3>* btConvexPolyhedron_getUniqueEdges(btConvexPolyhedron* obj)
+btAlignedVector3Array* btConvexPolyhedron_getUniqueEdges(btConvexPolyhedron* obj)
 {
 	return &obj->m_uniqueEdges;
 }
 
-btAlignedObjectArray<btVector3>* btConvexPolyhedron_getVertices(btConvexPolyhedron* obj)
+btAlignedVector3Array* btConvexPolyhedron_getVertices(btConvexPolyhedron* obj)
 {
 	return &obj->m_vertices;
 }

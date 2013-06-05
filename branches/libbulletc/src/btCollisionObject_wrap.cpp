@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCollisionObject_wrap.h"
 
 btCollisionObject* btCollisionObject_new()

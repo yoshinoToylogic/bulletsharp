@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btUniversalConstraint_wrap.h"
 
 btUniversalConstraint* btUniversalConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* anchor, btScalar* axis1, btScalar* axis2)

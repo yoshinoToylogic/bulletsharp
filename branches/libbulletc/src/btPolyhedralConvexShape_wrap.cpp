@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btPolyhedralConvexShape_wrap.h"
 
 const btConvexPolyhedron* btPolyhedralConvexShape_getConvexPolyhedron(btPolyhedralConvexShape* obj)

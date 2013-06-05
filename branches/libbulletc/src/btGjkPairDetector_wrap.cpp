@@ -1,3 +1,7 @@
+#include <BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h>
+#include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
+
+#include "conversion.h"
 #include "btGjkPairDetector_wrap.h"
 
 btGjkPairDetector* btGjkPairDetector_new(btConvexShape* objectA, btConvexShape* objectB, btVoronoiSimplexSolver* simplexSolver, btConvexPenetrationDepthSolver* penetrationDepthSolver)
@@ -25,7 +29,7 @@ int btGjkPairDetector_getCatchDegeneracies(btGjkPairDetector* obj)
 	return obj->m_catchDegeneracies;
 }
 
-void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, btDiscreteCollisionDetectorInterface::ClosestPointInput* input, btDiscreteCollisionDetectorInterface::Result* output, btIDebugDraw* debugDraw)
+void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, btDiscreteCollisionDetectorInterface_ClosestPointInput* input, btDiscreteCollisionDetectorInterface_Result* output, btIDebugDraw* debugDraw)
 {
 	obj->getClosestPointsNonVirtual(*input, *output, debugDraw);
 }

@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btConvexHullShape_wrap.h"
 
 btConvexHullShape* btConvexHullShape_new(btScalar* points, int numPoints, int stride)

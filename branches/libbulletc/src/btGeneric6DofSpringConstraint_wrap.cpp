@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btGeneric6DofSpringConstraint_wrap.h"
 
 btGeneric6DofSpringConstraint* btGeneric6DofSpringConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA)

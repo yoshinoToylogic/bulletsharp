@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btActionInterface_wrap.h"
 
 void btActionInterface_debugDraw(btActionInterface* obj, btIDebugDraw* debugDrawer)

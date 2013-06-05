@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btAxisSweep3_wrap.h"
 
 btAxisSweep3* btAxisSweep3_new(btScalar* worldAabbMin, btScalar* worldAabbMax, unsigned short maxHandles, btOverlappingPairCache* pairCache, bool disableRaycastAccelerator)

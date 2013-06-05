@@ -1,3 +1,6 @@
+#include <../Extras/Serialize/BulletWorldImporter/btWorldImporter.h>
+
+#include "conversion.h"
 #include "btWorldImporter_wrap.h"
 
 btWorldImporter* btWorldImporter_new(btDynamicsWorld* world)

@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btGearConstraint_wrap.h"
 
 btGearConstraint* btGearConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* axisInA, btScalar* axisInB, btScalar ratio)

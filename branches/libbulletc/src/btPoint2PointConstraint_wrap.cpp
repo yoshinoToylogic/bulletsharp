@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btPoint2PointConstraint_wrap.h"
 
 btConstraintSetting* btConstraintSetting_new()
@@ -53,12 +54,12 @@ btPoint2PointConstraint* btPoint2PointConstraint_new2(btRigidBody* rbA, btScalar
 	return new btPoint2PointConstraint(*rbA, VECTOR3_USE(pivotInA));
 }
 
-void btPoint2PointConstraint_getInfo1NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
+void btPoint2PointConstraint_getInfo1NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint_btConstraintInfo1* info)
 {
 	obj->getInfo1NonVirtual(info);
 }
 
-void btPoint2PointConstraint_getInfo2NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* body0_trans, btScalar* body1_trans)
+void btPoint2PointConstraint_getInfo2NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* body0_trans, btScalar* body1_trans)
 {
 	TRANSFORM_CONV(body0_trans);
 	TRANSFORM_CONV(body1_trans);

@@ -20,10 +20,10 @@ extern "C"
 	EXPORT void btHingeConstraint_getFrameOffsetB(btHingeConstraint* obj, btScalar* value);
 	EXPORT btScalar btHingeConstraint_getHingeAngle(btHingeConstraint* obj, btScalar* transA, btScalar* transB);
 	EXPORT btScalar btHingeConstraint_getHingeAngle2(btHingeConstraint* obj);
-	EXPORT void btHingeConstraint_getInfo1NonVirtual(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo1* info);
-	EXPORT void btHingeConstraint_getInfo2Internal(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
-	EXPORT void btHingeConstraint_getInfo2InternalUsingFrameOffset(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
-	EXPORT void btHingeConstraint_getInfo2NonVirtual(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
+	EXPORT void btHingeConstraint_getInfo1NonVirtual(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo1* info);
+	EXPORT void btHingeConstraint_getInfo2Internal(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
+	EXPORT void btHingeConstraint_getInfo2InternalUsingFrameOffset(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
+	EXPORT void btHingeConstraint_getInfo2NonVirtual(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* angVelA, btScalar* angVelB);
 	EXPORT btScalar btHingeConstraint_getLimitSign(btHingeConstraint* obj);
 	EXPORT btScalar btHingeConstraint_getLowerLimit(btHingeConstraint* obj);
 	EXPORT btScalar btHingeConstraint_getMaxMotorImpulse(btHingeConstraint* obj);

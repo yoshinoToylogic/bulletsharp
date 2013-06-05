@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btBroadphaseProxy_wrap.h"
 
 btBroadphaseProxy* btBroadphaseProxy_new()

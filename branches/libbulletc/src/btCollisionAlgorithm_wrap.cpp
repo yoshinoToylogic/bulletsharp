@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCollisionAlgorithm_wrap.h"
 
 btCollisionAlgorithmConstructionInfo* btCollisionAlgorithmConstructionInfo_new()

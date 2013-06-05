@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btGeneric6DofConstraint_wrap.h"
 
 btRotationalLimitMotor* btRotationalLimitMotor_new()
@@ -415,7 +416,7 @@ void btGeneric6DofConstraint_calculateTransforms2(btGeneric6DofConstraint* obj)
 	obj->calculateTransforms();
 }
 
-int btGeneric6DofConstraint_get_limit_motor_info2(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint::btConstraintInfo2* info, int row, btScalar* ax1, int rotational, int rotAllowed)
+int btGeneric6DofConstraint_get_limit_motor_info2(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint_btConstraintInfo2* info, int row, btScalar* ax1, int rotational, int rotAllowed)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -427,7 +428,7 @@ int btGeneric6DofConstraint_get_limit_motor_info2(btGeneric6DofConstraint* obj, 
 	return obj->get_limit_motor_info2(limot, TRANSFORM_USE(transA), TRANSFORM_USE(transB), VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB), info, row, VECTOR3_USE(ax1), rotational, rotAllowed);
 }
 
-int btGeneric6DofConstraint_get_limit_motor_info22(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint::btConstraintInfo2* info, int row, btScalar* ax1, int rotational)
+int btGeneric6DofConstraint_get_limit_motor_info22(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint_btConstraintInfo2* info, int row, btScalar* ax1, int rotational)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -483,12 +484,12 @@ void btGeneric6DofConstraint_getFrameOffsetB(btGeneric6DofConstraint* obj, btSca
 	btTransformToMatrix(&obj->getFrameOffsetB(), value);
 }
 
-void btGeneric6DofConstraint_getInfo1NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
+void btGeneric6DofConstraint_getInfo1NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint_btConstraintInfo1* info)
 {
 	obj->getInfo1NonVirtual(info);
 }
 
-void btGeneric6DofConstraint_getInfo2NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB)
+void btGeneric6DofConstraint_getInfo2NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);

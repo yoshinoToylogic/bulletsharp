@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionDispatch/btGhostObject.h>
+
+#include "conversion.h"
 #include "btGhostObject_wrap.h"
 
 btGhostObject* btGhostObject_new()
@@ -15,14 +18,14 @@ void btGhostObject_addOverlappingObjectInternal2(btGhostObject* obj, btBroadphas
 	obj->addOverlappingObjectInternal(otherProxy);
 }
 
-void btGhostObject_convexSweepTest(btGhostObject* obj, btConvexShape* castShape, btScalar* convexFromWorld, btScalar* convexToWorld, btCollisionWorld::ConvexResultCallback* resultCallback, btScalar allowedCcdPenetration)
+void btGhostObject_convexSweepTest(btGhostObject* obj, btConvexShape* castShape, btScalar* convexFromWorld, btScalar* convexToWorld, btCollisionWorld_ConvexResultCallback* resultCallback, btScalar allowedCcdPenetration)
 {
 	TRANSFORM_CONV(convexFromWorld);
 	TRANSFORM_CONV(convexToWorld);
 	obj->convexSweepTest(castShape, TRANSFORM_USE(convexFromWorld), TRANSFORM_USE(convexToWorld), *resultCallback, allowedCcdPenetration);
 }
 
-void btGhostObject_convexSweepTest2(btGhostObject* obj, btConvexShape* castShape, btScalar* convexFromWorld, btScalar* convexToWorld, btCollisionWorld::ConvexResultCallback* resultCallback)
+void btGhostObject_convexSweepTest2(btGhostObject* obj, btConvexShape* castShape, btScalar* convexFromWorld, btScalar* convexToWorld, btCollisionWorld_ConvexResultCallback* resultCallback)
 {
 	TRANSFORM_CONV(convexFromWorld);
 	TRANSFORM_CONV(convexToWorld);
@@ -39,7 +42,7 @@ btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, int in
 	return obj->getOverlappingObject(index);
 }
 
-btAlignedObjectArray<btCollisionObject*>* btGhostObject_getOverlappingPairs(btGhostObject* obj)
+btAlignedCollisionObjectArray* btGhostObject_getOverlappingPairs(btGhostObject* obj)
 {
 	return &obj->getOverlappingPairs();
 }
@@ -49,7 +52,7 @@ void btGhostObject_getOverlappingPairs2(btGhostObject* obj)
 	obj->getOverlappingPairs();
 }
 
-void btGhostObject_rayTest(btGhostObject* obj, btScalar* rayFromWorld, btScalar* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback)
+void btGhostObject_rayTest(btGhostObject* obj, btScalar* rayFromWorld, btScalar* rayToWorld, btCollisionWorld_RayResultCallback* resultCallback)
 {
 	VECTOR3_CONV(rayFromWorld);
 	VECTOR3_CONV(rayToWorld);

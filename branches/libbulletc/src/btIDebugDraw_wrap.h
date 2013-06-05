@@ -1,5 +1,22 @@
 #include "main.h"
 
+#ifndef BT_IDEBUG_DRAW__H
+#define pDrawAabb void*
+#define pDrawArc void*
+#define pDrawBox void*
+#define pDrawCapsule void*
+#define pDrawContactPoint void*
+#define pDrawCylinder void*
+#define pDrawLine void*
+#define pDrawPlane void*
+#define pDrawSphere void*
+#define pDrawSpherePatch void*
+#define pDrawTransform void*
+#define pGetDebugMode void*
+#define pSimpleCallback void*
+
+#define btIDebugDrawWrapper void
+#else
 typedef void (STDCALL pDrawAabb)(const btScalar* from, const btScalar* to, const btScalar* color);
 typedef void (STDCALL pDrawArc)(const btScalar* center, const btScalar* normal, const btScalar* axis,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle, const btScalar* color, bool drawSect, btScalar stepDegrees);
@@ -84,6 +101,7 @@ public:
 	// Never called from Bullet
 	//virtual void drawLine(const btVector3& from, const btVector3& to, const btVector3& fromColor, const btVector3& toColor);
 };
+#endif
 
 extern "C"
 {

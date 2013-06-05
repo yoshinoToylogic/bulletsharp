@@ -1,3 +1,6 @@
+#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
+
+#include "conversion.h"
 #include "btVoronoiSimplexSolver_wrap.h"
 
 btUsageBitfield* btUsageBitfield_new()

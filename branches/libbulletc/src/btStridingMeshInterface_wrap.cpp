@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btStridingMeshInterface_wrap.h"
 
 void btStridingMeshInterface_calculateAabbBruteForce(btStridingMeshInterface* obj, btScalar* aabbMin, btScalar* aabbMax)

@@ -19,8 +19,8 @@ extern "C"
 	EXPORT btScalar btSliderConstraint_getDampingOrthoLin(btSliderConstraint* obj);
 	EXPORT void btSliderConstraint_getFrameOffsetA(btSliderConstraint* obj, btScalar* value);
 	EXPORT void btSliderConstraint_getFrameOffsetB(btSliderConstraint* obj, btScalar* value);
-	EXPORT void btSliderConstraint_getInfo1NonVirtual(btSliderConstraint* obj, btTypedConstraint::btConstraintInfo1* info);
-	EXPORT void btSliderConstraint_getInfo2NonVirtual(btSliderConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar rbAinvMass, btScalar rbBinvMass);
+	EXPORT void btSliderConstraint_getInfo1NonVirtual(btSliderConstraint* obj, btTypedConstraint_btConstraintInfo1* info);
+	EXPORT void btSliderConstraint_getInfo2NonVirtual(btSliderConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar rbAinvMass, btScalar rbBinvMass);
 	EXPORT btScalar btSliderConstraint_getLinDepth(btSliderConstraint* obj);
 	EXPORT btScalar btSliderConstraint_getLinearPos(btSliderConstraint* obj);
 	EXPORT btScalar btSliderConstraint_getLowerAngLimit(btSliderConstraint* obj);

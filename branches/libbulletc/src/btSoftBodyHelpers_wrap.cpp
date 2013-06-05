@@ -1,3 +1,6 @@
+#include <BulletSoftBody/btSoftBodyHelpers.h>
+
+#include "conversion.h"
 #include "btSoftBodyHelpers_wrap.h"
 
 fDrawFlags* fDrawFlags_new()

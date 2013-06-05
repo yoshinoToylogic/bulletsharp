@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btDbvtBroadphase_wrap.h"
 
 btDbvtProxy* btDbvtProxy_new(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask)

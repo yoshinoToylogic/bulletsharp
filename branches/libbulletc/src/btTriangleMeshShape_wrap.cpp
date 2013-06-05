@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btTriangleMeshShape_wrap.h"
 
 void btTriangleMeshShape_getLocalAabbMax(btTriangleMeshShape* obj, btScalar* value)

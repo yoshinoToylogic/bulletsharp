@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btStaticPlaneShape_wrap.h"
 
 btStaticPlaneShape* btStaticPlaneShape_new(btScalar* planeNormal, btScalar planeConstant)

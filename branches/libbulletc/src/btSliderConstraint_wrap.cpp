@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btSliderConstraint_wrap.h"
 
 btSliderConstraint* btSliderConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA)
@@ -90,12 +91,12 @@ void btSliderConstraint_getFrameOffsetB(btSliderConstraint* obj, btScalar* value
 	btTransformToMatrix(&obj->getFrameOffsetB(), value);
 }
 
-void btSliderConstraint_getInfo1NonVirtual(btSliderConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
+void btSliderConstraint_getInfo1NonVirtual(btSliderConstraint* obj, btTypedConstraint_btConstraintInfo1* info)
 {
 	obj->getInfo1NonVirtual(info);
 }
 
-void btSliderConstraint_getInfo2NonVirtual(btSliderConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
+void btSliderConstraint_getInfo2NonVirtual(btSliderConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);

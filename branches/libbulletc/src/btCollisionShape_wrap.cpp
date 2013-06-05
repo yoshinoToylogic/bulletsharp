@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCollisionShape_wrap.h"
 
 void btCollisionShape_calculateLocalInertia(btCollisionShape* obj, btScalar mass, btScalar* inertia)

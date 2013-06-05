@@ -1,11 +1,14 @@
+#include <BulletCollision/CollisionDispatch/btSimulationIslandManager.h>
+
+#include "conversion.h"
 #include "btSimulationIslandManager_wrap.h"
 /*
-void btSimulationIslandManager_IslandCallback_processIsland(btSimulationIslandManager::IslandCallback* obj, * bodies, int numBodies, * manifolds, int numManifolds, int islandId)
+void btSimulationIslandManager_IslandCallback_processIsland(btSimulationIslandManager_IslandCallback* obj, * bodies, int numBodies, * manifolds, int numManifolds, int islandId)
 {
 	obj->processIsland(bodies, numBodies, manifolds, numManifolds, islandId);
 }
 */
-void btSimulationIslandManager_IslandCallback_delete(btSimulationIslandManager::IslandCallback* obj)
+void btSimulationIslandManager_IslandCallback_delete(btSimulationIslandManager_IslandCallback* obj)
 {
 	delete obj;
 }
@@ -15,7 +18,7 @@ btSimulationIslandManager* btSimulationIslandManager_new()
 	return new btSimulationIslandManager();
 }
 
-void btSimulationIslandManager_buildAndProcessIslands(btSimulationIslandManager* obj, btDispatcher* dispatcher, btCollisionWorld* collisionWorld, btSimulationIslandManager::IslandCallback* callback)
+void btSimulationIslandManager_buildAndProcessIslands(btSimulationIslandManager* obj, btDispatcher* dispatcher, btCollisionWorld* collisionWorld, btSimulationIslandManager_IslandCallback* callback)
 {
 	obj->buildAndProcessIslands(dispatcher, collisionWorld, callback);
 }

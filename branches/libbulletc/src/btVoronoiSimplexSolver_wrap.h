@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletCollision/NarrowPhaseCollision/btVoronoiSimplexSolver.h>
-
 extern "C"
 {
 	EXPORT btUsageBitfield* btUsageBitfield_new();

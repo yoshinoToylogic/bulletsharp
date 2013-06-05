@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btConeShape_wrap.h"
 
 btConeShape* btConeShape_new(btScalar radius, btScalar height)

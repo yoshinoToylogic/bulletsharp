@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletSoftBody/btSoftBodyHelpers.h>
-
 extern "C"
 {
 	EXPORT fDrawFlags* fDrawFlags_new();

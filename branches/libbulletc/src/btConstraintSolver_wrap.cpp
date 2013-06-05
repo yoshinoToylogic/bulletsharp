@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btConstraintSolver_wrap.h"
 
 void btConstraintSolver_delete(btConstraintSolver* obj)

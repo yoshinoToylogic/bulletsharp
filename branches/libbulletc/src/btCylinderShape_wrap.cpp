@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCylinderShape_wrap.h"
 
 btCylinderShape* btCylinderShape_new(btScalar* halfExtents)

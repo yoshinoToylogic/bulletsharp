@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btIDebugDraw_wrap.h"
 
 btIDebugDrawWrapper::btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawAabb drawAabbCallback, pDrawArc drawArcCallback, pDrawBox drawBoxCallback,

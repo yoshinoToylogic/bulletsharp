@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h>
-
 extern "C"
 {
 	EXPORT btGjkPairDetector* btGjkPairDetector_new(btConvexShape* objectA, btConvexShape* objectB, btVoronoiSimplexSolver* simplexSolver, btConvexPenetrationDepthSolver* penetrationDepthSolver);
@@ -9,7 +7,7 @@ extern "C"
 	EXPORT void btGjkPairDetector_getCachedSeparatingAxis(btGjkPairDetector* obj, btScalar* value);
 	EXPORT btScalar btGjkPairDetector_getCachedSeparatingDistance(btGjkPairDetector* obj);
 	EXPORT int btGjkPairDetector_getCatchDegeneracies(btGjkPairDetector* obj);
-	EXPORT void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, btDiscreteCollisionDetectorInterface::ClosestPointInput* input, btDiscreteCollisionDetectorInterface::Result* output, btIDebugDraw* debugDraw);
+	EXPORT void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, btDiscreteCollisionDetectorInterface_ClosestPointInput* input, btDiscreteCollisionDetectorInterface_Result* output, btIDebugDraw* debugDraw);
 	EXPORT int btGjkPairDetector_getCurIter(btGjkPairDetector* obj);
 	EXPORT int btGjkPairDetector_getDegenerateSimplex(btGjkPairDetector* obj);
 	EXPORT int btGjkPairDetector_getFixContactNormalDirection(btGjkPairDetector* obj);

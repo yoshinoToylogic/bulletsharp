@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btManifoldPoint_wrap.h"
 
 btConstraintRow* btConstraintRow_new()

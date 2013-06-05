@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletCollision/CollisionShapes/btShapeHull.h>
-
 extern "C"
 {
 	EXPORT btShapeHull* btShapeHull_new(btConvexShape* shape);

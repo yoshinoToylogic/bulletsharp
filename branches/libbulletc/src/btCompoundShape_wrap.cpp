@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCompoundShape_wrap.h"
 
 btCompoundShapeChild* btCompoundShapeChild_new()

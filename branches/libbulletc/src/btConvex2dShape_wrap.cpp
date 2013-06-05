@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionShapes/btConvex2dShape.h>
+
+#include "conversion.h"
 #include "btConvex2dShape_wrap.h"
 
 btConvex2dShape* btConvex2dShape_new(btConvexShape* convexChildShape)

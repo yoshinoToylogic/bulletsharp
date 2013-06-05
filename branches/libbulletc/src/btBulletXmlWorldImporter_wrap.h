@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <../Extras/Serialize/BulletXmlWorldImporter/btBulletXmlWorldImporter.h>
-
 extern "C"
 {
 	EXPORT btBulletXmlWorldImporter* btBulletXmlWorldImporter_new(btDynamicsWorld* world);
