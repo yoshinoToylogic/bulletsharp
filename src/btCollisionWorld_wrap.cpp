@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCollisionWorld_wrap.h"
 
 btCollisionWorld_ContactResultCallbackWrapper::btCollisionWorld_ContactResultCallbackWrapper(pAddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
@@ -20,7 +21,7 @@ btScalar btCollisionWorld_ContactResultCallbackWrapper::addSingleResult(btManifo
 
 bool btCollisionWorld_ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
 {
-	return btCollisionWorld::ContactResultCallback::needsCollision(proxy0);
+	return btCollisionWorld_ContactResultCallback::needsCollision(proxy0);
 }
 
 
@@ -105,72 +106,72 @@ void btCollisionWorld_LocalRayResult_delete(btCollisionWorld::LocalRayResult* ob
 	delete obj;
 }
 
-btScalar btCollisionWorld_RayResultCallback_addSingleResult(btCollisionWorld::RayResultCallback* obj, btCollisionWorld::LocalRayResult* rayResult, bool normalInWorldSpace)
+btScalar btCollisionWorld_RayResultCallback_addSingleResult(btCollisionWorld_RayResultCallback* obj, btCollisionWorld::LocalRayResult* rayResult, bool normalInWorldSpace)
 {
 	return obj->addSingleResult(*rayResult, normalInWorldSpace);
 }
 
-btScalar btCollisionWorld_RayResultCallback_getClosestHitFraction(btCollisionWorld::RayResultCallback* obj)
+btScalar btCollisionWorld_RayResultCallback_getClosestHitFraction(btCollisionWorld_RayResultCallback* obj)
 {
 	return obj->m_closestHitFraction;
 }
 
-short btCollisionWorld_RayResultCallback_getCollisionFilterGroup(btCollisionWorld::RayResultCallback* obj)
+short btCollisionWorld_RayResultCallback_getCollisionFilterGroup(btCollisionWorld_RayResultCallback* obj)
 {
 	return obj->m_collisionFilterGroup;
 }
 
-short btCollisionWorld_RayResultCallback_getCollisionFilterMask(btCollisionWorld::RayResultCallback* obj)
+short btCollisionWorld_RayResultCallback_getCollisionFilterMask(btCollisionWorld_RayResultCallback* obj)
 {
 	return obj->m_collisionFilterMask;
 }
 
-const btCollisionObject* btCollisionWorld_RayResultCallback_getCollisionObject(btCollisionWorld::RayResultCallback* obj)
+const btCollisionObject* btCollisionWorld_RayResultCallback_getCollisionObject(btCollisionWorld_RayResultCallback* obj)
 {
 	return obj->m_collisionObject;
 }
 
-unsigned int btCollisionWorld_RayResultCallback_getFlags(btCollisionWorld::RayResultCallback* obj)
+unsigned int btCollisionWorld_RayResultCallback_getFlags(btCollisionWorld_RayResultCallback* obj)
 {
 	return obj->m_flags;
 }
 
-bool btCollisionWorld_RayResultCallback_hasHit(btCollisionWorld::RayResultCallback* obj)
+bool btCollisionWorld_RayResultCallback_hasHit(btCollisionWorld_RayResultCallback* obj)
 {
 	return obj->hasHit();
 }
 
-bool btCollisionWorld_RayResultCallback_needsCollision(btCollisionWorld::RayResultCallback* obj, btBroadphaseProxy* proxy0)
+bool btCollisionWorld_RayResultCallback_needsCollision(btCollisionWorld_RayResultCallback* obj, btBroadphaseProxy* proxy0)
 {
 	return obj->needsCollision(proxy0);
 }
 
-void btCollisionWorld_RayResultCallback_setClosestHitFraction(btCollisionWorld::RayResultCallback* obj, btScalar value)
+void btCollisionWorld_RayResultCallback_setClosestHitFraction(btCollisionWorld_RayResultCallback* obj, btScalar value)
 {
 	obj->m_closestHitFraction = value;
 }
 
-void btCollisionWorld_RayResultCallback_setCollisionFilterGroup(btCollisionWorld::RayResultCallback* obj, short value)
+void btCollisionWorld_RayResultCallback_setCollisionFilterGroup(btCollisionWorld_RayResultCallback* obj, short value)
 {
 	obj->m_collisionFilterGroup = value;
 }
 
-void btCollisionWorld_RayResultCallback_setCollisionFilterMask(btCollisionWorld::RayResultCallback* obj, short value)
+void btCollisionWorld_RayResultCallback_setCollisionFilterMask(btCollisionWorld_RayResultCallback* obj, short value)
 {
 	obj->m_collisionFilterMask = value;
 }
 
-void btCollisionWorld_RayResultCallback_setCollisionObject(btCollisionWorld::RayResultCallback* obj, btCollisionObject* value)
+void btCollisionWorld_RayResultCallback_setCollisionObject(btCollisionWorld_RayResultCallback* obj, btCollisionObject* value)
 {
 	obj->m_collisionObject = value;
 }
 
-void btCollisionWorld_RayResultCallback_setFlags(btCollisionWorld::RayResultCallback* obj, unsigned int value)
+void btCollisionWorld_RayResultCallback_setFlags(btCollisionWorld_RayResultCallback* obj, unsigned int value)
 {
 	obj->m_flags = value;
 }
 
-void btCollisionWorld_RayResultCallback_delete(btCollisionWorld::RayResultCallback* obj)
+void btCollisionWorld_RayResultCallback_delete(btCollisionWorld_RayResultCallback* obj)
 {
 	ALIGNED_FREE(obj);
 }
@@ -229,22 +230,22 @@ btCollisionWorld::AllHitsRayResultCallback* btCollisionWorld_AllHitsRayResultCal
 	return new btCollisionWorld::AllHitsRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 }
 
-btAlignedObjectArray<const btCollisionObject*>* btCollisionWorld_AllHitsRayResultCallback_getCollisionObjects(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedConstCollisionObjectArray* btCollisionWorld_AllHitsRayResultCallback_getCollisionObjects(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
 	return &obj->m_collisionObjects;
 }
 
-btAlignedObjectArray<btScalar>* btCollisionWorld_AllHitsRayResultCallback_getHitFractions(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedScalarArray* btCollisionWorld_AllHitsRayResultCallback_getHitFractions(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
 	return &obj->m_hitFractions;
 }
 
-btAlignedObjectArray<btVector3>* btCollisionWorld_AllHitsRayResultCallback_getHitNormalWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedVector3Array* btCollisionWorld_AllHitsRayResultCallback_getHitNormalWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
 	return &obj->m_hitNormalWorld;
 }
 
-btAlignedObjectArray<btVector3>* btCollisionWorld_AllHitsRayResultCallback_getHitPointWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedVector3Array* btCollisionWorld_AllHitsRayResultCallback_getHitPointWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
 	return &obj->m_hitPointWorld;
 }
@@ -259,12 +260,12 @@ void btCollisionWorld_AllHitsRayResultCallback_getRayToWorld(btCollisionWorld::A
 	VECTOR3_OUT(&obj->m_rayToWorld, value);
 }
 
-btAlignedObjectArray<btVector3>* btCollisionWorld_AllHitsRayResultCallback_setHitNormalWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedVector3Array* btCollisionWorld_AllHitsRayResultCallback_setHitNormalWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
 	return &obj->m_hitNormalWorld;
 }
 
-btAlignedObjectArray<btVector3>* btCollisionWorld_AllHitsRayResultCallback_setHitPointWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedVector3Array* btCollisionWorld_AllHitsRayResultCallback_setHitPointWorld(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
 	return &obj->m_hitPointWorld;
 }
@@ -279,206 +280,206 @@ void btCollisionWorld_AllHitsRayResultCallback_setRayToWorld(btCollisionWorld::A
 	VECTOR3_IN(value, &obj->m_rayToWorld);
 }
 
-btCollisionWorld::LocalConvexResult* btCollisionWorld_LocalConvexResult_new(btCollisionObject* hitCollisionObject, btCollisionWorld::LocalShapeInfo* localShapeInfo, btScalar* hitNormalLocal, btScalar* hitPointLocal, btScalar hitFraction)
+btCollisionWorld_LocalConvexResult* btCollisionWorld_LocalConvexResult_new(btCollisionObject* hitCollisionObject, btCollisionWorld::LocalShapeInfo* localShapeInfo, btScalar* hitNormalLocal, btScalar* hitPointLocal, btScalar hitFraction)
 {
 	VECTOR3_CONV(hitNormalLocal);
 	VECTOR3_CONV(hitPointLocal);
-	return new btCollisionWorld::LocalConvexResult(hitCollisionObject, localShapeInfo, VECTOR3_USE(hitNormalLocal), VECTOR3_USE(hitPointLocal), hitFraction);
+	return new btCollisionWorld_LocalConvexResult(hitCollisionObject, localShapeInfo, VECTOR3_USE(hitNormalLocal), VECTOR3_USE(hitPointLocal), hitFraction);
 }
 
-const btCollisionObject* btCollisionWorld_LocalConvexResult_getHitCollisionObject(btCollisionWorld::LocalConvexResult* obj)
+const btCollisionObject* btCollisionWorld_LocalConvexResult_getHitCollisionObject(btCollisionWorld_LocalConvexResult* obj)
 {
 	return obj->m_hitCollisionObject;
 }
 
-btScalar btCollisionWorld_LocalConvexResult_getHitFraction(btCollisionWorld::LocalConvexResult* obj)
+btScalar btCollisionWorld_LocalConvexResult_getHitFraction(btCollisionWorld_LocalConvexResult* obj)
 {
 	return obj->m_hitFraction;
 }
 
-void btCollisionWorld_LocalConvexResult_getHitNormalLocal(btCollisionWorld::LocalConvexResult* obj, btScalar* value)
+void btCollisionWorld_LocalConvexResult_getHitNormalLocal(btCollisionWorld_LocalConvexResult* obj, btScalar* value)
 {
 	VECTOR3_OUT(&obj->m_hitNormalLocal, value);
 }
 
-void btCollisionWorld_LocalConvexResult_getHitPointLocal(btCollisionWorld::LocalConvexResult* obj, btScalar* value)
+void btCollisionWorld_LocalConvexResult_getHitPointLocal(btCollisionWorld_LocalConvexResult* obj, btScalar* value)
 {
 	VECTOR3_OUT(&obj->m_hitPointLocal, value);
 }
 
-btCollisionWorld::LocalShapeInfo* btCollisionWorld_LocalConvexResult_getLocalShapeInfo(btCollisionWorld::LocalConvexResult* obj)
+btCollisionWorld::LocalShapeInfo* btCollisionWorld_LocalConvexResult_getLocalShapeInfo(btCollisionWorld_LocalConvexResult* obj)
 {
 	return obj->m_localShapeInfo;
 }
 
-void btCollisionWorld_LocalConvexResult_setHitCollisionObject(btCollisionWorld::LocalConvexResult* obj, btCollisionObject* value)
+void btCollisionWorld_LocalConvexResult_setHitCollisionObject(btCollisionWorld_LocalConvexResult* obj, btCollisionObject* value)
 {
 	obj->m_hitCollisionObject = value;
 }
 
-void btCollisionWorld_LocalConvexResult_setHitFraction(btCollisionWorld::LocalConvexResult* obj, btScalar value)
+void btCollisionWorld_LocalConvexResult_setHitFraction(btCollisionWorld_LocalConvexResult* obj, btScalar value)
 {
 	obj->m_hitFraction = value;
 }
 
-void btCollisionWorld_LocalConvexResult_setHitNormalLocal(btCollisionWorld::LocalConvexResult* obj, btScalar* value)
+void btCollisionWorld_LocalConvexResult_setHitNormalLocal(btCollisionWorld_LocalConvexResult* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_hitNormalLocal);
 }
 
-void btCollisionWorld_LocalConvexResult_setHitPointLocal(btCollisionWorld::LocalConvexResult* obj, btScalar* value)
+void btCollisionWorld_LocalConvexResult_setHitPointLocal(btCollisionWorld_LocalConvexResult* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_hitPointLocal);
 }
 
-void btCollisionWorld_LocalConvexResult_setLocalShapeInfo(btCollisionWorld::LocalConvexResult* obj, btCollisionWorld::LocalShapeInfo* value)
+void btCollisionWorld_LocalConvexResult_setLocalShapeInfo(btCollisionWorld_LocalConvexResult* obj, btCollisionWorld::LocalShapeInfo* value)
 {
 	obj->m_localShapeInfo = value;
 }
 
-void btCollisionWorld_LocalConvexResult_delete(btCollisionWorld::LocalConvexResult* obj)
+void btCollisionWorld_LocalConvexResult_delete(btCollisionWorld_LocalConvexResult* obj)
 {
 	delete obj;
 }
 
-btScalar btCollisionWorld_ConvexResultCallback_addSingleResult(btCollisionWorld::ConvexResultCallback* obj, btCollisionWorld::LocalConvexResult* convexResult, bool normalInWorldSpace)
+btScalar btCollisionWorld_ConvexResultCallback_addSingleResult(btCollisionWorld_ConvexResultCallback* obj, btCollisionWorld_LocalConvexResult* convexResult, bool normalInWorldSpace)
 {
 	return obj->addSingleResult(*convexResult, normalInWorldSpace);
 }
 
-btScalar btCollisionWorld_ConvexResultCallback_getClosestHitFraction(btCollisionWorld::ConvexResultCallback* obj)
+btScalar btCollisionWorld_ConvexResultCallback_getClosestHitFraction(btCollisionWorld_ConvexResultCallback* obj)
 {
 	return obj->m_closestHitFraction;
 }
 
-short btCollisionWorld_ConvexResultCallback_getCollisionFilterGroup(btCollisionWorld::ConvexResultCallback* obj)
+short btCollisionWorld_ConvexResultCallback_getCollisionFilterGroup(btCollisionWorld_ConvexResultCallback* obj)
 {
 	return obj->m_collisionFilterGroup;
 }
 
-short btCollisionWorld_ConvexResultCallback_getCollisionFilterMask(btCollisionWorld::ConvexResultCallback* obj)
+short btCollisionWorld_ConvexResultCallback_getCollisionFilterMask(btCollisionWorld_ConvexResultCallback* obj)
 {
 	return obj->m_collisionFilterMask;
 }
 
-bool btCollisionWorld_ConvexResultCallback_hasHit(btCollisionWorld::ConvexResultCallback* obj)
+bool btCollisionWorld_ConvexResultCallback_hasHit(btCollisionWorld_ConvexResultCallback* obj)
 {
 	return obj->hasHit();
 }
 
-bool btCollisionWorld_ConvexResultCallback_needsCollision(btCollisionWorld::ConvexResultCallback* obj, btBroadphaseProxy* proxy0)
+bool btCollisionWorld_ConvexResultCallback_needsCollision(btCollisionWorld_ConvexResultCallback* obj, btBroadphaseProxy* proxy0)
 {
 	return obj->needsCollision(proxy0);
 }
 
-void btCollisionWorld_ConvexResultCallback_setClosestHitFraction(btCollisionWorld::ConvexResultCallback* obj, btScalar value)
+void btCollisionWorld_ConvexResultCallback_setClosestHitFraction(btCollisionWorld_ConvexResultCallback* obj, btScalar value)
 {
 	obj->m_closestHitFraction = value;
 }
 
-void btCollisionWorld_ConvexResultCallback_setCollisionFilterGroup(btCollisionWorld::ConvexResultCallback* obj, short value)
+void btCollisionWorld_ConvexResultCallback_setCollisionFilterGroup(btCollisionWorld_ConvexResultCallback* obj, short value)
 {
 	obj->m_collisionFilterGroup = value;
 }
 
-void btCollisionWorld_ConvexResultCallback_setCollisionFilterMask(btCollisionWorld::ConvexResultCallback* obj, short value)
+void btCollisionWorld_ConvexResultCallback_setCollisionFilterMask(btCollisionWorld_ConvexResultCallback* obj, short value)
 {
 	obj->m_collisionFilterMask = value;
 }
 
-void btCollisionWorld_ConvexResultCallback_delete(btCollisionWorld::ConvexResultCallback* obj)
+void btCollisionWorld_ConvexResultCallback_delete(btCollisionWorld_ConvexResultCallback* obj)
 {
 	delete obj;
 }
 
-btCollisionWorld::ClosestConvexResultCallback* btCollisionWorld_ClosestConvexResultCallback_new(btScalar* convexFromWorld, btScalar* convexToWorld)
+btCollisionWorld_ClosestConvexResultCallback* btCollisionWorld_ClosestConvexResultCallback_new(btScalar* convexFromWorld, btScalar* convexToWorld)
 {
 	VECTOR3_CONV(convexFromWorld);
 	VECTOR3_CONV(convexToWorld);
-	return ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
+	return ALIGNED_NEW(btCollisionWorld_ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_getConvexFromWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_getConvexFromWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_OUT(&obj->m_convexFromWorld, value);
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_getConvexToWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_getConvexToWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_OUT(&obj->m_convexToWorld, value);
 }
 
-const btCollisionObject* btCollisionWorld_ClosestConvexResultCallback_getHitCollisionObject(btCollisionWorld::ClosestConvexResultCallback* obj)
+const btCollisionObject* btCollisionWorld_ClosestConvexResultCallback_getHitCollisionObject(btCollisionWorld_ClosestConvexResultCallback* obj)
 {
 	return obj->m_hitCollisionObject;
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_getHitNormalWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_getHitNormalWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_OUT(&obj->m_hitNormalWorld, value);
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_getHitPointWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_getHitPointWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_OUT(&obj->m_hitPointWorld, value);
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_setConvexFromWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_setConvexFromWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_convexFromWorld);
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_setConvexToWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_setConvexToWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_convexToWorld);
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_setHitCollisionObject(btCollisionWorld::ClosestConvexResultCallback* obj, btCollisionObject* value)
+void btCollisionWorld_ClosestConvexResultCallback_setHitCollisionObject(btCollisionWorld_ClosestConvexResultCallback* obj, btCollisionObject* value)
 {
 	obj->m_hitCollisionObject = value;
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_setHitNormalWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_setHitNormalWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_hitNormalWorld);
 }
 
-void btCollisionWorld_ClosestConvexResultCallback_setHitPointWorld(btCollisionWorld::ClosestConvexResultCallback* obj, btScalar* value)
+void btCollisionWorld_ClosestConvexResultCallback_setHitPointWorld(btCollisionWorld_ClosestConvexResultCallback* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_hitPointWorld);
 }
 
-btScalar btCollisionWorld_ContactResultCallback_addSingleResult(btCollisionWorld::ContactResultCallback* obj, btManifoldPoint* cp, btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
+btScalar btCollisionWorld_ContactResultCallback_addSingleResult(btCollisionWorld_ContactResultCallback* obj, btManifoldPoint* cp, btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
 	return obj->addSingleResult(*cp, colObj0Wrap, partId0, index0, colObj1Wrap, partId1, index1);
 }
 
-short btCollisionWorld_ContactResultCallback_getCollisionFilterGroup(btCollisionWorld::ContactResultCallback* obj)
+short btCollisionWorld_ContactResultCallback_getCollisionFilterGroup(btCollisionWorld_ContactResultCallback* obj)
 {
 	return obj->m_collisionFilterGroup;
 }
 
-short btCollisionWorld_ContactResultCallback_getCollisionFilterMask(btCollisionWorld::ContactResultCallback* obj)
+short btCollisionWorld_ContactResultCallback_getCollisionFilterMask(btCollisionWorld_ContactResultCallback* obj)
 {
 	return obj->m_collisionFilterMask;
 }
 
-bool btCollisionWorld_ContactResultCallback_needsCollision(btCollisionWorld::ContactResultCallback* obj, btBroadphaseProxy* proxy0)
+bool btCollisionWorld_ContactResultCallback_needsCollision(btCollisionWorld_ContactResultCallback* obj, btBroadphaseProxy* proxy0)
 {
 	return obj->needsCollision(proxy0);
 }
 
-void btCollisionWorld_ContactResultCallback_setCollisionFilterGroup(btCollisionWorld::ContactResultCallback* obj, short value)
+void btCollisionWorld_ContactResultCallback_setCollisionFilterGroup(btCollisionWorld_ContactResultCallback* obj, short value)
 {
 	obj->m_collisionFilterGroup = value;
 }
 
-void btCollisionWorld_ContactResultCallback_setCollisionFilterMask(btCollisionWorld::ContactResultCallback* obj, short value)
+void btCollisionWorld_ContactResultCallback_setCollisionFilterMask(btCollisionWorld_ContactResultCallback* obj, short value)
 {
 	obj->m_collisionFilterMask = value;
 }
 
-void btCollisionWorld_ContactResultCallback_delete(btCollisionWorld::ContactResultCallback* obj)
+void btCollisionWorld_ContactResultCallback_delete(btCollisionWorld_ContactResultCallback* obj)
 {
 	delete obj;
 }
@@ -518,24 +519,24 @@ void btCollisionWorld_computeOverlappingPairs(btCollisionWorld* obj)
 	obj->computeOverlappingPairs();
 }
 
-void btCollisionWorld_contactPairTest(btCollisionWorld* obj, btCollisionObject* colObjA, btCollisionObject* colObjB, btCollisionWorld::ContactResultCallback* resultCallback)
+void btCollisionWorld_contactPairTest(btCollisionWorld* obj, btCollisionObject* colObjA, btCollisionObject* colObjB, btCollisionWorld_ContactResultCallback* resultCallback)
 {
 	obj->contactPairTest(colObjA, colObjB, *resultCallback);
 }
 
-void btCollisionWorld_contactTest(btCollisionWorld* obj, btCollisionObject* colObj, btCollisionWorld::ContactResultCallback* resultCallback)
+void btCollisionWorld_contactTest(btCollisionWorld* obj, btCollisionObject* colObj, btCollisionWorld_ContactResultCallback* resultCallback)
 {
 	obj->contactTest(colObj, *resultCallback);
 }
 
-void btCollisionWorld_convexSweepTest(btCollisionWorld* obj, btConvexShape* castShape, btScalar* from, btScalar* to, btCollisionWorld::ConvexResultCallback* resultCallback, btScalar allowedCcdPenetration)
+void btCollisionWorld_convexSweepTest(btCollisionWorld* obj, btConvexShape* castShape, btScalar* from, btScalar* to, btCollisionWorld_ConvexResultCallback* resultCallback, btScalar allowedCcdPenetration)
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
 	obj->convexSweepTest(castShape, TRANSFORM_USE(from), TRANSFORM_USE(to), *resultCallback, allowedCcdPenetration);
 }
 
-void btCollisionWorld_convexSweepTest2(btCollisionWorld* obj, btConvexShape* castShape, btScalar* from, btScalar* to, btCollisionWorld::ConvexResultCallback* resultCallback)
+void btCollisionWorld_convexSweepTest2(btCollisionWorld* obj, btConvexShape* castShape, btScalar* from, btScalar* to, btCollisionWorld_ConvexResultCallback* resultCallback)
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
@@ -594,7 +595,7 @@ btOverlappingPairCache* btCollisionWorld_getPairCache(btCollisionWorld* obj)
 	return obj->getPairCache();
 }
 
-void btCollisionWorld_objectQuerySingle(btConvexShape* castShape, btScalar* rayFromTrans, btScalar* rayToTrans, btCollisionObject* collisionObject, btCollisionShape* collisionShape, btScalar* colObjWorldTransform, btCollisionWorld::ConvexResultCallback* resultCallback, btScalar allowedPenetration)
+void btCollisionWorld_objectQuerySingle(btConvexShape* castShape, btScalar* rayFromTrans, btScalar* rayToTrans, btCollisionObject* collisionObject, btCollisionShape* collisionShape, btScalar* colObjWorldTransform, btCollisionWorld_ConvexResultCallback* resultCallback, btScalar allowedPenetration)
 {
 	TRANSFORM_CONV(rayFromTrans);
 	TRANSFORM_CONV(rayToTrans);
@@ -602,7 +603,7 @@ void btCollisionWorld_objectQuerySingle(btConvexShape* castShape, btScalar* rayF
 	btCollisionWorld::objectQuerySingle(castShape, TRANSFORM_USE(rayFromTrans), TRANSFORM_USE(rayToTrans), collisionObject, collisionShape, TRANSFORM_USE(colObjWorldTransform), *resultCallback, allowedPenetration);
 }
 
-void btCollisionWorld_objectQuerySingleInternal(btConvexShape* castShape, btScalar* convexFromTrans, btScalar* convexToTrans, btCollisionObjectWrapper* colObjWrap, btCollisionWorld::ConvexResultCallback* resultCallback, btScalar allowedPenetration)
+void btCollisionWorld_objectQuerySingleInternal(btConvexShape* castShape, btScalar* convexFromTrans, btScalar* convexToTrans, btCollisionObjectWrapper* colObjWrap, btCollisionWorld_ConvexResultCallback* resultCallback, btScalar allowedPenetration)
 {
 	TRANSFORM_CONV(convexFromTrans);
 	TRANSFORM_CONV(convexToTrans);
@@ -614,14 +615,14 @@ void btCollisionWorld_performDiscreteCollisionDetection(btCollisionWorld* obj)
 	obj->performDiscreteCollisionDetection();
 }
 
-void btCollisionWorld_rayTest(btCollisionWorld* obj, btScalar* rayFromWorld, btScalar* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback)
+void btCollisionWorld_rayTest(btCollisionWorld* obj, btScalar* rayFromWorld, btScalar* rayToWorld, btCollisionWorld_RayResultCallback* resultCallback)
 {
 	VECTOR3_CONV(rayFromWorld);
 	VECTOR3_CONV(rayToWorld);
 	obj->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback);
 }
 
-void btCollisionWorld_rayTestSingle(btScalar* rayFromTrans, btScalar* rayToTrans, btCollisionObject* collisionObject, btCollisionShape* collisionShape, btScalar* colObjWorldTransform, btCollisionWorld::RayResultCallback* resultCallback)
+void btCollisionWorld_rayTestSingle(btScalar* rayFromTrans, btScalar* rayToTrans, btCollisionObject* collisionObject, btCollisionShape* collisionShape, btScalar* colObjWorldTransform, btCollisionWorld_RayResultCallback* resultCallback)
 {
 	TRANSFORM_CONV(rayFromTrans);
 	TRANSFORM_CONV(rayToTrans);
@@ -629,7 +630,7 @@ void btCollisionWorld_rayTestSingle(btScalar* rayFromTrans, btScalar* rayToTrans
 	btCollisionWorld::rayTestSingle(TRANSFORM_USE(rayFromTrans), TRANSFORM_USE(rayToTrans), collisionObject, collisionShape, TRANSFORM_USE(colObjWorldTransform), *resultCallback);
 }
 
-void btCollisionWorld_rayTestSingleInternal(btScalar* rayFromTrans, btScalar* rayToTrans, btCollisionObjectWrapper* collisionObjectWrap, btCollisionWorld::RayResultCallback* resultCallback)
+void btCollisionWorld_rayTestSingleInternal(btScalar* rayFromTrans, btScalar* rayToTrans, btCollisionObjectWrapper* collisionObjectWrap, btCollisionWorld_RayResultCallback* resultCallback)
 {
 	TRANSFORM_CONV(rayFromTrans);
 	TRANSFORM_CONV(rayToTrans);

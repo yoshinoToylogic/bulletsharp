@@ -1,3 +1,6 @@
+#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+
+#include "conversion.h"
 #include "btGImpactCollisionAlgorithm_wrap.h"
 
 btGImpactCollisionAlgorithm* btGImpactCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap)

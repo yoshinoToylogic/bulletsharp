@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletDynamics/Character/btCharacterControllerInterface.h>
-
 extern "C"
 {
 	EXPORT bool btCharacterControllerInterface_canJump(btCharacterControllerInterface* obj);

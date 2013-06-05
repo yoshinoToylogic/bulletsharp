@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btBoxShape_wrap.h"
 
 btBoxShape* btBoxShape_new(btScalar* boxHalfExtents)

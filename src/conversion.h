@@ -1,29 +1,16 @@
 #pragma once
 
-#include "LinearMath/btVector3.h"
+#include <iostream>
+#include <LinearMath/btAlignedAllocator.h>
+#include <LinearMath/btVector3.h>
+#include <LinearMath/btMatrix3x3.h>
+#include <LinearMath/btQuickprof.h>
 #include "LinearMath/btTransform.h"
+#include <btBulletCollisionCommon.h>
+#include <btBulletDynamicsCommon.h>
 
 #define BTTRANSFORM_TRANSPOSE
 #define BTTRANSFORM_TO4X4
-
-
-#ifdef WIN32
-#define STDCALL __stdcall*
-#define uint unsigned int
-#else
-//#define STDCALL *
-#define STDCALL __attribute__ ((stdcall))*
-#endif
-
-#ifdef _MSC_VER
-#define EXPORT __declspec(dllexport)
-#else
-#if __GNUC__ >= 4
-	#define EXPORT __attribute__ ((visibility("default")))
-#else
-	#define EXPORT
-#endif
-#endif
 
 inline void btVector3ToVector3(const btVector3* v, btScalar* s)
 {
@@ -200,6 +187,18 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 	//m[11] = 0;
 #endif
 }
+
+
+#define ALIGNED_NEW_FORCE(targetClass) new (btAlignedAlloc(sizeof(targetClass), 16)) targetClass
+#define ALIGNED_FREE_FORCE(target) btAlignedFree(target)
+
+#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#define ALIGNED_NEW(targetClass) ALIGNED_NEW_FORCE(targetClass)
+#define ALIGNED_FREE(target) ALIGNED_FREE_FORCE(target)
+#else
+#define ALIGNED_NEW(targetClass) new targetClass
+#define ALIGNED_FREE(target) delete target
+#endif
 
 
 // SSE requires math structs to be aligned to 16-byte boundaries.

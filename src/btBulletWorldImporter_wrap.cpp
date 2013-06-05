@@ -1,3 +1,7 @@
+#include <../Extras/Serialize/BulletWorldImporter/btBulletWorldImporter.h>
+#include <../Extras/Serialize/BulletFileLoader/btBulletFile.h>
+
+#include "conversion.h"
 #include "btBulletWorldImporter_wrap.h"
 
 btBulletWorldImporter* btBulletWorldImporter_new(btDynamicsWorld* world)
@@ -10,7 +14,7 @@ btBulletWorldImporter* btBulletWorldImporter_new2()
 	return new btBulletWorldImporter();
 }
 
-bool btBulletWorldImporter_convertAllObjects(btBulletWorldImporter* obj, bParse::btBulletFile* file)
+bool btBulletWorldImporter_convertAllObjects(btBulletWorldImporter* obj, bParse_btBulletFile* file)
 {
 	return obj->convertAllObjects(file);
 }
@@ -30,7 +34,7 @@ bool btBulletWorldImporter_loadFileFromMemory(btBulletWorldImporter* obj, char* 
 	return obj->loadFileFromMemory(memoryBuffer, len);
 }
 
-bool btBulletWorldImporter_loadFileFromMemory2(btBulletWorldImporter* obj, bParse::btBulletFile* file)
+bool btBulletWorldImporter_loadFileFromMemory2(btBulletWorldImporter* obj, bParse_btBulletFile* file)
 {
 	return obj->loadFileFromMemory(file);
 }

@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btTriangleIndexVertexArray_wrap.h"
 
 btIndexedMesh* btIndexedMesh_new()

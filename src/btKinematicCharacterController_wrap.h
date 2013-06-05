@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
-
 extern "C"
 {
 	EXPORT btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight, int upAxis);

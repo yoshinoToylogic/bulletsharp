@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btDispatcher_wrap.h"
 
 btDispatcherInfo* btDispatcherInfo_new()

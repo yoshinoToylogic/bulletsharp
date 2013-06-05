@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btSerializer_wrap.h"
 
 btChunk* btChunk_new()

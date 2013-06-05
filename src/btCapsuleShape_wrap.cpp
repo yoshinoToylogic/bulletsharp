@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCapsuleShape_wrap.h"
 
 btCapsuleShape* btCapsuleShape_new(btScalar radius, btScalar height)

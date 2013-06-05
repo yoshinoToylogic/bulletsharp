@@ -1,3 +1,6 @@
+#include <BulletCollision/Gimpact/btGImpactShape.h>
+
+#include "conversion.h"
 #include "btGImpactShape_wrap.h"
 
 btTetrahedronShapeEx* btTetrahedronShapeEx_new()
@@ -109,7 +112,7 @@ void btGImpactShapeInterface_processAllTrianglesRay(btGImpactShapeInterface* obj
 	obj->processAllTrianglesRay(__unnamed0, VECTOR3_USE(__unnamed1), VECTOR3_USE(__unnamed2));
 }
 
-void btGImpactShapeInterface_rayTest(btGImpactShapeInterface* obj, btScalar* rayFrom, btScalar* rayTo, btCollisionWorld::RayResultCallback* resultCallback)
+void btGImpactShapeInterface_rayTest(btGImpactShapeInterface* obj, btScalar* rayFrom, btScalar* rayTo, btCollisionWorld_RayResultCallback* resultCallback)
 {
 	VECTOR3_CONV(rayFrom);
 	VECTOR3_CONV(rayTo);
@@ -132,27 +135,27 @@ void btGImpactShapeInterface_updateBound(btGImpactShapeInterface* obj)
 	obj->updateBound();
 }
 
-btGImpactCompoundShape::CompoundPrimitiveManager* btGImpactCompoundShape_CompoundPrimitiveManager_new(btGImpactCompoundShape::CompoundPrimitiveManager* compound)
+btGImpactCompoundShape_CompoundPrimitiveManager* btGImpactCompoundShape_CompoundPrimitiveManager_new(btGImpactCompoundShape_CompoundPrimitiveManager* compound)
 {
-	return new btGImpactCompoundShape::CompoundPrimitiveManager(*compound);
+	return new btGImpactCompoundShape_CompoundPrimitiveManager(*compound);
 }
 
-btGImpactCompoundShape::CompoundPrimitiveManager* btGImpactCompoundShape_CompoundPrimitiveManager_new2(btGImpactCompoundShape* compoundShape)
+btGImpactCompoundShape_CompoundPrimitiveManager* btGImpactCompoundShape_CompoundPrimitiveManager_new2(btGImpactCompoundShape* compoundShape)
 {
-	return new btGImpactCompoundShape::CompoundPrimitiveManager(compoundShape);
+	return new btGImpactCompoundShape_CompoundPrimitiveManager(compoundShape);
 }
 
-btGImpactCompoundShape::CompoundPrimitiveManager* btGImpactCompoundShape_CompoundPrimitiveManager_new3()
+btGImpactCompoundShape_CompoundPrimitiveManager* btGImpactCompoundShape_CompoundPrimitiveManager_new3()
 {
-	return new btGImpactCompoundShape::CompoundPrimitiveManager();
+	return new btGImpactCompoundShape_CompoundPrimitiveManager();
 }
 
-btGImpactCompoundShape* btGImpactCompoundShape_CompoundPrimitiveManager_getCompoundShape(btGImpactCompoundShape::CompoundPrimitiveManager* obj)
+btGImpactCompoundShape* btGImpactCompoundShape_CompoundPrimitiveManager_getCompoundShape(btGImpactCompoundShape_CompoundPrimitiveManager* obj)
 {
 	return obj->m_compoundShape;
 }
 
-void btGImpactCompoundShape_CompoundPrimitiveManager_setCompoundShape(btGImpactCompoundShape::CompoundPrimitiveManager* obj, btGImpactCompoundShape* value)
+void btGImpactCompoundShape_CompoundPrimitiveManager_setCompoundShape(btGImpactCompoundShape_CompoundPrimitiveManager* obj, btGImpactCompoundShape* value)
 {
 	obj->m_compoundShape = value;
 }
@@ -178,183 +181,183 @@ void btGImpactCompoundShape_addChildShape2(btGImpactCompoundShape* obj, btCollis
 	obj->addChildShape(shape);
 }
 
-btGImpactCompoundShape::CompoundPrimitiveManager* btGImpactCompoundShape_getCompoundPrimitiveManager(btGImpactCompoundShape* obj)
+btGImpactCompoundShape_CompoundPrimitiveManager* btGImpactCompoundShape_getCompoundPrimitiveManager(btGImpactCompoundShape* obj)
 {
 	return obj->getCompoundPrimitiveManager();
 }
 
-btGImpactMeshShapePart::TrimeshPrimitiveManager* btGImpactMeshShapePart_TrimeshPrimitiveManager_new(btStridingMeshInterface* meshInterface, int part)
+btGImpactMeshShapePart_TrimeshPrimitiveManager* btGImpactMeshShapePart_TrimeshPrimitiveManager_new(btStridingMeshInterface* meshInterface, int part)
 {
-	return new btGImpactMeshShapePart::TrimeshPrimitiveManager(meshInterface, part);
+	return new btGImpactMeshShapePart_TrimeshPrimitiveManager(meshInterface, part);
 }
 
-btGImpactMeshShapePart::TrimeshPrimitiveManager* btGImpactMeshShapePart_TrimeshPrimitiveManager_new2(btGImpactMeshShapePart::TrimeshPrimitiveManager* manager)
+btGImpactMeshShapePart_TrimeshPrimitiveManager* btGImpactMeshShapePart_TrimeshPrimitiveManager_new2(btGImpactMeshShapePart_TrimeshPrimitiveManager* manager)
 {
-	return new btGImpactMeshShapePart::TrimeshPrimitiveManager(*manager);
+	return new btGImpactMeshShapePart_TrimeshPrimitiveManager(*manager);
 }
 
-btGImpactMeshShapePart::TrimeshPrimitiveManager* btGImpactMeshShapePart_TrimeshPrimitiveManager_new3()
+btGImpactMeshShapePart_TrimeshPrimitiveManager* btGImpactMeshShapePart_TrimeshPrimitiveManager_new3()
 {
-	return new btGImpactMeshShapePart::TrimeshPrimitiveManager();
+	return new btGImpactMeshShapePart_TrimeshPrimitiveManager();
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_bullet_triangle(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int prim_index, btTriangleShapeEx* triangle)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_bullet_triangle(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int prim_index, btTriangleShapeEx* triangle)
 {
 	obj->get_bullet_triangle(prim_index, *triangle);
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_indices(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int face_index, unsigned int* i0, unsigned int* i1, unsigned int* i2)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_indices(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int face_index, unsigned int* i0, unsigned int* i1, unsigned int* i2)
 {
 	obj->get_indices(face_index, *i0, *i1, *i2);
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_vertex(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, unsigned int vertex_index, btScalar* vertex)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_vertex(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, unsigned int vertex_index, btScalar* vertex)
 {
 	VECTOR3_CONV(vertex);
 	obj->get_vertex(vertex_index, VECTOR3_USE(vertex));
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_get_vertex_count(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_get_vertex_count(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->get_vertex_count();
 }
 
-const unsigned char* btGImpactMeshShapePart_TrimeshPrimitiveManager_getIndexbase(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+const unsigned char* btGImpactMeshShapePart_TrimeshPrimitiveManager_getIndexbase(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->indexbase;
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_getIndexstride(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_getIndexstride(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->indexstride;
 }
 
-PHY_ScalarType btGImpactMeshShapePart_TrimeshPrimitiveManager_getIndicestype(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+PHY_ScalarType btGImpactMeshShapePart_TrimeshPrimitiveManager_getIndicestype(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->indicestype;
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_getLock_count(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_getLock_count(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->m_lock_count;
 }
 
-btScalar btGImpactMeshShapePart_TrimeshPrimitiveManager_getMargin(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+btScalar btGImpactMeshShapePart_TrimeshPrimitiveManager_getMargin(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->m_margin;
 }
 
-btStridingMeshInterface* btGImpactMeshShapePart_TrimeshPrimitiveManager_getMeshInterface(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+btStridingMeshInterface* btGImpactMeshShapePart_TrimeshPrimitiveManager_getMeshInterface(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->m_meshInterface;
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_getNumfaces(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_getNumfaces(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->numfaces;
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_getNumverts(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_getNumverts(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->numverts;
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_getPart(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_getPart(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->m_part;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_getScale(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_getScale(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	obj->m_scale;
 }
 
-int btGImpactMeshShapePart_TrimeshPrimitiveManager_getStride(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+int btGImpactMeshShapePart_TrimeshPrimitiveManager_getStride(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->stride;
 }
 
-PHY_ScalarType btGImpactMeshShapePart_TrimeshPrimitiveManager_getType(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+PHY_ScalarType btGImpactMeshShapePart_TrimeshPrimitiveManager_getType(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->type;
 }
 
-const unsigned char* btGImpactMeshShapePart_TrimeshPrimitiveManager_getVertexbase(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+const unsigned char* btGImpactMeshShapePart_TrimeshPrimitiveManager_getVertexbase(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	return obj->vertexbase;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_lock(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_lock(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	obj->lock();
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setIndexbase(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, unsigned char* value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setIndexbase(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, unsigned char* value)
 {
 	obj->indexbase = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setIndexstride(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setIndexstride(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int value)
 {
 	obj->indexstride = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setIndicestype(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, PHY_ScalarType value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setIndicestype(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, PHY_ScalarType value)
 {
 	obj->indicestype = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setLock_count(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setLock_count(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int value)
 {
 	obj->m_lock_count = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setMargin(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, btScalar value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setMargin(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, btScalar value)
 {
 	obj->m_margin = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setMeshInterface(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, btStridingMeshInterface* value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setMeshInterface(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, btStridingMeshInterface* value)
 {
 	obj->m_meshInterface = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setNumfaces(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setNumfaces(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int value)
 {
 	obj->numfaces = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setNumverts(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setNumverts(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int value)
 {
 	obj->numverts = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setPart(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setPart(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int value)
 {
 	obj->m_part = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setScale(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, btScalar* value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setScale(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_scale);
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setStride(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, int value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setStride(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, int value)
 {
 	obj->stride = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setType(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, PHY_ScalarType value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setType(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, PHY_ScalarType value)
 {
 	obj->type = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_setVertexbase(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj, unsigned char* value)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_setVertexbase(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, unsigned char* value)
 {
 	obj->vertexbase = value;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_unlock(btGImpactMeshShapePart::TrimeshPrimitiveManager* obj)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_unlock(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
 {
 	obj->unlock();
 }
@@ -374,7 +377,7 @@ int btGImpactMeshShapePart_getPart(btGImpactMeshShapePart* obj)
 	return obj->getPart();
 }
 
-btGImpactMeshShapePart::TrimeshPrimitiveManager* btGImpactMeshShapePart_getTrimeshPrimitiveManager(btGImpactMeshShapePart* obj)
+btGImpactMeshShapePart_TrimeshPrimitiveManager* btGImpactMeshShapePart_getTrimeshPrimitiveManager(btGImpactMeshShapePart* obj)
 {
 	return obj->getTrimeshPrimitiveManager();
 }

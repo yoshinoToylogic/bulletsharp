@@ -1,3 +1,6 @@
+#include <LinearMath/btPoolAllocator.h>
+
+#include "conversion.h"
 #include "btDefaultCollisionConfiguration_wrap.h"
 
 btDefaultCollisionConstructionInfo* btDefaultCollisionConstructionInfo_new()

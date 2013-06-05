@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btHinge2Constraint_wrap.h"
 
 btHinge2Constraint* btHinge2Constraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* anchor, btScalar* axis1, btScalar* axis2)

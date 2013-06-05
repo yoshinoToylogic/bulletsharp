@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
-
 extern "C"
 {
 	EXPORT btGImpactCollisionAlgorithm* btGImpactCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap);

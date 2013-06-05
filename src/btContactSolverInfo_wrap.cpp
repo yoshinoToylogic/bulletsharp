@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btContactSolverInfo_wrap.h"
 
 btContactSolverInfoData* btContactSolverInfoData_new()

@@ -12,8 +12,8 @@ extern "C"
 	EXPORT btScalar btConeTwistConstraint_getFixThresh(btConeTwistConstraint* obj);
 	EXPORT void btConeTwistConstraint_getFrameOffsetA(btConeTwistConstraint* obj, btScalar* value);
 	EXPORT void btConeTwistConstraint_getFrameOffsetB(btConeTwistConstraint* obj, btScalar* value);
-	EXPORT void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo1* info);
-	EXPORT void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* invInertiaWorldA, btScalar* invInertiaWorldB);
+	EXPORT void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo1* info);
+	EXPORT void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* invInertiaWorldA, btScalar* invInertiaWorldB);
 	EXPORT void btConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* obj, btScalar fAngleInRadians, btScalar fLength);
 	EXPORT int btConeTwistConstraint_getSolveSwingLimit(btConeTwistConstraint* obj);
 	EXPORT int btConeTwistConstraint_getSolveTwistLimit(btConeTwistConstraint* obj);

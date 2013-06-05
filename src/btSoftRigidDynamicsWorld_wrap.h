@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
-
 extern "C"
 {
 	EXPORT btSoftRigidDynamicsWorld* btSoftRigidDynamicsWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration, btSoftBodySolver* softBodySolver);

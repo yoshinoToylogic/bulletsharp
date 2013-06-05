@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btDynamicsWorld_wrap.h"
 
 void btDynamicsWorld_addAction(btDynamicsWorld* obj, btActionInterface* action)

@@ -13,8 +13,8 @@ extern "C"
 
 	EXPORT btPoint2PointConstraint* btPoint2PointConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* pivotInA, btScalar* pivotInB);
 	EXPORT btPoint2PointConstraint* btPoint2PointConstraint_new2(btRigidBody* rbA, btScalar* pivotInA);
-	EXPORT void btPoint2PointConstraint_getInfo1NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint::btConstraintInfo1* info);
-	EXPORT void btPoint2PointConstraint_getInfo2NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* body0_trans, btScalar* body1_trans);
+	EXPORT void btPoint2PointConstraint_getInfo1NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint_btConstraintInfo1* info);
+	EXPORT void btPoint2PointConstraint_getInfo2NonVirtual(btPoint2PointConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* body0_trans, btScalar* body1_trans);
 	EXPORT void btPoint2PointConstraint_getPivotInA(btPoint2PointConstraint* obj, btScalar* value);
 	EXPORT void btPoint2PointConstraint_getPivotInB(btPoint2PointConstraint* obj, btScalar* value);
 	EXPORT btConstraintSetting* btPoint2PointConstraint_getSetting(btPoint2PointConstraint* obj);

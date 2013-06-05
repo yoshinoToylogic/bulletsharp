@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btBvhTriangleMeshShape_wrap.h"
 
 btBvhTriangleMeshShape* btBvhTriangleMeshShape_new(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, bool buildBvh)

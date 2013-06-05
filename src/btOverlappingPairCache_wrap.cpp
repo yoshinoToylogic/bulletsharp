@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btOverlappingPairCache_wrap.h"
 
 void btOverlapCallback_delete(btOverlapCallback* obj)

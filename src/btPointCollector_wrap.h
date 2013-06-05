@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletCollision/NarrowPhaseCollision/btPointCollector.h>
-
 extern "C"
 {
 	EXPORT btPointCollector* btPointCollector_new();

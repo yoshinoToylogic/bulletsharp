@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btCollisionDispatcher_wrap.h"
 
 btCollisionDispatcher* btCollisionDispatcher_new(btCollisionConfiguration* collisionConfiguration)

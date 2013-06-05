@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btConeTwistConstraint_wrap.h"
 
 btConeTwistConstraint* btConeTwistConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* rbAFrame, btScalar* rbBFrame)
@@ -55,12 +56,12 @@ void btConeTwistConstraint_getFrameOffsetB(btConeTwistConstraint* obj, btScalar*
 	btTransformToMatrix(&obj->getFrameOffsetB(), value);
 }
 
-void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
+void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo1* info)
 {
 	obj->getInfo1NonVirtual(info);
 }
 
-void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btMatrix3x3* invInertiaWorldA, btMatrix3x3* invInertiaWorldB)
+void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btMatrix3x3* invInertiaWorldA, btMatrix3x3* invInertiaWorldB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);

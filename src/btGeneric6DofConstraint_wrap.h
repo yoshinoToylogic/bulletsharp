@@ -85,8 +85,8 @@ extern "C"
 	EXPORT void btGeneric6DofConstraint_calcAnchorPos(btGeneric6DofConstraint* obj);
 	EXPORT void btGeneric6DofConstraint_calculateTransforms(btGeneric6DofConstraint* obj, btScalar* transA, btScalar* transB);
 	EXPORT void btGeneric6DofConstraint_calculateTransforms2(btGeneric6DofConstraint* obj);
-	EXPORT int btGeneric6DofConstraint_get_limit_motor_info2(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint::btConstraintInfo2* info, int row, btScalar* ax1, int rotational, int rotAllowed);
-	EXPORT int btGeneric6DofConstraint_get_limit_motor_info22(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint::btConstraintInfo2* info, int row, btScalar* ax1, int rotational);
+	EXPORT int btGeneric6DofConstraint_get_limit_motor_info2(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint_btConstraintInfo2* info, int row, btScalar* ax1, int rotational, int rotAllowed);
+	EXPORT int btGeneric6DofConstraint_get_limit_motor_info22(btGeneric6DofConstraint* obj, btRotationalLimitMotor* limot, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB, btTypedConstraint_btConstraintInfo2* info, int row, btScalar* ax1, int rotational);
 	EXPORT btScalar btGeneric6DofConstraint_getAngle(btGeneric6DofConstraint* obj, int axis_index);
 	EXPORT void btGeneric6DofConstraint_getAngularLowerLimit(btGeneric6DofConstraint* obj, btScalar* angularLower);
 	EXPORT void btGeneric6DofConstraint_getAngularUpperLimit(btGeneric6DofConstraint* obj, btScalar* angularUpper);
@@ -95,8 +95,8 @@ extern "C"
 	EXPORT void btGeneric6DofConstraint_getCalculatedTransformB(btGeneric6DofConstraint* obj, btScalar* value);
 	EXPORT void btGeneric6DofConstraint_getFrameOffsetA(btGeneric6DofConstraint* obj, btScalar* value);
 	EXPORT void btGeneric6DofConstraint_getFrameOffsetB(btGeneric6DofConstraint* obj, btScalar* value);
-	EXPORT void btGeneric6DofConstraint_getInfo1NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint::btConstraintInfo1* info);
-	EXPORT void btGeneric6DofConstraint_getInfo2NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint::btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB);
+	EXPORT void btGeneric6DofConstraint_getInfo1NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint_btConstraintInfo1* info);
+	EXPORT void btGeneric6DofConstraint_getInfo2NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint_btConstraintInfo2* info, btScalar* transA, btScalar* transB, btScalar* linVelA, btScalar* linVelB, btScalar* angVelA, btScalar* angVelB);
 	EXPORT void btGeneric6DofConstraint_getLinearLowerLimit(btGeneric6DofConstraint* obj, btScalar* linearLower);
 	EXPORT void btGeneric6DofConstraint_getLinearUpperLimit(btGeneric6DofConstraint* obj, btScalar* linearUpper);
 	EXPORT btScalar btGeneric6DofConstraint_getRelativePivotPosition(btGeneric6DofConstraint* obj, int axis_index);

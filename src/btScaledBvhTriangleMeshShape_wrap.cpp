@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btScaledBvhTriangleMeshShape_wrap.h"
 
 btScaledBvhTriangleMeshShape* btScaledBvhTriangleMeshShape_new(btBvhTriangleMeshShape* childShape, btScalar* localScaling)

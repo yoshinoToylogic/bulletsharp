@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <LinearMath/btPolarDecomposition.h>
-
 extern "C"
 {
 	EXPORT btPolarDecomposition* btPolarDecomposition_new(btScalar tolerance, unsigned int maxIterations);

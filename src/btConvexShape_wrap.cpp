@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btConvexShape_wrap.h"
 /*
 void btConvexShape_batchedUnitVectorGetSupportingVertexWithoutMargin(btConvexShape* obj, btVector3* vectors, btVector3* supportVerticesOut, int numVectors)

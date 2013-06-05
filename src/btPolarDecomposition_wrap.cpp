@@ -1,3 +1,6 @@
+#include <LinearMath/btPolarDecomposition.h>
+
+#include "conversion.h"
 #include "btPolarDecomposition_wrap.h"
 
 btPolarDecomposition* btPolarDecomposition_new(btScalar tolerance, unsigned int maxIterations)

@@ -1,3 +1,6 @@
+#include <BulletDynamics/Character/btCharacterControllerInterface.h>
+
+#include "conversion.h"
 #include "btCharacterControllerInterface_wrap.h"
 
 bool btCharacterControllerInterface_canJump(btCharacterControllerInterface* obj)

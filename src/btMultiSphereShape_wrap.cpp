@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btMultiSphereShape_wrap.h"
 
 btMultiSphereShape* btMultiSphereShape_new(btScalar* positions, btScalar* radi, int numSpheres)

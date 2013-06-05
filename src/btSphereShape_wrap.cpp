@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btSphereShape_wrap.h"
 
 btSphereShape* btSphereShape_new(btScalar radius)

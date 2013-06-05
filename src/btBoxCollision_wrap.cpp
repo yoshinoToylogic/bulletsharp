@@ -1,3 +1,6 @@
+#include <BulletCollision/Gimpact/btBoxCollision.h>
+
+#include "conversion.h"
 #include "btBoxCollision_wrap.h"
 
 BT_BOX_BOX_TRANSFORM_CACHE* BT_BOX_BOX_TRANSFORM_CACHE_new()

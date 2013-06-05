@@ -1,7 +1,5 @@
 #include "main.h"
 
-#include <BulletCollision/Gimpact/btBoxCollision.h>
-
 extern "C"
 {
 	EXPORT BT_BOX_BOX_TRANSFORM_CACHE* BT_BOX_BOX_TRANSFORM_CACHE_new();

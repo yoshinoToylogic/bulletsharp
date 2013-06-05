@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btTriangleMesh_wrap.h"
 
 btTriangleMesh* btTriangleMesh_new(bool use32bitIndices, bool use4componentVertices)

@@ -1,3 +1,4 @@
+#include "conversion.h"
 #include "btConvexInternalShape_wrap.h"
 
 void btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj, btScalar* value)
