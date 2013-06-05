@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define btRigidBody_delete(obj) btCollisionObject_delete(obj)
+
 extern "C"
 {
 	EXPORT btRigidBody_btRigidBodyConstructionInfo* btRigidBody_btRigidBodyConstructionInfo_new(btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btScalar* localInertia);

@@ -2,6 +2,6 @@
 
 extern "C"
 {
-	EXPORT int btAlignedConstCollisionObjectArray_size(btCollisionObjectArray* obj);
-	EXPORT btCollisionObject* btAlignedConstCollisionObjectArray_at(btCollisionObjectArray* obj, int n);
+	EXPORT int btAlignedCollisionObjectArray_size(btAlignedCollisionObjectArray* obj);
+	EXPORT btCollisionObject* btAlignedCollisionObjectArray_at(btAlignedCollisionObjectArray* obj, int n);
 }

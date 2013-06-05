@@ -230,9 +230,9 @@ btCollisionWorld::AllHitsRayResultCallback* btCollisionWorld_AllHitsRayResultCal
 	return new btCollisionWorld::AllHitsRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 }
 
-btAlignedConstCollisionObjectArray* btCollisionWorld_AllHitsRayResultCallback_getCollisionObjects(btCollisionWorld::AllHitsRayResultCallback* obj)
+btAlignedCollisionObjectArray* btCollisionWorld_AllHitsRayResultCallback_getCollisionObjects(btCollisionWorld::AllHitsRayResultCallback* obj)
 {
-	return &obj->m_collisionObjects;
+	return (btAlignedCollisionObjectArray*)&obj->m_collisionObjects;
 }
 
 btAlignedScalarArray* btCollisionWorld_AllHitsRayResultCallback_getHitFractions(btCollisionWorld::AllHitsRayResultCallback* obj)

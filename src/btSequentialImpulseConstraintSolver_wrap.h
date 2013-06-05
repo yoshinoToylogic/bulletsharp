@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define btSequentialImpulseConstraintSolver_delete(obj) btConstraintSolver_delete(obj)
+
 extern "C"
 {
 	EXPORT btSequentialImpulseConstraintSolver* btSequentialImpulseConstraintSolver_new();
