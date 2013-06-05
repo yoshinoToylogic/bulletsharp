@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define btDefaultMotionState_delete(obj) btMotionState_delete(obj)
+
 extern "C"
 {
 	EXPORT btDefaultMotionState* btDefaultMotionState_new();

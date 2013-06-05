@@ -1,12 +1,12 @@
 #include "conversion.h"
 #include "btAlignedCollisionObjectArray_wrap.h"
 
-int btAlignedConstCollisionObjectArray_size(btCollisionObjectArray* obj)
+int btAlignedCollisionObjectArray_size(btAlignedCollisionObjectArray* obj)
 {
 	return obj->size();
 }
 
-btCollisionObject* btAlignedConstCollisionObjectArray_at(btCollisionObjectArray* obj, int n)
+btCollisionObject* btAlignedCollisionObjectArray_at(btAlignedCollisionObjectArray* obj, int n)
 {
 	return obj->at(n);
 }

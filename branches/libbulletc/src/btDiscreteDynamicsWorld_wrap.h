@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define btDiscreteDynamicsWorld_delete(obj) btCollisionWorld_delete(obj)
+
 extern "C"
 {
 	EXPORT btDiscreteDynamicsWorld* btDiscreteDynamicsWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration);

@@ -126,7 +126,6 @@
 #define btVector3 void
 #define btVector4 void
 #define btAlignedCollisionObjectArray void
-#define btAlignedConstCollisionObjectArray void
 #define btAlignedIntArray void
 #define btAlignedScalarArray void
 #define btAlignedVector3Array void
@@ -136,7 +135,6 @@
 #define btDynamicsWorldType int
 #else
 #define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
-#define btAlignedConstCollisionObjectArray btAlignedObjectArray<const btCollisionObject*>
 #define btAlignedIntArray btAlignedObjectArray<int>
 #define btAlignedScalarArray btAlignedObjectArray<btScalar>
 #define btAlignedVector3Array btAlignedObjectArray<btVector3>
