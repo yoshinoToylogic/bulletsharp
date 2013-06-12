@@ -131,6 +131,12 @@
     <Compile Include="MathUtil.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MultiThreaded\ParallelConstraintSolver.cs" />
+    <Compile Include="MultiThreaded\SpuCollisionTaskProcess.cs" />
+    <Compile Include="MultiThreaded\SpuGatheringCollisionDispatcher.cs" />
+    <Compile Include="MultiThreaded\SpuGatheringCollisionTask.cs" />
+    <Compile Include="MultiThreaded\ThreadSupportInterface.cs" />
+    <Compile Include="MultiThreaded\Win32ThreadSupport.cs" />
     <Compile Include="Native.cs">
       <SubType>Code</SubType>
     </Compile>

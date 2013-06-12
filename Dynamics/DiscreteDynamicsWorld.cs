@@ -6,6 +6,8 @@ namespace BulletSharp
 {
 	public class DiscreteDynamicsWorld : DynamicsWorld
 	{
+		private SimulationIslandManager _simulationIslandManager;
+
 		internal DiscreteDynamicsWorld(IntPtr native)
 			: base(native)
 		{
@@ -62,7 +64,14 @@ namespace BulletSharp
         */
 		public SimulationIslandManager SimulationIslandManager
 		{
-			get { return new SimulationIslandManager(btDiscreteDynamicsWorld_getSimulationIslandManager(_native)); }
+			get
+			{
+				if (_simulationIslandManager == null)
+				{
+					_simulationIslandManager = new SimulationIslandManager(btDiscreteDynamicsWorld_getSimulationIslandManager(_native));
+				}
+				return _simulationIslandManager;
+			}
 		}
 
 		public bool SynchronizeAllMotionStates
