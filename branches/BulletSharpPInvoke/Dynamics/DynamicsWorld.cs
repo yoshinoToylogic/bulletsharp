@@ -17,10 +17,6 @@ namespace BulletSharp
 	{
         public delegate void InternalTickCallback(DynamicsWorld world, float timeStep);
 
-        void InternalTickDelegate(DynamicsWorld world, float timeStep)
-        {
-        }
-
         internal InternalTickCallback _callback;
         protected ConstraintSolver _solver;
 

@@ -156,6 +156,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btOverlappingPairCache_wrap.h
     src/btOverlappingPairCallback_wrap.cpp
     src/btOverlappingPairCallback_wrap.h
+    src/btParallelConstraintSolver_wrap.cpp
+    src/btParallelConstraintSolver_wrap.h
     src/btPoint2PointConstraint_wrap.cpp
     src/btPoint2PointConstraint_wrap.h
     src/btPointCollector_wrap.cpp
@@ -206,6 +208,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btVoronoiSimplexSolver_wrap.h
     src/btWorldImporter_wrap.cpp
     src/btWorldImporter_wrap.h
+    src/SpuCollisionTaskProcess_wrap.cpp
+    src/SpuCollisionTaskProcess_wrap.h
     src/SpuGatheringCollisionDispatcher_wrap.cpp
     src/SpuGatheringCollisionDispatcher_wrap.h
     src/SpuGatheringCollisionTask_wrap.cpp
