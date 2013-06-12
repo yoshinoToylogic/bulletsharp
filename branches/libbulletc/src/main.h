@@ -280,6 +280,14 @@
 #define btShapeHull void
 #endif
 
+#ifndef BT_SPU_COLLISION_TASK_PROCESS_H
+#define SpuCollisionTaskProcess void
+#endif
+
+#ifndef BT_SPU_GATHERING_COLLISION__DISPATCHER_H
+#define SpuGatheringCollisionDispatcher void
+#endif
+
 #ifndef _BT_SOFT_BODY_H
 #define btSoftBody void
 #define btSoftBodyWorldInfo void
@@ -376,6 +384,12 @@
 #define btStridingMeshInterfaceData void
 #endif
 
+#ifndef BT_THREAD_SUPPORT_INTERFACE_H
+#define btBarrier void
+#define btCriticalSection void
+#define btThreadSupportInterface void
+#endif
+
 #ifndef BT_TRIANGLE_CALLBACK_H
 #define btInternalTriangleIndexCallback void
 #define btTriangleCallback void
@@ -389,6 +403,15 @@
 #define btSubSimplexClosestResult void
 #define btUsageBitfield void
 #define btVoronoiSimplexSolver void
+#endif
+
+#ifndef BT_WIN32_THREAD_SUPPORT_H
+#define Win32ThreadSupport void
+#define Win32ThreadSupport_Win32ThreadConstructionInfo void
+typedef void (*Win32ThreadFunc)(void* userPtr,void* lsMemory);
+typedef void* (*Win32lsMemorySetupFunc)();
+#else
+#define Win32ThreadSupport_Win32ThreadConstructionInfo Win32ThreadSupport::Win32ThreadConstructionInfo
 #endif
 
 #ifndef BT_WORLD_IMPORTER_H
@@ -429,4 +452,16 @@
 
 #ifndef POLARDECOMPOSITION_H
 #define btPolarDecomposition void
+#endif
+
+#ifndef SPU_GATHERING_COLLISION_TASK_H
+#if defined(_WIN64)
+	typedef unsigned __int64 ppu_address_t;
+#elif defined(__LP64__) || defined(__x86_64__)
+	typedef unsigned long int ppu_address_t;
+#else
+	typedef unsigned int ppu_address_t;
+#endif
+#define CollisionTask_LocalStoreMemory void
+#define SpuGatherAndProcessPairsTaskDesc void
 #endif
