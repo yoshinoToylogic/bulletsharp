@@ -253,6 +253,10 @@
 #define btOptimizedBvh void
 #endif
 
+#ifndef __BT_PARALLEL_CONSTRAINT_SOLVER_H
+#define btParallelConstraintSolver void
+#endif
+
 #ifndef BT_POINT_COLLECTOR_H
 #define btPointCollector void
 #endif
@@ -282,6 +286,7 @@
 
 #ifndef BT_SPU_COLLISION_TASK_PROCESS_H
 #define SpuCollisionTaskProcess void
+#define SpuGatherAndProcessWorkUnitInput void
 #endif
 
 #ifndef BT_SPU_GATHERING_COLLISION__DISPATCHER_H
