@@ -14,5 +14,5 @@ btScalar btStaticPlaneShape_getPlaneConstant(btStaticPlaneShape* obj)
 
 void btStaticPlaneShape_getPlaneNormal(btStaticPlaneShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getPlaneNormal(), value);
+	VECTOR3_OUT2(obj->getPlaneNormal(), value);
 }
