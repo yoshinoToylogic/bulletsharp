@@ -30,14 +30,14 @@ extern "C"
 	EXPORT void btWheelInfoConstructionInfo_delete(btWheelInfoConstructionInfo* obj);
 
 	EXPORT btWheelInfo_RaycastInfo* btWheelInfo_RaycastInfo_new();
-	EXPORT void btWheelInfo_RaycastInfo_getContactNormalWS(btWheelInfo_RaycastInfo* obj);
-	EXPORT void btWheelInfo_RaycastInfo_getContactPointWS(btWheelInfo_RaycastInfo* obj);
+	EXPORT void btWheelInfo_RaycastInfo_getContactNormalWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_getContactPointWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
 	EXPORT void* btWheelInfo_RaycastInfo_getGroundObject(btWheelInfo_RaycastInfo* obj);
-	EXPORT void btWheelInfo_RaycastInfo_getHardPointWS(btWheelInfo_RaycastInfo* obj);
+	EXPORT void btWheelInfo_RaycastInfo_getHardPointWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
 	EXPORT bool btWheelInfo_RaycastInfo_getIsInContact(btWheelInfo_RaycastInfo* obj);
 	EXPORT btScalar btWheelInfo_RaycastInfo_getSuspensionLength(btWheelInfo_RaycastInfo* obj);
-	EXPORT void btWheelInfo_RaycastInfo_getWheelAxleWS(btWheelInfo_RaycastInfo* obj);
-	EXPORT void btWheelInfo_RaycastInfo_getWheelDirectionWS(btWheelInfo_RaycastInfo* obj);
+	EXPORT void btWheelInfo_RaycastInfo_getWheelAxleWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_getWheelDirectionWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_setContactNormalWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_setContactPointWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_setGroundObject(btWheelInfo_RaycastInfo* obj, void* value);
