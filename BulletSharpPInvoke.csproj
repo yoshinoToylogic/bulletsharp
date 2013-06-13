@@ -93,6 +93,7 @@
     <Compile Include="Dynamics\ConstraintSolver.cs" />
     <Compile Include="Dynamics\ActionInterface.cs" />
     <Compile Include="Dynamics\ContactSolverInfo.cs" />
+    <Compile Include="Dynamics\IActionInterface.cs" />
     <Compile Include="Dynamics\DiscreteDynamicsWorld.cs" />
     <Compile Include="Dynamics\DynamicsWorld.cs" />
     <Compile Include="Dynamics\GearConstraint.cs" />
@@ -102,12 +103,15 @@
     <Compile Include="Dynamics\HingeConstraint.cs" />
     <Compile Include="Dynamics\KinematicCharacterController.cs" />
     <Compile Include="Dynamics\Point2PointConstraint.cs" />
+    <Compile Include="Dynamics\RaycastVehicle.cs" />
     <Compile Include="Dynamics\RigidBody.cs" />
     <Compile Include="Dynamics\RigidBodyConstructionInfo.cs" />
     <Compile Include="Dynamics\SequentialImpulseConstraintSolver.cs" />
     <Compile Include="Dynamics\SliderConstraint.cs" />
     <Compile Include="Dynamics\TypedConstraint.cs" />
     <Compile Include="Dynamics\UniversalConstraint.cs" />
+    <Compile Include="Dynamics\VehicleRaycaster.cs" />
+    <Compile Include="Dynamics\WheelInfo.cs" />
     <Compile Include="Extras\bFile.cs" />
     <Compile Include="Extras\BulletFile.cs" />
     <Compile Include="Extras\BulletWorldImporter.cs" />

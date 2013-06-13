@@ -25,9 +25,16 @@ namespace BulletSharp
 		{
 		}
 
-		public void AddAction(ActionInterface action)
+		public void AddAction(IActionInterface action)
 		{
-			btDynamicsWorld_addAction(_native, action._native);
+            if (action is ActionInterface)
+            {
+                btDynamicsWorld_addAction(_native, (action as ActionInterface)._native);
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
 		}
 
 		public void AddCharacter(ActionInterface character)
