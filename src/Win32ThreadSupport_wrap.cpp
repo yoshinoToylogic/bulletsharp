@@ -1,4 +1,7 @@
 #include <BulletMultiThreaded/Win32ThreadSupport.h>
+
+#ifdef USE_WIN32_THREADING
+
 #include <BulletMultiThreaded/btParallelConstraintSolver.h>
 #include <BulletMultiThreaded/SpuNarrowPhaseCollisionTask/SpuGatheringCollisionTask.h>
 
@@ -109,3 +112,5 @@ void Win32ThreadSupport_startThreads(Win32ThreadSupport* obj, Win32ThreadSupport
 {
 	obj->startThreads(*threadInfo);
 }
+
+#endif

@@ -1,6 +1,17 @@
 CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 PROJECT (libbulletc)
 
+IF (APPLE OR MSVC)
+	OPTION(BUILD_MULTITHREADING "Use BulletMultiThreading" ON)
+ELSE()
+	OPTION(BUILD_MULTITHREADING "Use BulletMultiThreading" OFF)
+ENDIF()
+
+IF (NOT CMAKE_BUILD_TYPE)
+# SET(CMAKE_BUILD_TYPE "Debug")
+ SET(CMAKE_BUILD_TYPE "MinSizeRel")
+ENDIF (NOT CMAKE_BUILD_TYPE) 
+
 FIND_PATH(BULLET_INCLUDE_DIR NAMES btBulletCollisionCommon.h
   PATHS
   ${PROJECT_SOURCE_DIR}/../../bullet/src/
@@ -37,6 +48,21 @@ ELSE()
 	SET(BULLETC_LIB libbulletc)
 	SET(LIB_SUFFIX _${CMAKE_CFG_INTDIR}.lib)
 ENDIF()
+
+IF(BUILD_MULTITHREADING)
+SET(MULTITHREADED_SOURCE
+    src/btThreadSupportInterface_wrap.cpp
+    src/btThreadSupportInterface_wrap.h
+    src/SpuCollisionTaskProcess_wrap.cpp
+    src/SpuCollisionTaskProcess_wrap.h
+    src/SpuGatheringCollisionDispatcher_wrap.cpp
+    src/SpuGatheringCollisionDispatcher_wrap.h
+    src/SpuGatheringCollisionTask_wrap.cpp
+    src/SpuGatheringCollisionTask_wrap.h
+    src/Win32ThreadSupport_wrap.cpp
+    src/Win32ThreadSupport_wrap.h
+)
+ENDIF(BUILD_MULTITHREADING)
 
 ADD_LIBRARY(${BULLETC_LIB} SHARED
     dllmain.cpp
@@ -194,8 +220,6 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btStaticPlaneShape_wrap.h
     src/btStridingMeshInterface_wrap.cpp
     src/btStridingMeshInterface_wrap.h
-    src/btThreadSupportInterface_wrap.cpp
-    src/btThreadSupportInterface_wrap.h
     src/btTriangleIndexVertexArray_wrap.cpp
     src/btTriangleIndexVertexArray_wrap.h
     src/btTriangleMesh_wrap.cpp
@@ -214,21 +238,16 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btWheelInfo_wrap.h
     src/btWorldImporter_wrap.cpp
     src/btWorldImporter_wrap.h
-    src/SpuCollisionTaskProcess_wrap.cpp
-    src/SpuCollisionTaskProcess_wrap.h
-    src/SpuGatheringCollisionDispatcher_wrap.cpp
-    src/SpuGatheringCollisionDispatcher_wrap.h
-    src/SpuGatheringCollisionTask_wrap.cpp
-    src/SpuGatheringCollisionTask_wrap.h
-    src/Win32ThreadSupport_wrap.cpp
-    src/Win32ThreadSupport_wrap.h
+    ${MULTITHREADED_SOURCE}
 )
 
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletCollision${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletDynamics${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} LinearMath${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletFileLoader${LIB_SUFFIX})
-TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletMultiThreaded${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletSoftBody${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletWorldImporter${LIB_SUFFIX})
 TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletXmlWorldImporter${LIB_SUFFIX})
+IF(BUILD_MULTITHREADING)
+    TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletMultiThreaded${LIB_SUFFIX})
+ENDIF(BUILD_MULTITHREADING)
