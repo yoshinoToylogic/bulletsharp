@@ -282,6 +282,15 @@
     <ClInclude Include="src\SpuCollisionTaskProcess_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\btVehicleRaycaster_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btWheelInfo_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btRaycastVehicle_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -546,6 +555,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\SpuCollisionTaskProcess_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btVehicleRaycaster_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btWheelInfo_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btRaycastVehicle_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

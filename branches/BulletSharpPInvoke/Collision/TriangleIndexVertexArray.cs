@@ -26,6 +26,12 @@ namespace BulletSharp
             return new UnmanagedMemoryStream((byte*)btIndexedMesh_getTriangleIndexBase(_native).ToPointer(), length, length, FileAccess.ReadWrite);
         }
 
+        public unsafe UnmanagedMemoryStream GetVertexStream()
+        {
+            int length = btIndexedMesh_getNumVertices(_native) * btIndexedMesh_getVertexStride(_native);
+            return new UnmanagedMemoryStream((byte*)btIndexedMesh_getVertexBase(_native).ToPointer(), length, length, FileAccess.ReadWrite);
+        }
+
         public PhyScalarType IndexType
 		{
 			get { return btIndexedMesh_getIndexType(_native); }

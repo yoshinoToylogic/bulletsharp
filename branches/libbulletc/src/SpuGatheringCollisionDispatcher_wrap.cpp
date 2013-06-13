@@ -1,4 +1,5 @@
 #include <BulletMultiThreaded/SpuGatheringCollisionDispatcher.h>
+#include <BulletMultiThreaded/btThreadSupportInterface.h>
 
 #include "conversion.h"
 #include "SpuGatheringCollisionDispatcher_wrap.h"

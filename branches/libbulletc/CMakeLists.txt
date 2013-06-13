@@ -166,6 +166,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btPolarDecomposition_wrap.h
     src/btPolyhedralConvexShape_wrap.cpp
     src/btPolyhedralConvexShape_wrap.h
+    src/btRaycastVehicle_wrap.cpp
+    src/btRaycastVehicle_wrap.h
     src/btRigidBody_wrap.cpp
     src/btRigidBody_wrap.h
     src/btScaledBvhTriangleMeshShape_wrap.cpp
@@ -204,8 +206,12 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btTypedConstraint_wrap.h
     src/btUniversalConstraint_wrap.cpp
     src/btUniversalConstraint_wrap.h
+    src/btVehicleRaycaster_wrap.cpp
+    src/btVehicleRaycaster_wrap.h
     src/btVoronoiSimplexSolver_wrap.cpp
     src/btVoronoiSimplexSolver_wrap.h
+    src/btWheelInfo_wrap.cpp
+    src/btWheelInfo_wrap.h
     src/btWorldImporter_wrap.cpp
     src/btWorldImporter_wrap.h
     src/SpuCollisionTaskProcess_wrap.cpp

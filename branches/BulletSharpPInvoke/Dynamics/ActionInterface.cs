@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class ActionInterface
+    public class ActionInterface : IActionInterface
 	{
 		internal IntPtr _native;
 
