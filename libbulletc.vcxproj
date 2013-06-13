@@ -144,6 +144,7 @@
     <ClInclude Include="src\btPointCollector_wrap.h" />
     <ClInclude Include="src\btPolarDecomposition_wrap.h" />
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h" />
+    <ClInclude Include="src\btRaycastVehicle_wrap.h" />
     <ClInclude Include="src\btRigidBody_wrap.h" />
     <ClInclude Include="src\btScaledBvhTriangleMeshShape_wrap.h" />
     <ClInclude Include="src\btSequentialImpulseConstraintSolver_wrap.h" />
@@ -163,7 +164,9 @@
     <ClInclude Include="src\btTriangleMesh_wrap.h" />
     <ClInclude Include="src\btTypedConstraint_wrap.h" />
     <ClInclude Include="src\btUniversalConstraint_wrap.h" />
+    <ClInclude Include="src\btVehicleRaycaster_wrap.h" />
     <ClInclude Include="src\btVoronoiSimplexSolver_wrap.h" />
+    <ClInclude Include="src\btWheelInfo_wrap.h" />
     <ClInclude Include="src\btWorldImporter_wrap.h" />
     <ClInclude Include="src\collections.h" />
     <ClInclude Include="src\conversion.h" />
@@ -243,6 +246,7 @@
     <ClCompile Include="src\btPointCollector_wrap.cpp" />
     <ClCompile Include="src\btPolarDecomposition_wrap.cpp" />
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp" />
+    <ClCompile Include="src\btRaycastVehicle_wrap.cpp" />
     <ClCompile Include="src\btRigidBody_wrap.cpp" />
     <ClCompile Include="src\btScaledBvhTriangleMeshShape_wrap.cpp" />
     <ClCompile Include="src\btSequentialImpulseConstraintSolver_wrap.cpp" />
@@ -262,7 +266,9 @@
     <ClCompile Include="src\btTriangleMesh_wrap.cpp" />
     <ClCompile Include="src\btTypedConstraint_wrap.cpp" />
     <ClCompile Include="src\btUniversalConstraint_wrap.cpp" />
+    <ClCompile Include="src\btVehicleRaycaster_wrap.cpp" />
     <ClCompile Include="src\btVoronoiSimplexSolver_wrap.cpp" />
+    <ClCompile Include="src\btWheelInfo_wrap.cpp" />
     <ClCompile Include="src\btWorldImporter_wrap.cpp" />
     <ClCompile Include="src\collections.cpp" />
     <ClCompile Include="src\SpuCollisionTaskProcess_wrap.cpp" />

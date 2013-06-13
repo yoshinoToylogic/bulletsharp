@@ -273,6 +273,20 @@
 #define btAlignedFaceArray btAlignedObjectArray<btFace>
 #endif
 
+#ifndef BT_RAYCASTVEHICLE_H
+#define btDefaultVehicleRaycaster void
+#define btRaycastVehicle_btVehicleTuning void
+#define btVehicleRaycaster void
+#define btVehicleRaycaster_btVehicleRaycasterResult void
+#define btWheelInfo void
+#define btWheelInfo_RaycastInfo void
+#define btWheelInfoConstructionInfo void
+#else
+#define btRaycastVehicle_btVehicleTuning btRaycastVehicle::btVehicleTuning
+#define btVehicleRaycaster_btVehicleRaycasterResult btVehicleRaycaster::btVehicleRaycasterResult
+#define btWheelInfo_RaycastInfo btWheelInfo::RaycastInfo
+#endif
+
 #ifndef BT_SERIALIZER_H
 #define btChunk void
 #define btDefaultSerializer void

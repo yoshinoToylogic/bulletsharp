@@ -205,7 +205,7 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 // Alignment cannot be guaranteed in .NET, so aligned temporary intermediate variables
 // must be used to exchange vectors and transforms with Bullet (if SSE is enabled).
 #define TEMP(var) var ## Temp
-#if 1//defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE) //&& defined(BT_USE_SIMD_VECTOR3)
+#if defined(BT_USE_SSE) //&& defined(BT_USE_SSE_IN_API) && defined(BT_USE_SIMD_VECTOR3)
 #define VECTOR3_DEF(vec) ATTRIBUTE_ALIGNED16(btVector3) TEMP(vec)
 #define VECTOR3_IN(invec, vec) Vector3TobtVector3(invec, vec)
 #define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
