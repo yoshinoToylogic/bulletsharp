@@ -242,7 +242,7 @@ namespace BulletSharp
 
 		public int NumWheels
 		{
-			get { return btRaycastVehicle_getNumWheels(_native); }
+            get { return _wheelInfo.Count; }
 		}
 
 		public int RightAxis
