@@ -16,8 +16,12 @@ namespace BulletSharp
 	public class DynamicsWorld : CollisionWorld
 	{
         public delegate void InternalTickCallback(DynamicsWorld world, float timeStep);
+        
+        [UnmanagedFunctionPointerAttribute(CallingConvention.Cdecl)]
+        public delegate void InternalTickCallbackUnmanaged(IntPtr world, float timeStep);
 
         internal InternalTickCallback _callback;
+        internal InternalTickCallbackUnmanaged _callbackUnmanaged;
         protected ConstraintSolver _solver;
 
 		internal DynamicsWorld(IntPtr native)
@@ -102,9 +106,29 @@ namespace BulletSharp
 			btDynamicsWorld_removeVehicle(_native, vehicle._native);
 		}
 
+        private void InternalTickCallbackNative(IntPtr world, float timeStep)
+        {
+            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
+            DynamicsWorld worldManaged = GCHandle.FromIntPtr(nativeUserInfo).Target as DynamicsWorld;
+            worldManaged._callback(worldManaged, timeStep);
+        }
+
 		public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo, bool isPreTick)
 		{
-            _callback = cb;
+            if (_callback != cb)
+            {
+                if (cb != null)
+                {
+                    _callback = cb;
+                    _callbackUnmanaged = new InternalTickCallbackUnmanaged(InternalTickCallbackNative);
+                }
+                else
+                {
+                    _callback = null;
+                    _callbackUnmanaged = null;
+                }
+            }
+
 	        WorldUserInfo = worldUserInfo;
 
             IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
@@ -113,7 +137,9 @@ namespace BulletSharp
 			        GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
 			        nativeUserInfo = GCHandle.ToIntPtr(handle);
 		        }
-                btDynamicsWorld_setInternalTickCallback(_native, Marshal.GetFunctionPointerForDelegate(cb), nativeUserInfo, isPreTick);
+                btDynamicsWorld_setInternalTickCallback(_native,
+                    Marshal.GetFunctionPointerForDelegate(_callbackUnmanaged),
+                    nativeUserInfo, isPreTick);
 	        } else {
 		        if (nativeUserInfo != IntPtr.Zero) {
                     GCHandle.FromIntPtr(nativeUserInfo).Free();

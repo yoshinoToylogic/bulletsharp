@@ -25,9 +25,9 @@ extern "C"
 	EXPORT void btDynamicsWorld_removeVehicle(btDynamicsWorld* obj, btActionInterface* vehicle);
 	EXPORT void btDynamicsWorld_setConstraintSolver(btDynamicsWorld* obj, btConstraintSolver* solver);
 	EXPORT void btDynamicsWorld_setGravity(btDynamicsWorld* obj, btScalar* gravity);
-	//EXPORT void btDynamicsWorld_setInternalTickCallback(btDynamicsWorld* obj, * cb, void* worldUserInfo, bool isPreTick);
-	//EXPORT void btDynamicsWorld_setInternalTickCallback2(btDynamicsWorld* obj, * cb, void* worldUserInfo);
-	//EXPORT void btDynamicsWorld_setInternalTickCallback3(btDynamicsWorld* obj, * cb);
+	EXPORT void btDynamicsWorld_setInternalTickCallback(btDynamicsWorld* obj, btInternalTickCallback cb, void* worldUserInfo, bool isPreTick);
+	EXPORT void btDynamicsWorld_setInternalTickCallback2(btDynamicsWorld* obj, btInternalTickCallback cb, void* worldUserInfo);
+	EXPORT void btDynamicsWorld_setInternalTickCallback3(btDynamicsWorld* obj, btInternalTickCallback cb);
 	EXPORT void btDynamicsWorld_setWorldUserInfo(btDynamicsWorld* obj, void* worldUserInfo);
 	EXPORT int btDynamicsWorld_stepSimulation(btDynamicsWorld* obj, btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
 	EXPORT int btDynamicsWorld_stepSimulation2(btDynamicsWorld* obj, btScalar timeStep, int maxSubSteps);
