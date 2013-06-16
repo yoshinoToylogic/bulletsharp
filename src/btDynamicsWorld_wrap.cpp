@@ -116,22 +116,22 @@ void btDynamicsWorld_setGravity(btDynamicsWorld* obj, btScalar* gravity)
 	VECTOR3_CONV(gravity);
 	obj->setGravity(VECTOR3_USE(gravity));
 }
-/*
-void btDynamicsWorld_setInternalTickCallback(btDynamicsWorld* obj, * cb, void* worldUserInfo, bool isPreTick)
+
+void btDynamicsWorld_setInternalTickCallback(btDynamicsWorld* obj, btInternalTickCallback cb, void* worldUserInfo, bool isPreTick)
 {
 	obj->setInternalTickCallback(cb, worldUserInfo, isPreTick);
 }
 
-void btDynamicsWorld_setInternalTickCallback2(btDynamicsWorld* obj, * cb, void* worldUserInfo)
+void btDynamicsWorld_setInternalTickCallback2(btDynamicsWorld* obj, btInternalTickCallback cb, void* worldUserInfo)
 {
 	obj->setInternalTickCallback(cb, worldUserInfo);
 }
 
-void btDynamicsWorld_setInternalTickCallback3(btDynamicsWorld* obj, * cb)
+void btDynamicsWorld_setInternalTickCallback3(btDynamicsWorld* obj, btInternalTickCallback cb)
 {
 	obj->setInternalTickCallback(cb);
 }
-*/
+
 void btDynamicsWorld_setWorldUserInfo(btDynamicsWorld* obj, void* worldUserInfo)
 {
 	obj->setWorldUserInfo(worldUserInfo);
