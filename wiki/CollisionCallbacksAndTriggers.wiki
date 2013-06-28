@@ -31,9 +31,9 @@ for (int i = 0; i < numManifolds; i++)
 }}}
 <wiki:comment>See Bullet/Demos/CollisionInterfaceDemo for a sample implementation.</wiki:comment>
 
-= GhostObject =
+= !GhostObject =
 
-A more efficient way is to iterate only over the pairs of objects that you are interested in. This can be done using a GhostObject. A GhostObject keeps track of its own overlapping pairs:
+A more efficient way is to iterate only over the pairs of objects that you are interested in. This can be done using a !GhostObject. A !GhostObject keeps track of its own overlapping pairs:
 
 {{{
 AlignedManifoldArray manifoldArray = new AlignedManifoldArray();
@@ -78,13 +78,13 @@ You have to add once some special callback to world to make the ghosts work.
 DiscreteDynamicsWorld dynamicsWorld = new CreateDiscreteDynamicsWorld(); // Assume the world is now initializing...
 dynamicsWorld.PairCache.SetInternalGhostPairCallback(new GhostPairCallback());
 }}}
-See bulletsharp\demos\Generic\CharacterDemo\CharacterDemo.cs and bullet\src\BulletDynamics\Character\btKinematicCharacterController.cpp (btKinematicCharacterController::recoverFromPenetration) for a sample implementation.
+See bulletsharp\demos\Generic\!CharacterDemo\!CharacterDemo.cs and bullet\src\!BulletDynamics\Character\btKinematicCharacterController.cpp (btKinematicCharacterController::recoverFromPenetration) for a sample implementation.
 
-= ContactTest =
+= !ContactTest =
 
-Bullet 2.76 onwards let you perform an instant query on the world (CollisionWorld or DiscreteDynamicsWorld) using the contactTest query. The contactTest query will peform a collision test against all overlapping objects in the world, and produces the results using a callback. The query object doesn't need to be part of the world. In order for an efficient query on large worlds, it is important that the broadphase aabbTest is accelerated, for example using the DbvtBroadphase or AxisSweep3 broadphase.
+Bullet 2.76 onwards let you perform an instant query on the world (!CollisionWorld or !DiscreteDynamicsWorld) using the contactTest query. The contactTest query will peform a collision test against all overlapping objects in the world, and produces the results using a callback. The query object doesn't need to be part of the world. In order for an efficient query on large worlds, it is important that the broadphase aabbTest is accelerated, for example using the !DbvtBroadphase or !AxisSweep3 broadphase.
 
-An advantage of this method is that you can perform collision tests at a reduced temporal resolution if you do not need collision tests at every physics tic. It is also convenient to use with a pre-existing object in the world, whereas GhostObject would require synchronizing with the target object. However, a downside is that collision detection is being duplicated for the target object (if it already exists in the world), so frequent or widespread collision tests may become less efficient than iterating over previously generated collision pairs.
+An advantage of this method is that you can perform collision tests at a reduced temporal resolution if you do not need collision tests at every physics tic. It is also convenient to use with a pre-existing object in the world, whereas !GhostObject would require synchronizing with the target object. However, a downside is that collision detection is being duplicated for the target object (if it already exists in the world), so frequent or widespread collision tests may become less efficient than iterating over previously generated collision pairs.
 
 Usage example:
 
@@ -140,9 +140,9 @@ ContactSensorCallback callback = new ContactSensorCallback(tgtBody, context);
 World.ContactTest(tgtBody,callback);
 }}}
 
-= ContactPairTest =
+= !ContactPairTest =
 
-Bullet 2.76 onwards provides the contactPairTest to perform collision detection between two specific collision objects only. Contact results are passed on using the provided callback. They don't need to be inserted in the world. See btCollisionWorld::contactPairTest in Bullet/src/BulletCollision/CollisionDispatch/btCollisionWorld.h for implementation details.
+Bullet 2.76 onwards provides the contactPairTest to perform collision detection between two specific collision objects only. Contact results are passed on using the provided callback. They don't need to be inserted in the world. See btCollisionWorld::contactPairTest in Bullet/src/!BulletCollision/!CollisionDispatch/btCollisionWorld.h for implementation details.
 
 = Contact Callbacks =
 
@@ -153,9 +153,9 @@ body.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
 
 There are three collision callbacks:
 
-== ManifoldPoint.ContactAdded ==
+== !ManifoldPoint.!ContactAdded ==
 
-This is called whenever a contact is added. From here, you can modify some properties [eg friction] of the contact point
+This is called whenever a contact is added. From here, you can modify some properties (eg friction) of the contact point
 {{{
 bool OnContactAdded(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
 {
@@ -165,7 +165,7 @@ ManifoldPoint.ContactAdded += OnContactAdded;
 }}}
 If your function returns false, then Bullet will assume that you did not modify the contact point properties at all.
 
-== PersistentManifold.ContactProcessed ==
+== !PersistentManifold.!ContactProcessed ==
 
 This is called immediately after the collision has been actually processed
 {{{
@@ -176,7 +176,7 @@ bool OnContactProcessed(ManifoldPoint cp, CollisionObject body0, CollisionObject
 PersistentManifold.ContactProcessed += OnContactProcessed;
 }}}
 
-== PersistentManifold.ContactDestroyed ==
+== !PersistentManifold.!ContactDestroyed ==
 
 This is called immediately after the contact point is destroyed.
 {{{
