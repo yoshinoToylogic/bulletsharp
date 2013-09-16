@@ -16,7 +16,7 @@ Most of Bullet's demos have been converted to `BulletSharp` (see Downloads or tr
 *Q*: How do I use `BulletSharp` with double precision?<br>
 *A*: Compile Bullet with BT_USE_DOUBLE_PRECISION defined at the top of btScalar.h, then compile `BulletSharp`.<br>
 <br>
-Alternatively, if you use CMake to set double precision, then specify BT_USE_DOUBLE_PRECISION in `StdAfx.h`.
+Alternatively, if you use CMake to set double precision, then specify BT_USE_DOUBLE_PRECISION in `StdAfx.h`. See BuildInstructions.
 
 *Q*: When compiling, I get the error "cannot open file 'MSCOREE.lib'", what's wrong?<br>
 *A*: Try to add one of these library paths in Visual Studio:
