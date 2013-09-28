@@ -31,3 +31,10 @@ If you want to use double precision, select USE_DOUBLE_PRECISION in CMake, then 
 The process is the same, except:
  * for Bullet, select the "Visual Studio xx Win64" generator in CMake,
  * for !BulletSharp, create the x64 solution platform in Configuration Manager.
+
+
+= Errors =
+
+Compiling !BulletSharp sometimes gives the following error:<br>
+{{{error LNK2038: mismatch detected for 'RuntimeLibrary': value 'MT_StaticRelease' doesn't match value 'MD_DynamicRelease' in AssemblyInfo.obj}}}<br>
+CMake sometimes fails to apply the USE_MSVC_RUNTIME_LIBRARY_DLL setting for bullet even if the option is set in CMake-gui. This results in a runtime library mismatch. To fix the error, open the CMake-gui settings for bullet again and make sure that USE_MSVC_RUNTIME_LIBRARY_DLL is checked. Then compile everything again.
