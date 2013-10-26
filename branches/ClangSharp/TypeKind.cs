@@ -52,6 +52,10 @@ namespace ClangSharp {
         FunctionNoProto,
         FunctionProto,
         ConstantArray,
-        Vector
+        Vector,
+        IncompleteArray,
+        VariableArray,
+        DependentSizedArray,
+        MemberPointer
     }
 }
