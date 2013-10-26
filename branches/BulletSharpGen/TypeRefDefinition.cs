@@ -124,6 +124,10 @@ namespace BulletSharpGen
                     Name = "long";
                     IsBasic = true;
                     break;
+                case TypeKind.LongLong:
+                    Name = "long long";
+                    IsBasic = true;
+                    break;
                 case TypeKind.Short:
                     Name = "short";
                     IsBasic = true;
@@ -173,6 +177,8 @@ namespace BulletSharpGen
                     IsBasic = true;
                     break;
                 case TypeKind.Record:
+                    Name = type.Canonical.Declaration.Spelling;
+                    break;
                 case TypeKind.Unexposed:
                     if (type.Canonical.Declaration.IsInvalid)
                     {
@@ -182,6 +188,8 @@ namespace BulletSharpGen
                     {
                         Name = type.Canonical.Declaration.Spelling;
                     }
+                    break;
+                case TypeKind.DependentSizedArray:
                     break;
                 default:
                     throw new NotImplementedException();

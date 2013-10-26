@@ -41,7 +41,7 @@ namespace BulletSharpGen
             {
                 if (Parent != null)
                 {
-                    return Parent.FullName + '_' + Name;
+                    return Parent.FullNameCS + '_' + Name;
                 }
                 return Name;
             }
