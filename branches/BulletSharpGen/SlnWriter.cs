@@ -95,7 +95,31 @@ namespace BulletSharpGen
                 projectWriter.WriteLine("      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>");
                 projectWriter.WriteLine("      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>");
             }
-            projectWriter.WriteLine("      <AdditionalIncludeDirectories>..\\bullet\\src;..\\bullet\\Extras\\HACD;..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>");
+            //projectWriter.WriteLine("      <AdditionalIncludeDirectories>..\\bullet\\src;..\\bullet\\Extras\\HACD;..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>");
+            projectWriter.WriteLine("      <AdditionalIncludeDirectories>..\\..\\bullet\\src;..\\..\\bullet\\Extras\\HACD;..\\..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>");
+            projectWriter.Write("      <AdditionalUsingDirectories>");
+            projectWriter.Write(conf.UsingDirectories);
+            if (!string.IsNullOrEmpty(conf.UsingDirectories) && !conf.UsingDirectories.EndsWith(";"))
+            {
+                projectWriter.Write(';');
+            }
+            projectWriter.WriteLine("%(AdditionalUsingDirectories)</AdditionalUsingDirectories>");
+            projectWriter.Write("      <PreprocessorDefinitions>");
+            projectWriter.Write(conf.Definitions);
+            if (!string.IsNullOrEmpty(conf.Definitions) && !conf.Definitions.EndsWith(";"))
+            {
+                projectWriter.Write(';');
+            }
+            projectWriter.Write("WIN32;");
+            if (conf.IsDebug)
+            {
+                projectWriter.Write("_DEBUG;");
+            }
+            else
+            {
+                projectWriter.Write("NDEBUG;");
+            }
+            projectWriter.WriteLine("%(PreprocessorDefinitions)</PreprocessorDefinitions>");
             if (conf.IsDebug)
             {
                 projectWriter.WriteLine("      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>");
@@ -103,15 +127,33 @@ namespace BulletSharpGen
             else
             {
                 projectWriter.WriteLine("      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>");
+                projectWriter.WriteLine("      <BufferSecurityCheck>false</BufferSecurityCheck>");
             }
             projectWriter.WriteLine("      <FloatingPointModel>Precise</FloatingPointModel>");
             projectWriter.WriteLine("      <PrecompiledHeader>Use</PrecompiledHeader>");
+            if (conf.IsDebug)
+            {
+                projectWriter.WriteLine("      <WarningLevel>Level3</WarningLevel>");
+                projectWriter.WriteLine("      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>");
+            }
+            else
+            {
+                projectWriter.WriteLine("      <WarningLevel>Level1</WarningLevel>");
+            }
+            //projectWriter.WriteLine("      <DisableSpecificWarnings>4793;%(DisableSpecificWarnings)</DisableSpecificWarnings>");
             projectWriter.WriteLine("    </ClCompile>");
             projectWriter.WriteLine("    <Link>");
             if (conf.IsDebug)
             {
+                projectWriter.WriteLine("      <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>");
+                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\2013\\lib\\Debug;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
                 projectWriter.WriteLine("      <GenerateDebugInformation>true</GenerateDebugInformation>");
                 projectWriter.WriteLine("      <AssemblyDebug>true</AssemblyDebug>");
+            }
+            else
+            {
+                projectWriter.WriteLine("      <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>");
+                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\2013\\lib\\MinSizeRel;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
             }
             projectWriter.WriteLine("      <TargetMachine>MachineX86</TargetMachine>");
             projectWriter.WriteLine("    </Link>");
@@ -149,8 +191,8 @@ namespace BulletSharpGen
             confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", "..\\..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
             confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
             confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\bin\\Release"));
-            confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\bin\\Debug"));
+            confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\\bin\\Release"));
+            confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\\bin\\Debug"));
             confs.Add(new ProjectConfiguration("Windows API Code Pack", true, "GRAPHICS_WAPICODEPACK", "..\\..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
             confs.Add(new ProjectConfiguration("Windows API Code Pack", false, "GRAPHICS_WAPICODEPACK", "..\\..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
             confs.Add(new ProjectConfiguration("XNA 3.1", true, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
