@@ -98,88 +98,67 @@ namespace BulletSharpGen
 
         public TypeRefDefinition(ClangSharp.Type type)
         {
-            switch (type.Kind)
+            switch (type.TypeKind)
             {
-                case TypeKind.Void:
-                    Name = "void";
+                case ClangSharp.Type.Kind.Void:
+                case ClangSharp.Type.Kind.Bool:
+                case ClangSharp.Type.Kind.CharS:
+                case ClangSharp.Type.Kind.Double:
+                case ClangSharp.Type.Kind.Float:
+                case ClangSharp.Type.Kind.Int:
+                case ClangSharp.Type.Kind.UChar:
+                case ClangSharp.Type.Kind.UInt:
+                    Name = type.Spelling;
                     IsBasic = true;
                     break;
-                case TypeKind.Bool:
-                    Name = "bool";
-                    IsBasic = true;
-                    break;
-                case TypeKind.Double:
-                    Name = "double";
-                    IsBasic = true;
-                    break;
-                case TypeKind.Float:
-                    Name = "float";
-                    IsBasic = true;
-                    break;
-                case TypeKind.Int:
-                    Name = "int";
-                    IsBasic = true;
-                    break;
-                case TypeKind.Long:
+                case ClangSharp.Type.Kind.Long:
                     Name = "long";
                     IsBasic = true;
                     break;
-                case TypeKind.LongLong:
+                case ClangSharp.Type.Kind.LongLong:
                     Name = "long long";
                     IsBasic = true;
                     break;
-                case TypeKind.Short:
+                case ClangSharp.Type.Kind.Short:
                     Name = "short";
                     IsBasic = true;
                     break;
-                case TypeKind.UInt:
-                    Name = "unsigned int";
-                    IsBasic = true;
-                    break;
-                case TypeKind.ULong:
+                case ClangSharp.Type.Kind.ULong:
                     Name = "unsigned long";
                     IsBasic = true;
                     break;
-                case TypeKind.Char_S:
-                    Name = "char";
-                    IsBasic = true;
-                    break;
-                case TypeKind.UChar:
-                    Name = "unsigned char";
-                    IsBasic = true;
-                    break;
-                case TypeKind.UShort:
+                case ClangSharp.Type.Kind.UShort:
                     Name = "unsigned short";
                     IsBasic = true;
                     break;
-                case TypeKind.Typedef:
+                case ClangSharp.Type.Kind.Typedef:
                     Name = type.Declaration.Spelling;
                     Referenced = new TypeRefDefinition(type.Canonical);
                     IsBasic = Referenced.IsBasic;
                     break;
-                case TypeKind.Pointer:
+                case ClangSharp.Type.Kind.Pointer:
                     Referenced = new TypeRefDefinition(type.Pointee);
                     IsPointer = true;
                     break;
-                case TypeKind.LValueReference:
+                case ClangSharp.Type.Kind.LValueReference:
                     Referenced = new TypeRefDefinition(type.Pointee);
                     IsReference = true;
                     break;
-                case TypeKind.ConstantArray:
+                case ClangSharp.Type.Kind.ConstantArray:
                     Referenced = new TypeRefDefinition(type.ArrayElementType);
                     IsConstantArray = true;
                     break;
-                case TypeKind.FunctionProto:
+                case ClangSharp.Type.Kind.FunctionProto:
                     // ??
                     break;
-                case TypeKind.Enum:
+                case ClangSharp.Type.Kind.Enum:
                     Name = type.Canonical.Declaration.Spelling;
                     IsBasic = true;
                     break;
-                case TypeKind.Record:
+                case ClangSharp.Type.Kind.Record:
                     Name = type.Canonical.Declaration.Spelling;
                     break;
-                case TypeKind.Unexposed:
+                case ClangSharp.Type.Kind.Unexposed:
                     if (type.Canonical.Declaration.IsInvalid)
                     {
                         Name = "[unexposed type]";
@@ -189,7 +168,7 @@ namespace BulletSharpGen
                         Name = type.Canonical.Declaration.Spelling;
                     }
                     break;
-                case TypeKind.DependentSizedArray:
+                case ClangSharp.Type.Kind.DependentSizedArray:
                     break;
                 default:
                     throw new NotImplementedException();

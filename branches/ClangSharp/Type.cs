@@ -1,21 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ClangSharp;
-
-namespace ClangSharp {
+﻿namespace ClangSharp {
     public class Type {
 
         internal Interop.Type Native { get; private set; }
 
         internal Type(Interop.Type native) {
             Native = native;
-        }
-
-        public TypeKind Kind
-        {
-            get { return Native.kind; }
         }
 
         public Type ArrayElementType
@@ -39,13 +28,14 @@ namespace ClangSharp {
             get { return new Cursor(Interop.clang_getTypeDeclaration(Native)); }
         }
 
-        public bool IsPodType
-        {
-            get { return Interop.clang_isPODType(Native); }
+        public Kind TypeKind {
+            get { return Native.kind; }
         }
 
-        public static string TypeKindSpelling(TypeKind kind) {
-            return Interop.clang_getTypeKindSpelling(kind).ManagedString;
+        public string TypeKindSpelling {
+            get {
+                return Interop.clang_getTypeKindSpelling(TypeKind).ManagedString;
+            }
         }
 
         public bool Equals(Type other) {
@@ -58,6 +48,115 @@ namespace ClangSharp {
 
         public override int GetHashCode() {
             return Native.GetHashCode();
+        }
+
+        public enum Kind {
+            Invalid,
+            Unexposed,
+            Void,
+            Bool,
+            CharU,
+            UChar,
+            Char16,
+            Char32,
+            UShort,
+            UInt,
+            ULong,
+            ULongLong,
+            UInt128,
+            CharS,
+            SChar,
+            WChar,
+            Short,
+            Int,
+            Long,
+            LongLong,
+            Int128,
+            Float,
+            Double,
+            LongDouble,
+            NullPtr,
+            Overload,
+            Dependent,
+            ObjCId,
+            ObjCClass,
+            ObjCSel,
+            FirstBuiltin = 2,
+            LastBuiltin = 29,
+            Complex = 100,
+            Pointer,
+            BlockPointer,
+            LValueReference,
+            RValueReference,
+            Record,
+            Enum,
+            Typedef,
+            ObjCInterface,
+            ObjCObjectPointer,
+            FunctionNoProto,
+            FunctionProto,
+            ConstantArray,
+            Vector,
+            IncompleteArray,
+            VariableArray,
+            DependentSizedArray,
+            MemberPointer
+        }
+
+        public string Spelling {
+            get {
+                switch (TypeKind) {
+                    case Kind.Void:
+                        return "void";
+                    case Kind.Bool:
+                        return "bool";
+                    case Kind.UChar:
+                    case Kind.CharU:
+                        return "unsigned char";
+                    case Kind.Char16:
+                        return "char16_t";
+                    case Kind.Char32:
+                        return "char32_t";
+                    case Kind.UShort:
+                        return "unsigned short int";
+                    case Kind.UInt:
+                        return "unsigned int";
+                    case Kind.ULong:
+                        return "unsigned long int";
+                    case Kind.ULongLong:
+                        return "unsigned long long int";
+                    case Kind.UInt128:
+                        return "uint128_t";
+                    case Kind.CharS:
+                        return "char";
+                    case Kind.SChar:
+                        return "signed char";
+                    case Kind.WChar:
+                        return "wchar_t";
+                    case Kind.Short:
+                        return "short int";
+                    case Kind.Int:
+                        return "int";
+                    case Kind.Long:
+                        return "long int";
+                    case Kind.LongLong:
+                        return "long long int";
+                    case Kind.Int128:
+                        return "int128_t";
+                    case Kind.Float:
+                        return "float";
+                    case Kind.Double:
+                        return "double";
+                    case Kind.LongDouble:
+                        return "long double";
+                    case Kind.NullPtr:
+                        return "nullptr";
+                    case Kind.Pointer:
+                        return Pointee.Spelling + "*";
+                    default:
+                        return Declaration.Spelling;
+                }
+            }
         }
     }
 }

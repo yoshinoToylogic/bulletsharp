@@ -5,7 +5,8 @@ namespace ClangSharp {
     public class Index : IDisposable {
         internal readonly IntPtr Native;
 
-        public Index() :this(true, true) {
+        public Index()
+            : this(true, false) {
         }
 
         public Index(bool excludeDeclarationsFromPch, bool displayDiagnostics) {
@@ -13,6 +14,11 @@ namespace ClangSharp {
         }
 
         public void Dispose() {
+            Interop.clang_disposeIndex(Native);
+            GC.SuppressFinalize(this);
+        }
+
+        ~Index() {
             Interop.clang_disposeIndex(Native);
         }
 
@@ -22,11 +28,11 @@ namespace ClangSharp {
             }
         }
 
-        public TranslationUnit CreateTranslationUnit(string astFilename) {
-            return new TranslationUnit(Interop.clang_createTranslationUnit(Native, astFilename));
+        public TranslationUnit CreateTranslationUnitFromAst(string astFilename) {
+            return new TranslationUnit(astFilename, Interop.clang_createTranslationUnit(Native, astFilename));
         }
 
-        public TranslationUnit CreateTranslationUnit(string filename, Options[] clangArgs, UnsavedFile[] unsavedFiles) {
+        public TranslationUnit CreateTranslationUnit(string filename, Options[] clangArgs, UnsavedFile[] unsavedFiles = null) {
             var args = clangArgs.Select(arg => "-" + arg.ToString().Replace("_", "-")).ToArray();
             return CreateTranslationUnit(
                 filename,
@@ -34,25 +40,21 @@ namespace ClangSharp {
                 unsavedFiles);
         }
 
-        public TranslationUnit CreateTranslationUnit(string filename, string []clangArgs, UnsavedFile[] unsavedFiles) {
-            return new TranslationUnit(
-                Interop.clang_createTranslationUnitFromSourceFile(
-                    Native,
-                    filename,
-                    clangArgs.Length,
-                    clangArgs,
-                    (uint)unsavedFiles.Length,
-                    unsavedFiles.Select(f => f.Native).ToArray()));
-        }
-
-        public TranslationUnit CreateTranslationUnit(string filename, string[] args, UnsavedFile[] unsavedFiles, TranslationUnitFlags options)
+        public TranslationUnit CreateTranslationUnit(string filename, string[] clangArgs = null, UnsavedFile[] unsavedFiles = null, TranslationUnitFlags options = TranslationUnitFlags.None)
         {
+            if (!System.IO.File.Exists(filename))
+            {
+                throw new System.IO.FileNotFoundException("Couldn't find input file.", filename);
+            }
+            clangArgs = clangArgs ?? new string[0];
+            unsavedFiles = unsavedFiles ?? new UnsavedFile[0];
             return new TranslationUnit(
+                filename,
                 Interop.clang_parseTranslationUnit(
                     Native,
                     filename,
-                    args,
-                    args.Length,
+                    clangArgs,
+                    clangArgs.Length,
                     unsavedFiles.Select(f => f.Native).ToArray(),
                     (uint)unsavedFiles.Length,
                     options));

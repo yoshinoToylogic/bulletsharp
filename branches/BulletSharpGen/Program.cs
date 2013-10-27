@@ -30,8 +30,8 @@ namespace BulletSharpGen
                 writer.Output();
             }
 
-            var projWriter = new SlnWriter(parser.HeaderDefinitions, namespaceName);
-            projWriter.Output();
+            var slnWriter = new SlnWriter(parser.HeaderDefinitions, namespaceName);
+            slnWriter.Output();
 
             Console.Write("Press any key to continue...");
             Console.ReadKey();

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ClangSharp;
 
 namespace BulletSharpGen
@@ -203,7 +204,7 @@ namespace BulletSharpGen
             if (cursor.Kind == CursorKind.TypedefDecl)
             {
                 currentClass.IsTypedef = true;
-                if (cursor.TypedefDeclUnderlyingType.Canonical.Kind != TypeKind.FunctionProto)
+                if (cursor.TypedefDeclUnderlyingType.Canonical.TypeKind != ClangSharp.Type.Kind.FunctionProto)
                 {
                     currentClass.TypedefUnderlyingType = new TypeRefDefinition(cursor.TypedefDeclUnderlyingType);
                 }
@@ -305,7 +306,7 @@ namespace BulletSharpGen
                     // Check if the return type is a template
                     cursor.VisitChildren(MethodTemplateTypeVisitor);
 
-                    IList<Token> tokens = currentTU.Tokenize(cursor.Extent);
+                    IList<Token> tokens = currentTU.Tokenize(cursor.Extent).ToList();
                     
                     // Check if the return type is const (no clang_isConst available, so look at tokens)
                     if (tokens.Count > 0 && tokens[0].Spelling.Equals("const"))
@@ -341,7 +342,7 @@ namespace BulletSharpGen
                         currentParameter = null;
 
                         // Check if it's a const or optional parameter
-                        IList<Token> argTokens = currentTU.Tokenize(arg.Extent);
+                        IEnumerable<Token> argTokens = currentTU.Tokenize(arg.Extent);
                         foreach (Token token in argTokens)
                         {
                             if (token.Spelling.Equals("const"))
