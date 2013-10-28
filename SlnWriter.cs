@@ -6,11 +6,21 @@ using System.Text;
 
 namespace BulletSharpGen
 {
+    enum TargetVS
+    {
+        VS2008,
+        VS2010,
+        VS2012,
+        VS2013
+    }
+
     class SlnWriter
     {
         Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
         StreamWriter solutionWriter, projectWriter;
         string namespaceName;
+        TargetVS targetVS = TargetVS.VS2010;
+        string targetVersionString;
 
         public SlnWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
         {
@@ -20,16 +30,164 @@ namespace BulletSharpGen
 
         void OutputProjectConfiguration(ProjectConfiguration conf)
         {
-            projectWriter.Write("    <ProjectConfiguration Include=\"");
-            projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
-            projectWriter.Write(conf.Name);
-            projectWriter.WriteLine("|Win32\">");
-            projectWriter.Write("      <Configuration>");
-            projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
-            projectWriter.Write(conf.Name);
-            projectWriter.WriteLine("</Configuration>");
-            projectWriter.WriteLine("      <Platform>Win32</Platform>");
-            projectWriter.WriteLine("    </ProjectConfiguration>");
+            if (targetVS == TargetVS.VS2008)
+            {
+                projectWriter.WriteLine("\t\t<Configuration");
+                projectWriter.Write("\t\t\tName=\"");
+                projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
+                projectWriter.Write(conf.Name);
+                projectWriter.WriteLine("|Win32\"");
+                projectWriter.WriteLine("\t\t\tOutputDirectory=\"$(SolutionDir)$(ConfigurationName)\"");
+                projectWriter.WriteLine("\t\t\tIntermediateDirectory=\"$(ConfigurationName)\"");
+                projectWriter.WriteLine("\t\t\tConfigurationType=\"2\"");
+                projectWriter.WriteLine("\t\t\tCharacterSet=\"1\"");
+                projectWriter.WriteLine("\t\t\tManagedExtensions=\"1\"");
+                if (!conf.IsDebug)
+                {
+                    projectWriter.WriteLine("\t\t\tWholeProgramOptimization=\"1\"");
+                }
+                projectWriter.WriteLine("\t\t\t>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCPreBuildEventTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCCustomBuildTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCXMLDataGeneratorTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCWebServiceProxyGeneratorTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCMIDLTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCCLCompilerTool\"");
+                if (conf.IsDebug)
+                {
+                    projectWriter.WriteLine("\t\t\t\tOptimization=\"0\"");
+                }
+                else
+                {
+                    projectWriter.WriteLine("\t\t\t\tInlineFunctionExpansion=\"2\"");
+                    //projectWriter.WriteLine("\t\t\t\tFavorSizeOrSpeed=\"2\"");
+                    projectWriter.WriteLine("\t\t\t\tFavorSizeOrSpeed=\"1\"");
+                }
+                projectWriter.WriteLine("\t\t\t\tAdditionalIncludeDirectories=\"..\\..\\bullet\\src;..\\..\\bullet\\Extras\\HACD;..\\..\\bullet\\Extras\\Serialize\\BulletWorldImporter\"");
+                projectWriter.Write("\t\t\t\tAdditionalUsingDirectories=\"");
+                projectWriter.Write(conf.UsingDirectories);
+                projectWriter.WriteLine("\"");
+                projectWriter.Write("\t\t\t\tPreprocessorDefinitions=\"");
+                projectWriter.Write(conf.Definitions);
+                if (!string.IsNullOrEmpty(conf.Definitions) && !conf.Definitions.EndsWith(";"))
+                {
+                    projectWriter.Write(';');
+                }
+                projectWriter.Write("WIN32;");
+                if (conf.IsDebug)
+                {
+                    projectWriter.Write("_DEBUG;");
+                }
+                else
+                {
+                    projectWriter.Write("NDEBUG;");
+                }
+                projectWriter.WriteLine("\"");
+                if (conf.IsDebug)
+                {
+                    projectWriter.WriteLine("\t\t\t\tRuntimeLibrary=\"3\"");
+                }
+                else
+                {
+                    projectWriter.WriteLine("\t\t\t\tRuntimeLibrary=\"2\"");
+                }
+                projectWriter.WriteLine("\t\t\t\tFloatingPointModel=\"0\"");
+                //projectWriter.WriteLine("\t\t\t\tEnableEnhancedInstructionSet=\"0\"");
+                projectWriter.WriteLine("\t\t\t\tUsePrecompiledHeader=\"2\"");
+                if (conf.IsDebug)
+                {
+                    projectWriter.WriteLine("\t\t\t\tWarningLevel=\"3\"");
+                    projectWriter.WriteLine("\t\t\t\tDebugInformationFormat=\"3\"");
+                }
+                else
+                {
+                    projectWriter.WriteLine("\t\t\t\tWarningLevel=\"1\"");
+                }
+                //projectWriter.WriteLine("\t\t\t\tDisableSpecificWarnings=\"4793\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCManagedResourceCompilerTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCResourceCompilerTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCPreLinkEventTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCLinkerTool\"");
+                //projectWriter.WriteLine("\t\t\t\tAdditionalOptions=\"/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt\"");
+                projectWriter.Write("\t\t\t\tAdditionalDependencies=\"");
+                if (conf.IsDebug)
+                {
+                    projectWriter.WriteLine("LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib\"");
+                }
+                else
+                {
+                    projectWriter.WriteLine("LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib\"");
+                }
+                projectWriter.WriteLine("\t\t\t\tLinkIncremental=\"1\"");
+                if (conf.IsDebug)
+                {
+                    projectWriter.WriteLine("\t\t\t\tAdditionalLibraryDirectories=\"..\\..\\bullet\\msvc\\2008\\lib\\Debug\"");
+                    projectWriter.WriteLine("\t\t\t\tGenerateDebugInformation=\"true\"");
+                    projectWriter.WriteLine("\t\t\t\tAssemblyDebug=\"1\"");
+                }
+                else
+                {
+                    projectWriter.WriteLine("\t\t\t\tAdditionalLibraryDirectories=\"..\\..\\bullet\\msvc\\2008\\lib\\MinSizeRel\"");
+                    projectWriter.WriteLine("\t\t\t\tGenerateDebugInformation=\"false\"");
+                }
+                projectWriter.WriteLine("\t\t\t\tTargetMachine=\"1\"");
+                //projectWriter.WriteLine("\t\t\t\tCLRUnmanagedCodeCheck=\"true\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCALinkTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCManifestTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCXDCMakeTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCBscMakeTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCFxCopTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCAppVerifierTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t\t<Tool");
+                projectWriter.WriteLine("\t\t\t\tName=\"VCPostBuildEventTool\"");
+                projectWriter.WriteLine("\t\t\t/>");
+                projectWriter.WriteLine("\t\t</Configuration>");
+            }
+            else
+            {
+                projectWriter.Write("    <ProjectConfiguration Include=\"");
+                projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
+                projectWriter.Write(conf.Name);
+                projectWriter.WriteLine("|Win32\">");
+                projectWriter.Write("      <Configuration>");
+                projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
+                projectWriter.Write(conf.Name);
+                projectWriter.WriteLine("</Configuration>");
+                projectWriter.WriteLine("      <Platform>Win32</Platform>");
+                projectWriter.WriteLine("    </ProjectConfiguration>");
+            }
         }
 
         void OutputPropertyGroupConfiguration(ProjectConfiguration conf)
@@ -43,13 +201,23 @@ namespace BulletSharpGen
             projectWriter.WriteLine("    <CLRSupport>true</CLRSupport>");
             if (conf.IsDebug)
             {
-                projectWriter.WriteLine("    <UseDebugLibraries>true</UseDebugLibraries>");
+                if (targetVS == TargetVS.VS2012 || targetVS == TargetVS.VS2013)
+                {
+                    projectWriter.WriteLine("    <UseDebugLibraries>true</UseDebugLibraries>");
+                }
             }
             else
             {
                 projectWriter.WriteLine("    <WholeProgramOptimization>true</WholeProgramOptimization>");
             }
-            projectWriter.WriteLine("    <PlatformToolset>v120</PlatformToolset>");
+            if (targetVS == TargetVS.VS2012)
+            {
+                projectWriter.WriteLine("    <PlatformToolset>v110</PlatformToolset>");
+            }
+            else if (targetVS == TargetVS.VS2013)
+            {
+                projectWriter.WriteLine("    <PlatformToolset>v120</PlatformToolset>");
+            }
             projectWriter.WriteLine("  </PropertyGroup>");
         }
 
@@ -146,28 +314,43 @@ namespace BulletSharpGen
             if (conf.IsDebug)
             {
                 projectWriter.WriteLine("      <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>");
-                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\2013\\lib\\Debug;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
+                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\" + targetVersionString + "\\lib\\Debug;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
                 projectWriter.WriteLine("      <GenerateDebugInformation>true</GenerateDebugInformation>");
                 projectWriter.WriteLine("      <AssemblyDebug>true</AssemblyDebug>");
             }
             else
             {
                 projectWriter.WriteLine("      <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>");
-                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\2013\\lib\\MinSizeRel;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
+                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\" + targetVersionString + "\\lib\\MinSizeRel;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
             }
             projectWriter.WriteLine("      <TargetMachine>MachineX86</TargetMachine>");
             projectWriter.WriteLine("    </Link>");
             projectWriter.WriteLine("  </ItemDefinitionGroup>");
         }
 
-        void OutputItemGroupReference(string referenceName)
+        void OutputItemGroupReference(string referenceName, string assemblyName)
         {
-            projectWriter.Write("    <Reference Include=\"");
-            projectWriter.Write(referenceName);
-            projectWriter.WriteLine("\">");
-            projectWriter.WriteLine("      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>");
-            projectWriter.WriteLine("      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>");
-            projectWriter.WriteLine("    </Reference>");
+            if (targetVS == TargetVS.VS2008)
+            {
+                projectWriter.WriteLine("\t\t<AssemblyReference");
+                projectWriter.Write("\t\t\tRelativePath=\"");
+                projectWriter.Write(referenceName);
+                projectWriter.WriteLine(".dll\"");
+                projectWriter.Write("\t\t\tAssemblyName=\"");
+                projectWriter.Write(assemblyName);
+                projectWriter.WriteLine("\"");
+                projectWriter.WriteLine("\t\t\tMinFrameworkVersion=\"131072\"");
+                projectWriter.WriteLine("\t\t/>");
+            }
+            else
+            {
+                projectWriter.Write("    <Reference Include=\"");
+                projectWriter.Write(referenceName);
+                projectWriter.WriteLine("\">");
+                projectWriter.WriteLine("      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>");
+                projectWriter.WriteLine("      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>");
+                projectWriter.WriteLine("    </Reference>");
+            }
         }
 
         public void Output()
@@ -203,15 +386,46 @@ namespace BulletSharpGen
             confs = confs.OrderBy(c => !c.IsDebug).ThenBy(c => c.Name).ToList();
 
 
+            switch (targetVS)
+            {
+                case TargetVS.VS2008:
+                    targetVersionString = "2008";
+                    break;
+                case TargetVS.VS2010:
+                    targetVersionString = "2010";
+                    break;
+                case TargetVS.VS2012:
+                    targetVersionString = "2012";
+                    break;
+                case TargetVS.VS2013:
+                    targetVersionString = "2013";
+                    break;
+            }
+
+
             Guid projectGuid = new Guid("5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0");
             string projectGuidString = projectGuid.ToString().ToUpper();
 
-            int fileFormatVersion = 12; //11
             solutionWriter.WriteLine();
             solutionWriter.Write("Microsoft Visual Studio Solution File, Format Version ");
-            solutionWriter.Write(fileFormatVersion.ToString());
-            solutionWriter.WriteLine(".00");
-            solutionWriter.WriteLine("# Visual Studio 11"); // "# Visual Studio 2010"
+            switch (targetVS)
+            {
+                case TargetVS.VS2008:
+                    solutionWriter.WriteLine("10.00");
+                    solutionWriter.WriteLine("# Visual C++ Express 2008");
+                    break;
+                case TargetVS.VS2010:
+                    solutionWriter.WriteLine("11.00");
+                    solutionWriter.WriteLine("# Visual Studio 2010");
+                    break;
+                case TargetVS.VS2012:
+                case TargetVS.VS2013:
+                    solutionWriter.WriteLine("12.00");
+                    solutionWriter.WriteLine("# Visual Studio 11");
+                    break;
+                default:
+                    throw new NotImplementedException();
+            }
 
             Guid vcppProjectType = new Guid("8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942");
             string vcppProjectTypeString = vcppProjectType.ToString().ToUpper();
@@ -221,7 +435,14 @@ namespace BulletSharpGen
             solutionWriter.Write(namespaceName);
             solutionWriter.Write("\", \"");
             solutionWriter.Write(namespaceName);
-            solutionWriter.Write(".vcxproj\", \"{");
+            if (targetVS == TargetVS.VS2008)
+            {
+                solutionWriter.Write(".vcproj\", \"{");
+            }
+            else
+            {
+                solutionWriter.Write(".vcxproj\", \"{");
+            }
             solutionWriter.Write(projectGuidString);
             solutionWriter.WriteLine("}\"");
             solutionWriter.WriteLine("EndProject");
@@ -275,76 +496,141 @@ namespace BulletSharpGen
             solutionFile.Dispose();
 
 
-            FileStream projectFile = new FileStream(outDirectory + "\\" + namespaceName + ".vcxproj", FileMode.Create, FileAccess.Write);
+            string projectFilename = namespaceName + (targetVS == TargetVS.VS2008 ? ".vcproj" : ".vcxproj");
+            FileStream projectFile = new FileStream(outDirectory + "\\" + projectFilename, FileMode.Create, FileAccess.Write);
             projectWriter = new StreamWriter(projectFile, Encoding.UTF8);
+            
+            if (targetVS == TargetVS.VS2008)
+            {
+                projectWriter.WriteLine("<?xml version=\"1.0\" encoding=\"Windows-1252\"?>");
+                projectWriter.WriteLine("<VisualStudioProject");
+                projectWriter.WriteLine("\tProjectType=\"Visual C++\"");
+                projectWriter.WriteLine("\tVersion=\"9.00\"");
+                projectWriter.Write("\tName=\"");
+                projectWriter.Write(namespaceName);
+                projectWriter.WriteLine("\"");
+                projectWriter.Write("\tProjectGUID=\"{");
+                projectWriter.Write(projectGuidString);
+                projectWriter.WriteLine("}\"");
+                projectWriter.Write("\tRootNamespace=\"");
+                projectWriter.Write(namespaceName);
+                projectWriter.WriteLine("\"");
+                projectWriter.WriteLine("\tKeyword=\"ManagedCProj\"");
+                projectWriter.WriteLine("	TargetFrameworkVersion=\"131072\"");
+                projectWriter.WriteLine("\t>");
+                projectWriter.WriteLine("\t<Platforms>");
+                projectWriter.WriteLine("\t\t<Platform");
+                projectWriter.WriteLine("\t\t\tName=\"Win32\"");
+                projectWriter.WriteLine("\t\t/>");
+                projectWriter.WriteLine("\t</Platforms>");
+                projectWriter.WriteLine("\t<ToolFiles>");
+                projectWriter.WriteLine("\t</ToolFiles>");
+            }
+            else
+            {
+                projectWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                projectWriter.Write("<Project DefaultTargets=\"Build\" ToolsVersion=\"");
+                switch (targetVS)
+                {
+                    case TargetVS.VS2010:
+                    case TargetVS.VS2012:
+                        projectWriter.Write("4.0");
+                        break;
+                    case TargetVS.VS2013:
+                        projectWriter.Write("12.0");
+                        break;
+                    default:
+                        throw new NotImplementedException();
+                }
+                projectWriter.WriteLine("\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
+            }
 
-            int toolsVersion = 12; // 4
-            projectWriter.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-            projectWriter.Write("<Project DefaultTargets=\"Build\" ToolsVersion=\"");
-            projectWriter.Write(toolsVersion.ToString());
-            projectWriter.WriteLine(".0\" xmlns=\"http://schemas.microsoft.com/developer/msbuild/2003\">");
-
-            projectWriter.WriteLine("  <ItemGroup Label=\"ProjectConfigurations\">");
+            if (targetVS == TargetVS.VS2008)
+            {
+                projectWriter.WriteLine("\t<Configurations>");
+            }
+            else
+            {
+                projectWriter.WriteLine("  <ItemGroup Label=\"ProjectConfigurations\">");
+            }
             foreach (var conf in confs)
             {
                 OutputProjectConfiguration(conf);
             }
-            projectWriter.WriteLine("  </ItemGroup>");
-
-
-            projectWriter.WriteLine("  <PropertyGroup Label=\"Globals\">");
-            projectWriter.Write("    <ProjectGuid>{");
-            projectWriter.Write(projectGuidString);
-            projectWriter.WriteLine("}</ProjectGuid>");
-            projectWriter.Write("    <RootNamespace>");
-            projectWriter.Write(namespaceName);
-            projectWriter.WriteLine("</RootNamespace>");
-            projectWriter.WriteLine("    <Keyword>ManagedCProj</Keyword>");
-            projectWriter.WriteLine("  </PropertyGroup>");
-
-
-            projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />");
-
-
-            foreach (var conf in confs)
+            if (targetVS == TargetVS.VS2008)
             {
-                OutputPropertyGroupConfiguration(conf);
+                projectWriter.WriteLine("\t</Configurations>");
+            }
+            else
+            {
+                projectWriter.WriteLine("  </ItemGroup>");
+
+                projectWriter.WriteLine("  <PropertyGroup Label=\"Globals\">");
+                projectWriter.Write("    <ProjectGuid>{");
+                projectWriter.Write(projectGuidString);
+                projectWriter.WriteLine("}</ProjectGuid>");
+                projectWriter.Write("    <RootNamespace>");
+                projectWriter.Write(namespaceName);
+                projectWriter.WriteLine("</RootNamespace>");
+                projectWriter.WriteLine("    <Keyword>ManagedCProj</Keyword>");
+                projectWriter.WriteLine("  </PropertyGroup>");
+
+
+                projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.Default.props\" />");
+
+
+                foreach (var conf in confs)
+                {
+                    OutputPropertyGroupConfiguration(conf);
+                }
+
+                projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />");
+                projectWriter.WriteLine("  <ImportGroup Label=\"ExtensionSettings\">");
+                projectWriter.WriteLine("  </ImportGroup>");
+
+
+                foreach (var conf in confs)
+                {
+                    OutputImportGroupPropertySheets(conf);
+                }
+
+
+                projectWriter.WriteLine("  <PropertyGroup Label=\"UserMacros\" />");
+                projectWriter.WriteLine("  <PropertyGroup>");
+                projectWriter.WriteLine("    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>");
+                foreach (var conf in confs)
+                {
+                    OutputPropertyGroupConfiguration2(conf);
+                }
+                projectWriter.WriteLine("  </PropertyGroup>");
+
+
+                foreach (var conf in confs)
+                {
+                    OutputItemDefinitionGroup(conf);
+                }
             }
 
-
-            projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.props\" />");
-            projectWriter.WriteLine("  <ImportGroup Label=\"ExtensionSettings\">");
-            projectWriter.WriteLine("  </ImportGroup>");
-
-
-            foreach (var conf in confs)
+            if (targetVS == TargetVS.VS2008)
             {
-                OutputImportGroupPropertySheets(conf);
+                projectWriter.WriteLine("\t<References>");
+            }
+            else
+            {
+                projectWriter.WriteLine("  <ItemGroup>");
+            }
+            OutputItemGroupReference("System", "System, Version=2.0.0.0, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL");
+            OutputItemGroupReference("System.Drawing", "System.Drawing, Version=2.0.0.0, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL");
+            if (targetVS == TargetVS.VS2008)
+            {
+                projectWriter.WriteLine("\t</References>");
+            }
+            else
+            {
+                projectWriter.WriteLine("  </ItemGroup>");
             }
 
-
-            projectWriter.WriteLine("  <PropertyGroup Label=\"UserMacros\" />");
-            projectWriter.WriteLine("  <PropertyGroup>");
-            projectWriter.WriteLine("    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>");
-            foreach (var conf in confs)
-            {
-                OutputPropertyGroupConfiguration2(conf);
-            }
-            projectWriter.WriteLine("  </PropertyGroup>");
-
-
-            foreach (var conf in confs)
-            {
-                OutputItemDefinitionGroup(conf);
-            }
-
-
-            projectWriter.WriteLine("  <ItemGroup>");
-            OutputItemGroupReference("System");
-            OutputItemGroupReference("System.Drawing");
-            projectWriter.WriteLine("  </ItemGroup>");
-
-            
+            /*
             projectWriter.WriteLine("  <ItemGroup>");
             foreach (HeaderDefinition header in headerDefinitions.Values.OrderBy(header => header.ManagedName))
             {
@@ -360,17 +646,26 @@ namespace BulletSharpGen
                 projectWriter.WriteLine(".cpp\" />");
             }
             projectWriter.WriteLine("  </ItemGroup>");
+            */
 
+            if (targetVS == TargetVS.VS2008)
+            {
+                projectWriter.WriteLine("\t<Globals>");
+                projectWriter.WriteLine("\t</Globals>");
+                projectWriter.WriteLine("</VisualStudioProject>");
+            }
+            else
+            {
+                projectWriter.WriteLine("  <ItemGroup>");
+                projectWriter.WriteLine("    <ResourceCompile Include=\"..\\src\\Resources.rc\" />");
+                projectWriter.WriteLine("  </ItemGroup>");
 
-            projectWriter.WriteLine("  <ItemGroup>");
-            projectWriter.WriteLine("    <ResourceCompile Include=\"..\\src\\Resources.rc\" />");
-            projectWriter.WriteLine("  </ItemGroup>");
+                projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />");
+                projectWriter.WriteLine("  <ImportGroup Label=\"ExtensionTargets\">");
+                projectWriter.WriteLine("  </ImportGroup>");
 
-
-            projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />");
-            projectWriter.WriteLine("  <ImportGroup Label=\"ExtensionTargets\">");
-            projectWriter.WriteLine("  </ImportGroup>");
-            projectWriter.Write("</Project>");
+                projectWriter.Write("</Project>");
+            }
 
             projectWriter.Dispose();
             projectFile.Dispose();
