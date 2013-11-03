@@ -16,15 +16,21 @@ namespace BulletSharpGen
 
     class SlnWriter
     {
-        Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
-        StreamWriter solutionWriter, projectWriter;
+        IEnumerable<string> sourceFiles, headerFiles, resourceFiles;
         string namespaceName;
-        TargetVS targetVS = TargetVS.VS2010;
-        string targetVersionString;
+        
+        StreamWriter solutionWriter, projectWriter;
+        TargetVS targetVS;
 
-        public SlnWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public string IncludeDirectories { get; set; }
+        public string LibraryDirectoriesDebug { get; set; }
+        public string LibraryDirectoriesRelease { get; set; }
+
+        public SlnWriter(IEnumerable<string> sourceFiles, IEnumerable<string> headerFiles, IEnumerable<string> resourceFiles, string namespaceName)
         {
-            this.headerDefinitions = headerDefinitions;
+            this.sourceFiles = sourceFiles;
+            this.headerFiles = headerFiles;
+            this.resourceFiles = resourceFiles;
             this.namespaceName = namespaceName;
         }
 
@@ -74,7 +80,12 @@ namespace BulletSharpGen
                     //projectWriter.WriteLine("\t\t\t\tFavorSizeOrSpeed=\"2\"");
                     projectWriter.WriteLine("\t\t\t\tFavorSizeOrSpeed=\"1\"");
                 }
-                projectWriter.WriteLine("\t\t\t\tAdditionalIncludeDirectories=\"..\\..\\bullet\\src;..\\..\\bullet\\Extras\\HACD;..\\..\\bullet\\Extras\\Serialize\\BulletWorldImporter\"");
+                if (!string.IsNullOrEmpty(IncludeDirectories))
+                {
+                    projectWriter.Write("\t\t\t\tAdditionalIncludeDirectories=\"");
+                    projectWriter.Write(IncludeDirectories);
+                    projectWriter.WriteLine("\"");
+                }
                 projectWriter.Write("\t\t\t\tAdditionalUsingDirectories=\"");
                 projectWriter.Write(conf.UsingDirectories);
                 projectWriter.WriteLine("\"");
@@ -127,26 +138,43 @@ namespace BulletSharpGen
                 projectWriter.WriteLine("\t\t\t/>");
                 projectWriter.WriteLine("\t\t\t<Tool");
                 projectWriter.WriteLine("\t\t\t\tName=\"VCLinkerTool\"");
-                //projectWriter.WriteLine("\t\t\t\tAdditionalOptions=\"/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt\"");
-                projectWriter.Write("\t\t\t\tAdditionalDependencies=\"");
                 if (conf.IsDebug)
                 {
-                    projectWriter.WriteLine("LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib\"");
+                    projectWriter.WriteLine("\t\t\t\tAdditionalOptions=\"/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd\"");
                 }
                 else
                 {
-                    projectWriter.WriteLine("LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib\"");
+                    projectWriter.WriteLine("\t\t\t\tAdditionalOptions=\"/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt\"");
+                }
+                projectWriter.Write("\t\t\t\tAdditionalDependencies=\"");
+                if (conf.IsDebug)
+                {
+                    projectWriter.WriteLine("LinearMath_Debug.lib BulletCollision_Debug.lib BulletDynamics_Debug.lib\"");
+                }
+                else
+                {
+                    projectWriter.WriteLine("LinearMath_MinSizeRel.lib BulletCollision_MinsizeRel.lib BulletDynamics_MinsizeRel.lib\"");
                 }
                 projectWriter.WriteLine("\t\t\t\tLinkIncremental=\"1\"");
                 if (conf.IsDebug)
                 {
-                    projectWriter.WriteLine("\t\t\t\tAdditionalLibraryDirectories=\"..\\..\\bullet\\msvc\\2008\\lib\\Debug\"");
+                    if (!string.IsNullOrEmpty(LibraryDirectoriesDebug))
+                    {
+                        projectWriter.Write("\t\t\t\tAdditionalLibraryDirectories=\"");
+                        projectWriter.Write(LibraryDirectoriesDebug);
+                        projectWriter.WriteLine("\"");
+                    }
                     projectWriter.WriteLine("\t\t\t\tGenerateDebugInformation=\"true\"");
                     projectWriter.WriteLine("\t\t\t\tAssemblyDebug=\"1\"");
                 }
                 else
                 {
-                    projectWriter.WriteLine("\t\t\t\tAdditionalLibraryDirectories=\"..\\..\\bullet\\msvc\\2008\\lib\\MinSizeRel\"");
+                    if (!string.IsNullOrEmpty(LibraryDirectoriesRelease))
+                    {
+                        projectWriter.Write("\t\t\t\tAdditionalLibraryDirectories=\"");
+                        projectWriter.Write(LibraryDirectoriesRelease);
+                        projectWriter.WriteLine("\"");
+                    }
                     projectWriter.WriteLine("\t\t\t\tGenerateDebugInformation=\"false\"");
                 }
                 projectWriter.WriteLine("\t\t\t\tTargetMachine=\"1\"");
@@ -263,8 +291,12 @@ namespace BulletSharpGen
                 projectWriter.WriteLine("      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>");
                 projectWriter.WriteLine("      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>");
             }
-            //projectWriter.WriteLine("      <AdditionalIncludeDirectories>..\\bullet\\src;..\\bullet\\Extras\\HACD;..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>");
-            projectWriter.WriteLine("      <AdditionalIncludeDirectories>..\\..\\bullet\\src;..\\..\\bullet\\Extras\\HACD;..\\..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>");
+            if (!string.IsNullOrEmpty(IncludeDirectories))
+            {
+                projectWriter.Write("      <AdditionalIncludeDirectories>");
+                projectWriter.Write(IncludeDirectories);
+                projectWriter.WriteLine("%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>");
+            }
             projectWriter.Write("      <AdditionalUsingDirectories>");
             projectWriter.Write(conf.UsingDirectories);
             if (!string.IsNullOrEmpty(conf.UsingDirectories) && !conf.UsingDirectories.EndsWith(";"))
@@ -314,16 +346,27 @@ namespace BulletSharpGen
             if (conf.IsDebug)
             {
                 projectWriter.WriteLine("      <AdditionalDependencies>LinearMath_Debug.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib</AdditionalDependencies>");
-                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\" + targetVersionString + "\\lib\\Debug;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
+                if (!string.IsNullOrEmpty(LibraryDirectoriesDebug))
+                {
+                    projectWriter.Write("      <AdditionalLibraryDirectories>");
+                    projectWriter.Write(LibraryDirectoriesDebug);
+                    projectWriter.WriteLine("%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
+                }
                 projectWriter.WriteLine("      <GenerateDebugInformation>true</GenerateDebugInformation>");
                 projectWriter.WriteLine("      <AssemblyDebug>true</AssemblyDebug>");
             }
             else
             {
                 projectWriter.WriteLine("      <AdditionalDependencies>LinearMath_MinSizeRel.lib;BulletCollision_MinsizeRel.lib;BulletDynamics_MinsizeRel.lib</AdditionalDependencies>");
-                projectWriter.WriteLine("      <AdditionalLibraryDirectories>..\\..\\bullet\\msvc\\" + targetVersionString + "\\lib\\MinSizeRel;$(ATISTREAMSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
+                if (!string.IsNullOrEmpty(LibraryDirectoriesRelease))
+                {
+                    projectWriter.Write("      <AdditionalLibraryDirectories>");
+                    projectWriter.Write(LibraryDirectoriesRelease);
+                    projectWriter.WriteLine("%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>");
+                }
             }
             projectWriter.WriteLine("      <TargetMachine>MachineX86</TargetMachine>");
+            //projectWriter.WriteLine("      <CLRUnmanagedCodeCheck>true</CLRUnmanagedCodeCheck>");
             projectWriter.WriteLine("    </Link>");
             projectWriter.WriteLine("  </ItemDefinitionGroup>");
         }
@@ -353,55 +396,14 @@ namespace BulletSharpGen
             }
         }
 
-        public void Output()
+        public void Output(TargetVS targetVS, List<ProjectConfiguration> confs, string outDirectory)
         {
-            string outDirectory = "src";
-
             Directory.CreateDirectory(outDirectory);
             FileStream solutionFile = new FileStream(outDirectory + "\\" + namespaceName + ".sln", FileMode.Create, FileAccess.Write);
             solutionWriter = new StreamWriter(solutionFile, Encoding.UTF8);
 
-            List<ProjectConfiguration> confs = new List<ProjectConfiguration>();
-            confs.Add(new ProjectConfiguration("Axiom", true, "GRAPHICS_AXIOM", "..\\..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
-            confs.Add(new ProjectConfiguration("Axiom", false, "GRAPHICS_AXIOM", "..\\..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
-            confs.Add(new ProjectConfiguration("Generic", true, "GRAPHICS_GENERIC"));
-            confs.Add(new ProjectConfiguration("Generic", false, "GRAPHICS_GENERIC"));
-            confs.Add(new ProjectConfiguration("Mogre", true, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Debug"));
-            confs.Add(new ProjectConfiguration("Mogre", false, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Release"));
-            confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", "..\\..\\sharpdx\\Source\\SharpDX\\bin\\Net40Debug"));
-            confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", "..\\..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
-            confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\\bin\\Release"));
-            confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\\bin\\Debug"));
-            confs.Add(new ProjectConfiguration("Windows API Code Pack", true, "GRAPHICS_WAPICODEPACK", "..\\..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
-            confs.Add(new ProjectConfiguration("Windows API Code Pack", false, "GRAPHICS_WAPICODEPACK", "..\\..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
-            confs.Add(new ProjectConfiguration("XNA 3.1", true, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
-            confs.Add(new ProjectConfiguration("XNA 3.1", false, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
-            confs.Add(new ProjectConfiguration("XNA 4.0", true, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
-            confs.Add(new ProjectConfiguration("XNA 4.0", false, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
-
+            this.targetVS = targetVS;
             confs = confs.OrderBy(c => !c.IsDebug).ThenBy(c => c.Name).ToList();
-
-
-            switch (targetVS)
-            {
-                case TargetVS.VS2008:
-                    targetVersionString = "2008";
-                    break;
-                case TargetVS.VS2010:
-                    targetVersionString = "2010";
-                    break;
-                case TargetVS.VS2012:
-                    targetVersionString = "2012";
-                    break;
-                case TargetVS.VS2013:
-                    targetVersionString = "2013";
-                    break;
-            }
-
 
             Guid projectGuid = new Guid("5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0");
             string projectGuidString = projectGuid.ToString().ToUpper();
@@ -630,26 +632,66 @@ namespace BulletSharpGen
                 projectWriter.WriteLine("  </ItemGroup>");
             }
 
-            /*
-            projectWriter.WriteLine("  <ItemGroup>");
-            foreach (HeaderDefinition header in headerDefinitions.Values.OrderBy(header => header.ManagedName))
-            {
-                if (header.Classes.Count == 0)
-                {
-                    continue;
-                }
-
-                projectWriter.Write("    <ClCompile Include=\"..\\");
-                projectWriter.Write(outDirectory);
-                projectWriter.Write('\\');
-                projectWriter.Write(header.ManagedName);
-                projectWriter.WriteLine(".cpp\" />");
-            }
-            projectWriter.WriteLine("  </ItemGroup>");
-            */
-
+            
             if (targetVS == TargetVS.VS2008)
             {
+                projectWriter.WriteLine("\t<Files>");
+                
+                projectWriter.WriteLine("\t\t<Filter");
+                projectWriter.WriteLine("\t\t\tName=\"Source Files\"");
+                projectWriter.WriteLine("\t\t\tFilter=\"cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx\"");
+                projectWriter.WriteLine("\t\t\tUniqueIdentifier=\"{4FC737F1-C7A5-4376-A066-2A32D752A2FF}\"");
+                projectWriter.WriteLine("\t\t\t>");
+                foreach (var sourceFile in sourceFiles)
+                {
+                    projectWriter.WriteLine("\t\t\t<File");
+                    projectWriter.Write("\t\t\t\tRelativePath=\"");
+                    projectWriter.Write(sourceFile);
+                    projectWriter.WriteLine(".cpp\"");
+                    if (sourceFile.EndsWith("Stdafx", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        projectWriter.WriteLine("\t\t\t\t>");
+                        foreach (var conf in confs)
+                        {
+                            projectWriter.WriteLine("\t\t\t\t<FileConfiguration");
+                            projectWriter.Write("\t\t\t\t\tName=\"");
+                            projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
+                            projectWriter.Write(conf.Name);
+                            projectWriter.WriteLine("|Win32\"");
+                            projectWriter.WriteLine("\t\t\t\t\t>");
+                            projectWriter.WriteLine("\t\t\t\t\t<Tool");
+                            projectWriter.WriteLine("\t\t\t\t\t\tName=\"VCCLCompilerTool\"");
+                            projectWriter.WriteLine("\t\t\t\t\t\tUsePrecompiledHeader=\"1\"");
+                            projectWriter.WriteLine("\t\t\t\t\t/>");
+                            projectWriter.WriteLine("\t\t\t\t</FileConfiguration>");
+                        }
+                    }
+                    else
+                    {
+                        projectWriter.WriteLine("\t\t\t\t>");
+                    }
+                    projectWriter.WriteLine("\t\t\t</File>");
+                }
+                projectWriter.WriteLine("\t\t</Filter>");
+
+                projectWriter.WriteLine("\t\t<Filter");
+                projectWriter.WriteLine("\t\t\tName=\"Header Files\"");
+                projectWriter.WriteLine("\t\t\tFilter=\"h;hpp;hxx;hm;inl;inc;xsd\"");
+                projectWriter.WriteLine("\t\t\tUniqueIdentifier=\"{93995380-89BD-4b04-88EB-625FBE52EBFB}\"");
+                projectWriter.WriteLine("\t\t\t>");
+                foreach (var sourceFile in sourceFiles)
+                {
+                    projectWriter.WriteLine("\t\t\t<File");
+                    projectWriter.Write("\t\t\t\tRelativePath=\"");
+                    projectWriter.Write(sourceFile);
+                    projectWriter.WriteLine(".h\"");
+                    projectWriter.WriteLine("\t\t\t\t>");
+                    projectWriter.WriteLine("\t\t\t</File>");
+                }
+                projectWriter.WriteLine("\t\t</Filter>");
+
+                projectWriter.WriteLine("\t</Files>");
+
                 projectWriter.WriteLine("\t<Globals>");
                 projectWriter.WriteLine("\t</Globals>");
                 projectWriter.WriteLine("</VisualStudioProject>");
@@ -657,7 +699,45 @@ namespace BulletSharpGen
             else
             {
                 projectWriter.WriteLine("  <ItemGroup>");
-                projectWriter.WriteLine("    <ResourceCompile Include=\"..\\src\\Resources.rc\" />");
+                foreach (var sourceFile in sourceFiles)
+                {
+                    projectWriter.Write("    <ClCompile Include=\"");
+                    projectWriter.Write(sourceFile);
+                    if (sourceFile.EndsWith("Stdafx", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        projectWriter.WriteLine(".cpp\">");
+                        foreach (var conf in confs)
+                        {
+                            projectWriter.Write("      <PrecompiledHeader Condition=\"'$(Configuration)|$(Platform)'=='");
+                            projectWriter.Write(conf.IsDebug ? "Debug " : "Release ");
+                            projectWriter.Write(conf.Name);
+                            projectWriter.WriteLine("|Win32'\">Create</PrecompiledHeader>");
+                        }
+                        projectWriter.WriteLine("    </ClCompile>");
+                    }
+                    else
+                    {
+                        projectWriter.WriteLine(".cpp\" />");
+                    }
+                }
+                projectWriter.WriteLine("  </ItemGroup>");
+
+                projectWriter.WriteLine("  <ItemGroup>");
+                foreach (var resourceFile in resourceFiles)
+                {
+                    projectWriter.Write("    <ResourceCompile Include=\"");
+                    projectWriter.Write(resourceFile);
+                    projectWriter.WriteLine("\" />");
+                }
+                projectWriter.WriteLine("  </ItemGroup>");
+
+                projectWriter.WriteLine("  <ItemGroup>");
+                foreach (var headerFile in headerFiles)
+                {
+                    projectWriter.Write("    <ClInclude Include=\"");
+                    projectWriter.Write(headerFile);
+                    projectWriter.WriteLine(".h\" />");
+                }
                 projectWriter.WriteLine("  </ItemGroup>");
 
                 projectWriter.WriteLine("  <Import Project=\"$(VCTargetsPath)\\Microsoft.Cpp.targets\" />");

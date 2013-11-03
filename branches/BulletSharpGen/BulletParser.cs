@@ -199,7 +199,28 @@ namespace BulletSharpGen
                 string name = header.Name;
                 if (name.StartsWith("bt"))
                 {
+                    if (name.Equals("btSparseSDF"))
+                    {
+                        header.ManagedName = "SparseSdf";
+                        continue;
+                    }
+                    else if (name.Equals("btCompoundFromGimpact"))
+                    {
+                        header.ManagedName = "CompoundFromGImpact";
+                        continue;
+                    }
                     header.ManagedName = name.Substring(2);
+                }
+                else if (name.StartsWith("hacd"))
+                {
+                    if (name.Equals("hacdHACD"))
+                    {
+                        header.ManagedName = "Hacd";
+                    }
+                    else
+                    {
+                        header.ManagedName = "Hacd" + name.Substring(4);
+                    }
                 }
             }
 
