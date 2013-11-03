@@ -41,6 +41,10 @@ namespace BulletSharpGen
             clangOptions.Add("-I");
             clangOptions.Add(src);
 
+            // WorldImporter include directory
+            clangOptions.Add("-I");
+            clangOptions.Add(src + "../Extras/Serialize/BulletWorldImporter");
+
             // Specify C++ headers, not C ones
             clangOptions.Add("-x");
             clangOptions.Add("c++-header");
@@ -62,6 +66,11 @@ namespace BulletSharpGen
             var headerFiles = Directory.EnumerateFiles(src, "*.h", SearchOption.AllDirectories);
             foreach (string header in headerFiles)
             {
+                if (header.Contains("GpuSoftBodySolvers") || header.Contains("vectormath"))
+                {
+                    continue;
+                }
+
                 string headerCanonical = header.Replace('\\', '/');
                 if (!excludedHeaders.Contains(headerCanonical))
                 {
@@ -92,6 +101,7 @@ namespace BulletSharpGen
             readHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btBulletWorldImporter.h");
             readHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btWorldImporter.h");
             readHeader(src + "..\\Extras\\Serialize\\BulletXmlWorldImporter\\btBulletXmlWorldImporter.h");
+            readHeader(src + "..\\Extras\\HACD\\hacdHACD.h");
 
             index.Dispose();
 
@@ -131,6 +141,10 @@ namespace BulletSharpGen
                 currentHeader.Enums.Add(currentEnum);
                 cursor.VisitChildren(EnumVisitor);
                 currentEnum = null;
+            }
+            else if (cursor.Kind == CursorKind.Namespace)
+            {
+                return Cursor.ChildVisitResult.Recurse;
             }
             return Cursor.ChildVisitResult.Continue;
         }
@@ -384,7 +398,16 @@ namespace BulletSharpGen
         void readHeader(string headerFile)
         {
             var unsavedFiles = new UnsavedFile[] { };
-            currentTU = index.CreateTranslationUnit(headerFile, clangOptions.ToArray(), unsavedFiles, TranslationUnitFlags.SkipFunctionBodies);
+            if (headerFile.EndsWith("PosixThreadSupport.h"))
+            {
+                List<string> clangOptionsPThread = new List<string>(clangOptions);
+                clangOptionsPThread.Add("-DUSE_PTHREADS");
+                currentTU = index.CreateTranslationUnit(headerFile, clangOptionsPThread.ToArray(), unsavedFiles, TranslationUnitFlags.SkipFunctionBodies);
+            }
+            else
+            {
+                currentTU = index.CreateTranslationUnit(headerFile, clangOptions.ToArray(), unsavedFiles, TranslationUnitFlags.SkipFunctionBodies);
+            }
             var cur = currentTU.Cursor;
             cur.VisitChildren(HeaderVisitor);
             currentTU.Dispose();
