@@ -33,9 +33,9 @@ namespace BulletSharpGen
             }
 
 
-            OutputSolution(TargetVS.VS2008, parser.HeaderDefinitions);
-            //OutputSolution(TargetVS.VS2010, parser.HeaderDefinitions);
-            OutputSolution(TargetVS.VS2012, parser.HeaderDefinitions);
+            //OutputSolution(TargetVS.VS2008, parser.HeaderDefinitions);
+            OutputSolution(TargetVS.VS2010, parser.HeaderDefinitions);
+            //OutputSolution(TargetVS.VS2012, parser.HeaderDefinitions);
             //OutputSolution(TargetVS.VS2013, parser.HeaderDefinitions);
 
 
@@ -64,34 +64,6 @@ namespace BulletSharpGen
                     throw new NotImplementedException();
             }
 
-            List<ProjectConfiguration> confs = new List<ProjectConfiguration>();
-            confs.Add(new ProjectConfiguration("Axiom", true, "GRAPHICS_AXIOM", "..\\..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
-            confs.Add(new ProjectConfiguration("Axiom", false, "GRAPHICS_AXIOM", "..\\..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
-            confs.Add(new ProjectConfiguration("Generic", true, "GRAPHICS_GENERIC"));
-            confs.Add(new ProjectConfiguration("Generic", false, "GRAPHICS_GENERIC"));
-            confs.Add(new ProjectConfiguration("Mogre", true, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Debug"));
-            confs.Add(new ProjectConfiguration("Mogre", false, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Release"));
-            confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", "..\\..\\sharpdx\\Source\\SharpDX\\bin\\Net40Debug"));
-            confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", "..\\..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
-            confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\\bin\\Release"));
-            confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", "..\\..\\SlimMath\\SlimMath\\bin\\Debug"));
-            if (targetVS != TargetVS.VS2008)
-            {
-                confs.Add(new ProjectConfiguration("Windows API Code Pack", true, "GRAPHICS_WAPICODEPACK", "..\\..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
-                confs.Add(new ProjectConfiguration("Windows API Code Pack", false, "GRAPHICS_WAPICODEPACK", "..\\..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
-            }
-            confs.Add(new ProjectConfiguration("XNA 3.1", true, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
-            confs.Add(new ProjectConfiguration("XNA 3.1", false, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
-            if (targetVS != TargetVS.VS2008)
-            {
-                confs.Add(new ProjectConfiguration("XNA 4.0", true, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
-                confs.Add(new ProjectConfiguration("XNA 4.0", false, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
-            }
-
             string rootFolder, slnRelDir;
             if (targetVS == TargetVS.VS2010)
             {
@@ -102,6 +74,34 @@ namespace BulletSharpGen
             {
                 rootFolder = "..\\src\\";
                 slnRelDir = "..\\";
+            }
+
+            List<ProjectConfiguration> confs = new List<ProjectConfiguration>();
+            confs.Add(new ProjectConfiguration("Axiom", true, "GRAPHICS_AXIOM", slnRelDir + "..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
+            confs.Add(new ProjectConfiguration("Axiom", false, "GRAPHICS_AXIOM", slnRelDir + "..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
+            confs.Add(new ProjectConfiguration("Generic", true, "GRAPHICS_GENERIC"));
+            confs.Add(new ProjectConfiguration("Generic", false, "GRAPHICS_GENERIC"));
+            confs.Add(new ProjectConfiguration("Mogre", true, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Debug"));
+            confs.Add(new ProjectConfiguration("Mogre", false, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Release"));
+            confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
+            confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
+            confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Debug"));
+            confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
+            confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
+            confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
+            confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", slnRelDir + "..\\SlimMath\\SlimMath\\bin\\Release"));
+            confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", slnRelDir + "..\\SlimMath\\SlimMath\\bin\\Debug"));
+            if (targetVS != TargetVS.VS2008)
+            {
+                confs.Add(new ProjectConfiguration("Windows API Code Pack", true, "GRAPHICS_WAPICODEPACK", slnRelDir + "..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
+                confs.Add(new ProjectConfiguration("Windows API Code Pack", false, "GRAPHICS_WAPICODEPACK", slnRelDir + "..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
+            }
+            confs.Add(new ProjectConfiguration("XNA 3.1", true, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
+            confs.Add(new ProjectConfiguration("XNA 3.1", false, "GRAPHICS_XNA31", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v3.1\\References\\Windows\\x86\\"));
+            if (targetVS != TargetVS.VS2008)
+            {
+                confs.Add(new ProjectConfiguration("XNA 4.0", true, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
+                confs.Add(new ProjectConfiguration("XNA 4.0", false, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
             }
 
             List<string> sourceFiles = new List<string>();
