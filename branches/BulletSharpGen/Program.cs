@@ -64,17 +64,8 @@ namespace BulletSharpGen
                     throw new NotImplementedException();
             }
 
-            string rootFolder, slnRelDir;
-            if (targetVS == TargetVS.VS2010)
-            {
-                rootFolder = "src\\";
-                slnRelDir = "";
-            }
-            else
-            {
-                rootFolder = "..\\src\\";
-                slnRelDir = "..\\";
-            }
+            string slnRelDir = (targetVS == TargetVS.VS2010) ? "" : "..\\";
+            string rootFolder = slnRelDir + "src\\";
 
             List<ProjectConfiguration> confs = new List<ProjectConfiguration>();
             confs.Add(new ProjectConfiguration("Axiom", true, "GRAPHICS_AXIOM", slnRelDir + "..\\Axiom-SDK-0.8.3376.12322\\bin\\Net35"));
@@ -104,36 +95,6 @@ namespace BulletSharpGen
                 confs.Add(new ProjectConfiguration("XNA 4.0", false, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
             }
 
-            List<string> sourceFiles = new List<string>();
-            sourceFiles.Add(rootFolder + "Stdafx");
-            sourceFiles.Add(rootFolder + "AssemblyInfo");
-            sourceFiles.Add(rootFolder + "Collections");
-            sourceFiles.Add(rootFolder + "Math");
-            sourceFiles.Add(rootFolder + "ObjectTable");
-            sourceFiles.Add(rootFolder + "StringConv");
-            sourceFiles.Add(rootFolder + "DataStream");
-            sourceFiles.Add(rootFolder + "Matrix");
-            //sourceFiles.Add(rootFolder + "Quaternion");
-            sourceFiles.Add(rootFolder + "Utilities");
-            //sourceFiles.Add(rootFolder + "Vector3");
-            sourceFiles.Add(rootFolder + "Vector4");
-
-            List<string> headerFiles = new List<string>();
-            headerFiles.Add(rootFolder + "Stdafx");
-            headerFiles.Add(rootFolder + "Collections");
-            headerFiles.Add(rootFolder + "Enums");
-            headerFiles.Add(rootFolder + "IDisposable");
-            headerFiles.Add(rootFolder + "Math");
-            headerFiles.Add(rootFolder + "ObjectTable");
-            headerFiles.Add(rootFolder + "StringConv");
-            headerFiles.Add(rootFolder + "Version");
-            headerFiles.Add(rootFolder + "DataStream");
-            headerFiles.Add(rootFolder + "Matrix");
-            //headerFiles.Add(rootFolder + "Quaternion");
-            headerFiles.Add(rootFolder + "Utilities");
-            //headerFiles.Add(rootFolder + "Vector3");
-            headerFiles.Add(rootFolder + "Vector4");
-
             string[] excludedClasses = new string[] { "ActionInterface", "AlignedAllocator", "bChunk", "bCommon",
             "bFile", "Box", "BulletFile", "cl_MiniCL_Defs", "cl_platform", "ContactProcessing", "ConvexHull",
             "ConvexHullComputer", "DantzigLCP", "DantzigSolver", "DefaultSoftBodySolver", "GenericPoolAllocator",
@@ -154,10 +115,44 @@ namespace BulletSharpGen
             "SpuMinkowskiPenetrationDepthSolver", "SpuSampleTask", "SpuSampleTaskProcess", "SpuSync", "StackAlloc",
             "SubSimplexConvexCast", "Transform", "TrbDynBody", "TrbStateVec", "vectormath_aos", "vmInclude",
             "HacdCircularList", "HacdGraph", "HacdICHull", "HacdManifoldMesh", "HacdVector",
-            "CompoundCompoundCollisionAlgorithm", "FixedConstraint"};
+            "Quaternion", "Vector3" };
 
-            List<string> bulletSourceFiles = new List<string>();
-            List<string> bulletHeaderFiles = new List<string>();
+            var filterWriter = new FilterWriter(NamespaceName);
+            var sourceFilter = new Filter("Source Files", "4FC737F1-C7A5-4376-A066-2A32D752A2FF", "cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx");
+            var headerFilter = new Filter("Header Files", "93995380-89BD-4b04-88EB-625FBE52EBFB", "h;hh;hpp;hxx;hm;inl;inc;xsd");
+            var resourceFilter = new Filter("Resource Files", "67DA6AB6-F800-4c08-8B7A-83BB121AAD01", "rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms");
+            filterWriter.RootFilter.Add(sourceFilter);
+            filterWriter.RootFilter.Add(headerFilter);
+            filterWriter.RootFilter.Add(resourceFilter);
+
+            sourceFilter.AddFile("", rootFolder + "Stdafx");
+            sourceFilter.AddFile("", rootFolder + "AssemblyInfo");
+            sourceFilter.AddFile("", rootFolder + "Collections");
+            sourceFilter.AddFile("", rootFolder + "Math");
+            sourceFilter.AddFile("", rootFolder + "ObjectTable");
+            sourceFilter.AddFile("", rootFolder + "StringConv");
+            sourceFilter.AddFile("", rootFolder + "DataStream");
+            sourceFilter.AddFile("", rootFolder + "Matrix");
+            sourceFilter.AddFile("", rootFolder + "Quaternion");
+            sourceFilter.AddFile("", rootFolder + "Utilities");
+            sourceFilter.AddFile("", rootFolder + "Vector3");
+            sourceFilter.AddFile("", rootFolder + "Vector4");
+
+            headerFilter.AddFile("", rootFolder + "Stdafx");
+            headerFilter.AddFile("", rootFolder + "Collections");
+            headerFilter.AddFile("", rootFolder + "Enums");
+            headerFilter.AddFile("", rootFolder + "IDisposable");
+            headerFilter.AddFile("", rootFolder + "Math");
+            headerFilter.AddFile("", rootFolder + "ObjectTable");
+            headerFilter.AddFile("", rootFolder + "StringConv");
+            headerFilter.AddFile("", rootFolder + "Version");
+            headerFilter.AddFile("", rootFolder + "DataStream");
+            headerFilter.AddFile("", rootFolder + "Matrix");
+            headerFilter.AddFile("", rootFolder + "Quaternion");
+            headerFilter.AddFile("", rootFolder + "Utilities");
+            headerFilter.AddFile("", rootFolder + "Vector3");
+            headerFilter.AddFile("", rootFolder + "Vector4");
+
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {
                 if (header.Classes.Count == 0 || excludedClasses.Contains(header.ManagedName))
@@ -165,36 +160,37 @@ namespace BulletSharpGen
                     continue;
                 }
 
-                bulletSourceFiles.Add(rootFolder + header.ManagedName);
-                bulletHeaderFiles.Add(rootFolder + header.ManagedName);
+                sourceFilter.AddFile(header.Filename, rootFolder + header.ManagedName);
+                headerFilter.AddFile(header.Filename, rootFolder + header.ManagedName);
             }
-            bulletSourceFiles.Add(rootFolder + "BulletMaterial");
-            bulletSourceFiles.Add(rootFolder + "DebugDraw");
-            bulletSourceFiles.Add(rootFolder + "IActionInterface");
-            bulletSourceFiles.Add(rootFolder + "InternalEdgeUtility");
-            bulletSourceFiles.Add(rootFolder + "OpenCL");
-            bulletSourceFiles.Add(rootFolder + "SoftBodySolver");
-            bulletSourceFiles.Add(rootFolder + "SoftBodySolverOpenCL");
-            bulletHeaderFiles.Add(rootFolder + "BulletMaterial");
-            bulletHeaderFiles.Add(rootFolder + "DebugDraw");
-            bulletHeaderFiles.Add(rootFolder + "IActionInterface");
-            bulletHeaderFiles.Add(rootFolder + "IDebugDraw");
-            bulletHeaderFiles.Add(rootFolder + "InternalEdgeUtility");
-            bulletHeaderFiles.Add(rootFolder + "OpenCL");
-            bulletHeaderFiles.Add(rootFolder + "SoftBodySolver");
-            bulletHeaderFiles.Add(rootFolder + "SoftBodySolverOpenCL");
 
-            bulletSourceFiles.Sort();
-            bulletHeaderFiles.Sort();
-            sourceFiles.AddRange(bulletSourceFiles);
-            headerFiles.AddRange(bulletHeaderFiles);
+            sourceFilter.AddFile("BulletCollision/CollisionDispatch/", rootFolder + "InternalEdgeUtility");
+            sourceFilter.AddFile("BulletCollision/CollisionShapes/", rootFolder + "BulletMaterial");
+            sourceFilter.AddFile("BulletCollision/NarrowPhaseCollision/", rootFolder + "SimplexSolverInterface");
+            sourceFilter.AddFile("BulletDynamics/Dynamics/", rootFolder + "IActionInterface");
+            sourceFilter.AddFile("LinearMath/", rootFolder + "DebugDraw");
+            sourceFilter.AddFile("MultiThreaded/GpuSoftBodySolvers/OpenCL/", rootFolder + "SoftBodySolverOpenCL");
+            sourceFilter.AddFile("OpenCL/", rootFolder + "OpenCL");
+            sourceFilter.AddFile("SoftBody/", rootFolder + "SoftBodySolver");
+            headerFilter.AddFile("BulletCollision/CollisionDispatch/", rootFolder + "InternalEdgeUtility");
+            headerFilter.AddFile("BulletCollision/CollisionShapes/", rootFolder + "BulletMaterial");
+            headerFilter.AddFile("BulletCollision/NarrowPhaseCollision/", rootFolder + "SimplexSolverInterface");
+            headerFilter.AddFile("LinearMath/", rootFolder + "DebugDraw");
+            headerFilter.AddFile("BulletDynamics/Dynamics/", rootFolder + "IActionInterface");
+            headerFilter.AddFile("LinearMath/", rootFolder + "IDebugDraw");
+            headerFilter.AddFile("MultiThreaded/GpuSoftBodySolvers/OpenCL/", rootFolder + "SoftBodySolverOpenCL");
+            headerFilter.AddFile("OpenCL/", rootFolder + "OpenCL");
+            headerFilter.AddFile("SoftBody/", rootFolder + "SoftBodySolver");
 
-            var resourceFiles = new List<string>();
-            resourceFiles.Add(rootFolder + "Resources.rc");
+            resourceFilter.AddFile("", rootFolder + "Resources.rc");
 
-            var slnWriter = new SlnWriter(sourceFiles, headerFiles, resourceFiles, NamespaceName);
-            slnWriter.IncludeDirectories = slnRelDir + "..\\bullet\\src;" + slnRelDir + "..\\bullet\\Extras\\HACD;" + slnRelDir + "..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;";
-            //slnWriter.IncludeDirectories = "..\\..\\bullet\\src;..\\..\\bullet\\Extras\\HACD;..\\..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;";
+            filterWriter.RootFilter.Sort();
+
+            var slnWriter = new SlnWriter(filterWriter, NamespaceName)
+            {
+                IncludeDirectories = slnRelDir + "..\\bullet\\src;" + slnRelDir + "..\\bullet\\Extras\\HACD;" + slnRelDir + "..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;",
+                FilterWriter = filterWriter
+            };
             if (targetVS == TargetVS.VS2008)
             {
                 slnWriter.LibraryDirectoriesRelease = slnRelDir + "..\\bullet\\msvc\\2008\\lib\\MinSizeRel";

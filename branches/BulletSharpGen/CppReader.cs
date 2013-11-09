@@ -124,7 +124,8 @@ namespace BulletSharpGen
             else
             {
                 // No, define a new one
-                currentHeader = new HeaderDefinition(filename);
+                string relativeFilename = filename.Substring(src.Length);
+                currentHeader = new HeaderDefinition(relativeFilename);
                 HeaderDefinitions.Add(filename, currentHeader);
                 headerQueue.Remove(filename);
             }
