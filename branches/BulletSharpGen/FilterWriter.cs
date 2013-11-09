@@ -243,7 +243,7 @@ namespace BulletSharpGen
             }
         }
 
-        void OutputFilter2008(Filter filter, int level, string extension)
+        void OutputFilter2008(Filter filter, int level, string extension, IList<ProjectConfiguration> confs = null)
         {
             OutputTabs(level);
             WriteLine("<Filter");
@@ -271,12 +271,38 @@ namespace BulletSharpGen
                 WriteLine("\"");
                 OutputTabs(level + 2);
                 WriteLine(">");
+                if (filename.EndsWith("Stdafx", StringComparison.InvariantCultureIgnoreCase) &&
+                    ".cpp".Equals(extension, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    foreach (var conf in confs)
+                    {
+                        OutputTabs(level + 2);
+                        WriteLine("<FileConfiguration");
+                        OutputTabs(level + 3);
+                        Write("Name=\"");
+                        Write(conf.IsDebug ? "Debug " : "Release ");
+                        Write(conf.Name);
+                        WriteLine("|Win32\"");
+                        OutputTabs(level + 3);
+                        WriteLine(">");
+                        OutputTabs(level + 3);
+                        WriteLine("<Tool");
+                        OutputTabs(level + 4);
+                        WriteLine("Name=\"VCCLCompilerTool\"");
+                        OutputTabs(level + 4);
+                        WriteLine("UsePrecompiledHeader=\"1\"");
+                        OutputTabs(level + 3);
+                        WriteLine("/>");
+                        OutputTabs(level + 2);
+                        WriteLine("</FileConfiguration>");
+                    }
+                }
                 OutputTabs(level + 1);
                 WriteLine("</File>");
             }
             foreach (var subFilter in filter.SubFilters)
             {
-                OutputFilter2008(subFilter, level + 1, extension);
+                OutputFilter2008(subFilter, level + 1, extension, confs);
             }
             OutputTabs(level);
             WriteLine("</Filter>");
@@ -334,7 +360,7 @@ namespace BulletSharpGen
             filterWriter = projectWriter;
 
             WriteLine("\t<Files>");
-            OutputFilter2008(RootFilter.GetChild("Source Files"), 2, ".cpp");
+            OutputFilter2008(RootFilter.GetChild("Source Files"), 2, ".cpp", confs);
             OutputFilter2008(RootFilter.GetChild("Header Files"), 2, ".h");
             OutputFilter2008(RootFilter.GetChild("Resource Files"), 2, "");
             WriteLine("\t</Files>");
@@ -358,9 +384,9 @@ namespace BulletSharpGen
                 Write("\t\t\t\tRelativePath=\"");
                 Write(sourceFile);
                 WriteLine(".cpp\"");
+                WriteLine("\t\t\t\t>");
                 if (sourceFile.EndsWith("Stdafx", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    WriteLine("\t\t\t\t>");
                     foreach (var conf in confs)
                     {
                         WriteLine("\t\t\t\t<FileConfiguration");
@@ -375,10 +401,6 @@ namespace BulletSharpGen
                         WriteLine("\t\t\t\t\t/>");
                         WriteLine("\t\t\t\t</FileConfiguration>");
                     }
-                }
-                else
-                {
-                    WriteLine("\t\t\t\t>");
                 }
                 WriteLine("\t\t\t</File>");
             }
