@@ -16,22 +16,22 @@ namespace BulletSharpGen
 
     class SlnWriter
     {
-        IEnumerable<string> sourceFiles, headerFiles, resourceFiles;
+        FilterWriter filterWriter;
         string namespaceName;
         
         StreamWriter solutionWriter, projectWriter;
         TargetVS targetVS;
+        FilterType filterType = FilterType.Structured;
 
         public string IncludeDirectories { get; set; }
         public string LibraryDirectoriesDebug { get; set; }
         public string LibraryDirectoriesRelease { get; set; }
         public bool X64 { get; set; }
+        public FilterWriter FilterWriter { get; set; }
 
-        public SlnWriter(IEnumerable<string> sourceFiles, IEnumerable<string> headerFiles, IEnumerable<string> resourceFiles, string namespaceName)
+        public SlnWriter(FilterWriter filterWriter, string namespaceName)
         {
-            this.sourceFiles = sourceFiles;
-            this.headerFiles = headerFiles;
-            this.resourceFiles = resourceFiles;
+            this.filterWriter = filterWriter;
             this.namespaceName = namespaceName;
             
             X64 = true;
@@ -448,7 +448,7 @@ namespace BulletSharpGen
             }
         }
 
-        public void Output(TargetVS targetVS, List<ProjectConfiguration> confs, string outDirectory)
+        public void Output(TargetVS targetVS, IList<ProjectConfiguration> confs, string outDirectory)
         {
             Directory.CreateDirectory(outDirectory);
             FileStream solutionFile = new FileStream(outDirectory + "\\" + namespaceName + ".sln", FileMode.Create, FileAccess.Write);
@@ -724,61 +724,7 @@ namespace BulletSharpGen
             
             if (targetVS == TargetVS.VS2008)
             {
-                WriteLine("\t<Files>");
-                
-                WriteLine("\t\t<Filter");
-                WriteLine("\t\t\tName=\"Source Files\"");
-                WriteLine("\t\t\tFilter=\"cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx\"");
-                WriteLine("\t\t\tUniqueIdentifier=\"{4FC737F1-C7A5-4376-A066-2A32D752A2FF}\"");
-                WriteLine("\t\t\t>");
-                foreach (var sourceFile in sourceFiles)
-                {
-                    WriteLine("\t\t\t<File");
-                    Write("\t\t\t\tRelativePath=\"");
-                    Write(sourceFile);
-                    WriteLine(".cpp\"");
-                    if (sourceFile.EndsWith("Stdafx", StringComparison.InvariantCultureIgnoreCase))
-                    {
-                        WriteLine("\t\t\t\t>");
-                        foreach (var conf in confs)
-                        {
-                            WriteLine("\t\t\t\t<FileConfiguration");
-                            Write("\t\t\t\t\tName=\"");
-                            WriteProjectConfigurationName(conf);
-                            WriteLine("|Win32\"");
-                            WriteLine("\t\t\t\t\t>");
-                            WriteLine("\t\t\t\t\t<Tool");
-                            WriteLine("\t\t\t\t\t\tName=\"VCCLCompilerTool\"");
-                            WriteLine("\t\t\t\t\t\tUsePrecompiledHeader=\"1\"");
-                            WriteLine("\t\t\t\t\t/>");
-                            WriteLine("\t\t\t\t</FileConfiguration>");
-                        }
-                    }
-                    else
-                    {
-                        WriteLine("\t\t\t\t>");
-                    }
-                    WriteLine("\t\t\t</File>");
-                }
-                WriteLine("\t\t</Filter>");
-
-                WriteLine("\t\t<Filter");
-                WriteLine("\t\t\tName=\"Header Files\"");
-                WriteLine("\t\t\tFilter=\"h;hpp;hxx;hm;inl;inc;xsd\"");
-                WriteLine("\t\t\tUniqueIdentifier=\"{93995380-89BD-4b04-88EB-625FBE52EBFB}\"");
-                WriteLine("\t\t\t>");
-                foreach (var sourceFile in sourceFiles)
-                {
-                    WriteLine("\t\t\t<File");
-                    Write("\t\t\t\tRelativePath=\"");
-                    Write(sourceFile);
-                    WriteLine(".h\"");
-                    WriteLine("\t\t\t\t>");
-                    WriteLine("\t\t\t</File>");
-                }
-                WriteLine("\t\t</Filter>");
-
-                WriteLine("\t</Files>");
+                filterWriter.Output2008(projectWriter, confs, outDirectory);
 
                 WriteLine("\t<Globals>");
                 WriteLine("\t</Globals>");
@@ -787,6 +733,7 @@ namespace BulletSharpGen
             else
             {
                 WriteLine("  <ItemGroup>");
+                var sourceFiles = filterWriter.RootFilter.GetChild("Source Files").GetFileList();
                 foreach (var sourceFile in sourceFiles)
                 {
                     Write("    <ClCompile Include=\"");
@@ -816,6 +763,7 @@ namespace BulletSharpGen
                 WriteLine("  </ItemGroup>");
 
                 WriteLine("  <ItemGroup>");
+                var resourceFiles = filterWriter.RootFilter.GetChild("Resource Files").GetFileList();
                 foreach (var resourceFile in resourceFiles)
                 {
                     Write("    <ResourceCompile Include=\"");
@@ -825,6 +773,7 @@ namespace BulletSharpGen
                 WriteLine("  </ItemGroup>");
 
                 WriteLine("  <ItemGroup>");
+                var headerFiles = filterWriter.RootFilter.GetChild("Header Files").GetFileList();
                 foreach (var headerFile in headerFiles)
                 {
                     Write("    <ClInclude Include=\"");
@@ -842,6 +791,12 @@ namespace BulletSharpGen
 
             projectWriter.Dispose();
             projectFile.Dispose();
+
+
+            if (FilterWriter != null && targetVS != TargetVS.VS2008)
+            {
+                FilterWriter.Output(targetVS, outDirectory);
+            }
         }
     }
 }
