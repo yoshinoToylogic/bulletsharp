@@ -187,14 +187,6 @@ namespace BulletSharpGen
                 WriteLine("\t\t\t/>");
                 WriteLine("\t\t\t<Tool");
                 WriteLine("\t\t\t\tName=\"VCLinkerTool\"");
-                if (conf.IsDebug)
-                {
-                    WriteLine("\t\t\t\tAdditionalOptions=\"/NODEFAULTLIB:libcmtd /NODEFAULTLIB:msvcprtd\"");
-                }
-                else
-                {
-                    WriteLine("\t\t\t\tAdditionalOptions=\"/NODEFAULTLIB:libcmt /NODEFAULTLIB:msvcprt\"");
-                }
                 Write("\t\t\t\tAdditionalDependencies=\"");
                 if (conf.IsDebug)
                 {
@@ -644,10 +636,22 @@ namespace BulletSharpGen
             {
                 WriteLine("  </ItemGroup>");
 
+                if (targetVS != TargetVS.VS2010)
+                {
+                    WriteLine("  <PropertyGroup Label=\"Globals\">");
+                    WriteLine("    <VCTargetsPath Condition=\"\'$(VCTargetsPath11)\' != \'\' and \'$(VSVersion)\' == \'\' and \'$(VisualStudioVersion)\' == \'\'\">$(VCTargetsPath11)</VCTargetsPath>");
+                    WriteLine("  </PropertyGroup>");
+                }
                 WriteLine("  <PropertyGroup Label=\"Globals\">");
                 Write("    <ProjectGuid>{");
                 Write(projectGuidString);
                 WriteLine("}</ProjectGuid>");
+                if (targetVS != TargetVS.VS2010)
+                {
+                    WriteLine("    <TargetFrameworkVersion Condition=\"\'$(Configuration)\'==\'Debug XNA 3.1\' OR \'$(Configuration)\'==\'Release XNA 3.1\'\">v2.0</TargetFrameworkVersion>");
+                    WriteLine("    <TargetFrameworkVersion Condition=\"\'$(Configuration)\'==\'Debug XNA 4.0\' OR \'$(Configuration)\'==\'Release XNA 4.0\'\">v4.0</TargetFrameworkVersion>");
+                    WriteLine("    <TargetFrameworkVersion Condition=\"\'$(TargetFrameworkVersion)\'==\'\'\">v4.5</TargetFrameworkVersion>");
+                }
                 Write("    <RootNamespace>");
                 Write(namespaceName);
                 WriteLine("</RootNamespace>");

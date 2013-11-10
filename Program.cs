@@ -76,12 +76,22 @@ namespace BulletSharpGen
             confs.Add(new ProjectConfiguration("Mogre", false, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Release"));
             confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
             confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Debug"));
-            confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
-            confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
-            confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", slnRelDir + "..\\SlimMath\\SlimMath\\bin\\Release"));
-            confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", slnRelDir + "..\\SlimMath\\SlimMath\\bin\\Debug"));
+            if (targetVS == TargetVS.VS2008)
+            {
+                confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net20Debug"));
+                confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net20Release"));
+                confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net20\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net20\\"));
+                confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net20\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net20\\"));
+            }
+            else
+            {
+                confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Debug"));
+                confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
+                confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
+                confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
+            }
+            //confs.Add(new ProjectConfiguration("SlimMath", true, "GRAPHICS_SLIMMATH", slnRelDir + "..\\SlimMath\\SlimMath\\bin\\Release"));
+            //confs.Add(new ProjectConfiguration("SlimMath", false, "GRAPHICS_SLIMMATH", slnRelDir + "..\\SlimMath\\SlimMath\\bin\\Debug"));
             if (targetVS != TargetVS.VS2008)
             {
                 confs.Add(new ProjectConfiguration("Windows API Code Pack", true, "GRAPHICS_WAPICODEPACK", slnRelDir + "..\\Windows API Code Pack 1.1\\binaries\\DirectX"));
