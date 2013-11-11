@@ -465,9 +465,14 @@ namespace BulletSharpGen
                     WriteLineSln("# Visual Studio 2010");
                     break;
                 case TargetVS.VS2012:
-                case TargetVS.VS2013:
                     WriteLineSln("12.00");
                     WriteLineSln("# Visual Studio 11");
+                    break;
+                case TargetVS.VS2013:
+                    WriteLineSln("12.00");
+                    WriteLineSln("# Visual Studio 2013");
+                    WriteLineSln("VisualStudioVersion = 12.0.21005.1");
+                    //WriteLineSln("MinimumVisualStudioVersion = 10.0.40219.1");
                     break;
                 default:
                     throw new NotImplementedException();
@@ -650,7 +655,14 @@ namespace BulletSharpGen
                 {
                     WriteLine("    <TargetFrameworkVersion Condition=\"\'$(Configuration)\'==\'Debug XNA 3.1\' OR \'$(Configuration)\'==\'Release XNA 3.1\'\">v2.0</TargetFrameworkVersion>");
                     WriteLine("    <TargetFrameworkVersion Condition=\"\'$(Configuration)\'==\'Debug XNA 4.0\' OR \'$(Configuration)\'==\'Release XNA 4.0\'\">v4.0</TargetFrameworkVersion>");
-                    WriteLine("    <TargetFrameworkVersion Condition=\"\'$(TargetFrameworkVersion)\'==\'\'\">v4.5</TargetFrameworkVersion>");
+                    if (targetVS == TargetVS.VS2012)
+                    {
+                        WriteLine("    <TargetFrameworkVersion Condition=\"\'$(TargetFrameworkVersion)\'==\'\'\">v4.5</TargetFrameworkVersion>");
+                    }
+                    else // if (targetVS == TargetVS.VS2013)
+                    {
+                        WriteLine("    <TargetFrameworkVersion Condition=\"\'$(TargetFrameworkVersion)\'==\'\'\">v4.5.1</TargetFrameworkVersion>");
+                    }
                 }
                 Write("    <RootNamespace>");
                 Write(namespaceName);

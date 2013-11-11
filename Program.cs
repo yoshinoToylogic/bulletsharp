@@ -74,6 +74,11 @@ namespace BulletSharpGen
             confs.Add(new ProjectConfiguration("Generic", false, "GRAPHICS_GENERIC"));
             confs.Add(new ProjectConfiguration("Mogre", true, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Debug"));
             confs.Add(new ProjectConfiguration("Mogre", false, "GRAPHICS_MOGRE", "C:\\MogreSDK\\bin\\Release"));
+            if (targetVS != TargetVS.VS2008)
+            {
+                confs.Add(new ProjectConfiguration("MonoGame", true, "GRAPHICS_MONOGAME", "$(ProgramFiles)\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\;$(ProgramFiles(x86))\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\"));
+                confs.Add(new ProjectConfiguration("MonoGame", false, "GRAPHICS_MONOGAME", "$(ProgramFiles)\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\;$(ProgramFiles(x86))\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\"));
+            }
             confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
             confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
             if (targetVS == TargetVS.VS2008)
