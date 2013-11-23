@@ -78,6 +78,8 @@ namespace BulletSharpGen
                 }
             }
 
+            Console.Write("Reading headers");
+
             index = new Index();
 
             // Parse the common headers
@@ -375,8 +377,8 @@ namespace BulletSharpGen
                 }
                 else if (cursor.Kind == CursorKind.FieldDecl)
                 {
-                    currentField = new FieldDefinition(cursor.Spelling, currentClass);
-                    currentField.Type = new TypeRefDefinition(cursor.Type);
+                    currentField = new FieldDefinition(cursor.Spelling,
+                        new TypeRefDefinition(cursor.Type), currentClass);
                     currentFieldHasSpecializedParameter = false;
                     cursor.VisitChildren(FieldTemplateTypeVisitor);
                     currentField = null;
@@ -398,6 +400,8 @@ namespace BulletSharpGen
 
         void readHeader(string headerFile)
         {
+            Console.Write('.');
+
             var unsavedFiles = new UnsavedFile[] { };
             if (headerFile.EndsWith("PosixThreadSupport.h"))
             {

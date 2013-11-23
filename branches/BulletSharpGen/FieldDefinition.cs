@@ -2,20 +2,15 @@
 {
     class FieldDefinition
     {
-        public string Name { get; set; }
-        public string ManagedName { get; set; }
-        public TypeRefDefinition Type { get; set; }
-        public ClassDefinition Parent { get; set; }
+        public string Name { get; private set; }
+        public TypeRefDefinition Type { get; private set; }
+        public ClassDefinition Parent { get; private set; }
 
-        public FieldDefinition(string name, ClassDefinition parent)
+        public FieldDefinition(string name, TypeRefDefinition type, ClassDefinition parent)
         {
-            Parent = parent;
             Name = name;
-            if (name.StartsWith("m_"))
-            {
-                name = name.Substring(2);
-            }
-            ManagedName = name;
+            Type = type;
+            Parent = parent;
 
             parent.Fields.Add(this);
         }
