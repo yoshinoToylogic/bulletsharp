@@ -149,13 +149,15 @@ namespace BulletSharpGen
                         method.Name.StartsWith("has") ||
                         method.Name.StartsWith("is")))
                     {
+                        // function returns the result
                         new PropertyDefinition(method);
-                        //c.Methods.Remove(method);
-                        //i--;
+                        c.Methods.Remove(method);
+                        i--;
                     }
                     else if (method.Parameters.Length == 1 && method.Name.StartsWith("get") &&
                         method.ReturnType.IsBasic && method.ReturnType.ManagedName == "void")
                     {
+                        // function writes the result to a given pointer
                         new PropertyDefinition(method);
                         //c.Methods.Remove(method);
                         //i--;
@@ -239,7 +241,7 @@ namespace BulletSharpGen
             foreach (ClassDefinition c in classDefinitions.Values)
             {
                 c.Methods.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
-                c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
+                c.Properties.Sort((p1, p2) => p1.VerblessName.CompareTo(p2.VerblessName));
             }
             /*
             // Apply transformations

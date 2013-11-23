@@ -138,8 +138,16 @@ namespace BulletSharpGen
             // Method definition
             sourceWriter.WriteLine('{');
             OutputTabs(1, true);
-            sourceWriter.Write("_native->");
-            sourceWriter.Write(method.Name);
+            if (method.IsConstructor)
+            {
+                sourceWriter.Write("_native = new ");
+                sourceWriter.Write(method.Parent.Name);
+            }
+            else
+            {
+                sourceWriter.Write("_native->");
+                sourceWriter.Write(method.Name);
+            }
             sourceWriter.Write('(');
             for (int i = 0; i < numParameters; i++)
             {
@@ -169,6 +177,94 @@ namespace BulletSharpGen
             if (hasOptionalParam)
             {
                 OutputMethod(method, level, numOptionalParams + 1);
+            }
+        }
+
+        void OutputPropertyMethod(MethodDefinition method)
+        {
+            bool isGetter = (method == method.Property.Getter);
+
+            // Return type
+            var returnType = method.ReturnType;
+            sourceWriter.Write(returnType.ManagedTypeRefName);
+            sourceWriter.Write(' ');
+
+            // Declaration
+            sourceWriter.Write(method.Parent.ManagedName);
+            sourceWriter.Write("::");
+            sourceWriter.Write(method.Property.VerblessName);
+            sourceWriter.Write("::");
+            if (isGetter)
+            {
+                sourceWriter.Write("get(");
+            }
+            else
+            {
+                sourceWriter.Write("set(");
+                var param = method.Parameters[0];
+                sourceWriter.Write(param.Type.ManagedTypeRefName);
+                sourceWriter.Write(' ');
+                sourceWriter.Write(param.Name);
+            }
+            sourceWriter.WriteLine(')');
+
+            // Method definition
+            sourceWriter.WriteLine('{');
+            OutputTabs(1, true);
+            if (isGetter)
+            {
+                sourceWriter.Write("return ");
+            }
+            if (method.Field != null)
+            {
+                if (method.Field.Type.ManagedName == "Vector3")
+                {
+                    if (isGetter)
+                    {
+                        sourceWriter.Write("Math::BtVector3ToVector3(&_native->");
+                    }
+                    else
+                    {
+                        sourceWriter.Write("Math::Vector3ToBtVector3(value, &_native->");
+                    }
+                    sourceWriter.Write(method.Field.Name);
+                    sourceWriter.Write(")");
+                }
+                else
+                {
+                    sourceWriter.Write("_native->");
+                    sourceWriter.Write(method.Field.Name);
+                    if (!isGetter)
+                    {
+                        sourceWriter.Write(" = ");
+                        var param = method.Parameters[0];
+                        sourceWriter.Write(param.Name);
+                    }
+                }
+                sourceWriter.WriteLine(';');
+            }
+            else
+            {
+                sourceWriter.Write("_native->");
+                sourceWriter.Write(method.Name);
+                sourceWriter.Write('(');
+                if (!isGetter)
+                {
+                    var param = method.Parameters[0];
+                    sourceWriter.Write(param.Name);
+                    if (!param.Type.IsBasic)
+                    {
+                        sourceWriter.Write("->_native");
+                    }
+                }
+                sourceWriter.WriteLine(");");
+            }
+            sourceWriter.WriteLine('}');
+
+            // No whitespace between get/set methods
+            if (!(isGetter && method.Property.Setter != null))
+            {
+                sourceWriter.WriteLine();
             }
         }
 
@@ -247,9 +343,17 @@ namespace BulletSharpGen
             headerWriter.WriteLine(';');
             hasWhiteSpace = false;
             sourceWriter.WriteLine();
+            if (c.BaseClass != null)
+            {
+                sourceWriter.Write("\t: ");
+                sourceWriter.Write(c.BaseClass.ManagedName);
+                sourceWriter.WriteLine("(native)");
+            }
             sourceWriter.WriteLine('{');
-            OutputTabs(1, true);
-            sourceWriter.WriteLine("_native = native;");
+            if (c.BaseClass == null)
+            {
+                sourceWriter.WriteLine("\t_native = native;");
+            }
             sourceWriter.WriteLine('}');
             sourceWriter.WriteLine();
 
@@ -286,14 +390,14 @@ namespace BulletSharpGen
 
                 foreach (MethodDefinition method in c.Methods)
                 {
-                    if (!method.IsConstructor)
+                    if (!method.IsConstructor && method.Field == null)
                     {
                         OutputMethod(method, level);
                     }
                 }
             }
 
-            // Write properties
+            // Write properties (includes unmanaged fields and getters/setters)
             foreach (PropertyDefinition prop in c.Properties)
             {
                 EnsureWhiteSpace();
@@ -302,7 +406,7 @@ namespace BulletSharpGen
                 headerWriter.Write("property ");
                 headerWriter.Write(prop.Type.ManagedTypeRefName);
                 headerWriter.Write(" ");
-                headerWriter.WriteLine(prop.Name);
+                headerWriter.WriteLine(prop.VerblessName);
                 OutputTabs(level + 1);
                 headerWriter.WriteLine("{");
                 
@@ -310,7 +414,12 @@ namespace BulletSharpGen
                 OutputTabs(level + 2);
                 headerWriter.Write(prop.Type.ManagedTypeRefName);
                 headerWriter.WriteLine(" get();");
-                
+                if (prop.VerblessName.Equals("Applied_force"))
+                {
+                    "".ToString();
+                }
+                OutputPropertyMethod(prop.Getter);
+
                 // Setter
                 if (prop.Setter != null)
                 {
@@ -318,6 +427,8 @@ namespace BulletSharpGen
                     headerWriter.Write("void set(");
                     headerWriter.Write(prop.Type.ManagedTypeRefName);
                     headerWriter.WriteLine(" value);");
+
+                    OutputPropertyMethod(prop.Setter);
                 }
 
                 OutputTabs(level + 1);
@@ -343,12 +454,12 @@ namespace BulletSharpGen
                 }
 
                 Directory.CreateDirectory(outDirectory);
-                FileStream headerFile = new FileStream(outDirectory + "\\" + header.Name + ".h", FileMode.Create, FileAccess.Write);
+                FileStream headerFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".h", FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#pragma once");
                 headerWriter.WriteLine();
 
-                FileStream sourceFile = new FileStream(outDirectory + "\\" + header.Name + ".cpp", FileMode.Create, FileAccess.Write);
+                FileStream sourceFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
                 sourceWriter.WriteLine("#include \"StdAfx.h\"");
                 sourceWriter.WriteLine();

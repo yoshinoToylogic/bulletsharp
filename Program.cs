@@ -12,7 +12,7 @@ namespace BulletSharpGen
         {
             // If true, outputs C++/CLI wrapper,
             // if false, outputs C wrapper with C# code.
-            bool cppCliMode = false;
+            bool cppCliMode = true;
 
             //var subset = new AssemblySubset();
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\BasicDemo.exe", "BulletSharp");
@@ -118,9 +118,7 @@ namespace BulletSharpGen
             "Gpu3DGridBroadphase", "Gpu3DGridBroadphaseSharedTypes", "GpuDefines", "GrahamScan2dConvexHull",
             "HashedSimplePairCache", "HashMap", "HeapManager", "IDebugDraw", "JacobianEntry", "List", "Material",
             "Matrix3x3", "MatrixX", "MiniCLTask", "MiniCLTaskScheduler", "MLCPSolver", "MLCPSolverInterface",
-            "MultiBody", "MultiBodyConstraint", "MultiBodyConstraintSolver", "MultiBodyDynamicsWorld",
-            "MultiBodyJointLimitConstraint", "MultiBodyJointMotor", "MultiBodyLink", "MultiBodyLinkCollider",
-            "MultiBodyPoint2Point", "MultiBodySolverConstraint", "MultiSapBroadphase", "PlatformDefinitions",
+            "MultiSapBroadphase", "PlatformDefinitions",
             "PolarDecomposition", "PolyhedralContactClipping", "PosixThreadSupport", "PpuAddressSpace", "QuadWord",
             "RaycastCallback", "SequentialThreadSupport", "SimpleDynamicsWorld", "SoftBodyData", "SoftBodyInternals",
             "SoftBodySolvers", "SoftRigidCollisionAlgorithm", "SoftSoftCollisionAlgorithm", "SolveProjectedGaussSeidel",

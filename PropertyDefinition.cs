@@ -3,37 +3,47 @@ namespace BulletSharpGen
 {
     class PropertyDefinition
     {
-        public string Name { get; private set; }
-        public string VerblessName { get; private set; }
         public MethodDefinition Getter { get; private set; }
         public MethodDefinition Setter { get; set; }
         public ClassDefinition Parent { get; private set; }
-        public TypeRefDefinition Type { get; private set; }
+        public string VerblessName { get; private set; }
+
+        public TypeRefDefinition Type
+        {
+            get
+            {
+                return Getter.ReturnType;
+            }
+        }
 
         // Property from getter method
         public PropertyDefinition(MethodDefinition getter)
         {
             Getter = getter;
-            Name = getter.Name;
             Parent = getter.Parent;
             Parent.Properties.Add(this);
             getter.Property = this;
-            Type = getter.ReturnType;
 
-            if (Name.StartsWith("get"))
+            string name = getter.Name;
+            
+            // one_two_three -> oneTwoThree
+            while (name.Contains("_"))
             {
-                Name = Name.Substring(3);
-                VerblessName = Name;
+                int pos = name.IndexOf('_');
+                name = name.Substring(0, pos) + name.Substring(pos + 1, 1).ToUpper() + name.Substring(pos + 2);
             }
-            else if (Name.StartsWith("is"))
+
+            if (name.StartsWith("get", StringComparison.InvariantCultureIgnoreCase))
             {
-                VerblessName = Name.Substring(2);
-                Name = "Is" + VerblessName;
+                VerblessName = name.Substring(3);
             }
-            else if (Name.StartsWith("has"))
+            else if (name.StartsWith("is", StringComparison.InvariantCultureIgnoreCase))
             {
-                VerblessName = Name.Substring(3);
-                Name = "Has" + VerblessName;
+                VerblessName = name.Substring(2);
+            }
+            else if (name.StartsWith("has", StringComparison.InvariantCultureIgnoreCase))
+            {
+                VerblessName = name.Substring(3);
             }
             else
             {
@@ -44,31 +54,42 @@ namespace BulletSharpGen
         // Property from field
         public PropertyDefinition(FieldDefinition field)
         {
-            Name = field.ManagedName;
-            VerblessName = Name;
+            //Name = field.ManagedName;
             Parent = field.Parent;
             Parent.Properties.Add(this);
-            Type = field.Type;
 
-            // Capitalize
-            Name = Name.Substring(0, 1).ToUpper() + Name.Substring(1);
-
-            // Generate getter/setter methods for C API
-            string getterName, setterName;
-            if (Name.StartsWith("has"))
+            string name = field.Name;
+            if (name.StartsWith("m_"))
             {
-                getterName = Name;
-                setterName = "set" + Name.Substring(3);
+                name = name.Substring(2);
             }
-            else if (Name.StartsWith("is"))
+            name = name.Substring(0, 1).ToUpper() + name.Substring(1); // capitalize
+
+            // one_two_three -> oneTwoThree
+            while (name.Contains("_"))
             {
-                getterName = Name;
-                setterName = "set" + Name.Substring(2);
+                int pos = name.IndexOf('_');
+                name = name.Substring(0, pos) + name.Substring(pos + 1, 1).ToUpper() + name.Substring(pos + 2);
+            }
+
+            VerblessName = name;
+
+            // Generate getter/setter methods
+            string getterName, setterName;
+            if (name.StartsWith("has"))
+            {
+                getterName = name;
+                setterName = "set" + name.Substring(3);
+            }
+            else if (name.StartsWith("is"))
+            {
+                getterName = name;
+                setterName = "set" + name.Substring(2);
             }
             else
             {
-                getterName = "get" + Name;
-                setterName = "set" + Name;
+                getterName = "get" + name;
+                setterName = "set" + name;
             }
 
             Getter = new MethodDefinition(getterName, Parent, 0);
@@ -81,6 +102,11 @@ namespace BulletSharpGen
             Setter.Parameters[0] = new ParameterDefinition("value", field.Type);
             Setter.Field = field;
             Setter.Property = this;
+        }
+
+        public override string ToString()
+        {
+            return VerblessName;
         }
     }
 }
