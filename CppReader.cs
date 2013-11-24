@@ -91,19 +91,19 @@ namespace BulletSharpGen
                     Console.WriteLine("Could not find " + commonHeader);
                     return;
                 }
-                readHeader(commonHeader);
+                ReadHeader(commonHeader);
             }
 
             while (headerQueue.Count != 0)
             {
-                readHeader(headerQueue[0]);
+                ReadHeader(headerQueue[0]);
             }
 
-            readHeader(src + "..\\Extras\\Serialize\\BulletFileLoader\\btBulletFile.h");
-            readHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btBulletWorldImporter.h");
-            readHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btWorldImporter.h");
-            readHeader(src + "..\\Extras\\Serialize\\BulletXmlWorldImporter\\btBulletXmlWorldImporter.h");
-            readHeader(src + "..\\Extras\\HACD\\hacdHACD.h");
+            ReadHeader(src + "..\\Extras\\Serialize\\BulletFileLoader\\btBulletFile.h");
+            ReadHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btBulletWorldImporter.h");
+            ReadHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btWorldImporter.h");
+            ReadHeader(src + "..\\Extras\\Serialize\\BulletXmlWorldImporter\\btBulletXmlWorldImporter.h");
+            ReadHeader(src + "..\\Extras\\HACD\\hacdHACD.h");
 
             index.Dispose();
 
@@ -136,7 +136,6 @@ namespace BulletSharpGen
                 cursor.Kind == CursorKind.ClassTemplate || cursor.Kind == CursorKind.TypedefDecl) && cursor.IsDefinition)
             {
                 ParseClassCursor(cursor);
-                return Cursor.ChildVisitResult.Continue;
             }
             else if (cursor.Kind == CursorKind.EnumDecl)
             {
@@ -398,7 +397,7 @@ namespace BulletSharpGen
             return Cursor.ChildVisitResult.Continue;
         }
 
-        void readHeader(string headerFile)
+        void ReadHeader(string headerFile)
         {
             Console.Write('.');
 

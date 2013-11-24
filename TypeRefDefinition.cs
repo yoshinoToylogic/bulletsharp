@@ -1,5 +1,4 @@
 ﻿using System;
-using ClangSharp;
 
 namespace BulletSharpGen
 {
@@ -43,11 +42,11 @@ namespace BulletSharpGen
                     {
                         return "ushort";
                     }
-                    else if (Name.Equals("unsigned int"))
+                    if (Name.Equals("unsigned int"))
                     {
                         return "uint";
                     }
-                    else if (Name.Equals("unsigned long"))
+                    if (Name.Equals("unsigned long"))
                     {
                         return "ulong";
                     }
@@ -87,10 +86,7 @@ namespace BulletSharpGen
                     {
                         return ManagedName + '*';
                     }
-                    else
-                    {
-                        return ManagedName + '^';
-                    }
+                    return ManagedName + '^';
                 }
                 return ManagedName;
             }

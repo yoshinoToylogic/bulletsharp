@@ -13,7 +13,7 @@ namespace BulletSharpGen
         Source = 2,
         CS = 4,
         DllImport = 8,
-        All = WriteTo.Header | WriteTo.Source | WriteTo.CS
+        All = Header | Source | CS
     }
 
     class WrapperWriter

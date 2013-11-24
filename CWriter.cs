@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace BulletSharpGen
 {
@@ -403,7 +402,7 @@ namespace BulletSharpGen
             Write("public ", WriteTo.CS);
             WriteType(prop.Type, WriteTo.CS);
             Write(' ', WriteTo.CS);
-            WriteLine(prop.Name, WriteTo.CS);
+            WriteLine(prop.VerblessName, WriteTo.CS);
             OutputTabs(level + 1, WriteTo.CS);
             WriteLine('{', WriteTo.CS);
 
@@ -510,7 +509,7 @@ namespace BulletSharpGen
                 // Write default constructor
                 if (constructorCount == 0 && !c.IsAbstract)
                 {
-                    MethodDefinition constructor = new MethodDefinition(c.Name, c, 0);
+                    var constructor = new MethodDefinition(c.Name, c, 0);
                     constructor.IsConstructor = true;
                     OutputMethod(constructor, level, ref overloadIndex, constructorCount);
                     constructorCount++;
@@ -535,7 +534,7 @@ namespace BulletSharpGen
                         overloadIndex = 0;
                     }
 
-                    OutputMethod(method, level, ref overloadIndex, 0);
+                    OutputMethod(method, level, ref overloadIndex);
                     previousMethod = method;
                 }
                 overloadIndex = 0;
@@ -550,7 +549,7 @@ namespace BulletSharpGen
             // Write delete method
             if (c.BaseClass == null)
             {
-                MethodDefinition del = new MethodDefinition("delete", c, 0);
+                var del = new MethodDefinition("delete", c, 0);
                 del.ReturnType = new TypeRefDefinition();
                 OutputMethod(del, level, ref overloadIndex, 0);
                 c.Methods.Remove(del);
@@ -569,7 +568,7 @@ namespace BulletSharpGen
 
         public void Output()
         {
-            string outDirectory = "src";
+            const string outDirectory = "src";
 
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {
@@ -582,7 +581,7 @@ namespace BulletSharpGen
 
                 // Header file
                 string headerFilename = header.Name + "_wrap.h";
-                FileStream headerFile = new FileStream(outDirectory + "\\" + headerFilename, FileMode.Create, FileAccess.Write);
+                var headerFile = new FileStream(outDirectory + "\\" + headerFilename, FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#include \"main.h\"");
                 headerWriter.WriteLine();
@@ -592,14 +591,14 @@ namespace BulletSharpGen
                 hasHeaderWhiteSpace = true;
 
                 // C++ source file
-                FileStream sourceFile = new FileStream(outDirectory + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
+                var sourceFile = new FileStream(outDirectory + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
                 sourceWriter.Write("#include \"");
                 sourceWriter.Write(headerFilename);
                 sourceWriter.WriteLine("\"");
 
                 // C# source file
-                FileStream csFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cs", FileMode.Create, FileAccess.Write);
+                var csFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cs", FileMode.Create, FileAccess.Write);
                 csWriter = new StreamWriter(csFile);
                 csWriter.WriteLine("using System;");
                 csWriter.WriteLine("using System.Runtime.InteropServices;");
