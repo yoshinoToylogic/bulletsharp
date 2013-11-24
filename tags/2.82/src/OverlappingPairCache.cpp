@@ -1,0 +1,221 @@
+#include "StdAfx.h"
+
+#include "AlignedObjectArray.h"
+#include "BroadphaseProxy.h"
+#include "Dispatcher.h"
+#include "OverlappingPairCache.h"
+
+OverlapCallback::~OverlapCallback()
+{
+	this->!OverlapCallback();
+}
+
+OverlapCallback::!OverlapCallback()
+{
+	if (this->IsDisposed)
+		return;
+
+	OnDisposing(this, nullptr);
+
+	delete _native;
+	_native = NULL;
+
+	OnDisposed(this, nullptr);
+}
+
+bool OverlapCallback::ProcessOverlap(BroadphasePair^ pair)
+{
+	return _native->processOverlap(*pair->_native);
+}
+
+bool OverlapCallback::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+
+
+OverlapFilterCallback::~OverlapFilterCallback()
+{
+	this->!OverlapFilterCallback();
+}
+
+OverlapFilterCallback::!OverlapFilterCallback()
+{
+	if (this->IsDisposed)
+		return;
+
+	OnDisposing(this, nullptr);
+
+	ObjectTable::Remove(_native);
+	//delete _native;
+	_native = NULL;
+
+	OnDisposed(this, nullptr);
+}
+
+OverlapFilterCallback::OverlapFilterCallback()
+{
+	_native = new OverlapFilterCallbackWrapper(this);
+	BulletSharp::ObjectTable::Add(this, _native);
+}
+
+bool OverlapFilterCallback::IsDisposed::get()
+{
+	return (_native == NULL);
+}
+
+OverlapFilterCallback::OverlapFilterCallback(btOverlapFilterCallback* callback)
+{
+	_native = callback;
+}
+
+OverlapFilterCallback^ OverlapFilterCallback::GetManaged(btOverlapFilterCallback* callback)
+{
+	return GetObjectFromTable(OverlapFilterCallback, callback);
+}
+
+
+#define Native static_cast<btOverlappingPairCache*>(_native)
+
+OverlappingPairCache::OverlappingPairCache(btOverlappingPairCache* pairCache)
+: OverlappingPairCallback(pairCache)
+{
+}
+
+void OverlappingPairCache::CleanOverlappingPair(BroadphasePair^ pair, Dispatcher^ dispatcher)
+{
+	Native->cleanOverlappingPair(*pair->_native, dispatcher->_native);
+}
+
+void OverlappingPairCache::CleanProxyFromPairs(BroadphaseProxy^ proxy, Dispatcher^ dispatcher)
+{
+	Native->cleanProxyFromPairs(proxy->_native, dispatcher->_native);
+}
+
+BroadphasePair^ OverlappingPairCache::FindPair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+{
+	return gcnew BroadphasePair(Native->findPair(proxy0->_native, proxy1->_native));
+}
+
+void OverlappingPairCache::ProcessAllOverlappingPairs(array<OverlapCallback^>^ callbacks, Dispatcher^ dispatcher)
+{
+	btOverlapCallback** btCallbacks = new btOverlapCallback*[callbacks->Length];
+	int i;
+	for (i=0; i<callbacks->Length; i++)
+		btCallbacks[i] = callbacks[i]->_native;
+	Native->processAllOverlappingPairs(*btCallbacks, dispatcher->_native);
+	delete[] btCallbacks;
+}
+
+#ifndef DISABLE_INTERNAL
+void OverlappingPairCache::SetInternalGhostPairCallback(OverlappingPairCallback^ ghostPairCallback)
+{
+	Native->setInternalGhostPairCallback(ghostPairCallback->_native);
+}
+#endif
+
+void OverlappingPairCache::SetOverlapFilterCallback(OverlapFilterCallback^ callback)
+{
+	Native->setOverlapFilterCallback(GetUnmanagedNullable(callback));
+}
+
+void OverlappingPairCache::SortOverlappingPairs(Dispatcher^ dispatcher)
+{
+	Native->sortOverlappingPairs(dispatcher->_native);
+}
+
+bool OverlappingPairCache::HasDeferredRemoval::get()
+{
+	return Native->hasDeferredRemoval();
+}
+
+int OverlappingPairCache::NumOverlappingPairs::get()
+{
+	return Native->getNumOverlappingPairs();
+}
+
+AlignedBroadphasePairArray^ OverlappingPairCache::OverlappingPairArray::get()
+{
+	btBroadphasePairArray* pairArray = &Native->getOverlappingPairArray();
+	ReturnCachedObjectGcnew(AlignedBroadphasePairArray, _overlappingPairArray, pairArray);
+}
+
+
+#undef Native
+#define Native static_cast<btHashedOverlappingPairCache*>(_native)
+
+HashedOverlappingPairCache::HashedOverlappingPairCache(btHashedOverlappingPairCache* pairCache)
+: OverlappingPairCache(pairCache)
+{
+}
+
+HashedOverlappingPairCache::HashedOverlappingPairCache()
+: OverlappingPairCache(new btHashedOverlappingPairCache)
+{
+}
+
+bool HashedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+{
+	return Native->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
+}
+
+int HashedOverlappingPairCache::Count::get()
+{
+	return Native->GetCount();
+}
+
+OverlapFilterCallback^ HashedOverlappingPairCache::OverlapFilterCallback::get()
+{
+	return BulletSharp::OverlapFilterCallback::GetManaged(Native->getOverlapFilterCallback());
+}
+void HashedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
+{
+	Native->setOverlapFilterCallback(value->_native);
+}
+
+
+SortedOverlappingPairCache::SortedOverlappingPairCache(btSortedOverlappingPairCache* sortedPairCache)
+: OverlappingPairCache(sortedPairCache)
+{
+}
+
+SortedOverlappingPairCache::SortedOverlappingPairCache()
+: OverlappingPairCache(new btSortedOverlappingPairCache)
+{
+}
+
+bool SortedOverlappingPairCache::NeedsBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
+{
+	return Native->needsBroadphaseCollision(proxy0->_native, proxy1->_native);
+}
+
+OverlapFilterCallback^ SortedOverlappingPairCache::OverlapFilterCallback::get()
+{
+	return BulletSharp::OverlapFilterCallback::GetManaged(Native->getOverlapFilterCallback());
+}
+void SortedOverlappingPairCache::OverlapFilterCallback::set(BulletSharp::OverlapFilterCallback^ value)
+{
+	Native->setOverlapFilterCallback(value->_native);
+}
+
+
+NullPairCache::NullPairCache(btNullPairCache* nullPairCache)
+: OverlappingPairCache(nullPairCache)
+{
+}
+
+NullPairCache::NullPairCache()
+: OverlappingPairCache(new btNullPairCache)
+{
+}
+
+
+OverlapFilterCallbackWrapper::OverlapFilterCallbackWrapper(OverlapFilterCallback^ callback)
+{
+	_callback = callback;
+}
+
+bool OverlapFilterCallbackWrapper::needBroadphaseCollision(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1) const
+{
+	return _callback->NeedBroadphaseCollision(BroadphaseProxy::GetManaged(proxy0), BroadphaseProxy::GetManaged(proxy1));
+}
