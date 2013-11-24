@@ -414,10 +414,6 @@ namespace BulletSharpGen
                 OutputTabs(level + 2);
                 headerWriter.Write(prop.Type.ManagedTypeRefName);
                 headerWriter.WriteLine(" get();");
-                if (prop.VerblessName.Equals("Applied_force"))
-                {
-                    "".ToString();
-                }
                 OutputPropertyMethod(prop.Getter);
 
                 // Setter
@@ -444,7 +440,7 @@ namespace BulletSharpGen
 
         public void Output()
         {
-            string outDirectory = "src";
+            const string outDirectory = "src";
 
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {
@@ -454,12 +450,12 @@ namespace BulletSharpGen
                 }
 
                 Directory.CreateDirectory(outDirectory);
-                FileStream headerFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".h", FileMode.Create, FileAccess.Write);
+                var headerFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".h", FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#pragma once");
                 headerWriter.WriteLine();
 
-                FileStream sourceFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cpp", FileMode.Create, FileAccess.Write);
+                var sourceFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
                 sourceWriter.WriteLine("#include \"StdAfx.h\"");
                 sourceWriter.WriteLine();
@@ -483,7 +479,7 @@ namespace BulletSharpGen
                 hasWhiteSpace = true;
 
                 // Find forward references
-                List<ClassDefinition> forwardRefs = new List<ClassDefinition>();
+                var forwardRefs = new List<ClassDefinition>();
                 foreach (ClassDefinition c in header.Classes)
                 {
                     FindForwardReferences(forwardRefs, c);
@@ -491,7 +487,7 @@ namespace BulletSharpGen
                 forwardRefs.Sort((r1, r2) => r1.ManagedName.CompareTo(r2.ManagedName));
 
                 // Write forward references
-                List<HeaderDefinition> forwardRefHeaders = new List<HeaderDefinition>();
+                var forwardRefHeaders = new List<HeaderDefinition>();
                 foreach (ClassDefinition c in forwardRefs)
                 {
                     OutputTabs(1);

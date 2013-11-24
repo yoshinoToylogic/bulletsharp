@@ -11,11 +11,11 @@ namespace BulletSharpGen
         public List<HeaderDefinition> Includes { get; set; }
         public List<EnumDefinition> Enums { get; set; }
 
-        string managedName;
+        string _managedName;
         public string ManagedName
         {
-            get { return managedName != null ? managedName : Name; }
-            set { managedName = value; }
+            get { return _managedName ?? Name; }
+            set { _managedName = value; }
         }
 
         public HeaderDefinition(string filename)

@@ -47,10 +47,10 @@ namespace BulletSharpGen
 
             int hash = 0x5d5d5d5d;
             char[] chars = value.ToCharArray();
-            foreach (char c in chars)
+            foreach (var c in chars)
             {
-                hash += (int)c;
-                hash -= ((int)c) << 16;
+                hash += c;
+                hash -= c << 16;
             }
             return hash;
         }
@@ -169,7 +169,7 @@ namespace BulletSharpGen
 
         public List<string> GetFileList(bool sorted = false)
         {
-            List<string> list = new List<string>();
+            var list = new List<string>();
             GetFileListRecursive(list);
             if (sorted)
             {

@@ -145,14 +145,7 @@ namespace BulletSharpGen
                     Write(';');
                 }
                 Write("WIN32;");
-                if (conf.IsDebug)
-                {
-                    Write("_DEBUG;");
-                }
-                else
-                {
-                    Write("NDEBUG;");
-                }
+                Write(conf.IsDebug ? "_DEBUG;" : "NDEBUG;");
                 WriteLine("\"");
                 if (conf.IsDebug)
                 {
@@ -352,14 +345,7 @@ namespace BulletSharpGen
                 Write(';');
             }
             Write("WIN32;");
-            if (conf.IsDebug)
-            {
-                Write("_DEBUG;");
-            }
-            else
-            {
-                Write("NDEBUG;");
-            }
+            Write(conf.IsDebug ? "_DEBUG;" : "NDEBUG;");
             WriteLine("%(PreprocessorDefinitions)</PreprocessorDefinitions>");
             if (conf.IsDebug)
             {
@@ -443,13 +429,13 @@ namespace BulletSharpGen
         public void Output(TargetVS targetVS, IList<ProjectConfiguration> confs, string outDirectory)
         {
             Directory.CreateDirectory(outDirectory);
-            FileStream solutionFile = new FileStream(outDirectory + "\\" + namespaceName + ".sln", FileMode.Create, FileAccess.Write);
+            var solutionFile = new FileStream(outDirectory + "\\" + namespaceName + ".sln", FileMode.Create, FileAccess.Write);
             solutionWriter = new StreamWriter(solutionFile, Encoding.UTF8);
 
             this.targetVS = targetVS;
             confs = confs.OrderBy(c => !c.IsDebug).ThenBy(c => c.Name).ToList();
 
-            Guid projectGuid = new Guid("5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0");
+            var projectGuid = new Guid("5A0DEF7E-B7E3-45E9-A511-0F03CECFF8C0");
             string projectGuidString = projectGuid.ToString().ToUpper();
 
             WriteLineSln();
@@ -569,7 +555,7 @@ namespace BulletSharpGen
 
 
             string projectFilename = namespaceName + (targetVS == TargetVS.VS2008 ? ".vcproj" : ".vcxproj");
-            FileStream projectFile = new FileStream(outDirectory + "\\" + projectFilename, FileMode.Create, FileAccess.Write);
+            var projectFile = new FileStream(outDirectory + "\\" + projectFilename, FileMode.Create, FileAccess.Write);
             projectWriter = new StreamWriter(projectFile, Encoding.UTF8);
             
             if (targetVS == TargetVS.VS2008)

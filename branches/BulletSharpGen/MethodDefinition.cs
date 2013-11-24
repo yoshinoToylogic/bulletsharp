@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace BulletSharpGen
+﻿namespace BulletSharpGen
 {
     class MethodDefinition
     {
@@ -38,7 +36,7 @@ namespace BulletSharpGen
                 return false;
             }
 
-            MethodDefinition m = obj as MethodDefinition;
+            var m = obj as MethodDefinition;
             if ((System.Object)m == null)
             {
                 return false;
