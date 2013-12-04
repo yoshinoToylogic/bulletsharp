@@ -3,7 +3,7 @@
 
 = Prerequisites =
   * CMake
-  * Microsoft Visual C++ 2008, 2010 or 2012 (2010/2012 are recommended)
+  * Microsoft Visual C++ 2008-2013 (2008 not recommended)
 
 
 = Instructions =
@@ -16,6 +16,7 @@
 bullet/msvc/2008 for "Visual Studio 9 2008"<br>
 bullet/msvc/2010 for "Visual Studio 10"<br>
 bullet/msvc/2012 for "Visual Studio 11"<br>
+bullet/msvc/2013 for "Visual Studio 12"<br>
 Set the *USE_MSVC_RUNTIME_LIBRARY_DLL* option.
 
 If you want to use double precision, select USE_DOUBLE_PRECISION in CMake, then go to bulletsharp/src/Stdaxh.h and uncomment the following line:
@@ -23,7 +24,7 @@ If you want to use double precision, select USE_DOUBLE_PRECISION in CMake, then 
 
 3. Open *`bullet/msvc/20xx/BULLET_PHYSICS.sln`* and build the *`MinSizeRel`* configuration.
 
-4. Open *`bulletsharp/BulletSharp.sln`* (or `bulletsharp/vs20xx/BulletSharp.sln` for VS 2008/2012) and select the build configuration for your graphics framework. !BulletSharp will use the Vector and Matrix classes from it. If the framework is not listed or you do not need one, then select the Generic configuration, which includes its own Vector/Matrix classes. Build the solution.
+4. Open *`bulletsharp/BulletSharp.sln`* (or `bulletsharp/(vs20xx/)BulletSharp.sln`) and select the build configuration for your graphics framework. !BulletSharp will use the Vector and Matrix classes from it. If the framework is not listed or you do not need one, then select the Generic configuration, which includes its own Vector/Matrix classes. Build the solution.
 
 
 = Instructions for x64 =
