@@ -211,6 +211,11 @@ namespace BulletSharpGen
                         header.ManagedName = "CompoundFromGImpact";
                         continue;
                     }
+                    else if (name.Equals("btNNCGConstraintSolver"))
+                    {
+                        header.ManagedName = "NncgConstraintSolver";
+                        continue;
+                    }
                     header.ManagedName = name.Substring(2);
                 }
                 else if (name.StartsWith("hacd"))
@@ -230,9 +235,19 @@ namespace BulletSharpGen
             foreach (ClassDefinition c in classDefinitions.Values)
             {
                 string name = c.Name;
-                if (name.StartsWith("bt") && name != "btScalar")
+                if (name.StartsWith("bt"))
                 {
-                    name = name.Substring(2);
+                    if (name.Equals("btNNCGConstraintSolver"))
+                    {
+                        name = "NncgConstraintSolver";
+                    }
+                    else if (name.Equals("btScalar"))
+                    {
+                    }
+                    else
+                    {
+                        name = name.Substring(2);
+                    }
                 }
                 c.ManagedName = name;
             }
