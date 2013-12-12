@@ -127,7 +127,7 @@ namespace BulletSharpGen
             "SpuMinkowskiPenetrationDepthSolver", "SpuSampleTask", "SpuSampleTaskProcess", "SpuSync", "StackAlloc",
             "SubSimplexConvexCast", "Transform", "TrbDynBody", "TrbStateVec", "vectormath_aos", "vmInclude",
             "HacdCircularList", "HacdGraph", "HacdICHull", "HacdManifoldMesh", "HacdVector",
-            "Quaternion", "Vector3" };
+            "Quaternion", "Vector3", "LemkeAlgorithm" };
 
             var filterWriter = new FilterWriter(NamespaceName);
             var sourceFilter = new Filter("Source Files", "4FC737F1-C7A5-4376-A066-2A32D752A2FF", "cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx");
