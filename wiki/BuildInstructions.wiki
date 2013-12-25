@@ -3,7 +3,7 @@
 
 = Prerequisites =
   * CMake
-  * Microsoft Visual C++ 2008-2013 (2008 not recommended)
+  * Microsoft Visual C++ 2008-2013 (latest recommended)
 
 
 = Instructions =
