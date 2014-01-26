@@ -62,6 +62,12 @@ namespace BulletSharp
 			get { return btDiscreteDynamicsWorld_getCollisionWorld(_native); }
 		}
         */
+		public bool LatencyMotionStateInterpolation
+		{
+			get { return btDiscreteDynamicsWorld_getLatencyMotionStateInterpolation(_native); }
+			set { btDiscreteDynamicsWorld_setLatencyMotionStateInterpolation(_native, value); }
+		}
+
 		public SimulationIslandManager SimulationIslandManager
 		{
 			get
@@ -90,12 +96,16 @@ namespace BulletSharp
 		static extern bool btDiscreteDynamicsWorld_getApplySpeculativeContactRestitution(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDiscreteDynamicsWorld_getCollisionWorld(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern bool btDiscreteDynamicsWorld_getLatencyMotionStateInterpolation(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDiscreteDynamicsWorld_getSimulationIslandManager(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution(IntPtr obj, bool enable);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btDiscreteDynamicsWorld_setLatencyMotionStateInterpolation(IntPtr obj, bool latencyInterpolation);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDiscreteDynamicsWorld_setNumTasks(IntPtr obj, int numTasks);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
