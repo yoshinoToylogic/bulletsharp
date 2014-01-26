@@ -30,13 +30,3 @@ btCapsuleShapeZ* btCapsuleShapeZ_new(btScalar radius, btScalar height)
 {
 	return new btCapsuleShapeZ(radius, height);
 }
-
-btCapsuleShapeData* btCapsuleShapeData_new()
-{
-	return new btCapsuleShapeData();
-}
-
-void btCapsuleShapeData_delete(btCapsuleShapeData* obj)
-{
-	delete obj;
-}

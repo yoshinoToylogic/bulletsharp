@@ -36,9 +36,14 @@ namespace BulletSharp
 			btCharacterControllerInterface_preStep(_native, collisionWorld._native);
 		}
 
-		public void Reset()
+		public void Reset(CollisionWorld collisionWorld)
 		{
-			btCharacterControllerInterface_reset(_native);
+			btCharacterControllerInterface_reset(_native, collisionWorld._native);
+		}
+
+		public void SetUpInterpolate(bool value)
+		{
+			btCharacterControllerInterface_setUpInterpolate(_native, value);
 		}
 
 		public void SetWalkDirection(Vector3 walkDirection)
@@ -67,7 +72,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCharacterControllerInterface_preStep(IntPtr obj, IntPtr collisionWorld);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCharacterControllerInterface_reset(IntPtr obj);
+		static extern void btCharacterControllerInterface_reset(IntPtr obj, IntPtr collisionWorld);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCharacterControllerInterface_setUpInterpolate(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCharacterControllerInterface_setWalkDirection(IntPtr obj, [In] ref Vector3 walkDirection);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

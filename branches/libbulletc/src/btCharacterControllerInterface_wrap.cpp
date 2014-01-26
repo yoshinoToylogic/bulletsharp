@@ -28,9 +28,14 @@ void btCharacterControllerInterface_preStep(btCharacterControllerInterface* obj,
 	obj->preStep(collisionWorld);
 }
 
-void btCharacterControllerInterface_reset(btCharacterControllerInterface* obj)
+void btCharacterControllerInterface_reset(btCharacterControllerInterface* obj, btCollisionWorld* collisionWorld)
 {
-	obj->reset();
+	obj->reset(collisionWorld);
+}
+
+void btCharacterControllerInterface_setUpInterpolate(btCharacterControllerInterface* obj, bool value)
+{
+	obj->setUpInterpolate(value);
 }
 
 void btCharacterControllerInterface_setWalkDirection(btCharacterControllerInterface* obj, btScalar* walkDirection)

@@ -10,7 +10,4 @@ extern "C"
 	EXPORT btCapsuleShapeX* btCapsuleShapeX_new(btScalar radius, btScalar height);
 
 	EXPORT btCapsuleShapeZ* btCapsuleShapeZ_new(btScalar radius, btScalar height);
-
-	EXPORT btCapsuleShapeData* btCapsuleShapeData_new();
-	EXPORT void btCapsuleShapeData_delete(btCapsuleShapeData* obj);
 }

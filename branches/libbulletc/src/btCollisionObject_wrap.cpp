@@ -307,6 +307,11 @@ void btCollisionObject_setRollingFriction(btCollisionObject* obj, btScalar frict
 	obj->setRollingFriction(frict);
 }
 
+void btCollisionObject_setUserIndex(btCollisionObject* obj, int index)
+{
+	obj->setUserIndex(index);
+}
+
 void btCollisionObject_setUserPointer(btCollisionObject* obj, void* userPointer)
 {
 	obj->setUserPointer(userPointer);

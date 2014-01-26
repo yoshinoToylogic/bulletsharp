@@ -26,6 +26,11 @@ btCollisionWorld* btDiscreteDynamicsWorld_getCollisionWorld(btDiscreteDynamicsWo
 	return obj->getCollisionWorld();
 }
 
+bool btDiscreteDynamicsWorld_getLatencyMotionStateInterpolation(btDiscreteDynamicsWorld* obj)
+{
+	return obj->getLatencyMotionStateInterpolation();
+}
+
 btSimulationIslandManager* btDiscreteDynamicsWorld_getSimulationIslandManager(btDiscreteDynamicsWorld* obj)
 {
 	return obj->getSimulationIslandManager();
@@ -44,6 +49,11 @@ bool btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(btDiscreteDynamicsWor
 void btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution(btDiscreteDynamicsWorld* obj, bool enable)
 {
 	obj->setApplySpeculativeContactRestitution(enable);
+}
+
+void btDiscreteDynamicsWorld_setLatencyMotionStateInterpolation(btDiscreteDynamicsWorld* obj, bool latencyInterpolation)
+{
+	obj->setLatencyMotionStateInterpolation(latencyInterpolation);
 }
 
 void btDiscreteDynamicsWorld_setNumTasks(btDiscreteDynamicsWorld* obj, int numTasks)

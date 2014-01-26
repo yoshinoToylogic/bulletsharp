@@ -53,6 +53,21 @@ namespace BulletSharp
             return new CompoundShape(btWorldImporter_createCompoundShape(_native));
 		}
 
+		public CollisionShape CreateConeShapeZ(float radius, float height)
+		{
+			return new ConeShapeZ(radius, height);
+		}
+
+		public CollisionShape CreateConeShapeX(float radius, float height)
+		{
+			return new ConeShapeX(radius, height);
+		}
+
+		public CollisionShape CreateConeShapeY(float radius, float height)
+		{
+			return new ConeShape(radius, height);
+		}
+
 		public ConeTwistConstraint CreateConeTwistConstraint(RigidBody rbA, Matrix rbAFrame)
 		{
             return new ConeTwistConstraint(btWorldImporter_createConeTwistConstraint(_native, rbA._native, ref rbAFrame));
@@ -88,27 +103,32 @@ namespace BulletSharp
             return new CylinderShape(btWorldImporter_createCylinderShapeY(_native, radius, height));
 		}
 
-		public Generic6DofConstraint CreateGeneric6DofConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
+		public GearConstraint CreateGearConstraint(RigidBody rbA, RigidBody rbB, Vector3 axisInA, Vector3 axisInB, float ratio)
 		{
-			return new Generic6DofConstraint(btWorldImporter_createGeneric6DofConstraint(_native, rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA));
+			return new GearConstraint(rbA, rbB, ref axisInA, ref axisInB, ratio);
 		}
 
 		public Generic6DofConstraint CreateGeneric6DofConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameB)
 		{
-			return new Generic6DofConstraint(btWorldImporter_createGeneric6DofConstraint2(_native, rbB._native, ref frameInB, useLinearReferenceFrameB));
+			return new Generic6DofConstraint(rbB, frameInB, useLinearReferenceFrameB);
 		}
-        /*
+
+		public Generic6DofConstraint CreateGeneric6DofConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
+		{
+			return new Generic6DofConstraint(rbA, rbB, frameInA, frameInB, useLinearReferenceFrameA);
+		}
+
 		public Generic6DofSpringConstraint CreateGeneric6DofSpringConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 		{
-			return btWorldImporter_createGeneric6DofSpringConstraint(_native, rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA);
+			return new Generic6DofSpringConstraint(rbA, rbB, frameInA, frameInB, useLinearReferenceFrameA);
 		}
 
 		public GImpactMeshShape CreateGimpactShape(StridingMeshInterface trimesh)
 		{
-			return btWorldImporter_createGimpactShape(_native, trimesh._native);
+            return new GImpactMeshShape(trimesh._native);
 		}
-        */
-        public HingeConstraint CreateHingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
+
+		public HingeConstraint CreateHingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
 		{
             return new HingeConstraint(btWorldImporter_createHingeConstraint(_native, rbA._native, rbB._native, ref rbAFrame, ref rbBFrame, useReferenceFrameA));
 		}
@@ -135,14 +155,14 @@ namespace BulletSharp
 
 		public MultiSphereShape CreateMultiSphereShape(Vector3 positions, float radi, int numSpheres)
 		{
-			return btWorldImporter_createMultiSphereShape(_native, positions._native, radi._native, numSpheres);
+			return new MultiSphereShape(_native, ref positions, radi._native, numSpheres);
 		}
 
 		public OptimizedBvh CreateOptimizedBvh()
 		{
-			return btWorldImporter_createOptimizedBvh(_native);
+			return new OptimizedBvh(_native);
 		}
-*/
+        */
 		public CollisionShape CreatePlaneShape(Vector3 planeNormal, float planeConstant)
 		{
             return new StaticPlaneShape(btWorldImporter_createPlaneShape(_native, ref planeNormal, planeConstant));
@@ -162,25 +182,25 @@ namespace BulletSharp
 		{
             return new RigidBody(btWorldImporter_createRigidBody(_native, isDynamic, mass, ref startTransform, shape._native, bodyName));
 		}
-        /*
+
 		public ScaledBvhTriangleMeshShape CreateScaledTrangleMeshShape(BvhTriangleMeshShape meshShape, Vector3 localScalingbtBvhTriangleMeshShape)
 		{
-			return btWorldImporter_createScaledTrangleMeshShape(_native, meshShape._native, localScalingbtBvhTriangleMeshShape._native);
+			return new ScaledBvhTriangleMeshShape(meshShape, localScalingbtBvhTriangleMeshShape);
 		}
 
 		public SliderConstraint CreateSliderConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameA)
 		{
-			return btWorldImporter_createSliderConstraint(_native, rbB._native, ref frameInB, useLinearReferenceFrameA);
+			return new SliderConstraint(rbB, frameInB, useLinearReferenceFrameA);
 		}
 
-        public SliderConstraint CreateSliderConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
+		public SliderConstraint CreateSliderConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
 		{
-			return btWorldImporter_createSliderConstraint2(_native, rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA);
+			return new SliderConstraint(rbA, rbB, frameInA, frameInB, useLinearReferenceFrameA);
 		}
-        */
+
 		public CollisionShape CreateSphereShape(float radius)
 		{
-			return new SphereShape(btWorldImporter_createSphereShape(_native, radius));
+			return new SphereShape(radius);
 		}
         /*
 		public StridingMeshInterfaceData CreateStridingMeshInterfaceData(StridingMeshInterfaceData interfaceData)
@@ -192,12 +212,12 @@ namespace BulletSharp
 		{
 			return btWorldImporter_createTriangleInfoMap(_native);
 		}
-
+        */
 		public TriangleIndexVertexArray CreateTriangleMeshContainer()
 		{
-			return btWorldImporter_createTriangleMeshContainer(_native);
+            return new TriangleIndexVertexArray(btWorldImporter_createTriangleMeshContainer(_native));
 		}
-        */
+
 		public void DeleteAllData()
 		{
 			btWorldImporter_deleteAllData(_native);
@@ -321,9 +341,15 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_createCompoundShape(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btWorldImporter_createConeTwistConstraint(IntPtr obj, IntPtr rbA, [In] ref Matrix rbAFrame);
+		static extern IntPtr btWorldImporter_createConeShapeZ(IntPtr obj, float radius, float height);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btWorldImporter_createConeTwistConstraint2(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame);
+		static extern IntPtr btWorldImporter_createConeShapeX(IntPtr obj, float radius, float height);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btWorldImporter_createConeShapeY(IntPtr obj, float radius, float height);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btWorldImporter_createConeTwistConstraint(IntPtr obj, IntPtr rbA, [In] ref Matrix rbAFrame);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btWorldImporter_createConeTwistConstraint2(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Matrix rbAFrame, [In] ref Matrix rbBFrame);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_createConvexHullShape(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -335,11 +361,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_createCylinderShapeY(IntPtr obj, float radius, float height);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btWorldImporter_createGeneric6DofConstraint(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Matrix frameInA, [In] ref Matrix frameInB, bool useLinearReferenceFrameA);
+		static extern IntPtr btWorldImporter_createGearConstraint(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Vector3 axisInA, [In] ref Vector3 axisInB, float ratio);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btWorldImporter_createGeneric6DofConstraint2(IntPtr obj, IntPtr rbB, [In] ref Matrix frameInB, bool useLinearReferenceFrameB);
+		static extern IntPtr btWorldImporter_createGeneric6DofConstraint(IntPtr obj, IntPtr rbB, [In] ref Matrix frameInB, bool useLinearReferenceFrameB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btWorldImporter_createGeneric6DofSpringConstraint(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Matrix frameInA, [In] ref Matrix frameInB, bool useLinearReferenceFrameA);
+		static extern IntPtr btWorldImporter_createGeneric6DofConstraint2(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Matrix frameInA, [In] ref Matrix frameInB, bool useLinearReferenceFrameA);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btWorldImporter_createGeneric6DofSpringConstraint(IntPtr obj, IntPtr rbA, IntPtr rbB, [In] ref Matrix frameInA, [In] ref Matrix frameInB, bool useLinearReferenceFrameA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_createGimpactShape(IntPtr obj, IntPtr trimesh);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -392,26 +420,26 @@ namespace BulletSharp
         static extern IntPtr btWorldImporter_getConstraintByName(IntPtr obj, string name);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern string btWorldImporter_getNameForPointer(IntPtr obj, IntPtr ptr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btWorldImporter_getNumBvhs(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btWorldImporter_getNumCollisionShapes(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btWorldImporter_getNumConstraints(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btWorldImporter_getNumRigidBodies(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btWorldImporter_getNumTriangleInfoMaps(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btWorldImporter_getNumBvhs(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btWorldImporter_getNumCollisionShapes(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btWorldImporter_getNumConstraints(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btWorldImporter_getNumRigidBodies(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btWorldImporter_getNumTriangleInfoMaps(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_getRigidBodyByIndex(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btWorldImporter_getRigidBodyByName(IntPtr obj, string name);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_getTriangleInfoMapByIndex(IntPtr obj, int index);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btWorldImporter_getVerboseMode(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btWorldImporter_getVerboseMode(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btWorldImporter_setDynamicsWorldInfo(IntPtr obj, [In] ref Vector3 gravity, IntPtr solverInfo);
+		static extern void btWorldImporter_setDynamicsWorldInfo(IntPtr obj, [In] ref Vector3 gravity, IntPtr solverInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btWorldImporter_setVerboseMode(IntPtr obj, int verboseMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
