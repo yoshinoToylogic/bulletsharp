@@ -45,6 +45,21 @@ btCompoundShape* btWorldImporter_createCompoundShape(btWorldImporter* obj)
 	return obj->createCompoundShape();
 }
 
+btCollisionShape* btWorldImporter_createConeShapeZ(btWorldImporter* obj, btScalar radius, btScalar height)
+{
+	return obj->createConeShapeZ(radius, height);
+}
+
+btCollisionShape* btWorldImporter_createConeShapeX(btWorldImporter* obj, btScalar radius, btScalar height)
+{
+	return obj->createConeShapeX(radius, height);
+}
+
+btCollisionShape* btWorldImporter_createConeShapeY(btWorldImporter* obj, btScalar radius, btScalar height)
+{
+	return obj->createConeShapeY(radius, height);
+}
+
 btConeTwistConstraint* btWorldImporter_createConeTwistConstraint(btWorldImporter* obj, btRigidBody* rbA, btScalar* rbAFrame)
 {
 	TRANSFORM_CONV(rbAFrame);
@@ -83,17 +98,24 @@ btCollisionShape* btWorldImporter_createCylinderShapeY(btWorldImporter* obj, btS
 	return obj->createCylinderShapeY(radius, height);
 }
 
-btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA)
+btGearConstraint* btWorldImporter_createGearConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* axisInA, btScalar* axisInB, btScalar ratio)
+{
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
+	return obj->createGearConstraint(*rbA, *rbB, VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), ratio);
+}
+
+btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint(btWorldImporter* obj, btRigidBody* rbB, btScalar* frameInB, bool useLinearReferenceFrameB)
+{
+	TRANSFORM_CONV(frameInB);
+	return obj->createGeneric6DofConstraint(*rbB, TRANSFORM_USE(frameInB), useLinearReferenceFrameB);
+}
+
+btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint2(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA)
 {
 	TRANSFORM_CONV(frameInA);
 	TRANSFORM_CONV(frameInB);
 	return obj->createGeneric6DofConstraint(*rbA, *rbB, TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
-}
-
-btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint2(btWorldImporter* obj, btRigidBody* rbB, btScalar* frameInB, bool useLinearReferenceFrameB)
-{
-	TRANSFORM_CONV(frameInB);
-	return obj->createGeneric6DofConstraint(*rbB, TRANSFORM_USE(frameInB), useLinearReferenceFrameB);
 }
 
 btGeneric6DofSpringConstraint* btWorldImporter_createGeneric6DofSpringConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA)
@@ -156,17 +178,17 @@ btCollisionShape* btWorldImporter_createPlaneShape(btWorldImporter* obj, btScala
 	return obj->createPlaneShape(VECTOR3_USE(planeNormal), planeConstant);
 }
 
-btPoint2PointConstraint* btWorldImporter_createPoint2PointConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* pivotInA, btScalar* pivotInB)
+btPoint2PointConstraint* btWorldImporter_createPoint2PointConstraint(btWorldImporter* obj, btRigidBody* rbA, btScalar* pivotInA)
+{
+	VECTOR3_CONV(pivotInA);
+	return obj->createPoint2PointConstraint(*rbA, VECTOR3_USE(pivotInA));
+}
+
+btPoint2PointConstraint* btWorldImporter_createPoint2PointConstraint2(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* pivotInA, btScalar* pivotInB)
 {
 	VECTOR3_CONV(pivotInA);
 	VECTOR3_CONV(pivotInB);
 	return obj->createPoint2PointConstraint(*rbA, *rbB, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
-}
-
-btPoint2PointConstraint* btWorldImporter_createPoint2PointConstraint2(btWorldImporter* obj, btRigidBody* rbA, btScalar* pivotInA)
-{
-	VECTOR3_CONV(pivotInA);
-	return obj->createPoint2PointConstraint(*rbA, VECTOR3_USE(pivotInA));
 }
 
 btRigidBody* btWorldImporter_createRigidBody(btWorldImporter* obj, bool isDynamic, btScalar mass, btScalar* startTransform, btCollisionShape* shape, char* bodyName)

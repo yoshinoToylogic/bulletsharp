@@ -33,6 +33,14 @@ inline void Vector3TobtVector3(const btScalar* s, btVector3* v)
 	v->setZ(s[2]);
 }
 
+inline void btVector4ToVector4(const btVector4* v, btScalar* s)
+{
+	s[0] = v->getX();
+	s[1] = v->getY();
+	s[2] = v->getZ();
+	s[3] = v->getW();
+}
+
 inline void btQuaternionToQuaternion(const btQuaternion* q, btScalar* s)
 {
 	s[0] = q->getX();

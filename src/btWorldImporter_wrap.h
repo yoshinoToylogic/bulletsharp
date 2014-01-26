@@ -10,6 +10,9 @@ extern "C"
 	EXPORT btCollisionShape* btWorldImporter_createCapsuleShapeY(btWorldImporter* obj, btScalar radius, btScalar height);
 	EXPORT btCollisionObject* btWorldImporter_createCollisionObject(btWorldImporter* obj, btScalar* startTransform, btCollisionShape* shape, char* bodyName);
 	EXPORT btCompoundShape* btWorldImporter_createCompoundShape(btWorldImporter* obj);
+	EXPORT btCollisionShape* btWorldImporter_createConeShapeZ(btWorldImporter* obj, btScalar radius, btScalar height);
+	EXPORT btCollisionShape* btWorldImporter_createConeShapeX(btWorldImporter* obj, btScalar radius, btScalar height);
+	EXPORT btCollisionShape* btWorldImporter_createConeShapeY(btWorldImporter* obj, btScalar radius, btScalar height);
 	EXPORT btConeTwistConstraint* btWorldImporter_createConeTwistConstraint(btWorldImporter* obj, btRigidBody* rbA, btScalar* rbAFrame);
 	EXPORT btConeTwistConstraint* btWorldImporter_createConeTwistConstraint2(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* rbAFrame, btScalar* rbBFrame);
 	EXPORT btConvexHullShape* btWorldImporter_createConvexHullShape(btWorldImporter* obj);
@@ -17,8 +20,9 @@ extern "C"
 	EXPORT btCollisionShape* btWorldImporter_createCylinderShapeZ(btWorldImporter* obj, btScalar radius, btScalar height);
 	EXPORT btCollisionShape* btWorldImporter_createCylinderShapeX(btWorldImporter* obj, btScalar radius, btScalar height);
 	EXPORT btCollisionShape* btWorldImporter_createCylinderShapeY(btWorldImporter* obj, btScalar radius, btScalar height);
-	EXPORT btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA);
-	EXPORT btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint2(btWorldImporter* obj, btRigidBody* rbB, btScalar* frameInB, bool useLinearReferenceFrameB);
+	EXPORT btGearConstraint* btWorldImporter_createGearConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* axisInA, btScalar* axisInB, btScalar ratio);
+	EXPORT btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint(btWorldImporter* obj, btRigidBody* rbB, btScalar* frameInB, bool useLinearReferenceFrameB);
+	EXPORT btGeneric6DofConstraint* btWorldImporter_createGeneric6DofConstraint2(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA);
 	EXPORT btGeneric6DofSpringConstraint* btWorldImporter_createGeneric6DofSpringConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB, bool useLinearReferenceFrameA);
 	EXPORT btGImpactMeshShape* btWorldImporter_createGimpactShape(btWorldImporter* obj, btStridingMeshInterface* trimesh);
 	EXPORT btHingeConstraint* btWorldImporter_createHingeConstraint(btWorldImporter* obj, btRigidBody* rbA, btRigidBody* rbB, btScalar* rbAFrame, btScalar* rbBFrame, bool useReferenceFrameA);

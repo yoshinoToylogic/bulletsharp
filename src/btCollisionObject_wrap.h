@@ -61,6 +61,7 @@ extern "C"
 	EXPORT void btCollisionObject_setIslandTag(btCollisionObject* obj, int tag);
 	EXPORT void btCollisionObject_setRestitution(btCollisionObject* obj, btScalar rest);
 	EXPORT void btCollisionObject_setRollingFriction(btCollisionObject* obj, btScalar frict);
+	EXPORT void btCollisionObject_setUserIndex(btCollisionObject* obj, int index);
 	EXPORT void btCollisionObject_setUserPointer(btCollisionObject* obj, void* userPointer);
 	EXPORT void btCollisionObject_setWorldTransform(btCollisionObject* obj, btScalar* worldTrans);
 	EXPORT void btCollisionObject_delete(btCollisionObject* obj);
