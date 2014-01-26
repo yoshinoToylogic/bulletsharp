@@ -371,9 +371,9 @@ namespace BulletSharp
 
         internal static TypedConstraint GetManaged(IntPtr native)
         {
-            IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(native);
-            if (handlePtr.ToInt64() != -1)
+            if (btTypedConstraint_getUserConstraintId(native) != -1)
             {
+                IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(native);
                 GCHandle handle = GCHandle.FromIntPtr(handlePtr);
                 return handle.Target as TypedConstraint;
             }
@@ -393,7 +393,7 @@ namespace BulletSharp
         {
             _native = native;
 
-            if (btTypedConstraint_getUserConstraintPtr(_native).ToInt64() != -1)
+            if (btTypedConstraint_getUserConstraintId(_native) != -1)
             {
                 throw new InvalidOperationException();
             }
@@ -566,9 +566,9 @@ namespace BulletSharp
         {
             if (_native != IntPtr.Zero)
             {
-                IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(_native);
-                if (handlePtr.ToInt64() != -1)
+                if (btTypedConstraint_getUserConstraintId(_native) != -1)
                 {
+                    IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(_native);
                     GCHandle.FromIntPtr(handlePtr).Free();
                     btTypedConstraint_delete(_native);
                 }
