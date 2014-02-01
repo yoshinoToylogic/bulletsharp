@@ -20,34 +20,41 @@ namespace ConvexDecompositionDemo
                 float.Parse(f2, CultureInfo.InvariantCulture));
         }
 
-        void GetVertex(string[] faceVertex)
+        int GetVertex(string[] faceVertex)
         {
             int vindex = int.Parse(faceVertex[0]);
             Vector3 position = vertices[vindex - 1];
 
             // Search for a duplicate
-            int i;
-            for (i = 0; i < finalVertices.Count; i++)
+            int index;
+            for (index = 0; index < finalVertices.Count; index++)
             {
-                if (finalVertices[i].Equals(position))
+                if (finalVertices[index].Equals(position))
                 {
-                    indices.Add(i);
-                    return;
+                    indices.Add(index);
+                    return index;
                 }
             }
 
             finalVertices.Add(position);
-            indices.Add(finalVertices.Count - 1);
+            indices.Add(index);
+            return index;
         }
 
         void ProcessLine(string line)
         {
+            if (string.IsNullOrEmpty(line))
+            {
+                return;
+            }
+
             string[] parts = line.Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
             string cmd = parts[0];
 
             if (cmd.Equals("v"))
             {
-                vertices.Add(ToVector3(parts[1], parts[2], parts[3]));
+                Vector3 v = ToVector3(parts[1], parts[2], parts[3]);
+                vertices.Add(v);
             }
             else if (cmd.Equals("vt"))
             {
@@ -55,19 +62,23 @@ namespace ConvexDecompositionDemo
             }
             else if (cmd.Equals("vn"))
             {
-                normals.Add(ToVector3(parts[1], parts[2], parts[3]));
+                Vector3 n = ToVector3(parts[1], parts[2], parts[3]);
+                normals.Add(n);
             }
             else if (cmd.Equals("f"))
             {
-                List<Vector3> faceVerts = new List<Vector3>();
+                int[] face = new int[parts.Length - 1];
 
-                for (int i = 1; i < parts.Length; i++)
+                face[0] = GetVertex(parts[1].Split(faceSplit, System.StringSplitOptions.RemoveEmptyEntries));
+                face[1] = GetVertex(parts[2].Split(faceSplit, System.StringSplitOptions.RemoveEmptyEntries));
+                face[2] = GetVertex(parts[3].Split(faceSplit, System.StringSplitOptions.RemoveEmptyEntries));
+
+                if (face.Length == 4)
                 {
-                    string[] v = parts[i].Split(new char[] { '/' }, System.StringSplitOptions.RemoveEmptyEntries);
-                    GetVertex(v);
+                    indices.Add(face[0]);
+                    indices.Add(face[2]);
+                    face[3] = GetVertex(parts[4].Split(faceSplit, System.StringSplitOptions.RemoveEmptyEntries));
                 }
-
-                int vcount = parts.Length - 1;
             }
         }
 
@@ -102,6 +113,7 @@ namespace ConvexDecompositionDemo
             return ret;
         }
 
+        readonly char[] faceSplit = new char[] { '/' };
         public int triCount;
         List<int> indices;
         public List<Vector3> normals;
