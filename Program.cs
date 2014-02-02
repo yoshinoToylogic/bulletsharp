@@ -23,12 +23,12 @@ namespace BulletSharpGen
             var parser = new BulletParser(reader.ClassDefinitions, reader.HeaderDefinitions);
             if (cppCliMode)
             {
-                var writer = new CppWriter(parser.HeaderDefinitions, NamespaceName);
+                var writer = new CppCliWriter(parser.HeaderDefinitions, NamespaceName);
                 writer.Output();
             }
             else
             {
-                var writer = new CWriter(parser.HeaderDefinitions, NamespaceName);
+                var writer = new PInvokeWriter(parser.HeaderDefinitions, NamespaceName);
                 writer.Output();
             }
 
