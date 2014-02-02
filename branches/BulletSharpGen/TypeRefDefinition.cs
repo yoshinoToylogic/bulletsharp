@@ -14,6 +14,7 @@ namespace BulletSharpGen
         public bool HasTemplateTypeParameter { get; set; }
         public TypeRefDefinition SpecializedTemplateType { get; set; }
 
+        private bool _unresolved;
         public ClassDefinition Target { get; set; }
 
         public string FullName
@@ -66,7 +67,11 @@ namespace BulletSharpGen
                 }
                 if (Target == null)
                 {
-                    Console.WriteLine("Unresolved reference to " + Name);
+                    if (!_unresolved)
+                    {
+                        Console.WriteLine("Unresolved reference to " + Name);
+                    }
+                    _unresolved = true;
                     return Name;
                 }
                 if (SpecializedTemplateType != null)

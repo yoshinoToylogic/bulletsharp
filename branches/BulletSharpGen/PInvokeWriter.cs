@@ -4,9 +4,9 @@ using System.IO;
 
 namespace BulletSharpGen
 {
-    class CWriter : WrapperWriter
+    class PInvokeWriter : WrapperWriter
     {
-        public CWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public PInvokeWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
             : base(headerDefinitions, namespaceName)
         {
         }
@@ -517,33 +517,40 @@ namespace BulletSharpGen
                 overloadIndex = 0;
             }
 
-            // Write methods and properties
-            if (c.Methods.Count - constructorCount != 0)
+            var methods = new List<MethodDefinition>(c.Methods);
+            foreach (PropertyDefinition prop in c.Properties)
             {
-                // Methods
-                MethodDefinition previousMethod = null;
-                foreach (MethodDefinition method in c.Methods)
+                methods.Add(prop.Getter);
+                if (prop.Setter != null)
                 {
-                    if (method.IsConstructor)
-                    {
-                        continue;
-                    }
-
-                    if (previousMethod != null && previousMethod.Name != method.Name)
-                    {
-                        overloadIndex = 0;
-                    }
-
-                    OutputMethod(method, level, ref overloadIndex);
-                    previousMethod = method;
+                    methods.Add(prop.Setter);
                 }
-                overloadIndex = 0;
-                
-                // Properties
-                foreach (PropertyDefinition prop in c.Properties)
+            }
+            methods.Sort((a, b) => a.Name.CompareTo(b.Name));
+
+            // Write methods
+            MethodDefinition previousMethod = null;
+            foreach (MethodDefinition method in methods)
+            {
+                if (method.IsConstructor)
                 {
-                    OutputProperty(prop, level);
+                    continue;
                 }
+
+                if (previousMethod != null && previousMethod.Name != method.Name)
+                {
+                    overloadIndex = 0;
+                }
+
+                OutputMethod(method, level, ref overloadIndex);
+                previousMethod = method;
+            }
+            overloadIndex = 0;
+
+            // Write properties
+            foreach (PropertyDefinition prop in c.Properties)
+            {
+                OutputProperty(prop, level);
             }
 
             // Write delete method
@@ -568,7 +575,7 @@ namespace BulletSharpGen
 
         public void Output()
         {
-            const string outDirectory = "src";
+            string outDirectory = NamespaceName + "_pinvoke";
 
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {

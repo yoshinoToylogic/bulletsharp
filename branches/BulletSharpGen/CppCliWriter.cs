@@ -11,14 +11,14 @@ namespace BulletSharpGen
         Internal
     }
 
-    class CppWriter
+    class CppCliWriter
     {
         Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
         StreamWriter headerWriter, sourceWriter;
         bool hasWhiteSpace;
         string namespaceName;
 
-        public CppWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public CppCliWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
         {
             this.headerDefinitions = headerDefinitions;
             this.namespaceName = namespaceName;
@@ -440,7 +440,7 @@ namespace BulletSharpGen
 
         public void Output()
         {
-            const string outDirectory = "src";
+            string outDirectory = namespaceName + "_cppcli";
 
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {

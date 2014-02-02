@@ -288,6 +288,11 @@ namespace BulletSharpGen
                 {
                     typeRef.Target = classDefinitions[typeRef.Name];
                 }
+
+                if (typeRef.SpecializedTemplateType != null)
+                {
+                    ResolveTypeRef(typeRef.SpecializedTemplateType);
+                }
             }
         }
 
