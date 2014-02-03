@@ -202,12 +202,12 @@ namespace BulletSharp
 		{
 			btDispatcher_freeCollisionAlgorithm(_native, ptr);
 		}
-        /*
+        
 		public PersistentManifold GetManifoldByIndexInternal(int index)
 		{
-			return btDispatcher_getManifoldByIndexInternal(_native, index);
+            return new PersistentManifold(btDispatcher_getManifoldByIndexInternal(_native, index));
 		}
-
+        /*
 		public PersistentManifold GetNewManifold(CollisionObject b0, CollisionObject b1)
 		{
 			return btDispatcher_getNewManifold(_native, b0._native, b1._native);
