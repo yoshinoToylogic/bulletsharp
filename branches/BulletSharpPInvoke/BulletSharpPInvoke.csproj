@@ -70,6 +70,7 @@
     <Compile Include="Collision\MultiSphereShape.cs" />
     <Compile Include="Collision\OverlappingPairCache.cs" />
     <Compile Include="Collision\OverlappingPairCallback.cs" />
+    <Compile Include="Collision\PersistentManifold.cs" />
     <Compile Include="Collision\PointCollector.cs" />
     <Compile Include="Collision\ScaledBvhTriangleMeshShape.cs" />
     <Compile Include="Collision\ShapeHull.cs" />

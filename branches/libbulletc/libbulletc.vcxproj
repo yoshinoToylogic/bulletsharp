@@ -209,6 +209,7 @@
     <ClInclude Include="src\btOverlappingPairCache_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCallback_wrap.h" />
     <ClInclude Include="src\btParallelConstraintSolver_wrap.h" />
+    <ClInclude Include="src\btPersistentManifold_wrap.h" />
     <ClInclude Include="src\btPoint2PointConstraint_wrap.h" />
     <ClInclude Include="src\btPointCollector_wrap.h" />
     <ClInclude Include="src\btPolarDecomposition_wrap.h" />
@@ -317,6 +318,7 @@
     <ClCompile Include="src\btOverlappingPairCache_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCallback_wrap.cpp" />
     <ClCompile Include="src\btParallelConstraintSolver_wrap.cpp" />
+    <ClCompile Include="src\btPersistentManifold_wrap.cpp" />
     <ClCompile Include="src\btPoint2PointConstraint_wrap.cpp" />
     <ClCompile Include="src\btPointCollector_wrap.cpp" />
     <ClCompile Include="src\btPolarDecomposition_wrap.cpp" />

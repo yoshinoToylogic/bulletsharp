@@ -30,7 +30,6 @@
 #define btActionInterface void
 #define btIDebugDraw void
 #define btCollisionWorld void
-#define btCollisionObject void
 #define btBoxShape void
 #define btSphereShape void
 #define btCapsuleShape void
@@ -99,7 +98,6 @@
 #define btIndexedMesh void
 #define IndexedMeshArray void
 #define btManifoldArray void
-#define btManifoldPoint void
 #define btManifoldResult void
 #define btMinkowskiPenetrationDepthSolver void
 #define btMotionState void
@@ -109,7 +107,6 @@
 #define btOverlapFilterCallback void
 #define btOverlappingPairCache void
 #define btOverlappingPairCallback void
-#define btPersistentManifold void
 #define btPolyhedralConvexAabbCachingShape void
 #define btPolyhedralConvexShape void
 #define btPositionAndRadius void
@@ -205,6 +202,10 @@
 #define btCollisionAlgorithmCreateFunc void
 #endif
 
+#ifndef BT_COLLISION_OBJECT_H
+#define btCollisionObject void
+#endif
+
 #ifndef BT_CONCAVE_SHAPE_H
 #define btConcaveShape void
 #endif
@@ -249,12 +250,20 @@
 #define btKinematicCharacterController void
 #endif
 
+#ifndef BT_MANIFOLD_CONTACT_POINT_H
+#define btManifoldPoint void
+#endif
+
 #ifndef BT_OPTIMIZED_BVH_H
 #define btOptimizedBvh void
 #endif
 
 #ifndef __BT_PARALLEL_CONSTRAINT_SOLVER_H
 #define btParallelConstraintSolver void
+#endif
+
+#ifndef BT_PERSISTENT_MANIFOLD_H
+#define btPersistentManifold void
 #endif
 
 #ifndef BT_POINT_COLLECTOR_H
