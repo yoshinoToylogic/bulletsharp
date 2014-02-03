@@ -32,8 +32,7 @@ namespace BasicDemo
                 return;
             }
 
-            GraphicsMode mode = new GraphicsMode(DisplayDevice.Default.BitsPerPixel, 16, 0, 0, 0, 1, false);
-            BasicDemo demo = new BasicDemo(mode);
+            BasicDemo demo = new BasicDemo(GraphicsMode.Default);
             demo.Run(60);
         }
     }
