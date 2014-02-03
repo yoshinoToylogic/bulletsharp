@@ -159,8 +159,8 @@ namespace BulletSharpGen
                     {
                         // function writes the result to a given pointer
                         new PropertyDefinition(method);
-                        //c.Methods.Remove(method);
-                        //i--;
+                        c.Methods.Remove(method);
+                        i--;
                     }
                 }
                 for (i = 0; i < c.Methods.Count; i++)
@@ -176,8 +176,8 @@ namespace BulletSharpGen
                             {
                                 prop.Setter = method;
                                 method.Property = prop;
-                                //c.Methods.Remove(method);
-                                //i--;
+                                c.Methods.Remove(method);
+                                i--;
                                 break;
                             }
                         }
@@ -191,7 +191,9 @@ namespace BulletSharpGen
                 foreach (FieldDefinition field in c.Fields)
                 {
                     ResolveTypeRef(field.Type);
-                    new PropertyDefinition(field);
+                    var prop = new PropertyDefinition(field);
+                    c.Methods.Remove(prop.Getter);
+                    c.Methods.Remove(prop.Setter);
                 }
             }
 
