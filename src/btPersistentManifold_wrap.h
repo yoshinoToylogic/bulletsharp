@@ -29,4 +29,9 @@ extern "C"
 	EXPORT void btPersistentManifold_setIndex1a(btPersistentManifold* obj, int value);
 	EXPORT void btPersistentManifold_setNumContacts(btPersistentManifold* obj, int cachedPoints);
 	EXPORT bool btPersistentManifold_validContactDistance(btPersistentManifold* obj, btManifoldPoint* pt);
+
+	EXPORT ContactDestroyedCallback getGContactDestroyedCallback();
+	EXPORT ContactProcessedCallback getGContactProcessedCallback();
+	EXPORT void setGContactDestroyedCallback(ContactDestroyedCallback value);
+	EXPORT void setGContactProcessedCallback(ContactProcessedCallback value);
 }
