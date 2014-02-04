@@ -140,3 +140,23 @@ bool btPersistentManifold_validContactDistance(btPersistentManifold* obj, btMani
 {
 	return obj->validContactDistance(*pt);
 }
+
+ContactDestroyedCallback getGContactDestroyedCallback()
+{
+	return gContactDestroyedCallback;
+}
+
+void setGContactDestroyedCallback(ContactDestroyedCallback value)
+{
+	gContactDestroyedCallback = value;
+}
+
+ContactProcessedCallback getGContactProcessedCallback()
+{
+	return gContactProcessedCallback;
+}
+
+void setGContactProcessedCallback(ContactProcessedCallback value)
+{
+	gContactProcessedCallback = value;
+}

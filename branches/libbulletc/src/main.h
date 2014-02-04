@@ -264,6 +264,8 @@
 
 #ifndef BT_PERSISTENT_MANIFOLD_H
 #define btPersistentManifold void
+#define ContactDestroyedCallback void
+#define ContactProcessedCallback void
 #endif
 
 #ifndef BT_POINT_COLLECTOR_H

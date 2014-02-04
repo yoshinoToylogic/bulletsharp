@@ -4,9 +4,78 @@ using System.Security;
 
 namespace BulletSharp
 {
+    public delegate void ContactDestroyedEventHandler(Object userPersistantData);
+    public delegate void ContactProcessedEventHandler(ManifoldPoint cp, CollisionObject body0, CollisionObject body1);
+
 	public class PersistentManifold //: TypedObject
 	{
         internal IntPtr _native;
+
+        static ContactDestroyedEventHandler _contactDestroyed;
+        static ContactProcessedEventHandler _contactProcessed;
+        static ContactDestroyedUnmanagedDelegate _contactDestroyedUnmanaged;
+        static ContactProcessedUnmanagedDelegate _contactProcessedUnmanaged;
+        static IntPtr _contactDestroyedUnmanagedPtr;
+        static IntPtr _contactProcessedUnmanagedPtr;
+
+        private delegate bool ContactDestroyedUnmanagedDelegate(IntPtr userPersistantData);
+        private delegate bool ContactProcessedUnmanagedDelegate(IntPtr cp, IntPtr body0, IntPtr body1);
+
+        static bool ContactDestroyedUnmanaged(IntPtr userPersistentData)
+        {
+            _contactDestroyed.Invoke(userPersistentData);
+	        return false;
+        }
+
+        static bool ContactProcessedUnmanaged(IntPtr cp, IntPtr body0, IntPtr body1)
+        {
+            _contactProcessed.Invoke(new ManifoldPoint(cp, true), CollisionObject.GetManaged(body0), CollisionObject.GetManaged(body1));
+            return false;
+        }
+
+        public static event ContactDestroyedEventHandler ContactDestroyed
+        {
+            add
+            {
+                if (_contactDestroyedUnmanaged == null)
+                {
+                    _contactDestroyedUnmanaged = new ContactDestroyedUnmanagedDelegate(ContactDestroyedUnmanaged);
+                    _contactDestroyedUnmanagedPtr = Marshal.GetFunctionPointerForDelegate(_contactDestroyedUnmanaged);
+                }
+                setGContactDestroyedCallback(_contactDestroyedUnmanagedPtr);
+                _contactDestroyed += value;
+            }
+            remove
+            {
+                _contactDestroyed -= value;
+                if (_contactDestroyed.GetInvocationList().Length == 0)
+                {
+                    setGContactDestroyedCallback(IntPtr.Zero);
+                }
+            }
+        }
+
+        public static event ContactProcessedEventHandler ContactProcessed
+        {
+            add
+            {
+                if (_contactProcessedUnmanaged == null)
+                {
+                    _contactProcessedUnmanaged = new ContactProcessedUnmanagedDelegate(ContactProcessedUnmanaged);
+                    _contactProcessedUnmanagedPtr = Marshal.GetFunctionPointerForDelegate(_contactProcessedUnmanaged);
+                }
+                setGContactProcessedCallback(_contactProcessedUnmanagedPtr);
+                _contactProcessed += value;
+            }
+            remove
+            {
+                _contactProcessed -= value;
+                if (_contactProcessed.GetInvocationList().Length == 0)
+                {
+                    setGContactProcessedCallback(IntPtr.Zero);
+                }
+            }
+        }
 
 		internal PersistentManifold(IntPtr native)
 		{
@@ -178,5 +247,13 @@ namespace BulletSharp
 		static extern void btPersistentManifold_setNumContacts(IntPtr obj, int cachedPoints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btPersistentManifold_validContactDistance(IntPtr obj, IntPtr pt);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr getGContactDestroyedCallback();
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr getGContactProcessedCallback();
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void setGContactDestroyedCallback(IntPtr value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void setGContactProcessedCallback(IntPtr value);
 	}
 }
