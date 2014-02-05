@@ -122,6 +122,7 @@
 #define btTransform void
 #define btVector3 void
 #define btVector4 void
+#define btAligendBroadphasePairArray void
 #define btAlignedCollisionObjectArray void
 #define btAlignedIntArray void
 #define btAlignedScalarArray void
@@ -131,6 +132,7 @@
 #define PHY_ScalarType int
 #define btDynamicsWorldType int
 #else
+#define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair*>
 #define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
 #define btAlignedIntArray btAlignedObjectArray<int>
 #define btAlignedScalarArray btAlignedObjectArray<btScalar>

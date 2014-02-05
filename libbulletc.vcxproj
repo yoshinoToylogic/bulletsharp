@@ -153,7 +153,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\btActionInterface_wrap.h" />
+    <ClInclude Include="src\btAlignedBroadphasePairArray_wrap.h" />
     <ClInclude Include="src\btAlignedCollisionObjectArray_wrap.h" />
+    <ClInclude Include="src\btAlignedManifoldArray_wrap.h" />
     <ClInclude Include="src\btAxisSweep3_wrap.h" />
     <ClInclude Include="src\btBoxCollision_wrap.h" />
     <ClInclude Include="src\btBoxShape_wrap.h" />
@@ -262,7 +264,9 @@
       </PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\btActionInterface_wrap.cpp" />
+    <ClCompile Include="src\btAlignedBroadphasePairArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedCollisionObjectArray_wrap.cpp" />
+    <ClCompile Include="src\btAlignedManifoldArray_wrap.cpp" />
     <ClCompile Include="src\btAxisSweep3_wrap.cpp" />
     <ClCompile Include="src\btBoxCollision_wrap.cpp" />
     <ClCompile Include="src\btBoxShape_wrap.cpp" />
