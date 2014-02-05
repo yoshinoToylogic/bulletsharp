@@ -138,12 +138,12 @@ namespace BulletSharp
 		{
 			get { return btOverlappingPairCache_getNumOverlappingPairs(_native); }
 		}
-        /*
+        
 		public AlignedBroadphasePairArray OverlappingPairArray
 		{
-			get { return btOverlappingPairCache_getOverlappingPairArray(_native); }
+            get { return new AlignedBroadphasePairArray(btOverlappingPairCache_getOverlappingPairArray(_native)); }
 		}
-        */
+        
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOverlappingPairCache_cleanOverlappingPair(IntPtr obj, IntPtr pair, IntPtr dispatcher);
@@ -171,8 +171,8 @@ namespace BulletSharp
 
 	public class HashedOverlappingPairCache : OverlappingPairCache
 	{
-		internal HashedOverlappingPairCache(IntPtr native)
-			: base(native)
+		internal HashedOverlappingPairCache(IntPtr native, bool preventDelete = false)
+			: base(native, preventDelete)
 		{
 		}
 

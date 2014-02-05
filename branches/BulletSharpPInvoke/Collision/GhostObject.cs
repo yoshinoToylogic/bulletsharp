@@ -128,7 +128,7 @@ namespace BulletSharp
             {
                 if (_overlappingPairCache == null)
                 {
-                    _overlappingPairCache = new HashedOverlappingPairCache(btPairCachingGhostObject_getOverlappingPairCache(_native));
+                    _overlappingPairCache = new HashedOverlappingPairCache(btPairCachingGhostObject_getOverlappingPairCache(_native), true);
                 }
                 return _overlappingPairCache;
             }

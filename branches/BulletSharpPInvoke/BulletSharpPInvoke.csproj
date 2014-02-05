@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collision\ActivatingCollisionAlgorithm.cs" />
+    <Compile Include="LinearMath\AlignedManifoldArray.cs" />
     <Compile Include="Collision\AxisSweep3.cs" />
     <Compile Include="Collision\BoxShape.cs" />
     <Compile Include="Collision\BroadphaseInterface.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="Extras\BulletWorldImporter.cs" />
     <Compile Include="Extras\BulletXmlWorldImporter.cs" />
     <Compile Include="Extras\WorldImporter.cs" />
+    <Compile Include="LinearMath\AlignedBroadphasePairArray.cs" />
     <Compile Include="LinearMath\AlignedCollisionObjectArray.cs" />
     <Compile Include="LinearMath\AlignedObjectArray.cs" />
     <Compile Include="LinearMath\AlignedVector3Array.cs" />

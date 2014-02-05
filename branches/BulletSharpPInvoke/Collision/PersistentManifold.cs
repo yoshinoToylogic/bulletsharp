@@ -10,6 +10,7 @@ namespace BulletSharp
 	public class PersistentManifold //: TypedObject
 	{
         internal IntPtr _native;
+        bool _preventDelete;
 
         static ContactDestroyedEventHandler _contactDestroyed;
         static ContactProcessedEventHandler _contactProcessed;
@@ -77,9 +78,10 @@ namespace BulletSharp
             }
         }
 
-		internal PersistentManifold(IntPtr native)
+		internal PersistentManifold(IntPtr native, bool preventDelete = false)
 		{
             _native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public PersistentManifold()

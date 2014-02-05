@@ -205,7 +205,7 @@ namespace BulletSharp
         
 		public PersistentManifold GetManifoldByIndexInternal(int index)
 		{
-            return new PersistentManifold(btDispatcher_getManifoldByIndexInternal(_native, index));
+            return new PersistentManifold(btDispatcher_getManifoldByIndexInternal(_native, index), true);
 		}
         /*
 		public PersistentManifold GetNewManifold(CollisionObject b0, CollisionObject b1)
