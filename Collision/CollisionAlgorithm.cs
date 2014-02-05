@@ -74,27 +74,30 @@ namespace BulletSharp
 	public class CollisionAlgorithm
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal CollisionAlgorithm(IntPtr native)
+		internal CollisionAlgorithm(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
         /*
 		public float CalculateTimeOfImpact(CollisionObject body0, CollisionObject body1, DispatcherInfo dispatchInfo, ManifoldResult resultOut)
 		{
 			return btCollisionAlgorithm_calculateTimeOfImpact(_native, body0._native, body1._native, dispatchInfo._native, resultOut._native);
 		}
-
+        */
+        public void GetAllContactManifolds(AlignedManifoldArray manifoldArray)
+        {
+            btCollisionAlgorithm_getAllContactManifolds(_native, manifoldArray._native);
+        }
+        /*
 		public void ProcessCollision(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, DispatcherInfo dispatchInfo, ManifoldResult resultOut)
 		{
 			btCollisionAlgorithm_processCollision(_native, body0Wrap._native, body1Wrap._native, dispatchInfo._native, resultOut._native);
 		}
-
-		public void AllContactManifolds
-		{
-			get { return btCollisionAlgorithm_getAllContactManifolds(_native); }
-		}
         */
+        
 		public void Dispose()
 		{
 			Dispose(true);
@@ -105,7 +108,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btCollisionAlgorithm_delete(_native);
+                if (!_preventDelete)
+                {
+                    btCollisionAlgorithm_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

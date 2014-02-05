@@ -274,10 +274,12 @@ namespace BulletSharp
 	public class BroadphasePair
 	{
 		internal IntPtr _native;
+        bool _preventDelete;
 
-		internal BroadphasePair(IntPtr native)
+		internal BroadphasePair(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public BroadphasePair()
@@ -294,20 +296,20 @@ namespace BulletSharp
 		{
 			_native = btBroadphasePair_new3(proxy0._native, proxy1._native);
 		}
-        /*
+        
 		public CollisionAlgorithm Algorithm
 		{
-			get { return btBroadphasePair_getAlgorithm(_native); }
+            get { return new CollisionAlgorithm(btBroadphasePair_getAlgorithm(_native), true); }
 			set { btBroadphasePair_setAlgorithm(_native, value._native); }
 		}
-        */
-		public BroadphaseProxy PProxy0
+        
+		public BroadphaseProxy Proxy0
 		{
             get { return new BroadphaseProxy(btBroadphasePair_getPProxy0(_native), true); }
 			set { btBroadphasePair_setPProxy0(_native, value._native); }
 		}
 
-		public BroadphaseProxy PProxy1
+		public BroadphaseProxy Proxy1
 		{
 			get { return new BroadphaseProxy(btBroadphasePair_getPProxy1(_native), true); }
 			set { btBroadphasePair_setPProxy1(_native, value._native); }
@@ -323,7 +325,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btBroadphasePair_delete(_native);
+                if (!_preventDelete)
+                {
+                    btBroadphasePair_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

@@ -6,8 +6,8 @@ namespace BulletSharp
 {
 	public class GImpactCollisionAlgorithm : ActivatingCollisionAlgorithm
 	{
-		internal GImpactCollisionAlgorithm(IntPtr native)
-			: base(native)
+		internal GImpactCollisionAlgorithm(IntPtr native, bool preventDelete = false)
+			: base(native, preventDelete)
 		{
 		}
 
