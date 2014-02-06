@@ -74,7 +74,7 @@ namespace BulletSharp
             {
                 if (_overlappingPairs == null)
                 {
-                    _overlappingPairs = new AlignedCollisionObjectArray(btGhostObject_getOverlappingPairs(_native));
+                    _overlappingPairs = new AlignedCollisionObjectArray(btGhostObject_getOverlappingPairs(_native), true);
                 }
                 return _overlappingPairs;
             }

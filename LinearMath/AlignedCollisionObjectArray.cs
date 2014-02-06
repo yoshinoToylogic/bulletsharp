@@ -72,9 +72,12 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedCollisionObjectArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedCollisionObjectArray : AlignedObjectArray, IList<CollisionObject>, IDisposable
     {
-        internal AlignedCollisionObjectArray(IntPtr native)
+        bool _preventDelete;
+
+        internal AlignedCollisionObjectArray(IntPtr native, bool preventDelete = false)
             : base(native)
         {
+            _preventDelete = preventDelete;
         }
 
         public void Dispose()
@@ -87,7 +90,10 @@ namespace BulletSharp
         {
             if (_native != IntPtr.Zero)
             {
-                //btAlignedObjectArray_delete(_native);
+                if (!_preventDelete)
+                {
+                    btAlignedCollisionObjectArray_delete(_native);
+                }
                 _native = IntPtr.Zero;
             }
         }
@@ -177,5 +183,7 @@ namespace BulletSharp
         protected static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btAlignedCollisionObjectArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btAlignedCollisionObjectArray_delete(IntPtr obj);
     }
 }

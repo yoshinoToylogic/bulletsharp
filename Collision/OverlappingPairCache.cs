@@ -87,6 +87,7 @@ namespace BulletSharp
 	public class OverlappingPairCache : OverlappingPairCallback
 	{
         OverlappingPairCallback _ghostPairCallback;
+        AlignedBroadphasePairArray _overlappingPairArray;
 
 		internal OverlappingPairCache(IntPtr native, bool preventDelete = false)
             : base(native, preventDelete)
@@ -141,7 +142,15 @@ namespace BulletSharp
         
 		public AlignedBroadphasePairArray OverlappingPairArray
 		{
-            get { return new AlignedBroadphasePairArray(btOverlappingPairCache_getOverlappingPairArray(_native)); }
+            get
+            {
+                IntPtr pairArrayPtr = btOverlappingPairCache_getOverlappingPairArray(_native);
+                if (_overlappingPairArray == null || !_overlappingPairArray._native.Equals(pairArrayPtr))
+                {
+                    _overlappingPairArray = new AlignedBroadphasePairArray(pairArrayPtr, true);
+                }
+                return _overlappingPairArray;
+            }
 		}
         
 

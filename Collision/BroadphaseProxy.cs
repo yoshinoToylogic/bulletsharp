@@ -157,10 +157,10 @@ namespace BulletSharp
 			set { btBroadphaseProxy_setAabbMin(_native, ref value); }
 		}
 
-		public IntPtr ClientObject
+		public Object ClientObject
 		{
-			get { return btBroadphaseProxy_getClientObject(_native); }
-			set { btBroadphaseProxy_setClientObject(_native, value); }
+			get { return CollisionObject.GetManaged(btBroadphaseProxy_getClientObject(_native)); }
+			set { btBroadphaseProxy_setClientObject(_native, (value as CollisionObject)._native); }
 		}
 
 		public short CollisionFilterGroup

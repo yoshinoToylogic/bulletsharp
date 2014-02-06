@@ -72,9 +72,12 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedBroadphasePairArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedBroadphasePairArray : AlignedObjectArray, IList<BroadphasePair>, IDisposable
     {
-        internal AlignedBroadphasePairArray(IntPtr native)
+        bool _preventDelete;
+
+        internal AlignedBroadphasePairArray(IntPtr native, bool preventDelete)
             : base(native)
         {
+            _preventDelete = preventDelete;
         }
 
         public void Dispose()
@@ -87,7 +90,10 @@ namespace BulletSharp
         {
             if (_native != IntPtr.Zero)
             {
-                //btAlignedObjectArray_delete(_native);
+                if (!_preventDelete)
+                {
+                    btAlignedBroadphasePairArray_delete(_native);
+                }
                 _native = IntPtr.Zero;
             }
         }
@@ -177,5 +183,7 @@ namespace BulletSharp
         protected static extern int btAlignedBroadphasePairArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btAlignedBroadphasePairArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btAlignedBroadphasePairArray_delete(IntPtr obj);
     }
 }

@@ -72,9 +72,12 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedManifoldArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedManifoldArray : AlignedObjectArray, IList<PersistentManifold>, IDisposable
     {
-        internal AlignedManifoldArray(IntPtr native)
+        bool _preventDelete;
+
+        internal AlignedManifoldArray(IntPtr native, bool preventDelete)
             : base(native)
         {
+            _preventDelete = preventDelete;
         }
 
         public AlignedManifoldArray()
@@ -92,7 +95,10 @@ namespace BulletSharp
         {
             if (_native != IntPtr.Zero)
             {
-                //btAlignedObjectArray_delete(_native);
+                if (!_preventDelete)
+                {
+                    btManifoldArray_delete(_native);
+                }
                 _native = IntPtr.Zero;
             }
         }
@@ -125,7 +131,7 @@ namespace BulletSharp
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new PersistentManifold(btAlignedManifoldArray_at(_native, index), true);
+                return new PersistentManifold(btManifoldArray_at(_native, index), true);
             }
             set
             {
@@ -155,7 +161,7 @@ namespace BulletSharp
 
         public int Count
         {
-            get { return btAlignedManifoldArray_size(_native); }
+            get { return btManifoldArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -181,8 +187,10 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btManifoldArray_new();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedManifoldArray_size(IntPtr obj);
+        protected static extern int btManifoldArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedManifoldArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btManifoldArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btManifoldArray_delete(IntPtr obj);
     }
 }

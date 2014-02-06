@@ -355,7 +355,7 @@ namespace BulletSharp
 			{
 				if (_collisionObjects == null)
 				{
-					_collisionObjects = new AlignedCollisionObjectArray(btCollisionWorld_AllHitsRayResultCallback_getCollisionObjects(_native));
+					_collisionObjects = new AlignedCollisionObjectArray(btCollisionWorld_AllHitsRayResultCallback_getCollisionObjects(_native), true);
 				}
 				return _collisionObjects;
 			}
