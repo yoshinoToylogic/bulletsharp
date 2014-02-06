@@ -15,3 +15,8 @@ btPersistentManifold* btManifoldArray_at(btManifoldArray* obj, int n)
 {
 	return obj->at(n);
 }
+
+void btManifoldArray_delete(btManifoldArray* obj)
+{
+	delete obj;
+}

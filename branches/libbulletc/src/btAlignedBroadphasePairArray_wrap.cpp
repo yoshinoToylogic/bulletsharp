@@ -10,3 +10,8 @@ btBroadphasePair* btAlignedBroadphasePairArray_at(btAlignedBroadphasePairArray* 
 {
 	return obj->at(n);
 }
+
+void btAlignedBroadphasePairArray_delete(btAlignedBroadphasePairArray* obj)
+{
+	delete obj;
+}
