@@ -4,4 +4,5 @@ extern "C"
 {
 	EXPORT int btAlignedBroadphasePairArray_size(btAlignedBroadphasePairArray* obj);
 	EXPORT btBroadphasePair* btAlignedBroadphasePairArray_at(btAlignedBroadphasePairArray* obj, int n);
+	EXPORT void btAlignedBroadphasePairArray_delete(btAlignedCollisionObjectArray* obj);
 }

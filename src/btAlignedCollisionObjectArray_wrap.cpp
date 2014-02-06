@@ -10,3 +10,8 @@ btCollisionObject* btAlignedCollisionObjectArray_at(btAlignedCollisionObjectArra
 {
 	return obj->at(n);
 }
+
+void btAlignedCollisionObjectArray_delete(btAlignedCollisionObjectArray* obj)
+{
+	delete obj;
+}
