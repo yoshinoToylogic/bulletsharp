@@ -118,14 +118,14 @@ class ContactSensorCallback : CollisionWorld.ContactResultCallback
 	
     //! Called with each contact for your own processing (e.g. test if contacts fall in within sensor parameters)
     public override float AddSingleResult(ManifoldPoint cp,
-        CollisionObject colObj0, int partId0, int index0,
-        CollisionObject colObj1, int partId1, int index1)
+        CollisionObjectWrapper colObj0, int partId0, int index0,
+        CollisionObjectWrapper colObj1, int partId1, int index1)
     {
 	    Vector3 pt; // will be set to point of collision relative to body
-	    if(colObj0==body) {
+	    if(colObj0.CollisionObject==body) {
 		    pt = cp.LocalPointA;
 	    } else {
-		    System.Diagnostics.Debug.Assert(colObj1==body);
+		    System.Diagnostics.Debug.Assert(colObj1.CollisionObject==body);
 		    pt = cp.LocalPointB;
 	    }
 	    // do stuff with the collision point
@@ -155,7 +155,7 @@ There are three collision callbacks:
 
 == !ManifoldPoint.!ContactAdded ==
 
-This is called whenever a contact is added. From here, you can modify some properties (eg friction) of the contact point
+This is called whenever a contact is added (note that the same contact may be added multiple times before it is processed). From here, you can modify some properties (eg friction) of the contact point
 {{{
 bool OnContactAdded(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
 {
@@ -167,7 +167,7 @@ If your function returns false, then Bullet will assume that you did not modify 
 
 == !PersistentManifold.!ContactProcessed ==
 
-This is called immediately after the collision has been actually processed
+This is called immediately after the collision has actually been processed
 {{{
 bool OnContactProcessed(ManifoldPoint cp, CollisionObject body0, CollisionObject body1)
 {
