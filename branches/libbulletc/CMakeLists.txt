@@ -74,8 +74,12 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/collections.h
     src/btActionInterface_wrap.cpp
     src/btActionInterface_wrap.h
+    src/btAlignedBroadphaseArray_wrap.cpp
+    src/btAlignedBroadphaseArray_wrap.h
     src/btAlignedCollisionObjectArray_wrap.cpp
     src/btAlignedCollisionObjectArray_wrap.h
+    src/btAlignedManifoldArray_wrap.cpp
+    src/btAlignedManifoldArray_wrap.h
     src/btAxisSweep3_wrap.cpp
     src/btAxisSweep3_wrap.h
     src/btBoxCollision_wrap.cpp
@@ -184,6 +188,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btOverlappingPairCache_wrap.h
     src/btOverlappingPairCallback_wrap.cpp
     src/btOverlappingPairCallback_wrap.h
+    src/btPersistentManifold_wrap.cpp
+    src/btPersistentManifold_wrap.h
     src/btPoint2PointConstraint_wrap.cpp
     src/btPoint2PointConstraint_wrap.h
     src/btPointCollector_wrap.cpp
