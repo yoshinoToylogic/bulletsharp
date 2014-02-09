@@ -132,7 +132,7 @@
 #define PHY_ScalarType int
 #define btDynamicsWorldType int
 #else
-#define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair*>
+#define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair>
 #define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
 #define btAlignedIntArray btAlignedObjectArray<int>
 #define btAlignedScalarArray btAlignedObjectArray<btScalar>
