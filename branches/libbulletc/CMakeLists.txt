@@ -74,8 +74,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/collections.h
     src/btActionInterface_wrap.cpp
     src/btActionInterface_wrap.h
-    src/btAlignedBroadphaseArray_wrap.cpp
-    src/btAlignedBroadphaseArray_wrap.h
+    src/btAlignedBroadphasePairArray_wrap.cpp
+    src/btAlignedBroadphasePairArray_wrap.h
     src/btAlignedCollisionObjectArray_wrap.cpp
     src/btAlignedCollisionObjectArray_wrap.h
     src/btAlignedManifoldArray_wrap.cpp

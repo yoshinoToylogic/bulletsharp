@@ -738,7 +738,7 @@ namespace BulletSharp
 
 		bool NeedsCollisionUnmanaged(IntPtr proxy0)
 		{
-			return NeedsCollision(new BroadphaseProxy(proxy0, true));
+			return NeedsCollision(BroadphaseProxy.GetManaged(proxy0));
 		}
 
 		public virtual bool NeedsCollision(BroadphaseProxy proxy0)
@@ -807,6 +807,7 @@ namespace BulletSharp
 		protected CollisionConfiguration _collisionConfiguration;
 		protected Dispatcher _dispatcher;
 		protected BroadphaseInterface _broadphase;
+		OverlappingPairCache _pairCache;
 
 		internal CollisionWorld(IntPtr native)
 		{
@@ -978,7 +979,14 @@ namespace BulletSharp
 
 		public OverlappingPairCache PairCache
 		{
-			get { return new OverlappingPairCache(btCollisionWorld_getPairCache(_native), true); }
+			get
+			{
+				if (_pairCache == null)
+				{
+					_pairCache = new OverlappingPairCache(btCollisionWorld_getPairCache(_native), true);
+				}
+				return _pairCache;
+			}
 		}
 
 		public void Dispose()

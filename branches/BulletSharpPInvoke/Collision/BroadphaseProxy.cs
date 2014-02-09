@@ -80,6 +80,15 @@ namespace BulletSharp
             _preventDelete = preventDelete;
 		}
 
+        internal static BroadphaseProxy GetManaged(IntPtr native)
+        {
+            if (native == IntPtr.Zero)
+            {
+                return null;
+            }
+            return new BroadphaseProxy(native, true);
+        }
+
 		public BroadphaseProxy()
 		{
 			_native = btBroadphaseProxy_new();
@@ -299,19 +308,23 @@ namespace BulletSharp
         
 		public CollisionAlgorithm Algorithm
 		{
-            get { return new CollisionAlgorithm(btBroadphasePair_getAlgorithm(_native), true); }
-			set { btBroadphasePair_setAlgorithm(_native, value._native); }
+            get
+            {
+                IntPtr valuePtr = btBroadphasePair_getAlgorithm(_native);
+                return (valuePtr == IntPtr.Zero) ? null : new CollisionAlgorithm(valuePtr, true);
+            }
+			set { btBroadphasePair_setAlgorithm(_native, (value._native == IntPtr.Zero) ? IntPtr.Zero : value._native); }
 		}
         
 		public BroadphaseProxy Proxy0
 		{
-            get { return new BroadphaseProxy(btBroadphasePair_getPProxy0(_native), true); }
+            get { return BroadphaseProxy.GetManaged(btBroadphasePair_getPProxy0(_native)); }
 			set { btBroadphasePair_setPProxy0(_native, value._native); }
 		}
 
 		public BroadphaseProxy Proxy1
 		{
-			get { return new BroadphaseProxy(btBroadphasePair_getPProxy1(_native), true); }
+            get { return BroadphaseProxy.GetManaged(btBroadphasePair_getPProxy1(_native)); }
 			set { btBroadphasePair_setPProxy1(_native, value._native); }
 		}
 
