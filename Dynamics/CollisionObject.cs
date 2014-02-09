@@ -181,7 +181,7 @@ namespace BulletSharp
 
 		public BroadphaseProxy BroadphaseHandle
 		{
-            get { return new BroadphaseProxy(btCollisionObject_getBroadphaseHandle(_native), true); }
+            get { return BroadphaseProxy.GetManaged(btCollisionObject_getBroadphaseHandle(_native)); }
 			set { btCollisionObject_setBroadphaseHandle(_native, value._native); }
 		}
 
