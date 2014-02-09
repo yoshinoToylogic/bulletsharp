@@ -8,7 +8,7 @@ int btAlignedBroadphasePairArray_size(btAlignedBroadphasePairArray* obj)
 
 btBroadphasePair* btAlignedBroadphasePairArray_at(btAlignedBroadphasePairArray* obj, int n)
 {
-	return obj->at(n);
+	return &obj->at(n);
 }
 
 void btAlignedBroadphasePairArray_delete(btAlignedBroadphasePairArray* obj)
