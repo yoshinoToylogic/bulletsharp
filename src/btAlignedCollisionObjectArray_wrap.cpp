@@ -11,6 +11,11 @@ btCollisionObject* btAlignedCollisionObjectArray_at(btAlignedCollisionObjectArra
 	return obj->at(n);
 }
 
+void btAlignedCollisionObjectArray_resizeNoInitialize(btAlignedCollisionObjectArray* obj, int newSize)
+{
+	return obj->resizeNoInitialize(newSize);
+}
+
 void btAlignedCollisionObjectArray_delete(btAlignedCollisionObjectArray* obj)
 {
 	delete obj;
