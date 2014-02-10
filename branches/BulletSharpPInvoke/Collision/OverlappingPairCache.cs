@@ -106,7 +106,7 @@ namespace BulletSharp
 
 		public BroadphasePair FindPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
 		{
-            return new BroadphasePair(btOverlappingPairCache_findPair(_native, proxy0._native, proxy1._native));
+            return new BroadphasePair(btOverlappingPairCache_findPair(_native, proxy0._native, proxy1._native), true);
 		}
 
 		public void ProcessAllOverlappingPairs(OverlapCallback __unnamed0, Dispatcher dispatcher)
