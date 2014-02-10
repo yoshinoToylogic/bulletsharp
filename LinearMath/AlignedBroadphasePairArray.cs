@@ -141,7 +141,7 @@ namespace BulletSharp
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            btAlignedBroadphasePairArray_resizeNoInitialize(_native, 0);
         }
 
         public bool Contains(BroadphasePair item)
@@ -183,6 +183,8 @@ namespace BulletSharp
         protected static extern int btAlignedBroadphasePairArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btAlignedBroadphasePairArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btAlignedBroadphasePairArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern void btAlignedBroadphasePairArray_delete(IntPtr obj);
     }

@@ -141,7 +141,7 @@ namespace BulletSharp
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            btAlignedCollisionObjectArray_resizeNoInitialize(_native, 0);
         }
 
         public bool Contains(CollisionObject item)
@@ -183,6 +183,8 @@ namespace BulletSharp
         protected static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btAlignedCollisionObjectArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btAlignedCollisionObjectArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern void btAlignedCollisionObjectArray_delete(IntPtr obj);
     }

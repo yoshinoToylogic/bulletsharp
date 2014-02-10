@@ -146,7 +146,7 @@ namespace BulletSharp
 
         public void Clear()
         {
-            throw new NotImplementedException();
+            btManifoldArray_resizeNoInitialize(_native, 0);
         }
 
         public bool Contains(PersistentManifold item)
@@ -190,6 +190,8 @@ namespace BulletSharp
         protected static extern int btManifoldArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btManifoldArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btManifoldArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern void btManifoldArray_delete(IntPtr obj);
     }
