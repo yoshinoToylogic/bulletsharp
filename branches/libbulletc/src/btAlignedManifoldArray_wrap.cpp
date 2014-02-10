@@ -16,6 +16,11 @@ btPersistentManifold* btManifoldArray_at(btManifoldArray* obj, int n)
 	return obj->at(n);
 }
 
+void btManifoldArray_resizeNoInitialize(btManifoldArray* obj, int newSize)
+{
+	return obj->resizeNoInitialize(newSize);
+}
+
 void btManifoldArray_delete(btManifoldArray* obj)
 {
 	delete obj;
