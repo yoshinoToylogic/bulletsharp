@@ -24,7 +24,7 @@ namespace BulletSharp
 
         static bool ContactDestroyedUnmanaged(IntPtr userPersistentData)
         {
-            _contactDestroyed.Invoke(userPersistentData);
+            _contactDestroyed.Invoke(GCHandle.FromIntPtr(userPersistentData).Target);
 	        return false;
         }
 
@@ -49,7 +49,7 @@ namespace BulletSharp
             remove
             {
                 _contactDestroyed -= value;
-                if (_contactDestroyed.GetInvocationList().Length == 0)
+                if (_contactDestroyed == null)
                 {
                     setGContactDestroyedCallback(IntPtr.Zero);
                 }
@@ -71,7 +71,7 @@ namespace BulletSharp
             remove
             {
                 _contactProcessed -= value;
-                if (_contactProcessed.GetInvocationList().Length == 0)
+                if (_contactProcessed == null)
                 {
                     setGContactProcessedCallback(IntPtr.Zero);
                 }

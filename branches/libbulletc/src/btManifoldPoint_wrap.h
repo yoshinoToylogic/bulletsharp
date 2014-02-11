@@ -74,4 +74,7 @@ extern "C"
 	EXPORT void btManifoldPoint_setPositionWorldOnB(btManifoldPoint* obj, btScalar* value);
 	EXPORT void btManifoldPoint_setUserPersistentData(btManifoldPoint* obj, void* value);
 	EXPORT void btManifoldPoint_delete(btManifoldPoint* obj);
+
+	EXPORT ContactAddedCallback getGContactAddedCallback();
+	EXPORT void setGContactAddedCallback(ContactAddedCallback value);
 }

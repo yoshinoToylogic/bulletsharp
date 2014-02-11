@@ -104,10 +104,46 @@ namespace BulletSharp
 		static extern void btConstraintRow_delete(IntPtr obj);
 	}
 
+    public delegate void ContactAddedEventHandler(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1);
+
 	public class ManifoldPoint
 	{
 		internal IntPtr _native;
         bool _preventDelete;
+
+        static ContactAddedEventHandler _contactAdded;
+        static ContactAddedUnmanagedDelegate _contactAddedUnmanaged;
+        static IntPtr _contactAddedUnmanagedPtr;
+
+        private delegate bool ContactAddedUnmanagedDelegate(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1);
+
+        static bool ContactAddedUnmanaged(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1)
+        {
+            _contactAdded.Invoke(new ManifoldPoint(cp, true), new CollisionObjectWrapper(colObj0Wrap), partId0, index0, new CollisionObjectWrapper(colObj1Wrap), partId1, index1);
+            return false;
+        }
+
+        public static event ContactAddedEventHandler ContactAdded
+        {
+            add
+            {
+                if (_contactAddedUnmanaged == null)
+                {
+                    _contactAddedUnmanaged = new ContactAddedUnmanagedDelegate(ContactAddedUnmanaged);
+                    _contactAddedUnmanagedPtr = Marshal.GetFunctionPointerForDelegate(_contactAddedUnmanaged);
+                }
+                setGContactAddedCallback(_contactAddedUnmanagedPtr);
+                _contactAdded += value;
+            }
+            remove
+            {
+                _contactAdded -= value;
+                if (_contactAdded == null)
+                {
+                    setGContactAddedCallback(IntPtr.Zero);
+                }
+            }
+        }
 
         internal ManifoldPoint(IntPtr native, bool preventDelete = false)
 		{
@@ -310,10 +346,35 @@ namespace BulletSharp
 			set { btManifoldPoint_setPositionWorldOnB(_native, ref value); }
 		}
 
-		public IntPtr UserPersistentData
+		public Object UserPersistentData
 		{
-			get { return btManifoldPoint_getUserPersistentData(_native); }
-			set { btManifoldPoint_setUserPersistentData(_native, value); }
+			get
+            {
+                IntPtr valuePtr = btManifoldPoint_getUserPersistentData(_native);
+                return (valuePtr != IntPtr.Zero) ? GCHandle.FromIntPtr(valuePtr).Target : null;
+            }
+			set
+            {
+                IntPtr prevPtr = btManifoldPoint_getUserPersistentData(_native);
+                if (prevPtr != IntPtr.Zero)
+                {
+                    GCHandle prevHandle = GCHandle.FromIntPtr(prevPtr);
+                    if (object.ReferenceEquals(value, prevHandle.Target))
+                    {
+                        return;
+                    }
+                    prevHandle.Free();
+                }
+                if (value != null)
+                {
+                    GCHandle handle = GCHandle.Alloc(value);
+                    btManifoldPoint_setUserPersistentData(_native, GCHandle.ToIntPtr(handle));
+                }
+                else
+                {
+                    btManifoldPoint_setUserPersistentData(_native, IntPtr.Zero);
+                }
+            }
 		}
 
 		public void Dispose()
@@ -449,5 +510,8 @@ namespace BulletSharp
 		static extern void btManifoldPoint_setUserPersistentData(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_delete(IntPtr obj);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void setGContactAddedCallback(IntPtr value);
 	}
 }
