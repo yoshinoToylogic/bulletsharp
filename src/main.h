@@ -254,6 +254,7 @@
 
 #ifndef BT_MANIFOLD_CONTACT_POINT_H
 #define btManifoldPoint void
+#define ContactAddedCallback void
 #endif
 
 #ifndef BT_OPTIMIZED_BVH_H

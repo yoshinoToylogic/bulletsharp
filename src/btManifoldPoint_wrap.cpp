@@ -362,3 +362,13 @@ void btManifoldPoint_delete(btManifoldPoint* obj)
 {
 	delete obj;
 }
+
+ContactAddedCallback getGContactAddedCallback()
+{
+	return gContactAddedCallback;
+}
+
+void setGContactAddedCallback(ContactAddedCallback value)
+{
+	gContactAddedCallback = value;
+}
