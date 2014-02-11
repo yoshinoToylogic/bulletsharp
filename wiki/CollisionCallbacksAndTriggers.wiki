@@ -146,7 +146,7 @@ Bullet 2.76 onwards provides the contactPairTest to perform collision detection 
 
 = Contact Callbacks =
 
-Be careful when using contact callbacks. They might be called too frequent for your purpose. Bullet supports custom callbacks at various points in the collision system. The callbacks themselves are very simply implemented as events that you hook up to with appropriate functions. Before you can expect them to be called you must set an appropriate flag in your rigid body:
+Be careful when using contact callbacks. They may be called too frequently for your purposes. Bullet supports custom callbacks at various points in the collision system. The callbacks themselves are very simply implemented as events that you hook up to with appropriate functions. Before you can expect them to be called you must set an appropriate flag in your rigid body:
 {{{
 body.CollisionFlags |= CollisionFlags.CustomMaterialCallback;
 }}}
@@ -157,9 +157,8 @@ There are three collision callbacks:
 
 This is called whenever a contact is added (note that the same contact may be added multiple times before it is processed). From here, you can modify some properties (eg friction) of the contact point
 {{{
-bool OnContactAdded(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
+void OnContactAdded(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1)
 {
-    return false;
 }
 ManifoldPoint.ContactAdded += OnContactAdded;
 }}}
@@ -169,9 +168,8 @@ If your function returns false, then Bullet will assume that you did not modify 
 
 This is called immediately after the collision has actually been processed
 {{{
-bool OnContactProcessed(ManifoldPoint cp, CollisionObject body0, CollisionObject body1)
+void OnContactProcessed(ManifoldPoint cp, CollisionObject body0, CollisionObject body1)
 {
-    return false;
 }
 PersistentManifold.ContactProcessed += OnContactProcessed;
 }}}
@@ -180,14 +178,17 @@ PersistentManifold.ContactProcessed += OnContactProcessed;
 
 This is called immediately after the contact point is destroyed.
 {{{
-bool OnContactDestroyed(object userPersistantData)
+void OnContactDestroyed(object userPersistantData)
 {
-    return false;
 }
 PersistentManifold.ContactDestroyed += OnContactDestroyed;
 }}}
+The passed _userPersistentData_ argument is the value of the _!UserPersistentData_ member of the _!ManifoldPoint_ which has been destroyed (this can be set in _!ContactAdded_ or _!ContactProcessed).
 
-== Trigger ==
+*Note that !ContactDestroyed will not be called for any contact point unless _cp.!UserPersistentData_ is set!*  You must set this (to some value other than null) in a prior contact added/processed callback in order to receive a destroyed callback.
+
+
+== Triggers ==
 
 Collision objects with a callback still have collision response with dynamic rigid bodies. In order to use collision objects as trigger, you have to disable the collision response.
 {{{
