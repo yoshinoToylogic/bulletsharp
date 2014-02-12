@@ -19,7 +19,9 @@ namespace BulletSharp
         static IntPtr _contactDestroyedUnmanagedPtr;
         static IntPtr _contactProcessedUnmanagedPtr;
 
+        [UnmanagedFunctionPointer(Native.Conv)]
         private delegate bool ContactDestroyedUnmanagedDelegate(IntPtr userPersistantData);
+        [UnmanagedFunctionPointer(Native.Conv)]
         private delegate bool ContactProcessedUnmanagedDelegate(IntPtr cp, IntPtr body0, IntPtr body1);
 
         static bool ContactDestroyedUnmanaged(IntPtr userPersistentData)

@@ -115,6 +115,7 @@ namespace BulletSharp
         static ContactAddedUnmanagedDelegate _contactAddedUnmanaged;
         static IntPtr _contactAddedUnmanagedPtr;
 
+        [UnmanagedFunctionPointer(Native.Conv)]
         private delegate bool ContactAddedUnmanagedDelegate(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1);
 
         static bool ContactAddedUnmanaged(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1)
@@ -511,6 +512,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_delete(IntPtr obj);
 
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr getGContactAddedCallback();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void setGContactAddedCallback(IntPtr value);
 	}
