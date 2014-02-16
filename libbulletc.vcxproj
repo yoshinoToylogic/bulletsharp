@@ -193,6 +193,7 @@
     <ClInclude Include="src\btDiscreteDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btDispatcher_wrap.h" />
     <ClInclude Include="src\btDynamicsWorld_wrap.h" />
+    <ClInclude Include="src\btFixedConstraint_wrap.h" />
     <ClInclude Include="src\btGearConstraint_wrap.h" />
     <ClInclude Include="src\btGeneric6DofConstraint_wrap.h" />
     <ClInclude Include="src\btGeneric6DofSpringConstraint_wrap.h" />
@@ -208,6 +209,7 @@
     <ClInclude Include="src\btManifoldPoint_wrap.h" />
     <ClInclude Include="src\btMinkowskiPenetrationDepthSolver_wrap.h" />
     <ClInclude Include="src\btMultiSphereShape_wrap.h" />
+    <ClInclude Include="src\btNNCGConstraintSolver_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCache_wrap.h" />
     <ClInclude Include="src\btOverlappingPairCallback_wrap.h" />
     <ClInclude Include="src\btParallelConstraintSolver_wrap.h" />
@@ -225,6 +227,7 @@
     <ClInclude Include="src\btSimulationIslandManager_wrap.h" />
     <ClInclude Include="src\btSliderConstraint_wrap.h" />
     <ClInclude Include="src\btSoftBodyHelpers_wrap.h" />
+    <ClInclude Include="src\btSoftBodyRigidBodyCollisionConfiguration_wrap.h" />
     <ClInclude Include="src\btSoftBody_wrap.h" />
     <ClInclude Include="src\btSoftRigidDynamicsWorld_wrap.h" />
     <ClInclude Include="src\btSphereShape_wrap.h" />
@@ -235,6 +238,7 @@
     <ClInclude Include="src\btTriangleMeshShape_wrap.h" />
     <ClInclude Include="src\btTriangleMesh_wrap.h" />
     <ClInclude Include="src\btTypedConstraint_wrap.h" />
+    <ClInclude Include="src\btUniformScalingShape_wrap.h" />
     <ClInclude Include="src\btUniversalConstraint_wrap.h" />
     <ClInclude Include="src\btVehicleRaycaster_wrap.h" />
     <ClInclude Include="src\btVoronoiSimplexSolver_wrap.h" />
@@ -304,6 +308,7 @@
     <ClCompile Include="src\btDiscreteDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btDispatcher_wrap.cpp" />
     <ClCompile Include="src\btDynamicsWorld_wrap.cpp" />
+    <ClCompile Include="src\btFixedConstraint_wrap.cpp" />
     <ClCompile Include="src\btGearConstraint_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofConstraint_wrap.cpp" />
     <ClCompile Include="src\btGeneric6DofSpringConstraint_wrap.cpp" />
@@ -319,6 +324,7 @@
     <ClCompile Include="src\btManifoldPoint_wrap.cpp" />
     <ClCompile Include="src\btMinkowskiPenetrationDepthSolver_wrap.cpp" />
     <ClCompile Include="src\btMultiSphereShape_wrap.cpp" />
+    <ClCompile Include="src\btNNCGConstraintSolver_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCache_wrap.cpp" />
     <ClCompile Include="src\btOverlappingPairCallback_wrap.cpp" />
     <ClCompile Include="src\btParallelConstraintSolver_wrap.cpp" />
@@ -336,6 +342,7 @@
     <ClCompile Include="src\btSimulationIslandManager_wrap.cpp" />
     <ClCompile Include="src\btSliderConstraint_wrap.cpp" />
     <ClCompile Include="src\btSoftBodyHelpers_wrap.cpp" />
+    <ClCompile Include="src\btSoftBodyRigidBodyCollisionConfiguration_wrap.cpp" />
     <ClCompile Include="src\btSoftBody_wrap.cpp" />
     <ClCompile Include="src\btSoftRigidDynamicsWorld_wrap.cpp" />
     <ClCompile Include="src\btSphereShape_wrap.cpp" />
@@ -346,6 +353,7 @@
     <ClCompile Include="src\btTriangleMeshShape_wrap.cpp" />
     <ClCompile Include="src\btTriangleMesh_wrap.cpp" />
     <ClCompile Include="src\btTypedConstraint_wrap.cpp" />
+    <ClCompile Include="src\btUniformScalingShape_wrap.cpp" />
     <ClCompile Include="src\btUniversalConstraint_wrap.cpp" />
     <ClCompile Include="src\btVehicleRaycaster_wrap.cpp" />
     <ClCompile Include="src\btVoronoiSimplexSolver_wrap.cpp" />

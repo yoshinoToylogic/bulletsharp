@@ -91,14 +91,14 @@ void btIndexedMesh_delete(btIndexedMesh* obj)
 	delete obj;
 }
 
-btTriangleIndexVertexArray* btTriangleIndexVertexArray_new()
-{
-	return new btTriangleIndexVertexArray();
-}
-
-btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride)
+btTriangleIndexVertexArray* btTriangleIndexVertexArray_new(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride)
 {
 	return new btTriangleIndexVertexArray(numTriangles, triangleIndexBase, triangleIndexStride, numVertices, vertexBase, vertexStride);
+}
+
+btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2()
+{
+	return new btTriangleIndexVertexArray();
 }
 
 void btTriangleIndexVertexArray_addIndexedMesh(btTriangleIndexVertexArray* obj, btIndexedMesh* mesh, PHY_ScalarType indexType)

@@ -154,6 +154,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDispatcher_wrap.h
     src/btDynamicsWorld_wrap.cpp
     src/btDynamicsWorld_wrap.h
+    src/btFixedConstraint_wrap.cpp
+    src/btFixedConstraint_wrap.h
     src/btGearConstraint_wrap.cpp
     src/btGearConstraint_wrap.h
     src/btGeneric6DofConstraint_wrap.cpp
@@ -184,6 +186,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btMinkowskiPenetrationDepthSolver_wrap.h
     src/btMultiSphereShape_wrap.cpp
     src/btMultiSphereShape_wrap.h
+    src/btNNCGConstraintSolver_wrap.cpp
+    src/btNNCGConstraintSolver_wrap.h
     src/btOverlappingPairCache_wrap.cpp
     src/btOverlappingPairCache_wrap.h
     src/btOverlappingPairCallback_wrap.cpp
@@ -218,6 +222,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSoftBody_wrap.h
     src/btSoftBodyHelpers_wrap.cpp
     src/btSoftBodyHelpers_wrap.h
+    src/btSoftBodyRigidBodyCollisionConfiguration.cpp
+    src/btSoftBodyRigidBodyCollisionConfiguration.h
     src/btSoftRigidDynamicsWorld_wrap.cpp
     src/btSoftRigidDynamicsWorld_wrap.h
     src/btSphereShape_wrap.cpp
@@ -234,6 +240,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btTriangleMeshShape_wrap.h
     src/btTypedConstraint_wrap.cpp
     src/btTypedConstraint_wrap.h
+    src/btUniformScalingShape_wrap.cpp
+    src/btUniformScalingShape_wrap.h
     src/btUniversalConstraint_wrap.cpp
     src/btUniversalConstraint_wrap.h
     src/btVehicleRaycaster_wrap.cpp

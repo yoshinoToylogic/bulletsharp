@@ -54,7 +54,6 @@
 #define btTetrahedronShape void
 #define btEmptyShape void
 #define btMultiSphereShape void
-#define btUniformScalingShape void
 #define btSphereSphereCollisionAlgorithm void
 #define btDefaultCollisionConfiguration void
 #define btCollisionDispatcher void
@@ -84,9 +83,7 @@
 #define btCollisionWorld_LocalShapeInfo void
 #define btCollisionWorld_RayResultCallback void
 #define btCompoundShapeChild void
-#define btConvexShape void
 #define btDbvtBroadphase void
-#define btDefaultCollisionConstructionInfo void
 #define btDefaultMotionState void
 #define btDiscreteCollisionDetectorInterface void
 #define btDiscreteCollisionDetectorInterface_ClosestPointInput void
@@ -208,6 +205,10 @@
 #define btCollisionObject void
 #endif
 
+#ifndef BT_COLLISION_OBJECT_WRAPPER_H
+#define btCollisionObjectWrapper void
+#endif
+
 #ifndef BT_CONCAVE_SHAPE_H
 #define btConcaveShape void
 #endif
@@ -225,6 +226,10 @@
 #define btConvexPenetrationDepthSolver void
 #endif
 
+#ifndef BT_CONVEX_SHAPE_INTERFACE1
+#define btConvexShape void
+#endif
+
 #ifndef BT_DBVT_BROADPHASE_H
 #define btDbvtProxy void
 #endif
@@ -232,6 +237,10 @@
 #ifndef BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
 #define btDbvt void
 #define btDbvtNode void
+#endif
+
+#ifndef BT_FIXED_CONSTRAINT_H
+#define btFixedConstraint void
 #endif
 
 #ifndef BT_GHOST_OBJECT_H
@@ -255,6 +264,10 @@
 #ifndef BT_MANIFOLD_CONTACT_POINT_H
 #define btManifoldPoint void
 #define ContactAddedCallback void
+#endif
+
+#ifndef BT_NNCG_CONSTRAINT_SOLVER_H
+#define btNNCGConstraintSolver void
 #endif
 
 #ifndef BT_OPTIMIZED_BVH_H
@@ -412,6 +425,10 @@
 #define btSoftRigidDynamicsWorld void
 #endif
 
+#ifndef BT_SOFTBODY_RIGIDBODY_COLLISION_CONFIGURATION
+#define btSoftBodyRigidBodyCollisionConfiguration void
+#endif
+
 #ifndef BT_STRIDING_MESHINTERFACE_H
 #define btStridingMeshInterface void
 #define btStridingMeshInterfaceData void
@@ -430,6 +447,10 @@
 
 #ifndef _BT_TRIANGLE_INFO_MAP_H
 #define btTriangleInfoMap void
+#endif
+
+#ifndef BT_UNIFORM_SCALING_SHAPE_H
+#define btUniformScalingShape void
 #endif
 
 #ifndef BT_VORONOI_SIMPLEX_SOLVER_H
