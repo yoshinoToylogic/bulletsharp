@@ -189,19 +189,19 @@ namespace BulletSharp
 			set { btDbvtBroadphase_setStageRoots(_native, value._native); }
 		}
         */
-		public uint Updates_call
+		public uint UpdatesCall
 		{
 			get { return btDbvtBroadphase_getUpdates_call(_native); }
 			set { btDbvtBroadphase_setUpdates_call(_native, value); }
 		}
 
-		public uint Updates_done
+		public uint UpdatesDone
 		{
 			get { return btDbvtBroadphase_getUpdates_done(_native); }
 			set { btDbvtBroadphase_setUpdates_done(_native, value); }
 		}
 
-		public float Updates_ratio
+		public float UpdatesRatio
 		{
 			get { return btDbvtBroadphase_getUpdates_ratio(_native); }
 			set { btDbvtBroadphase_setUpdates_ratio(_native, value); }

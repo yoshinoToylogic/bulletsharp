@@ -37,6 +37,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collision\ActivatingCollisionAlgorithm.cs" />
+    <Compile Include="Collision\UniformScalingShape.cs" />
+    <Compile Include="Dynamics\FixedConstraint.cs" />
+    <Compile Include="Dynamics\NncgConstraintSolver.cs" />
     <Compile Include="LinearMath\AlignedManifoldArray.cs" />
     <Compile Include="Collision\AxisSweep3.cs" />
     <Compile Include="Collision\BoxShape.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftBody\SoftBody.cs" />
     <Compile Include="SoftBody\SoftBodyHelpers.cs" />
+    <Compile Include="SoftBody\SoftBodyRigidBodyCollisionConfiguration.cs" />
     <Compile Include="SoftBody\SoftRigidDynamicsWorld.cs" />
     <Compile Include="Utilities.cs">
       <SubType>Code</SubType>
