@@ -213,6 +213,10 @@ namespace BulletSharpGen
                 return t.Referenced.Equals(Referenced);
             }
 
+            if (Name == null)
+            {
+                return t.Name == null;
+            }
             return t.Name.Equals(Name);
         }
 

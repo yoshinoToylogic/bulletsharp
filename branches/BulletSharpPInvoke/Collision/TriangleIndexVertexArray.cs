@@ -149,12 +149,12 @@ namespace BulletSharp
 		}
 
 		public TriangleIndexVertexArray()
-			: base(btTriangleIndexVertexArray_new())
+			: base(btTriangleIndexVertexArray_new2())
 		{
 		}
 
         public TriangleIndexVertexArray(int[] triangles, float[] vertices)
-            : base(btTriangleIndexVertexArray_new())
+            : base(btTriangleIndexVertexArray_new2())
         {
             _initialMesh = new IndexedMesh
             {
@@ -171,7 +171,7 @@ namespace BulletSharp
         }
 
         public TriangleIndexVertexArray(ICollection<int> triangles, ICollection<float> vertices)
-            : base(btTriangleIndexVertexArray_new())
+            : base(btTriangleIndexVertexArray_new2())
         {
             _initialMesh = new IndexedMesh
             {
@@ -192,7 +192,7 @@ namespace BulletSharp
         }
 
         public TriangleIndexVertexArray(ICollection<int> triangles, ICollection<Vector3> vertices)
-            : base(btTriangleIndexVertexArray_new())
+            : base(btTriangleIndexVertexArray_new2())
         {
             _initialMesh = new IndexedMesh
             {
@@ -220,7 +220,7 @@ namespace BulletSharp
         }
 
         public TriangleIndexVertexArray(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride, int numVertices, IntPtr vertexBase, int vertexStride)
-			: base(btTriangleIndexVertexArray_new2(numTriangles, triangleIndexBase, triangleIndexStride, numVertices, vertexBase, vertexStride))
+			: base(btTriangleIndexVertexArray_new(numTriangles, triangleIndexBase, triangleIndexStride, numVertices, vertexBase, vertexStride))
 		{
 		}
 
@@ -254,9 +254,9 @@ namespace BulletSharp
         }
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleIndexVertexArray_new();
+		static extern IntPtr btTriangleIndexVertexArray_new(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride, int numVertices, IntPtr vertexBase, int vertexStride);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleIndexVertexArray_new2(int numTriangles, IntPtr triangleIndexBase, int triangleIndexStride, int numVertices, IntPtr vertexBase, int vertexStride);
+		static extern IntPtr btTriangleIndexVertexArray_new2();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btTriangleIndexVertexArray_addIndexedMesh(IntPtr obj, IntPtr mesh, PhyScalarType indexType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
