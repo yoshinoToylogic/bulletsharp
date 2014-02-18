@@ -533,13 +533,16 @@ namespace BulletSharp
         public virtual void DrawTransform(ref Matrix transform, float orthoLen)
         {
             Vector3 start = transform.TranslationVector;
-            Vector3 temp = start + Vector3.TransformCoordinate(new Vector3(orthoLen, 0, 0), transform);
+            Matrix origin = transform;
+            origin.TranslationVector = Vector3.Zero;
+
+            Vector3 temp = start + Vector3.TransformCoordinate(new Vector3(orthoLen, 0, 0), origin);
             Vector3 colour = new Vector3(0.7f, 0, 0);
             DrawLine(ref start, ref temp, ref colour);
-            temp = start + Vector3.TransformCoordinate(new Vector3(0, orthoLen, 0), transform);
+            temp = start + Vector3.TransformCoordinate(new Vector3(0, orthoLen, 0), origin);
             colour = new Vector3(0, 0.7f, 0);
             DrawLine(ref start, ref temp, ref colour);
-            temp = start + Vector3.TransformCoordinate(new Vector3(0, 0, orthoLen), transform);
+            temp = start + Vector3.TransformCoordinate(new Vector3(0, 0, orthoLen), origin);
             colour = new Vector3(0, 0, 0.7f);
             DrawLine(ref start, ref temp, ref colour);
         }
