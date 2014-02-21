@@ -7,6 +7,11 @@ btCylinderShape* btCylinderShape_new(btScalar* halfExtents)
 	return new btCylinderShape(VECTOR3_USE(halfExtents));
 }
 
+btCylinderShape* btCylinderShape_new2(btScalar halfExtentX, btScalar halfExtentY, btScalar halfExtentZ)
+{
+	return new btCylinderShape(btVector3(halfExtentX, halfExtentY, halfExtentZ));
+}
+
 void btCylinderShape_getHalfExtentsWithMargin(btCylinderShape* obj, btScalar* value)
 {
 	VECTOR3_OUT2(obj->getHalfExtentsWithMargin(), value);
@@ -33,8 +38,18 @@ btCylinderShapeX* btCylinderShapeX_new(btScalar* halfExtents)
 	return new btCylinderShapeX(VECTOR3_USE(halfExtents));
 }
 
+btCylinderShapeX* btCylinderShapeX_new2(btScalar halfExtentX, btScalar halfExtentY, btScalar halfExtentZ)
+{
+	return new btCylinderShapeX(btVector3(halfExtentX, halfExtentY, halfExtentZ));
+}
+
 btCylinderShapeZ* btCylinderShapeZ_new(btScalar* halfExtents)
 {
 	VECTOR3_CONV(halfExtents);
 	return new btCylinderShapeZ(VECTOR3_USE(halfExtents));
+}
+
+btCylinderShapeZ* btCylinderShapeZ_new2(btScalar halfExtentX, btScalar halfExtentY, btScalar halfExtentZ)
+{
+	return new btCylinderShapeZ(btVector3(halfExtentX, halfExtentY, halfExtentZ));
 }

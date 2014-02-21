@@ -127,6 +127,7 @@
     <Compile Include="LinearMath\AlignedObjectArray.cs" />
     <Compile Include="LinearMath\AlignedVector3Array.cs" />
     <Compile Include="LinearMath\Collections.cs" />
+    <Compile Include="LinearMath\AlignedCollisionShapeArray.cs" />
     <Compile Include="LinearMath\DebugDraw.cs" />
     <Compile Include="LinearMath\DefaultMotionState.cs" />
     <Compile Include="LinearMath\GeometryUtil.cs" />

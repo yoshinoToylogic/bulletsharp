@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace BulletSharp
+namespace BulletSharp.SoftBody
 {
 	public class SoftBodyWorldInfo
 	{
@@ -124,3098 +124,3099 @@ namespace BulletSharp
 		static extern void btSoftBodyWorldInfo_delete(IntPtr obj);
 	}
 
-	public class SoftBody : CollisionObject
+	public class eAeroModel
 	{
-		public class eAeroModel
+		internal IntPtr _native;
+
+		internal eAeroModel(IntPtr native)
 		{
-			internal IntPtr _native;
-
-			internal eAeroModel(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public eAeroModel()
-			{
-				_native = btSoftBody_eAeroModel_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_eAeroModel_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~eAeroModel()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_eAeroModel_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_eAeroModel_delete(IntPtr obj);
+			_native = native;
 		}
 
-		public class eVSolver
+		public eAeroModel()
 		{
-			internal IntPtr _native;
-
-			internal eVSolver(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public eVSolver()
-			{
-				_native = btSoftBody_eVSolver_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_eVSolver_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~eVSolver()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_eVSolver_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_eVSolver_delete(IntPtr obj);
+			_native = btSoftBody_eAeroModel_new();
 		}
 
-		public class ePSolver
+		public void Dispose()
 		{
-			internal IntPtr _native;
-
-			internal ePSolver(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public ePSolver()
-			{
-				_native = btSoftBody_ePSolver_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_ePSolver_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~ePSolver()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_ePSolver_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_ePSolver_delete(IntPtr obj);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		public class eSolverPresets
+		protected virtual void Dispose(bool disposing)
 		{
-			internal IntPtr _native;
-
-			internal eSolverPresets(IntPtr native)
+			if (_native != IntPtr.Zero)
 			{
-				_native = native;
+				btSoftBody_eAeroModel_delete(_native);
+				_native = IntPtr.Zero;
 			}
-
-			public eSolverPresets()
-			{
-				_native = btSoftBody_eSolverPresets_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_eSolverPresets_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~eSolverPresets()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_eSolverPresets_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_eSolverPresets_delete(IntPtr obj);
 		}
 
-		public class eFeature
+		~eAeroModel()
 		{
-			internal IntPtr _native;
-
-			internal eFeature(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public eFeature()
-			{
-				_native = btSoftBody_eFeature_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_eFeature_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~eFeature()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_eFeature_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_eFeature_delete(IntPtr obj);
+			Dispose(false);
 		}
 
-		public class fCollision
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_eAeroModel_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_eAeroModel_delete(IntPtr obj);
+	}
+
+	public class eVSolver
+	{
+		internal IntPtr _native;
+
+		internal eVSolver(IntPtr native)
 		{
-			internal IntPtr _native;
-
-			internal fCollision(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public fCollision()
-			{
-				_native = btSoftBody_fCollision_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_fCollision_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~fCollision()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_fCollision_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_fCollision_delete(IntPtr obj);
+			_native = native;
 		}
 
-		public class fMaterial
+		public eVSolver()
 		{
-			internal IntPtr _native;
-
-			internal fMaterial(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public fMaterial()
-			{
-				_native = btSoftBody_fMaterial_new();
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_fMaterial_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~fMaterial()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_fMaterial_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_fMaterial_delete(IntPtr obj);
+			_native = btSoftBody_eVSolver_new();
 		}
 
-		public class sRayCast
+		public void Dispose()
 		{
-			internal IntPtr _native;
-
-			internal sRayCast(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public sRayCast()
-			{
-				_native = btSoftBody_sRayCast_new();
-			}
-
-			public SoftBody Body
-			{
-				get { return SoftBody.GetManaged(btSoftBody_sRayCast_getBody(_native)) as SoftBody; }
-				set { btSoftBody_sRayCast_setBody(_native, value._native); }
-			}
-            /*
-			public void Feature
-			{
-				get { return btSoftBody_sRayCast_getFeature(_native); }
-				set { btSoftBody_sRayCast_setFeature(_native, value._native); }
-			}
-            */
-			public float Fraction
-			{
-				get { return btSoftBody_sRayCast_getFraction(_native); }
-				set { btSoftBody_sRayCast_setFraction(_native, value); }
-			}
-
-			public int Index
-			{
-				get { return btSoftBody_sRayCast_getIndex(_native); }
-				set { btSoftBody_sRayCast_setIndex(_native, value); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_sRayCast_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~sRayCast()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_sRayCast_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_sRayCast_getBody(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sRayCast_getFeature(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_sRayCast_getFraction(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_sRayCast_getIndex(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sRayCast_setBody(IntPtr obj, IntPtr value);
-			//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			//static extern void btSoftBody_sRayCast_setFeature(IntPtr obj, _ value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sRayCast_setFraction(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sRayCast_setIndex(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sRayCast_delete(IntPtr obj);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		public class ImplicitFn
+		protected virtual void Dispose(bool disposing)
 		{
-			internal IntPtr _native;
-
-			internal ImplicitFn(IntPtr native)
+			if (_native != IntPtr.Zero)
 			{
-				_native = native;
+				btSoftBody_eVSolver_delete(_native);
+				_native = IntPtr.Zero;
 			}
-
-			public float Eval(Vector3 x)
-			{
-				return btSoftBody_ImplicitFn_Eval(_native, ref x);
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_ImplicitFn_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~ImplicitFn()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_ImplicitFn_Eval(IntPtr obj, [In] ref Vector3 x);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_ImplicitFn_delete(IntPtr obj);
 		}
 
-		public class sCti
+		~eVSolver()
 		{
-			internal IntPtr _native;
-
-			internal sCti(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public sCti()
-			{
-				_native = btSoftBody_sCti_new();
-			}
-
-			public CollisionObject ColObj
-			{
-                get { return CollisionObject.GetManaged(btSoftBody_sCti_getColObj(_native)); }
-				set { btSoftBody_sCti_setColObj(_native, value._native); }
-			}
-            /*
-			public void Normal
-			{
-				get { return btSoftBody_sCti_getNormal(_native); }
-				set { btSoftBody_sCti_setNormal(_native, value._native); }
-			}
-            */
-			public float Offset
-			{
-				get { return btSoftBody_sCti_getOffset(_native); }
-				set { btSoftBody_sCti_setOffset(_native, value); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_sCti_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~sCti()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_sCti_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_sCti_getColObj(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sCti_getNormal(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_sCti_getOffset(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sCti_setColObj(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sCti_setNormal(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sCti_setOffset(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sCti_delete(IntPtr obj);
+			Dispose(false);
 		}
 
-		public class sMedium
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_eVSolver_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_eVSolver_delete(IntPtr obj);
+	}
+
+	public class ePSolver
+	{
+		internal IntPtr _native;
+
+		internal ePSolver(IntPtr native)
 		{
-			internal IntPtr _native;
-
-			internal sMedium(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public sMedium()
-			{
-				_native = btSoftBody_sMedium_new();
-			}
-
-			public float Density
-			{
-				get { return btSoftBody_sMedium_getDensity(_native); }
-				set { btSoftBody_sMedium_setDensity(_native, value); }
-			}
-
-			public float Pressure
-			{
-				get { return btSoftBody_sMedium_getPressure(_native); }
-				set { btSoftBody_sMedium_setPressure(_native, value); }
-			}
-            /*
-			public void Velocity
-			{
-				get { return btSoftBody_sMedium_getVelocity(_native); }
-				set { btSoftBody_sMedium_setVelocity(_native, value._native); }
-			}
-            */
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_sMedium_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~sMedium()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_sMedium_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_sMedium_getDensity(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_sMedium_getPressure(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sMedium_getVelocity(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sMedium_setDensity(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sMedium_setPressure(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sMedium_setVelocity(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_sMedium_delete(IntPtr obj);
+			_native = native;
 		}
 
-		public class Element
+		public ePSolver()
 		{
-			internal IntPtr _native;
-
-			internal Element(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public Element()
-			{
-				_native = btSoftBody_Element_new();
-			}
-
-			public IntPtr Tag
-			{
-				get { return btSoftBody_Element_getTag(_native); }
-				set { btSoftBody_Element_setTag(_native, value); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Element_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Element()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Element_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Element_getTag(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Element_setTag(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Element_delete(IntPtr obj);
+			_native = btSoftBody_ePSolver_new();
 		}
 
-		public class Material : Element
+		public void Dispose()
 		{
-			internal Material(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public Material()
-				: base(btSoftBody_Material_new())
-			{
-			}
-
-			public int Flags
-			{
-				get { return btSoftBody_Material_getFlags(_native); }
-				set { btSoftBody_Material_setFlags(_native, value); }
-			}
-
-			public float KAST
-			{
-				get { return btSoftBody_Material_getKAST(_native); }
-				set { btSoftBody_Material_setKAST(_native, value); }
-			}
-
-			public float KLST
-			{
-				get { return btSoftBody_Material_getKLST(_native); }
-				set { btSoftBody_Material_setKLST(_native, value); }
-			}
-
-			public float KVST
-			{
-				get { return btSoftBody_Material_getKVST(_native); }
-				set { btSoftBody_Material_setKVST(_native, value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Material_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Material_getFlags(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Material_getKAST(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Material_getKLST(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Material_getKVST(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Material_setFlags(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Material_setKAST(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Material_setKLST(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Material_setKVST(IntPtr obj, float value);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		public class Feature : Element
+		protected virtual void Dispose(bool disposing)
 		{
-			internal Feature(IntPtr native)
-				: base(native)
+			if (_native != IntPtr.Zero)
 			{
+				btSoftBody_ePSolver_delete(_native);
+				_native = IntPtr.Zero;
 			}
-
-			public Feature()
-				: base(btSoftBody_Feature_new())
-			{
-			}
-
-			public Material Material
-			{
-				get { return new Material(btSoftBody_Feature_getMaterial(_native)); }
-				set { btSoftBody_Feature_setMaterial(_native, value._native); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Feature_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Feature_getMaterial(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Feature_setMaterial(IntPtr obj, IntPtr value);
 		}
 
-		public class Node : Feature
+		~ePSolver()
 		{
-			internal Node(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public Node()
-				: base(btSoftBody_Node_new())
-			{
-			}
-
-			public float Area
-			{
-				get { return btSoftBody_Node_getArea(_native); }
-				set { btSoftBody_Node_setArea(_native, value); }
-			}
-
-			public int Battach
-			{
-				get { return btSoftBody_Node_getBattach(_native); }
-				set { btSoftBody_Node_setBattach(_native, value); }
-			}
-            /*
-			public void F
-			{
-				get { return btSoftBody_Node_getF(_native); }
-				set { btSoftBody_Node_setF(_native, value._native); }
-			}
-            */
-			public float Im
-			{
-				get { return btSoftBody_Node_getIm(_native); }
-				set { btSoftBody_Node_setIm(_native, value); }
-			}
-            /*
-			public DbvtNode Leaf
-			{
-				get { return btSoftBody_Node_getLeaf(_native); }
-				set { btSoftBody_Node_setLeaf(_native, value._native); }
-			}
-
-			public void N
-			{
-				get { return btSoftBody_Node_getN(_native); }
-				set { btSoftBody_Node_setN(_native, value._native); }
-			}
-
-			public void Q
-			{
-				get { return btSoftBody_Node_getQ(_native); }
-				set { btSoftBody_Node_setQ(_native, value._native); }
-			}
-
-			public void V
-			{
-				get { return btSoftBody_Node_getV(_native); }
-				set { btSoftBody_Node_setV(_native, value._native); }
-			}
-
-			public void X
-			{
-				get { return btSoftBody_Node_getX(_native); }
-				set { btSoftBody_Node_setX(_native, value._native); }
-			}
-            */
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Node_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Node_getArea(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Node_getBattach(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_getF(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Node_getIm(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Node_getLeaf(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_getN(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_getQ(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_getV(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_getX(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setArea(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setBattach(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setF(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setIm(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setLeaf(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setN(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setQ(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setV(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Node_setX(IntPtr obj, Vector3 value);
+			Dispose(false);
 		}
 
-		public class Link : Feature
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_ePSolver_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_ePSolver_delete(IntPtr obj);
+	}
+
+	public class eSolverPresets
+	{
+		internal IntPtr _native;
+
+		internal eSolverPresets(IntPtr native)
 		{
-			internal Link(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public Link()
-				: base(btSoftBody_Link_new())
-			{
-			}
-
-			public int Bbending
-			{
-				get { return btSoftBody_Link_getBbending(_native); }
-				set { btSoftBody_Link_setBbending(_native, value); }
-			}
-
-			public float C0
-			{
-				get { return btSoftBody_Link_getC0(_native); }
-				set { btSoftBody_Link_setC0(_native, value); }
-			}
-
-			public float C1
-			{
-				get { return btSoftBody_Link_getC1(_native); }
-				set { btSoftBody_Link_setC1(_native, value); }
-			}
-
-			public float C2
-			{
-				get { return btSoftBody_Link_getC2(_native); }
-				set { btSoftBody_Link_setC2(_native, value); }
-			}
-            /*
-			public void C3
-			{
-				get { return btSoftBody_Link_getC3(_native); }
-				set { btSoftBody_Link_setC3(_native, value._native); }
-			}
-            */
-			public Node N
-			{
-				get { return new Node(btSoftBody_Link_getN(_native)); }
-				set { btSoftBody_Link_setN(_native, value._native); }
-			}
-
-			public float Rl
-			{
-				get { return btSoftBody_Link_getRl(_native); }
-				set { btSoftBody_Link_setRl(_native, value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Link_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Link_getBbending(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Link_getC0(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Link_getC1(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Link_getC2(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_getC3(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Link_getN(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Link_getRl(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setBbending(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setC0(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setC1(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setC2(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setC3(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setN(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Link_setRl(IntPtr obj, float value);
+			_native = native;
 		}
 
-		public class Face : Feature
+		public eSolverPresets()
 		{
-			internal Face(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public Face()
-				: base(btSoftBody_Face_new())
-			{
-			}
-            /*
-			public DbvtNode Leaf
-			{
-				get { return btSoftBody_Face_getLeaf(_native); }
-				set { btSoftBody_Face_setLeaf(_native, value._native); }
-			}
-            */
-			public Node N
-			{
-                get { return new Node(btSoftBody_Face_getN(_native)); }
-				set { btSoftBody_Face_setN(_native, value._native); }
-			}
-            /*
-			public void Normal
-			{
-				get { return btSoftBody_Face_getNormal(_native); }
-				set { btSoftBody_Face_setNormal(_native, value._native); }
-			}
-            */
-			public float Ra
-			{
-				get { return btSoftBody_Face_getRa(_native); }
-				set { btSoftBody_Face_setRa(_native, value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Face_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Face_getLeaf(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Face_getN(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Face_getNormal(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Face_getRa(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Face_setLeaf(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Face_setN(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Face_setNormal(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Face_setRa(IntPtr obj, float value);
+			_native = btSoftBody_eSolverPresets_new();
 		}
 
-		public class Tetra : Feature
+		public void Dispose()
 		{
-			internal Tetra(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public Tetra()
-				: base(btSoftBody_Tetra_new())
-			{
-			}
-
-			public Vector3 C0
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_Tetra_getC0(_native, out value);
-					return value;
-				}
-				set { btSoftBody_Tetra_setC0(_native, ref value); }
-			}
-
-			public float C1
-			{
-				get { return btSoftBody_Tetra_getC1(_native); }
-				set { btSoftBody_Tetra_setC1(_native, value); }
-			}
-
-			public float C2
-			{
-				get { return btSoftBody_Tetra_getC2(_native); }
-				set { btSoftBody_Tetra_setC2(_native, value); }
-			}
-            /*
-			public DbvtNode Leaf
-			{
-				get { return btSoftBody_Tetra_getLeaf(_native); }
-				set { btSoftBody_Tetra_setLeaf(_native, value._native); }
-			}
-            */
-			public Node N
-			{
-				get { return new Node(btSoftBody_Tetra_getN(_native)); }
-				set { btSoftBody_Tetra_setN(_native, value._native); }
-			}
-
-			public float Rv
-			{
-				get { return btSoftBody_Tetra_getRv(_native); }
-				set { btSoftBody_Tetra_setRv(_native, value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Tetra_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_getC0(IntPtr obj, [Out] out Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Tetra_getC1(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Tetra_getC2(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Tetra_getLeaf(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Tetra_getN(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Tetra_getRv(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_setC0(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_setC1(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_setC2(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_setLeaf(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_setN(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Tetra_setRv(IntPtr obj, float value);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		public class RContact
+		protected virtual void Dispose(bool disposing)
 		{
-			internal IntPtr _native;
-
-			internal RContact(IntPtr native)
+			if (_native != IntPtr.Zero)
 			{
-				_native = native;
+				btSoftBody_eSolverPresets_delete(_native);
+				_native = IntPtr.Zero;
 			}
-
-			public RContact()
-			{
-				_native = btSoftBody_RContact_new();
-			}
-            /*
-			public void C0
-			{
-				get { return btSoftBody_RContact_getC0(_native); }
-				set { btSoftBody_RContact_setC0(_native, value._native); }
-			}
-            
-			public void C1
-			{
-				get { return btSoftBody_RContact_getC1(_native); }
-				set { btSoftBody_RContact_setC1(_native, value._native); }
-			}
-            */
-			public float C2
-			{
-				get { return btSoftBody_RContact_getC2(_native); }
-				set { btSoftBody_RContact_setC2(_native, value); }
-			}
-
-			public float C3
-			{
-				get { return btSoftBody_RContact_getC3(_native); }
-				set { btSoftBody_RContact_setC3(_native, value); }
-			}
-
-			public float C4
-			{
-				get { return btSoftBody_RContact_getC4(_native); }
-				set { btSoftBody_RContact_setC4(_native, value); }
-			}
-            /*
-			public void Cti
-			{
-				get { return btSoftBody_RContact_getCti(_native); }
-				set { btSoftBody_RContact_setCti(_native, value._native); }
-			}
-            */
-			public Node Node
-			{
-				get { return new Node(btSoftBody_RContact_getNode(_native)); }
-				set { btSoftBody_RContact_setNode(_native, value._native); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_RContact_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~RContact()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_RContact_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_getC0(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_getC1(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_RContact_getC2(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_RContact_getC3(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_RContact_getC4(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_getCti(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_RContact_getNode(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_setC0(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_RContact_setC1(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_setC2(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_setC3(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_setC4(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_setCti(IntPtr obj, sCti value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_setNode(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RContact_delete(IntPtr obj);
 		}
 
-		public class SContact
+		~eSolverPresets()
 		{
-			internal IntPtr _native;
-
-			internal SContact(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public SContact()
-			{
-				_native = btSoftBody_SContact_new();
-			}
-            /*
-			public float Cfm
-			{
-				get { return btSoftBody_SContact_getCfm(_native); }
-				set { btSoftBody_SContact_setCfm(_native, value._native); }
-			}
-            */
-			public Face Face
-			{
-				get { return new Face(btSoftBody_SContact_getFace(_native)); }
-				set { btSoftBody_SContact_setFace(_native, value._native); }
-			}
-
-			public float Friction
-			{
-				get { return btSoftBody_SContact_getFriction(_native); }
-				set { btSoftBody_SContact_setFriction(_native, value); }
-			}
-
-			public float Margin
-			{
-				get { return btSoftBody_SContact_getMargin(_native); }
-				set { btSoftBody_SContact_setMargin(_native, value); }
-			}
-
-			public Node Node
-			{
-				get { return new Node(btSoftBody_SContact_getNode(_native)); }
-				set { btSoftBody_SContact_setNode(_native, value._native); }
-			}
-            /*
-			public void Normal
-			{
-				get { return btSoftBody_SContact_getNormal(_native); }
-				set { btSoftBody_SContact_setNormal(_native, value._native); }
-			}
-
-			public void Weights
-			{
-				get { return btSoftBody_SContact_getWeights(_native); }
-				set { btSoftBody_SContact_setWeights(_native, value._native); }
-			}
-            */
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_SContact_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~SContact()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_SContact_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_SContact_getCfm(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_SContact_getFace(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SContact_getFriction(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SContact_getMargin(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_SContact_getNode(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_getNormal(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_getWeights(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setCfm(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setFace(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setFriction(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setMargin(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setNode(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setNormal(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_setWeights(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SContact_delete(IntPtr obj);
+			Dispose(false);
 		}
 
-		public class Anchor
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_eSolverPresets_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_eSolverPresets_delete(IntPtr obj);
+	}
+
+	public class eFeature
+	{
+		internal IntPtr _native;
+
+		internal eFeature(IntPtr native)
 		{
-			internal IntPtr _native;
-
-			internal Anchor(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public Anchor()
-			{
-				_native = btSoftBody_Anchor_new();
-			}
-
-			public RigidBody Body
-			{
-				get { return CollisionObject.GetManaged(btSoftBody_Anchor_getBody(_native)) as RigidBody; }
-				set { btSoftBody_Anchor_setBody(_native, value._native); }
-			}
-            /*
-			public void C0
-			{
-				get { return btSoftBody_Anchor_getC0(_native); }
-				set { btSoftBody_Anchor_setC0(_native, value._native); }
-			}
-
-			public void C1
-			{
-				get { return btSoftBody_Anchor_getC1(_native); }
-				set { btSoftBody_Anchor_setC1(_native, value._native); }
-			}
-            */
-			public float C2
-			{
-				get { return btSoftBody_Anchor_getC2(_native); }
-				set { btSoftBody_Anchor_setC2(_native, value); }
-			}
-
-			public float Influence
-			{
-				get { return btSoftBody_Anchor_getInfluence(_native); }
-				set { btSoftBody_Anchor_setInfluence(_native, value); }
-			}
-            /*
-			public void Local
-			{
-				get { return btSoftBody_Anchor_getLocal(_native); }
-				set { btSoftBody_Anchor_setLocal(_native, value._native); }
-			}
-            */
-			public Node Node
-			{
-				get { return new Node(btSoftBody_Anchor_getNode(_native)); }
-				set { btSoftBody_Anchor_setNode(_native, value._native); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Anchor_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Anchor()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Anchor_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Anchor_getBody(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_getC0(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_getC1(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Anchor_getC2(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Anchor_getInfluence(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_getLocal(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Anchor_getNode(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_setBody(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_setC0(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_Anchor_setC1(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_setC2(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_setInfluence(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_setLocal(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_setNode(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Anchor_delete(IntPtr obj);
+			_native = native;
 		}
 
-		public class Note : Element
+		public eFeature()
 		{
-			internal Note(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public Note()
-				: base(btSoftBody_Note_new())
-			{
-			}
-            /*
-			public float Coords
-			{
-				get { return btSoftBody_Note_getCoords(_native); }
-				set { btSoftBody_Note_setCoords(_native, value._native); }
-			}
-            */
-			public Node Nodes
-			{
-				get { return new Node(btSoftBody_Note_getNodes(_native)); }
-				set { btSoftBody_Note_setNodes(_native, value._native); }
-			}
-            /*
-			public void Offset
-			{
-				get { return btSoftBody_Note_getOffset(_native); }
-				set { btSoftBody_Note_setOffset(_native, value._native); }
-			}
-            */
-			public int Rank
-			{
-				get { return btSoftBody_Note_getRank(_native); }
-				set { btSoftBody_Note_setRank(_native, value); }
-			}
-
-			public string Text
-			{
-				get { return btSoftBody_Note_getText(_native); }
-				set { btSoftBody_Note_setText(_native, value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Note_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Note_getCoords(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Note_getNodes(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Note_getOffset(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Note_getRank(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern string btSoftBody_Note_getText(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Note_setCoords(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Note_setNodes(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Note_setOffset(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Note_setRank(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Note_setText(IntPtr obj, string value);
+			_native = btSoftBody_eFeature_new();
 		}
 
-		public class Pose
+		public void Dispose()
 		{
-			internal IntPtr _native;
-
-			internal Pose(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public Pose()
-			{
-				_native = btSoftBody_Pose_new();
-			}
-            /*
-			public void Aqq
-			{
-				get { return btSoftBody_Pose_getAqq(_native); }
-				set { btSoftBody_Pose_setAqq(_native, value._native); }
-			}
-            */
-			public bool Bframe
-			{
-				get { return btSoftBody_Pose_getBframe(_native); }
-				set { btSoftBody_Pose_setBframe(_native, value); }
-			}
-
-			public bool Bvolume
-			{
-				get { return btSoftBody_Pose_getBvolume(_native); }
-				set { btSoftBody_Pose_setBvolume(_native, value); }
-			}
-            /*
-			public void Com
-			{
-				get { return btSoftBody_Pose_getCom(_native); }
-				set { btSoftBody_Pose_setCom(_native, value._native); }
-			}
-
-			public tVector3Array Pos
-			{
-				get { return btSoftBody_Pose_getPos(_native); }
-				set { btSoftBody_Pose_setPos(_native, value._native); }
-			}
-
-			public void Rot
-			{
-				get { return btSoftBody_Pose_getRot(_native); }
-				set { btSoftBody_Pose_setRot(_native, value._native); }
-			}
-
-			public void Scl
-			{
-				get { return btSoftBody_Pose_getScl(_native); }
-				set { btSoftBody_Pose_setScl(_native, value._native); }
-			}
-
-			public tScalarArray Wgh
-			{
-				get { return btSoftBody_Pose_getWgh(_native); }
-				set { btSoftBody_Pose_setWgh(_native, value._native); }
-			}
-            */
-			public float Volume
-			{
-				get { return btSoftBody_Pose_getVolume(_native); }
-				set { btSoftBody_Pose_setVolume(_native, value); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Pose_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Pose()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Pose_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_getAqq(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern bool btSoftBody_Pose_getBframe(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern bool btSoftBody_Pose_getBvolume(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_getCom(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Pose_getPos(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_getRot(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_getScl(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Pose_getWgh(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Pose_getVolume(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setAqq(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setBframe(IntPtr obj, bool value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setBvolume(IntPtr obj, bool value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setCom(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setPos(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_Pose_setRot(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_Pose_setScl(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setWgh(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_setVolume(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Pose_delete(IntPtr obj);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		public class Cluster
+		protected virtual void Dispose(bool disposing)
 		{
-			internal IntPtr _native;
-
-			internal Cluster(IntPtr native)
+			if (_native != IntPtr.Zero)
 			{
-				_native = native;
+				btSoftBody_eFeature_delete(_native);
+				_native = IntPtr.Zero;
 			}
-
-			public Cluster()
-			{
-				_native = btSoftBody_Cluster_new();
-			}
-
-			public float Adamping
-			{
-				get { return btSoftBody_Cluster_getAdamping(_native); }
-				set { btSoftBody_Cluster_setAdamping(_native, value); }
-			}
-            /*
-			public void Av
-			{
-				get { return btSoftBody_Cluster_getAv(_native); }
-				set { btSoftBody_Cluster_setAv(_native, value._native); }
-			}
-            */
-			public int ClusterIndex
-			{
-				get { return btSoftBody_Cluster_getClusterIndex(_native); }
-				set { btSoftBody_Cluster_setClusterIndex(_native, value); }
-			}
-
-			public bool Collide
-			{
-				get { return btSoftBody_Cluster_getCollide(_native); }
-				set { btSoftBody_Cluster_setCollide(_native, value); }
-			}
-            /*
-			public void Com
-			{
-				get { return btSoftBody_Cluster_getCom(_native); }
-				set { btSoftBody_Cluster_setCom(_native, value._native); }
-			}
-            */
-			public bool ContainsAnchor
-			{
-				get { return btSoftBody_Cluster_getContainsAnchor(_native); }
-				set { btSoftBody_Cluster_setContainsAnchor(_native, value); }
-			}
-            /*
-			public Vector3 Dimpulses
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_Cluster_getDimpulses(_native, out value);
-					return value;
-				}
-				set { btSoftBody_Cluster_setDimpulses(_native, ref value); }
-			}
-
-			public tVector3Array Framerefs
-			{
-				get { return btSoftBody_Cluster_getFramerefs(_native); }
-				set { btSoftBody_Cluster_setFramerefs(_native, value._native); }
-			}
-
-			public void Framexform
-			{
-				get { return btSoftBody_Cluster_getFramexform(_native); }
-				set { btSoftBody_Cluster_setFramexform(_native, value._native); }
-			}
-            */
-			public float Idmass
-			{
-				get { return btSoftBody_Cluster_getIdmass(_native); }
-				set { btSoftBody_Cluster_setIdmass(_native, value); }
-			}
-
-			public float Imass
-			{
-				get { return btSoftBody_Cluster_getImass(_native); }
-				set { btSoftBody_Cluster_setImass(_native, value); }
-			}
-            /*
-			public void Invwi
-			{
-				get { return btSoftBody_Cluster_getInvwi(_native); }
-				set { btSoftBody_Cluster_setInvwi(_native, value._native); }
-			}
-            */
-			public float Ldamping
-			{
-				get { return btSoftBody_Cluster_getLdamping(_native); }
-				set { btSoftBody_Cluster_setLdamping(_native, value); }
-			}
-            /*
-			public DbvtNode Leaf
-			{
-				get { return btSoftBody_Cluster_getLeaf(_native); }
-				set { btSoftBody_Cluster_setLeaf(_native, value._native); }
-			}
-
-			public void Locii
-			{
-				get { return btSoftBody_Cluster_getLocii(_native); }
-				set { btSoftBody_Cluster_setLocii(_native, value._native); }
-			}
-
-			public void Lv
-			{
-				get { return btSoftBody_Cluster_getLv(_native); }
-				set { btSoftBody_Cluster_setLv(_native, value._native); }
-			}
-
-			public tScalarArray Masses
-			{
-				get { return btSoftBody_Cluster_getMasses(_native); }
-				set { btSoftBody_Cluster_setMasses(_native, value._native); }
-			}
-            */
-			public float Matching
-			{
-				get { return btSoftBody_Cluster_getMatching(_native); }
-				set { btSoftBody_Cluster_setMatching(_native, value); }
-			}
-
-			public float MaxSelfCollisionImpulse
-			{
-				get { return btSoftBody_Cluster_getMaxSelfCollisionImpulse(_native); }
-				set { btSoftBody_Cluster_setMaxSelfCollisionImpulse(_native, value); }
-			}
-
-			public float Ndamping
-			{
-				get { return btSoftBody_Cluster_getNdamping(_native); }
-				set { btSoftBody_Cluster_setNdamping(_native, value); }
-			}
-
-			public int Ndimpulses
-			{
-				get { return btSoftBody_Cluster_getNdimpulses(_native); }
-				set { btSoftBody_Cluster_setNdimpulses(_native, value); }
-			}
-            /*
-			public void Nodes
-			{
-				get { return btSoftBody_Cluster_getNodes(_native); }
-				set { btSoftBody_Cluster_setNodes(_native, value._native); }
-			}
-            */
-			public int Nvimpulses
-			{
-				get { return btSoftBody_Cluster_getNvimpulses(_native); }
-				set { btSoftBody_Cluster_setNvimpulses(_native, value); }
-			}
-
-			public float SelfCollisionImpulseFactor
-			{
-				get { return btSoftBody_Cluster_getSelfCollisionImpulseFactor(_native); }
-				set { btSoftBody_Cluster_setSelfCollisionImpulseFactor(_native, value); }
-			}
-            /*
-			public Vector3 Vimpulses
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_Cluster_getVimpulses(_native, out value);
-					return value;
-				}
-				set { btSoftBody_Cluster_setVimpulses(_native, ref value); }
-			}
-            */
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Cluster_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Cluster()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Cluster_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getAdamping(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getAv(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Cluster_getClusterIndex(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern bool btSoftBody_Cluster_getCollide(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getCom(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern bool btSoftBody_Cluster_getContainsAnchor(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Cluster_getDimpulses(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Cluster_getFramerefs(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getFramexform(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getIdmass(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getImass(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getInvwi(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getLdamping(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Cluster_getLeaf(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getLocii(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getLv(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Cluster_getMasses(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getMatching(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getMaxSelfCollisionImpulse(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getNdamping(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Cluster_getNdimpulses(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_getNodes(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Cluster_getNvimpulses(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Cluster_getSelfCollisionImpulseFactor(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Cluster_getVimpulses(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setAdamping(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setAv(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setClusterIndex(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setCollide(IntPtr obj, bool value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setCom(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setContainsAnchor(IntPtr obj, bool value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setDimpulses(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setFramerefs(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setFramexform(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setIdmass(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setImass(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_Cluster_setInvwi(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setLdamping(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setLeaf(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_Cluster_setLocii(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setLv(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setMasses(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setMatching(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setMaxSelfCollisionImpulse(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setNdamping(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setNdimpulses(IntPtr obj, int value);
-			//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			//static extern void btSoftBody_Cluster_setNodes(IntPtr obj, AlignedObjectArray<Node> value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setNvimpulses(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setSelfCollisionImpulseFactor(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_setVimpulses(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Cluster_delete(IntPtr obj);
 		}
 
-		public class Impulse
+		~eFeature()
 		{
-			internal IntPtr _native;
-
-			internal Impulse(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public Impulse()
-			{
-				_native = btSoftBody_Impulse_new();
-			}
-            /*
-			public void operator-(Impulse impulse)
-			{
-				btSoftBody_Impulse_operator_n(_native);
-			}
-
-			public void operator*(Impulse impulse, float x)
-			{
-				btSoftBody_Impulse_operator_m(_native, x);
-			}
-            */
-			public int AsDrift
-			{
-				get { return btSoftBody_Impulse_getAsDrift(_native); }
-				set { btSoftBody_Impulse_setAsDrift(_native, value); }
-			}
-
-			public int AsVelocity
-			{
-				get { return btSoftBody_Impulse_getAsVelocity(_native); }
-				set { btSoftBody_Impulse_setAsVelocity(_native, value); }
-			}
-            /*
-			public void Drift
-			{
-				get { return btSoftBody_Impulse_getDrift(_native); }
-				set { btSoftBody_Impulse_setDrift(_native, value._native); }
-			}
-
-			public void Velocity
-			{
-				get { return btSoftBody_Impulse_getVelocity(_native); }
-				set { btSoftBody_Impulse_setVelocity(_native, value._native); }
-			}
-            */
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Impulse_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Impulse()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Impulse_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Impulse_getAsDrift(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Impulse_getAsVelocity(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_getDrift(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_getVelocity(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_operator_n(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_operator_m(IntPtr obj, float x);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_setAsDrift(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_setAsVelocity(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_setDrift(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_setVelocity(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Impulse_delete(IntPtr obj);
+			Dispose(false);
 		}
 
-		public class Body
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_eFeature_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_eFeature_delete(IntPtr obj);
+	}
+
+	public class fCollision
+	{
+		internal IntPtr _native;
+
+		internal fCollision(IntPtr native)
 		{
-			internal IntPtr _native;
-
-			internal Body(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public Body()
-			{
-				_native = btSoftBody_Body_new();
-			}
-
-			public Body(CollisionObject colObj)
-			{
-				_native = btSoftBody_Body_new2(colObj._native);
-			}
-
-			public Body(Cluster p)
-			{
-				_native = btSoftBody_Body_new3(p._native);
-			}
-
-			public void Activate()
-			{
-				btSoftBody_Body_activate(_native);
-			}
-
-			public void AngularVelocity(Vector3 rpos)
-			{
-				btSoftBody_Body_angularVelocity(_native, ref rpos);
-			}
-
-			public void AngularVelocity()
-			{
-				btSoftBody_Body_angularVelocity2(_native);
-			}
-
-			public void ApplyAImpulse(Impulse impulse)
-			{
-				btSoftBody_Body_applyAImpulse(_native, impulse._native);
-			}
-
-			public void ApplyDAImpulse(Vector3 impulse)
-			{
-				btSoftBody_Body_applyDAImpulse(_native, ref impulse);
-			}
-
-			public void ApplyDCImpulse(Vector3 impulse)
-			{
-				btSoftBody_Body_applyDCImpulse(_native, ref impulse);
-			}
-
-			public void ApplyDImpulse(Vector3 impulse, Vector3 rpos)
-			{
-				btSoftBody_Body_applyDImpulse(_native, ref impulse, ref rpos);
-			}
-
-			public void ApplyImpulse(Impulse impulse, Vector3 rpos)
-			{
-				btSoftBody_Body_applyImpulse(_native, impulse._native, ref rpos);
-			}
-
-			public void ApplyVAImpulse(Vector3 impulse)
-			{
-				btSoftBody_Body_applyVAImpulse(_native, ref impulse);
-			}
-
-			public void ApplyVImpulse(Vector3 impulse, Vector3 rpos)
-			{
-				btSoftBody_Body_applyVImpulse(_native, ref impulse, ref rpos);
-			}
-
-			public float InvMass()
-			{
-				return btSoftBody_Body_invMass(_native);
-			}
-            /*
-			public Matrix InvWorldInertia()
-			{
-				return btSoftBody_Body_invWorldInertia(_native);
-			}
-            */
-			public void LinearVelocity()
-			{
-				btSoftBody_Body_linearVelocity(_native);
-			}
-
-			public void Velocity(Vector3 rpos)
-			{
-				btSoftBody_Body_velocity(_native, ref rpos);
-			}
-            /*
-			public Matrix Xform()
-			{
-				return btSoftBody_Body_xform(_native);
-			}
-            */
-			public CollisionObject CollisionObject
-			{
-                get { return CollisionObject.GetManaged(btSoftBody_Body_getCollisionObject(_native)); }
-				set { btSoftBody_Body_setCollisionObject(_native, value._native); }
-			}
-
-			public RigidBody Rigid
-			{
-				get { return CollisionObject.GetManaged(btSoftBody_Body_getRigid(_native)) as RigidBody; }
-				set { btSoftBody_Body_setRigid(_native, value._native); }
-			}
-
-			public Cluster Soft
-			{
-				get { return new Cluster(btSoftBody_Body_getSoft(_native)); }
-				set { btSoftBody_Body_setSoft(_native, value._native); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Body_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Body()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_new2(IntPtr colObj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_new3(IntPtr p);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_activate(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_angularVelocity(IntPtr obj, [In] ref Vector3 rpos);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_angularVelocity2(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyAImpulse(IntPtr obj, IntPtr impulse);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyDAImpulse(IntPtr obj, [In] ref Vector3 impulse);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyDCImpulse(IntPtr obj, [In] ref Vector3 impulse);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyDImpulse(IntPtr obj, [In] ref Vector3 impulse, [In] ref Vector3 rpos);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyImpulse(IntPtr obj, IntPtr impulse, [In] ref Vector3 rpos);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyVAImpulse(IntPtr obj, [In] ref Vector3 impulse);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_applyVImpulse(IntPtr obj, [In] ref Vector3 impulse, [In] ref Vector3 rpos);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_getCollisionObject(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_getRigid(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_getSoft(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Body_invMass(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_invWorldInertia(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_linearVelocity(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_setCollisionObject(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_setRigid(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_setSoft(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_velocity(IntPtr obj, [In] ref Vector3 rpos);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Body_xform(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Body_delete(IntPtr obj);
+			_native = native;
 		}
 
-		public class Joint
+		public fCollision()
 		{
-			public class eType
-			{
-				internal IntPtr _native;
-
-				internal eType(IntPtr native)
-				{
-					_native = native;
-				}
-
-				public eType()
-				{
-					_native = btSoftBody_Joint_eType_new();
-				}
-
-				public void Dispose()
-				{
-					Dispose(true);
-					GC.SuppressFinalize(this);
-				}
-
-				protected virtual void Dispose(bool disposing)
-				{
-					if (_native != IntPtr.Zero)
-					{
-						btSoftBody_Joint_eType_delete(_native);
-						_native = IntPtr.Zero;
-					}
-				}
-
-				~eType()
-				{
-					Dispose(false);
-				}
-
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern IntPtr btSoftBody_Joint_eType_new();
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_Joint_eType_delete(IntPtr obj);
-			}
-
-			public class Specs
-			{
-				internal IntPtr _native;
-
-				internal Specs(IntPtr native)
-				{
-					_native = native;
-				}
-
-				public Specs()
-				{
-					_native = btSoftBody_Joint_Specs_new();
-				}
-
-				public float Cfm
-				{
-					get { return btSoftBody_Joint_Specs_getCfm(_native); }
-					set { btSoftBody_Joint_Specs_setCfm(_native, value); }
-				}
-
-				public float Erp
-				{
-					get { return btSoftBody_Joint_Specs_getErp(_native); }
-					set { btSoftBody_Joint_Specs_setErp(_native, value); }
-				}
-
-				public float Split
-				{
-					get { return btSoftBody_Joint_Specs_getSplit(_native); }
-					set { btSoftBody_Joint_Specs_setSplit(_native, value); }
-				}
-
-				public void Dispose()
-				{
-					Dispose(true);
-					GC.SuppressFinalize(this);
-				}
-
-				protected virtual void Dispose(bool disposing)
-				{
-					if (_native != IntPtr.Zero)
-					{
-						btSoftBody_Joint_Specs_delete(_native);
-						_native = IntPtr.Zero;
-					}
-				}
-
-				~Specs()
-				{
-					Dispose(false);
-				}
-
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern IntPtr btSoftBody_Joint_Specs_new();
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern float btSoftBody_Joint_Specs_getCfm(IntPtr obj);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern float btSoftBody_Joint_Specs_getErp(IntPtr obj);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern float btSoftBody_Joint_Specs_getSplit(IntPtr obj);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_Joint_Specs_setCfm(IntPtr obj, float value);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_Joint_Specs_setErp(IntPtr obj, float value);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_Joint_Specs_setSplit(IntPtr obj, float value);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_Joint_Specs_delete(IntPtr obj);
-			}
-
-			internal IntPtr _native;
-
-			internal Joint(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public void Prepare(float dt, int iterations)
-			{
-				btSoftBody_Joint_Prepare(_native, dt, iterations);
-			}
-
-			public void Solve(float dt, float sor)
-			{
-				btSoftBody_Joint_Solve(_native, dt, sor);
-			}
-
-			public void Terminate(float dt)
-			{
-				btSoftBody_Joint_Terminate(_native, dt);
-			}
-
-			public void Type()
-			{
-				btSoftBody_Joint_Type(_native);
-			}
-            /*
-			public Body Bodies
-			{
-				get { return btSoftBody_Joint_getBodies(_native); }
-				set { btSoftBody_Joint_setBodies(_native, value._native); }
-			}
-            */
-			public float Cfm
-			{
-				get { return btSoftBody_Joint_getCfm(_native); }
-				set { btSoftBody_Joint_setCfm(_native, value); }
-			}
-
-			public bool Delete
-			{
-				get { return btSoftBody_Joint_getDelete(_native); }
-				set { btSoftBody_Joint_setDelete(_native, value); }
-			}
-            /*
-			public void Drift
-			{
-				get { return btSoftBody_Joint_getDrift(_native); }
-				set { btSoftBody_Joint_setDrift(_native, value._native); }
-			}
-            */
-			public float Erp
-			{
-				get { return btSoftBody_Joint_getErp(_native); }
-				set { btSoftBody_Joint_setErp(_native, value); }
-			}
-            /*
-			public void Massmatrix
-			{
-				get { return btSoftBody_Joint_getMassmatrix(_native); }
-				set { btSoftBody_Joint_setMassmatrix(_native, value._native); }
-			}
-
-			public Vector3 Refs
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_Joint_getRefs(_native, out value);
-					return value;
-				}
-				set { btSoftBody_Joint_setRefs(_native, ref value); }
-			}
-
-			public void Sdrift
-			{
-				get { return btSoftBody_Joint_getSdrift(_native); }
-				set { btSoftBody_Joint_setSdrift(_native, value._native); }
-			}
-            */
-			public float Split
-			{
-				get { return btSoftBody_Joint_getSplit(_native); }
-				set { btSoftBody_Joint_setSplit(_native, value); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Joint_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Joint()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Joint_getBodies(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Joint_getCfm(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern bool btSoftBody_Joint_getDelete(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_getDrift(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Joint_getErp(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_getMassmatrix(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Joint_getRefs(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_getSdrift(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Joint_getSplit(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_Prepare(IntPtr obj, float dt, int iterations);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setBodies(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setCfm(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setDelete(IntPtr obj, bool value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setDrift(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setErp(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_Joint_setMassmatrix(IntPtr obj, [In] ref Matrix value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setRefs(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setSdrift(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_setSplit(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_Solve(IntPtr obj, float dt, float sor);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_Terminate(IntPtr obj, float dt);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_Type(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Joint_delete(IntPtr obj);
+			_native = btSoftBody_fCollision_new();
 		}
 
-		public class LJoint : Joint
+		public void Dispose()
 		{
-			internal LJoint(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public LJoint()
-				: base(btSoftBody_LJoint_new())
-			{
-			}
-
-			public Vector3 Rpos
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_LJoint_getRpos(_native, out value);
-					return value;
-				}
-				set { btSoftBody_LJoint_setRpos(_native, ref value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_LJoint_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_LJoint_getRpos(IntPtr obj, [Out] out Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_LJoint_setRpos(IntPtr obj, [In] ref Vector3 value);
+			Dispose(true);
+			GC.SuppressFinalize(this);
 		}
 
-		public class AJoint : Joint
+		protected virtual void Dispose(bool disposing)
 		{
-			public class IControl
+			if (_native != IntPtr.Zero)
 			{
-				internal IntPtr _native;
-
-				internal IControl(IntPtr native)
-				{
-					_native = native;
-				}
-
-				public IControl()
-				{
-					_native = btSoftBody_AJoint_IControl_new();
-				}
-
-				public IControl Default()
-				{
-                    return new IControl(btSoftBody_AJoint_IControl_Default());
-				}
-
-				public void Prepare(AJoint __unnamed0)
-				{
-					btSoftBody_AJoint_IControl_Prepare(_native, __unnamed0._native);
-				}
-
-				public float Speed(AJoint __unnamed0, float current)
-				{
-					return btSoftBody_AJoint_IControl_Speed(_native, __unnamed0._native, current);
-				}
-
-				public void Dispose()
-				{
-					Dispose(true);
-					GC.SuppressFinalize(this);
-				}
-
-				protected virtual void Dispose(bool disposing)
-				{
-					if (_native != IntPtr.Zero)
-					{
-						btSoftBody_AJoint_IControl_delete(_native);
-						_native = IntPtr.Zero;
-					}
-				}
-
-				~IControl()
-				{
-					Dispose(false);
-				}
-
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern IntPtr btSoftBody_AJoint_IControl_new();
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern IntPtr btSoftBody_AJoint_IControl_Default();
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_AJoint_IControl_Prepare(IntPtr obj, IntPtr __unnamed0);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern float btSoftBody_AJoint_IControl_Speed(IntPtr obj, IntPtr __unnamed0, float current);
-				[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-				static extern void btSoftBody_AJoint_IControl_delete(IntPtr obj);
+				btSoftBody_fCollision_delete(_native);
+				_native = IntPtr.Zero;
 			}
-
-			internal AJoint(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public AJoint()
-				: base(btSoftBody_AJoint_new())
-			{
-			}
-
-			public Vector3 Axis
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_AJoint_getAxis(_native, out value);
-					return value;
-				}
-				set { btSoftBody_AJoint_setAxis(_native, ref value); }
-			}
-
-			public IControl Icontrol
-			{
-				get { return new IControl(btSoftBody_AJoint_getIcontrol(_native)); }
-				set { btSoftBody_AJoint_setIcontrol(_native, value._native); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_AJoint_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_AJoint_getAxis(IntPtr obj, [Out] out Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_AJoint_getIcontrol(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_AJoint_setAxis(IntPtr obj, [In] ref Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_AJoint_setIcontrol(IntPtr obj, IntPtr value);
 		}
 
-		public class CJoint : Joint
+		~fCollision()
 		{
-			internal CJoint(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public CJoint()
-				: base(btSoftBody_CJoint_new())
-			{
-			}
-
-			public float Friction
-			{
-				get { return btSoftBody_CJoint_getFriction(_native); }
-				set { btSoftBody_CJoint_setFriction(_native, value); }
-			}
-
-			public int Life
-			{
-				get { return btSoftBody_CJoint_getLife(_native); }
-				set { btSoftBody_CJoint_setLife(_native, value); }
-			}
-
-			public int Maxlife
-			{
-				get { return btSoftBody_CJoint_getMaxlife(_native); }
-				set { btSoftBody_CJoint_setMaxlife(_native, value); }
-			}
-            /*
-			public void Normal
-			{
-				get { return btSoftBody_CJoint_getNormal(_native); }
-				set { btSoftBody_CJoint_setNormal(_native, value._native); }
-			}
-            */
-			public Vector3 Rpos
-			{
-				get
-				{
-					Vector3 value;
-					btSoftBody_CJoint_getRpos(_native, out value);
-					return value;
-				}
-				set { btSoftBody_CJoint_setRpos(_native, ref value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_CJoint_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_CJoint_getFriction(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_CJoint_getLife(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_CJoint_getMaxlife(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_CJoint_getNormal(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btSoftBody_CJoint_getRpos(IntPtr obj, [Out] out Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_CJoint_setFriction(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_CJoint_setLife(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_CJoint_setMaxlife(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_CJoint_setNormal(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_CJoint_setRpos(IntPtr obj, [In] ref Vector3 value);
+			Dispose(false);
 		}
 
-		public class Config
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_fCollision_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_fCollision_delete(IntPtr obj);
+	}
+
+	public class fMaterial
+	{
+		internal IntPtr _native;
+
+		internal fMaterial(IntPtr native)
 		{
-			internal IntPtr _native;
-
-			internal Config(IntPtr native)
-			{
-				_native = native;
-			}
-
-			public Config()
-			{
-				_native = btSoftBody_Config_new();
-			}
-            /*
-			public void Aeromodel
-			{
-				get { return btSoftBody_Config_getAeromodel(_native); }
-				set { btSoftBody_Config_setAeromodel(_native, value._native); }
-			}
-            */
-			public int Citerations
-			{
-				get { return btSoftBody_Config_getCiterations(_native); }
-				set { btSoftBody_Config_setCiterations(_native, value); }
-			}
-
-			public int Collisions
-			{
-				get { return btSoftBody_Config_getCollisions(_native); }
-				set { btSoftBody_Config_setCollisions(_native, value); }
-			}
-
-			public int Diterations
-			{
-				get { return btSoftBody_Config_getDiterations(_native); }
-				set { btSoftBody_Config_setDiterations(_native, value); }
-			}
-            /*
-			public tPSolverArray Dsequence
-			{
-				get { return btSoftBody_Config_getDsequence(_native); }
-				set { btSoftBody_Config_setDsequence(_native, value._native); }
-			}
-            */
-			public float KAHR
-			{
-				get { return btSoftBody_Config_getKAHR(_native); }
-				set { btSoftBody_Config_setKAHR(_native, value); }
-			}
-
-			public float KCHR
-			{
-				get { return btSoftBody_Config_getKCHR(_native); }
-				set { btSoftBody_Config_setKCHR(_native, value); }
-			}
-
-			public float KDF
-			{
-				get { return btSoftBody_Config_getKDF(_native); }
-				set { btSoftBody_Config_setKDF(_native, value); }
-			}
-
-			public float KDG
-			{
-				get { return btSoftBody_Config_getKDG(_native); }
-				set { btSoftBody_Config_setKDG(_native, value); }
-			}
-
-			public float KDP
-			{
-				get { return btSoftBody_Config_getKDP(_native); }
-				set { btSoftBody_Config_setKDP(_native, value); }
-			}
-
-			public float KKHR
-			{
-				get { return btSoftBody_Config_getKKHR(_native); }
-				set { btSoftBody_Config_setKKHR(_native, value); }
-			}
-
-			public float KLF
-			{
-				get { return btSoftBody_Config_getKLF(_native); }
-				set { btSoftBody_Config_setKLF(_native, value); }
-			}
-
-			public float KMT
-			{
-				get { return btSoftBody_Config_getKMT(_native); }
-				set { btSoftBody_Config_setKMT(_native, value); }
-			}
-
-			public float KPR
-			{
-				get { return btSoftBody_Config_getKPR(_native); }
-				set { btSoftBody_Config_setKPR(_native, value); }
-			}
-
-			public float KSHR
-			{
-				get { return btSoftBody_Config_getKSHR(_native); }
-				set { btSoftBody_Config_setKSHR(_native, value); }
-			}
-
-			public float KSK_SPLT_CL
-			{
-				get { return btSoftBody_Config_getKSK_SPLT_CL(_native); }
-				set { btSoftBody_Config_setKSK_SPLT_CL(_native, value); }
-			}
-
-			public float KSKHR_CL
-			{
-				get { return btSoftBody_Config_getKSKHR_CL(_native); }
-				set { btSoftBody_Config_setKSKHR_CL(_native, value); }
-			}
-
-			public float KSR_SPLT_CL
-			{
-				get { return btSoftBody_Config_getKSR_SPLT_CL(_native); }
-				set { btSoftBody_Config_setKSR_SPLT_CL(_native, value); }
-			}
-
-			public float KSRHR_CL
-			{
-				get { return btSoftBody_Config_getKSRHR_CL(_native); }
-				set { btSoftBody_Config_setKSRHR_CL(_native, value); }
-			}
-
-			public float KSS_SPLT_CL
-			{
-				get { return btSoftBody_Config_getKSS_SPLT_CL(_native); }
-				set { btSoftBody_Config_setKSS_SPLT_CL(_native, value); }
-			}
-
-			public float KSSHR_CL
-			{
-				get { return btSoftBody_Config_getKSSHR_CL(_native); }
-				set { btSoftBody_Config_setKSSHR_CL(_native, value); }
-			}
-
-			public float KVC
-			{
-				get { return btSoftBody_Config_getKVC(_native); }
-				set { btSoftBody_Config_setKVC(_native, value); }
-			}
-
-			public float KVCF
-			{
-				get { return btSoftBody_Config_getKVCF(_native); }
-				set { btSoftBody_Config_setKVCF(_native, value); }
-			}
-
-			public float Maxvolume
-			{
-				get { return btSoftBody_Config_getMaxvolume(_native); }
-				set { btSoftBody_Config_setMaxvolume(_native, value); }
-			}
-
-			public int Piterations
-			{
-				get { return btSoftBody_Config_getPiterations(_native); }
-				set { btSoftBody_Config_setPiterations(_native, value); }
-			}
-            /*
-			public tPSolverArray Psequence
-			{
-				get { return btSoftBody_Config_getPsequence(_native); }
-				set { btSoftBody_Config_setPsequence(_native, value._native); }
-			}
-            */
-			public float Timescale
-			{
-				get { return btSoftBody_Config_getTimescale(_native); }
-				set { btSoftBody_Config_setTimescale(_native, value); }
-			}
-
-			public int Viterations
-			{
-				get { return btSoftBody_Config_getViterations(_native); }
-				set { btSoftBody_Config_setViterations(_native, value); }
-			}
-            /*
-			public tVSolverArray Vsequence
-			{
-				get { return btSoftBody_Config_getVsequence(_native); }
-				set { btSoftBody_Config_setVsequence(_native, value._native); }
-			}
-            */
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_Config_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~Config()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Config_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_getAeromodel(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Config_getCiterations(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Config_getCollisions(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Config_getDiterations(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Config_getDsequence(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKAHR(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKCHR(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKDF(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKDG(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKDP(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKKHR(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKLF(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKMT(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKPR(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSHR(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSK_SPLT_CL(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSKHR_CL(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSR_SPLT_CL(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSRHR_CL(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSS_SPLT_CL(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKSSHR_CL(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKVC(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getKVCF(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getMaxvolume(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Config_getPiterations(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Config_getPsequence(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_Config_getTimescale(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_Config_getViterations(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_Config_getVsequence(IntPtr obj);
-			//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			//static extern void btSoftBody_Config_setAeromodel(IntPtr obj, _ value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setCiterations(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setCollisions(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setDiterations(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setDsequence(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKAHR(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKCHR(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKDF(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKDG(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKDP(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKKHR(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKLF(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKMT(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKPR(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSHR(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSK_SPLT_CL(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSKHR_CL(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSR_SPLT_CL(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSRHR_CL(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSS_SPLT_CL(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKSSHR_CL(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKVC(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setKVCF(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setMaxvolume(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setPiterations(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setPsequence(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setTimescale(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setViterations(IntPtr obj, int value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_setVsequence(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_Config_delete(IntPtr obj);
+			_native = native;
 		}
 
-		public class SolverState
+		public fMaterial()
 		{
-			internal IntPtr _native;
+			_native = btSoftBody_fMaterial_new();
+		}
 
-			internal SolverState(IntPtr native)
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
 			{
-				_native = native;
+				btSoftBody_fMaterial_delete(_native);
+				_native = IntPtr.Zero;
 			}
+		}
 
-			public SolverState()
-			{
-				_native = btSoftBody_SolverState_new();
-			}
+		~fMaterial()
+		{
+			Dispose(false);
+		}
 
-			public float Isdt
-			{
-				get { return btSoftBody_SolverState_getIsdt(_native); }
-				set { btSoftBody_SolverState_setIsdt(_native, value); }
-			}
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_fMaterial_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_fMaterial_delete(IntPtr obj);
+	}
 
-			public float Radmrg
-			{
-				get { return btSoftBody_SolverState_getRadmrg(_native); }
-				set { btSoftBody_SolverState_setRadmrg(_native, value); }
-			}
+	public class SRayCast
+	{
+		internal IntPtr _native;
 
-			public float Sdt
-			{
-				get { return btSoftBody_SolverState_getSdt(_native); }
-				set { btSoftBody_SolverState_setSdt(_native, value); }
-			}
+		internal SRayCast(IntPtr native)
+		{
+			_native = native;
+		}
 
-			public float Updmrg
-			{
-				get { return btSoftBody_SolverState_getUpdmrg(_native); }
-				set { btSoftBody_SolverState_setUpdmrg(_native, value); }
-			}
+		public SRayCast()
+		{
+			_native = btSoftBody_sRayCast_new();
+		}
 
-			public float Velmrg
-			{
-				get { return btSoftBody_SolverState_getVelmrg(_native); }
-				set { btSoftBody_SolverState_setVelmrg(_native, value); }
-			}
-
-			public void Dispose()
-			{
-				Dispose(true);
-				GC.SuppressFinalize(this);
-			}
-
-			protected virtual void Dispose(bool disposing)
-			{
-				if (_native != IntPtr.Zero)
-				{
-					btSoftBody_SolverState_delete(_native);
-					_native = IntPtr.Zero;
-				}
-			}
-
-			~SolverState()
-			{
-				Dispose(false);
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_SolverState_new();
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SolverState_getIsdt(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SolverState_getRadmrg(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SolverState_getSdt(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SolverState_getUpdmrg(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_SolverState_getVelmrg(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SolverState_setIsdt(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SolverState_setRadmrg(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SolverState_setSdt(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SolverState_setUpdmrg(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SolverState_setVelmrg(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_SolverState_delete(IntPtr obj);
+		public SoftBody Body
+		{
+			get { return SoftBody.GetManaged(btSoftBody_sRayCast_getBody(_native)) as SoftBody; }
+			set { btSoftBody_sRayCast_setBody(_native, value._native); }
 		}
         /*
-		public class RayFromToCaster : ICollide
+		public void Feature
 		{
-			internal RayFromToCaster(IntPtr native)
-				: base(native)
-			{
-			}
-
-			public RayFromToCaster(Vector3 rayFrom, Vector3 rayTo, float mxt)
-				: base(btSoftBody_RayFromToCaster_new(ref rayFrom, ref rayTo, mxt))
-			{
-			}
-
-			public float RayFromToTriangle(Vector3 rayFrom, Vector3 rayTo, Vector3 rayNormalizedDirection, Vector3 a, Vector3 b, Vector3 c, float maxt)
-			{
-				return btSoftBody_RayFromToCaster_rayFromToTriangle(ref rayFrom, ref rayTo, ref rayNormalizedDirection, ref a, ref b, ref c, maxt);
-			}
-
-			public float RayFromToTriangle(Vector3 rayFrom, Vector3 rayTo, Vector3 rayNormalizedDirection, Vector3 a, Vector3 b, Vector3 c)
-			{
-				return btSoftBody_RayFromToCaster_rayFromToTriangle2(ref rayFrom, ref rayTo, ref rayNormalizedDirection, ref a, ref b, ref c);
-			}
-
-			public Face Face
-			{
-				get { return btSoftBody_RayFromToCaster_getFace(_native); }
-				set { btSoftBody_RayFromToCaster_setFace(_native, value._native); }
-			}
-
-			public float Mint
-			{
-				get { return btSoftBody_RayFromToCaster_getMint(_native); }
-				set { btSoftBody_RayFromToCaster_setMint(_native, value); }
-			}
-
-			public void RayFrom
-			{
-				get { return btSoftBody_RayFromToCaster_getRayFrom(_native); }
-				set { btSoftBody_RayFromToCaster_setRayFrom(_native, value._native); }
-			}
-
-			public void RayNormalizedDirection
-			{
-				get { return btSoftBody_RayFromToCaster_getRayNormalizedDirection(_native); }
-				set { btSoftBody_RayFromToCaster_setRayNormalizedDirection(_native, value._native); }
-			}
-
-			public void RayTo
-			{
-				get { return btSoftBody_RayFromToCaster_getRayTo(_native); }
-				set { btSoftBody_RayFromToCaster_setRayTo(_native, value._native); }
-			}
-
-			public int Tests
-			{
-				get { return btSoftBody_RayFromToCaster_getTests(_native); }
-				set { btSoftBody_RayFromToCaster_setTests(_native, value); }
-			}
-
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_RayFromToCaster_new([In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, float mxt);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern IntPtr btSoftBody_RayFromToCaster_getFace(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_RayFromToCaster_getMint(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_getRayFrom(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_getRayNormalizedDirection(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_getRayTo(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern int btSoftBody_RayFromToCaster_getTests(IntPtr obj);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_RayFromToCaster_rayFromToTriangle([In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, [In] ref Vector3 rayNormalizedDirection, [In] ref Vector3 a, [In] ref Vector3 b, [In] ref Vector3 c, float maxt);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern float btSoftBody_RayFromToCaster_rayFromToTriangle2([In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, [In] ref Vector3 rayNormalizedDirection, [In] ref Vector3 a, [In] ref Vector3 b, [In] ref Vector3 c);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_setFace(IntPtr obj, IntPtr value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_setMint(IntPtr obj, float value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_setRayFrom(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_setRayNormalizedDirection(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_setRayTo(IntPtr obj, Vector3 value);
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSoftBody_RayFromToCaster_setTests(IntPtr obj, int value);
+			get { return btSoftBody_sRayCast_getFeature(_native); }
+			set { btSoftBody_sRayCast_setFeature(_native, value._native); }
 		}
         */
+		public float Fraction
+		{
+			get { return btSoftBody_sRayCast_getFraction(_native); }
+			set { btSoftBody_sRayCast_setFraction(_native, value); }
+		}
+
+		public int Index
+		{
+			get { return btSoftBody_sRayCast_getIndex(_native); }
+			set { btSoftBody_sRayCast_setIndex(_native, value); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_sRayCast_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+        ~SRayCast()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_sRayCast_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_sRayCast_getBody(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sRayCast_getFeature(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_sRayCast_getFraction(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_sRayCast_getIndex(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sRayCast_setBody(IntPtr obj, IntPtr value);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern void btSoftBody_sRayCast_setFeature(IntPtr obj, _ value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sRayCast_setFraction(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sRayCast_setIndex(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sRayCast_delete(IntPtr obj);
+	}
+
+	public class ImplicitFn
+	{
+		internal IntPtr _native;
+
+		internal ImplicitFn(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public float Eval(Vector3 x)
+		{
+			return btSoftBody_ImplicitFn_Eval(_native, ref x);
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_ImplicitFn_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~ImplicitFn()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_ImplicitFn_Eval(IntPtr obj, [In] ref Vector3 x);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_ImplicitFn_delete(IntPtr obj);
+	}
+
+	public class sCti
+	{
+		internal IntPtr _native;
+
+		internal sCti(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public sCti()
+		{
+			_native = btSoftBody_sCti_new();
+		}
+
+		public CollisionObject ColObj
+		{
+            get { return CollisionObject.GetManaged(btSoftBody_sCti_getColObj(_native)); }
+			set { btSoftBody_sCti_setColObj(_native, value._native); }
+		}
+        /*
+		public void Normal
+		{
+			get { return btSoftBody_sCti_getNormal(_native); }
+			set { btSoftBody_sCti_setNormal(_native, value._native); }
+		}
+        */
+		public float Offset
+		{
+			get { return btSoftBody_sCti_getOffset(_native); }
+			set { btSoftBody_sCti_setOffset(_native, value); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_sCti_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~sCti()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_sCti_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_sCti_getColObj(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sCti_getNormal(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_sCti_getOffset(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sCti_setColObj(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sCti_setNormal(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sCti_setOffset(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sCti_delete(IntPtr obj);
+	}
+
+	public class sMedium
+	{
+		internal IntPtr _native;
+
+		internal sMedium(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public sMedium()
+		{
+			_native = btSoftBody_sMedium_new();
+		}
+
+		public float Density
+		{
+			get { return btSoftBody_sMedium_getDensity(_native); }
+			set { btSoftBody_sMedium_setDensity(_native, value); }
+		}
+
+		public float Pressure
+		{
+			get { return btSoftBody_sMedium_getPressure(_native); }
+			set { btSoftBody_sMedium_setPressure(_native, value); }
+		}
+        /*
+		public void Velocity
+		{
+			get { return btSoftBody_sMedium_getVelocity(_native); }
+			set { btSoftBody_sMedium_setVelocity(_native, value._native); }
+		}
+        */
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_sMedium_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~sMedium()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_sMedium_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_sMedium_getDensity(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_sMedium_getPressure(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sMedium_getVelocity(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sMedium_setDensity(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sMedium_setPressure(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sMedium_setVelocity(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_sMedium_delete(IntPtr obj);
+	}
+
+	public class Element
+	{
+		internal IntPtr _native;
+
+		internal Element(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Element()
+		{
+			_native = btSoftBody_Element_new();
+		}
+
+		public IntPtr Tag
+		{
+			get { return btSoftBody_Element_getTag(_native); }
+			set { btSoftBody_Element_setTag(_native, value); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Element_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Element()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Element_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Element_getTag(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Element_setTag(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Element_delete(IntPtr obj);
+	}
+
+	public class Material : Element
+	{
+		internal Material(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Material()
+			: base(btSoftBody_Material_new())
+		{
+		}
+
+		public int Flags
+		{
+			get { return btSoftBody_Material_getFlags(_native); }
+			set { btSoftBody_Material_setFlags(_native, value); }
+		}
+
+		public float KAST
+		{
+			get { return btSoftBody_Material_getKAST(_native); }
+			set { btSoftBody_Material_setKAST(_native, value); }
+		}
+
+		public float KLST
+		{
+			get { return btSoftBody_Material_getKLST(_native); }
+			set { btSoftBody_Material_setKLST(_native, value); }
+		}
+
+		public float KVST
+		{
+			get { return btSoftBody_Material_getKVST(_native); }
+			set { btSoftBody_Material_setKVST(_native, value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Material_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Material_getFlags(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Material_getKAST(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Material_getKLST(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Material_getKVST(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Material_setFlags(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Material_setKAST(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Material_setKLST(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Material_setKVST(IntPtr obj, float value);
+	}
+
+	public class Feature : Element
+	{
+		internal Feature(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Feature()
+			: base(btSoftBody_Feature_new())
+		{
+		}
+
+		public Material Material
+		{
+			get { return new Material(btSoftBody_Feature_getMaterial(_native)); }
+			set { btSoftBody_Feature_setMaterial(_native, value._native); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Feature_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Feature_getMaterial(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Feature_setMaterial(IntPtr obj, IntPtr value);
+	}
+
+	public class Node : Feature
+	{
+		internal Node(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Node()
+			: base(btSoftBody_Node_new())
+		{
+		}
+
+		public float Area
+		{
+			get { return btSoftBody_Node_getArea(_native); }
+			set { btSoftBody_Node_setArea(_native, value); }
+		}
+
+		public int Battach
+		{
+			get { return btSoftBody_Node_getBattach(_native); }
+			set { btSoftBody_Node_setBattach(_native, value); }
+		}
+        /*
+		public void F
+		{
+			get { return btSoftBody_Node_getF(_native); }
+			set { btSoftBody_Node_setF(_native, value._native); }
+		}
+        */
+		public float Im
+		{
+			get { return btSoftBody_Node_getIm(_native); }
+			set { btSoftBody_Node_setIm(_native, value); }
+		}
+        /*
+		public DbvtNode Leaf
+		{
+			get { return btSoftBody_Node_getLeaf(_native); }
+			set { btSoftBody_Node_setLeaf(_native, value._native); }
+		}
+
+		public void N
+		{
+			get { return btSoftBody_Node_getN(_native); }
+			set { btSoftBody_Node_setN(_native, value._native); }
+		}
+
+		public void Q
+		{
+			get { return btSoftBody_Node_getQ(_native); }
+			set { btSoftBody_Node_setQ(_native, value._native); }
+		}
+
+		public void V
+		{
+			get { return btSoftBody_Node_getV(_native); }
+			set { btSoftBody_Node_setV(_native, value._native); }
+		}
+
+		public void X
+		{
+			get { return btSoftBody_Node_getX(_native); }
+			set { btSoftBody_Node_setX(_native, value._native); }
+		}
+        */
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Node_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Node_getArea(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Node_getBattach(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_getF(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Node_getIm(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Node_getLeaf(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_getN(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_getQ(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_getV(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_getX(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setArea(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setBattach(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setF(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setIm(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setLeaf(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setN(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setQ(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setV(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Node_setX(IntPtr obj, Vector3 value);
+	}
+
+	public class Link : Feature
+	{
+		internal Link(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Link()
+			: base(btSoftBody_Link_new())
+		{
+		}
+
+		public int Bbending
+		{
+			get { return btSoftBody_Link_getBbending(_native); }
+			set { btSoftBody_Link_setBbending(_native, value); }
+		}
+
+		public float C0
+		{
+			get { return btSoftBody_Link_getC0(_native); }
+			set { btSoftBody_Link_setC0(_native, value); }
+		}
+
+		public float C1
+		{
+			get { return btSoftBody_Link_getC1(_native); }
+			set { btSoftBody_Link_setC1(_native, value); }
+		}
+
+		public float C2
+		{
+			get { return btSoftBody_Link_getC2(_native); }
+			set { btSoftBody_Link_setC2(_native, value); }
+		}
+        /*
+		public void C3
+		{
+			get { return btSoftBody_Link_getC3(_native); }
+			set { btSoftBody_Link_setC3(_native, value._native); }
+		}
+        */
+		public Node N
+		{
+			get { return new Node(btSoftBody_Link_getN(_native)); }
+			set { btSoftBody_Link_setN(_native, value._native); }
+		}
+
+		public float Rl
+		{
+			get { return btSoftBody_Link_getRl(_native); }
+			set { btSoftBody_Link_setRl(_native, value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Link_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Link_getBbending(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Link_getC0(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Link_getC1(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Link_getC2(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_getC3(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Link_getN(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Link_getRl(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setBbending(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setC0(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setC1(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setC2(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setC3(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setN(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Link_setRl(IntPtr obj, float value);
+	}
+
+	public class Face : Feature
+	{
+		internal Face(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Face()
+			: base(btSoftBody_Face_new())
+		{
+		}
+        /*
+		public DbvtNode Leaf
+		{
+			get { return btSoftBody_Face_getLeaf(_native); }
+			set { btSoftBody_Face_setLeaf(_native, value._native); }
+		}
+        */
+		public Node N
+		{
+            get { return new Node(btSoftBody_Face_getN(_native)); }
+			set { btSoftBody_Face_setN(_native, value._native); }
+		}
+        /*
+		public void Normal
+		{
+			get { return btSoftBody_Face_getNormal(_native); }
+			set { btSoftBody_Face_setNormal(_native, value._native); }
+		}
+        */
+		public float Ra
+		{
+			get { return btSoftBody_Face_getRa(_native); }
+			set { btSoftBody_Face_setRa(_native, value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Face_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Face_getLeaf(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Face_getN(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Face_getNormal(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Face_getRa(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Face_setLeaf(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Face_setN(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Face_setNormal(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Face_setRa(IntPtr obj, float value);
+	}
+
+	public class Tetra : Feature
+	{
+		internal Tetra(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Tetra()
+			: base(btSoftBody_Tetra_new())
+		{
+		}
+
+		public Vector3 C0
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_Tetra_getC0(_native, out value);
+				return value;
+			}
+			set { btSoftBody_Tetra_setC0(_native, ref value); }
+		}
+
+		public float C1
+		{
+			get { return btSoftBody_Tetra_getC1(_native); }
+			set { btSoftBody_Tetra_setC1(_native, value); }
+		}
+
+		public float C2
+		{
+			get { return btSoftBody_Tetra_getC2(_native); }
+			set { btSoftBody_Tetra_setC2(_native, value); }
+		}
+        /*
+		public DbvtNode Leaf
+		{
+			get { return btSoftBody_Tetra_getLeaf(_native); }
+			set { btSoftBody_Tetra_setLeaf(_native, value._native); }
+		}
+        */
+		public Node N
+		{
+			get { return new Node(btSoftBody_Tetra_getN(_native)); }
+			set { btSoftBody_Tetra_setN(_native, value._native); }
+		}
+
+		public float Rv
+		{
+			get { return btSoftBody_Tetra_getRv(_native); }
+			set { btSoftBody_Tetra_setRv(_native, value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Tetra_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_getC0(IntPtr obj, [Out] out Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Tetra_getC1(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Tetra_getC2(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Tetra_getLeaf(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Tetra_getN(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Tetra_getRv(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_setC0(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_setC1(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_setC2(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_setLeaf(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_setN(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Tetra_setRv(IntPtr obj, float value);
+	}
+
+	public class RContact
+	{
+		internal IntPtr _native;
+
+		internal RContact(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public RContact()
+		{
+			_native = btSoftBody_RContact_new();
+		}
+        /*
+		public void C0
+		{
+			get { return btSoftBody_RContact_getC0(_native); }
+			set { btSoftBody_RContact_setC0(_native, value._native); }
+		}
+            
+		public void C1
+		{
+			get { return btSoftBody_RContact_getC1(_native); }
+			set { btSoftBody_RContact_setC1(_native, value._native); }
+		}
+        */
+		public float C2
+		{
+			get { return btSoftBody_RContact_getC2(_native); }
+			set { btSoftBody_RContact_setC2(_native, value); }
+		}
+
+		public float C3
+		{
+			get { return btSoftBody_RContact_getC3(_native); }
+			set { btSoftBody_RContact_setC3(_native, value); }
+		}
+
+		public float C4
+		{
+			get { return btSoftBody_RContact_getC4(_native); }
+			set { btSoftBody_RContact_setC4(_native, value); }
+		}
+        /*
+		public void Cti
+		{
+			get { return btSoftBody_RContact_getCti(_native); }
+			set { btSoftBody_RContact_setCti(_native, value._native); }
+		}
+        */
+		public Node Node
+		{
+			get { return new Node(btSoftBody_RContact_getNode(_native)); }
+			set { btSoftBody_RContact_setNode(_native, value._native); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_RContact_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~RContact()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_RContact_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_getC0(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_getC1(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_RContact_getC2(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_RContact_getC3(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_RContact_getC4(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_getCti(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_RContact_getNode(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_setC0(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_RContact_setC1(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_setC2(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_setC3(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_setC4(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_setCti(IntPtr obj, sCti value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_setNode(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RContact_delete(IntPtr obj);
+	}
+
+	public class SContact
+	{
+		internal IntPtr _native;
+
+		internal SContact(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public SContact()
+		{
+			_native = btSoftBody_SContact_new();
+		}
+        /*
+		public float Cfm
+		{
+			get { return btSoftBody_SContact_getCfm(_native); }
+			set { btSoftBody_SContact_setCfm(_native, value._native); }
+		}
+        */
+		public Face Face
+		{
+			get { return new Face(btSoftBody_SContact_getFace(_native)); }
+			set { btSoftBody_SContact_setFace(_native, value._native); }
+		}
+
+		public float Friction
+		{
+			get { return btSoftBody_SContact_getFriction(_native); }
+			set { btSoftBody_SContact_setFriction(_native, value); }
+		}
+
+		public float Margin
+		{
+			get { return btSoftBody_SContact_getMargin(_native); }
+			set { btSoftBody_SContact_setMargin(_native, value); }
+		}
+
+		public Node Node
+		{
+			get { return new Node(btSoftBody_SContact_getNode(_native)); }
+			set { btSoftBody_SContact_setNode(_native, value._native); }
+		}
+        /*
+		public void Normal
+		{
+			get { return btSoftBody_SContact_getNormal(_native); }
+			set { btSoftBody_SContact_setNormal(_native, value._native); }
+		}
+
+		public void Weights
+		{
+			get { return btSoftBody_SContact_getWeights(_native); }
+			set { btSoftBody_SContact_setWeights(_native, value._native); }
+		}
+        */
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_SContact_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~SContact()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_SContact_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_SContact_getCfm(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_SContact_getFace(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SContact_getFriction(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SContact_getMargin(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_SContact_getNode(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_getNormal(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_getWeights(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setCfm(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setFace(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setFriction(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setMargin(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setNode(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setNormal(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_setWeights(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SContact_delete(IntPtr obj);
+	}
+
+	public class Anchor
+	{
+		internal IntPtr _native;
+
+		internal Anchor(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Anchor()
+		{
+			_native = btSoftBody_Anchor_new();
+		}
+
+		public RigidBody Body
+		{
+			get { return CollisionObject.GetManaged(btSoftBody_Anchor_getBody(_native)) as RigidBody; }
+			set { btSoftBody_Anchor_setBody(_native, value._native); }
+		}
+        /*
+		public void C0
+		{
+			get { return btSoftBody_Anchor_getC0(_native); }
+			set { btSoftBody_Anchor_setC0(_native, value._native); }
+		}
+
+		public void C1
+		{
+			get { return btSoftBody_Anchor_getC1(_native); }
+			set { btSoftBody_Anchor_setC1(_native, value._native); }
+		}
+        */
+		public float C2
+		{
+			get { return btSoftBody_Anchor_getC2(_native); }
+			set { btSoftBody_Anchor_setC2(_native, value); }
+		}
+
+		public float Influence
+		{
+			get { return btSoftBody_Anchor_getInfluence(_native); }
+			set { btSoftBody_Anchor_setInfluence(_native, value); }
+		}
+        /*
+		public void Local
+		{
+			get { return btSoftBody_Anchor_getLocal(_native); }
+			set { btSoftBody_Anchor_setLocal(_native, value._native); }
+		}
+        */
+		public Node Node
+		{
+			get { return new Node(btSoftBody_Anchor_getNode(_native)); }
+			set { btSoftBody_Anchor_setNode(_native, value._native); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Anchor_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Anchor()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Anchor_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Anchor_getBody(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_getC0(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_getC1(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Anchor_getC2(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Anchor_getInfluence(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_getLocal(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Anchor_getNode(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_setBody(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_setC0(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_Anchor_setC1(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_setC2(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_setInfluence(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_setLocal(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_setNode(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Anchor_delete(IntPtr obj);
+	}
+
+	public class Note : Element
+	{
+		internal Note(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public Note()
+			: base(btSoftBody_Note_new())
+		{
+		}
+        /*
+		public float Coords
+		{
+			get { return btSoftBody_Note_getCoords(_native); }
+			set { btSoftBody_Note_setCoords(_native, value._native); }
+		}
+        */
+		public Node Nodes
+		{
+			get { return new Node(btSoftBody_Note_getNodes(_native)); }
+			set { btSoftBody_Note_setNodes(_native, value._native); }
+		}
+        /*
+		public void Offset
+		{
+			get { return btSoftBody_Note_getOffset(_native); }
+			set { btSoftBody_Note_setOffset(_native, value._native); }
+		}
+        */
+		public int Rank
+		{
+			get { return btSoftBody_Note_getRank(_native); }
+			set { btSoftBody_Note_setRank(_native, value); }
+		}
+
+		public string Text
+		{
+			get { return btSoftBody_Note_getText(_native); }
+			set { btSoftBody_Note_setText(_native, value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Note_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Note_getCoords(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Note_getNodes(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Note_getOffset(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Note_getRank(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern string btSoftBody_Note_getText(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Note_setCoords(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Note_setNodes(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Note_setOffset(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Note_setRank(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Note_setText(IntPtr obj, string value);
+	}
+
+	public class Pose
+	{
+		internal IntPtr _native;
+
+		internal Pose(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Pose()
+		{
+			_native = btSoftBody_Pose_new();
+		}
+        /*
+		public void Aqq
+		{
+			get { return btSoftBody_Pose_getAqq(_native); }
+			set { btSoftBody_Pose_setAqq(_native, value._native); }
+		}
+        */
+		public bool Bframe
+		{
+			get { return btSoftBody_Pose_getBframe(_native); }
+			set { btSoftBody_Pose_setBframe(_native, value); }
+		}
+
+		public bool Bvolume
+		{
+			get { return btSoftBody_Pose_getBvolume(_native); }
+			set { btSoftBody_Pose_setBvolume(_native, value); }
+		}
+        /*
+		public void Com
+		{
+			get { return btSoftBody_Pose_getCom(_native); }
+			set { btSoftBody_Pose_setCom(_native, value._native); }
+		}
+
+		public tVector3Array Pos
+		{
+			get { return btSoftBody_Pose_getPos(_native); }
+			set { btSoftBody_Pose_setPos(_native, value._native); }
+		}
+
+		public void Rot
+		{
+			get { return btSoftBody_Pose_getRot(_native); }
+			set { btSoftBody_Pose_setRot(_native, value._native); }
+		}
+
+		public void Scl
+		{
+			get { return btSoftBody_Pose_getScl(_native); }
+			set { btSoftBody_Pose_setScl(_native, value._native); }
+		}
+
+		public tScalarArray Wgh
+		{
+			get { return btSoftBody_Pose_getWgh(_native); }
+			set { btSoftBody_Pose_setWgh(_native, value._native); }
+		}
+        */
+		public float Volume
+		{
+			get { return btSoftBody_Pose_getVolume(_native); }
+			set { btSoftBody_Pose_setVolume(_native, value); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Pose_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Pose()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Pose_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_getAqq(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btSoftBody_Pose_getBframe(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btSoftBody_Pose_getBvolume(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_getCom(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Pose_getPos(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_getRot(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_getScl(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Pose_getWgh(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Pose_getVolume(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setAqq(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setBframe(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setBvolume(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setCom(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setPos(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_Pose_setRot(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_Pose_setScl(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setWgh(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_setVolume(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Pose_delete(IntPtr obj);
+	}
+
+	public class Cluster
+	{
+		internal IntPtr _native;
+
+		internal Cluster(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Cluster()
+		{
+			_native = btSoftBody_Cluster_new();
+		}
+
+		public float Adamping
+		{
+			get { return btSoftBody_Cluster_getAdamping(_native); }
+			set { btSoftBody_Cluster_setAdamping(_native, value); }
+		}
+        /*
+		public void Av
+		{
+			get { return btSoftBody_Cluster_getAv(_native); }
+			set { btSoftBody_Cluster_setAv(_native, value._native); }
+		}
+        */
+		public int ClusterIndex
+		{
+			get { return btSoftBody_Cluster_getClusterIndex(_native); }
+			set { btSoftBody_Cluster_setClusterIndex(_native, value); }
+		}
+
+		public bool Collide
+		{
+			get { return btSoftBody_Cluster_getCollide(_native); }
+			set { btSoftBody_Cluster_setCollide(_native, value); }
+		}
+        /*
+		public void Com
+		{
+			get { return btSoftBody_Cluster_getCom(_native); }
+			set { btSoftBody_Cluster_setCom(_native, value._native); }
+		}
+        */
+		public bool ContainsAnchor
+		{
+			get { return btSoftBody_Cluster_getContainsAnchor(_native); }
+			set { btSoftBody_Cluster_setContainsAnchor(_native, value); }
+		}
+        /*
+		public Vector3 Dimpulses
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_Cluster_getDimpulses(_native, out value);
+				return value;
+			}
+			set { btSoftBody_Cluster_setDimpulses(_native, ref value); }
+		}
+
+		public tVector3Array Framerefs
+		{
+			get { return btSoftBody_Cluster_getFramerefs(_native); }
+			set { btSoftBody_Cluster_setFramerefs(_native, value._native); }
+		}
+
+		public void Framexform
+		{
+			get { return btSoftBody_Cluster_getFramexform(_native); }
+			set { btSoftBody_Cluster_setFramexform(_native, value._native); }
+		}
+        */
+		public float Idmass
+		{
+			get { return btSoftBody_Cluster_getIdmass(_native); }
+			set { btSoftBody_Cluster_setIdmass(_native, value); }
+		}
+
+		public float Imass
+		{
+			get { return btSoftBody_Cluster_getImass(_native); }
+			set { btSoftBody_Cluster_setImass(_native, value); }
+		}
+        /*
+		public void Invwi
+		{
+			get { return btSoftBody_Cluster_getInvwi(_native); }
+			set { btSoftBody_Cluster_setInvwi(_native, value._native); }
+		}
+        */
+		public float Ldamping
+		{
+			get { return btSoftBody_Cluster_getLdamping(_native); }
+			set { btSoftBody_Cluster_setLdamping(_native, value); }
+		}
+        /*
+		public DbvtNode Leaf
+		{
+			get { return btSoftBody_Cluster_getLeaf(_native); }
+			set { btSoftBody_Cluster_setLeaf(_native, value._native); }
+		}
+
+		public void Locii
+		{
+			get { return btSoftBody_Cluster_getLocii(_native); }
+			set { btSoftBody_Cluster_setLocii(_native, value._native); }
+		}
+
+		public void Lv
+		{
+			get { return btSoftBody_Cluster_getLv(_native); }
+			set { btSoftBody_Cluster_setLv(_native, value._native); }
+		}
+
+		public tScalarArray Masses
+		{
+			get { return btSoftBody_Cluster_getMasses(_native); }
+			set { btSoftBody_Cluster_setMasses(_native, value._native); }
+		}
+        */
+		public float Matching
+		{
+			get { return btSoftBody_Cluster_getMatching(_native); }
+			set { btSoftBody_Cluster_setMatching(_native, value); }
+		}
+
+		public float MaxSelfCollisionImpulse
+		{
+			get { return btSoftBody_Cluster_getMaxSelfCollisionImpulse(_native); }
+			set { btSoftBody_Cluster_setMaxSelfCollisionImpulse(_native, value); }
+		}
+
+		public float Ndamping
+		{
+			get { return btSoftBody_Cluster_getNdamping(_native); }
+			set { btSoftBody_Cluster_setNdamping(_native, value); }
+		}
+
+		public int Ndimpulses
+		{
+			get { return btSoftBody_Cluster_getNdimpulses(_native); }
+			set { btSoftBody_Cluster_setNdimpulses(_native, value); }
+		}
+        /*
+		public void Nodes
+		{
+			get { return btSoftBody_Cluster_getNodes(_native); }
+			set { btSoftBody_Cluster_setNodes(_native, value._native); }
+		}
+        */
+		public int Nvimpulses
+		{
+			get { return btSoftBody_Cluster_getNvimpulses(_native); }
+			set { btSoftBody_Cluster_setNvimpulses(_native, value); }
+		}
+
+		public float SelfCollisionImpulseFactor
+		{
+			get { return btSoftBody_Cluster_getSelfCollisionImpulseFactor(_native); }
+			set { btSoftBody_Cluster_setSelfCollisionImpulseFactor(_native, value); }
+		}
+        /*
+		public Vector3 Vimpulses
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_Cluster_getVimpulses(_native, out value);
+				return value;
+			}
+			set { btSoftBody_Cluster_setVimpulses(_native, ref value); }
+		}
+        */
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Cluster_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Cluster()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Cluster_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getAdamping(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getAv(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Cluster_getClusterIndex(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btSoftBody_Cluster_getCollide(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getCom(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btSoftBody_Cluster_getContainsAnchor(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Cluster_getDimpulses(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Cluster_getFramerefs(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getFramexform(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getIdmass(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getImass(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getInvwi(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getLdamping(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Cluster_getLeaf(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getLocii(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getLv(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Cluster_getMasses(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getMatching(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getMaxSelfCollisionImpulse(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getNdamping(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Cluster_getNdimpulses(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_getNodes(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Cluster_getNvimpulses(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Cluster_getSelfCollisionImpulseFactor(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Cluster_getVimpulses(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setAdamping(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setAv(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setClusterIndex(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setCollide(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setCom(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setContainsAnchor(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setDimpulses(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setFramerefs(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setFramexform(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setIdmass(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setImass(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_Cluster_setInvwi(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setLdamping(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setLeaf(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_Cluster_setLocii(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setLv(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setMasses(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setMatching(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setMaxSelfCollisionImpulse(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setNdamping(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setNdimpulses(IntPtr obj, int value);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern void btSoftBody_Cluster_setNodes(IntPtr obj, AlignedObjectArray<Node> value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setNvimpulses(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setSelfCollisionImpulseFactor(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_setVimpulses(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Cluster_delete(IntPtr obj);
+	}
+
+	public class Impulse
+	{
+		internal IntPtr _native;
+
+		internal Impulse(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Impulse()
+		{
+			_native = btSoftBody_Impulse_new();
+		}
+        /*
+		public void operator-(Impulse impulse)
+		{
+			btSoftBody_Impulse_operator_n(_native);
+		}
+
+		public void operator*(Impulse impulse, float x)
+		{
+			btSoftBody_Impulse_operator_m(_native, x);
+		}
+        */
+		public int AsDrift
+		{
+			get { return btSoftBody_Impulse_getAsDrift(_native); }
+			set { btSoftBody_Impulse_setAsDrift(_native, value); }
+		}
+
+		public int AsVelocity
+		{
+			get { return btSoftBody_Impulse_getAsVelocity(_native); }
+			set { btSoftBody_Impulse_setAsVelocity(_native, value); }
+		}
+        /*
+		public void Drift
+		{
+			get { return btSoftBody_Impulse_getDrift(_native); }
+			set { btSoftBody_Impulse_setDrift(_native, value._native); }
+		}
+
+		public void Velocity
+		{
+			get { return btSoftBody_Impulse_getVelocity(_native); }
+			set { btSoftBody_Impulse_setVelocity(_native, value._native); }
+		}
+        */
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Impulse_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Impulse()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Impulse_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Impulse_getAsDrift(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Impulse_getAsVelocity(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_getDrift(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_getVelocity(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_operator_n(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_operator_m(IntPtr obj, float x);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_setAsDrift(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_setAsVelocity(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_setDrift(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_setVelocity(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Impulse_delete(IntPtr obj);
+	}
+
+	public class Body
+	{
+		internal IntPtr _native;
+
+		internal Body(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Body()
+		{
+			_native = btSoftBody_Body_new();
+		}
+
+		public Body(CollisionObject colObj)
+		{
+			_native = btSoftBody_Body_new2(colObj._native);
+		}
+
+		public Body(Cluster p)
+		{
+			_native = btSoftBody_Body_new3(p._native);
+		}
+
+		public void Activate()
+		{
+			btSoftBody_Body_activate(_native);
+		}
+
+		public void AngularVelocity(Vector3 rpos)
+		{
+			btSoftBody_Body_angularVelocity(_native, ref rpos);
+		}
+
+		public void AngularVelocity()
+		{
+			btSoftBody_Body_angularVelocity2(_native);
+		}
+
+		public void ApplyAImpulse(Impulse impulse)
+		{
+			btSoftBody_Body_applyAImpulse(_native, impulse._native);
+		}
+
+		public void ApplyDAImpulse(Vector3 impulse)
+		{
+			btSoftBody_Body_applyDAImpulse(_native, ref impulse);
+		}
+
+		public void ApplyDCImpulse(Vector3 impulse)
+		{
+			btSoftBody_Body_applyDCImpulse(_native, ref impulse);
+		}
+
+		public void ApplyDImpulse(Vector3 impulse, Vector3 rpos)
+		{
+			btSoftBody_Body_applyDImpulse(_native, ref impulse, ref rpos);
+		}
+
+		public void ApplyImpulse(Impulse impulse, Vector3 rpos)
+		{
+			btSoftBody_Body_applyImpulse(_native, impulse._native, ref rpos);
+		}
+
+		public void ApplyVAImpulse(Vector3 impulse)
+		{
+			btSoftBody_Body_applyVAImpulse(_native, ref impulse);
+		}
+
+		public void ApplyVImpulse(Vector3 impulse, Vector3 rpos)
+		{
+			btSoftBody_Body_applyVImpulse(_native, ref impulse, ref rpos);
+		}
+
+		public float InvMass()
+		{
+			return btSoftBody_Body_invMass(_native);
+		}
+        /*
+		public Matrix InvWorldInertia()
+		{
+			return btSoftBody_Body_invWorldInertia(_native);
+		}
+        */
+		public void LinearVelocity()
+		{
+			btSoftBody_Body_linearVelocity(_native);
+		}
+
+		public void Velocity(Vector3 rpos)
+		{
+			btSoftBody_Body_velocity(_native, ref rpos);
+		}
+        /*
+		public Matrix Xform()
+		{
+			return btSoftBody_Body_xform(_native);
+		}
+        */
+		public CollisionObject CollisionObject
+		{
+            get { return CollisionObject.GetManaged(btSoftBody_Body_getCollisionObject(_native)); }
+			set { btSoftBody_Body_setCollisionObject(_native, value._native); }
+		}
+
+		public RigidBody Rigid
+		{
+			get { return CollisionObject.GetManaged(btSoftBody_Body_getRigid(_native)) as RigidBody; }
+			set { btSoftBody_Body_setRigid(_native, value._native); }
+		}
+
+		public Cluster Soft
+		{
+			get { return new Cluster(btSoftBody_Body_getSoft(_native)); }
+			set { btSoftBody_Body_setSoft(_native, value._native); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Body_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Body()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_new2(IntPtr colObj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_new3(IntPtr p);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_activate(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_angularVelocity(IntPtr obj, [In] ref Vector3 rpos);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_angularVelocity2(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyAImpulse(IntPtr obj, IntPtr impulse);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyDAImpulse(IntPtr obj, [In] ref Vector3 impulse);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyDCImpulse(IntPtr obj, [In] ref Vector3 impulse);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyDImpulse(IntPtr obj, [In] ref Vector3 impulse, [In] ref Vector3 rpos);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyImpulse(IntPtr obj, IntPtr impulse, [In] ref Vector3 rpos);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyVAImpulse(IntPtr obj, [In] ref Vector3 impulse);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_applyVImpulse(IntPtr obj, [In] ref Vector3 impulse, [In] ref Vector3 rpos);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_getCollisionObject(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_getRigid(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_getSoft(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Body_invMass(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_invWorldInertia(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_linearVelocity(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_setCollisionObject(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_setRigid(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_setSoft(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_velocity(IntPtr obj, [In] ref Vector3 rpos);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Body_xform(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Body_delete(IntPtr obj);
+	}
+
+	public class Joint
+	{
+		public class eType
+		{
+			internal IntPtr _native;
+
+			internal eType(IntPtr native)
+			{
+				_native = native;
+			}
+
+			public eType()
+			{
+				_native = btSoftBody_Joint_eType_new();
+			}
+
+			public void Dispose()
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
+
+			protected virtual void Dispose(bool disposing)
+			{
+				if (_native != IntPtr.Zero)
+				{
+					btSoftBody_Joint_eType_delete(_native);
+					_native = IntPtr.Zero;
+				}
+			}
+
+			~eType()
+			{
+				Dispose(false);
+			}
+
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern IntPtr btSoftBody_Joint_eType_new();
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_Joint_eType_delete(IntPtr obj);
+		}
+
+		public class Specs
+		{
+			internal IntPtr _native;
+
+			internal Specs(IntPtr native)
+			{
+				_native = native;
+			}
+
+			public Specs()
+			{
+				_native = btSoftBody_Joint_Specs_new();
+			}
+
+			public float Cfm
+			{
+				get { return btSoftBody_Joint_Specs_getCfm(_native); }
+				set { btSoftBody_Joint_Specs_setCfm(_native, value); }
+			}
+
+			public float Erp
+			{
+				get { return btSoftBody_Joint_Specs_getErp(_native); }
+				set { btSoftBody_Joint_Specs_setErp(_native, value); }
+			}
+
+			public float Split
+			{
+				get { return btSoftBody_Joint_Specs_getSplit(_native); }
+				set { btSoftBody_Joint_Specs_setSplit(_native, value); }
+			}
+
+			public void Dispose()
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
+
+			protected virtual void Dispose(bool disposing)
+			{
+				if (_native != IntPtr.Zero)
+				{
+					btSoftBody_Joint_Specs_delete(_native);
+					_native = IntPtr.Zero;
+				}
+			}
+
+			~Specs()
+			{
+				Dispose(false);
+			}
+
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern IntPtr btSoftBody_Joint_Specs_new();
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern float btSoftBody_Joint_Specs_getCfm(IntPtr obj);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern float btSoftBody_Joint_Specs_getErp(IntPtr obj);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern float btSoftBody_Joint_Specs_getSplit(IntPtr obj);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_Joint_Specs_setCfm(IntPtr obj, float value);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_Joint_Specs_setErp(IntPtr obj, float value);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_Joint_Specs_setSplit(IntPtr obj, float value);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_Joint_Specs_delete(IntPtr obj);
+		}
+
+		internal IntPtr _native;
+
+		internal Joint(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public void Prepare(float dt, int iterations)
+		{
+			btSoftBody_Joint_Prepare(_native, dt, iterations);
+		}
+
+		public void Solve(float dt, float sor)
+		{
+			btSoftBody_Joint_Solve(_native, dt, sor);
+		}
+
+		public void Terminate(float dt)
+		{
+			btSoftBody_Joint_Terminate(_native, dt);
+		}
+
+		public void Type()
+		{
+			btSoftBody_Joint_Type(_native);
+		}
+        /*
+		public Body Bodies
+		{
+			get { return btSoftBody_Joint_getBodies(_native); }
+			set { btSoftBody_Joint_setBodies(_native, value._native); }
+		}
+        */
+		public float Cfm
+		{
+			get { return btSoftBody_Joint_getCfm(_native); }
+			set { btSoftBody_Joint_setCfm(_native, value); }
+		}
+
+		public bool Delete
+		{
+			get { return btSoftBody_Joint_getDelete(_native); }
+			set { btSoftBody_Joint_setDelete(_native, value); }
+		}
+        /*
+		public void Drift
+		{
+			get { return btSoftBody_Joint_getDrift(_native); }
+			set { btSoftBody_Joint_setDrift(_native, value._native); }
+		}
+        */
+		public float Erp
+		{
+			get { return btSoftBody_Joint_getErp(_native); }
+			set { btSoftBody_Joint_setErp(_native, value); }
+		}
+        /*
+		public void Massmatrix
+		{
+			get { return btSoftBody_Joint_getMassmatrix(_native); }
+			set { btSoftBody_Joint_setMassmatrix(_native, value._native); }
+		}
+
+		public Vector3 Refs
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_Joint_getRefs(_native, out value);
+				return value;
+			}
+			set { btSoftBody_Joint_setRefs(_native, ref value); }
+		}
+
+		public void Sdrift
+		{
+			get { return btSoftBody_Joint_getSdrift(_native); }
+			set { btSoftBody_Joint_setSdrift(_native, value._native); }
+		}
+        */
+		public float Split
+		{
+			get { return btSoftBody_Joint_getSplit(_native); }
+			set { btSoftBody_Joint_setSplit(_native, value); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Joint_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Joint()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Joint_getBodies(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Joint_getCfm(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btSoftBody_Joint_getDelete(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_getDrift(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Joint_getErp(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_getMassmatrix(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Joint_getRefs(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_getSdrift(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Joint_getSplit(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_Prepare(IntPtr obj, float dt, int iterations);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setBodies(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setCfm(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setDelete(IntPtr obj, bool value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setDrift(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setErp(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_Joint_setMassmatrix(IntPtr obj, [In] ref Matrix value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setRefs(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setSdrift(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_setSplit(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_Solve(IntPtr obj, float dt, float sor);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_Terminate(IntPtr obj, float dt);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_Type(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Joint_delete(IntPtr obj);
+	}
+
+	public class LJoint : Joint
+	{
+		internal LJoint(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public LJoint()
+			: base(btSoftBody_LJoint_new())
+		{
+		}
+
+		public Vector3 Rpos
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_LJoint_getRpos(_native, out value);
+				return value;
+			}
+			set { btSoftBody_LJoint_setRpos(_native, ref value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_LJoint_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_LJoint_getRpos(IntPtr obj, [Out] out Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_LJoint_setRpos(IntPtr obj, [In] ref Vector3 value);
+	}
+
+	public class AJoint : Joint
+	{
+		public class IControl
+		{
+			internal IntPtr _native;
+
+			internal IControl(IntPtr native)
+			{
+				_native = native;
+			}
+
+			public IControl()
+			{
+				_native = btSoftBody_AJoint_IControl_new();
+			}
+
+			public IControl Default()
+			{
+                return new IControl(btSoftBody_AJoint_IControl_Default());
+			}
+
+			public void Prepare(AJoint __unnamed0)
+			{
+				btSoftBody_AJoint_IControl_Prepare(_native, __unnamed0._native);
+			}
+
+			public float Speed(AJoint __unnamed0, float current)
+			{
+				return btSoftBody_AJoint_IControl_Speed(_native, __unnamed0._native, current);
+			}
+
+			public void Dispose()
+			{
+				Dispose(true);
+				GC.SuppressFinalize(this);
+			}
+
+			protected virtual void Dispose(bool disposing)
+			{
+				if (_native != IntPtr.Zero)
+				{
+					btSoftBody_AJoint_IControl_delete(_native);
+					_native = IntPtr.Zero;
+				}
+			}
+
+			~IControl()
+			{
+				Dispose(false);
+			}
+
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern IntPtr btSoftBody_AJoint_IControl_new();
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern IntPtr btSoftBody_AJoint_IControl_Default();
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_AJoint_IControl_Prepare(IntPtr obj, IntPtr __unnamed0);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern float btSoftBody_AJoint_IControl_Speed(IntPtr obj, IntPtr __unnamed0, float current);
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern void btSoftBody_AJoint_IControl_delete(IntPtr obj);
+		}
+
+		internal AJoint(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public AJoint()
+			: base(btSoftBody_AJoint_new())
+		{
+		}
+
+		public Vector3 Axis
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_AJoint_getAxis(_native, out value);
+				return value;
+			}
+			set { btSoftBody_AJoint_setAxis(_native, ref value); }
+		}
+
+		public IControl Icontrol
+		{
+			get { return new IControl(btSoftBody_AJoint_getIcontrol(_native)); }
+			set { btSoftBody_AJoint_setIcontrol(_native, value._native); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_AJoint_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_AJoint_getAxis(IntPtr obj, [Out] out Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_AJoint_getIcontrol(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_AJoint_setAxis(IntPtr obj, [In] ref Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_AJoint_setIcontrol(IntPtr obj, IntPtr value);
+	}
+
+	public class CJoint : Joint
+	{
+		internal CJoint(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public CJoint()
+			: base(btSoftBody_CJoint_new())
+		{
+		}
+
+		public float Friction
+		{
+			get { return btSoftBody_CJoint_getFriction(_native); }
+			set { btSoftBody_CJoint_setFriction(_native, value); }
+		}
+
+		public int Life
+		{
+			get { return btSoftBody_CJoint_getLife(_native); }
+			set { btSoftBody_CJoint_setLife(_native, value); }
+		}
+
+		public int Maxlife
+		{
+			get { return btSoftBody_CJoint_getMaxlife(_native); }
+			set { btSoftBody_CJoint_setMaxlife(_native, value); }
+		}
+        /*
+		public void Normal
+		{
+			get { return btSoftBody_CJoint_getNormal(_native); }
+			set { btSoftBody_CJoint_setNormal(_native, value._native); }
+		}
+        */
+		public Vector3 Rpos
+		{
+			get
+			{
+				Vector3 value;
+				btSoftBody_CJoint_getRpos(_native, out value);
+				return value;
+			}
+			set { btSoftBody_CJoint_setRpos(_native, ref value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_CJoint_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_CJoint_getFriction(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_CJoint_getLife(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_CJoint_getMaxlife(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_CJoint_getNormal(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btSoftBody_CJoint_getRpos(IntPtr obj, [Out] out Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_CJoint_setFriction(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_CJoint_setLife(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_CJoint_setMaxlife(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_CJoint_setNormal(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_CJoint_setRpos(IntPtr obj, [In] ref Vector3 value);
+	}
+
+	public class Config
+	{
+		internal IntPtr _native;
+
+		internal Config(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public Config()
+		{
+			_native = btSoftBody_Config_new();
+		}
+        /*
+		public void Aeromodel
+		{
+			get { return btSoftBody_Config_getAeromodel(_native); }
+			set { btSoftBody_Config_setAeromodel(_native, value._native); }
+		}
+        */
+		public int Citerations
+		{
+			get { return btSoftBody_Config_getCiterations(_native); }
+			set { btSoftBody_Config_setCiterations(_native, value); }
+		}
+
+		public int Collisions
+		{
+			get { return btSoftBody_Config_getCollisions(_native); }
+			set { btSoftBody_Config_setCollisions(_native, value); }
+		}
+
+		public int Diterations
+		{
+			get { return btSoftBody_Config_getDiterations(_native); }
+			set { btSoftBody_Config_setDiterations(_native, value); }
+		}
+        /*
+		public tPSolverArray Dsequence
+		{
+			get { return btSoftBody_Config_getDsequence(_native); }
+			set { btSoftBody_Config_setDsequence(_native, value._native); }
+		}
+        */
+		public float KAHR
+		{
+			get { return btSoftBody_Config_getKAHR(_native); }
+			set { btSoftBody_Config_setKAHR(_native, value); }
+		}
+
+		public float KCHR
+		{
+			get { return btSoftBody_Config_getKCHR(_native); }
+			set { btSoftBody_Config_setKCHR(_native, value); }
+		}
+
+		public float KDF
+		{
+			get { return btSoftBody_Config_getKDF(_native); }
+			set { btSoftBody_Config_setKDF(_native, value); }
+		}
+
+		public float KDG
+		{
+			get { return btSoftBody_Config_getKDG(_native); }
+			set { btSoftBody_Config_setKDG(_native, value); }
+		}
+
+		public float KDP
+		{
+			get { return btSoftBody_Config_getKDP(_native); }
+			set { btSoftBody_Config_setKDP(_native, value); }
+		}
+
+		public float KKHR
+		{
+			get { return btSoftBody_Config_getKKHR(_native); }
+			set { btSoftBody_Config_setKKHR(_native, value); }
+		}
+
+		public float KLF
+		{
+			get { return btSoftBody_Config_getKLF(_native); }
+			set { btSoftBody_Config_setKLF(_native, value); }
+		}
+
+		public float KMT
+		{
+			get { return btSoftBody_Config_getKMT(_native); }
+			set { btSoftBody_Config_setKMT(_native, value); }
+		}
+
+		public float KPR
+		{
+			get { return btSoftBody_Config_getKPR(_native); }
+			set { btSoftBody_Config_setKPR(_native, value); }
+		}
+
+		public float KSHR
+		{
+			get { return btSoftBody_Config_getKSHR(_native); }
+			set { btSoftBody_Config_setKSHR(_native, value); }
+		}
+
+		public float KSK_SPLT_CL
+		{
+			get { return btSoftBody_Config_getKSK_SPLT_CL(_native); }
+			set { btSoftBody_Config_setKSK_SPLT_CL(_native, value); }
+		}
+
+		public float KSKHR_CL
+		{
+			get { return btSoftBody_Config_getKSKHR_CL(_native); }
+			set { btSoftBody_Config_setKSKHR_CL(_native, value); }
+		}
+
+		public float KSR_SPLT_CL
+		{
+			get { return btSoftBody_Config_getKSR_SPLT_CL(_native); }
+			set { btSoftBody_Config_setKSR_SPLT_CL(_native, value); }
+		}
+
+		public float KSRHR_CL
+		{
+			get { return btSoftBody_Config_getKSRHR_CL(_native); }
+			set { btSoftBody_Config_setKSRHR_CL(_native, value); }
+		}
+
+		public float KSS_SPLT_CL
+		{
+			get { return btSoftBody_Config_getKSS_SPLT_CL(_native); }
+			set { btSoftBody_Config_setKSS_SPLT_CL(_native, value); }
+		}
+
+		public float KSSHR_CL
+		{
+			get { return btSoftBody_Config_getKSSHR_CL(_native); }
+			set { btSoftBody_Config_setKSSHR_CL(_native, value); }
+		}
+
+		public float KVC
+		{
+			get { return btSoftBody_Config_getKVC(_native); }
+			set { btSoftBody_Config_setKVC(_native, value); }
+		}
+
+		public float KVCF
+		{
+			get { return btSoftBody_Config_getKVCF(_native); }
+			set { btSoftBody_Config_setKVCF(_native, value); }
+		}
+
+		public float Maxvolume
+		{
+			get { return btSoftBody_Config_getMaxvolume(_native); }
+			set { btSoftBody_Config_setMaxvolume(_native, value); }
+		}
+
+		public int Piterations
+		{
+			get { return btSoftBody_Config_getPiterations(_native); }
+			set { btSoftBody_Config_setPiterations(_native, value); }
+		}
+        /*
+		public tPSolverArray Psequence
+		{
+			get { return btSoftBody_Config_getPsequence(_native); }
+			set { btSoftBody_Config_setPsequence(_native, value._native); }
+		}
+        */
+		public float Timescale
+		{
+			get { return btSoftBody_Config_getTimescale(_native); }
+			set { btSoftBody_Config_setTimescale(_native, value); }
+		}
+
+		public int Viterations
+		{
+			get { return btSoftBody_Config_getViterations(_native); }
+			set { btSoftBody_Config_setViterations(_native, value); }
+		}
+        /*
+		public tVSolverArray Vsequence
+		{
+			get { return btSoftBody_Config_getVsequence(_native); }
+			set { btSoftBody_Config_setVsequence(_native, value._native); }
+		}
+        */
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_Config_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~Config()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Config_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_getAeromodel(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Config_getCiterations(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Config_getCollisions(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Config_getDiterations(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Config_getDsequence(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKAHR(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKCHR(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKDF(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKDG(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKDP(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKKHR(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKLF(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKMT(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKPR(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSHR(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSK_SPLT_CL(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSKHR_CL(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSR_SPLT_CL(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSRHR_CL(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSS_SPLT_CL(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKSSHR_CL(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKVC(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getKVCF(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getMaxvolume(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Config_getPiterations(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Config_getPsequence(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_Config_getTimescale(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_Config_getViterations(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_Config_getVsequence(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern void btSoftBody_Config_setAeromodel(IntPtr obj, _ value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setCiterations(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setCollisions(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setDiterations(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setDsequence(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKAHR(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKCHR(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKDF(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKDG(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKDP(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKKHR(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKLF(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKMT(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKPR(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSHR(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSK_SPLT_CL(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSKHR_CL(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSR_SPLT_CL(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSRHR_CL(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSS_SPLT_CL(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKSSHR_CL(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKVC(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setKVCF(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setMaxvolume(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setPiterations(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setPsequence(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setTimescale(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setViterations(IntPtr obj, int value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_setVsequence(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_Config_delete(IntPtr obj);
+	}
+
+	public class SolverState
+	{
+		internal IntPtr _native;
+
+		internal SolverState(IntPtr native)
+		{
+			_native = native;
+		}
+
+		public SolverState()
+		{
+			_native = btSoftBody_SolverState_new();
+		}
+
+		public float Isdt
+		{
+			get { return btSoftBody_SolverState_getIsdt(_native); }
+			set { btSoftBody_SolverState_setIsdt(_native, value); }
+		}
+
+		public float Radmrg
+		{
+			get { return btSoftBody_SolverState_getRadmrg(_native); }
+			set { btSoftBody_SolverState_setRadmrg(_native, value); }
+		}
+
+		public float Sdt
+		{
+			get { return btSoftBody_SolverState_getSdt(_native); }
+			set { btSoftBody_SolverState_setSdt(_native, value); }
+		}
+
+		public float Updmrg
+		{
+			get { return btSoftBody_SolverState_getUpdmrg(_native); }
+			set { btSoftBody_SolverState_setUpdmrg(_native, value); }
+		}
+
+		public float Velmrg
+		{
+			get { return btSoftBody_SolverState_getVelmrg(_native); }
+			set { btSoftBody_SolverState_setVelmrg(_native, value); }
+		}
+
+		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+				btSoftBody_SolverState_delete(_native);
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~SolverState()
+		{
+			Dispose(false);
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_SolverState_new();
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SolverState_getIsdt(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SolverState_getRadmrg(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SolverState_getSdt(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SolverState_getUpdmrg(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_SolverState_getVelmrg(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SolverState_setIsdt(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SolverState_setRadmrg(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SolverState_setSdt(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SolverState_setUpdmrg(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SolverState_setVelmrg(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_SolverState_delete(IntPtr obj);
+	}
+    /*
+	public class RayFromToCaster : ICollide
+	{
+		internal RayFromToCaster(IntPtr native)
+			: base(native)
+		{
+		}
+
+		public RayFromToCaster(Vector3 rayFrom, Vector3 rayTo, float mxt)
+			: base(btSoftBody_RayFromToCaster_new(ref rayFrom, ref rayTo, mxt))
+		{
+		}
+
+		public float RayFromToTriangle(Vector3 rayFrom, Vector3 rayTo, Vector3 rayNormalizedDirection, Vector3 a, Vector3 b, Vector3 c, float maxt)
+		{
+			return btSoftBody_RayFromToCaster_rayFromToTriangle(ref rayFrom, ref rayTo, ref rayNormalizedDirection, ref a, ref b, ref c, maxt);
+		}
+
+		public float RayFromToTriangle(Vector3 rayFrom, Vector3 rayTo, Vector3 rayNormalizedDirection, Vector3 a, Vector3 b, Vector3 c)
+		{
+			return btSoftBody_RayFromToCaster_rayFromToTriangle2(ref rayFrom, ref rayTo, ref rayNormalizedDirection, ref a, ref b, ref c);
+		}
+
+		public Face Face
+		{
+			get { return btSoftBody_RayFromToCaster_getFace(_native); }
+			set { btSoftBody_RayFromToCaster_setFace(_native, value._native); }
+		}
+
+		public float Mint
+		{
+			get { return btSoftBody_RayFromToCaster_getMint(_native); }
+			set { btSoftBody_RayFromToCaster_setMint(_native, value); }
+		}
+
+		public void RayFrom
+		{
+			get { return btSoftBody_RayFromToCaster_getRayFrom(_native); }
+			set { btSoftBody_RayFromToCaster_setRayFrom(_native, value._native); }
+		}
+
+		public void RayNormalizedDirection
+		{
+			get { return btSoftBody_RayFromToCaster_getRayNormalizedDirection(_native); }
+			set { btSoftBody_RayFromToCaster_setRayNormalizedDirection(_native, value._native); }
+		}
+
+		public void RayTo
+		{
+			get { return btSoftBody_RayFromToCaster_getRayTo(_native); }
+			set { btSoftBody_RayFromToCaster_setRayTo(_native, value._native); }
+		}
+
+		public int Tests
+		{
+			get { return btSoftBody_RayFromToCaster_getTests(_native); }
+			set { btSoftBody_RayFromToCaster_setTests(_native, value); }
+		}
+
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_RayFromToCaster_new([In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, float mxt);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btSoftBody_RayFromToCaster_getFace(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_RayFromToCaster_getMint(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_getRayFrom(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_getRayNormalizedDirection(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_getRayTo(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btSoftBody_RayFromToCaster_getTests(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_RayFromToCaster_rayFromToTriangle([In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, [In] ref Vector3 rayNormalizedDirection, [In] ref Vector3 a, [In] ref Vector3 b, [In] ref Vector3 c, float maxt);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern float btSoftBody_RayFromToCaster_rayFromToTriangle2([In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, [In] ref Vector3 rayNormalizedDirection, [In] ref Vector3 a, [In] ref Vector3 b, [In] ref Vector3 c);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_setFace(IntPtr obj, IntPtr value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_setMint(IntPtr obj, float value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_setRayFrom(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_setRayNormalizedDirection(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_setRayTo(IntPtr obj, Vector3 value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btSoftBody_RayFromToCaster_setTests(IntPtr obj, int value);
+	}
+    */
+
+    public class SoftBody : CollisionObject
+    {
 		internal SoftBody(IntPtr native)
 			: base(native)
 		{
@@ -3706,7 +3707,7 @@ namespace BulletSharp
 			return btSoftBody_rayTest(_native, ref rayFrom, ref rayTo, mint._native, feature._native, index._native, bcountonly);
 		}
         */
-		public bool RayTest(Vector3 rayFrom, Vector3 rayTo, sRayCast results)
+        public bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast results)
 		{
 			return btSoftBody_rayTest2(_native, ref rayFrom, ref rayTo, results._native);
 		}
