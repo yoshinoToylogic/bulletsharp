@@ -6,21 +6,21 @@ using System.Diagnostics;
 
 namespace BulletSharp
 {
-    public class AlignedManifoldArrayDebugView
+    public class AlignedCollisionShapeArrayDebugView
     {
-        private AlignedManifoldArray _array;
+        private AlignedCollisionShapeArray _array;
 
-        public AlignedManifoldArrayDebugView(AlignedManifoldArray array)
+        public AlignedCollisionShapeArrayDebugView(AlignedCollisionShapeArray array)
         {
             _array = array;
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public PersistentManifold[] Items
+        public CollisionShape[] Items
         {
             get
             {
-                PersistentManifold[] array = new PersistentManifold[_array.Count];
+                CollisionShape[] array = new CollisionShape[_array.Count];
                 for (int i = 0; i < _array.Count; i++)
                 {
                     array[i] = _array[i];
@@ -30,20 +30,20 @@ namespace BulletSharp
         }
     }
 
-    public class AlignedManifoldArrayEnumerator : IEnumerator<PersistentManifold>
+    public class AlignedCollisionShapeArrayEnumerator : IEnumerator<CollisionShape>
     {
         int _i;
         int _count;
-        AlignedManifoldArray _array;
+        AlignedCollisionShapeArray _array;
 
-        public AlignedManifoldArrayEnumerator(AlignedManifoldArray array)
+        public AlignedCollisionShapeArrayEnumerator(AlignedCollisionShapeArray array)
         {
             _array = array;
             _count = array.Count;
             _i = -1;
         }
 
-        public PersistentManifold Current
+        public CollisionShape Current
         {
             get { return _array[_i]; }
         }
@@ -69,19 +69,19 @@ namespace BulletSharp
         }
     }
 
-    [Serializable, DebuggerTypeProxy(typeof(AlignedManifoldArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedManifoldArray : AlignedObjectArray, IList<PersistentManifold>, IDisposable
+    [Serializable, DebuggerTypeProxy(typeof(AlignedCollisionShapeArrayDebugView)), DebuggerDisplay("Count = {Count}")]
+    public class AlignedCollisionShapeArray : AlignedObjectArray, IList<CollisionShape>, IDisposable
     {
         bool _preventDelete;
 
-        internal AlignedManifoldArray(IntPtr native, bool preventDelete)
+        internal AlignedCollisionShapeArray(IntPtr native, bool preventDelete = false)
             : base(native)
         {
             _preventDelete = preventDelete;
         }
 
-        public AlignedManifoldArray()
-            : base(btManifoldArray_new())
+        public AlignedCollisionShapeArray()
+            : base(btAlignedCollisionShapeArray_new())
         {
         }
 
@@ -97,23 +97,23 @@ namespace BulletSharp
             {
                 if (!_preventDelete)
                 {
-                    btManifoldArray_delete(_native);
+                    btAlignedCollisionShapeArray_delete(_native);
                 }
                 _native = IntPtr.Zero;
             }
         }
 
-        ~AlignedManifoldArray()
+        ~AlignedCollisionShapeArray()
         {
             Dispose(false);
         }
 
-        public int IndexOf(PersistentManifold item)
+        public int IndexOf(CollisionShape item)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(int index, PersistentManifold item)
+        public void Insert(int index, CollisionShape item)
         {
             throw new NotImplementedException();
         }
@@ -123,7 +123,7 @@ namespace BulletSharp
             throw new NotImplementedException();
         }
 
-        public PersistentManifold this[int index]
+        public CollisionShape this[int index]
         {
             get
             {
@@ -131,7 +131,7 @@ namespace BulletSharp
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new PersistentManifold(btManifoldArray_at(_native, index), true);
+                return CollisionShape.GetManaged(btAlignedCollisionShapeArray_at(_native, index));
             }
             set
             {
@@ -139,29 +139,29 @@ namespace BulletSharp
             }
         }
 
-        public void Add(PersistentManifold item)
+        public void Add(CollisionShape item)
         {
-            btManifoldArray_push_back(_native, item._native);
+            btAlignedCollisionShapeArray_push_back(_native, item._native);
         }
 
         public void Clear()
         {
-            btManifoldArray_resizeNoInitialize(_native, 0);
+            btAlignedCollisionShapeArray_resizeNoInitialize(_native, 0);
         }
 
-        public bool Contains(PersistentManifold item)
+        public bool Contains(CollisionShape item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(PersistentManifold[] array, int arrayIndex)
+        public void CopyTo(CollisionShape[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
         public int Count
         {
-            get { return btManifoldArray_size(_native); }
+            get { return btAlignedCollisionShapeArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -169,32 +169,32 @@ namespace BulletSharp
             get { return false; }
         }
 
-        public bool Remove(PersistentManifold item)
+        public bool Remove(CollisionShape item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<PersistentManifold> GetEnumerator()
+        public IEnumerator<CollisionShape> GetEnumerator()
         {
-            return new AlignedManifoldArrayEnumerator(this);
+            return new AlignedCollisionShapeArrayEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new AlignedManifoldArrayEnumerator(this);
+            return new AlignedCollisionShapeArrayEnumerator(this);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btManifoldArray_new();
+        protected static extern IntPtr btAlignedCollisionShapeArray_new();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btManifoldArray_size(IntPtr obj);
+        protected static extern IntPtr btAlignedCollisionShapeArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btManifoldArray_at(IntPtr obj, int n);
+        protected static extern void btAlignedCollisionShapeArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btManifoldArray_push_back(IntPtr obj, IntPtr val);
+        protected static extern void btAlignedCollisionShapeArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btManifoldArray_resizeNoInitialize(IntPtr obj, int newSize);
+        protected static extern int btAlignedCollisionShapeArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btManifoldArray_delete(IntPtr obj);
+        protected static extern void btAlignedCollisionShapeArray_delete(IntPtr obj);
     }
 }

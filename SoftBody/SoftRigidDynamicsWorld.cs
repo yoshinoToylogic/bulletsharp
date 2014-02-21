@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
-namespace BulletSharp
+namespace BulletSharp.SoftBody
 {
 	public class SoftRigidDynamicsWorld : DiscreteDynamicsWorld
 	{

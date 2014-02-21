@@ -136,7 +136,7 @@ namespace BulletSharp
 
         public void Add(CollisionObject item)
         {
-            throw new NotImplementedException();
+            btAlignedCollisionObjectArray_push_back(_native, item._native);
         }
 
         public void Clear()
@@ -180,11 +180,13 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btAlignedCollisionObjectArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern void btAlignedCollisionObjectArray_push_back(IntPtr obj, IntPtr val);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern void btAlignedCollisionObjectArray_resizeNoInitialize(IntPtr obj, int newSize);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern void btAlignedCollisionObjectArray_delete(IntPtr obj);
     }

@@ -16,6 +16,11 @@ namespace BulletSharp
 		{
 		}
 
+        public CylinderShape(float halfExtentX, float halfExtentY, float halfExtentZ)
+            : base(btCylinderShape_new2(halfExtentX, halfExtentY, halfExtentZ))
+        {
+        }
+
 		public Vector3 HalfExtentsWithMargin
 		{
             get
@@ -48,6 +53,8 @@ namespace BulletSharp
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCylinderShape_new([In] ref Vector3 halfExtents);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCylinderShape_new2(float halfExtentX, float halfExtentY, float halfExtentZ);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCylinderShape_getHalfExtentsWithMargin(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -70,8 +77,15 @@ namespace BulletSharp
 		{
 		}
 
+        public CylinderShapeX(float halfExtentX, float halfExtentY, float halfExtentZ)
+            : base(btCylinderShapeX_new2(halfExtentX, halfExtentY, halfExtentZ))
+        {
+        }
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCylinderShapeX_new([In] ref Vector3 halfExtents);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCylinderShapeX_new2(float halfExtentX, float halfExtentY, float halfExtentZ);
 	}
 
 	public class CylinderShapeZ : CylinderShape
@@ -86,7 +100,14 @@ namespace BulletSharp
 		{
 		}
 
+        public CylinderShapeZ(float halfExtentX, float halfExtentY, float halfExtentZ)
+            : base(btCylinderShapeZ_new2(halfExtentX, halfExtentY, halfExtentZ))
+        {
+        }
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCylinderShapeZ_new([In] ref Vector3 halfExtents);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCylinderShapeZ_new2(float halfExtentX, float halfExtentY, float halfExtentZ);
 	}
 }
