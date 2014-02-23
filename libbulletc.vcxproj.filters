@@ -315,6 +315,9 @@
     <ClInclude Include="src\btAlignedCollisionShapeArray_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\btTransformUtil_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -612,6 +615,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btAlignedCollisionShapeArray_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btTransformUtil_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

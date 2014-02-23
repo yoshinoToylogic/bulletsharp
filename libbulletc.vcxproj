@@ -235,6 +235,7 @@
     <ClInclude Include="src\btStaticPlaneShape_wrap.h" />
     <ClInclude Include="src\btStridingMeshInterface_wrap.h" />
     <ClInclude Include="src\btThreadSupportInterface_wrap.h" />
+    <ClInclude Include="src\btTransformUtil_wrap.h" />
     <ClInclude Include="src\btTriangleIndexVertexArray_wrap.h" />
     <ClInclude Include="src\btTriangleMeshShape_wrap.h" />
     <ClInclude Include="src\btTriangleMesh_wrap.h" />
@@ -351,6 +352,7 @@
     <ClCompile Include="src\btStaticPlaneShape_wrap.cpp" />
     <ClCompile Include="src\btStridingMeshInterface_wrap.cpp" />
     <ClCompile Include="src\btThreadSupportInterface_wrap.cpp" />
+    <ClCompile Include="src\btTransformUtil_wrap.cpp" />
     <ClCompile Include="src\btTriangleIndexVertexArray_wrap.cpp" />
     <ClCompile Include="src\btTriangleMeshShape_wrap.cpp" />
     <ClCompile Include="src\btTriangleMesh_wrap.cpp" />
