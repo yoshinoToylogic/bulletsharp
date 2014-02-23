@@ -276,6 +276,8 @@ namespace BulletSharp
 
 	public class TrimeshPrimitiveManager : PrimitiveManagerBase
 	{
+        StridingMeshInterface _meshInterface;
+
 		internal TrimeshPrimitiveManager(IntPtr native)
 			: base(native)
 		{
@@ -284,6 +286,7 @@ namespace BulletSharp
 		public TrimeshPrimitiveManager(StridingMeshInterface meshInterface, int part)
 			: base(btGImpactMeshShapePart_TrimeshPrimitiveManager_new(meshInterface._native, part))
 		{
+            _meshInterface = meshInterface;
 		}
 
 		public TrimeshPrimitiveManager(TrimeshPrimitiveManager manager)
@@ -358,8 +361,12 @@ namespace BulletSharp
 
 		public StridingMeshInterface MeshInterface
 		{
-            get { return new StridingMeshInterface(btGImpactMeshShapePart_TrimeshPrimitiveManager_getMeshInterface(_native)); }
-			set { btGImpactMeshShapePart_TrimeshPrimitiveManager_setMeshInterface(_native, value._native); }
+            get { return _meshInterface; }
+            set
+            {
+                _meshInterface = value;
+                btGImpactMeshShapePart_TrimeshPrimitiveManager_setMeshInterface(_native, value._native);
+            }
 		}
 
 		public int Numfaces

@@ -410,7 +410,7 @@ namespace BulletSharp
 			_native = native;
 		}
 
-		public void Get_primitive_box(int prim_index, AABB primbox)
+		public void GetPrimitiveBox(int prim_index, AABB primbox)
 		{
 			btPrimitiveManagerBase_get_primitive_box(_native, prim_index, primbox._native);
 		}
@@ -420,12 +420,12 @@ namespace BulletSharp
 			btPrimitiveManagerBase_get_primitive_triangle(_native, prim_index, triangle._native);
 		}
         */
-		public int _primitive_count
+		public int PrimitiveCount
 		{
 			get { return btPrimitiveManagerBase_get_primitive_count(_native); }
 		}
 
-		public bool Is_trimesh
+		public bool IsTrimesh
 		{
 			get { return btPrimitiveManagerBase_is_trimesh(_native); }
 		}

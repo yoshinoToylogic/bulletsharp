@@ -72,12 +72,12 @@ namespace BulletSharp
 		{
 			btCollisionShape_getAabb(_native, t._native, aabbMin._native, aabbMax._native);
 		}
-
-		public void GetBoundingSphere(Vector3 center, float radius)
-		{
-			btCollisionShape_getBoundingSphere(_native, center._native, radius._native);
-		}
         */
+		public void GetBoundingSphere(out Vector3 center, out float radius)
+		{
+			btCollisionShape_getBoundingSphere(_native, out center, out radius);
+		}
+
 		public float GetContactBreakingThreshold(float defaultContactThresholdFactor)
 		{
 			return btCollisionShape_getContactBreakingThreshold(_native, defaultContactThresholdFactor);
@@ -97,12 +97,17 @@ namespace BulletSharp
 		{
 			get { return btCollisionShape_getAngularMotionDisc(_native); }
 		}
-        /*
-		public void AnisotropicRollingFrictionDirection
+        
+		public Vector3 AnisotropicRollingFrictionDirection
 		{
-			get { return btCollisionShape_getAnisotropicRollingFrictionDirection(_native); }
+            get
+            {
+                Vector3 value;
+                btCollisionShape_getAnisotropicRollingFrictionDirection(_native, out value);
+                return value;
+            }
 		}
-        */
+        
 		public bool IsCompound
 		{
 			get { return btCollisionShape_isCompound(_native); }
@@ -159,12 +164,12 @@ namespace BulletSharp
 			get { return btCollisionShape_getMargin(_native); }
 			set { btCollisionShape_setMargin(_native, value); }
 		}
-        /*
+        
 		public string Name
 		{
 			get { return btCollisionShape_getName(_native); }
 		}
-        */
+        
         public BroadphaseNativeType ShapeType
 		{
 			get { return btCollisionShape_getShapeType(_native); }
@@ -203,9 +208,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionShape_getAngularMotionDisc(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionShape_getAnisotropicRollingFrictionDirection(IntPtr obj);
+		static extern void btCollisionShape_getAnisotropicRollingFrictionDirection(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionShape_getBoundingSphere(IntPtr obj, IntPtr center, IntPtr radius);
+		static extern void btCollisionShape_getBoundingSphere(IntPtr obj, [Out] out Vector3 center, [Out] out float radius);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionShape_getContactBreakingThreshold(IntPtr obj, float defaultContactThresholdFactor);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -137,6 +137,7 @@
     <Compile Include="LinearMath\PolarDecomposition.cs" />
     <Compile Include="LinearMath\Quaternion.cs" />
     <Compile Include="LinearMath\Serializer.cs" />
+    <Compile Include="LinearMath\TransformUtil.cs" />
     <Compile Include="LinearMath\Vector3.cs" />
     <Compile Include="LinearMath\Vector4.cs" />
     <Compile Include="MathUtil.cs">
