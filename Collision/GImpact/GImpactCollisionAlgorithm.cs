@@ -6,8 +6,24 @@ namespace BulletSharp
 {
 	public class GImpactCollisionAlgorithm : ActivatingCollisionAlgorithm
 	{
-		internal GImpactCollisionAlgorithm(IntPtr native, bool preventDelete = false)
-			: base(native, preventDelete)
+		public class CreateFunc : CollisionAlgorithmCreateFunc
+		{
+			internal CreateFunc(IntPtr native)
+				: base(native)
+			{
+			}
+
+			public CreateFunc()
+				: base(btGImpactCollisionAlgorithm_CreateFunc_new())
+			{
+			}
+
+			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			static extern IntPtr btGImpactCollisionAlgorithm_CreateFunc_new();
+		}
+
+		internal GImpactCollisionAlgorithm(IntPtr native)
+			: base(native)
 		{
 		}
 
