@@ -37,6 +37,22 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collision\ActivatingCollisionAlgorithm.cs" />
+    <Compile Include="Collision\Box2DBox2DCollisionAlgorithm.cs" />
+    <Compile Include="Collision\BoxBoxCollisionAlgorithm.cs" />
+    <Compile Include="Collision\CollisionCreateFunc.cs" />
+    <Compile Include="Collision\CompoundCollisionAlgorithm.cs" />
+    <Compile Include="Collision\CompoundCompoundCollisionAlgorithm.cs" />
+    <Compile Include="Collision\Convex2DConvex2DAlgorithm.cs" />
+    <Compile Include="Collision\ConvexConcaveCollisionAlgorithm.cs" />
+    <Compile Include="Collision\ConvexPlaneCollisionAlgorithm.cs" />
+    <Compile Include="Collision\ConvexTriangleMeshShape.cs" />
+    <Compile Include="Collision\EmptyCollisionAlgorithm.cs" />
+    <Compile Include="Collision\SoftBodyConcaveCollisionAlgorithm.cs" />
+    <Compile Include="Collision\SoftRigidCollisionAlgorithm.cs" />
+    <Compile Include="Collision\SoftSoftCollisionAlgorithm.cs" />
+    <Compile Include="Collision\SphereBoxCollisionAlgorithm.cs" />
+    <Compile Include="Collision\SphereSphereCollisionAlgorithm.cs" />
+    <Compile Include="Collision\SphereTriangleCollisionAlgorithm.cs" />
     <Compile Include="Collision\UniformScalingShape.cs" />
     <Compile Include="Dynamics\FixedConstraint.cs" />
     <Compile Include="Dynamics\NncgConstraintSolver.cs" />

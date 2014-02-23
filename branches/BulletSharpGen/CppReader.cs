@@ -185,7 +185,7 @@ namespace BulletSharpGen
             {
                 currentClass = new ClassDefinition(className, currentHeader);
             }
-            ClassDefinitions.Add(className, currentClass);
+            ClassDefinitions.Add(currentClass.FullNameCS, currentClass);
             if (cursor.Kind == CursorKind.ClassDecl)
             {
                 currentMemberAccess = AccessSpecifier.Private; // default class access specifier
