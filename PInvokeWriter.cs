@@ -113,6 +113,10 @@ namespace BulletSharpGen
             }
             else
             {
+                if (method.IsStatic)
+                {
+                    Write("static ", WriteTo.CS);
+                }
                 WriteType(method.ReturnType, propertyTo);
                 Write(' ', propertyTo);
                 if (method.ReturnType.IsBasic)
@@ -517,6 +521,7 @@ namespace BulletSharpGen
                 overloadIndex = 0;
             }
 
+            // Combine methods from properties
             var methods = new List<MethodDefinition>(c.Methods);
             foreach (PropertyDefinition prop in c.Properties)
             {
