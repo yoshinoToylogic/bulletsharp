@@ -7,7 +7,7 @@ extern "C"
 	EXPORT void btCollisionShape_calculateTemporalAabb(btCollisionShape* obj, btScalar* curTrans, btScalar* linvel, btScalar* angvel, btScalar timeStep, btScalar* temporalAabbMin, btScalar* temporalAabbMax);
 	EXPORT void btCollisionShape_getAabb(btCollisionShape* obj, btScalar* t, btScalar* aabbMin, btScalar* aabbMax);
 	EXPORT btScalar btCollisionShape_getAngularMotionDisc(btCollisionShape* obj);
-	EXPORT void btCollisionShape_getAnisotropicRollingFrictionDirection(btCollisionShape* obj);
+	EXPORT void btCollisionShape_getAnisotropicRollingFrictionDirection(btCollisionShape* obj, btScalar* value);
 	EXPORT void btCollisionShape_getBoundingSphere(btCollisionShape* obj, btScalar* center, btScalar* radius);
 	EXPORT btScalar btCollisionShape_getContactBreakingThreshold(btCollisionShape* obj, btScalar defaultContactThresholdFactor);
 	EXPORT void btCollisionShape_getLocalScaling(btCollisionShape* obj, btScalar* scaling);

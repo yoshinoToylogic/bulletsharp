@@ -36,12 +36,12 @@ namespace BulletSharp
 			btSliderConstraint_setFrames(_native, ref frameA, ref frameB);
 		}
 
-		public void TestAngLimits()
+		public void TestAngularLimits()
 		{
 			btSliderConstraint_testAngLimits(_native);
 		}
 
-		public void TestLinLimits()
+		public void TestLinearLimits()
 		{
 			btSliderConstraint_testLinLimits(_native);
 		}
@@ -56,12 +56,12 @@ namespace BulletSharp
 			get { return btSliderConstraint_getAncorInB(_native); }
 		}
         */
-		public float AngDepth
+		public float AngularDepth
 		{
 			get { return btSliderConstraint_getAngDepth(_native); }
 		}
 
-		public float AngularPos
+		public float AngularPosition
 		{
 			get { return btSliderConstraint_getAngularPos(_native); }
 		}
@@ -86,37 +86,37 @@ namespace BulletSharp
 			}
 		}
 
-		public float DampingDirAng
+		public float DampingDirAngular
 		{
 			get { return btSliderConstraint_getDampingDirAng(_native); }
 			set { btSliderConstraint_setDampingDirAng(_native, value); }
 		}
 
-		public float DampingDirLin
+		public float DampingDirLinear
 		{
 			get { return btSliderConstraint_getDampingDirLin(_native); }
 			set { btSliderConstraint_setDampingDirLin(_native, value); }
 		}
 
-		public float DampingLimAng
+		public float DampingLimAngular
 		{
 			get { return btSliderConstraint_getDampingLimAng(_native); }
 			set { btSliderConstraint_setDampingLimAng(_native, value); }
 		}
 
-		public float DampingLimLin
+		public float DampingLimLinear
 		{
 			get { return btSliderConstraint_getDampingLimLin(_native); }
 			set { btSliderConstraint_setDampingLimLin(_native, value); }
 		}
 
-		public float DampingOrthoAng
+		public float DampingOrthoAngular
 		{
 			get { return btSliderConstraint_getDampingOrthoAng(_native); }
 			set { btSliderConstraint_setDampingOrthoAng(_native, value); }
 		}
 
-		public float DampingOrthoLin
+		public float DampingOrthoLinear
 		{
 			get { return btSliderConstraint_getDampingOrthoLin(_native); }
 			set { btSliderConstraint_setDampingOrthoLin(_native, value); }
@@ -147,7 +147,7 @@ namespace BulletSharp
 			get { return btSliderConstraint_getInfo1NonVirtual(_native); }
 		}
         */
-		public float LinDepth
+		public float LinearDepth
 		{
 			get { return btSliderConstraint_getLinDepth(_native); }
 		}
@@ -157,13 +157,13 @@ namespace BulletSharp
 			get { return btSliderConstraint_getLinearPos(_native); }
 		}
 
-		public float LowerAngLimit
+		public float LowerAngularLimit
 		{
 			get { return btSliderConstraint_getLowerAngLimit(_native); }
 			set { btSliderConstraint_setLowerAngLimit(_native, value); }
 		}
 
-		public float LowerLinLimit
+		public float LowerLinearLimit
 		{
 			get { return btSliderConstraint_getLowerLinLimit(_native); }
 			set { btSliderConstraint_setLowerLinLimit(_native, value); }
@@ -175,125 +175,125 @@ namespace BulletSharp
 			set { btSliderConstraint_setMaxAngMotorForce(_native, value); }
 		}
 
-		public float MaxLinMotorForce
+		public float MaxLinearMotorForce
 		{
 			get { return btSliderConstraint_getMaxLinMotorForce(_native); }
 			set { btSliderConstraint_setMaxLinMotorForce(_native, value); }
 		}
 
-		public bool PoweredAngMotor
+		public bool PoweredAngularMotor
 		{
 			get { return btSliderConstraint_getPoweredAngMotor(_native); }
 			set { btSliderConstraint_setPoweredAngMotor(_native, value); }
 		}
 
-		public bool PoweredLinMotor
+		public bool PoweredLinearMotor
 		{
 			get { return btSliderConstraint_getPoweredLinMotor(_native); }
 			set { btSliderConstraint_setPoweredLinMotor(_native, value); }
 		}
 
-		public float RestitutionDirAng
+		public float RestitutionDirAngular
 		{
 			get { return btSliderConstraint_getRestitutionDirAng(_native); }
 			set { btSliderConstraint_setRestitutionDirAng(_native, value); }
 		}
 
-		public float RestitutionDirLin
+		public float RestitutionDirLinear
 		{
 			get { return btSliderConstraint_getRestitutionDirLin(_native); }
 			set { btSliderConstraint_setRestitutionDirLin(_native, value); }
 		}
 
-		public float RestitutionLimAng
+		public float RestitutionLimAngular
 		{
 			get { return btSliderConstraint_getRestitutionLimAng(_native); }
 			set { btSliderConstraint_setRestitutionLimAng(_native, value); }
 		}
 
-		public float RestitutionLimLin
+		public float RestitutionLimLinear
 		{
 			get { return btSliderConstraint_getRestitutionLimLin(_native); }
 			set { btSliderConstraint_setRestitutionLimLin(_native, value); }
 		}
 
-		public float RestitutionOrthoAng
+		public float RestitutionOrthoAngular
 		{
 			get { return btSliderConstraint_getRestitutionOrthoAng(_native); }
 			set { btSliderConstraint_setRestitutionOrthoAng(_native, value); }
 		}
 
-		public float RestitutionOrthoLin
+		public float RestitutionOrthoLinear
 		{
 			get { return btSliderConstraint_getRestitutionOrthoLin(_native); }
 			set { btSliderConstraint_setRestitutionOrthoLin(_native, value); }
 		}
 
-		public float SoftnessDirAng
+		public float SoftnessDirAngular
 		{
 			get { return btSliderConstraint_getSoftnessDirAng(_native); }
 			set { btSliderConstraint_setSoftnessDirAng(_native, value); }
 		}
 
-		public float SoftnessDirLin
+		public float SoftnessDirLinear
 		{
 			get { return btSliderConstraint_getSoftnessDirLin(_native); }
 			set { btSliderConstraint_setSoftnessDirLin(_native, value); }
 		}
 
-		public float SoftnessLimAng
+		public float SoftnessLimAngular
 		{
 			get { return btSliderConstraint_getSoftnessLimAng(_native); }
 			set { btSliderConstraint_setSoftnessLimAng(_native, value); }
 		}
 
-		public float SoftnessLimLin
+		public float SoftnessLimLinear
 		{
 			get { return btSliderConstraint_getSoftnessLimLin(_native); }
 			set { btSliderConstraint_setSoftnessLimLin(_native, value); }
 		}
 
-		public float SoftnessOrthoAng
+		public float SoftnessOrthoAngular
 		{
 			get { return btSliderConstraint_getSoftnessOrthoAng(_native); }
 			set { btSliderConstraint_setSoftnessOrthoAng(_native, value); }
 		}
 
-		public float SoftnessOrthoLin
+		public float SoftnessOrthoLinear
 		{
 			get { return btSliderConstraint_getSoftnessOrthoLin(_native); }
 			set { btSliderConstraint_setSoftnessOrthoLin(_native, value); }
 		}
 
-		public bool SolveAngLimit
+		public bool SolveAngularLimit
 		{
 			get { return btSliderConstraint_getSolveAngLimit(_native); }
 		}
 
-		public bool SolveLinLimit
+		public bool SolveLinearLimit
 		{
 			get { return btSliderConstraint_getSolveLinLimit(_native); }
 		}
 
-		public float TargetAngMotorVelocity
+		public float TargetAngularMotorVelocity
 		{
 			get { return btSliderConstraint_getTargetAngMotorVelocity(_native); }
 			set { btSliderConstraint_setTargetAngMotorVelocity(_native, value); }
 		}
 
-		public float TargetLinMotorVelocity
+		public float TargetLinearMotorVelocity
 		{
 			get { return btSliderConstraint_getTargetLinMotorVelocity(_native); }
 			set { btSliderConstraint_setTargetLinMotorVelocity(_native, value); }
 		}
 
-		public float UpperAngLimit
+		public float UpperAngularLimit
 		{
 			get { return btSliderConstraint_getUpperAngLimit(_native); }
 			set { btSliderConstraint_setUpperAngLimit(_native, value); }
 		}
 
-		public float UpperLinLimit
+		public float UpperLinearLimit
 		{
 			get { return btSliderConstraint_getUpperLinLimit(_native); }
 			set { btSliderConstraint_setUpperLinLimit(_native, value); }

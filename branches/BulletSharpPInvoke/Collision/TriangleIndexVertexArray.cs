@@ -22,7 +22,7 @@ namespace BulletSharp
 
         public unsafe UnmanagedMemoryStream GetTriangleStream()
         {
-            int length = 3 * btIndexedMesh_getNumVertices(_native) * btIndexedMesh_getVertexStride(_native);
+            int length = btIndexedMesh_getNumTriangles(_native) * btIndexedMesh_getTriangleIndexStride(_native);
             return new UnmanagedMemoryStream((byte*)btIndexedMesh_getTriangleIndexBase(_native).ToPointer(), length, length, FileAccess.ReadWrite);
         }
 

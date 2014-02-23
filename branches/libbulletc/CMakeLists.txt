@@ -234,6 +234,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btStaticPlaneShape_wrap.h
     src/btStridingMeshInterface_wrap.cpp
     src/btStridingMeshInterface_wrap.h
+    src/btTransformUtil_wrap.cpp
+    src/btTransformUtil_wrap.h
     src/btTriangleIndexVertexArray_wrap.cpp
     src/btTriangleIndexVertexArray_wrap.h
     src/btTriangleMesh_wrap.cpp
