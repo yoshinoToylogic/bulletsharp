@@ -50,13 +50,10 @@
 #define btScaledBvhTriangleMeshShape void
 #define btTriangleMeshShape void
 #define btTriangleIndexVertexArray void
-#define btCompoundShape void
 #define btTetrahedronShape void
 #define btEmptyShape void
 #define btMultiSphereShape void
-#define btSphereSphereCollisionAlgorithm void
 #define btDefaultCollisionConfiguration void
-#define btCollisionDispatcher void
 #define btSimpleBroadphase void
 #define btAABB void
 #define btAxisSweep3 void
@@ -67,12 +64,7 @@
 #define btBroadphasePair void
 #define btBroadphasePairArray void
 #define btBroadphasePairSortPredicate void
-#define btBroadphaseProxy void
 #define btBroadphaseRayCallback void
-#define btCollisionAlgorithm void
-#define btCollisionAlgorithmConstructionInfo void
-#define btCollisionObjectWrapper void
-#define btCollisionShape void
 #define btCollisionWorld_AllHitsRayResultCallback void
 #define btCollisionWorld_ClosestConvexResultCallback void
 #define btCollisionWorld_ClosestRayResultCallback void
@@ -88,14 +80,10 @@
 #define btDiscreteCollisionDetectorInterface void
 #define btDiscreteCollisionDetectorInterface_ClosestPointInput void
 #define btDiscreteCollisionDetectorInterface_Result void
-#define btDispatcher void
-#define btDispatcherInfo void
 #define btDynamicsWorld void
 #define btHashedOverlappingPairCache void
 #define btIndexedMesh void
 #define IndexedMeshArray void
-#define btManifoldArray void
-#define btManifoldResult void
 #define btMinkowskiPenetrationDepthSolver void
 #define btMotionState void
 #define btMultiSapBroadphase void
@@ -185,6 +173,24 @@
 #define btTypedConstraint_btConstraintInfo2 btTypedConstraint::btConstraintInfo2
 #endif
 
+#ifndef BT_BOX_2D_BOX_2D__COLLISION_ALGORITHM_H
+#define btBox2dBox2dCollisionAlgorithm void
+#define btBox2dBox2dCollisionAlgorithm_CreateFunc void
+#else
+#define btBox2dBox2dCollisionAlgorithm_CreateFunc btBox2dBox2dCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_BOX_BOX__COLLISION_ALGORITHM_H
+#define btBoxBoxCollisionAlgorithm void
+#define btBoxBoxCollisionAlgorithm_CreateFunc void
+#else
+#define btBoxBoxCollisionAlgorithm_CreateFunc btBoxBoxCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_BROADPHASE_PROXY_H
+#define btBroadphaseProxy void
+#endif
+
 #ifndef BT_BULLET_FILE_H
 #define bParse_btBulletFile void
 #else
@@ -195,12 +201,22 @@
 #define btCharacterControllerInterface void
 #endif
 
+#ifndef BT_COLLISION_ALGORITHM_H
+#define btCollisionAlgorithm void
+#define btCollisionAlgorithmConstructionInfo void
+#define btManifoldArray void
+#endif
+
 #ifndef BT_COLLISION_CONFIGURATION
 #define btCollisionConfiguration void
 #endif
 
 #ifndef BT_COLLISION_CREATE_FUNC
 #define btCollisionAlgorithmCreateFunc void
+#endif
+
+#ifndef BT_COLLISION__DISPATCHER_H
+#define btCollisionDispatcher void
 #endif
 
 #ifndef BT_COLLISION_OBJECT_H
@@ -211,12 +227,62 @@
 #define btCollisionObjectWrapper void
 #endif
 
+#ifndef BT_COLLISION_SHAPE_H
+#define btCollisionShape void
+#endif
+
+#ifndef BT_COMPOUND_COLLISION_ALGORITHM_H
+#define btCompoundCollisionAlgorithm void
+#define btCompoundCollisionAlgorithm_CreateFunc void
+#define btCompoundCollisionAlgorithm_SwappedCreateFunc void
+#else
+#define btCompoundCollisionAlgorithm_CreateFunc btCompoundCollisionAlgorithm::CreateFunc
+#define btCompoundCollisionAlgorithm_SwappedCreateFunc btCompoundCollisionAlgorithm::SwappedCreateFunc
+#endif
+
+#ifndef BT_COMPOUND_COMPOUND_COLLISION_ALGORITHM_H
+#define btCompoundCompoundCollisionAlgorithm void
+#define btCompoundCompoundCollisionAlgorithm_CreateFunc void
+#define btCompoundCompoundCollisionAlgorithm_SwappedCreateFunc void
+#else
+#define btCompoundCompoundCollisionAlgorithm_CreateFunc btCompoundCompoundCollisionAlgorithm::CreateFunc
+#define btCompoundCompoundCollisionAlgorithm_SwappedCreateFunc btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc
+#endif
+
+#ifndef BT_COMPOUND_SHAPE_H
+#define btCompoundShape void
+#endif
+
 #ifndef BT_CONCAVE_SHAPE_H
 #define btConcaveShape void
 #endif
 
 #ifndef BT_CONVEX_2D_SHAPE_H
 #define btConvex2dShape void
+#endif
+
+#ifndef BT_CONVEX_2D_CONVEX_2D_ALGORITHM_H
+#define btConvex2dConvex2dAlgorithm void
+#define btConvex2dConvex2dAlgorithm_CreateFunc void
+#else
+#define btConvex2dConvex2dAlgorithm_CreateFunc btConvex2dConvex2dAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_CONVEX_CONCAVE_COLLISION_ALGORITHM_H
+#define btConvexConcaveCollisionAlgorithm void
+#define btConvexConcaveCollisionAlgorithm_CreateFunc void
+#define btConvexConcaveCollisionAlgorithm_SwappedCreateFunc void
+#define btConvexTriangleCallback void
+#else
+#define btConvexConcaveCollisionAlgorithm_CreateFunc btConvexConcaveCollisionAlgorithm::CreateFunc
+#define btConvexConcaveCollisionAlgorithm_SwappedCreateFunc btConvexConcaveCollisionAlgorithm::SwappedCreateFunc
+#endif
+
+#ifndef BT_CONVEX_CONVEX_ALGORITHM_H
+#define btConvexConvexAlgorithm void
+#define btConvexConvexAlgorithm_CreateFunc void
+#else
+#define btConvexConvexAlgorithm_CreateFunc btConvexConvexAlgorithm::CreateFunc
 #endif
 
 #ifndef BT_CONVEX_INTERNAL_SHAPE_H
@@ -228,6 +294,13 @@
 #define btConvexPenetrationDepthSolver void
 #endif
 
+#ifndef BT_CONVEX_PLANE_COLLISION_ALGORITHM_H
+#define btConvexPlaneCollisionAlgorithm void
+#define btConvexPlaneCollisionAlgorithm_CreateFunc void
+#else
+#define btConvexPlaneCollisionAlgorithm_CreateFunc btConvexPlaneCollisionAlgorithm::CreateFunc
+#endif
+
 #ifndef BT_CONVEX_SHAPE_INTERFACE1
 #define btConvexShape void
 #endif
@@ -236,9 +309,21 @@
 #define btDbvtProxy void
 #endif
 
+#ifndef BT_DISPATCHER_H
+#define btDispatcher void
+#define btDispatcherInfo void
+#endif
+
 #ifndef BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
 #define btDbvt void
 #define btDbvtNode void
+#endif
+
+#ifndef BT_EMPTY_ALGORITH
+#define btEmptyAlgorithm void
+#define btEmptyAlgorithm_CreateFunc void
+#else
+#define btEmptyAlgorithm_CreateFunc btEmptyAlgorithm::CreateFunc
 #endif
 
 #ifndef BT_FIXED_CONSTRAINT_H
@@ -266,6 +351,10 @@
 #ifndef BT_MANIFOLD_CONTACT_POINT_H
 #define btManifoldPoint void
 #define ContactAddedCallback void
+#endif
+
+#ifndef BT_MANIFOLD_RESULT_H
+#define btManifoldResult void
 #endif
 
 #ifndef BT_NNCG_CONSTRAINT_SOLVER_H
@@ -325,15 +414,6 @@
 
 #ifndef BT_SHAPE_HULL_H
 #define btShapeHull void
-#endif
-
-#ifndef BT_SPU_COLLISION_TASK_PROCESS_H
-#define SpuCollisionTaskProcess void
-#define SpuGatherAndProcessWorkUnitInput void
-#endif
-
-#ifndef BT_SPU_GATHERING_COLLISION__DISPATCHER_H
-#define SpuGatheringCollisionDispatcher void
 #endif
 
 #ifndef _BT_SOFT_BODY_H
@@ -414,12 +494,37 @@
 #define btSoftBody_Tetra btSoftBody::Tetra
 #endif
 
+#ifndef BT_SOFT_BODY_CONCAVE_COLLISION_ALGORITHM_H
+#define btSoftBodyConcaveCollisionAlgorithm void
+#define btSoftBodyConcaveCollisionAlgorithm_CreateFunc void
+#define btSoftBodyConcaveCollisionAlgorithm_SwappedCreateFunc void
+#define btSoftBodyTriangleCallback void
+#define btTriIndex void
+#else
+#define btSoftBodyConcaveCollisionAlgorithm_CreateFunc btSoftBodyConcaveCollisionAlgorithm::CreateFunc
+#define btSoftBodyConcaveCollisionAlgorithm_SwappedCreateFunc btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc
+#endif
+
 #ifndef BT_SOFT_BODY_HELPERS_H
 #define fDrawFlags void
 #endif
 
 #ifndef BT_SOFT_BODY_SOLVERS_H
 #define btSoftBodySolver void
+#endif
+
+#ifndef BT_SOFT_RIGID_COLLISION_ALGORITHM_H
+#define btSoftRigidCollisionAlgorithm void
+#define btSoftRigidCollisionAlgorithm_CreateFunc void
+#else
+#define btSoftRigidCollisionAlgorithm_CreateFunc btSoftRigidCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_SOFT_SOFT_COLLISION_ALGORITHM_H
+#define btSoftSoftCollisionAlgorithm void
+#define btSoftSoftCollisionAlgorithm_CreateFunc void
+#else
+#define btSoftSoftCollisionAlgorithm_CreateFunc btSoftSoftCollisionAlgorithm::CreateFunc
 #endif
 
 #ifndef BT_SOFT_RIGID_DYNAMICS_WORLD_H
@@ -429,6 +534,36 @@
 
 #ifndef BT_SOFTBODY_RIGIDBODY_COLLISION_CONFIGURATION
 #define btSoftBodyRigidBodyCollisionConfiguration void
+#endif
+
+#ifndef BT_SPHERE_BOX_COLLISION_ALGORITHM_H
+#define btSphereBoxCollisionAlgorithm void
+#define btSphereBoxCollisionAlgorithm_CreateFunc void
+#else
+#define btSphereBoxCollisionAlgorithm_CreateFunc btSphereBoxCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_SPHERE_SPHERE_COLLISION_ALGORITHM_H
+#define btSphereSphereCollisionAlgorithm void
+#define btSphereSphereCollisionAlgorithm_CreateFunc void
+#else
+#define btSphereSphereCollisionAlgorithm_CreateFunc btSphereSphereCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_SPHERE_TRIANGLE_COLLISION_ALGORITHM_H
+#define btSphereTriangleCollisionAlgorithm void
+#define btSphereTriangleCollisionAlgorithm_CreateFunc void
+#else
+#define btSphereTriangleCollisionAlgorithm_CreateFunc btSphereTriangleCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_SPU_COLLISION_TASK_PROCESS_H
+#define SpuCollisionTaskProcess void
+#define SpuGatherAndProcessWorkUnitInput void
+#endif
+
+#ifndef BT_SPU_GATHERING_COLLISION__DISPATCHER_H
+#define SpuGatheringCollisionDispatcher void
 #endif
 
 #ifndef BT_STRIDING_MESHINTERFACE_H

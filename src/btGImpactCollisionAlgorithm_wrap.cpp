@@ -1,7 +1,12 @@
-#include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
+#include <BulletCollision/GImpact/btGImpactCollisionAlgorithm.h>
 
-#include "conversion.h"
 #include "btGImpactCollisionAlgorithm_wrap.h"
+
+btGImpactCollisionAlgorithm::CreateFunc* btGImpactCollisionAlgorithm_CreateFunc_new()
+{
+	return new btGImpactCollisionAlgorithm::CreateFunc();
+}
 
 btGImpactCollisionAlgorithm* btGImpactCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap)
 {

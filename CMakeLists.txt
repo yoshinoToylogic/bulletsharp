@@ -84,6 +84,10 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btAlignedManifoldArray_wrap.h
     src/btAxisSweep3_wrap.cpp
     src/btAxisSweep3_wrap.h
+    src/btBox2dBox2dCollisionAlgorithm_wrap.cpp
+    src/btBox2dBox2dCollisionAlgorithm_wrap.h
+    src/btBoxBoxCollisionAlgorithm_wrap.cpp
+    src/btBoxBoxCollisionAlgorithm_wrap.h
     src/btBoxCollision_wrap.cpp
     src/btBoxCollision_wrap.h
     src/btBoxShape_wrap.cpp
@@ -108,6 +112,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btCollisionAlgorithm_wrap.h
     src/btCollisionConfiguration_wrap.cpp
     src/btCollisionConfiguration_wrap.h
+    src/btCollisionCreateFunc_wrap.cpp
+    src/btCollisionCreateFunc_wrap.h
     src/btCollisionDispatcher_wrap.cpp
     src/btCollisionDispatcher_wrap.h
     src/btCollisionObject_wrap.cpp
@@ -118,6 +124,10 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btCollisionShape_wrap.h
     src/btCollisionWorld_wrap.cpp
     src/btCollisionWorld_wrap.h
+    src/btCompoundCollisionAlgorithm_wrap.cpp
+    src/btCompoundCollisionAlgorithm_wrap.h
+    src/btCompoundCompoundCollisionAlgorithm_wrap.cpp
+    src/btCompoundCompoundCollisionAlgorithm_wrap.h
     src/btCompoundShape_wrap.cpp
     src/btCompoundShape_wrap.h
     src/btConeShape_wrap.cpp
@@ -128,18 +138,28 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btConstraintSolver_wrap.h
     src/btContactSolverInfo_wrap.cpp
     src/btContactSolverInfo_wrap.h
+    src/btConvex2dConvex2dAlgorithm_wrap.cpp
+    src/btConvex2dConvex2dAlgorithm_wrap.h
     src/btConvex2dShape_wrap.cpp
     src/btConvex2dShape_wrap.h
+    src/btConvexConcaveCollisionAlgorithm_wrap.cpp
+    src/btConvexConcaveCollisionAlgorithm_wrap.h
+    src/btConvexConvexAlgorithm_wrap.cpp
+    src/btConvexConvexAlgorithm_wrap.h
     src/btConvexHullShape_wrap.cpp
     src/btConvexHullShape_wrap.h
     src/btConvexInternalShape_wrap.cpp
     src/btConvexInternalShape_wrap.h
     src/btConvexPenetrationDepthSolver_wrap.cpp
     src/btConvexPenetrationDepthSolver_wrap.h
+    src/btConvexPlaneCollisionAlgorithm_wrap.cpp
+    src/btConvexPlaneCollisionAlgorithm_wrap.h
     src/btConvexPolyhedron_wrap.cpp
     src/btConvexPolyhedron_wrap.h
     src/btConvexShape_wrap.cpp
     src/btConvexShape_wrap.h
+    src/btConvexTriangleMeshShape_wrap.cpp
+    src/btConvexTriangleMeshShape_wrap.h
     src/btCylinderShape_wrap.cpp
     src/btCylinderShape_wrap.h
     src/btDbvtBroadphase_wrap.cpp
@@ -154,6 +174,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDiscreteDynamicsWorld_wrap.h
     src/btDispatcher_wrap.cpp
     src/btDispatcher_wrap.h
+    src/btEmptyCollisionAlgorithm_wrap.cpp
+    src/btEmptyCollisionAlgorithm_wrap.h
     src/btDynamicsWorld_wrap.cpp
     src/btDynamicsWorld_wrap.h
     src/btFixedConstraint_wrap.cpp
@@ -220,16 +242,28 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSimulationIslandManager_wrap.h
     src/btSliderConstraint_wrap.cpp
     src/btSliderConstraint_wrap.h
+    src/btSoftBodyConcaveCollisionAlgorithm_wrap.cpp
+    src/btSoftBodyConcaveCollisionAlgorithm_wrap.h
     src/btSoftBody_wrap.cpp
     src/btSoftBody_wrap.h
     src/btSoftBodyHelpers_wrap.cpp
     src/btSoftBodyHelpers_wrap.h
-    src/btSoftBodyRigidBodyCollisionConfiguration.cpp
-    src/btSoftBodyRigidBodyCollisionConfiguration.h
+    src/btSoftBodyRigidBodyCollisionConfiguration_wrap.cpp
+    src/btSoftBodyRigidBodyCollisionConfiguration_wrap.h
+    src/btSoftRigidCollisionAlgorithm_wrap.cpp
+    src/btSoftRigidCollisionAlgorithm_wrap.h
     src/btSoftRigidDynamicsWorld_wrap.cpp
     src/btSoftRigidDynamicsWorld_wrap.h
+    src/btSoftSoftCollisionAlgorithm_wrap.cpp
+    src/btSoftSoftCollisionAlgorithm_wrap.h
+    src/btSphereBoxCollisionAlgorithm_wrap.cpp
+    src/btSphereBoxCollisionAlgorithm_wrap.h
     src/btSphereShape_wrap.cpp
     src/btSphereShape_wrap.h
+    src/btSphereSphereCollisionAlgorithm_wrap.cpp
+    src/btSphereSphereCollisionAlgorithm_wrap.h
+    src/btSphereTriangleCollisionAlgorithm_wrap.cpp
+    src/btSphereTriangleCollisionAlgorithm_wrap.h
     src/btStaticPlaneShape_wrap.cpp
     src/btStaticPlaneShape_wrap.h
     src/btStridingMeshInterface_wrap.cpp
