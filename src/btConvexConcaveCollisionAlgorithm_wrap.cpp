@@ -22,12 +22,12 @@ void btConvexTriangleCallback_clearWrapperData(btConvexTriangleCallback* obj)
 
 void btConvexTriangleCallback_getAabbMax(btConvexTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAabbMax(), value);
+	VECTOR3_OUT(&obj->getAabbMax(), value);
 }
 
 void btConvexTriangleCallback_getAabbMin(btConvexTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAabbMin(), value);
+	VECTOR3_OUT(&obj->getAabbMin(), value);
 }
 
 btPersistentManifold* btConvexTriangleCallback_getManifoldPtr(btConvexTriangleCallback* obj)
