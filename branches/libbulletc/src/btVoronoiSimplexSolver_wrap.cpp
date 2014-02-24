@@ -110,7 +110,7 @@ btScalar* btSubSimplexClosestResult_getBarycentricCoords(btSubSimplexClosestResu
 
 void btSubSimplexClosestResult_getClosestPointOnSimplex(btSubSimplexClosestResult* obj, btScalar* value)
 {
-	VECTOR3_OUT2(obj->m_closestPointOnSimplex, value);
+	VECTOR3_OUT(&obj->m_closestPointOnSimplex, value);
 }
 
 bool btSubSimplexClosestResult_getDegenerate(btSubSimplexClosestResult* obj)
