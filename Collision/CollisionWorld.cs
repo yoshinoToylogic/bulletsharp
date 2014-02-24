@@ -712,7 +712,9 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
+        [UnmanagedFunctionPointer(Native.Conv)]
 		delegate float AddSingleResultUnmanagedDelegate(IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1);
+        [UnmanagedFunctionPointer(Native.Conv)]
 		delegate bool NeedsCollisionUnmanagedDelegate(IntPtr proxy0);
 
 		AddSingleResultUnmanagedDelegate _addSingleResult;

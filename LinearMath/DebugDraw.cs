@@ -31,20 +31,33 @@ namespace BulletSharp
     {
         internal IntPtr _native;
 
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawAabbUnmanagedDelegate([In] ref Vector3 from, [In] ref Vector3 to, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawArcUnmanagedDelegate([In] ref Vector3 center, [In] ref Vector3 normal, [In] ref Vector3 axis, float radiusA, float radiusB,
             float minAngle, float maxAngle, ref Vector3 color, bool drawSect, float stepDegrees);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawBoxUnmanagedDelegate([In] ref Vector3 bbMin, [In] ref Vector3 bbMax, [In] ref Matrix trans, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawCapsuleUnmanagedDelegate(float radius, float halfHeight, int upAxis, [In] ref Matrix transform, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawContactPointUnmanagedDelegate([In] ref Vector3 pointOnB, [In] ref Vector3 normalOnB, float distance, int lifeTime, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawCylinderUnmanagedDelegate(float radius, float halfHeight, int upAxis, [In] ref Matrix transform, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawLineUnmanagedDelegate([In] ref Vector3 from, [In] ref Vector3 to, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawPlaneUnmanagedDelegate([In] ref Vector3 planeNormal, float planeConst, [In] ref Matrix transform, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawSphereUnmanagedDelegate(float radius, [In] ref Matrix transform, [In] ref Vector3 color);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawSpherePatchUnmanagedDelegate([In] ref Vector3 center, [In] ref Vector3 up, [In] ref Vector3 axis, float radius,
             float minTh, float maxTh, float minPs, float maxPs, [In] ref Vector3 color, float stepDegrees);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawTransformUnmanagedDelegate([In] ref Matrix transform, float orthoLen);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void SimpleCallback(int x);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate DebugDrawModes GetDebugModeUnmanagedDelegate();
 
         DrawAabbUnmanagedDelegate _drawAabb;
