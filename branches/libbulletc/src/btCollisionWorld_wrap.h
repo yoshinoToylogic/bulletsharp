@@ -6,8 +6,8 @@
 
 #define btCollisionWorld_ContactResultCallbackWrapper void
 #else
-typedef bool (STDCALL pNeedsCollision)(btBroadphaseProxy* proxy0);
-typedef bool (STDCALL pAddSingleResult)(btManifoldPoint& cp,
+typedef bool (*pNeedsCollision)(btBroadphaseProxy* proxy0);
+typedef bool (*pAddSingleResult)(btManifoldPoint& cp,
 		const btCollisionObjectWrapper* colObj0, int partId0, int index0,
 		const btCollisionObjectWrapper* colObj1, int partId1, int index1);
 

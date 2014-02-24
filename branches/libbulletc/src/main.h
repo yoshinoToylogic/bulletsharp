@@ -1,13 +1,5 @@
 #pragma once
 
-#ifdef WIN32
-#define STDCALL __stdcall*
-#define uint unsigned int
-#else
-//#define STDCALL *
-#define STDCALL __attribute__ ((stdcall))*
-#endif
-
 #ifdef _MSC_VER
 #define EXPORT __declspec(dllexport)
 #else
@@ -192,8 +184,12 @@
 #endif
 
 #ifndef BT_BULLET_FILE_H
+#define btAligendCharPtrArray void
+#define btAlignedStructHandleArray void
 #define bParse_btBulletFile void
 #else
+#define btAligendCharPtrArray btAlignedObjectArray<char*>
+#define btAlignedStructHandleArray btAlignedObjectArray<bParse::bStructHandle*>
 #define bParse_btBulletFile bParse::btBulletFile
 #endif
 
@@ -392,6 +388,7 @@
 #endif
 
 #ifndef BT_RAYCASTVEHICLE_H
+#define btAlignedWheelInfoArray void
 #define btDefaultVehicleRaycaster void
 #define btRaycastVehicle_btVehicleTuning void
 #define btVehicleRaycaster void
@@ -400,6 +397,7 @@
 #define btWheelInfo_RaycastInfo void
 #define btWheelInfoConstructionInfo void
 #else
+#define btAlignedWheelInfoArray btAlignedObjectArray<btWheelInfo>
 #define btRaycastVehicle_btVehicleTuning btRaycastVehicle::btVehicleTuning
 #define btVehicleRaycaster_btVehicleRaycasterResult btVehicleRaycaster::btVehicleRaycasterResult
 #define btWheelInfo_RaycastInfo btWheelInfo::RaycastInfo
@@ -428,6 +426,7 @@
 #define btSoftBody_fMaterial int
 #define btSoftBody_AJoint void
 #define btSoftBody_AJoint_IControl void
+#define btSoftBody_AJoint_Specs void
 #define btSoftBody_Anchor void
 #define btSoftBody_Body void
 #define btSoftBody_CJoint void
@@ -443,6 +442,7 @@
 #define btSoftBody_Joint_Specs void
 #define btSoftBody_Link void
 #define btSoftBody_LJoint void
+#define btSoftBody_LJoint_Specs void
 #define btSoftBody_Material void
 #define btSoftBody_Node void
 #define btSoftBody_Note void
@@ -465,6 +465,7 @@
 #define btSoftBody_fMaterial btSoftBody::fMaterial
 #define btSoftBody_AJoint btSoftBody::AJoint
 #define btSoftBody_AJoint_IControl btSoftBody::AJoint::IControl
+#define btSoftBody_AJoint_Specs btSoftBody::AJoint::Specs
 #define btSoftBody_Anchor btSoftBody::Anchor
 #define btSoftBody_Body btSoftBody::Body
 #define btSoftBody_CJoint btSoftBody::CJoint
@@ -480,6 +481,7 @@
 #define btSoftBody_Joint_Specs btSoftBody::Joint::Specs
 #define btSoftBody_Link btSoftBody::Link
 #define btSoftBody_LJoint btSoftBody::LJoint
+#define btSoftBody_LJoint_Specs btSoftBody::LJoint::Specs
 #define btSoftBody_Material btSoftBody::Material
 #define btSoftBody_Node btSoftBody::Node
 #define btSoftBody_Note btSoftBody::Note

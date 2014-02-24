@@ -3,16 +3,6 @@
 #include "conversion.h"
 #include "btSoftBodyHelpers_wrap.h"
 
-fDrawFlags* fDrawFlags_new()
-{
-	return new fDrawFlags();
-}
-
-void fDrawFlags_delete(fDrawFlags* obj)
-{
-	delete obj;
-}
-
 float btSoftBodyHelpers_CalculateUV(int resx, int resy, int ix, int iy, int id)
 {
 	return btSoftBodyHelpers::CalculateUV(resx, resy, ix, iy, id);

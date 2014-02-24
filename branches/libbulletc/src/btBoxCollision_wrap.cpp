@@ -27,41 +27,40 @@ void BT_BOX_BOX_TRANSFORM_CACHE_calc_from_homogenic(BT_BOX_BOX_TRANSFORM_CACHE* 
 	obj->calc_from_homogenic(TRANSFORM_USE(trans0), TRANSFORM_USE(trans1));
 }
 
-void BT_BOX_BOX_TRANSFORM_CACHE_getAR(BT_BOX_BOX_TRANSFORM_CACHE* obj)
+void BT_BOX_BOX_TRANSFORM_CACHE_getAR(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* value)
 {
-	obj->m_AR;
+	MATRIX3X3_OUT(&obj->m_AR, value);
 }
 
-void BT_BOX_BOX_TRANSFORM_CACHE_getR1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj)
+void BT_BOX_BOX_TRANSFORM_CACHE_getR1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* value)
 {
-	obj->m_R1to0;
+	MATRIX3X3_OUT(&obj->m_R1to0, value);
 }
 
-void BT_BOX_BOX_TRANSFORM_CACHE_getT1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj)
+void BT_BOX_BOX_TRANSFORM_CACHE_getT1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* value)
 {
-	obj->m_T1to0;
-}
-/*
-void BT_BOX_BOX_TRANSFORM_CACHE_setAR(BT_BOX_BOX_TRANSFORM_CACHE* obj, void value)
-{
-	obj->m_AR = value;
+	VECTOR3_OUT(&obj->m_T1to0, value);
 }
 
-void BT_BOX_BOX_TRANSFORM_CACHE_setR1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, void value)
+void BT_BOX_BOX_TRANSFORM_CACHE_setAR(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* value)
 {
-	obj->m_R1to0 = value;
+	MATRIX3X3_IN(value, &obj->m_AR);
 }
 
-void BT_BOX_BOX_TRANSFORM_CACHE_setT1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, void value)
+void BT_BOX_BOX_TRANSFORM_CACHE_setR1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_T1to0 = value;
+	MATRIX3X3_IN(value, &obj->m_R1to0);
 }
-*/
-void BT_BOX_BOX_TRANSFORM_CACHE_transform(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* point)
+
+void BT_BOX_BOX_TRANSFORM_CACHE_setT1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_T1to0);
+}
+
+void BT_BOX_BOX_TRANSFORM_CACHE_transform(BT_BOX_BOX_TRANSFORM_CACHE* obj, btScalar* point, btScalar* value)
 {
 	VECTOR3_CONV(point);
-	obj->transform(VECTOR3_USE(point));
+	VECTOR3_OUT(&obj->transform(VECTOR3_USE(point)), value);
 }
 
 void BT_BOX_BOX_TRANSFORM_CACHE_delete(BT_BOX_BOX_TRANSFORM_CACHE* obj)
@@ -148,14 +147,14 @@ void btAABB_get_center_extend(btAABB* obj, btScalar* center, btScalar* extend)
 	obj->get_center_extend(VECTOR3_USE(center), VECTOR3_USE(extend));
 }
 
-void btAABB_getMax(btAABB* obj)
+void btAABB_getMax(btAABB* obj, btScalar* value)
 {
-	obj->m_max;
+	VECTOR3_OUT(&obj->m_max, value);
 }
 
-void btAABB_getMin(btAABB* obj)
+void btAABB_getMin(btAABB* obj, btScalar* value)
 {
-	obj->m_min;
+	VECTOR3_OUT(&obj->m_min, value);
 }
 
 bool btAABB_has_collision(btAABB* obj, btAABB* other)

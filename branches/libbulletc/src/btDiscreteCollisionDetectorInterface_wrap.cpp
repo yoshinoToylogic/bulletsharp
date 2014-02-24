@@ -33,14 +33,14 @@ btScalar btDiscreteCollisionDetectorInterface_ClosestPointInput_getMaximumDistan
 	return obj->m_maximumDistanceSquared;
 }
 
-void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformA(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj)
+void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformA(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value)
 {
-	obj->m_transformA;
+	TRANSFORM_OUT(&obj->m_transformA, value);
 }
 
-void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformB(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj)
+void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformB(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value)
 {
-	obj->m_transformB;
+	TRANSFORM_OUT(&obj->m_transformB, value);
 }
 
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_setMaximumDistanceSquared(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar value)

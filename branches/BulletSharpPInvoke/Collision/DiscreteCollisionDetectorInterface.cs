@@ -15,7 +15,7 @@ namespace BulletSharp
 				_native = native;
 			}
 
-			public void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, float depth)
+			public void AddContactPoint(ref Vector3 normalOnBInWorld, ref Vector3 pointInWorld, float depth)
 			{
 				btDiscreteCollisionDetectorInterface_Result_addContactPoint(_native, ref normalOnBInWorld, ref pointInWorld, depth);
 			}

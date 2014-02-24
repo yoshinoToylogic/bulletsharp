@@ -22,98 +22,52 @@ void btBulletFile_addStruct(bParse_btBulletFile* obj, char* structType, void* da
 	obj->addStruct(structType, data, len, oldPtr, code);
 }
 
-void btBulletFile_getBvhs(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getBvhs(bParse_btBulletFile* obj)
 {
-	obj->m_bvhs;
+	return &obj->m_bvhs;
 }
 
-void btBulletFile_getCollisionObjects(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getCollisionObjects(bParse_btBulletFile* obj)
 {
-	obj->m_collisionObjects;
+	return &obj->m_collisionObjects;
 }
 
-void btBulletFile_getCollisionShapes(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getCollisionShapes(bParse_btBulletFile* obj)
 {
-	obj->m_collisionShapes;
+	return &obj->m_collisionShapes;
 }
 
-void btBulletFile_getConstraints(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getConstraints(bParse_btBulletFile* obj)
 {
-	obj->m_constraints;
+	return &obj->m_constraints;
 }
 
-void btBulletFile_getDataBlocks(bParse_btBulletFile* obj)
+btAligendCharPtrArray* btBulletFile_getDataBlocks(bParse_btBulletFile* obj)
 {
-	obj->m_dataBlocks;
+	return &obj->m_dataBlocks;
 }
 
-void btBulletFile_getDynamicsWorldInfo(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getDynamicsWorldInfo(bParse_btBulletFile* obj)
 {
-	obj->m_dynamicsWorldInfo;
+	return &obj->m_dynamicsWorldInfo;
 }
 
-void btBulletFile_getRigidBodies(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getRigidBodies(bParse_btBulletFile* obj)
 {
-	obj->m_rigidBodies;
+	return &obj->m_rigidBodies;
 }
 
-void btBulletFile_getSoftBodies(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getSoftBodies(bParse_btBulletFile* obj)
 {
-	obj->m_softBodies;
+	return &obj->m_softBodies;
 }
 
-void btBulletFile_getTriangleInfoMaps(bParse_btBulletFile* obj)
+btAlignedStructHandleArray* btBulletFile_getTriangleInfoMaps(bParse_btBulletFile* obj)
 {
-	obj->m_triangleInfoMaps;
+	return &obj->m_triangleInfoMaps;
 }
 
 void btBulletFile_parseData(bParse_btBulletFile* obj)
 {
 	obj->parseData();
 }
-/*
-void btBulletFile_setBvhs(bParse_btBulletFile* obj, void value)
-{
-	obj->m_bvhs = value;
-}
-
-void btBulletFile_setCollisionObjects(bParse_btBulletFile* obj, void value)
-{
-	obj->m_collisionObjects = value;
-}
-
-void btBulletFile_setCollisionShapes(bParse_btBulletFile* obj, void value)
-{
-	obj->m_collisionShapes = value;
-}
-
-void btBulletFile_setConstraints(bParse_btBulletFile* obj, void value)
-{
-	obj->m_constraints = value;
-}
-
-void btBulletFile_setDataBlocks(bParse_btBulletFile* obj, void value)
-{
-	obj->m_dataBlocks = value;
-}
-
-void btBulletFile_setDynamicsWorldInfo(bParse_btBulletFile* obj, void value)
-{
-	obj->m_dynamicsWorldInfo = value;
-}
-
-void btBulletFile_setRigidBodies(bParse_btBulletFile* obj, void value)
-{
-	obj->m_rigidBodies = value;
-}
-
-void btBulletFile_setSoftBodies(bParse_btBulletFile* obj, void value)
-{
-	obj->m_softBodies = value;
-}
-
-void btBulletFile_setTriangleInfoMaps(bParse_btBulletFile* obj, void value)
-{
-	obj->m_triangleInfoMaps = value;
-}
-*/

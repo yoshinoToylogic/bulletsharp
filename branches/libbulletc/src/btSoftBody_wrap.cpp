@@ -24,9 +24,9 @@ btDispatcher* btSoftBodyWorldInfo_getDispatcher(btSoftBodyWorldInfo* obj)
 	return obj->m_dispatcher;
 }
 
-void btSoftBodyWorldInfo_getGravity(btSoftBodyWorldInfo* obj)
+void btSoftBodyWorldInfo_getGravity(btSoftBodyWorldInfo* obj, btScalar* value)
 {
-	obj->m_gravity;
+	VECTOR3_OUT(&obj->m_gravity, value);
 }
 
 void btSoftBodyWorldInfo_getSparsesdf(btSoftBodyWorldInfo* obj)
@@ -39,9 +39,9 @@ btScalar btSoftBodyWorldInfo_getWater_density(btSoftBodyWorldInfo* obj)
 	return obj->water_density;
 }
 
-void btSoftBodyWorldInfo_getWater_normal(btSoftBodyWorldInfo* obj)
+void btSoftBodyWorldInfo_getWater_normal(btSoftBodyWorldInfo* obj, btScalar* value)
 {
-	obj->water_normal;
+	VECTOR3_OUT(&obj->water_normal, value);
 }
 
 btScalar btSoftBodyWorldInfo_getWater_offset(btSoftBodyWorldInfo* obj)
@@ -63,13 +63,12 @@ void btSoftBodyWorldInfo_setDispatcher(btSoftBodyWorldInfo* obj, btDispatcher* v
 {
 	obj->m_dispatcher = value;
 }
-/*
-void btSoftBodyWorldInfo_setGravity(btSoftBodyWorldInfo* obj, void value)
-{
-	VECTOR3_CONV(value);
-	obj->m_gravity = value;
-}
 
+void btSoftBodyWorldInfo_setGravity(btSoftBodyWorldInfo* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_gravity);
+}
+/*
 void btSoftBodyWorldInfo_setSparsesdf(btSoftBodyWorldInfo* obj, void value)
 {
 	obj->m_sparsesdf = value;
@@ -79,89 +78,18 @@ void btSoftBodyWorldInfo_setWater_density(btSoftBodyWorldInfo* obj, btScalar val
 {
 	obj->water_density = value;
 }
-/*
-void btSoftBodyWorldInfo_setWater_normal(btSoftBodyWorldInfo* obj, void value)
+
+void btSoftBodyWorldInfo_setWater_normal(btSoftBodyWorldInfo* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->water_normal = value;
+	VECTOR3_IN(value, &obj->water_normal);
 }
-*/
+
 void btSoftBodyWorldInfo_setWater_offset(btSoftBodyWorldInfo* obj, btScalar value)
 {
 	obj->water_offset = value;
 }
 
 void btSoftBodyWorldInfo_delete(btSoftBodyWorldInfo* obj)
-{
-	delete obj;
-}
-
-btSoftBody_eAeroModel* btSoftBody_eAeroModel_new()
-{
-	return new btSoftBody_eAeroModel();
-}
-
-void btSoftBody_eAeroModel_delete(btSoftBody_eAeroModel* obj)
-{
-	delete obj;
-}
-
-btSoftBody_eVSolver* btSoftBody_eVSolver_new()
-{
-	return new btSoftBody_eVSolver();
-}
-
-void btSoftBody_eVSolver_delete(btSoftBody_eVSolver* obj)
-{
-	delete obj;
-}
-
-btSoftBody_ePSolver* btSoftBody_ePSolver_new()
-{
-	return new btSoftBody_ePSolver();
-}
-
-void btSoftBody_ePSolver_delete(btSoftBody_ePSolver* obj)
-{
-	delete obj;
-}
-
-btSoftBody_eSolverPresets* btSoftBody_eSolverPresets_new()
-{
-	return new btSoftBody_eSolverPresets();
-}
-
-void btSoftBody_eSolverPresets_delete(btSoftBody_eSolverPresets* obj)
-{
-	delete obj;
-}
-
-btSoftBody_eFeature* btSoftBody_eFeature_new()
-{
-	return new btSoftBody_eFeature();
-}
-
-void btSoftBody_eFeature_delete(btSoftBody_eFeature* obj)
-{
-	delete obj;
-}
-
-btSoftBody_fCollision* btSoftBody_fCollision_new()
-{
-	return new btSoftBody_fCollision();
-}
-
-void btSoftBody_fCollision_delete(btSoftBody_fCollision* obj)
-{
-	delete obj;
-}
-
-btSoftBody_fMaterial* btSoftBody_fMaterial_new()
-{
-	return new btSoftBody_fMaterial();
-}
-
-void btSoftBody_fMaterial_delete(btSoftBody_fMaterial* obj)
 {
 	delete obj;
 }
@@ -2365,27 +2293,27 @@ void btSoftBody_appendAnchor6(btSoftBody* obj, int node, btRigidBody* body)
 {
 	obj->appendAnchor(node, body);
 }
-/*
-void btSoftBody_appendAngularJoint(btSoftBody* obj, btSoftBody_Joint_Specs* specs, void body)
+
+void btSoftBody_appendAngularJoint(btSoftBody* obj, btSoftBody_AJoint_Specs* specs, btSoftBody::Body* body)
 {
-	obj->appendAngularJoint(*specs, body);
+	obj->appendAngularJoint(*specs, *body);
 }
 
-void btSoftBody_appendAngularJoint2(btSoftBody* obj, btSoftBody_Joint_Specs* specs)
+void btSoftBody_appendAngularJoint2(btSoftBody* obj, btSoftBody_AJoint_Specs* specs)
 {
 	obj->appendAngularJoint(*specs);
 }
 
-void btSoftBody_appendAngularJoint3(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody_Cluster* body0, void body1)
+void btSoftBody_appendAngularJoint3(btSoftBody* obj, btSoftBody_AJoint_Specs* specs, btSoftBody_Cluster* body0, btSoftBody::Body* body1)
 {
-	obj->appendAngularJoint(*specs, body0, body1);
+	obj->appendAngularJoint(*specs, body0, *body1);
 }
 
-void btSoftBody_appendAngularJoint4(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody* body)
+void btSoftBody_appendAngularJoint4(btSoftBody* obj, btSoftBody_AJoint_Specs* specs, btSoftBody* body)
 {
 	obj->appendAngularJoint(*specs, body);
 }
-*/
+
 void btSoftBody_appendFace(btSoftBody* obj, int model, btSoftBody_Material* mat)
 {
 	obj->appendFace(model, mat);
@@ -2410,27 +2338,27 @@ void btSoftBody_appendFace5(btSoftBody* obj, int node0, int node1, int node2)
 {
 	obj->appendFace(node0, node1, node2);
 }
-/*
-void btSoftBody_appendLinearJoint(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody* body)
+
+void btSoftBody_appendLinearJoint(btSoftBody* obj, btSoftBody_LJoint_Specs* specs, btSoftBody* body)
 {
 	obj->appendLinearJoint(*specs, body);
 }
 
-void btSoftBody_appendLinearJoint2(btSoftBody* obj, btSoftBody_Joint_Specs* specs, void body)
+void btSoftBody_appendLinearJoint2(btSoftBody* obj, btSoftBody_LJoint_Specs* specs, btSoftBody::Body* body)
 {
-	obj->appendLinearJoint(*specs, body);
+	obj->appendLinearJoint(*specs, *body);
 }
 
-void btSoftBody_appendLinearJoint3(btSoftBody* obj, btSoftBody_Joint_Specs* specs)
+void btSoftBody_appendLinearJoint3(btSoftBody* obj, btSoftBody_LJoint_Specs* specs)
 {
 	obj->appendLinearJoint(*specs);
 }
 
-void btSoftBody_appendLinearJoint4(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody_Cluster* body0, void body1)
+void btSoftBody_appendLinearJoint4(btSoftBody* obj, btSoftBody_LJoint_Specs* specs, btSoftBody_Cluster* body0, btSoftBody::Body* body1)
 {
-	obj->appendLinearJoint(*specs, body0, body1);
+	obj->appendLinearJoint(*specs, body0, *body1);
 }
-*/
+
 void btSoftBody_appendLink(btSoftBody* obj, int node0, int node1, btSoftBody_Material* mat, bool bcheckexist)
 {
 	obj->appendLink(node0, node1, mat, bcheckexist);

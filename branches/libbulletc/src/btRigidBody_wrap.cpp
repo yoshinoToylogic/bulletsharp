@@ -67,9 +67,9 @@ btScalar btRigidBody_btRigidBodyConstructionInfo_getLinearSleepingThreshold(btRi
 	return obj->m_linearSleepingThreshold;
 }
 
-void btRigidBody_btRigidBodyConstructionInfo_getLocalInertia(btRigidBody_btRigidBodyConstructionInfo* obj)
+void btRigidBody_btRigidBodyConstructionInfo_getLocalInertia(btRigidBody_btRigidBodyConstructionInfo* obj, btScalar* value)
 {
-	obj->m_localInertia;
+	VECTOR3_OUT(&obj->m_localInertia, value);
 }
 
 btScalar btRigidBody_btRigidBodyConstructionInfo_getMass(btRigidBody_btRigidBodyConstructionInfo* obj)
@@ -92,9 +92,9 @@ btScalar btRigidBody_btRigidBodyConstructionInfo_getRollingFriction(btRigidBody_
 	return obj->m_rollingFriction;
 }
 
-void btRigidBody_btRigidBodyConstructionInfo_getStartWorldTransform(btRigidBody_btRigidBodyConstructionInfo* obj)
+void btRigidBody_btRigidBodyConstructionInfo_getStartWorldTransform(btRigidBody_btRigidBodyConstructionInfo* obj, btScalar* value)
 {
-	obj->m_startWorldTransform;
+	TRANSFORM_OUT(&obj->m_startWorldTransform, value);
 }
 
 void btRigidBody_btRigidBodyConstructionInfo_setAdditionalAngularDampingFactor(btRigidBody_btRigidBodyConstructionInfo* obj, btScalar value)

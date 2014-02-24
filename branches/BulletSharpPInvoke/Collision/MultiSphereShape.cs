@@ -64,10 +64,15 @@ namespace BulletSharp
 			_native = btPositionAndRadius_new();
 		}
         /*
-		public void Pos
+		public Vector3 Pos
 		{
-			get { return btPositionAndRadius_getPos(_native); }
-			set { btPositionAndRadius_setPos(_native, value._native); }
+            get
+            {
+                Vector3 value;
+                btPositionAndRadius_getPos(_native, out value);
+                return value;
+            }
+			set { btPositionAndRadius_setPos(_native, ref value); }
 		}
         */
 		public float Radius
@@ -99,11 +104,11 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btPositionAndRadius_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPositionAndRadius_getPos(IntPtr obj);
+		static extern void btPositionAndRadius_getPos(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btPositionAndRadius_getRadius(IntPtr obj);
-		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		//static extern void btPositionAndRadius_setPos(IntPtr obj, Vector3FloatData value);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btPositionAndRadius_setPos(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPositionAndRadius_setRadius(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

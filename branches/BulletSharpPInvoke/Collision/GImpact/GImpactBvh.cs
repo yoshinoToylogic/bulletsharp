@@ -161,7 +161,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int GIM_BVH_DATA_getData(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void GIM_BVH_DATA_setBound(IntPtr obj, AABB value);
+		static extern void GIM_BVH_DATA_setBound(IntPtr obj, Aabb value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void GIM_BVH_DATA_setData(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -236,7 +236,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool GIM_BVH_TREE_NODE_isLeafNode(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void GIM_BVH_TREE_NODE_setBound(IntPtr obj, AABB value);
+		static extern void GIM_BVH_TREE_NODE_setBound(IntPtr obj, Aabb value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void GIM_BVH_TREE_NODE_setDataIndex(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -321,7 +321,7 @@ namespace BulletSharp
 			return btBvhTree_getLeftNode(_native, nodeindex);
 		}
 
-		public void GetNodeBound(int nodeindex, AABB bound)
+		public void GetNodeBound(int nodeindex, Aabb bound)
 		{
 			btBvhTree_getNodeBound(_native, nodeindex, bound._native);
 		}
@@ -341,7 +341,7 @@ namespace BulletSharp
 			return btBvhTree_isLeafNode(_native, nodeindex);
 		}
 
-		public void SetNodeBound(int nodeindex, AABB bound)
+		public void SetNodeBound(int nodeindex, Aabb bound)
 		{
 			btBvhTree_setNodeBound(_native, nodeindex, bound._native);
 		}
@@ -410,7 +410,7 @@ namespace BulletSharp
 			_native = native;
 		}
 
-		public void GetPrimitiveBox(int prim_index, AABB primbox)
+		public void GetPrimitiveBox(int prim_index, Aabb primbox)
 		{
 			btPrimitiveManagerBase_get_primitive_box(_native, prim_index, primbox._native);
 		}
@@ -481,12 +481,12 @@ namespace BulletSharp
 			_native = btGImpactBvh_new2(primitive_manager._native);
 		}
 
-		public bool BoxQuery(AABB box, AlignedObjectArray collided_results)
+		public bool BoxQuery(Aabb box, AlignedObjectArray collided_results)
 		{
 			return btGImpactBvh_boxQuery(_native, box._native, collided_results._native);
 		}
 
-		public bool BoxQueryTrans(AABB box, Matrix transform, AlignedObjectArray collided_results)
+		public bool BoxQueryTrans(Aabb box, Matrix transform, AlignedObjectArray collided_results)
 		{
 			return btGImpactBvh_boxQueryTrans(_native, box._native, ref transform, collided_results._native);
 		}
@@ -521,7 +521,7 @@ namespace BulletSharp
 			return btGImpactBvh_getLeftNode(_native, nodeindex);
 		}
 
-		public void GetNodeBound(int nodeindex, AABB bound)
+		public void GetNodeBound(int nodeindex, Aabb bound)
 		{
 			btGImpactBvh_getNodeBound(_native, nodeindex, bound._native);
 		}
@@ -551,7 +551,7 @@ namespace BulletSharp
 			return btGImpactBvh_rayQuery(_native, ref ray_dir, ref ray_origin, collided_results._native);
 		}
 
-		public void SetNodeBound(int nodeindex, AABB bound)
+		public void SetNodeBound(int nodeindex, Aabb bound)
 		{
 			btGImpactBvh_setNodeBound(_native, nodeindex, bound._native);
 		}

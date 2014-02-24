@@ -153,9 +153,9 @@ btWheelInfo* btRaycastVehicle_getWheelInfo(btRaycastVehicle* obj, int index)
 	return &obj->getWheelInfo(index);
 }
 
-void btRaycastVehicle_getWheelInfo2(btRaycastVehicle* obj)
+btAlignedWheelInfoArray* btRaycastVehicle_getWheelInfo2(btRaycastVehicle* obj)
 {
-	obj->m_wheelInfo;
+	return &obj->m_wheelInfo;
 }
 
 void btRaycastVehicle_getWheelTransformWS(btRaycastVehicle* obj, int wheelIndex, btScalar* value)

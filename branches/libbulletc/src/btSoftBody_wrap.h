@@ -6,41 +6,20 @@ extern "C"
 	EXPORT btScalar btSoftBodyWorldInfo_getAir_density(btSoftBodyWorldInfo* obj);
 	EXPORT btBroadphaseInterface* btSoftBodyWorldInfo_getBroadphase(btSoftBodyWorldInfo* obj);
 	EXPORT btDispatcher* btSoftBodyWorldInfo_getDispatcher(btSoftBodyWorldInfo* obj);
-	EXPORT void btSoftBodyWorldInfo_getGravity(btSoftBodyWorldInfo* obj);
+	EXPORT void btSoftBodyWorldInfo_getGravity(btSoftBodyWorldInfo* obj, btScalar* value);
 	EXPORT void btSoftBodyWorldInfo_getSparsesdf(btSoftBodyWorldInfo* obj);
 	EXPORT btScalar btSoftBodyWorldInfo_getWater_density(btSoftBodyWorldInfo* obj);
-	EXPORT void btSoftBodyWorldInfo_getWater_normal(btSoftBodyWorldInfo* obj);
+	EXPORT void btSoftBodyWorldInfo_getWater_normal(btSoftBodyWorldInfo* obj, btScalar* value);
 	EXPORT btScalar btSoftBodyWorldInfo_getWater_offset(btSoftBodyWorldInfo* obj);
 	EXPORT void btSoftBodyWorldInfo_setAir_density(btSoftBodyWorldInfo* obj, btScalar value);
 	EXPORT void btSoftBodyWorldInfo_setBroadphase(btSoftBodyWorldInfo* obj, btBroadphaseInterface* value);
 	EXPORT void btSoftBodyWorldInfo_setDispatcher(btSoftBodyWorldInfo* obj, btDispatcher* value);
-	//EXPORT void btSoftBodyWorldInfo_setGravity(btSoftBodyWorldInfo* obj, void value);
+	EXPORT void btSoftBodyWorldInfo_setGravity(btSoftBodyWorldInfo* obj, btScalar* value);
 	//EXPORT void btSoftBodyWorldInfo_setSparsesdf(btSoftBodyWorldInfo* obj, void value);
 	EXPORT void btSoftBodyWorldInfo_setWater_density(btSoftBodyWorldInfo* obj, btScalar value);
-	//EXPORT void btSoftBodyWorldInfo_setWater_normal(btSoftBodyWorldInfo* obj, void value);
+	EXPORT void btSoftBodyWorldInfo_setWater_normal(btSoftBodyWorldInfo* obj, btScalar* value);
 	EXPORT void btSoftBodyWorldInfo_setWater_offset(btSoftBodyWorldInfo* obj, btScalar value);
 	EXPORT void btSoftBodyWorldInfo_delete(btSoftBodyWorldInfo* obj);
-
-	EXPORT btSoftBody_eAeroModel* btSoftBody_eAeroModel_new();
-	EXPORT void btSoftBody_eAeroModel_delete(btSoftBody_eAeroModel* obj);
-
-	EXPORT btSoftBody_eVSolver* btSoftBody_eVSolver_new();
-	EXPORT void btSoftBody_eVSolver_delete(btSoftBody_eVSolver* obj);
-
-	EXPORT btSoftBody_ePSolver* btSoftBody_ePSolver_new();
-	EXPORT void btSoftBody_ePSolver_delete(btSoftBody_ePSolver* obj);
-
-	EXPORT btSoftBody_eSolverPresets* btSoftBody_eSolverPresets_new();
-	EXPORT void btSoftBody_eSolverPresets_delete(btSoftBody_eSolverPresets* obj);
-
-	EXPORT btSoftBody_eFeature* btSoftBody_eFeature_new();
-	EXPORT void btSoftBody_eFeature_delete(btSoftBody_eFeature* obj);
-
-	EXPORT btSoftBody_fCollision* btSoftBody_fCollision_new();
-	EXPORT void btSoftBody_fCollision_delete(btSoftBody_fCollision* obj);
-
-	EXPORT btSoftBody_fMaterial* btSoftBody_fMaterial_new();
-	EXPORT void btSoftBody_fMaterial_delete(btSoftBody_fMaterial* obj);
 
 	EXPORT btSoftBody_sRayCast* btSoftBody_sRayCast_new();
 	EXPORT btSoftBody* btSoftBody_sRayCast_getBody(btSoftBody_sRayCast* obj);
@@ -494,19 +473,19 @@ extern "C"
 	EXPORT void btSoftBody_appendAnchor4(btSoftBody* obj, int node, btRigidBody* body, bool disableCollisionBetweenLinkedBodies, btScalar influence);
 	EXPORT void btSoftBody_appendAnchor5(btSoftBody* obj, int node, btRigidBody* body, bool disableCollisionBetweenLinkedBodies);
 	EXPORT void btSoftBody_appendAnchor6(btSoftBody* obj, int node, btRigidBody* body);
-	//EXPORT void btSoftBody_appendAngularJoint(btSoftBody* obj, btSoftBody_Joint_Specs* specs, void body);
-	EXPORT void btSoftBody_appendAngularJoint2(btSoftBody* obj, btSoftBody_Joint_Specs* specs);
-	//EXPORT void btSoftBody_appendAngularJoint3(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody_Cluster* body0, void body1);
-	EXPORT void btSoftBody_appendAngularJoint4(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody* body);
+	EXPORT void btSoftBody_appendAngularJoint(btSoftBody* obj, btSoftBody_AJoint_Specs* specs, btSoftBody_Body* body);
+	EXPORT void btSoftBody_appendAngularJoint2(btSoftBody* obj, btSoftBody_AJoint_Specs* specs);
+	EXPORT void btSoftBody_appendAngularJoint3(btSoftBody* obj, btSoftBody_AJoint_Specs* specs, btSoftBody_Cluster* body0, btSoftBody_Body* body1);
+	EXPORT void btSoftBody_appendAngularJoint4(btSoftBody* obj, btSoftBody_AJoint_Specs* specs, btSoftBody* body);
 	EXPORT void btSoftBody_appendFace(btSoftBody* obj, int model, btSoftBody_Material* mat);
 	EXPORT void btSoftBody_appendFace2(btSoftBody* obj, int model);
 	EXPORT void btSoftBody_appendFace3(btSoftBody* obj);
 	EXPORT void btSoftBody_appendFace4(btSoftBody* obj, int node0, int node1, int node2, btSoftBody_Material* mat);
 	EXPORT void btSoftBody_appendFace5(btSoftBody* obj, int node0, int node1, int node2);
-	EXPORT void btSoftBody_appendLinearJoint(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody* body);
-	//EXPORT void btSoftBody_appendLinearJoint2(btSoftBody* obj, btSoftBody_Joint_Specs* specs, void body);
-	EXPORT void btSoftBody_appendLinearJoint3(btSoftBody* obj, btSoftBody_Joint_Specs* specs);
-	//EXPORT void btSoftBody_appendLinearJoint4(btSoftBody* obj, btSoftBody_Joint_Specs* specs, btSoftBody_Cluster* body0, void body1);
+	EXPORT void btSoftBody_appendLinearJoint(btSoftBody* obj, btSoftBody_LJoint_Specs* specs, btSoftBody* body);
+	EXPORT void btSoftBody_appendLinearJoint2(btSoftBody* obj, btSoftBody_LJoint_Specs* specs, btSoftBody_Body* body);
+	EXPORT void btSoftBody_appendLinearJoint3(btSoftBody* obj, btSoftBody_LJoint_Specs* specs);
+	EXPORT void btSoftBody_appendLinearJoint4(btSoftBody* obj, btSoftBody_LJoint_Specs* specs, btSoftBody_Cluster* body0, btSoftBody_Body* body1);
 	EXPORT void btSoftBody_appendLink(btSoftBody* obj, int node0, int node1, btSoftBody_Material* mat, bool bcheckexist);
 	EXPORT void btSoftBody_appendLink2(btSoftBody* obj, int node0, int node1, btSoftBody_Material* mat);
 	EXPORT void btSoftBody_appendLink3(btSoftBody* obj, int node0, int node1);

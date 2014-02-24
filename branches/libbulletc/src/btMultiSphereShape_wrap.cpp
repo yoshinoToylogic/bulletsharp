@@ -37,18 +37,18 @@ btPositionAndRadius* btPositionAndRadius_new()
 {
 	return new btPositionAndRadius();
 }
-
-void btPositionAndRadius_getPos(btPositionAndRadius* obj)
+/*
+void btPositionAndRadius_getPos(btPositionAndRadius* obj, btScalar* value)
 {
 	obj->m_pos;
 }
-
+*/
 float btPositionAndRadius_getRadius(btPositionAndRadius* obj)
 {
 	return obj->m_radius;
 }
 /*
-void btPositionAndRadius_setPos(btPositionAndRadius* obj, void value)
+void btPositionAndRadius_setPos(btPositionAndRadius* obj, btScalar* value)
 {
 	obj->m_pos = value;
 }

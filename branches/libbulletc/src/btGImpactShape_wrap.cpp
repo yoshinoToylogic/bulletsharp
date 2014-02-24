@@ -267,9 +267,9 @@ int btGImpactMeshShapePart_TrimeshPrimitiveManager_getPart(btGImpactMeshShapePar
 	return obj->m_part;
 }
 
-void btGImpactMeshShapePart_TrimeshPrimitiveManager_getScale(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
+void btGImpactMeshShapePart_TrimeshPrimitiveManager_getScale(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, btScalar* value)
 {
-	obj->m_scale;
+	VECTOR3_OUT(&obj->m_scale, value);
 }
 
 int btGImpactMeshShapePart_TrimeshPrimitiveManager_getStride(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
