@@ -340,6 +340,8 @@ namespace BulletSharpGen
                     return "VECTOR3_CONV(" + parameter.Name + ");";
                 case "Transform":
                     return "TRANSFORM_CONV(" + parameter.Name + ");";
+                case "Quaternion":
+                    return "QUATERNION_CONV(" + parameter.Name + ");";
                 default:
                     return null;
             }
@@ -353,6 +355,8 @@ namespace BulletSharpGen
                     return "VECTOR3_USE(" + parameter.Name + ")";
                 case "Transform":
                     return "TRANSFORM_USE(" + parameter.Name + ")";
+                case "Quaternion":
+                    return "QUATERNION_USE(" + parameter.Name + ")";
                 default:
                     return null;
             }
