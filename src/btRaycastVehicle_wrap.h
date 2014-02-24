@@ -31,7 +31,7 @@ extern "C"
 	EXPORT int btRaycastVehicle_getUserConstraintId(btRaycastVehicle* obj);
 	EXPORT int btRaycastVehicle_getUserConstraintType(btRaycastVehicle* obj);
 	EXPORT btWheelInfo* btRaycastVehicle_getWheelInfo(btRaycastVehicle* obj, int index);
-	EXPORT void btRaycastVehicle_getWheelInfo2(btRaycastVehicle* obj);
+	EXPORT btAlignedWheelInfoArray* btRaycastVehicle_getWheelInfo2(btRaycastVehicle* obj);
 	EXPORT void btRaycastVehicle_getWheelTransformWS(btRaycastVehicle* obj, int wheelIndex, btScalar* value);
 	EXPORT btScalar btRaycastVehicle_rayCast(btRaycastVehicle* obj, btWheelInfo* wheel);
 	EXPORT void btRaycastVehicle_resetSuspension(btRaycastVehicle* obj);

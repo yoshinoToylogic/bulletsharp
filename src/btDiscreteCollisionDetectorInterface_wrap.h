@@ -9,8 +9,8 @@ extern "C"
 
 	EXPORT btDiscreteCollisionDetectorInterface_ClosestPointInput* btDiscreteCollisionDetectorInterface_ClosestPointInput_new();
 	EXPORT btScalar btDiscreteCollisionDetectorInterface_ClosestPointInput_getMaximumDistanceSquared(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj);
-	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformA(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj);
-	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformB(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj);
+	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformA(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value);
+	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_getTransformB(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value);
 	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_setMaximumDistanceSquared(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar value);
 	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_setTransformA(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value);
 	EXPORT void btDiscreteCollisionDetectorInterface_ClosestPointInput_setTransformB(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value);
@@ -21,7 +21,7 @@ extern "C"
 
 	EXPORT void btStorageResult_getClosestPointInB(btStorageResult* obj);
 	EXPORT btScalar btStorageResult_getDistance(btStorageResult* obj);
-	EXPORT void btStorageResult_getNormalOnSurfaceB(btStorageResult* obj);
+	EXPORT void btStorageResult_getNormalOnSurfaceB(btStorageResult* obj, btScalar* value);
 	EXPORT void btStorageResult_setClosestPointInB(btStorageResult* obj, btScalar* value);
 	EXPORT void btStorageResult_setDistance(btStorageResult* obj, btScalar value);
 	EXPORT void btStorageResult_setNormalOnSurfaceB(btStorageResult* obj, btScalar* value);

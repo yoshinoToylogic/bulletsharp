@@ -9,9 +9,9 @@ extern "C"
 	EXPORT btScalar btMultiSphereShape_getSphereRadius(btMultiSphereShape* obj, int index);
 
 	EXPORT btPositionAndRadius* btPositionAndRadius_new();
-	EXPORT void btPositionAndRadius_getPos(btPositionAndRadius* obj);
+	//EXPORT void btPositionAndRadius_getPos(btPositionAndRadius* obj, btScalar* value);
 	EXPORT float btPositionAndRadius_getRadius(btPositionAndRadius* obj);
-	//EXPORT void btPositionAndRadius_setPos(btPositionAndRadius* obj, void value);
+	//EXPORT void btPositionAndRadius_setPos(btPositionAndRadius* obj, btScalar* value);
 	EXPORT void btPositionAndRadius_setRadius(btPositionAndRadius* obj, float value);
 	EXPORT void btPositionAndRadius_delete(btPositionAndRadius* obj);
 }

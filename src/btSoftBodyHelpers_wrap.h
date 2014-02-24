@@ -2,9 +2,6 @@
 
 extern "C"
 {
-	EXPORT fDrawFlags* fDrawFlags_new();
-	EXPORT void fDrawFlags_delete(fDrawFlags* obj);
-
 	EXPORT float btSoftBodyHelpers_CalculateUV(int resx, int resy, int ix, int iy, int id);
 	EXPORT btSoftBody* btSoftBodyHelpers_CreateEllipsoid(btSoftBodyWorldInfo* worldInfo, btScalar* center, btScalar* radius, int res);
 	EXPORT btSoftBody* btSoftBodyHelpers_CreateFromConvexHull(btSoftBodyWorldInfo* worldInfo, btScalar* vertices, int nvertices, bool randomizeConstraints);

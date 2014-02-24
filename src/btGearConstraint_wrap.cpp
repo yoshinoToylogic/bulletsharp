@@ -17,12 +17,12 @@ btGearConstraint* btGearConstraint_new2(btRigidBody* rbA, btRigidBody* rbB, btSc
 
 void btGearConstraint_getAxisA(btGearConstraint* obj, btScalar* axisA)
 {
-	VECTOR3_OUT(obj->getAxisA(), axisA);
+	VECTOR3_OUT(&obj->getAxisA(), axisA);
 }
 
 void btGearConstraint_getAxisB(btGearConstraint* obj, btScalar* axisB)
 {
-	VECTOR3_OUT(obj->getAxisB(), axisB);
+	VECTOR3_OUT(&obj->getAxisB(), axisB);
 }
 
 btScalar btGearConstraint_setRatio(btGearConstraint* obj)
