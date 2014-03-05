@@ -218,8 +218,6 @@ namespace DemoFramework.SharpDX
 
         void CreateBuffers()
         {
-            DisposeBuffers();
-
             // New RenderTargetView from the backbuffer
             using (var bb = Texture2D.FromSwapChain<Texture2D>(_swapChain, 0))
             {
@@ -327,14 +325,18 @@ namespace DemoFramework.SharpDX
         {
             Form.SizeChanged += (o, args) =>
             {
-                _width = Form.ClientSize.Width;
-                _height = Form.ClientSize.Height;
-
                 if (_swapChain == null)
                     return;
 
                 renderView.Dispose();
                 depthView.Dispose();
+                DisposeBuffers();
+
+                if (Form.WindowState == FormWindowState.Minimized)
+                    return;
+
+                _width = Form.ClientSize.Width;
+                _height = Form.ClientSize.Height;
                 _swapChain.ResizeBuffers(_swapChain.Description.BufferCount, 0, 0, Format.Unknown, 0);
 
                 CreateBuffers();
