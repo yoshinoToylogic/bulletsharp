@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Globalization;
 using SharpDX;
+using SharpDX.Direct2D1;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
+using SharpDX.DirectWrite;
 using SharpDX.DXGI;
-using Device = SharpDX.Direct3D11.Device;
 
 namespace DemoFramework.SharpDX11
 {
     public class InfoText : IDisposable
     {
-        Device device;
-        SharpDX.DirectWrite.Font font;
-        Color4 color = new Color4(1, 0, 0, 1);
-        Color4 clearColor = new Color4(1, 0, 0, 0);
+        Color4 color = new Color4(1, 1, 1, 1);
+        Color4 clearColor;
         float fps = -1;
         string textString = "";
-        Rectangle rect = new Rectangle(0, 0, 256, 256);
+        RectangleF rect;
         CultureInfo culture = CultureInfo.InvariantCulture;
-        Texture2D renderTexture;
-        RenderTargetView renderTextureView;
-        RenderTargetView[] renderViews;
-        OutputMergerStage outputMerger;
+        Guid pixelFormat = SharpDX.WIC.PixelFormat.Format32bppPRGBA;
+
+        TextFormat _textFormat;
+        DeviceContext _immediateContext;
+        WicRenderTarget _wicRenderTarget;
+        SharpDX.WIC.Bitmap _wicBitmap;
+        SolidColorBrush _sceneColorBrush;
+        Texture2D _renderTexture;
+        public ShaderResourceView OverlayBufferRes;
 
         bool _isEnabled = true;
         public bool IsEnabled
@@ -41,46 +45,60 @@ namespace DemoFramework.SharpDX11
             }
         }
 
-        public ShaderResourceView OverlayBufferRes;
-        public float Width {
-            get { return rect.Width; }
+        const int _width = 256;
+        public float Width
+        {
+            get { return _width; }
         }
+        const int _height = 256;
         public float Height
         {
-            get { return rect.Height; }
+            get { return _height; }
         }
 
-        public InfoText(Device device)
+        public InfoText(SharpDX.Direct3D11.Device device)
         {
-            this.device = device;
-            outputMerger = device.ImmediateContext.OutputMerger;
+            _immediateContext = device.ImmediateContext;
+            rect.Size = new Size2F(Width, Height);
 
-            var dw = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Shared);
-            var fonts = dw.GetSystemFontCollection(false);
-            int fontIndex;
-            fonts.FindFamilyName("tahoma", out fontIndex);
-            var fontFamily = fonts.GetFontFamily(fontIndex);
-            font = fontFamily.GetFirstMatchingFont(SharpDX.DirectWrite.FontWeight.Normal, SharpDX.DirectWrite.FontStretch.Normal, SharpDX.DirectWrite.FontStyle.Normal);
+            var factoryWic = new SharpDX.WIC.ImagingFactory();
+            _wicBitmap = new SharpDX.WIC.Bitmap(factoryWic, _width, _height, pixelFormat, SharpDX.WIC.BitmapCreateCacheOption.CacheOnLoad);
+            var renderTargetProperties = new RenderTargetProperties(RenderTargetType.Default,
+                new SharpDX.Direct2D1.PixelFormat(SharpDX.DXGI.Format.R8G8B8A8_UNorm,
+                    SharpDX.Direct2D1.AlphaMode.Premultiplied), 0, 0, RenderTargetUsage.None,
+                    SharpDX.Direct2D1.FeatureLevel.Level_DEFAULT);
+            factoryWic.Dispose();
+            
+            var factory2D = new SharpDX.Direct2D1.Factory();
+            _wicRenderTarget = new WicRenderTarget(factory2D, _wicBitmap, renderTargetProperties);
+            _wicRenderTarget.TextAntialiasMode = TextAntialiasMode.Default;
+            factory2D.Dispose();
 
-            renderTexture = new Texture2D(device, new Texture2DDescription()
+            var factoryDWrite = new SharpDX.DirectWrite.Factory(SharpDX.DirectWrite.FactoryType.Shared);
+            _textFormat = new TextFormat(factoryDWrite, "Tahoma", 20);
+            factoryDWrite.Dispose();
+            
+            _sceneColorBrush = new SolidColorBrush(_wicRenderTarget, color);
+            clearColor = color;
+            clearColor.Alpha = 0;
+
+            _renderTexture = new Texture2D(device, new Texture2DDescription()
             {
                 ArraySize = 1,
-                BindFlags = BindFlags.RenderTarget | BindFlags.ShaderResource,
-                CpuAccessFlags = CpuAccessFlags.None,
+                BindFlags = BindFlags.ShaderResource,
+                CpuAccessFlags = CpuAccessFlags.Write,
                 Format = Format.R8G8B8A8_UNorm,
-                Height = rect.Width,
-                Width = rect.Height,
+                Height = _height,
+                Width = _width,
                 MipLevels = 1,
                 OptionFlags = ResourceOptionFlags.None,
                 SampleDescription = new SampleDescription(1, 0),
-                Usage = ResourceUsage.Default
+                Usage = ResourceUsage.Dynamic
             });
-            renderTextureView = new RenderTargetView(device, renderTexture);
-            renderViews = new[] { renderTextureView };
-
-            OverlayBufferRes = new ShaderResourceView(device, renderTexture, new ShaderResourceViewDescription()
+            
+            OverlayBufferRes = new ShaderResourceView(device, _renderTexture, new ShaderResourceViewDescription()
             {
-                Format = Format.R8G8B8A8_UNorm,
+                Format = _renderTexture.Description.Format,
                 Dimension = ShaderResourceViewDimension.Texture2D,
                 Texture2D = new ShaderResourceViewDescription.Texture2DResource()
                 {
@@ -92,16 +110,40 @@ namespace DemoFramework.SharpDX11
 
         public void Dispose()
         {
-            if (renderTexture != null)
+            if (_renderTexture != null)
             {
-                renderTexture.Dispose();
-                renderTexture = null;
+                _renderTexture.Dispose();
+                _renderTexture = null;
             }
 
-            if (renderTextureView != null)
+            if (_wicBitmap != null)
             {
-                renderTextureView.Dispose();
-                renderTextureView = null;
+                _wicBitmap.Dispose();
+                _wicBitmap = null;
+            }
+
+            if (_wicRenderTarget != null)
+            {
+                _wicRenderTarget.Dispose();
+                _wicRenderTarget = null;
+            }
+
+            if (_sceneColorBrush != null)
+            {
+                _sceneColorBrush.Dispose();
+                _sceneColorBrush = null;
+            }
+
+            if (OverlayBufferRes != null)
+            {
+                OverlayBufferRes.Dispose();
+                OverlayBufferRes = null;
+            }
+            
+            if (_textFormat != null)
+            {
+                _textFormat.Dispose();
+                _textFormat = null;
             }
         }
 
@@ -114,10 +156,19 @@ namespace DemoFramework.SharpDX11
             {
                 fps = framesPerSecond;
                 textString = string.Format("FPS: {0}\n{1}", fps.ToString("0.00", culture), _text);
+                
+                _wicRenderTarget.BeginDraw();
+                _wicRenderTarget.Clear(clearColor);
+                _wicRenderTarget.DrawText(textString, _textFormat, rect, _sceneColorBrush);
+                _wicRenderTarget.EndDraw();
 
-                outputMerger.SetTargets(renderViews);
-                device.ImmediateContext.ClearRenderTargetView(renderTextureView, clearColor);
-                //font.DrawText(null, textString, rect, FontDrawFlags.Left, color);
+                var bitmapLock = _wicBitmap.Lock(SharpDX.WIC.BitmapLockFlags.Read);
+                DataStream stream;
+                _immediateContext.MapSubresource(_renderTexture, 0, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out stream);
+                stream.WriteRange(bitmapLock.Data.DataPointer, _width * _height * 4);
+                _immediateContext.UnmapSubresource(_renderTexture, 0);
+                stream.Dispose();
+                bitmapLock.Dispose();
             }
         }
     }
