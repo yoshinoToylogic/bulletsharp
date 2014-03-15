@@ -806,10 +806,8 @@ namespace BulletSharp
 		internal IntPtr _native;
 
 		AlignedCollisionObjectArray _collisionObjectArray;
-		protected CollisionConfiguration _collisionConfiguration;
-		protected Dispatcher _dispatcher;
-		protected BroadphaseInterface _broadphase;
-		OverlappingPairCache _pairCache;
+		Dispatcher _dispatcher;
+		BroadphaseInterface _broadphase;
 
 		internal CollisionWorld(IntPtr native)
 		{
@@ -820,8 +818,7 @@ namespace BulletSharp
 		{
 			_native = btCollisionWorld_new(dispatcher._native, broadphasePairCache._native, collisionConfiguration._native);
 			_dispatcher = dispatcher;
-			_broadphase = broadphasePairCache;
-			_collisionConfiguration = collisionConfiguration;
+			Broadphase = broadphasePairCache;
 		}
 
 		public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
@@ -929,7 +926,12 @@ namespace BulletSharp
 			get { return _broadphase; }
 			set
 			{
+                if (_broadphase != null)
+                {
+                    _broadphase._worldRefs.Remove(this);
+                }
 				_broadphase = value;
+                _broadphase._worldRefs.Add(this);
 				btCollisionWorld_setBroadphase(_native, value._native);
 			}
 		}
@@ -961,6 +963,11 @@ namespace BulletSharp
 		public Dispatcher Dispatcher
 		{
 			get { return _dispatcher; }
+            internal set
+            {
+                _dispatcher = value;
+                _dispatcher._worldRefs.Add(this);
+            }
 		}
 
 		public DispatcherInfo DispatchInfo
@@ -981,14 +988,7 @@ namespace BulletSharp
 
 		public OverlappingPairCache PairCache
 		{
-			get
-			{
-				if (_pairCache == null)
-				{
-					_pairCache = new OverlappingPairCache(btCollisionWorld_getPairCache(_native), true);
-				}
-				return _pairCache;
-			}
+            get { return Broadphase.OverlappingPairCache; }
 		}
 
 		public void Dispose()
@@ -1003,6 +1003,18 @@ namespace BulletSharp
 			{
 				btCollisionWorld_delete(_native);
 				_native = IntPtr.Zero;
+
+                _broadphase._worldRefs.Remove(this);
+                if (_broadphase._worldDeferredCleanup && _broadphase._worldRefs.Count == 0)
+                {
+                    _broadphase.Dispose();
+                }
+
+                _dispatcher._worldRefs.Remove(this);
+                if (_dispatcher._worldDeferredCleanup && _dispatcher._worldRefs.Count == 0)
+                {
+                    _dispatcher.Dispose();
+                }
 			}
 		}
 

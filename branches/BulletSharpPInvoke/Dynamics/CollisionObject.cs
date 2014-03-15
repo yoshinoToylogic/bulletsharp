@@ -182,7 +182,7 @@ namespace BulletSharp
 		public BroadphaseProxy BroadphaseHandle
 		{
             get { return BroadphaseProxy.GetManaged(btCollisionObject_getBroadphaseHandle(_native)); }
-			set { btCollisionObject_setBroadphaseHandle(_native, value._native); }
+            set { btCollisionObject_setBroadphaseHandle(_native, value != null ? value._native : IntPtr.Zero); }
 		}
 
 		public float CcdMotionThreshold
@@ -348,8 +348,15 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btCollisionObject_delete(_native);
-				_native = IntPtr.Zero;
+                // Is the object added to a world?
+                if (btCollisionObject_getBroadphaseHandle(_native) != IntPtr.Zero)
+                {
+                    BroadphaseHandle = null;
+                    //System.Diagnostics.Debugger.Break();
+                    return;
+                }
+                btCollisionObject_delete(_native);
+                _native = IntPtr.Zero;
 			}
 		}
 

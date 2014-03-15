@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -168,6 +169,9 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
+        internal List<CollisionWorld> _worldRefs = new List<CollisionWorld>(1);
+        internal bool _worldDeferredCleanup;
+
 		internal Dispatcher(IntPtr native)
 		{
 			_native = native;
@@ -177,12 +181,12 @@ namespace BulletSharp
 		{
 			return btDispatcher_allocateCollisionAlgorithm(_native, size);
 		}
-        /*
+
 		public void ClearManifold(PersistentManifold manifold)
 		{
 			btDispatcher_clearManifold(_native, manifold._native);
 		}
-        */
+
 		public void DispatchAllCollisionPairs(OverlappingPairCache pairCache, DispatcherInfo dispatchInfo, Dispatcher dispatcher)
 		{
 			btDispatcher_dispatchAllCollisionPairs(_native, pairCache._native, dispatchInfo._native, dispatcher._native);
@@ -222,12 +226,12 @@ namespace BulletSharp
 		{
 			return btDispatcher_needsResponse(_native, body0._native, body1._native);
 		}
-        /*
+        
 		public void ReleaseManifold(PersistentManifold manifold)
 		{
 			btDispatcher_releaseManifold(_native, manifold._native);
 		}
-
+        /*
 		public PersistentManifold InternalManifoldPointer
 		{
 			get { return btDispatcher_getInternalManifoldPointer(_native); }
@@ -253,8 +257,17 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btDispatcher_delete(_native);
-				_native = IntPtr.Zero;
+                if (_worldRefs.Count == 0)
+                {
+                    btDispatcher_delete(_native);
+                    _native = IntPtr.Zero;
+                }
+                else
+                {
+                    // Can't delete dispatcher, because it is referenced by a world,
+                    // tell the world to clean up the broadphase later.
+                    _worldDeferredCleanup = true;
+                }
 			}
 		}
 

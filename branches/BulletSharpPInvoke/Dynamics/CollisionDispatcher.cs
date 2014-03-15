@@ -14,6 +14,8 @@ namespace BulletSharp
 
 	public class CollisionDispatcher : Dispatcher
 	{
+        protected CollisionConfiguration _collisionConfiguration;
+
         List<CollisionAlgorithmCreateFunc> _collisionCreateFuncs;
 
 		internal CollisionDispatcher(IntPtr native)
@@ -24,6 +26,7 @@ namespace BulletSharp
 		public CollisionDispatcher(CollisionConfiguration collisionConfiguration)
 			: base(btCollisionDispatcher_new(collisionConfiguration._native))
 		{
+            _collisionConfiguration = collisionConfiguration;
 		}
 
 		public void DefaultNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo)
@@ -44,8 +47,12 @@ namespace BulletSharp
 
 		public CollisionConfiguration CollisionConfiguration
 		{
-            get { return new CollisionConfiguration(btCollisionDispatcher_getCollisionConfiguration(_native)); }
-			set { btCollisionDispatcher_setCollisionConfiguration(_native, value._native); }
+            get { return _collisionConfiguration; }
+            set
+            {
+                _collisionConfiguration = value;
+                btCollisionDispatcher_setCollisionConfiguration(_native, value._native);
+            }
 		}
 
         public DispatcherFlags DispatcherFlags

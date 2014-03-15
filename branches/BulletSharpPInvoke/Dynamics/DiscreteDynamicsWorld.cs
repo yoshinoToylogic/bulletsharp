@@ -20,9 +20,8 @@ namespace BulletSharp
             solver != null ? solver._native : IntPtr.Zero,
             collisionConfiguration != null ? collisionConfiguration._native : IntPtr.Zero))
         {
-            _collisionConfiguration = collisionConfiguration;
-            _dispatcher = dispatcher;
-            _broadphase = pairCache;
+            Dispatcher = dispatcher;
+            Broadphase = pairCache;
             _solver = solver;
         }
 
