@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -100,6 +101,8 @@ namespace BulletSharp
 		internal IntPtr _native;
 
         protected OverlappingPairCache _pairCache;
+        internal List<CollisionWorld> _worldRefs = new List<CollisionWorld>(1);
+        internal bool _worldDeferredCleanup;
 
 		internal BroadphaseInterface(IntPtr native)
 		{
@@ -188,8 +191,17 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btBroadphaseInterface_delete(_native);
-				_native = IntPtr.Zero;
+                if (_worldRefs.Count == 0)
+                {
+                    btBroadphaseInterface_delete(_native);
+                    _native = IntPtr.Zero;
+                }
+                else
+                {
+                    // Can't delete broadphase, because it is referenced by a world,
+                    // tell the world to clean up the broadphase later.
+                    _worldDeferredCleanup = true;
+                }
 			}
 		}
 

@@ -16,6 +16,7 @@ namespace BulletSharp
 		public SpuGatheringCollisionDispatcher(ThreadSupportInterface threadInterface, uint maxNumOutstandingTasks, CollisionConfiguration collisionConfiguration)
 			: base(SpuGatheringCollisionDispatcher_new(threadInterface._native, maxNumOutstandingTasks, collisionConfiguration._native))
 		{
+            _collisionConfiguration = collisionConfiguration;
             _threadInterface = threadInterface;
 		}
 
