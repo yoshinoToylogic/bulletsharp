@@ -90,6 +90,27 @@ namespace BulletSharpGen
                 }
             }
 
+            // Exclude constructors of abstract classes
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                if (!c.IsAbstract)
+                {
+                    continue;
+                }
+
+                int i;
+                for (i = 0; i < c.Methods.Count; )
+                {
+                    var method = c.Methods[i];
+                    if (method.IsConstructor)
+                    {
+                        c.Methods.Remove(method);
+                        continue;
+                    }
+                    i++;
+                }
+            }
+
             /*
             // Turn fields into getters/setters
             foreach (ClassDefinition c in classDefinitions.Values)
@@ -332,16 +353,95 @@ namespace BulletSharpGen
             }
         }
 
+        public static string GetTypeRefName(TypeRefDefinition type)
+        {
+            if (!string.IsNullOrEmpty(type.Name) && type.Name.Equals("btAlignedObjectArray"))
+            {
+                if (type.SpecializedTemplateType != null)
+                {
+                    return "Aligned" + type.SpecializedTemplateType.ManagedName + "Array^";
+                }
+            }
+
+            switch (type.ManagedName)
+            {
+                case "Matrix3x3":
+                    return "Matrix";
+                case "Transform":
+                    return "Matrix";
+                case "Quaternion":
+                case "Vector3":
+                    return type.ManagedName;
+            }
+            
+            if (type.ManagedName.Equals("float") && "btScalar".Equals(type.Name))
+            {
+                return "btScalar";
+            }
+            return type.ManagedTypeRefName;
+        }
+
+        // Does the type require additional lines of code to marshal?
+        public static bool TypeRequiresMarshal(TypeRefDefinition type)
+        {
+            switch (type.ManagedName)
+            {
+                case "Matrix3x3":
+                case "Quaternion":
+                case "Transform":
+                case "Vector3":
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static string GetTypeMarshalPrologue(ParameterDefinition parameter)
         {
             switch (parameter.Type.ManagedName)
             {
-                case "Vector3":
-                    return "VECTOR3_CONV(" + parameter.Name + ");";
-                case "Transform":
-                    return "TRANSFORM_CONV(" + parameter.Name + ");";
                 case "Quaternion":
                     return "QUATERNION_CONV(" + parameter.Name + ");";
+                case "Matrix3x3":
+                    return "MATRIX3X3_CONV(" + parameter.Name + ");";
+                case "Transform":
+                    return "TRANSFORM_CONV(" + parameter.Name + ");";
+                case "Vector3":
+                    return "VECTOR3_CONV(" + parameter.Name + ");";
+                default:
+                    return null;
+            }
+        }
+
+        public static string GetTypeMarshalPrologueCppCli(ParameterDefinition parameter)
+        {
+            switch (parameter.Type.ManagedName)
+            {
+                case "Matrix3x3":
+                    return "MATRIX3X3_CONV(" + parameter.Name + ");";
+                case "Quaternion":
+                    return "QUATERNION_CONV(" + parameter.Name + ");";
+                case "Transform":
+                    return "TRANSFORM_CONV(" + parameter.Name + ");";
+                case "Vector3":
+                    return "VECTOR3_DEF(" + parameter.Name + ");";
+                default:
+                    return null;
+            }
+        }
+
+        public static string GetTypeMarshalEpilogueCppCli(ParameterDefinition parameter)
+        {
+            switch (parameter.Type.ManagedName)
+            {
+                case "Quaternion":
+                    return "QUATERNION_DEL(" + parameter.Name + ");";
+                case "Matrix3x3":
+                    return "MATRIX3X3_DEL(" + parameter.Name + ");";
+                case "Transform":
+                    return "TRANSFORM_DEL(" + parameter.Name + ");";
+                case "Vector3":
+                    return "VECTOR3_DEL(" + parameter.Name + ");";
                 default:
                     return null;
             }
@@ -351,12 +451,57 @@ namespace BulletSharpGen
         {
             switch (parameter.Type.ManagedName)
             {
-                case "Vector3":
-                    return "VECTOR3_USE(" + parameter.Name + ")";
-                case "Transform":
-                    return "TRANSFORM_USE(" + parameter.Name + ")";
                 case "Quaternion":
                     return "QUATERNION_USE(" + parameter.Name + ")";
+                case "Transform":
+                    return "TRANSFORM_USE(" + parameter.Name + ")";
+                case "Matrix3x3":
+                    return "MATRIX3X3_USE(" + parameter.Name + ")";
+                case "Vector3":
+                    return "VECTOR3_USE(" + parameter.Name + ")";
+                default:
+                    return null;
+            }
+        }
+
+        public static string GetTypeMarshalConstructorStart(MethodDefinition getter)
+        {
+            switch (getter.ReturnType.ManagedName)
+            {
+                case "CollisionShape":
+                    return "CollisionShape::GetManaged(";
+                case "OverlappingPairCache":
+                    return "OverlappingPairCache::GetManaged(";
+                case "Transform":
+                    return "Math::BtTransformToMatrix(&";
+                case "Vector3":
+                    return "Math::BtVector3ToVector3(&";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public static string GetTypeMarshalConstructorEnd(MethodDefinition getter)
+        {
+            switch (getter.ReturnType.ManagedName)
+            {
+                case "CollisionShape":
+                case "Transform":
+                case "Vector3":
+                    return ")";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public static string GetTypeMarshalFieldSet(FieldDefinition field, ParameterDefinition parameter)
+        {
+            switch (field.Type.ManagedName)
+            {
+                case "Transform":
+                    return "Math::MatrixToBtTransform(" + parameter.Name + ", &_native->" + field.Name + ')';
+                case "Vector3":
+                    return "Math::Vector3ToBtVector3(" + parameter.Name + ", &_native->" + field.Name + ')';
                 default:
                     return null;
             }
