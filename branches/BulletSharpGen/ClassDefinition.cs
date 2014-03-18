@@ -46,6 +46,18 @@ namespace BulletSharpGen
             }
         }
 
+        public string FullNameManaged
+        {
+            get
+            {
+                if (Parent != null)
+                {
+                    return Parent.FullNameManaged + "::" + ManagedName;
+                }
+                return ManagedName;
+            }
+        }
+
         public ClassDefinition(string name, ClassDefinition parent)
             : this(name, parent.Header)
         {

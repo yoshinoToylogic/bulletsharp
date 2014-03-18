@@ -18,32 +18,93 @@ namespace BulletSharpGen
         bool hasWhiteSpace;
         string namespaceName;
 
+        int _headerLineLength;
+        int _sourceLineLength;
+        
+        const int TabWidth = 4;
+        const int LineBreakWidth = 80;
+
         public CppCliWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
         {
             this.headerDefinitions = headerDefinitions;
             this.namespaceName = namespaceName;
         }
 
-        void OutputTabs(int n, bool source = false)
+        void WriteTabs(int n, bool source = false)
         {
             for (int i = 0; i < n; i++)
             {
-                (source ? sourceWriter : headerWriter).Write("\t");
+                if (source)
+                {
+                    sourceWriter.Write('\t');
+                    _sourceLineLength += TabWidth;
+                }
+                else
+                {
+                    headerWriter.Write('\t');
+                    _headerLineLength += TabWidth;
+                }
             }
         }
 
-        /// <summary>Writes to both the header and the source file</summary>
-        void Write(string s)
+        void HeaderWrite(string s)
         {
             headerWriter.Write(s);
-            sourceWriter.Write(s);
+            _headerLineLength += s.Length;
         }
 
-        /// <summary>Writes to both the header and the source file</summary>
-        void Write(char s)
+        void HeaderWriteLine(string s = "")
         {
-            headerWriter.Write(s);
+            HeaderWrite(s);
+            headerWriter.WriteLine();
+            _headerLineLength = 0;
+        }
+
+        void SourceWrite(string s)
+        {
             sourceWriter.Write(s);
+            _sourceLineLength += s.Length;
+        }
+
+        void SourceWrite(char c)
+        {
+            sourceWriter.Write(c);
+            _sourceLineLength += 1;
+        }
+
+        void SourceWriteLine(string s = "")
+        {
+            sourceWriter.WriteLine(s);
+            _sourceLineLength = 0;
+        }
+
+        void SourceWriteLine(char c)
+        {
+            sourceWriter.WriteLine(c);
+            _sourceLineLength = 0;
+        }
+
+        void Write(string s)
+        {
+            HeaderWrite(s);
+            SourceWrite(s);
+        }
+
+        void Write(char c, bool source = true)
+        {
+            headerWriter.Write(c);
+            _headerLineLength += 1;
+            if (source)
+            {
+                sourceWriter.Write(c);
+                _sourceLineLength += 1;
+            }
+        }
+
+        void WriteLine(string s)
+        {
+            HeaderWriteLine(s);
+            SourceWriteLine(s);
         }
 
         void EnsureAccess(int level, ref RefAccessSpecifier current, RefAccessSpecifier required, bool withWhiteSpace = true)
@@ -55,18 +116,18 @@ namespace BulletSharpGen
                     EnsureWhiteSpace();
                 }
 
-                OutputTabs(level);
+                WriteTabs(level);
                 if (required == RefAccessSpecifier.Internal)
                 {
-                    headerWriter.WriteLine("internal:");
+                    HeaderWriteLine("internal:");
                 }
                 else if (required == RefAccessSpecifier.Private)
                 {
-                    headerWriter.WriteLine("private:");
+                    HeaderWriteLine("private:");
                 }
                 else if (required == RefAccessSpecifier.Public)
                 {
-                    headerWriter.WriteLine("public:");
+                    HeaderWriteLine("public:");
                 }
                 current = required;
             }
@@ -76,39 +137,55 @@ namespace BulletSharpGen
         {
             if (!hasWhiteSpace)
             {
-                headerWriter.WriteLine();
+                HeaderWriteLine();
                 hasWhiteSpace = true;
             }
         }
 
         void OutputMethod(MethodDefinition method, int level, int numOptionalParams = 0)
         {
-            OutputTabs(level + 1);
+            WriteTabs(level + 1);
 
             // "static"
             if (method.IsStatic)
             {
-                headerWriter.Write("static ");
+                HeaderWrite("static ");
             }
 
             // Return type
             if (!method.IsConstructor)
             {
                 var returnType = method.ReturnType;
-                Write(returnType.ManagedTypeRefName);
+                Write(BulletParser.GetTypeRefName(returnType));
                 Write(' ');
             }
 
             // Name
-            sourceWriter.Write(method.Parent.ManagedName);
-            sourceWriter.Write("::");
+            SourceWrite(method.Parent.FullNameManaged);
+            SourceWrite("::");
             if (method.IsConstructor)
             {
                 Write(method.Parent.ManagedName);
             }
             else
             {
-                Write(method.ManagedName);
+                if (method.Property != null)
+                {
+                    SourceWrite(method.Property.VerblessName);
+                    SourceWrite("::");
+                    if (method.Property.Getter.Equals(method))
+                    {
+                        Write("get");
+                    }
+                    else
+                    {
+                        Write("set");
+                    }
+                }
+                else
+                {
+                    Write(method.ManagedName);
+                }
             }
             Write('(');
 
@@ -118,7 +195,7 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                Write(param.Type.ManagedTypeRefName);
+                Write(BulletParser.GetTypeRefName(param.Type));
                 Write(' ');
                 Write(param.Name);
 
@@ -129,142 +206,270 @@ namespace BulletSharpGen
 
                 if (i != numParameters - 1)
                 {
-                    Write(", ");
+                    if (_headerLineLength >= LineBreakWidth)
+                    {
+                        HeaderWriteLine(",");
+                        WriteTabs(level + 2);
+                    }
+                    else
+                    {
+                        HeaderWrite(", ");
+                    }
+
+                    if (_sourceLineLength >= LineBreakWidth)
+                    {
+                        SourceWriteLine(",");
+                        WriteTabs(1, true);
+                    }
+                    else
+                    {
+                        SourceWrite(", ");
+                    }
                 }
             }
-            headerWriter.WriteLine(");");
-            sourceWriter.WriteLine(')');
+            HeaderWriteLine(");");
+            SourceWriteLine(')');
+
+
+            // Constructor chaining
+            bool doConstructorChaining = false;
+            if (method.IsConstructor && method.Parent.BaseClass != null)
+            {
+                // If there is no need for marshalling code, we can chain constructors
+                doConstructorChaining = true;
+                foreach (var param in method.Parameters)
+                {
+                    if (BulletParser.TypeRequiresMarshal(param.Type))
+                    {
+                        doConstructorChaining = false;
+                        break;
+                    }
+                }
+
+                WriteTabs(1, true);
+                SourceWrite(": ");
+                SourceWrite(method.Parent.BaseClass.ManagedName);
+                SourceWrite('(');
+
+                if (doConstructorChaining)
+                {
+                    SourceWrite("new ");
+                    SourceWrite(method.Parent.Name);
+                    SourceWrite('(');
+                    for (int i = 0; i < numParameters; i++)
+                    {
+                        var param = method.Parameters[i];
+                        SourceWrite(param.Name);
+                        if (!param.Type.IsBasic)
+                        {
+                            SourceWrite("->_native");
+                        }
+
+                        if (param.IsOptional)
+                        {
+                            hasOptionalParam = true;
+                        }
+
+                        // Any more parameters?
+                        if (i != numParameters - 1)
+                        {
+                            if (_sourceLineLength >= LineBreakWidth)
+                            {
+                                SourceWriteLine(",");
+                                WriteTabs(2, true);
+                            }
+                            else
+                            {
+                                SourceWrite(", ");
+                            }
+                        }
+                    }
+                    SourceWrite(')');
+                }
+                else
+                {
+                    SourceWrite('0');
+                }
+
+                SourceWriteLine(')');
+            }
 
             // Method definition
-            sourceWriter.WriteLine('{');
-            OutputTabs(1, true);
-            if (method.IsConstructor)
+            SourceWriteLine('{');
+
+            if (!doConstructorChaining)
             {
-                sourceWriter.Write("_native = new ");
-                sourceWriter.Write(method.Parent.Name);
-            }
-            else
-            {
-                sourceWriter.Write("_native->");
-                sourceWriter.Write(method.Name);
-            }
-            sourceWriter.Write('(');
-            for (int i = 0; i < numParameters; i++)
-            {
-                var param = method.Parameters[i];
-                sourceWriter.Write(param.Name);
-                if (!param.Type.IsBasic)
+                // Type marshalling prologue
+                if (method.Field == null)
                 {
-                    sourceWriter.Write("->_native");
+                    for (int i = 0; i < numParameters; i++)
+                    {
+                        var param = method.Parameters[i];
+                        string prologue = BulletParser.GetTypeMarshalPrologueCppCli(param);
+                        if (!string.IsNullOrEmpty(prologue))
+                        {
+                            WriteTabs(1, true);
+                            SourceWriteLine(prologue);
+                        }
+                    }
                 }
 
-                if (param.IsOptional)
+                WriteTabs(1, true);
+                if (method.IsConstructor)
                 {
-                    hasOptionalParam = true;
+                    SourceWrite("_native = new ");
+                }
+                else
+                {
+                    if (!(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
+                    {
+                        //if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
+                        SourceWrite("return ");
+                        SourceWrite(BulletParser.GetTypeMarshalConstructorStart(method));
+                    }
                 }
 
-                if (i != numParameters - 1)
+
+                if (method.Field != null)
                 {
-                    sourceWriter.Write(", ");
+                    if (method.Equals(method.Property.Getter))
+                    {
+                        SourceWrite("_native->");
+                        SourceWrite(method.Field.Name);
+                    }
+
+                    var setter = method.Property.Setter;
+                    if (setter != null && method.Equals(setter))
+                    {
+                        var param = method.Parameters[0];
+                        var fieldSet = BulletParser.GetTypeMarshalFieldSet(method.Field, param);
+                        if (!string.IsNullOrEmpty(fieldSet))
+                        {
+                            SourceWrite(fieldSet);
+                        }
+                        else
+                        {
+                            SourceWrite("_native->");
+                            SourceWrite(method.Field.Name);
+                            SourceWrite(" = ");
+                            SourceWrite(param.Name);
+                            if (!param.Type.IsBasic)
+                            {
+                                SourceWrite("->_native");
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (!method.IsConstructor)
+                    {
+                        if (method.IsStatic)
+                        {
+                            SourceWrite(method.Parent.FullName);
+                            SourceWrite("::");
+                        }
+                        else
+                        {
+                            SourceWrite("_native->");
+                        }
+                    }
+                    SourceWrite(method.Name);
+                    SourceWrite('(');
+                    for (int i = 0; i < numParameters; i++)
+                    {
+                        var param = method.Parameters[i];
+
+                        string marshal = BulletParser.GetTypeMarshal(param);
+                        if (string.IsNullOrEmpty(marshal))
+                        {
+                            if (param.Type.IsBasic)
+                            {
+                                SourceWrite(param.Name);
+                            }
+                            else
+                            {
+                                if (param.Type.IsPointer || param.Type.IsReference)
+                                {
+                                    if (param.Type.IsReference)
+                                    {
+                                        // Dereference
+                                        SourceWrite('*');
+                                    }
+
+                                    if (param.Type.Referenced.Target != null &&
+                                        param.Type.Referenced.Target.BaseClass != null)
+                                    {
+                                        // Cast native pointer from base class
+                                        SourceWrite('(');
+                                        SourceWrite(param.Type.Referenced.FullName);
+                                        SourceWrite("*)");
+                                    }
+                                }
+                                SourceWrite(param.Name);
+                                SourceWrite("->_native");
+                            }
+                        }
+                        else
+                        {
+                            SourceWrite(marshal);
+                        }
+
+                        if (param.IsOptional)
+                        {
+                            hasOptionalParam = true;
+                        }
+
+                        // Any more parameters?
+                        if (i != numParameters - 1)
+                        {
+                            if (_sourceLineLength >= LineBreakWidth)
+                            {
+                                SourceWriteLine(",");
+                                WriteTabs(2, true);
+                            }
+                            else
+                            {
+                                SourceWrite(", ");
+                            }
+                        }
+                    }
+                    SourceWrite(')');
+                }
+                if (!method.IsConstructor && !(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
+                {
+                    SourceWrite(BulletParser.GetTypeMarshalConstructorEnd(method));
+                }
+                SourceWriteLine(';');
+
+                // Type marshalling epilogue
+                if (method.Field == null)
+                {
+                    for (int i = 0; i < numParameters; i++)
+                    {
+                        var param = method.Parameters[i];
+                        string epilogue = BulletParser.GetTypeMarshalEpilogueCppCli(param);
+                        if (!string.IsNullOrEmpty(epilogue))
+                        {
+                            WriteTabs(1, true);
+                            SourceWriteLine(epilogue);
+                        }
+                    }
                 }
             }
-            sourceWriter.WriteLine(");");
-            sourceWriter.WriteLine('}');
-            sourceWriter.WriteLine();
-            hasWhiteSpace = false;
+            SourceWriteLine('}');
+
+            // No whitespace between get/set methods
+            if (!(method.Property != null && method.Property.Getter.Equals(method) && method.Property.Setter != null))
+            {
+                SourceWriteLine();
+                hasWhiteSpace = false;
+            }
 
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
             {
                 OutputMethod(method, level, numOptionalParams + 1);
-            }
-        }
-
-        void OutputPropertyMethod(MethodDefinition method)
-        {
-            bool isGetter = (method == method.Property.Getter);
-
-            // Return type
-            var returnType = method.ReturnType;
-            sourceWriter.Write(returnType.ManagedTypeRefName);
-            sourceWriter.Write(' ');
-
-            // Declaration
-            sourceWriter.Write(method.Parent.ManagedName);
-            sourceWriter.Write("::");
-            sourceWriter.Write(method.Property.VerblessName);
-            sourceWriter.Write("::");
-            if (isGetter)
-            {
-                sourceWriter.Write("get(");
-            }
-            else
-            {
-                sourceWriter.Write("set(");
-                var param = method.Parameters[0];
-                sourceWriter.Write(param.Type.ManagedTypeRefName);
-                sourceWriter.Write(' ');
-                sourceWriter.Write(param.Name);
-            }
-            sourceWriter.WriteLine(')');
-
-            // Method definition
-            sourceWriter.WriteLine('{');
-            OutputTabs(1, true);
-            if (isGetter)
-            {
-                sourceWriter.Write("return ");
-            }
-            if (method.Field != null)
-            {
-                if (method.Field.Type.ManagedName == "Vector3")
-                {
-                    if (isGetter)
-                    {
-                        sourceWriter.Write("Math::BtVector3ToVector3(&_native->");
-                    }
-                    else
-                    {
-                        sourceWriter.Write("Math::Vector3ToBtVector3(value, &_native->");
-                    }
-                    sourceWriter.Write(method.Field.Name);
-                    sourceWriter.Write(")");
-                }
-                else
-                {
-                    sourceWriter.Write("_native->");
-                    sourceWriter.Write(method.Field.Name);
-                    if (!isGetter)
-                    {
-                        sourceWriter.Write(" = ");
-                        var param = method.Parameters[0];
-                        sourceWriter.Write(param.Name);
-                    }
-                }
-                sourceWriter.WriteLine(';');
-            }
-            else
-            {
-                sourceWriter.Write("_native->");
-                sourceWriter.Write(method.Name);
-                sourceWriter.Write('(');
-                if (!isGetter)
-                {
-                    var param = method.Parameters[0];
-                    sourceWriter.Write(param.Name);
-                    if (!param.Type.IsBasic)
-                    {
-                        sourceWriter.Write("->_native");
-                    }
-                }
-                sourceWriter.WriteLine(");");
-            }
-            sourceWriter.WriteLine('}');
-
-            // No whitespace between get/set methods
-            if (!(isGetter && method.Property.Setter != null))
-            {
-                sourceWriter.WriteLine();
             }
         }
 
@@ -278,22 +483,26 @@ namespace BulletSharpGen
             EnsureWhiteSpace();
 
             // Write access modifier
-            OutputTabs(level);
+            WriteTabs(level);
             if (level == 1)
             {
-                headerWriter.Write("public ");
+                HeaderWrite("public ");
             }
 
             // Write class definition
-            headerWriter.Write("ref class ");
-            headerWriter.Write(c.ManagedName);
+            HeaderWrite("ref class ");
+            HeaderWrite(c.ManagedName);
+            if (c.IsAbstract)
+            {
+                HeaderWrite(" abstract");
+            }
             if (c.BaseClass != null)
             {
-                headerWriter.Write(" : ");
-                headerWriter.Write(c.BaseClass.ManagedName);
+                HeaderWrite(" : ");
+                HeaderWrite(c.BaseClass.ManagedName);
             }
-            headerWriter.WriteLine();
-            OutputTabs(level);
+            HeaderWriteLine();
+            WriteTabs(level);
             headerWriter.WriteLine("{");
             hasWhiteSpace = true;
 
@@ -319,12 +528,12 @@ namespace BulletSharpGen
             {
                 if (c.Classes.Count != 0)
                 {
-                    headerWriter.WriteLine();
+                    HeaderWriteLine();
                 }
                 EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
-                OutputTabs(level + 1);
-                headerWriter.Write(c.Name);
+                WriteTabs(level + 1);
+                HeaderWrite(c.Name);
                 headerWriter.WriteLine("* _native;");
             }
 
@@ -333,29 +542,31 @@ namespace BulletSharpGen
             // Write unmanaged constructor
             EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
-            OutputTabs(level + 1);
-            sourceWriter.Write(c.ManagedName);
-            sourceWriter.Write("::");
+            WriteTabs(level + 1);
+            SourceWrite(c.ManagedName);
+            SourceWrite("::");
             Write(c.ManagedName);
             Write('(');
             Write(c.Name);
             Write("* native)");
             headerWriter.WriteLine(';');
             hasWhiteSpace = false;
-            sourceWriter.WriteLine();
+            SourceWriteLine();
             if (c.BaseClass != null)
             {
-                sourceWriter.Write("\t: ");
-                sourceWriter.Write(c.BaseClass.ManagedName);
-                sourceWriter.WriteLine("(native)");
+                WriteTabs(1, true);
+                SourceWrite(": ");
+                SourceWrite(c.BaseClass.ManagedName);
+                SourceWriteLine("(native)");
             }
-            sourceWriter.WriteLine('{');
+            SourceWriteLine('{');
             if (c.BaseClass == null)
             {
-                sourceWriter.WriteLine("\t_native = native;");
+                WriteTabs(1, true);
+                SourceWriteLine("_native = native;");
             }
-            sourceWriter.WriteLine('}');
-            sourceWriter.WriteLine();
+            SourceWriteLine('}');
+            SourceWriteLine();
 
             // TODO: write destructor & finalizer
 
@@ -402,38 +613,37 @@ namespace BulletSharpGen
             {
                 EnsureWhiteSpace();
 
-                OutputTabs(level + 1);
-                headerWriter.Write("property ");
-                headerWriter.Write(prop.Type.ManagedTypeRefName);
-                headerWriter.Write(" ");
-                headerWriter.WriteLine(prop.VerblessName);
-                OutputTabs(level + 1);
+                string typeRefName = BulletParser.GetTypeRefName(prop.Type);
+
+                WriteTabs(level + 1);
+                HeaderWrite("property ");
+                HeaderWrite(typeRefName);
+                HeaderWrite(" ");
+                if (prop.Getter.ManagedName.StartsWith("Get"))
+                {
+                    headerWriter.WriteLine(prop.VerblessName);
+                }
+                else
+                {
+                    headerWriter.WriteLine(prop.Getter.ManagedName);
+                }
+                WriteTabs(level + 1);
                 headerWriter.WriteLine("{");
                 
-                // Getter
-                OutputTabs(level + 2);
-                headerWriter.Write(prop.Type.ManagedTypeRefName);
-                headerWriter.WriteLine(" get();");
-                OutputPropertyMethod(prop.Getter);
-
-                // Setter
+                // Getter/Setter
+                OutputMethod(prop.Getter, level + 1);
                 if (prop.Setter != null)
                 {
-                    OutputTabs(level + 2);
-                    headerWriter.Write("void set(");
-                    headerWriter.Write(prop.Type.ManagedTypeRefName);
-                    headerWriter.WriteLine(" value);");
-
-                    OutputPropertyMethod(prop.Setter);
+                    OutputMethod(prop.Setter, level + 1);
                 }
 
-                OutputTabs(level + 1);
+                WriteTabs(level + 1);
                 headerWriter.WriteLine("}");
 
                 hasWhiteSpace = false;
             }
 
-            OutputTabs(level);
+            WriteTabs(level);
             headerWriter.WriteLine("};");
             hasWhiteSpace = false;
         }
@@ -453,27 +663,27 @@ namespace BulletSharpGen
                 var headerFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".h", FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#pragma once");
-                headerWriter.WriteLine();
+                HeaderWriteLine();
 
                 var sourceFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
-                sourceWriter.WriteLine("#include \"StdAfx.h\"");
-                sourceWriter.WriteLine();
+                SourceWriteLine("#include \"StdAfx.h\"");
+                SourceWriteLine();
 
                 // Write includes
                 if (header.Includes.Count != 0)
                 {
                     foreach (HeaderDefinition include in header.Includes)
                     {
-                        headerWriter.Write("#include \"");
-                        headerWriter.Write(include.ManagedName);
+                        HeaderWrite("#include \"");
+                        HeaderWrite(include.ManagedName);
                         headerWriter.WriteLine(".h\"");
                     }
-                    headerWriter.WriteLine();
+                    HeaderWriteLine();
                 }
 
                 // Write namespace
-                headerWriter.Write("namespace ");
+                HeaderWrite("namespace ");
                 headerWriter.WriteLine(namespaceName);
                 headerWriter.WriteLine("{");
                 hasWhiteSpace = true;
@@ -490,9 +700,9 @@ namespace BulletSharpGen
                 var forwardRefHeaders = new List<HeaderDefinition>();
                 foreach (ClassDefinition c in forwardRefs)
                 {
-                    OutputTabs(1);
-                    headerWriter.Write("ref class ");
-                    headerWriter.Write(c.ManagedName);
+                    WriteTabs(1);
+                    HeaderWrite("ref class ");
+                    HeaderWrite(c.ManagedName);
                     headerWriter.WriteLine(";");
                     if (!forwardRefHeaders.Contains(c.Header))
                     {
@@ -508,11 +718,11 @@ namespace BulletSharpGen
                 {
                     foreach (HeaderDefinition h in forwardRefHeaders)
                     {
-                        sourceWriter.Write("#include \"");
-                        sourceWriter.Write(h.ManagedName);
-                        sourceWriter.WriteLine(".h\"");
+                        SourceWrite("#include \"");
+                        SourceWrite(h.ManagedName);
+                        SourceWriteLine(".h\"");
                     }
-                    sourceWriter.WriteLine();
+                    SourceWriteLine();
                 }
 
                 // Write classes
@@ -533,6 +743,17 @@ namespace BulletSharpGen
 
         static void AddForwardReference(List<ClassDefinition> forwardRefs, TypeRefDefinition type, HeaderDefinition header)
         {
+            if (type.IsBasic)
+            {
+                return;
+            }
+
+            if (type.IsPointer || type.IsReference)
+            {
+                AddForwardReference(forwardRefs, type.Referenced, header);
+                return;
+            }
+
             if (type.Target != null)
             {
                 if (!forwardRefs.Contains(type.Target))
@@ -548,6 +769,11 @@ namespace BulletSharpGen
 
         static void FindForwardReferences(List<ClassDefinition> forwardRefs, ClassDefinition c)
         {
+            if (c.ManagedName.Equals("CollisionAlgorithmConstructionInfo"))
+            {
+                "".ToCharArray();
+            }
+
             foreach (PropertyDefinition prop in c.Properties)
             {
                 AddForwardReference(forwardRefs, prop.Type, c.Header);

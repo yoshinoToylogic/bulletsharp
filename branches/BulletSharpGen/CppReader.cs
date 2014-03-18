@@ -254,6 +254,7 @@ namespace BulletSharpGen
             }
             else if (cursor.Kind == CursorKind.TemplateRef)
             {
+                // TODO
                 return Cursor.ChildVisitResult.Recurse;
             }
             return Cursor.ChildVisitResult.Continue;
@@ -388,6 +389,10 @@ namespace BulletSharpGen
                     currentHeader.Enums.Add(currentEnum);
                     cursor.VisitChildren(EnumVisitor);
                     currentEnum = null;
+                }
+                else if (cursor.Kind == CursorKind.UnionDecl)
+                {
+                    return Cursor.ChildVisitResult.Recurse;
                 }
                 else
                 {

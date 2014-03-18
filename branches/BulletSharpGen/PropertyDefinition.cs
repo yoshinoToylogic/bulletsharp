@@ -39,11 +39,11 @@ namespace BulletSharpGen
             }
             else if (name.StartsWith("is", StringComparison.InvariantCultureIgnoreCase))
             {
-                VerblessName = name.Substring(2);
+                VerblessName = name[0].ToString().ToUpper() + name.Substring(1);
             }
             else if (name.StartsWith("has", StringComparison.InvariantCultureIgnoreCase))
             {
-                VerblessName = name.Substring(3);
+                VerblessName = name[0].ToString().ToUpper() + name.Substring(1);
             }
             else
             {

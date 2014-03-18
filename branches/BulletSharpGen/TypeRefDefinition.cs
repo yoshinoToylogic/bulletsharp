@@ -39,6 +39,7 @@ namespace BulletSharpGen
                     {
                         return "byte";
                     }
+                    /*
                     if (Name.Equals("unsigned short"))
                     {
                         return "ushort";
@@ -51,6 +52,7 @@ namespace BulletSharpGen
                     {
                         return "ulong";
                     }
+                    */
                     if (Referenced != null)
                     {
                         return Referenced.ManagedName;
