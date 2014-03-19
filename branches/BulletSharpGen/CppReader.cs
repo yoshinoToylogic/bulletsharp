@@ -99,14 +99,18 @@ namespace BulletSharpGen
                 ReadHeader(headerQueue[0]);
             }
 
-            ReadHeader(src + "..\\Extras\\Serialize\\BulletFileLoader\\btBulletFile.h");
-            ReadHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btBulletWorldImporter.h");
-            ReadHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btWorldImporter.h");
-            ReadHeader(src + "..\\Extras\\Serialize\\BulletXmlWorldImporter\\btBulletXmlWorldImporter.h");
-            ReadHeader(src + "..\\Extras\\HACD\\hacdHACD.h");
+            if (Directory.Exists(src + "..\\Extras\\"))
+            {
+                ReadHeader(src + "..\\Extras\\Serialize\\BulletFileLoader\\btBulletFile.h");
+                ReadHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btBulletWorldImporter.h");
+                ReadHeader(src + "..\\Extras\\Serialize\\BulletWorldImporter\\btWorldImporter.h");
+                ReadHeader(src + "..\\Extras\\Serialize\\BulletXmlWorldImporter\\btBulletXmlWorldImporter.h");
+                ReadHeader(src + "..\\Extras\\HACD\\hacdHACD.h");
+            }
 
             index.Dispose();
 
+            Console.WriteLine();
             Console.WriteLine("Read complete - headers: " + HeaderDefinitions.Count + ", classes: " + ClassDefinitions.Count);
         }
 
@@ -171,12 +175,33 @@ namespace BulletSharpGen
         void ParseClassCursor(Cursor cursor)
         {
             string className = cursor.Spelling;
-            if (ClassDefinitions.ContainsKey(className))
+            string fullyQualifiedName;
+
+            if (cursor.Type.TypeKind != ClangSharp.Type.Kind.Invalid)
+            {
+                fullyQualifiedName = TypeRefDefinition.GetFullyQualifiedName(cursor.Type);
+            }
+            else if (currentClass != null)
+            {
+                fullyQualifiedName = currentClass.FullName + "::" + className;
+            }
+            else
+            {
+                fullyQualifiedName = className;
+            }
+
+            if (ClassDefinitions.ContainsKey(fullyQualifiedName))
+            {
+                return;
+            }
+
+            if (string.IsNullOrEmpty(className) && cursor.Kind == CursorKind.StructDecl && currentClass == null)
             {
                 return;
             }
 
             AccessSpecifier parentMemberAccess = currentMemberAccess;
+
             if (currentClass != null)
             {
                 currentClass = new ClassDefinition(className, currentClass);
@@ -185,7 +210,22 @@ namespace BulletSharpGen
             {
                 currentClass = new ClassDefinition(className, currentHeader);
             }
-            ClassDefinitions.Add(currentClass.FullNameCS, currentClass);
+
+            // Unnamed struct escapes to the surrounding scope
+            if (!(string.IsNullOrEmpty(className) && cursor.Kind == CursorKind.StructDecl))
+            {
+                ClassDefinitions.Add(fullyQualifiedName, currentClass);
+
+                if (currentClass.Parent != null)
+                {
+                    currentClass.Parent.Classes.Add(currentClass);
+                }
+                else
+                {
+                    currentHeader.Classes.Add(currentClass);
+                }
+            }
+
             if (cursor.Kind == CursorKind.ClassDecl)
             {
                 currentMemberAccess = AccessSpecifier.Private; // default class access specifier
@@ -206,15 +246,6 @@ namespace BulletSharpGen
                 {
                     currentMemberAccess = AccessSpecifier.Public; // default struct access specifier
                 }
-            }
-
-            if (currentClass.Parent != null)
-            {
-                currentClass.Parent.Classes.Add(currentClass);
-            }
-            else
-            {
-                currentHeader.Classes.Add(currentClass);
             }
 
             if (cursor.Kind == CursorKind.TypedefDecl)
@@ -270,7 +301,7 @@ namespace BulletSharpGen
                 }
                 else if (currentFieldHasSpecializedParameter)
                 {
-                    currentField.Type.SpecializedTemplateType = new TypeRefDefinition(cursor.Definition.Spelling);
+                    currentField.Type.SpecializedTemplateType = new TypeRefDefinition(cursor.Type);
                 }
                 return Cursor.ChildVisitResult.Break;
             }
@@ -295,109 +326,114 @@ namespace BulletSharpGen
             if (cursor.Kind == CursorKind.CxxAccessSpecifier)
             {
                 currentMemberAccess = cursor.AccessSpecifier;
+                return Cursor.ChildVisitResult.Continue;
             }
             else if (cursor.Kind == CursorKind.CxxBaseSpecifier)
             {
-                currentClass.BaseClass = new TypeRefDefinition(cursor.Definition.Spelling);
+                currentClass.BaseClass = new TypeRefDefinition(cursor.Type);
+                return Cursor.ChildVisitResult.Continue;
             }
-            else if (currentMemberAccess == AccessSpecifier.Public)
+            
+            if (currentMemberAccess != AccessSpecifier.Public)
             {
-                if ((cursor.Kind == CursorKind.ClassDecl || cursor.Kind == CursorKind.StructDecl ||
-                    cursor.Kind == CursorKind.ClassTemplate || cursor.Kind == CursorKind.TypedefDecl) && cursor.IsDefinition)
+                return Cursor.ChildVisitResult.Continue;
+            }
+
+            if ((cursor.Kind == CursorKind.ClassDecl || cursor.Kind == CursorKind.StructDecl ||
+                cursor.Kind == CursorKind.ClassTemplate || cursor.Kind == CursorKind.TypedefDecl) && cursor.IsDefinition)
+            {
+                ParseClassCursor(cursor);
+            }
+            else if (cursor.Kind == CursorKind.CxxMethod || cursor.Kind == CursorKind.Constructor)
+            {
+                string methodName = cursor.Spelling;
+                if (excludedMethods.ContainsKey(methodName))
                 {
-                    ParseClassCursor(cursor);
+                    return Cursor.ChildVisitResult.Continue;
                 }
-                else if (cursor.Kind == CursorKind.CxxMethod || cursor.Kind == CursorKind.Constructor)
+                
+                currentMethod = new MethodDefinition(methodName, currentClass, cursor.NumArguments);
+                currentMethod.ReturnType = new TypeRefDefinition(cursor.ResultType);
+                currentMethod.IsStatic = cursor.IsStaticCxxMethod;
+                currentMethod.IsConstructor = cursor.Kind == CursorKind.Constructor;
+
+                // Check if the return type is a template
+                cursor.VisitChildren(MethodTemplateTypeVisitor);
+
+                IList<Token> tokens = currentTU.Tokenize(cursor.Extent).ToList();
+
+                // Check if the return type is const (no clang_isConst available, so look at tokens)
+                if (tokens.Count > 0 && tokens[0].Spelling.Equals("const"))
                 {
-                    string methodName = cursor.Spelling;
-                    if (excludedMethods.ContainsKey(methodName))
+                    currentMethod.ReturnType.IsConst = true;
+                }
+
+                // Check if the method is abstract (no clang_isAbstract available, so look at tokens)
+                if (tokens.Count > 3)
+                {
+                    if (tokens[tokens.Count - 3].Spelling.Equals("=") &&
+                        tokens[tokens.Count - 2].Spelling.Equals("0") &&
+                        tokens[tokens.Count - 1].Spelling.Equals(";"))
                     {
-                        return Cursor.ChildVisitResult.Continue;
+                        currentMethod.IsAbstract = true;
+                        currentClass.IsAbstract = true;
                     }
+                }
 
-                    currentMethod = new MethodDefinition(methodName, currentClass, cursor.NumArguments);
-                    currentMethod.ReturnType = new TypeRefDefinition(cursor.ResultType);
-                    currentMethod.IsStatic = cursor.IsStaticCxxMethod;
-                    currentMethod.IsConstructor = cursor.Kind == CursorKind.Constructor;
+                // Parse arguments
+                for (uint i = 0; i < cursor.NumArguments; i++)
+                {
+                    Cursor arg = cursor.GetArgument(i);
 
-                    // Check if the return type is a template
-                    cursor.VisitChildren(MethodTemplateTypeVisitor);
-
-                    IList<Token> tokens = currentTU.Tokenize(cursor.Extent).ToList();
-                    
-                    // Check if the return type is const (no clang_isConst available, so look at tokens)
-                    if (tokens.Count > 0 && tokens[0].Spelling.Equals("const"))
+                    string parameterName = arg.Spelling;
+                    if (parameterName == "")
                     {
-                        currentMethod.ReturnType.IsConst = true;
+                        parameterName = "__unnamed" + i;
                     }
+                    currentParameter = new ParameterDefinition(parameterName, new TypeRefDefinition(arg.Type));
+                    currentMethod.Parameters[i] = currentParameter;
+                    arg.VisitChildren(MethodTemplateTypeVisitor);
+                    currentParameter = null;
 
-                    // Check if the method is abstract (no clang_isAbstract available, so look at tokens)
-                    if (tokens.Count > 3)
+                    // Check if it's a const or optional parameter
+                    IEnumerable<Token> argTokens = currentTU.Tokenize(arg.Extent);
+                    foreach (Token token in argTokens)
                     {
-                        if (tokens[tokens.Count - 3].Spelling.Equals("=") &&
-                            tokens[tokens.Count - 2].Spelling.Equals("0") &&
-                            tokens[tokens.Count - 1].Spelling.Equals(";"))
+                        if (token.Spelling.Equals("const"))
                         {
-                            currentMethod.IsAbstract = true;
-                            currentClass.IsAbstract = true;
+                            currentMethod.Parameters[i].Type.IsConst = true;
+                        }
+                        else if (token.Spelling.Equals("="))
+                        {
+                            currentMethod.Parameters[i].IsOptional = true;
                         }
                     }
+                }
 
-                    // Parse arguments
-                    for (uint i = 0; i < cursor.NumArguments; i++)
-                    {
-                        Cursor arg = cursor.GetArgument(i);
-
-                        string parameterName = arg.Spelling;
-                        if (parameterName == "")
-                        {
-                            parameterName = "__unnamed" + i;
-                        }
-                        currentParameter = new ParameterDefinition(parameterName, new TypeRefDefinition(arg.Type));
-                        currentMethod.Parameters[i] = currentParameter;
-                        arg.VisitChildren(MethodTemplateTypeVisitor);
-                        currentParameter = null;
-
-                        // Check if it's a const or optional parameter
-                        IEnumerable<Token> argTokens = currentTU.Tokenize(arg.Extent);
-                        foreach (Token token in argTokens)
-                        {
-                            if (token.Spelling.Equals("const"))
-                            {
-                                currentMethod.Parameters[i].Type.IsConst = true;
-                            }
-                            else if (token.Spelling.Equals("="))
-                            {
-                                currentMethod.Parameters[i].IsOptional = true;
-                            }
-                        }
-                    }
-
-                    currentMethod = null;
-                }
-                else if (cursor.Kind == CursorKind.FieldDecl)
-                {
-                    currentField = new FieldDefinition(cursor.Spelling,
-                        new TypeRefDefinition(cursor.Type), currentClass);
-                    currentFieldHasSpecializedParameter = false;
-                    cursor.VisitChildren(FieldTemplateTypeVisitor);
-                    currentField = null;
-                }
-                else if (cursor.Kind == CursorKind.EnumDecl)
-                {
-                    currentEnum = new EnumDefinition(cursor.Spelling);
-                    currentHeader.Enums.Add(currentEnum);
-                    cursor.VisitChildren(EnumVisitor);
-                    currentEnum = null;
-                }
-                else if (cursor.Kind == CursorKind.UnionDecl)
-                {
-                    return Cursor.ChildVisitResult.Recurse;
-                }
-                else
-                {
-                    //Console.WriteLine(cursor.Spelling);
-                }
+                currentMethod = null;
+            }
+            else if (cursor.Kind == CursorKind.FieldDecl)
+            {
+                currentField = new FieldDefinition(cursor.Spelling,
+                    new TypeRefDefinition(cursor.Type), currentClass);
+                currentFieldHasSpecializedParameter = false;
+                cursor.VisitChildren(FieldTemplateTypeVisitor);
+                currentField = null;
+            }
+            else if (cursor.Kind == CursorKind.EnumDecl)
+            {
+                currentEnum = new EnumDefinition(cursor.Spelling);
+                currentHeader.Enums.Add(currentEnum);
+                cursor.VisitChildren(EnumVisitor);
+                currentEnum = null;
+            }
+            else if (cursor.Kind == CursorKind.UnionDecl)
+            {
+                return Cursor.ChildVisitResult.Recurse;
+            }
+            else
+            {
+                //Console.WriteLine(cursor.Spelling);
             }
             return Cursor.ChildVisitResult.Continue;
         }

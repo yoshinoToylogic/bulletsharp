@@ -135,7 +135,7 @@ namespace BulletSharpGen
                     IsBasic = true;
                     break;
                 case ClangSharp.Type.Kind.Typedef:
-                    Name = type.Declaration.Spelling;
+                    Name = GetFullyQualifiedName(type);
                     Referenced = new TypeRefDefinition(type.Canonical);
                     IsBasic = Referenced.IsBasic;
                     break;
@@ -159,17 +159,8 @@ namespace BulletSharpGen
                     IsBasic = true;
                     break;
                 case ClangSharp.Type.Kind.Record:
-                    Name = type.Canonical.Declaration.Spelling;
-                    break;
                 case ClangSharp.Type.Kind.Unexposed:
-                    if (type.Canonical.Declaration.IsInvalid)
-                    {
-                        Name = "[unexposed type]";
-                    }
-                    else
-                    {
-                        Name = type.Canonical.Declaration.Spelling;
-                    }
+                    Name = GetFullyQualifiedName(type);
                     break;
                 case ClangSharp.Type.Kind.DependentSizedArray:
                     break;
@@ -178,15 +169,33 @@ namespace BulletSharpGen
             }
         }
 
-        public TypeRefDefinition(string name)
-        {
-            Name = name;
-        }
-
         public TypeRefDefinition()
         {
             Name = "void";
             IsBasic = true;
+        }
+
+        public static string GetFullyQualifiedName(ClangSharp.Type type)
+        {
+            string name;
+            var decl = type.Declaration;
+            if (decl.IsInvalid)
+            {
+                name = "[unexposed type]";
+            }
+            else
+            {
+                name = decl.Spelling;
+                while (decl.SemanticParent.Kind == ClangSharp.CursorKind.ClassDecl ||
+                    decl.SemanticParent.Kind == ClangSharp.CursorKind.StructDecl ||
+                    decl.SemanticParent.Kind == ClangSharp.CursorKind.ClassTemplate ||
+                    decl.SemanticParent.Kind == ClangSharp.CursorKind.Namespace)
+                {
+                    name = decl.SemanticParent.Spelling + "::" + name;
+                    decl = decl.SemanticParent;
+                }
+            }
+            return name;
         }
 
         public override bool Equals(object obj)
