@@ -406,7 +406,7 @@ namespace BulletSharpGen
             Write("public ", WriteTo.CS);
             WriteType(prop.Type, WriteTo.CS);
             Write(' ', WriteTo.CS);
-            WriteLine(prop.VerblessName, WriteTo.CS);
+            WriteLine(prop.Name, WriteTo.CS);
             OutputTabs(level + 1, WriteTo.CS);
             WriteLine('{', WriteTo.CS);
 

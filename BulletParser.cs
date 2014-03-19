@@ -166,16 +166,17 @@ namespace BulletSharpGen
                 {
                     var method = c.Methods[i];
                     if (method.Parameters.Length == 0 &&
-                        (method.Name.StartsWith("get") ||
-                        method.Name.StartsWith("has") ||
-                        method.Name.StartsWith("is")))
+                        (method.Name.StartsWith("get", StringComparison.InvariantCultureIgnoreCase) ||
+                        method.Name.StartsWith("has", StringComparison.InvariantCultureIgnoreCase) ||
+                        method.Name.StartsWith("is", StringComparison.InvariantCultureIgnoreCase)))
                     {
                         // function returns the result
                         new PropertyDefinition(method);
                         c.Methods.Remove(method);
                         i--;
                     }
-                    else if (method.Parameters.Length == 1 && method.Name.StartsWith("get") &&
+                    else if (method.Parameters.Length == 1 &&
+                        method.Name.StartsWith("get", StringComparison.InvariantCultureIgnoreCase) &&
                         method.ReturnType.IsBasic && method.ReturnType.ManagedName == "void")
                     {
                         // function writes the result to a given pointer
@@ -187,13 +188,14 @@ namespace BulletSharpGen
                 for (i = 0; i < c.Methods.Count; i++)
                 {
                     var method = c.Methods[i];
-                    if (method.Parameters.Length == 1 && method.Name.StartsWith("set"))
+                    if (method.Parameters.Length == 1 &&
+                        method.Name.StartsWith("set", StringComparison.InvariantCultureIgnoreCase))
                     {
                         string name = method.Name.Substring(3);
                         // Find the property with the matching getter
                         foreach (PropertyDefinition prop in c.Properties)
                         {
-                            if (prop.VerblessName.Equals(name))
+                            if (prop.Name.Equals(name))
                             {
                                 prop.Setter = method;
                                 method.Property = prop;
@@ -472,6 +474,8 @@ namespace BulletSharpGen
                     return "CollisionShape::GetManaged(";
                 case "OverlappingPairCache":
                     return "OverlappingPairCache::GetManaged(";
+                case "Quaternion":
+                    return "Math::BtQuatToQuaternion(&";
                 case "Transform":
                     return "Math::BtTransformToMatrix(&";
                 case "Vector3":
@@ -486,6 +490,7 @@ namespace BulletSharpGen
             switch (getter.ReturnType.ManagedName)
             {
                 case "CollisionShape":
+                case "Quaternion":
                 case "Transform":
                 case "Vector3":
                     return ")";
@@ -498,6 +503,8 @@ namespace BulletSharpGen
         {
             switch (field.Type.ManagedName)
             {
+                case "Quaternion":
+                    return "Math::QuaternionToBtQuat(" + parameter.Name + ", &_native->" + field.Name + ')';
                 case "Transform":
                     return "Math::MatrixToBtTransform(" + parameter.Name + ", &_native->" + field.Name + ')';
                 case "Vector3":

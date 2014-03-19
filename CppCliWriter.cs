@@ -142,6 +142,62 @@ namespace BulletSharpGen
             }
         }
 
+        void OutputMethodMarshal(MethodDefinition method, int numParameters)
+        {
+            SourceWrite(method.Name);
+            SourceWrite('(');
+            for (int i = 0; i < numParameters; i++)
+            {
+                var param = method.Parameters[i];
+                string marshal = BulletParser.GetTypeMarshal(param);
+                if (!string.IsNullOrEmpty(marshal))
+                {
+                    SourceWrite(marshal);
+                }
+                else if (param.Type.IsBasic)
+                {
+                    SourceWrite(param.Name);
+                }
+                else
+                {
+                    if (param.Type.IsPointer || param.Type.IsReference)
+                    {
+                        if (param.Type.IsReference)
+                        {
+                            // Dereference
+                            SourceWrite('*');
+                        }
+
+                        if (param.Type.Referenced.Target != null &&
+                            param.Type.Referenced.Target.BaseClass != null)
+                        {
+                            // Cast native pointer from base class
+                            SourceWrite('(');
+                            SourceWrite(param.Type.Referenced.FullName);
+                            SourceWrite("*)");
+                        }
+                    }
+                    SourceWrite(param.Name);
+                    SourceWrite("->_native");
+                }
+
+                // Any more parameters?
+                if (i != numParameters - 1)
+                {
+                    if (_sourceLineLength >= LineBreakWidth)
+                    {
+                        SourceWriteLine(",");
+                        WriteTabs(2, true);
+                    }
+                    else
+                    {
+                        SourceWrite(", ");
+                    }
+                }
+            }
+            SourceWrite(')');
+        }
+
         void OutputMethod(MethodDefinition method, int level, int numOptionalParams = 0)
         {
             WriteTabs(level + 1);
@@ -171,7 +227,7 @@ namespace BulletSharpGen
             {
                 if (method.Property != null)
                 {
-                    SourceWrite(method.Property.VerblessName);
+                    SourceWrite(method.Property.Name);
                     SourceWrite("::");
                     if (method.Property.Getter.Equals(method))
                     {
@@ -254,37 +310,7 @@ namespace BulletSharpGen
                 if (doConstructorChaining)
                 {
                     SourceWrite("new ");
-                    SourceWrite(method.Parent.Name);
-                    SourceWrite('(');
-                    for (int i = 0; i < numParameters; i++)
-                    {
-                        var param = method.Parameters[i];
-                        SourceWrite(param.Name);
-                        if (!param.Type.IsBasic)
-                        {
-                            SourceWrite("->_native");
-                        }
-
-                        if (param.IsOptional)
-                        {
-                            hasOptionalParam = true;
-                        }
-
-                        // Any more parameters?
-                        if (i != numParameters - 1)
-                        {
-                            if (_sourceLineLength >= LineBreakWidth)
-                            {
-                                SourceWriteLine(",");
-                                WriteTabs(2, true);
-                            }
-                            else
-                            {
-                                SourceWrite(", ");
-                            }
-                        }
-                    }
-                    SourceWrite(')');
+                    OutputMethodMarshal(method, numParameters);
                 }
                 else
                 {
@@ -374,67 +400,7 @@ namespace BulletSharpGen
                             SourceWrite("_native->");
                         }
                     }
-                    SourceWrite(method.Name);
-                    SourceWrite('(');
-                    for (int i = 0; i < numParameters; i++)
-                    {
-                        var param = method.Parameters[i];
-
-                        string marshal = BulletParser.GetTypeMarshal(param);
-                        if (string.IsNullOrEmpty(marshal))
-                        {
-                            if (param.Type.IsBasic)
-                            {
-                                SourceWrite(param.Name);
-                            }
-                            else
-                            {
-                                if (param.Type.IsPointer || param.Type.IsReference)
-                                {
-                                    if (param.Type.IsReference)
-                                    {
-                                        // Dereference
-                                        SourceWrite('*');
-                                    }
-
-                                    if (param.Type.Referenced.Target != null &&
-                                        param.Type.Referenced.Target.BaseClass != null)
-                                    {
-                                        // Cast native pointer from base class
-                                        SourceWrite('(');
-                                        SourceWrite(param.Type.Referenced.FullName);
-                                        SourceWrite("*)");
-                                    }
-                                }
-                                SourceWrite(param.Name);
-                                SourceWrite("->_native");
-                            }
-                        }
-                        else
-                        {
-                            SourceWrite(marshal);
-                        }
-
-                        if (param.IsOptional)
-                        {
-                            hasOptionalParam = true;
-                        }
-
-                        // Any more parameters?
-                        if (i != numParameters - 1)
-                        {
-                            if (_sourceLineLength >= LineBreakWidth)
-                            {
-                                SourceWriteLine(",");
-                                WriteTabs(2, true);
-                            }
-                            else
-                            {
-                                SourceWrite(", ");
-                            }
-                        }
-                    }
-                    SourceWrite(')');
+                    OutputMethodMarshal(method, numParameters);
                 }
                 if (!method.IsConstructor && !(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
                 {
@@ -615,18 +581,19 @@ namespace BulletSharpGen
 
                 string typeRefName = BulletParser.GetTypeRefName(prop.Type);
 
+                /*
+                // If property name matches type name, resolve ambiguity
+                if (prop.Name.Equals(prop.Type.ManagedName))
+                {
+                    typeRefName = namespaceName + "::" + typeRefName;
+                }
+                */
+
                 WriteTabs(level + 1);
                 HeaderWrite("property ");
                 HeaderWrite(typeRefName);
                 HeaderWrite(" ");
-                if (prop.Getter.ManagedName.StartsWith("Get"))
-                {
-                    headerWriter.WriteLine(prop.VerblessName);
-                }
-                else
-                {
-                    headerWriter.WriteLine(prop.Getter.ManagedName);
-                }
+                headerWriter.WriteLine(prop.Name);
                 WriteTabs(level + 1);
                 headerWriter.WriteLine("{");
                 
@@ -769,11 +736,6 @@ namespace BulletSharpGen
 
         static void FindForwardReferences(List<ClassDefinition> forwardRefs, ClassDefinition c)
         {
-            if (c.ManagedName.Equals("CollisionAlgorithmConstructionInfo"))
-            {
-                "".ToCharArray();
-            }
-
             foreach (PropertyDefinition prop in c.Properties)
             {
                 AddForwardReference(forwardRefs, prop.Type, c.Header);
