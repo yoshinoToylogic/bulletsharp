@@ -457,7 +457,7 @@
 #define btSoftBody_Tetra void
 #else
 #define btSoftBody_eAeroModel btSoftBody::eAeroModel
-#define btSoftBody_eFeature btSoftBody::eFeature
+#define btSoftBody_eFeature btSoftBody::eFeature::_
 #define btSoftBody_ePSolver btSoftBody::ePSolver
 #define btSoftBody_eSolverPresets btSoftBody::eSolverPresets
 #define btSoftBody_eVSolver btSoftBody::eVSolver
