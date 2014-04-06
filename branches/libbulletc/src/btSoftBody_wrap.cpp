@@ -94,6 +94,7 @@ void btSoftBodyWorldInfo_delete(btSoftBodyWorldInfo* obj)
 	delete obj;
 }
 
+
 btSoftBody_sRayCast* btSoftBody_sRayCast_new()
 {
 	return new btSoftBody_sRayCast();
@@ -104,9 +105,9 @@ btSoftBody* btSoftBody_sRayCast_getBody(btSoftBody_sRayCast* obj)
 	return obj->body;
 }
 
-void btSoftBody_sRayCast_getFeature(btSoftBody_sRayCast* obj)
+btSoftBody::eFeature::_ btSoftBody_sRayCast_getFeature(btSoftBody_sRayCast* obj)
 {
-	obj->feature;
+	return obj->feature;
 }
 
 btScalar btSoftBody_sRayCast_getFraction(btSoftBody_sRayCast* obj)
@@ -123,12 +124,12 @@ void btSoftBody_sRayCast_setBody(btSoftBody_sRayCast* obj, btSoftBody* value)
 {
 	obj->body = value;
 }
-/*
-void btSoftBody_sRayCast_setFeature(btSoftBody_sRayCast* obj, void value)
+
+void btSoftBody_sRayCast_setFeature(btSoftBody_sRayCast* obj, btSoftBody::eFeature::_ value)
 {
 	obj->feature = value;
 }
-*/
+
 void btSoftBody_sRayCast_setFraction(btSoftBody_sRayCast* obj, btScalar value)
 {
 	obj->fraction = value;
@@ -144,6 +145,7 @@ void btSoftBody_sRayCast_delete(btSoftBody_sRayCast* obj)
 	delete obj;
 }
 
+
 btScalar btSoftBody_ImplicitFn_Eval(btSoftBody_ImplicitFn* obj, btScalar* x)
 {
 	VECTOR3_CONV(x);
@@ -155,19 +157,20 @@ void btSoftBody_ImplicitFn_delete(btSoftBody_ImplicitFn* obj)
 	delete obj;
 }
 
+
 btSoftBody_sCti* btSoftBody_sCti_new()
 {
 	return new btSoftBody_sCti();
 }
-/*
-btCollisionObject* btSoftBody_sCti_getColObj(btSoftBody_sCti* obj)
+
+const btCollisionObject* btSoftBody_sCti_getColObj(btSoftBody_sCti* obj)
 {
 	return obj->m_colObj;
 }
-*/
-void btSoftBody_sCti_getNormal(btSoftBody_sCti* obj)
+
+void btSoftBody_sCti_getNormal(btSoftBody_sCti* obj, btScalar* value)
 {
-	obj->m_normal;
+	VECTOR3_OUT(&obj->m_normal, value);
 }
 
 btScalar btSoftBody_sCti_getOffset(btSoftBody_sCti* obj)
@@ -179,13 +182,12 @@ void btSoftBody_sCti_setColObj(btSoftBody_sCti* obj, btCollisionObject* value)
 {
 	obj->m_colObj = value;
 }
-/*
-void btSoftBody_sCti_setNormal(btSoftBody_sCti* obj, void value)
+
+void btSoftBody_sCti_setNormal(btSoftBody_sCti* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_normal = value;
+	VECTOR3_IN(value, &obj->m_normal);
 }
-*/
+
 void btSoftBody_sCti_setOffset(btSoftBody_sCti* obj, btScalar value)
 {
 	obj->m_offset = value;
@@ -195,6 +197,7 @@ void btSoftBody_sCti_delete(btSoftBody_sCti* obj)
 {
 	delete obj;
 }
+
 
 btSoftBody_sMedium* btSoftBody_sMedium_new()
 {
@@ -211,9 +214,9 @@ btScalar btSoftBody_sMedium_getPressure(btSoftBody_sMedium* obj)
 	return obj->m_pressure;
 }
 
-void btSoftBody_sMedium_getVelocity(btSoftBody_sMedium* obj)
+void btSoftBody_sMedium_getVelocity(btSoftBody_sMedium* obj, btScalar* value)
 {
-	obj->m_velocity;
+	VECTOR3_OUT(&obj->m_velocity, value);
 }
 
 void btSoftBody_sMedium_setDensity(btSoftBody_sMedium* obj, btScalar value)
@@ -225,17 +228,17 @@ void btSoftBody_sMedium_setPressure(btSoftBody_sMedium* obj, btScalar value)
 {
 	obj->m_pressure = value;
 }
-/*
-void btSoftBody_sMedium_setVelocity(btSoftBody_sMedium* obj, void value)
+
+void btSoftBody_sMedium_setVelocity(btSoftBody_sMedium* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_velocity = value;
+	VECTOR3_IN(value, &obj->m_velocity);
 }
-*/
+
 void btSoftBody_sMedium_delete(btSoftBody_sMedium* obj)
 {
 	delete obj;
 }
+
 
 btSoftBody_Element* btSoftBody_Element_new()
 {
@@ -256,6 +259,7 @@ void btSoftBody_Element_delete(btSoftBody_Element* obj)
 {
 	delete obj;
 }
+
 
 btSoftBody_Material* btSoftBody_Material_new()
 {
@@ -302,6 +306,7 @@ void btSoftBody_Material_setKVST(btSoftBody_Material* obj, btScalar value)
 	obj->m_kVST = value;
 }
 
+
 btSoftBody_Feature* btSoftBody_Feature_new()
 {
 	return new btSoftBody_Feature();
@@ -316,6 +321,7 @@ void btSoftBody_Feature_setMaterial(btSoftBody_Feature* obj, btSoftBody_Material
 {
 	obj->m_material = value;
 }
+
 
 btSoftBody_Node* btSoftBody_Node_new()
 {
@@ -332,9 +338,9 @@ int btSoftBody_Node_getBattach(btSoftBody_Node* obj)
 	return obj->m_battach;
 }
 
-void btSoftBody_Node_getF(btSoftBody_Node* obj)
+void btSoftBody_Node_getF(btSoftBody_Node* obj, btScalar* value)
 {
-	obj->m_f;
+	VECTOR3_OUT(&obj->m_f, value);
 }
 
 btScalar btSoftBody_Node_getIm(btSoftBody_Node* obj)
@@ -347,24 +353,24 @@ btDbvtNode* btSoftBody_Node_getLeaf(btSoftBody_Node* obj)
 	return obj->m_leaf;
 }
 
-void btSoftBody_Node_getN(btSoftBody_Node* obj)
+void btSoftBody_Node_getN(btSoftBody_Node* obj, btScalar* value)
 {
-	obj->m_n;
+	VECTOR3_OUT(&obj->m_n, value);
 }
 
-void btSoftBody_Node_getQ(btSoftBody_Node* obj)
+void btSoftBody_Node_getQ(btSoftBody_Node* obj, btScalar* value)
 {
-	obj->m_q;
+	VECTOR3_OUT(&obj->m_q, value);
 }
 
-void btSoftBody_Node_getV(btSoftBody_Node* obj)
+void btSoftBody_Node_getV(btSoftBody_Node* obj, btScalar* value)
 {
-	obj->m_v;
+	VECTOR3_OUT(&obj->m_v, value);
 }
 
-void btSoftBody_Node_getX(btSoftBody_Node* obj)
+void btSoftBody_Node_getX(btSoftBody_Node* obj, btScalar* value)
 {
-	obj->m_x;
+	VECTOR3_OUT(&obj->m_x, value);
 }
 
 void btSoftBody_Node_setArea(btSoftBody_Node* obj, btScalar value)
@@ -376,13 +382,12 @@ void btSoftBody_Node_setBattach(btSoftBody_Node* obj, int value)
 {
 	obj->m_battach = value;
 }
-/*
-void btSoftBody_Node_setF(btSoftBody_Node* obj, void value)
+
+void btSoftBody_Node_setF(btSoftBody_Node* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_f = value;
+	VECTOR3_IN(value, &obj->m_f);
 }
-*/
+
 void btSoftBody_Node_setIm(btSoftBody_Node* obj, btScalar value)
 {
 	obj->m_im = value;
@@ -392,31 +397,28 @@ void btSoftBody_Node_setLeaf(btSoftBody_Node* obj, btDbvtNode* value)
 {
 	obj->m_leaf = value;
 }
-/*
-void btSoftBody_Node_setN(btSoftBody_Node* obj, void value)
+
+void btSoftBody_Node_setN(btSoftBody_Node* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_n = value;
+	VECTOR3_IN(value, &obj->m_n);
 }
 
-void btSoftBody_Node_setQ(btSoftBody_Node* obj, void value)
+void btSoftBody_Node_setQ(btSoftBody_Node* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_q = value;
+	VECTOR3_IN(value, &obj->m_q);
 }
 
-void btSoftBody_Node_setV(btSoftBody_Node* obj, void value)
+void btSoftBody_Node_setV(btSoftBody_Node* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_v = value;
+	VECTOR3_IN(value, &obj->m_v);
 }
 
-void btSoftBody_Node_setX(btSoftBody_Node* obj, void value)
+void btSoftBody_Node_setX(btSoftBody_Node* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_x = value;
+	VECTOR3_IN(value, &obj->m_x);
 }
-*/
+
+
 btSoftBody_Link* btSoftBody_Link_new()
 {
 	return new btSoftBody_Link();
@@ -442,16 +444,16 @@ btScalar btSoftBody_Link_getC2(btSoftBody_Link* obj)
 	return obj->m_c2;
 }
 
-void btSoftBody_Link_getC3(btSoftBody_Link* obj)
+void btSoftBody_Link_getC3(btSoftBody_Link* obj, btScalar* value)
 {
-	obj->m_c3;
+	VECTOR3_OUT(&obj->m_c3, value);
 }
-/*
-* btSoftBody_Link_getN(btSoftBody_Link* obj)
+
+btSoftBody::Node** btSoftBody_Link_getN(btSoftBody_Link* obj)
 {
 	return obj->m_n;
 }
-*/
+
 btScalar btSoftBody_Link_getRl(btSoftBody_Link* obj)
 {
 	return obj->m_rl;
@@ -476,13 +478,12 @@ void btSoftBody_Link_setC2(btSoftBody_Link* obj, btScalar value)
 {
 	obj->m_c2 = value;
 }
-/*
-void btSoftBody_Link_setC3(btSoftBody_Link* obj, void value)
-{
-	VECTOR3_CONV(value);
-	obj->m_c3 = value;
-}
 
+void btSoftBody_Link_setC3(btSoftBody_Link* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_c3);
+}
+/*
 void btSoftBody_Link_setN(btSoftBody_Link* obj, * value)
 {
 	obj->m_n = value;
@@ -493,6 +494,7 @@ void btSoftBody_Link_setRl(btSoftBody_Link* obj, btScalar value)
 	obj->m_rl = value;
 }
 
+
 btSoftBody_Face* btSoftBody_Face_new()
 {
 	return new btSoftBody_Face();
@@ -502,15 +504,15 @@ btDbvtNode* btSoftBody_Face_getLeaf(btSoftBody_Face* obj)
 {
 	return obj->m_leaf;
 }
-/*
-* btSoftBody_Face_getN(btSoftBody_Face* obj)
+
+btSoftBody::Node** btSoftBody_Face_getN(btSoftBody_Face* obj)
 {
 	return obj->m_n;
 }
-*/
-void btSoftBody_Face_getNormal(btSoftBody_Face* obj)
+
+void btSoftBody_Face_getNormal(btSoftBody_Face* obj, btScalar* value)
 {
-	obj->m_normal;
+	VECTOR3_OUT(&obj->m_normal, value);
 }
 
 btScalar btSoftBody_Face_getRa(btSoftBody_Face* obj)
@@ -527,17 +529,17 @@ void btSoftBody_Face_setN(btSoftBody_Face* obj, * value)
 {
 	obj->m_n = value;
 }
-
-void btSoftBody_Face_setNormal(btSoftBody_Face* obj, void value)
-{
-	VECTOR3_CONV(value);
-	obj->m_normal = value;
-}
 */
+void btSoftBody_Face_setNormal(btSoftBody_Face* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_normal);
+}
+
 void btSoftBody_Face_setRa(btSoftBody_Face* obj, btScalar value)
 {
 	obj->m_ra = value;
 }
+
 
 btSoftBody_Tetra* btSoftBody_Tetra_new()
 {
@@ -563,12 +565,12 @@ btDbvtNode* btSoftBody_Tetra_getLeaf(btSoftBody_Tetra* obj)
 {
 	return obj->m_leaf;
 }
-/*
-* btSoftBody_Tetra_getN(btSoftBody_Tetra* obj)
+
+btSoftBody::Node** btSoftBody_Tetra_getN(btSoftBody_Tetra* obj)
 {
 	return obj->m_n;
 }
-*/
+
 btScalar btSoftBody_Tetra_getRv(btSoftBody_Tetra* obj)
 {
 	return obj->m_rv;
@@ -605,19 +607,20 @@ void btSoftBody_Tetra_setRv(btSoftBody_Tetra* obj, btScalar value)
 	obj->m_rv = value;
 }
 
+
 btSoftBody_RContact* btSoftBody_RContact_new()
 {
 	return new btSoftBody_RContact();
 }
 
-void btSoftBody_RContact_getC0(btSoftBody_RContact* obj)
+void btSoftBody_RContact_getC0(btSoftBody_RContact* obj, btScalar* value)
 {
-	obj->m_c0;
+	MATRIX3X3_OUT(&obj->m_c0, value);
 }
 
-void btSoftBody_RContact_getC1(btSoftBody_RContact* obj)
+void btSoftBody_RContact_getC1(btSoftBody_RContact* obj, btScalar* value)
 {
-	obj->m_c1;
+	VECTOR3_OUT(&obj->m_c1, value);
 }
 
 btScalar btSoftBody_RContact_getC2(btSoftBody_RContact* obj)
@@ -635,27 +638,26 @@ btScalar btSoftBody_RContact_getC4(btSoftBody_RContact* obj)
 	return obj->m_c4;
 }
 
-void btSoftBody_RContact_getCti(btSoftBody_RContact* obj)
+btSoftBody::sCti* btSoftBody_RContact_getCti(btSoftBody_RContact* obj)
 {
-	obj->m_cti;
+	return &obj->m_cti;
 }
 
 btSoftBody_Node* btSoftBody_RContact_getNode(btSoftBody_RContact* obj)
 {
 	return obj->m_node;
 }
-/*
-void btSoftBody_RContact_setC0(btSoftBody_RContact* obj, void value)
+
+void btSoftBody_RContact_setC0(btSoftBody_RContact* obj, btScalar* value)
 {
-	obj->m_c0 = value;
+	MATRIX3X3_OUT(&obj->m_c0, value);
 }
 
-void btSoftBody_RContact_setC1(btSoftBody_RContact* obj, void value)
+void btSoftBody_RContact_setC1(btSoftBody_RContact* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_c1 = value;
+	VECTOR3_OUT(&obj->m_c1, value);
 }
-*/
+
 void btSoftBody_RContact_setC2(btSoftBody_RContact* obj, btScalar value)
 {
 	obj->m_c2 = value;
@@ -685,6 +687,7 @@ void btSoftBody_RContact_delete(btSoftBody_RContact* obj)
 {
 	delete obj;
 }
+
 
 btSoftBody_SContact* btSoftBody_SContact_new()
 {

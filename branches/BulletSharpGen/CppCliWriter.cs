@@ -509,7 +509,7 @@ namespace BulletSharpGen
             EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
             WriteTabs(level + 1);
-            SourceWrite(c.ManagedName);
+            SourceWrite(c.FullNameManaged);
             SourceWrite("::");
             Write(c.ManagedName);
             Write('(');

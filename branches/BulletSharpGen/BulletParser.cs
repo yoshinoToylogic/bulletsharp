@@ -281,7 +281,7 @@ namespace BulletSharpGen
             foreach (ClassDefinition c in classDefinitions.Values)
             {
                 c.Methods.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
-                c.Properties.Sort((p1, p2) => p1.VerblessName.CompareTo(p2.VerblessName));
+                c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
             }
             /*
             // Apply transformations
@@ -453,6 +453,8 @@ namespace BulletSharpGen
         {
             switch (parameter.Type.ManagedName)
             {
+                case "IDebugDraw":
+                    return "DebugDraw::GetUnmanaged(" + parameter.Name + ")";
                 case "Quaternion":
                     return "QUATERNION_USE(" + parameter.Name + ")";
                 case "Transform":
@@ -472,6 +474,8 @@ namespace BulletSharpGen
             {
                 case "CollisionShape":
                     return "CollisionShape::GetManaged(";
+                case "IDebugDraw":
+                    return "DebugDraw::GetUnmanaged(";
                 case "OverlappingPairCache":
                     return "OverlappingPairCache::GetManaged(";
                 case "Quaternion":
@@ -490,6 +494,7 @@ namespace BulletSharpGen
             switch (getter.ReturnType.ManagedName)
             {
                 case "CollisionShape":
+                case "IDebugDraw":
                 case "Quaternion":
                 case "Transform":
                 case "Vector3":
