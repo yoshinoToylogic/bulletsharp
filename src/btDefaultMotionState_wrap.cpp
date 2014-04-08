@@ -41,17 +41,17 @@ void* btDefaultMotionState_getUserPointer(btDefaultMotionState* obj)
 
 void btDefaultMotionState_setCenterOfMassOffset(btDefaultMotionState* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_centerOfMassOffset);
+	TRANSFORM_IN(value, &obj->m_centerOfMassOffset);
 }
 
 void btDefaultMotionState_setGraphicsWorldTrans(btDefaultMotionState* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_graphicsWorldTrans);
+	TRANSFORM_IN(value, &obj->m_graphicsWorldTrans);
 }
 
 void btDefaultMotionState_setStartWorldTrans(btDefaultMotionState* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_startWorldTrans);
+	TRANSFORM_IN(value, &obj->m_startWorldTrans);
 }
 
 void btDefaultMotionState_setUserPointer(btDefaultMotionState* obj, void* value)

@@ -355,7 +355,7 @@ btScalar btWheelInfo_getWheelsSuspensionForce(btWheelInfo* obj)
 
 void btWheelInfo_getWorldTransform(btWheelInfo* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_worldTransform);
+	TRANSFORM_IN(value, &obj->m_worldTransform);
 }
 
 void btWheelInfo_setBIsFrontWheel(btWheelInfo* obj, bool value)
@@ -480,7 +480,7 @@ void btWheelInfo_setWheelsSuspensionForce(btWheelInfo* obj, btScalar value)
 
 void btWheelInfo_setWorldTransform(btWheelInfo* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_worldTransform);
+	TRANSFORM_IN(value, &obj->m_worldTransform);
 }
 
 void btWheelInfo_updateWheel(btWheelInfo* obj, btRigidBody* chassis, btWheelInfo_RaycastInfo* raycastInfo)

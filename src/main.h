@@ -415,6 +415,7 @@
 #endif
 
 #ifndef _BT_SOFT_BODY_H
+#define btAlignedNodeArray void
 #define btSoftBody void
 #define btSoftBodyWorldInfo void
 #define btSoftBody_eAeroModel int
@@ -456,6 +457,7 @@
 #define btSoftBody_sRayCast void
 #define btSoftBody_Tetra void
 #else
+#define btAlignedNodeArray btAlignedObjectArray<btSoftBody::Node*>
 #define btSoftBody_eAeroModel btSoftBody::eAeroModel
 #define btSoftBody_eFeature btSoftBody::eFeature::_
 #define btSoftBody_ePSolver btSoftBody::ePSolver

@@ -719,14 +719,14 @@ btSoftBody_Node* btSoftBody_SContact_getNode(btSoftBody_SContact* obj)
 	return obj->m_node;
 }
 
-void btSoftBody_SContact_getNormal(btSoftBody_SContact* obj)
+void btSoftBody_SContact_getNormal(btSoftBody_SContact* obj, btScalar* value)
 {
-	obj->m_normal;
+	VECTOR3_OUT(&obj->m_normal, value);
 }
 
-void btSoftBody_SContact_getWeights(btSoftBody_SContact* obj)
+void btSoftBody_SContact_getWeights(btSoftBody_SContact* obj, btScalar* value)
 {
-	obj->m_weights;
+	VECTOR3_OUT(&obj->m_weights, value);
 }
 /*
 void btSoftBody_SContact_setCfm(btSoftBody_SContact* obj, btScalar* value)
@@ -753,23 +753,22 @@ void btSoftBody_SContact_setNode(btSoftBody_SContact* obj, btSoftBody_Node* valu
 {
 	obj->m_node = value;
 }
-/*
-void btSoftBody_SContact_setNormal(btSoftBody_SContact* obj, void value)
+
+void btSoftBody_SContact_setNormal(btSoftBody_SContact* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_normal = value;
+	VECTOR3_IN(value, &obj->m_normal);
 }
 
-void btSoftBody_SContact_setWeights(btSoftBody_SContact* obj, void value)
+void btSoftBody_SContact_setWeights(btSoftBody_SContact* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_weights = value;
+	VECTOR3_IN(value, &obj->m_weights);
 }
-*/
+
 void btSoftBody_SContact_delete(btSoftBody_SContact* obj)
 {
 	delete obj;
 }
+
 
 btSoftBody_Anchor* btSoftBody_Anchor_new()
 {
@@ -781,14 +780,14 @@ btRigidBody* btSoftBody_Anchor_getBody(btSoftBody_Anchor* obj)
 	return obj->m_body;
 }
 
-void btSoftBody_Anchor_getC0(btSoftBody_Anchor* obj)
+void btSoftBody_Anchor_getC0(btSoftBody_Anchor* obj, btScalar* value)
 {
-	obj->m_c0;
+	MATRIX3X3_OUT(&obj->m_c0, value);
 }
 
-void btSoftBody_Anchor_getC1(btSoftBody_Anchor* obj)
+void btSoftBody_Anchor_getC1(btSoftBody_Anchor* obj, btScalar* value)
 {
-	obj->m_c1;
+	VECTOR3_OUT(&obj->m_c1, value);
 }
 
 btScalar btSoftBody_Anchor_getC2(btSoftBody_Anchor* obj)
@@ -801,9 +800,9 @@ btScalar btSoftBody_Anchor_getInfluence(btSoftBody_Anchor* obj)
 	return obj->m_influence;
 }
 
-void btSoftBody_Anchor_getLocal(btSoftBody_Anchor* obj)
+void btSoftBody_Anchor_getLocal(btSoftBody_Anchor* obj, btScalar* value)
 {
-	obj->m_local;
+	VECTOR3_OUT(&obj->m_local, value);
 }
 
 btSoftBody_Node* btSoftBody_Anchor_getNode(btSoftBody_Anchor* obj)
@@ -815,18 +814,17 @@ void btSoftBody_Anchor_setBody(btSoftBody_Anchor* obj, btRigidBody* value)
 {
 	obj->m_body = value;
 }
-/*
-void btSoftBody_Anchor_setC0(btSoftBody_Anchor* obj, void value)
+
+void btSoftBody_Anchor_setC0(btSoftBody_Anchor* obj, btScalar* value)
 {
-	obj->m_c0 = value;
+	MATRIX3X3_IN(value, &obj->m_c0);
 }
 
-void btSoftBody_Anchor_setC1(btSoftBody_Anchor* obj, void value)
+void btSoftBody_Anchor_setC1(btSoftBody_Anchor* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_c1 = value;
+	VECTOR3_IN(value, &obj->m_c1);
 }
-*/
+
 void btSoftBody_Anchor_setC2(btSoftBody_Anchor* obj, btScalar value)
 {
 	obj->m_c2 = value;
@@ -836,13 +834,12 @@ void btSoftBody_Anchor_setInfluence(btSoftBody_Anchor* obj, btScalar value)
 {
 	obj->m_influence = value;
 }
-/*
-void btSoftBody_Anchor_setLocal(btSoftBody_Anchor* obj, void value)
+
+void btSoftBody_Anchor_setLocal(btSoftBody_Anchor* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_local = value;
+	VECTOR3_IN(value, &obj->m_local);
 }
-*/
+
 void btSoftBody_Anchor_setNode(btSoftBody_Anchor* obj, btSoftBody_Node* value)
 {
 	obj->m_node = value;
@@ -853,6 +850,7 @@ void btSoftBody_Anchor_delete(btSoftBody_Anchor* obj)
 	delete obj;
 }
 
+
 btSoftBody_Note* btSoftBody_Note_new()
 {
 	return new btSoftBody_Note();
@@ -862,12 +860,12 @@ btScalar* btSoftBody_Note_getCoords(btSoftBody_Note* obj)
 {
 	return obj->m_coords;
 }
-/*
-* btSoftBody_Note_getNodes(btSoftBody_Note* obj)
+
+btSoftBody_Node** btSoftBody_Note_getNodes(btSoftBody_Note* obj)
 {
 	return obj->m_nodes;
 }
-*/
+
 void btSoftBody_Note_getOffset(btSoftBody_Note* obj)
 {
 	obj->m_offset;
@@ -892,31 +890,31 @@ void btSoftBody_Note_setNodes(btSoftBody_Note* obj, * value)
 {
 	obj->m_nodes = value;
 }
-
-void btSoftBody_Note_setOffset(btSoftBody_Note* obj, void value)
-{
-	VECTOR3_CONV(value);
-	obj->m_offset = value;
-}
 */
+void btSoftBody_Note_setOffset(btSoftBody_Note* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_offset);
+}
+
 void btSoftBody_Note_setRank(btSoftBody_Note* obj, int value)
 {
 	obj->m_rank = value;
 }
 
-void btSoftBody_Note_setText(btSoftBody_Note* obj, char* value)
+void btSoftBody_Note_setText(btSoftBody_Note* obj, const char* value)
 {
 	obj->m_text = value;
 }
+
 
 btSoftBody_Pose* btSoftBody_Pose_new()
 {
 	return new btSoftBody_Pose();
 }
 
-void btSoftBody_Pose_getAqq(btSoftBody_Pose* obj)
+void btSoftBody_Pose_getAqq(btSoftBody_Pose* obj, btScalar* value)
 {
-	obj->m_aqq;
+	MATRIX3X3_OUT(&obj->m_aqq, value);
 }
 
 bool btSoftBody_Pose_getBframe(btSoftBody_Pose* obj)
@@ -929,41 +927,41 @@ bool btSoftBody_Pose_getBvolume(btSoftBody_Pose* obj)
 	return obj->m_bvolume;
 }
 
-void btSoftBody_Pose_getCom(btSoftBody_Pose* obj)
+void btSoftBody_Pose_getCom(btSoftBody_Pose* obj, btScalar* value)
 {
-	obj->m_com;
-}
-/*
-btAlignedObjectArray* btSoftBody_Pose_getPos(btSoftBody_Pose* obj)
-{
-	return obj->m_pos;
-}
-*/
-void btSoftBody_Pose_getRot(btSoftBody_Pose* obj)
-{
-	obj->m_rot;
+	VECTOR3_OUT(&obj->m_com, value);
 }
 
-void btSoftBody_Pose_getScl(btSoftBody_Pose* obj)
+btSoftBody::tVector3Array* btSoftBody_Pose_getPos(btSoftBody_Pose* obj)
 {
-	obj->m_scl;
+	return &obj->m_pos;
 }
-/*
-btAlignedObjectArray* btSoftBody_Pose_getWgh(btSoftBody_Pose* obj)
+
+void btSoftBody_Pose_getRot(btSoftBody_Pose* obj, btScalar* value)
 {
-	return obj->m_wgh;
+	MATRIX3X3_OUT(&obj->m_rot, value);
 }
-*/
+
+void btSoftBody_Pose_getScl(btSoftBody_Pose* obj, btScalar* value)
+{
+	MATRIX3X3_OUT(&obj->m_scl, value);
+}
+
+btSoftBody::tScalarArray* btSoftBody_Pose_getWgh(btSoftBody_Pose* obj)
+{
+	return &obj->m_wgh;
+}
+
 btScalar btSoftBody_Pose_getVolume(btSoftBody_Pose* obj)
 {
 	return obj->m_volume;
 }
-/*
-void btSoftBody_Pose_setAqq(btSoftBody_Pose* obj, void value)
+
+void btSoftBody_Pose_setAqq(btSoftBody_Pose* obj, btScalar* value)
 {
-	obj->m_aqq = value;
+	MATRIX3X3_IN(value, &obj->m_aqq);
 }
-*/
+
 void btSoftBody_Pose_setBframe(btSoftBody_Pose* obj, bool value)
 {
 	obj->m_bframe = value;
@@ -973,28 +971,27 @@ void btSoftBody_Pose_setBvolume(btSoftBody_Pose* obj, bool value)
 {
 	obj->m_bvolume = value;
 }
-/*
-void btSoftBody_Pose_setCom(btSoftBody_Pose* obj, void value)
-{
-	VECTOR3_CONV(value);
-	obj->m_com = value;
-}
 
+void btSoftBody_Pose_setCom(btSoftBody_Pose* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_com);
+}
+/*
 void btSoftBody_Pose_setPos(btSoftBody_Pose* obj, btAlignedObjectArray* value)
 {
 	obj->m_pos = value;
 }
-
-void btSoftBody_Pose_setRot(btSoftBody_Pose* obj, void value)
+*/
+void btSoftBody_Pose_setRot(btSoftBody_Pose* obj, btScalar* value)
 {
-	obj->m_rot = value;
+	MATRIX3X3_IN(value, &obj->m_rot);
 }
 
-void btSoftBody_Pose_setScl(btSoftBody_Pose* obj, void value)
+void btSoftBody_Pose_setScl(btSoftBody_Pose* obj, btScalar* value)
 {
-	obj->m_scl = value;
+	MATRIX3X3_IN(value, &obj->m_scl);
 }
-
+/*
 void btSoftBody_Pose_setWgh(btSoftBody_Pose* obj, btAlignedObjectArray* value)
 {
 	obj->m_wgh = value;
@@ -1010,6 +1007,7 @@ void btSoftBody_Pose_delete(btSoftBody_Pose* obj)
 	delete obj;
 }
 
+
 btSoftBody_Cluster* btSoftBody_Cluster_new()
 {
 	return new btSoftBody_Cluster();
@@ -1020,9 +1018,9 @@ btScalar btSoftBody_Cluster_getAdamping(btSoftBody_Cluster* obj)
 	return obj->m_adamping;
 }
 
-void btSoftBody_Cluster_getAv(btSoftBody_Cluster* obj)
+void btSoftBody_Cluster_getAv(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_av;
+	VECTOR3_OUT(&obj->m_av, value);
 }
 
 int btSoftBody_Cluster_getClusterIndex(btSoftBody_Cluster* obj)
@@ -1035,29 +1033,29 @@ bool btSoftBody_Cluster_getCollide(btSoftBody_Cluster* obj)
 	return obj->m_collide;
 }
 
-void btSoftBody_Cluster_getCom(btSoftBody_Cluster* obj)
+void btSoftBody_Cluster_getCom(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_com;
+	VECTOR3_OUT(&obj->m_com, value);
 }
 
 bool btSoftBody_Cluster_getContainsAnchor(btSoftBody_Cluster* obj)
 {
 	return obj->m_containsAnchor;
 }
-/*
-btScalar* btSoftBody_Cluster_getDimpulses(btSoftBody_Cluster* obj)
+
+btVector3* btSoftBody_Cluster_getDimpulses(btSoftBody_Cluster* obj)
 {
 	return obj->m_dimpulses;
 }
 
-btAlignedObjectArray* btSoftBody_Cluster_getFramerefs(btSoftBody_Cluster* obj)
+btSoftBody::tVector3Array* btSoftBody_Cluster_getFramerefs(btSoftBody_Cluster* obj)
 {
-	return obj->m_framerefs;
+	return &obj->m_framerefs;
 }
-*/
-void btSoftBody_Cluster_getFramexform(btSoftBody_Cluster* obj)
+
+void btSoftBody_Cluster_getFramexform(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_framexform;
+	TRANSFORM_OUT(&obj->m_framexform, value);
 }
 
 btScalar btSoftBody_Cluster_getIdmass(btSoftBody_Cluster* obj)
@@ -1070,9 +1068,9 @@ btScalar btSoftBody_Cluster_getImass(btSoftBody_Cluster* obj)
 	return obj->m_imass;
 }
 
-void btSoftBody_Cluster_getInvwi(btSoftBody_Cluster* obj)
+void btSoftBody_Cluster_getInvwi(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_invwi;
+	MATRIX3X3_OUT(&obj->m_invwi, value);
 }
 
 btScalar btSoftBody_Cluster_getLdamping(btSoftBody_Cluster* obj)
@@ -1085,21 +1083,21 @@ btDbvtNode* btSoftBody_Cluster_getLeaf(btSoftBody_Cluster* obj)
 	return obj->m_leaf;
 }
 
-void btSoftBody_Cluster_getLocii(btSoftBody_Cluster* obj)
+void btSoftBody_Cluster_getLocii(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_locii;
+	MATRIX3X3_OUT(&obj->m_locii, value);
 }
 
-void btSoftBody_Cluster_getLv(btSoftBody_Cluster* obj)
+void btSoftBody_Cluster_getLv(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_lv;
+	VECTOR3_OUT(&obj->m_lv, value);
 }
-/*
-btAlignedObjectArray* btSoftBody_Cluster_getMasses(btSoftBody_Cluster* obj)
+
+btSoftBody::tScalarArray* btSoftBody_Cluster_getMasses(btSoftBody_Cluster* obj)
 {
-	return obj->m_masses;
+	return &obj->m_masses;
 }
-*/
+
 btScalar btSoftBody_Cluster_getMatching(btSoftBody_Cluster* obj)
 {
 	return obj->m_matching;
@@ -1120,9 +1118,9 @@ int btSoftBody_Cluster_getNdimpulses(btSoftBody_Cluster* obj)
 	return obj->m_ndimpulses;
 }
 
-void btSoftBody_Cluster_getNodes(btSoftBody_Cluster* obj)
+btAlignedObjectArray<btSoftBody::Node*>* btSoftBody_Cluster_getNodes(btSoftBody_Cluster* obj)
 {
-	obj->m_nodes;
+	return &obj->m_nodes;
 }
 
 int btSoftBody_Cluster_getNvimpulses(btSoftBody_Cluster* obj)
@@ -1134,22 +1132,21 @@ btScalar btSoftBody_Cluster_getSelfCollisionImpulseFactor(btSoftBody_Cluster* ob
 {
 	return obj->m_selfCollisionImpulseFactor;
 }
-/*
-btScalar* btSoftBody_Cluster_getVimpulses(btSoftBody_Cluster* obj)
+
+btVector3* btSoftBody_Cluster_getVimpulses(btSoftBody_Cluster* obj)
 {
 	return obj->m_vimpulses;
 }
-*/
+
 void btSoftBody_Cluster_setAdamping(btSoftBody_Cluster* obj, btScalar value)
 {
 	obj->m_adamping = value;
 }
-/*
-void btSoftBody_Cluster_setAv(btSoftBody_Cluster* obj, void value)
+
+void btSoftBody_Cluster_setAv(btSoftBody_Cluster* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_av = value;
-}*/
+	VECTOR3_IN(value, &obj->m_av);
+}
 
 void btSoftBody_Cluster_setClusterIndex(btSoftBody_Cluster* obj, int value)
 {
@@ -1160,13 +1157,12 @@ void btSoftBody_Cluster_setCollide(btSoftBody_Cluster* obj, bool value)
 {
 	obj->m_collide = value;
 }
-/*
-void btSoftBody_Cluster_setCom(btSoftBody_Cluster* obj, void value)
+
+void btSoftBody_Cluster_setCom(btSoftBody_Cluster* obj, btScalar* value)
 {
-	VECTOR3_CONV(value);
-	obj->m_com = value;
+	VECTOR3_IN(value, &obj->m_com);
 }
-*/
+
 void btSoftBody_Cluster_setContainsAnchor(btSoftBody_Cluster* obj, bool value)
 {
 	obj->m_containsAnchor = value;
@@ -1182,13 +1178,12 @@ void btSoftBody_Cluster_setFramerefs(btSoftBody_Cluster* obj, btAlignedObjectArr
 {
 	obj->m_framerefs = value;
 }
-
-void btSoftBody_Cluster_setFramexform(btSoftBody_Cluster* obj, void value)
-{
-	TRANSFORM_CONV(value);
-	obj->m_framexform = value;
-}
 */
+void btSoftBody_Cluster_setFramexform(btSoftBody_Cluster* obj, btScalar* value)
+{
+	TRANSFORM_IN(value, &obj->m_framexform);
+}
+
 void btSoftBody_Cluster_setIdmass(btSoftBody_Cluster* obj, btScalar value)
 {
 	obj->m_idmass = value;
@@ -1198,12 +1193,12 @@ void btSoftBody_Cluster_setImass(btSoftBody_Cluster* obj, btScalar value)
 {
 	obj->m_imass = value;
 }
-/*
-void btSoftBody_Cluster_setInvwi(btSoftBody_Cluster* obj, void value)
+
+void btSoftBody_Cluster_setInvwi(btSoftBody_Cluster* obj, btScalar* value)
 {
-	obj->m_invwi = value;
+	MATRIX3X3_IN(value, &obj->m_invwi);
 }
-*/
+
 void btSoftBody_Cluster_setLdamping(btSoftBody_Cluster* obj, btScalar value)
 {
 	obj->m_ldamping = value;
@@ -1213,18 +1208,17 @@ void btSoftBody_Cluster_setLeaf(btSoftBody_Cluster* obj, btDbvtNode* value)
 {
 	obj->m_leaf = value;
 }
+
+void btSoftBody_Cluster_setLocii(btSoftBody_Cluster* obj, btScalar* value)
+{
+	MATRIX3X3_IN(value, &obj->m_locii);
+}
+
+void btSoftBody_Cluster_setLv(btSoftBody_Cluster* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_lv);
+}
 /*
-void btSoftBody_Cluster_setLocii(btSoftBody_Cluster* obj, void value)
-{
-	obj->m_locii = value;
-}
-
-void btSoftBody_Cluster_setLv(btSoftBody_Cluster* obj, void value)
-{
-	VECTOR3_CONV(value);
-	obj->m_lv = value;
-}
-
 void btSoftBody_Cluster_setMasses(btSoftBody_Cluster* obj, btAlignedObjectArray* value)
 {
 	obj->m_masses = value;
@@ -1275,6 +1269,7 @@ void btSoftBody_Cluster_delete(btSoftBody_Cluster* obj)
 {
 	delete obj;
 }
+
 
 btSoftBody_Impulse* btSoftBody_Impulse_new()
 {
