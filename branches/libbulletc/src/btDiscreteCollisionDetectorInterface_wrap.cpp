@@ -50,12 +50,12 @@ void btDiscreteCollisionDetectorInterface_ClosestPointInput_setMaximumDistanceSq
 
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_setTransformA(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_transformA);
+	TRANSFORM_IN(value, &obj->m_transformA);
 }
 
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_setTransformB(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_transformB);
+	TRANSFORM_IN(value, &obj->m_transformB);
 }
 
 void btDiscreteCollisionDetectorInterface_ClosestPointInput_delete(btDiscreteCollisionDetectorInterface_ClosestPointInput* obj)

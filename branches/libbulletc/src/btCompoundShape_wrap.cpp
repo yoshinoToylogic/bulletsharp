@@ -53,7 +53,7 @@ void btCompoundShapeChild_setNode(btCompoundShapeChild* obj, btDbvtNode* value)
 
 void btCompoundShapeChild_setTransform(btCompoundShapeChild* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_transform);
+	TRANSFORM_IN(value, &obj->m_transform);
 }
 
 void btCompoundShapeChild_delete(btCompoundShapeChild* obj)

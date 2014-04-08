@@ -179,7 +179,7 @@ void btRigidBody_btRigidBodyConstructionInfo_setRollingFriction(btRigidBody_btRi
 
 void btRigidBody_btRigidBodyConstructionInfo_setStartWorldTransform(btRigidBody_btRigidBodyConstructionInfo* obj, btScalar* value)
 {
-	MatrixTobtTransform(value, &obj->m_startWorldTransform);
+	TRANSFORM_IN(value, &obj->m_startWorldTransform);
 }
 
 void btRigidBody_btRigidBodyConstructionInfo_delete(btRigidBody_btRigidBodyConstructionInfo* obj)

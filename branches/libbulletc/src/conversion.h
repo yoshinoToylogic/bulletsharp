@@ -271,7 +271,8 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define QUATERNION_OUT(quat, outquat) *(btQuaternion*)outquat = quat
 #define QUATERNION_OUT2(quat, outquat) *(btQuaternion*)outquat = quat
 #endif
-#define TRANSFORM_CONV(tr) TRANSFORM_DEF(tr); MatrixTobtTransform(tr, &TEMP(tr))
+#define TRANSFORM_IN(intr, tr) MatrixTobtTransform(intr, tr)
+#define TRANSFORM_CONV(tr) TRANSFORM_DEF(tr); TRANSFORM_IN(tr, &TEMP(tr))
 #define TRANSFORM_USE(tr) TEMP(tr)
 #define TRANSFORM_OUT(tr, outtr) btTransformToMatrix(tr, outtr)
 #define TRANSFORM_DEF_OUT(tr) TRANSFORM_OUT(&TEMP(tr), tr)
