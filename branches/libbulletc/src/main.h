@@ -99,6 +99,7 @@
 #define btTransform void
 #define btVector3 void
 #define btVector4 void
+#define btAlignedBoolArray void
 #define btAligendBroadphasePairArray void
 #define btAlignedCollisionObjectArray void
 #define btAlignedCollisionShapeArray void
@@ -113,7 +114,9 @@
 #define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair>
 #define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
 #define btAlignedCollisionShapeArray btAlignedObjectArray<btCollisionShape*>
+#define btAlignedConstCollisionObjectArray btAlignedObjectArray<const btCollisionObject*>
 #define btAlignedIntArray btAlignedObjectArray<int>
+#define btAlignedBoolArray btAlignedObjectArray<bool>
 #define btAlignedScalarArray btAlignedObjectArray<btScalar>
 #define btAlignedVector3Array btAlignedObjectArray<btVector3>
 #define btCollisionWorld_AllHitsRayResultCallback btCollisionWorld::AllHitsRayResultCallback
@@ -415,7 +418,19 @@
 #endif
 
 #ifndef _BT_SOFT_BODY_H
+#define btAlignedAnchorArray void
+#define btAlignedClusterArray void
+#define btAlignedSoftBodyFaceArray void
+#define btAlignedJointArray void
+#define btAlignedLinkArray void
+#define btAlignedMaterialArray void
 #define btAlignedNodeArray void
+#define btAlignedNodePtrArray void
+#define btAlignedNoteArray void
+#define btAlignedPSolverArray void
+#define btAlignedRContactArray void
+#define btAlignedSContactArray void
+#define btAlignedVSolverArray void
 #define btSoftBody void
 #define btSoftBodyWorldInfo void
 #define btSoftBody_eAeroModel int
@@ -457,12 +472,26 @@
 #define btSoftBody_sRayCast void
 #define btSoftBody_Tetra void
 #else
-#define btAlignedNodeArray btAlignedObjectArray<btSoftBody::Node*>
-#define btSoftBody_eAeroModel btSoftBody::eAeroModel
+#define btAlignedAnchorArray btSoftBody::tAnchorArray
+#define btAlignedClusterArray btSoftBody::tClusterArray
+#define btAlignedRContactArray btSoftBody::tRContactArray
+#define btAlignedSoftBodyFaceArray btSoftBody::tFaceArray
+#define btAlignedJointArray btSoftBody::tJointArray
+#define btAlignedLinkArray btSoftBody::tLinkArray
+#define btAlignedMaterialArray btSoftBody::tMaterialArray
+#define btAlignedNodeArray btSoftBody::tNodeArray
+#define btAlignedNodePtrArray btAlignedObjectArray<btSoftBody::Node*>
+#define btAlignedNoteArray btSoftBody::tNoteArray
+#define btAlignedPSolverArray btSoftBody::tPSolverArray
+#define btAlignedRContactArray btSoftBody::tRContactArray
+#define btAlignedSContactArray btSoftBody::tSContactArray
+#define btAlignedTetraArray btSoftBody::tTetraArray
+#define btAlignedVSolverArray btSoftBody::tVSolverArray
+#define btSoftBody_eAeroModel btSoftBody::eAeroModel::_
 #define btSoftBody_eFeature btSoftBody::eFeature::_
-#define btSoftBody_ePSolver btSoftBody::ePSolver
-#define btSoftBody_eSolverPresets btSoftBody::eSolverPresets
-#define btSoftBody_eVSolver btSoftBody::eVSolver
+#define btSoftBody_ePSolver btSoftBody::ePSolver::_
+#define btSoftBody_eSolverPresets btSoftBody::eSolverPresets::_
+#define btSoftBody_eVSolver btSoftBody::eVSolver::_
 #define btSoftBody_fCollision btSoftBody::fCollision
 #define btSoftBody_fMaterial btSoftBody::fMaterial
 #define btSoftBody_AJoint btSoftBody::AJoint
@@ -538,6 +567,12 @@
 
 #ifndef BT_SOFTBODY_RIGIDBODY_COLLISION_CONFIGURATION
 #define btSoftBodyRigidBodyCollisionConfiguration void
+#endif
+
+#ifndef BT_SPARSE_SDF_H
+#define btSparseSdf3 void
+#else
+#define btSparseSdf3 btSparseSdf<3>
 #endif
 
 #ifndef BT_SPHERE_BOX_COLLISION_ALGORITHM_H

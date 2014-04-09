@@ -18,7 +18,7 @@ namespace BulletSharp.SoftBody
 			_native = btSoftBodyWorldInfo_new();
 		}
 
-		public float Air_density
+		public float AirDensity
 		{
 			get { return btSoftBodyWorldInfo_getAir_density(_native); }
 			set { btSoftBodyWorldInfo_setAir_density(_native, value); }
@@ -2510,29 +2510,59 @@ namespace BulletSharp.SoftBody
 			_native = btSoftBody_Config_new();
 		}
 
-        public AeroModel Aeromodel
+        public AeroModel AeroModel
 		{
 			get { return btSoftBody_Config_getAeromodel(_native); }
 			set { btSoftBody_Config_setAeromodel(_native, value); }
 		}
 
-		public int CIterations
-		{
-			get { return btSoftBody_Config_getCiterations(_native); }
-			set { btSoftBody_Config_setCiterations(_native, value); }
-		}
+        public float Ahr
+        {
+            get { return btSoftBody_Config_getKAHR(_native); }
+            set { btSoftBody_Config_setKAHR(_native, value); }
+        }
 
-		public int Collisions
-		{
-			get { return btSoftBody_Config_getCollisions(_native); }
-			set { btSoftBody_Config_setCollisions(_native, value); }
-		}
+        public float Chr
+        {
+            get { return btSoftBody_Config_getKCHR(_native); }
+            set { btSoftBody_Config_setKCHR(_native, value); }
+        }
 
-		public int Diterations
+        public int CIterations
+        {
+            get { return btSoftBody_Config_getCiterations(_native); }
+            set { btSoftBody_Config_setCiterations(_native, value); }
+        }
+
+        public int Collisions
+        {
+            get { return btSoftBody_Config_getCollisions(_native); }
+            set { btSoftBody_Config_setCollisions(_native, value); }
+        }
+
+        public float DF
+        {
+            get { return btSoftBody_Config_getKDF(_native); }
+            set { btSoftBody_Config_setKDF(_native, value); }
+        }
+
+        public float DG
+        {
+            get { return btSoftBody_Config_getKDG(_native); }
+            set { btSoftBody_Config_setKDG(_native, value); }
+        }
+
+		public int DIterations
 		{
 			get { return btSoftBody_Config_getDiterations(_native); }
 			set { btSoftBody_Config_setDiterations(_native, value); }
 		}
+
+        public float DP
+        {
+            get { return btSoftBody_Config_getKDP(_native); }
+            set { btSoftBody_Config_setKDP(_native, value); }
+        }
         /*
 		public tPSolverArray Dsequence
 		{
@@ -2540,121 +2570,91 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_Config_setDsequence(_native, value._native); }
 		}
         */
-		public float KAHR
-		{
-			get { return btSoftBody_Config_getKAHR(_native); }
-			set { btSoftBody_Config_setKAHR(_native, value); }
-		}
-
-		public float KCHR
-		{
-			get { return btSoftBody_Config_getKCHR(_native); }
-			set { btSoftBody_Config_setKCHR(_native, value); }
-		}
-
-		public float KDF
-		{
-			get { return btSoftBody_Config_getKDF(_native); }
-			set { btSoftBody_Config_setKDF(_native, value); }
-		}
-
-		public float KDG
-		{
-			get { return btSoftBody_Config_getKDG(_native); }
-			set { btSoftBody_Config_setKDG(_native, value); }
-		}
-
-		public float KDP
-		{
-			get { return btSoftBody_Config_getKDP(_native); }
-			set { btSoftBody_Config_setKDP(_native, value); }
-		}
-
-		public float KKHR
+		public float Khr
 		{
 			get { return btSoftBody_Config_getKKHR(_native); }
 			set { btSoftBody_Config_setKKHR(_native, value); }
 		}
 
-		public float KLF
+		public float LF
 		{
 			get { return btSoftBody_Config_getKLF(_native); }
 			set { btSoftBody_Config_setKLF(_native, value); }
 		}
 
-		public float KMT
+		public float MT
 		{
 			get { return btSoftBody_Config_getKMT(_native); }
 			set { btSoftBody_Config_setKMT(_native, value); }
 		}
 
-		public float KPR
+		public float PR
 		{
 			get { return btSoftBody_Config_getKPR(_native); }
 			set { btSoftBody_Config_setKPR(_native, value); }
 		}
 
-		public float KSHR
+		public float Shr
 		{
 			get { return btSoftBody_Config_getKSHR(_native); }
 			set { btSoftBody_Config_setKSHR(_native, value); }
 		}
 
-		public float KSK_SPLT_CL
+		public float SKSplitCL
 		{
 			get { return btSoftBody_Config_getKSK_SPLT_CL(_native); }
 			set { btSoftBody_Config_setKSK_SPLT_CL(_native, value); }
 		}
 
-		public float KSKHR_CL
+		public float SkhrCL
 		{
 			get { return btSoftBody_Config_getKSKHR_CL(_native); }
 			set { btSoftBody_Config_setKSKHR_CL(_native, value); }
 		}
 
-		public float KSR_SPLT_CL
+		public float SRSplitCL
 		{
 			get { return btSoftBody_Config_getKSR_SPLT_CL(_native); }
 			set { btSoftBody_Config_setKSR_SPLT_CL(_native, value); }
 		}
 
-		public float KSRHR_CL
+		public float SRHRCL
 		{
 			get { return btSoftBody_Config_getKSRHR_CL(_native); }
 			set { btSoftBody_Config_setKSRHR_CL(_native, value); }
 		}
 
-		public float KSS_SPLT_CL
+        public float SSSplitCL
 		{
 			get { return btSoftBody_Config_getKSS_SPLT_CL(_native); }
 			set { btSoftBody_Config_setKSS_SPLT_CL(_native, value); }
 		}
 
-		public float KSSHR_CL
+		public float Sshr
 		{
 			get { return btSoftBody_Config_getKSSHR_CL(_native); }
 			set { btSoftBody_Config_setKSSHR_CL(_native, value); }
 		}
 
-		public float KVC
+		public float VC
 		{
 			get { return btSoftBody_Config_getKVC(_native); }
 			set { btSoftBody_Config_setKVC(_native, value); }
 		}
 
-		public float KVCF
+		public float Vcf
 		{
 			get { return btSoftBody_Config_getKVCF(_native); }
 			set { btSoftBody_Config_setKVCF(_native, value); }
 		}
 
-		public float Maxvolume
+		public float MaxVolume
 		{
 			get { return btSoftBody_Config_getMaxvolume(_native); }
 			set { btSoftBody_Config_setMaxvolume(_native, value); }
 		}
 
-		public int Piterations
+		public int PIterations
 		{
 			get { return btSoftBody_Config_getPiterations(_native); }
 			set { btSoftBody_Config_setPiterations(_native, value); }
@@ -2672,7 +2672,7 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_Config_setTimescale(_native, value); }
 		}
 
-		public int Viterations
+		public int VIterations
 		{
 			get { return btSoftBody_Config_getViterations(_native); }
 			set { btSoftBody_Config_setViterations(_native, value); }
@@ -3009,6 +3009,8 @@ namespace BulletSharp.SoftBody
 
     public class SoftBody : CollisionObject
     {
+        private Config _config;
+
 		internal SoftBody(IntPtr native)
 			: base(native)
 		{
@@ -3608,6 +3610,12 @@ namespace BulletSharp.SoftBody
 		{
 			btSoftBody_translate(_native, ref trs);
 		}
+
+        public void Translate(float x, float y, float z)
+        {
+            Vector3 trs = new Vector3(x, y, z);
+            btSoftBody_translate(_native, ref trs);
+        }
         /*
 		public SoftBody Upcast(CollisionObject colObj)
 		{
@@ -3687,13 +3695,20 @@ namespace BulletSharp.SoftBody
 			get { return btSoftBody_getCdbvt(_native); }
 			set { btSoftBody_setCdbvt(_native, value._native); }
 		}
-
-		public void Cfg
+        */
+		public Config Cfg
 		{
-			get { return btSoftBody_getCfg(_native); }
+            get
+            {
+                if (_config == null)
+                {
+                    _config = new Config(btSoftBody_getCfg(_native));
+                }
+                return _config;
+            }
 			set { btSoftBody_setCfg(_native, value._native); }
 		}
-
+        /*
 		public void ClusterConnectivity
 		{
 			get { return btSoftBody_getClusterConnectivity(_native); }
@@ -4021,7 +4036,7 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_getCdbvt(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_getCfg(IntPtr obj);
+		static extern IntPtr btSoftBody_getCfg(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_getClusterConnectivity(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -4141,7 +4156,7 @@ namespace BulletSharp.SoftBody
 		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		//static extern void btSoftBody_setCdbvt(IntPtr obj, Dbvt value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_setCfg(IntPtr obj, Config value);
+		static extern void btSoftBody_setCfg(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_setClusterConnectivity(IntPtr obj, AlignedObjectArray value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
