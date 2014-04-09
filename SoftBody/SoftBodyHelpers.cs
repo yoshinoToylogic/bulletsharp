@@ -36,15 +36,25 @@ namespace BulletSharp.SoftBody
             return new SoftBody(btSoftBodyHelpers_CreateEllipsoid(worldInfo._native, ref center, ref radius, res));
 		}
 
-		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3 vertices, int nvertices, bool randomizeConstraints)
+		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nvertices, bool randomizeConstraints)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, ref vertices, nvertices, randomizeConstraints));
+			return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, nvertices, randomizeConstraints));
 		}
 
-		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3 vertices, int nvertices)
+        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, bool randomizeConstraints)
+        {
+            return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, vertices.Length, randomizeConstraints));
+        }
+
+		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nvertices)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, ref vertices, nvertices));
+			return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, nvertices));
 		}
+
+        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices)
+        {
+            return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, vertices.Length));
+        }
 
         public static SoftBody CreateFromTetGenData(SoftBodyWorldInfo worldInfo, string ele, string face, string node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 		{
@@ -151,9 +161,9 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBodyHelpers_CreateEllipsoid(IntPtr worldInfo, [In] ref Vector3 center, [In] ref Vector3 radius, int res);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull(IntPtr worldInfo, [In] ref Vector3 vertices, int nvertices, bool randomizeConstraints);
+		static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices, bool randomizeConstraints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull2(IntPtr worldInfo, [In] ref Vector3 vertices, int nvertices);
+		static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull2(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreateFromTetGenData(IntPtr worldInfo, string ele, string face, string node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
