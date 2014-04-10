@@ -104,6 +104,16 @@ namespace BulletSharp
         internal List<CollisionWorld> _worldRefs = new List<CollisionWorld>(1);
         internal bool _worldDeferredCleanup;
 
+        internal static BroadphaseInterface GetManaged(IntPtr obj)
+        {
+            if (obj == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            return new BroadphaseInterface(obj);
+        }
+
 		internal BroadphaseInterface(IntPtr native)
 		{
 			_native = native;

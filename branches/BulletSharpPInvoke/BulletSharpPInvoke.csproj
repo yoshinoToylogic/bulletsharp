@@ -169,10 +169,13 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoftBody\AlignedMaterialArray.cs" />
+    <Compile Include="SoftBody\AlignedNodeArray.cs" />
     <Compile Include="SoftBody\SoftBody.cs" />
     <Compile Include="SoftBody\SoftBodyHelpers.cs" />
     <Compile Include="SoftBody\SoftBodyRigidBodyCollisionConfiguration.cs" />
     <Compile Include="SoftBody\SoftRigidDynamicsWorld.cs" />
+    <Compile Include="SoftBody\SparseSdf.cs" />
     <Compile Include="Utilities.cs">
       <SubType>Code</SubType>
     </Compile>
