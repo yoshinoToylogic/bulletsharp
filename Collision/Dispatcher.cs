@@ -49,7 +49,7 @@ namespace BulletSharp
 			set { btDispatcherInfo_setEnableSatConvex(_native, value); }
 		}
 
-		public bool EnableSPU
+		public bool EnableSpu
 		{
 			get { return btDispatcherInfo_getEnableSPU(_native); }
 			set { btDispatcherInfo_setEnableSPU(_native, value); }
