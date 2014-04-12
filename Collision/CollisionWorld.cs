@@ -806,8 +806,8 @@ namespace BulletSharp
 		internal IntPtr _native;
 
 		AlignedCollisionObjectArray _collisionObjectArray;
-		Dispatcher _dispatcher;
-		BroadphaseInterface _broadphase;
+		protected Dispatcher _dispatcher;
+		protected BroadphaseInterface _broadphase;
 
 		internal CollisionWorld(IntPtr native)
 		{

@@ -60,17 +60,17 @@ namespace BulletSharp.SoftBody
 		{
 			return new SoftBody(btSoftBodyHelpers_CreateFromTetGenData(worldInfo._native, ele, face, node, bfacelinks, btetralinks, bfacesfromtetras));
 		}
-        /*
-		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float vertices, int triangles, int ntriangles, bool randomizeConstraints)
+
+		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles, bool randomizeConstraints)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices._native, triangles._native, ntriangles, randomizeConstraints));
+			return new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices, triangles, triangles.Length / 3, randomizeConstraints));
 		}
 
-		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float vertices, int triangles, int ntriangles)
+		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices._native, triangles._native, ntriangles));
+			return new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices, triangles, triangles.Length / 3));
 		}
-        */
+
 		public static SoftBody CreatePatch(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
 		{
 			return new SoftBody(btSoftBodyHelpers_CreatePatch(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
@@ -167,9 +167,9 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreateFromTetGenData(IntPtr worldInfo, string ele, string face, string node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh(IntPtr worldInfo, IntPtr vertices, IntPtr triangles, int ntriangles, bool randomizeConstraints);
+		static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles, bool randomizeConstraints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh2(IntPtr worldInfo, IntPtr vertices, IntPtr triangles, int ntriangles);
+		static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh2(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBodyHelpers_CreatePatch(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

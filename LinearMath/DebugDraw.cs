@@ -56,6 +56,8 @@ namespace BulletSharp
         [UnmanagedFunctionPointer(Native.Conv)]
         delegate void DrawTransformUnmanagedDelegate([In] ref Matrix transform, float orthoLen);
         [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void DrawTriangleUnmanagedDelegate([In] ref Vector3 v0, [In] ref Vector3 v1, [In] ref Vector3 v2, [In] ref Vector3 color, float alpha);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate void SimpleCallback(int x);
         [UnmanagedFunctionPointer(Native.Conv)]
         delegate DebugDrawModes GetDebugModeUnmanagedDelegate();
@@ -71,6 +73,7 @@ namespace BulletSharp
         DrawSphereUnmanagedDelegate _drawSphere;
         DrawSpherePatchUnmanagedDelegate _drawSpherePatch;
         DrawTransformUnmanagedDelegate _drawTransform;
+        DrawTriangleUnmanagedDelegate _drawTriangle;
         GetDebugModeUnmanagedDelegate _getDebugMode;
         SimpleCallback _cb;
 
@@ -133,6 +136,7 @@ namespace BulletSharp
             _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphere);
             _drawSpherePatch = new DrawSpherePatchUnmanagedDelegate(DrawSpherePatch);
             _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransform);
+            _drawTriangle = new DrawTriangleUnmanagedDelegate(DrawTriangle);
             _getDebugMode = new GetDebugModeUnmanagedDelegate(GetDebugModeUnmanaged);
             _cb = new SimpleCallback(SimpleCallbackUnmanaged);
 
@@ -149,6 +153,7 @@ namespace BulletSharp
                 Marshal.GetFunctionPointerForDelegate(_drawSphere),
                 Marshal.GetFunctionPointerForDelegate(_drawSpherePatch),
                 Marshal.GetFunctionPointerForDelegate(_drawTransform),
+                Marshal.GetFunctionPointerForDelegate(_drawTriangle),
                 Marshal.GetFunctionPointerForDelegate(_getDebugMode),
                 Marshal.GetFunctionPointerForDelegate(_cb));
         }
@@ -585,7 +590,7 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btIDebugDrawWrapper_new(IntPtr debugDrawGCHandle, IntPtr drawAabbCallback,
             IntPtr drawArcCallback, IntPtr drawBoxCallback, IntPtr drawCapsuleCallback, IntPtr drawContactPointCallback,
-            IntPtr drawCylinderCallback, IntPtr drawLineCallback, IntPtr drawPlaneCallback, IntPtr drawSphereCallback, IntPtr drawSpherePatchCallback, IntPtr drawTransformCallback, IntPtr getDebugModeCallback, IntPtr cb);
+            IntPtr drawCylinderCallback, IntPtr drawLineCallback, IntPtr drawPlaneCallback, IntPtr drawSphereCallback, IntPtr drawSpherePatchCallback, IntPtr drawTransformCallback, IntPtr drawTriangleCallback, IntPtr getDebugModeCallback, IntPtr cb);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btIDebugDrawWrapper_getDebugDrawGCHandle(IntPtr obj);
     }
