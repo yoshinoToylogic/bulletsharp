@@ -160,6 +160,7 @@
     <ClInclude Include="src\btAlignedSoftBodyArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyClusterArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyFaceArray_wrap.h" />
+    <ClInclude Include="src\btAlignedSoftBodyLinkArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyMaterialArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyNodeArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyTetraArray_wrap.h" />
@@ -301,6 +302,7 @@
     <ClCompile Include="src\btAlignedSoftBodyArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyClusterArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyFaceArray_wrap.cpp" />
+    <ClCompile Include="src\btAlignedSoftBodyLinkArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyMaterialArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyNodeArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyTetraArray_wrap.cpp" />

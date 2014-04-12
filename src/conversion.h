@@ -225,7 +225,8 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define ALIGNED_NEW_FORCE(targetClass) new (btAlignedAlloc(sizeof(targetClass), 16)) targetClass
 #define ALIGNED_FREE_FORCE(target) btAlignedFree(target)
 
-#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+//#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE)
 #define ALIGNED_NEW(targetClass) ALIGNED_NEW_FORCE(targetClass)
 #define ALIGNED_FREE(target) ALIGNED_FREE_FORCE(target)
 #else

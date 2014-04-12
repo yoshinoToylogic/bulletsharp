@@ -119,7 +119,7 @@ extern "C"
 	EXPORT void btSoftBody_Face_setRa(btSoftBody_Face* obj, btScalar value);
 
 	EXPORT btSoftBody_Tetra* btSoftBody_Tetra_new();
-	EXPORT void btSoftBody_Tetra_getC0(btSoftBody_Tetra* obj, btScalar* value);
+	EXPORT btVector3* btSoftBody_Tetra_getC0(btSoftBody_Tetra* obj);
 	EXPORT btScalar btSoftBody_Tetra_getC1(btSoftBody_Tetra* obj);
 	EXPORT btScalar btSoftBody_Tetra_getC2(btSoftBody_Tetra* obj);
 	EXPORT btDbvtNode* btSoftBody_Tetra_getLeaf(btSoftBody_Tetra* obj);
@@ -341,6 +341,10 @@ extern "C"
 	EXPORT void btSoftBody_Joint_Type(btSoftBody_Joint* obj);
 	EXPORT void btSoftBody_Joint_delete(btSoftBody_Joint* obj);
 
+	EXPORT btSoftBody_LJoint_Specs* btSoftBody_LJoint_Specs_new();
+	EXPORT void btSoftBody_LJoint_Specs_getPosition(btSoftBody_LJoint_Specs* obj, btScalar* value);
+	EXPORT void btSoftBody_LJoint_Specs_setPosition(btSoftBody_LJoint_Specs* obj, btScalar* value);
+
 	EXPORT btSoftBody_LJoint* btSoftBody_LJoint_new();
 	EXPORT btVector3* btSoftBody_LJoint_getRpos(btSoftBody_LJoint* obj);
 	//EXPORT void btSoftBody_LJoint_setRpos(btSoftBody_LJoint* obj, btScalar* value);
@@ -350,6 +354,10 @@ extern "C"
 	EXPORT void btSoftBody_AJoint_IControl_Prepare(btSoftBody_AJoint_IControl* obj, btSoftBody_AJoint* __unnamed0);
 	EXPORT btScalar btSoftBody_AJoint_IControl_Speed(btSoftBody_AJoint_IControl* obj, btSoftBody_AJoint* __unnamed0, btScalar current);
 	EXPORT void btSoftBody_AJoint_IControl_delete(btSoftBody_AJoint_IControl* obj);
+
+	EXPORT btSoftBody_AJoint_Specs* btSoftBody_AJoint_Specs_new();
+	EXPORT void btSoftBody_AJoint_Specs_getAxis(btSoftBody_AJoint_Specs* obj, btScalar* value);
+	EXPORT void btSoftBody_AJoint_Specs_setAxis(btSoftBody_AJoint_Specs* obj, btScalar* value);
 
 	EXPORT btSoftBody_AJoint* btSoftBody_AJoint_new();
 	EXPORT btVector3* btSoftBody_AJoint_getAxis(btSoftBody_AJoint* obj);
@@ -518,8 +526,8 @@ extern "C"
 	EXPORT void btSoftBody_cleanupClusters(btSoftBody* obj);
 	EXPORT void btSoftBody_clusterAImpulse(btSoftBody_Cluster* cluster, btSoftBody_Impulse* impulse);
 	EXPORT void btSoftBody_clusterCom(btSoftBody_Cluster* cluster);
-	EXPORT void btSoftBody_clusterCom2(btSoftBody* obj, int cluster);
-	EXPORT int btSoftBody_clusterCount(btSoftBody* obj);
+	EXPORT void btSoftBody_clusterCom2(btSoftBody* obj, int cluster, btScalar* com);
+	EXPORT int btSoftBody_clusterCount(btSoftBody* obj, btScalar* com);
 	EXPORT void btSoftBody_clusterDAImpulse(btSoftBody_Cluster* cluster, btScalar* impulse);
 	EXPORT void btSoftBody_clusterDCImpulse(btSoftBody_Cluster* cluster, btScalar* impulse);
 	EXPORT void btSoftBody_clusterDImpulse(btSoftBody_Cluster* cluster, btScalar* rpos, btScalar* impulse);
@@ -625,7 +633,7 @@ extern "C"
 	EXPORT void btSoftBody_setSoftBodySolver(btSoftBody* obj, btSoftBodySolver* softBodySolver);
 	EXPORT void btSoftBody_setSoftBodySolver2(btSoftBody* obj, btSoftBodySolver* value);
 	EXPORT void btSoftBody_setSolver(btSoftBody* obj, btSoftBody_eSolverPresets preset);
-	EXPORT void btSoftBody_setSst(btSoftBody* obj, btSoftBody_SolverState value);
+	//EXPORT void btSoftBody_setSst(btSoftBody* obj, btSoftBody_SolverState value);
 	EXPORT void btSoftBody_setTag(btSoftBody* obj, void* value);
 	//EXPORT void btSoftBody_setTetras(btSoftBody* obj, btAlignedObjectArray* value);
 	EXPORT void btSoftBody_setTimeacc(btSoftBody* obj, btScalar value);
@@ -659,4 +667,8 @@ extern "C"
 
 	EXPORT int btSoftBody_getFaceVertexData(btSoftBody* obj, btScalar* vertices);
 	EXPORT int btSoftBody_getFaceVertexNormalData(btSoftBody* obj, btScalar* vertices);
+	EXPORT int btSoftBody_getLinkVertexData(btSoftBody* obj, btScalar* vertices);
+	EXPORT int btSoftBody_getLinkVertexNormalData(btSoftBody* obj, btScalar* vertices);
+	EXPORT int btSoftBody_getTetraVertexData(btSoftBody* obj, btScalar* vertices);
+	EXPORT int btSoftBody_getTetraVertexNormalData(btSoftBody* obj, btScalar* vertices);
 }
