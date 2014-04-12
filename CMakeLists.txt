@@ -82,6 +82,18 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btAlignedCollisionShapeArray_wrap.h
     src/btAlignedManifoldArray_wrap.cpp
     src/btAlignedManifoldArray_wrap.h
+    src/btAlignedSoftBodyArray_wrap.cpp
+    src/btAlignedSoftBodyArray_wrap.h
+    src/btAlignedSoftBodyClusterArray_wrap.cpp
+    src/btAlignedSoftBodyClusterArray_wrap.h
+    src/btAlignedSoftBodyFaceArray_wrap.cpp
+    src/btAlignedSoftBodyFaceArray_wrap.h
+    src/btAlignedSoftBodyMaterialArray_wrap.cpp
+    src/btAlignedSoftBodyMaterialArray_wrap.h
+    src/btAlignedSoftBodyNodeArray_wrap.cpp
+    src/btAlignedSoftBodyNodeArray_wrap.h
+    src/btAlignedSoftBodyTetraArray_wrap.cpp
+    src/btAlignedSoftBodyTetraArray_wrap.h
     src/btAxisSweep3_wrap.cpp
     src/btAxisSweep3_wrap.h
     src/btBox2dBox2dCollisionAlgorithm_wrap.cpp
@@ -256,6 +268,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSoftRigidDynamicsWorld_wrap.h
     src/btSoftSoftCollisionAlgorithm_wrap.cpp
     src/btSoftSoftCollisionAlgorithm_wrap.h
+    src/btSparseSdf3_wrap.cpp
+    src/btSparseSdf3_wrap.h
     src/btSphereBoxCollisionAlgorithm_wrap.cpp
     src/btSphereBoxCollisionAlgorithm_wrap.h
     src/btSphereShape_wrap.cpp

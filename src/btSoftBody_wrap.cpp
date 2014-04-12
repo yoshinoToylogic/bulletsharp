@@ -2516,14 +2516,18 @@ void btSoftBody_clusterAImpulse(btSoftBody_Cluster* cluster, btSoftBody_Impulse*
 	btSoftBody::clusterAImpulse(cluster, *impulse);
 }
 
-void btSoftBody_clusterCom(btSoftBody_Cluster* cluster)
+void btSoftBody_clusterCom(btSoftBody_Cluster* cluster, btScalar* com)
 {
-	btSoftBody::clusterCom(cluster);
+	VECTOR3_DEF(com);
+	VECTOR3_USE(com) = btSoftBody::clusterCom(cluster);
+	VECTOR3_DEF_OUT(com);
 }
 
-void btSoftBody_clusterCom2(btSoftBody* obj, int cluster)
+void btSoftBody_clusterCom2(btSoftBody* obj, int cluster, btScalar* com)
 {
-	obj->clusterCom(cluster);
+	VECTOR3_DEF(com);
+	VECTOR3_USE(com) = obj->clusterCom(cluster);
+	VECTOR3_DEF_OUT(com);
 }
 
 int btSoftBody_clusterCount(btSoftBody* obj)
@@ -3231,4 +3235,56 @@ void btSoftBody_updatePose(btSoftBody* obj)
 void btSoftBody_VSolve_Links(btSoftBody* psb, btScalar kst)
 {
 	btSoftBody::VSolve_Links(psb, kst);
+}
+
+int btSoftBody_getFaceVertexData(btSoftBody* obj, btScalar* vertices)
+{
+	btAlignedObjectArray<btSoftBody::Face>* faceArray = &obj->m_faces;
+	int faceCount = faceArray->size();
+	if (faceCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = faceCount * 3;
+
+	int i, j;
+	for (i = 0; i < faceCount; i++) {
+		for (j = 0; j < 3; j++) {
+			btSoftBody::Node* n = faceArray->at(i).m_n[j];
+			vertices[0] = n->m_x.x();
+			vertices[1] = n->m_x.y();
+			vertices[2] = n->m_x.z();
+			vertices += 3;
+		}
+	}
+
+	return vertexCount;
+}
+
+int btSoftBody_getFaceVertexNormalData(btSoftBody* obj, btScalar* vertices)
+{
+	btAlignedObjectArray<btSoftBody::Face>* faceArray = &obj->m_faces;
+	int faceCount = faceArray->size();
+	if (faceCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = faceCount * 3;
+	int vertexNormalCount = vertexCount * 2;
+
+	int i, j;
+	for (i = 0; i < faceCount; i++) {
+		for (j = 0; j < 3; j++) {
+			btSoftBody::Node* n = faceArray->at(i).m_n[j];
+			vertices[0] = n->m_x.x();
+			vertices[1] = n->m_x.y();
+			vertices[2] = n->m_x.z();
+			vertices[3] = n->m_n.x();
+			vertices[4] = n->m_n.y();
+			vertices[5] = n->m_n.z();
+			vertices += 6;
+		}
+	}
+
+	return vertexCount;
 }
