@@ -8,9 +8,12 @@ namespace BulletSharp.SoftBody
 	{
 		internal IntPtr _native;
 
-		internal SparseSdf(IntPtr native)
+        private bool _preventDelete;
+
+		internal SparseSdf(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public SparseSdf()
@@ -45,7 +48,7 @@ namespace BulletSharp.SoftBody
 
         public int RemoveReferences(CollisionShape pcs)
         {
-            return btSparseSdf3_RemoveReferences(_native, pcs._native);
+            return btSparseSdf3_RemoveReferences(_native, (pcs != null) ? pcs._native : IntPtr.Zero);
         }
 
         public void Reset()
@@ -63,7 +66,10 @@ namespace BulletSharp.SoftBody
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btSparseSdf_delete(_native);
+                if (!_preventDelete)
+                {
+                    btSparseSdf_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

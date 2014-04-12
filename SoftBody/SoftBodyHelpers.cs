@@ -33,62 +33,86 @@ namespace BulletSharp.SoftBody
 
 		public static SoftBody CreateEllipsoid(SoftBodyWorldInfo worldInfo, Vector3 center, Vector3 radius, int res)
 		{
-            return new SoftBody(btSoftBodyHelpers_CreateEllipsoid(worldInfo._native, ref center, ref radius, res));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateEllipsoid(worldInfo._native, ref center, ref radius, res));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
 		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nvertices, bool randomizeConstraints)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, nvertices, randomizeConstraints));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, nvertices, randomizeConstraints));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
         public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, bool randomizeConstraints)
         {
-            return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, vertices.Length, randomizeConstraints));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, vertices.Length, randomizeConstraints));
+            body.WorldInfo = worldInfo;
+            return body;
         }
 
 		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nvertices)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, nvertices));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, nvertices));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
         public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices)
         {
-            return new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, vertices.Length));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, vertices.Length));
+            body.WorldInfo = worldInfo;
+            return body;
         }
 
         public static SoftBody CreateFromTetGenData(SoftBodyWorldInfo worldInfo, string ele, string face, string node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromTetGenData(worldInfo._native, ele, face, node, bfacelinks, btetralinks, bfacesfromtetras));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTetGenData(worldInfo._native, ele, face, node, bfacelinks, btetralinks, bfacesfromtetras));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
 		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles, bool randomizeConstraints)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices, triangles, triangles.Length / 3, randomizeConstraints));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices, triangles, triangles.Length / 3, randomizeConstraints));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
 		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices, triangles, triangles.Length / 3));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices, triangles, triangles.Length / 3));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
 		public static SoftBody CreatePatch(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreatePatch(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatch(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
         /*
 		public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags, float tex_coords)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreatePatchUV(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags, tex_coords._native));
+			SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatchUV(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags, tex_coords._native));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
         */
-		public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
+        public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreatePatchUV2(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatchUV2(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
 		public static SoftBody CreateRope(SoftBodyWorldInfo worldInfo, Vector3 from, Vector3 to, int res, int fixeds)
 		{
-			return new SoftBody(btSoftBodyHelpers_CreateRope(worldInfo._native, ref from, ref to, res, fixeds));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateRope(worldInfo._native, ref from, ref to, res, fixeds));
+            body.WorldInfo = worldInfo;
+            return body;
 		}
 
 		public static void Draw(SoftBody psb, IDebugDraw idraw, int drawflags)
