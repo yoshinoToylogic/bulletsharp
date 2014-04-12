@@ -6,6 +6,8 @@ namespace BulletSharp.SoftBody
 {
 	public class SoftRigidDynamicsWorld : DiscreteDynamicsWorld
 	{
+        private AlignedSoftBodyArray _softBodyArray;
+
 		internal SoftRigidDynamicsWorld(IntPtr native)
 			: base(native)
 		{
@@ -14,11 +16,15 @@ namespace BulletSharp.SoftBody
 		public SoftRigidDynamicsWorld(Dispatcher dispatcher, BroadphaseInterface pairCache, ConstraintSolver constraintSolver, CollisionConfiguration collisionConfiguration, SoftBodySolver softBodySolver)
 			: base(btSoftRigidDynamicsWorld_new(dispatcher._native, pairCache._native, constraintSolver._native, collisionConfiguration._native, softBodySolver._native))
 		{
+            _dispatcher = dispatcher;
+            _broadphase = pairCache;
 		}
         */
 		public SoftRigidDynamicsWorld(Dispatcher dispatcher, BroadphaseInterface pairCache, ConstraintSolver constraintSolver, CollisionConfiguration collisionConfiguration)
 			: base(btSoftRigidDynamicsWorld_new2(dispatcher._native, pairCache._native, constraintSolver._native, collisionConfiguration._native))
 		{
+            _dispatcher = dispatcher;
+            _broadphase = pairCache;
 		}
 
 		public void AddSoftBody(SoftBody body, short collisionFilterGroup, short collisionFilterMask)
@@ -46,12 +52,19 @@ namespace BulletSharp.SoftBody
 			get { return btSoftRigidDynamicsWorld_getDrawFlags(_native); }
 			set { btSoftRigidDynamicsWorld_setDrawFlags(_native, value); }
 		}
-        /*
-		public SoftBodyArray SoftBodyArray
+
+		public AlignedSoftBodyArray SoftBodyArray
 		{
-			get { return btSoftRigidDynamicsWorld_getSoftBodyArray(_native); }
+            get
+            {
+                if (_softBodyArray == null)
+                {
+                    _softBodyArray = new AlignedSoftBodyArray(btSoftRigidDynamicsWorld_getSoftBodyArray(_native), true);
+                }
+                return _softBodyArray;
+            }
 		}
-        */
+
 		public SoftBodyWorldInfo WorldInfo
 		{
             get { return new SoftBodyWorldInfo(btSoftRigidDynamicsWorld_getWorldInfo(_native)); }

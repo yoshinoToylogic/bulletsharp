@@ -6,21 +6,21 @@ using System.Diagnostics;
 
 namespace BulletSharp.SoftBody
 {
-    public class AlignedMaterialArrayDebugView
+    public class AlignedFaceArrayDebugView
     {
-        private AlignedMaterialArray _array;
+        private AlignedFaceArray _array;
 
-        public AlignedMaterialArrayDebugView(AlignedMaterialArray array)
+        public AlignedFaceArrayDebugView(AlignedFaceArray array)
         {
             _array = array;
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public Material[] Items
+        public Face[] Items
         {
             get
             {
-                Material[] array = new Material[_array.Count];
+                Face[] array = new Face[_array.Count];
                 for (int i = 0; i < _array.Count; i++)
                 {
                     array[i] = _array[i];
@@ -30,20 +30,20 @@ namespace BulletSharp.SoftBody
         }
     }
 
-    public class AlignedMaterialArrayEnumerator : IEnumerator<Material>
+    public class AlignedFaceArrayEnumerator : IEnumerator<Face>
     {
         int _i;
         int _count;
-        AlignedMaterialArray _array;
+        AlignedFaceArray _array;
 
-        public AlignedMaterialArrayEnumerator(AlignedMaterialArray array)
+        public AlignedFaceArrayEnumerator(AlignedFaceArray array)
         {
             _array = array;
             _count = array.Count;
             _i = -1;
         }
 
-        public Material Current
+        public Face Current
         {
             get { return _array[_i]; }
         }
@@ -69,12 +69,12 @@ namespace BulletSharp.SoftBody
         }
     }
 
-    [Serializable, DebuggerTypeProxy(typeof(AlignedMaterialArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedMaterialArray : AlignedObjectArray, IList<Material>, IDisposable
+    [Serializable, DebuggerTypeProxy(typeof(AlignedFaceArrayDebugView)), DebuggerDisplay("Count = {Count}")]
+    public class AlignedFaceArray : AlignedObjectArray, IList<Face>, IDisposable
     {
         bool _preventDelete;
 
-        internal AlignedMaterialArray(IntPtr native, bool preventDelete = false)
+        internal AlignedFaceArray(IntPtr native, bool preventDelete = false)
             : base(native)
         {
             _preventDelete = preventDelete;
@@ -92,23 +92,23 @@ namespace BulletSharp.SoftBody
             {
                 if (!_preventDelete)
                 {
-                    btAlignedSoftBodyMaterialArray_delete(_native);
+                    btAlignedSoftBodyFaceArray_delete(_native);
                 }
                 _native = IntPtr.Zero;
             }
         }
 
-        ~AlignedMaterialArray()
+        ~AlignedFaceArray()
         {
             Dispose(false);
         }
 
-        public int IndexOf(Material item)
+        public int IndexOf(Face item)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(int index, Material item)
+        public void Insert(int index, Face item)
         {
             throw new NotImplementedException();
         }
@@ -118,7 +118,7 @@ namespace BulletSharp.SoftBody
             throw new NotImplementedException();
         }
 
-        public Material this[int index]
+        public Face this[int index]
         {
             get
             {
@@ -126,7 +126,7 @@ namespace BulletSharp.SoftBody
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new Material(btAlignedSoftBodyMaterialArray_at(_native, index), true);
+                return new Face(btAlignedSoftBodyFaceArray_at(_native, index), true);
             }
             set
             {
@@ -134,29 +134,29 @@ namespace BulletSharp.SoftBody
             }
         }
 
-        public void Add(Material item)
+        public void Add(Face item)
         {
-            btAlignedSoftBodyMaterialArray_push_back(_native, item._native);
+            btAlignedSoftBodyFaceArray_push_back(_native, item._native);
         }
 
         public void Clear()
         {
-            btAlignedSoftBodyMaterialArray_resizeNoInitialize(_native, 0);
+            btAlignedSoftBodyFaceArray_resizeNoInitialize(_native, 0);
         }
 
-        public bool Contains(Material item)
+        public bool Contains(Face item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(Material[] array, int arrayIndex)
+        public void CopyTo(Face[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
         public int Count
         {
-            get { return btAlignedSoftBodyMaterialArray_size(_native); }
+            get { return btAlignedSoftBodyFaceArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -164,30 +164,30 @@ namespace BulletSharp.SoftBody
             get { return false; }
         }
 
-        public bool Remove(Material item)
+        public bool Remove(Face item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<Material> GetEnumerator()
+        public IEnumerator<Face> GetEnumerator()
         {
-            return new AlignedMaterialArrayEnumerator(this);
+            return new AlignedFaceArrayEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new AlignedMaterialArrayEnumerator(this);
+            return new AlignedFaceArrayEnumerator(this);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedSoftBodyMaterialArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btAlignedSoftBodyFaceArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyMaterialArray_push_back(IntPtr obj, IntPtr val);
+        protected static extern void btAlignedSoftBodyFaceArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyMaterialArray_resizeNoInitialize(IntPtr obj, int newSize);
+        protected static extern void btAlignedSoftBodyFaceArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedSoftBodyMaterialArray_size(IntPtr obj);
+        protected static extern int btAlignedSoftBodyFaceArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyMaterialArray_delete(IntPtr obj);
+        protected static extern void btAlignedSoftBodyFaceArray_delete(IntPtr obj);
     }
 }

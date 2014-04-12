@@ -92,7 +92,7 @@ namespace BulletSharp.SoftBody
             {
                 if (!_preventDelete)
                 {
-                    btAlignedNodeArray_delete(_native);
+                    btAlignedSoftBodyNodeArray_delete(_native);
                 }
                 _native = IntPtr.Zero;
             }
@@ -126,7 +126,7 @@ namespace BulletSharp.SoftBody
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new Node(btAlignedNodeArray_at(_native, index));
+                return new Node(btAlignedSoftBodyNodeArray_at(_native, index), true);
             }
             set
             {
@@ -136,12 +136,12 @@ namespace BulletSharp.SoftBody
 
         public void Add(Node item)
         {
-            btAlignedNodeArray_push_back(_native, item._native);
+            btAlignedSoftBodyNodeArray_push_back(_native, item._native);
         }
 
         public void Clear()
         {
-            btAlignedNodeArray_resizeNoInitialize(_native, 0);
+            btAlignedSoftBodyNodeArray_resizeNoInitialize(_native, 0);
         }
 
         public bool Contains(Node item)
@@ -156,7 +156,7 @@ namespace BulletSharp.SoftBody
 
         public int Count
         {
-            get { return btAlignedNodeArray_size(_native); }
+            get { return btAlignedSoftBodyNodeArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -180,14 +180,14 @@ namespace BulletSharp.SoftBody
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedNodeArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btAlignedSoftBodyNodeArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedNodeArray_push_back(IntPtr obj, IntPtr val);
+        protected static extern void btAlignedSoftBodyNodeArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedNodeArray_resizeNoInitialize(IntPtr obj, int newSize);
+        protected static extern void btAlignedSoftBodyNodeArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedNodeArray_size(IntPtr obj);
+        protected static extern int btAlignedSoftBodyNodeArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedNodeArray_delete(IntPtr obj);
+        protected static extern void btAlignedSoftBodyNodeArray_delete(IntPtr obj);
     }
 }

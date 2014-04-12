@@ -8,6 +8,8 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
+        private bool _preventDelete;
+
         internal static CollisionShape GetManaged(IntPtr obj)
         {
             if (obj == IntPtr.Zero)
@@ -31,9 +33,12 @@ namespace BulletSharp
                     return new ConvexHullShape(obj);
                 case BroadphaseNativeType.StaticPlane:
                     return new StaticPlaneShape(obj);
+                case BroadphaseNativeType.SoftBodyShape:
+                    CollisionShape shape = new CollisionShape(obj);
+                    shape._preventDelete = true;
+                    return shape;
             }
             throw new NotImplementedException();
-            return new CollisionShape(obj);
         }
 
         internal CollisionShape(IntPtr obj)
@@ -187,7 +192,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btCollisionShape_delete(_native);
+                if (!_preventDelete)
+                {
+                    btCollisionShape_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

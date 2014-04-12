@@ -171,6 +171,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SoftBody\AlignedMaterialArray.cs" />
     <Compile Include="SoftBody\AlignedNodeArray.cs" />
+    <Compile Include="SoftBody\AlignedClusterArray.cs" />
+    <Compile Include="SoftBody\AlignedSoftBodyArray.cs" />
+    <Compile Include="SoftBody\Collections.cs" />
+    <Compile Include="SoftBody\AlignedTetraArray.cs" />
+    <Compile Include="SoftBody\AlignedFaceArray.cs" />
     <Compile Include="SoftBody\SoftBody.cs" />
     <Compile Include="SoftBody\SoftBodyHelpers.cs" />
     <Compile Include="SoftBody\SoftBodyRigidBodyCollisionConfiguration.cs" />

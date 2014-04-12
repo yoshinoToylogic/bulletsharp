@@ -3,7 +3,7 @@
 
 btIDebugDrawWrapper::btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawAabb drawAabbCallback, pDrawArc drawArcCallback, pDrawBox drawBoxCallback,
 	pDrawCapsule drawCapsuleCallback, pDrawContactPoint drawContactPointCallback, pDrawCylinder drawCylinderCallback, pDrawLine drawLineCallback, pDrawPlane drawPlaneCallback,
-	pDrawSphere drawSphereCallback, pDrawSpherePatch drawSpherePatchCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
+	pDrawSphere drawSphereCallback, pDrawSpherePatch drawSpherePatchCallback, pDrawTransform drawTransformCallback, pDrawTriangle drawTriangleCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
 {
 	_debugDrawGCHandle = debugDrawGCHandle;
 	_drawAabbCallback = drawAabbCallback;
@@ -17,6 +17,7 @@ btIDebugDrawWrapper::btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawAabb draw
 	_drawSphereCallback = drawSphereCallback;
 	_drawSpherePatchCallback = drawSpherePatchCallback;
 	_drawTransformCallback = drawTransformCallback;
+	_drawTriangleCallback = drawTriangleCallback;
 	_getDebugModeCallback = getDebugModeCallback;
 	_cb = cb;
 }
@@ -135,9 +136,7 @@ void btIDebugDrawWrapper::drawTransform(const btTransform& transform, btScalar o
 
 void btIDebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2, const btVector3& color, btScalar)
 {
-	_cb(13);
-	//_debugDraw->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
-		//BtVectorToBtColor(color), 0);
+	_drawTriangleCallback(v0, v1, v2, color, 0);
 }
 
 void btIDebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
@@ -196,9 +195,9 @@ int	btIDebugDrawWrapper::getDebugMode() const
 
 btIDebugDrawWrapper* btIDebugDrawWrapper_new(void* debugDrawGCHandle, pDrawAabb drawAabbCallback, pDrawArc drawArcCallback, pDrawBox drawBoxCallback,
 	pDrawCapsule drawCapsule, pDrawContactPoint drawContactPointCallback, pDrawCylinder drawCylinderCallback, pDrawLine drawLineCallback,
-	pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback, pDrawSpherePatch drawSpherePatchCallback, pDrawTransform drawTransformCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
+	pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback, pDrawSpherePatch drawSpherePatchCallback, pDrawTransform drawTransformCallback, pDrawTriangle drawTriangleCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb)
 {
-	return new btIDebugDrawWrapper(debugDrawGCHandle, drawAabbCallback, drawArcCallback, drawBoxCallback, drawCapsule, drawContactPointCallback, drawCylinderCallback, drawLineCallback, drawPlaneCallback, drawSphereCallback, drawSpherePatchCallback, drawTransformCallback, getDebugModeCallback, cb);
+	return new btIDebugDrawWrapper(debugDrawGCHandle, drawAabbCallback, drawArcCallback, drawBoxCallback, drawCapsule, drawContactPointCallback, drawCylinderCallback, drawLineCallback, drawPlaneCallback, drawSphereCallback, drawSpherePatchCallback, drawTransformCallback, drawTriangleCallback, getDebugModeCallback, cb);
 }
 
 void* btIDebugDrawWrapper_getDebugDrawGCHandle(btIDebugDrawWrapper* obj)
