@@ -7,12 +7,15 @@ namespace BulletSharp.SoftBody
 	public class SoftBodyWorldInfo
 	{
 		internal IntPtr _native;
-
+        
+        private bool _preventDelete;
         private Dispatcher _dispatcher;
-
-		internal SoftBodyWorldInfo(IntPtr native)
+        private SparseSdf _sparseSdf;
+        
+		internal SoftBodyWorldInfo(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public SoftBodyWorldInfo()
@@ -55,7 +58,14 @@ namespace BulletSharp.SoftBody
 
         public SparseSdf SparseSdf
 		{
-			get { return new SparseSdf(btSoftBodyWorldInfo_getSparsesdf(_native)); }
+            get
+            {
+                if (_sparseSdf == null)
+                {
+                    _sparseSdf = new SparseSdf(btSoftBodyWorldInfo_getSparsesdf(_native), true);
+                }
+                return _sparseSdf;
+            }
 			//set { btSoftBodyWorldInfo_setSparsesdf(_native, value._native); }
 		}
         
@@ -1599,9 +1609,12 @@ namespace BulletSharp.SoftBody
 	{
 		internal IntPtr _native;
 
-		internal Cluster(IntPtr native)
+        private bool _preventDelete;
+
+		internal Cluster(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public Cluster()
@@ -1779,7 +1792,10 @@ namespace BulletSharp.SoftBody
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btSoftBody_Cluster_delete(_native);
+                if (!_preventDelete)
+                {
+                    btSoftBody_Cluster_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -2102,8 +2118,12 @@ namespace BulletSharp.SoftBody
 
 		public Cluster Soft
 		{
-			get { return new Cluster(btSoftBody_Body_getSoft(_native)); }
-			set { btSoftBody_Body_setSoft(_native, value._native); }
+            get
+            {
+                IntPtr soft = btSoftBody_Body_getSoft(_native);
+                return (soft != IntPtr.Zero) ? new Cluster(soft, true) : null;
+            }
+			set { btSoftBody_Body_setSoft(_native, (value != null) ? value._native : IntPtr.Zero); }
 		}
 
 		public void Dispose()
@@ -2714,9 +2734,12 @@ namespace BulletSharp.SoftBody
 	{
 		internal IntPtr _native;
 
-		internal Config(IntPtr native)
+        private bool _preventDelete;
+
+		internal Config(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public Config()
@@ -2908,7 +2931,10 @@ namespace BulletSharp.SoftBody
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btSoftBody_Config_delete(_native);
+                if (!_preventDelete)
+                {
+                    btSoftBody_Config_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -3228,7 +3254,7 @@ namespace BulletSharp.SoftBody
         private AlignedClusterArray _clusters;
         private AlignedFaceArray _faces;
         //private AlignedJointArray _joints;
-        //private AlignedLinkArray _links;
+        private AlignedLinkArray _links;
         private AlignedMaterialArray _materials;
         private AlignedNodeArray _nodes;
         //private AlignedNoteArray _notes;
@@ -3238,13 +3264,13 @@ namespace BulletSharp.SoftBody
 			: base(native)
 		{
 		}
-        /*
-		public SoftBody(SoftBodyWorldInfo worldInfo, int node_count, Vector3 x, float m)
-			: base(btSoftBody_new(worldInfo._native, node_count, ref x, m._native))
+        
+		public SoftBody(SoftBodyWorldInfo worldInfo, int node_count, Vector3[] x, float[] m)
+			: base(btSoftBody_new(worldInfo._native, node_count, x, m))
 		{
             _worldInfo = worldInfo;
 		}
-        */
+        
         public SoftBody(SoftBodyWorldInfo worldInfo)
 			: base(btSoftBody_new2(worldInfo._native))
 		{
@@ -3931,6 +3957,56 @@ namespace BulletSharp.SoftBody
             return btSoftBody_getFaceVertexNormalData(_native, vertices);
         }
 
+        public int GetLinkVertexData(ref Vector3[] vertices)
+        {
+            int vertexCount = Links.Count * 2;
+
+            if (vertices == null || vertices.Length != vertexCount)
+            {
+                vertices = new Vector3[vertexCount];
+            }
+
+            return btSoftBody_getLinkVertexData(_native, vertices);
+        }
+
+        public int GetLinkVertexNormalData(ref Vector3[] vertices)
+        {
+            int vertexCount = Links.Count * 2;
+            int vertexNormalCount = vertexCount * 2;
+
+            if (vertices == null || vertices.Length != vertexNormalCount)
+            {
+                vertices = new Vector3[vertexNormalCount];
+            }
+
+            return btSoftBody_getLinkVertexNormalData(_native, vertices);
+        }
+
+        int GetTetraVertexData(ref Vector3[] vertices)
+        {
+            int vertexCount = Tetras.Count * 12;
+
+            if (vertices == null || vertices.Length != vertexCount)
+            {
+                vertices = new Vector3[vertexCount];
+            }
+
+            return btSoftBody_getTetraVertexData(_native, vertices);
+        }
+
+        int GetTetraVertexNormalData(ref Vector3[] vertices)
+        {
+            int vertexCount = Tetras.Count * 12;
+            int vertexNormalCount = vertexCount * 2;
+
+            if (vertices == null || vertices.Length != vertexNormalCount)
+            {
+                vertices = new Vector3[vertexNormalCount];
+            }
+
+            return btSoftBody_getTetraVertexNormalData(_native, vertices);
+        }
+
         public int GetVertexNormalData(ref Vector3[] data)
         {
             if (Faces.Count != 0)
@@ -3939,10 +4015,9 @@ namespace BulletSharp.SoftBody
             }
             else if (Tetras.Count != 0)
             {
-                //return GetTetraVertexNormalData(data);
+                return GetTetraVertexNormalData(ref data);
             }
-            //return GetLinkVertexNormalData(data);
-            return 0;
+            return GetLinkVertexNormalData(ref data);
         }
         /*
 		public tAnchorArray Anchors
@@ -3980,7 +4055,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_config == null)
                 {
-                    _config = new Config(btSoftBody_getCfg(_native));
+                    _config = new Config(btSoftBody_getCfg(_native), true);
                 }
                 return _config;
             }
@@ -3999,7 +4074,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_clusters == null)
                 {
-                    _clusters = new AlignedClusterArray(btSoftBody_getClusters(_native));
+                    _clusters = new AlignedClusterArray(btSoftBody_getClusters(_native), true);
                 }
                 return _clusters;
             }
@@ -4018,7 +4093,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_faces == null)
                 {
-                    _faces = new AlignedFaceArray(btSoftBody_getFaces(_native));
+                    _faces = new AlignedFaceArray(btSoftBody_getFaces(_native), true);
                 }
                 return _faces;
             }
@@ -4042,20 +4117,27 @@ namespace BulletSharp.SoftBody
 			get { return btSoftBody_getJoints(_native); }
 			set { btSoftBody_setJoints(_native, value._native); }
 		}
-
-		public tLinkArray Links
-		{
-			get { return btSoftBody_getLinks(_native); }
-			set { btSoftBody_setLinks(_native, value._native); }
-		}
         */
+		public AlignedLinkArray Links
+		{
+            get
+            {
+                if (_links == null)
+                {
+                    _links = new AlignedLinkArray(btSoftBody_getLinks(_native), true);
+                }
+                return _links;
+            }
+			//set { btSoftBody_setLinks(_native, value._native); }
+		}
+        
 		public AlignedMaterialArray Materials
 		{
             get
             {
                 if (_materials == null)
                 {
-                    _materials = new AlignedMaterialArray(btSoftBody_getMaterials(_native));
+                    _materials = new AlignedMaterialArray(btSoftBody_getMaterials(_native), true);
                 }
                 return _materials;
             }
@@ -4074,7 +4156,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_nodes == null)
                 {
-                    _nodes = new AlignedNodeArray(btSoftBody_getNodes(_native));
+                    _nodes = new AlignedNodeArray(btSoftBody_getNodes(_native), true);
                 }
                 return _nodes;
             }
@@ -4135,7 +4217,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_tetras == null)
                 {
-                    _tetras = new AlignedTetraArray(btSoftBody_getTetras(_native));
+                    _tetras = new AlignedTetraArray(btSoftBody_getTetras(_native), true);
                 }
                 return _tetras;
             }
@@ -4182,7 +4264,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_worldInfo == null)
                 {
-                    _worldInfo = new SoftBodyWorldInfo(btSoftBody_getWorldInfo(_native));
+                    _worldInfo = new SoftBodyWorldInfo(btSoftBody_getWorldInfo(_native), true);
                 }
                 return _worldInfo;
             }
@@ -4194,7 +4276,7 @@ namespace BulletSharp.SoftBody
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBody_new(IntPtr worldInfo, int node_count, [In] ref Vector3 x, IntPtr m);
+		static extern IntPtr btSoftBody_new(IntPtr worldInfo, int node_count, [In] Vector3[] x, [In] float[] m);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBody_new2(IntPtr worldInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -4595,5 +4677,21 @@ namespace BulletSharp.SoftBody
         static extern int btSoftBody_getFaceVertexNormalData(IntPtr obj, [Out] float[] value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern int btSoftBody_getFaceVertexNormalData(IntPtr obj, [Out] Vector3[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getLinkVertexData(IntPtr obj, [Out] float[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getLinkVertexData(IntPtr obj, [Out] Vector3[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getLinkVertexNormalData(IntPtr obj, [Out] float[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getLinkVertexNormalData(IntPtr obj, [Out] Vector3[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexData(IntPtr obj, [Out] float[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexData(IntPtr obj, [Out] Vector3[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexNormalData(IntPtr obj, [Out] float[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexNormalData(IntPtr obj, [Out] Vector3[] value);
 	}
 }

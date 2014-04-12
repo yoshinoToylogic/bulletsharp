@@ -545,12 +545,12 @@ btSoftBody_Tetra* btSoftBody_Tetra_new()
 {
 	return new btSoftBody_Tetra();
 }
-/*
-btScalar* btSoftBody_Tetra_getC0(btSoftBody_Tetra* obj)
+
+btVector3* btSoftBody_Tetra_getC0(btSoftBody_Tetra* obj)
 {
 	return obj->m_c0;
 }
-*/
+
 btScalar btSoftBody_Tetra_getC1(btSoftBody_Tetra* obj)
 {
 	return obj->m_c1;
@@ -1626,6 +1626,22 @@ void btSoftBody_Joint_delete(btSoftBody_Joint* obj)
 }
 
 
+btSoftBody_LJoint_Specs* btSoftBody_LJoint_Specs_new()
+{
+	return new btSoftBody::LJoint::Specs();
+}
+
+void btSoftBody_LJoint_Specs_getPosition(btSoftBody_LJoint_Specs* obj, btScalar* value)
+{
+	VECTOR3_OUT(&obj->position, value);
+}
+
+void btSoftBody_LJoint_Specs_setPosition(btSoftBody_LJoint_Specs* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->position);
+}
+
+
 btSoftBody_LJoint* btSoftBody_LJoint_new()
 {
 	return new btSoftBody_LJoint();
@@ -1666,6 +1682,22 @@ btScalar btSoftBody_AJoint_IControl_Speed(btSoftBody_AJoint_IControl* obj, btSof
 void btSoftBody_AJoint_IControl_delete(btSoftBody_AJoint_IControl* obj)
 {
 	delete obj;
+}
+
+
+btSoftBody_AJoint_Specs* btSoftBody_AJoint_Specs_new()
+{
+	return new btSoftBody::AJoint::Specs();
+}
+
+void btSoftBody_AJoint_Specs_getAxis(btSoftBody_AJoint_Specs* obj, btScalar* value)
+{
+	VECTOR3_OUT(&obj->axis, value);
+}
+
+void btSoftBody_AJoint_Specs_setAxis(btSoftBody_AJoint_Specs* obj, btScalar* value)
+{
+	VECTOR3_IN(value, &obj->axis);
 }
 
 
@@ -3076,12 +3108,12 @@ void btSoftBody_setSolver(btSoftBody* obj, btSoftBody::eSolverPresets::_ preset)
 {
 	obj->setSolver(preset);
 }
-
+/*
 void btSoftBody_setSst(btSoftBody* obj, btSoftBody::SolverState value)
 {
 	obj->m_sst = value;
 }
-
+*/
 void btSoftBody_setTag(btSoftBody* obj, void* value)
 {
 	obj->m_tag = value;
@@ -3251,9 +3283,7 @@ int btSoftBody_getFaceVertexData(btSoftBody* obj, btScalar* vertices)
 	for (i = 0; i < faceCount; i++) {
 		for (j = 0; j < 3; j++) {
 			btSoftBody::Node* n = faceArray->at(i).m_n[j];
-			vertices[0] = n->m_x.x();
-			vertices[1] = n->m_x.y();
-			vertices[2] = n->m_x.z();
+			VECTOR3_OUT(n->m_x, &vertices[0]);
 			vertices += 3;
 		}
 	}
@@ -3270,20 +3300,151 @@ int btSoftBody_getFaceVertexNormalData(btSoftBody* obj, btScalar* vertices)
 	}
 
 	int vertexCount = faceCount * 3;
-	int vertexNormalCount = vertexCount * 2;
 
 	int i, j;
 	for (i = 0; i < faceCount; i++) {
 		for (j = 0; j < 3; j++) {
 			btSoftBody::Node* n = faceArray->at(i).m_n[j];
-			vertices[0] = n->m_x.x();
-			vertices[1] = n->m_x.y();
-			vertices[2] = n->m_x.z();
-			vertices[3] = n->m_n.x();
-			vertices[4] = n->m_n.y();
-			vertices[5] = n->m_n.z();
+			VECTOR3_OUT(n->m_x, &vertices[0]);
+			VECTOR3_OUT(n->m_n, &vertices[3]);
 			vertices += 6;
 		}
+	}
+
+	return vertexCount;
+}
+
+int btSoftBody_getLinkVertexData(btSoftBody* obj, btScalar* vertices)
+{
+	btAlignedObjectArray<btSoftBody::Link>* linkArray = &obj->m_links;
+	int linkCount = linkArray->size();
+	if (linkCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = linkCount * 2;
+
+	int i;
+	for (i = 0; i < linkCount; i++) {
+		btSoftBody::Link* l = &linkArray->at(i);
+		VECTOR3_OUT(&l->m_n[0]->m_x, &vertices[0]);
+		VECTOR3_OUT(&l->m_n[1]->m_x, &vertices[3]);
+		vertices += 6;
+	}
+
+	return vertexCount;
+}
+
+int btSoftBody_getLinkVertexNormalData(btSoftBody* obj, btScalar* vertices)
+{
+	btAlignedObjectArray<btSoftBody::Link>* linkArray = &obj->m_links;
+	int linkCount = linkArray->size();
+	if (linkCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = linkCount * 2;
+
+	int i;
+	for (i = 0; i < linkCount; i++) {
+		btSoftBody::Link* l = &linkArray->at(i);
+		VECTOR3_OUT(&l->m_n[0]->m_x, &vertices[0]);
+		VECTOR3_OUT(&l->m_n[1]->m_x, &vertices[6]);
+		vertices += 12;
+	}
+
+	return vertexCount;
+}
+
+int btSoftBody_getTetraVertexData(btSoftBody* obj, btScalar* vertices)
+{
+	btAlignedObjectArray<btSoftBody::Tetra>* tetraArray = &obj->m_tetras;
+	int tetraCount = tetraArray->size();
+	if (tetraCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = tetraCount * 12;
+
+	int i;
+	for (i = 0; i < tetraCount; i++) {
+		btSoftBody::Tetra* t = &tetraArray->at(i);
+		VECTOR3_OUT(t->m_n[0]->m_x, &vertices[0]);
+		VECTOR3_OUT(t->m_n[1]->m_x, &vertices[3]);
+		VECTOR3_OUT(t->m_n[2]->m_x, &vertices[6]);
+		
+		VECTOR3_OUT(t->m_n[0]->m_x, &vertices[9]);
+		VECTOR3_OUT(t->m_n[1]->m_x, &vertices[12]);
+		VECTOR3_OUT(t->m_n[3]->m_x, &vertices[15]);
+
+		VECTOR3_OUT(t->m_n[1]->m_x, &vertices[18]);
+		VECTOR3_OUT(t->m_n[2]->m_x, &vertices[21]);
+		VECTOR3_OUT(t->m_n[3]->m_x, &vertices[24]);
+
+		VECTOR3_OUT(t->m_n[2]->m_x, &vertices[27]);
+		VECTOR3_OUT(t->m_n[0]->m_x, &vertices[30]);
+		VECTOR3_OUT(t->m_n[3]->m_x, &vertices[33]);
+
+		vertices += 36;
+	}
+
+	return vertexCount;
+}
+
+int btSoftBody_getTetraVertexNormalData(btSoftBody* obj, btScalar* vertices)
+{
+	btAlignedObjectArray<btSoftBody::Tetra>* tetraArray = &obj->m_tetras;
+	int tetraCount = tetraArray->size();
+	if (tetraCount == 0) {
+		return 0;
+	}
+
+	int vertexCount = tetraCount * 12;
+
+	int i;
+	btVector3 c1, c2, c3, normal;
+	for (i = 0; i < tetraCount; i++) {
+		btSoftBody::Tetra* t = &tetraArray->at(i);
+		c1 = t->m_n[1]->m_x - t->m_n[0]->m_x;
+		c2 = t->m_n[0]->m_x - t->m_n[2]->m_x;
+
+		normal = c1.cross(c2);
+		VECTOR3_OUT(t->m_n[0]->m_x, &vertices[0]);
+		VECTOR3_OUT(normal, &vertices[3]);
+		VECTOR3_OUT(t->m_n[1]->m_x, &vertices[6]);
+		VECTOR3_OUT(normal, &vertices[9]);
+		VECTOR3_OUT(t->m_n[2]->m_x, &vertices[12]);
+		VECTOR3_OUT(normal, &vertices[15]);
+
+		c3 = t->m_n[3]->m_x - t->m_n[0]->m_x;
+		normal = c1.cross(c3);
+		VECTOR3_OUT(t->m_n[0]->m_x, &vertices[18]);
+		VECTOR3_OUT(normal, &vertices[21]);
+		VECTOR3_OUT(t->m_n[1]->m_x, &vertices[24]);
+		VECTOR3_OUT(normal, &vertices[27]);
+		VECTOR3_OUT(t->m_n[3]->m_x, &vertices[30]);
+		VECTOR3_OUT(normal, &vertices[33]);
+
+		c1 = t->m_n[2]->m_x - t->m_n[1]->m_x;
+		c3 = t->m_n[3]->m_x - t->m_n[1]->m_x;
+		normal = c1.cross(c3);
+		VECTOR3_OUT(t->m_n[1]->m_x, &vertices[36]);
+		VECTOR3_OUT(normal, &vertices[39]);
+		VECTOR3_OUT(t->m_n[2]->m_x, &vertices[42]);
+		VECTOR3_OUT(normal, &vertices[45]);
+		VECTOR3_OUT(t->m_n[3]->m_x, &vertices[48]);
+		VECTOR3_OUT(normal, &vertices[51]);
+
+		c3 = t->m_n[3]->m_x - t->m_n[2]->m_x;
+		normal = c2.cross(c3);
+		VECTOR3_OUT(t->m_n[2]->m_x, &vertices[54]);
+		VECTOR3_OUT(normal, &vertices[57]);
+		VECTOR3_OUT(t->m_n[0]->m_x, &vertices[60]);
+		VECTOR3_OUT(normal, &vertices[63]);
+		VECTOR3_OUT(t->m_n[3]->m_x, &vertices[66]);
+		VECTOR3_OUT(normal, &vertices[69]);
+
+		vertices += 72;
 	}
 
 	return vertexCount;

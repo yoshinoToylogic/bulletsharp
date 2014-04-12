@@ -7,6 +7,7 @@ namespace BulletSharp.SoftBody
 	public class SoftRigidDynamicsWorld : DiscreteDynamicsWorld
 	{
         private AlignedSoftBodyArray _softBodyArray;
+        private SoftBodyWorldInfo _worldInfo;
 
 		internal SoftRigidDynamicsWorld(IntPtr native)
 			: base(native)
@@ -18,6 +19,7 @@ namespace BulletSharp.SoftBody
 		{
             _dispatcher = dispatcher;
             _broadphase = pairCache;
+            _solver = constraintSolver;
 		}
         */
 		public SoftRigidDynamicsWorld(Dispatcher dispatcher, BroadphaseInterface pairCache, ConstraintSolver constraintSolver, CollisionConfiguration collisionConfiguration)
@@ -25,6 +27,7 @@ namespace BulletSharp.SoftBody
 		{
             _dispatcher = dispatcher;
             _broadphase = pairCache;
+            _solver = constraintSolver;
 		}
 
 		public void AddSoftBody(SoftBody body, short collisionFilterGroup, short collisionFilterMask)
@@ -67,7 +70,14 @@ namespace BulletSharp.SoftBody
 
 		public SoftBodyWorldInfo WorldInfo
 		{
-            get { return new SoftBodyWorldInfo(btSoftRigidDynamicsWorld_getWorldInfo(_native)); }
+            get
+            {
+                if (_worldInfo == null)
+                {
+                    _worldInfo = new SoftBodyWorldInfo(btSoftRigidDynamicsWorld_getWorldInfo(_native), true);
+                }
+                return _worldInfo;
+            }
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

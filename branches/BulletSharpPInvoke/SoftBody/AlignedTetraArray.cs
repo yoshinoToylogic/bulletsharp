@@ -92,7 +92,7 @@ namespace BulletSharp.SoftBody
             {
                 if (!_preventDelete)
                 {
-                    btAlignedTetraArray_delete(_native);
+                    btAlignedSoftBodyTetraArray_delete(_native);
                 }
                 _native = IntPtr.Zero;
             }
@@ -126,7 +126,7 @@ namespace BulletSharp.SoftBody
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new Tetra(btAlignedTetraArray_at(_native, index), true);
+                return new Tetra(btAlignedSoftBodyTetraArray_at(_native, index), true);
             }
             set
             {
@@ -136,12 +136,12 @@ namespace BulletSharp.SoftBody
 
         public void Add(Tetra item)
         {
-            btAlignedTetraArray_push_back(_native, item._native);
+            btAlignedSoftBodyTetraArray_push_back(_native, item._native);
         }
 
         public void Clear()
         {
-            btAlignedTetraArray_resizeNoInitialize(_native, 0);
+            btAlignedSoftBodyTetraArray_resizeNoInitialize(_native, 0);
         }
 
         public bool Contains(Tetra item)
@@ -156,7 +156,7 @@ namespace BulletSharp.SoftBody
 
         public int Count
         {
-            get { return btAlignedTetraArray_size(_native); }
+            get { return btAlignedSoftBodyTetraArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -180,14 +180,14 @@ namespace BulletSharp.SoftBody
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedTetraArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btAlignedSoftBodyTetraArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedTetraArray_push_back(IntPtr obj, IntPtr val);
+        protected static extern void btAlignedSoftBodyTetraArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedTetraArray_resizeNoInitialize(IntPtr obj, int newSize);
+        protected static extern void btAlignedSoftBodyTetraArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedTetraArray_size(IntPtr obj);
+        protected static extern int btAlignedSoftBodyTetraArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedTetraArray_delete(IntPtr obj);
+        protected static extern void btAlignedSoftBodyTetraArray_delete(IntPtr obj);
     }
 }

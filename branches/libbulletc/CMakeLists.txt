@@ -88,6 +88,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btAlignedSoftBodyClusterArray_wrap.h
     src/btAlignedSoftBodyFaceArray_wrap.cpp
     src/btAlignedSoftBodyFaceArray_wrap.h
+    src/btAlignedSoftBodyLinkArray_wrap.cpp
+    src/btAlignedSoftBodyLinkArray_wrap.h
     src/btAlignedSoftBodyMaterialArray_wrap.cpp
     src/btAlignedSoftBodyMaterialArray_wrap.h
     src/btAlignedSoftBodyNodeArray_wrap.cpp

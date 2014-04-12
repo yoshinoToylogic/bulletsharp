@@ -6,21 +6,21 @@ using System.Diagnostics;
 
 namespace BulletSharp.SoftBody
 {
-    public class AlignedClusterArrayDebugView
+    public class AlignedLinkArrayDebugView
     {
-        private AlignedClusterArray _array;
+        private AlignedLinkArray _array;
 
-        public AlignedClusterArrayDebugView(AlignedClusterArray array)
+        public AlignedLinkArrayDebugView(AlignedLinkArray array)
         {
             _array = array;
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public Cluster[] Items
+        public Link[] Items
         {
             get
             {
-                Cluster[] array = new Cluster[_array.Count];
+                Link[] array = new Link[_array.Count];
                 for (int i = 0; i < _array.Count; i++)
                 {
                     array[i] = _array[i];
@@ -30,20 +30,20 @@ namespace BulletSharp.SoftBody
         }
     }
 
-    public class AlignedClusterArrayEnumerator : IEnumerator<Cluster>
+    public class AlignedLinkArrayEnumerator : IEnumerator<Link>
     {
         int _i;
         int _count;
-        AlignedClusterArray _array;
+        AlignedLinkArray _array;
 
-        public AlignedClusterArrayEnumerator(AlignedClusterArray array)
+        public AlignedLinkArrayEnumerator(AlignedLinkArray array)
         {
             _array = array;
             _count = array.Count;
             _i = -1;
         }
 
-        public Cluster Current
+        public Link Current
         {
             get { return _array[_i]; }
         }
@@ -69,12 +69,12 @@ namespace BulletSharp.SoftBody
         }
     }
 
-    [Serializable, DebuggerTypeProxy(typeof(AlignedClusterArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedClusterArray : AlignedObjectArray, IList<Cluster>, IDisposable
+    [Serializable, DebuggerTypeProxy(typeof(AlignedLinkArrayDebugView)), DebuggerDisplay("Count = {Count}")]
+    public class AlignedLinkArray : AlignedObjectArray, IList<Link>, IDisposable
     {
         bool _preventDelete;
 
-        internal AlignedClusterArray(IntPtr native, bool preventDelete = false)
+        internal AlignedLinkArray(IntPtr native, bool preventDelete = false)
             : base(native)
         {
             _preventDelete = preventDelete;
@@ -92,23 +92,23 @@ namespace BulletSharp.SoftBody
             {
                 if (!_preventDelete)
                 {
-                    btAlignedSoftBodyClusterArray_delete(_native);
+                    btAlignedSoftBodyLinkArray_delete(_native);
                 }
                 _native = IntPtr.Zero;
             }
         }
 
-        ~AlignedClusterArray()
+        ~AlignedLinkArray()
         {
             Dispose(false);
         }
 
-        public int IndexOf(Cluster item)
+        public int IndexOf(Link item)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(int index, Cluster item)
+        public void Insert(int index, Link item)
         {
             throw new NotImplementedException();
         }
@@ -118,7 +118,7 @@ namespace BulletSharp.SoftBody
             throw new NotImplementedException();
         }
 
-        public Cluster this[int index]
+        public Link this[int index]
         {
             get
             {
@@ -126,7 +126,7 @@ namespace BulletSharp.SoftBody
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new Cluster(btAlignedSoftBodyClusterArray_at(_native, index), true);
+                return new Link(btAlignedSoftBodyLinkArray_at(_native, index), true);
             }
             set
             {
@@ -134,29 +134,29 @@ namespace BulletSharp.SoftBody
             }
         }
 
-        public void Add(Cluster item)
+        public void Add(Link item)
         {
-            btAlignedSoftBodyClusterArray_push_back(_native, item._native);
+            btAlignedSoftBodyLinkArray_push_back(_native, item._native);
         }
 
         public void Clear()
         {
-            btAlignedSoftBodyClusterArray_resizeNoInitialize(_native, 0);
+            btAlignedSoftBodyLinkArray_resizeNoInitialize(_native, 0);
         }
 
-        public bool Contains(Cluster item)
+        public bool Contains(Link item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(Cluster[] array, int arrayIndex)
+        public void CopyTo(Link[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
         public int Count
         {
-            get { return btAlignedSoftBodyClusterArray_size(_native); }
+            get { return btAlignedSoftBodyLinkArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -164,30 +164,30 @@ namespace BulletSharp.SoftBody
             get { return false; }
         }
 
-        public bool Remove(Cluster item)
+        public bool Remove(Link item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<Cluster> GetEnumerator()
+        public IEnumerator<Link> GetEnumerator()
         {
-            return new AlignedClusterArrayEnumerator(this);
+            return new AlignedLinkArrayEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new AlignedClusterArrayEnumerator(this);
+            return new AlignedLinkArrayEnumerator(this);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedSoftBodyClusterArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btAlignedSoftBodyLinkArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyClusterArray_push_back(IntPtr obj, IntPtr val);
+        protected static extern void btAlignedSoftBodyLinkArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyClusterArray_resizeNoInitialize(IntPtr obj, int newSize);
+        protected static extern void btAlignedSoftBodyLinkArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedSoftBodyClusterArray_size(IntPtr obj);
+        protected static extern int btAlignedSoftBodyLinkArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyClusterArray_delete(IntPtr obj);
+        protected static extern void btAlignedSoftBodyLinkArray_delete(IntPtr obj);
     }
 }

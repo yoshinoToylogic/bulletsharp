@@ -432,6 +432,7 @@
 #define btAlignedSoftBodyRContactArray void
 #define btAlignedSoftBodySContactArray void
 #define btAlignedSoftBodyVSolverArray void
+#define btSoftBodyNodePtrArray void
 #define btSoftBody void
 #define btSoftBodyWorldInfo void
 #define btSoftBody_eAeroModel int
@@ -489,6 +490,7 @@
 #define btAlignedSoftBodySContactArray btSoftBody::tSContactArray
 #define btAlignedSoftBodyTetraArray btSoftBody::tTetraArray
 #define btAlignedSoftBodyVSolverArray btSoftBody::tVSolverArray
+#define btSoftBodyNodePtrArray btSoftBody::Node*
 #define btSoftBody_eAeroModel btSoftBody::eAeroModel::_
 #define btSoftBody_eFeature btSoftBody::eFeature::_
 #define btSoftBody_ePSolver btSoftBody::ePSolver::_

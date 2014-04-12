@@ -1,3 +1,5 @@
+#include <BulletSoftBody/btSoftBody.h>
+
 #include "conversion.h"
 #include "collections.h"
 
@@ -9,6 +11,11 @@ btCompoundShapeChild* btCompoundShapeChild_array_at(btCompoundShapeChild* a, int
 unsigned int uint_array_at(const unsigned int* a, int n)
 {
 	return a[n];
+}
+
+btSoftBody::Node* btSoftBodyNodePtrArray_at(btSoftBody::Node** obj, int n)
+{
+	return obj[n];
 }
 
 void btVector3_array_at(const btVector3* a, int n, btScalar* value)

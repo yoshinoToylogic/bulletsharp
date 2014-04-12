@@ -51,7 +51,7 @@ namespace BulletSharp.SoftBody
                 {
                     throw new ArgumentOutOfRangeException("index");
                 }
-                return new Node(btSoftBodyNodePtr_array_at(_native, index), true);
+                return new Node(btSoftBodyNodePtrArray_at(_native, index), true);
             }
             set
             {
@@ -90,6 +90,6 @@ namespace BulletSharp.SoftBody
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btSoftBodyNodePtr_array_at(IntPtr obj, int n);
+        protected static extern IntPtr btSoftBodyNodePtrArray_at(IntPtr obj, int n);
     }
 }
