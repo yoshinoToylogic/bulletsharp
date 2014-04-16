@@ -808,6 +808,7 @@ namespace BulletSharp
 		AlignedCollisionObjectArray _collisionObjectArray;
 		protected Dispatcher _dispatcher;
 		protected BroadphaseInterface _broadphase;
+        private DispatcherInfo _dispatchInfo;
 
 		internal CollisionWorld(IntPtr native)
 		{
@@ -972,7 +973,14 @@ namespace BulletSharp
 
 		public DispatcherInfo DispatchInfo
 		{
-			get { return new DispatcherInfo(btCollisionWorld_getDispatchInfo(_native)); }
+            get
+            {
+                if (_dispatchInfo == null)
+                {
+                    _dispatchInfo = new DispatcherInfo(btCollisionWorld_getDispatchInfo(_native), true);
+                }
+                return _dispatchInfo;
+            }
 		}
 
 		public bool ForceUpdateAllAabbs

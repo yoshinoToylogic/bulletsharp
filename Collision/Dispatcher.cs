@@ -8,10 +8,12 @@ namespace BulletSharp
 	public class DispatcherInfo
 	{
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal DispatcherInfo(IntPtr native)
+		internal DispatcherInfo(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public DispatcherInfo()
@@ -101,7 +103,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btDispatcherInfo_delete(_native);
+                if (!_preventDelete)
+                {
+                    btDispatcherInfo_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

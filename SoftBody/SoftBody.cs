@@ -191,7 +191,7 @@ namespace BulletSharp.SoftBody
     }
 
     [Flags]
-    public enum Collision
+    public enum Collisions
     {
         None = 0x00,
         RvsMask = 0x0f,
@@ -292,19 +292,24 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_sRayCast_delete(IntPtr obj);
 	}
 
-	public class ImplicitFn
+	public abstract class ImplicitFn
 	{
 		internal IntPtr _native;
 
-		internal ImplicitFn(IntPtr native)
-		{
-			_native = native;
-		}
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate float EvalUnmanagedDelegate([In] ref Vector3 x);
 
-		public float Eval(Vector3 x)
-		{
-			return btSoftBody_ImplicitFn_Eval(_native, ref x);
-		}
+        EvalUnmanagedDelegate _eval;
+
+        public ImplicitFn()
+        {
+            _eval = new EvalUnmanagedDelegate(Eval);
+
+            _native = btSoftBody_ImplicitFnWrapper_new(
+                Marshal.GetFunctionPointerForDelegate(_eval));
+        }
+
+        public abstract float Eval(ref Vector3 x);
 
 		public void Dispose()
 		{
@@ -327,7 +332,7 @@ namespace BulletSharp.SoftBody
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btSoftBody_ImplicitFn_Eval(IntPtr obj, [In] ref Vector3 x);
+		static extern IntPtr btSoftBody_ImplicitFnWrapper_new(IntPtr evalCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_ImplicitFn_delete(IntPtr obj);
 	}
@@ -2547,12 +2552,12 @@ namespace BulletSharp.SoftBody
                 return new IControl(btSoftBody_AJoint_IControl_Default());
 			}
 
-			public void Prepare(AJoint __unnamed0)
+			public virtual void Prepare(AJoint __unnamed0)
 			{
 				btSoftBody_AJoint_IControl_Prepare(_native, __unnamed0._native);
 			}
 
-			public float Speed(AJoint __unnamed0, float current)
+			public virtual float Speed(AJoint __unnamed0, float current)
 			{
 				return btSoftBody_AJoint_IControl_Speed(_native, __unnamed0._native, current);
 			}
@@ -2591,6 +2596,8 @@ namespace BulletSharp.SoftBody
 
         public new class Specs : Joint.Specs
         {
+            public IControl _iControl;
+
             internal Specs(IntPtr native)
                 : base(native)
             {
@@ -2612,13 +2619,36 @@ namespace BulletSharp.SoftBody
                 set { btSoftBody_AJoint_Specs_setAxis(_native, ref value); }
             }
 
+            public IControl Control
+            {
+                get
+                {
+                    if (_iControl == null)
+                    {
+                        _iControl = new IControl(btSoftBody_AJoint_Specs_getIcontrol(_native));
+                    }
+                    return _iControl;
+                }
+                set
+                {
+                    _iControl = value;
+                    btSoftBody_AJoint_Specs_setIcontrol(_native, value._native);
+                }
+            }
+
             [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
             static extern IntPtr btSoftBody_AJoint_Specs_new();
             [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
             static extern void btSoftBody_AJoint_Specs_getAxis(IntPtr obj, [Out] out Vector3 value);
             [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern IntPtr btSoftBody_AJoint_Specs_getIcontrol(IntPtr obj);
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
             static extern void btSoftBody_AJoint_Specs_setAxis(IntPtr obj, [In] ref Vector3 value);
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern void btSoftBody_AJoint_Specs_setIcontrol(IntPtr obj, IntPtr value);
         }
+
+        private IControl _iControl;
 
 		internal AJoint(IntPtr native)
 			: base(native)
@@ -2641,10 +2671,21 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_AJoint_setAxis(_native, ref value); }
 		}
 
-		public IControl Icontrol
+		public IControl Control
 		{
-			get { return new IControl(btSoftBody_AJoint_getIcontrol(_native)); }
-			set { btSoftBody_AJoint_setIcontrol(_native, value._native); }
+            get
+            {
+                if (_iControl == null)
+                {
+                    _iControl = new IControl(btSoftBody_AJoint_getIcontrol(_native));
+                }
+                return _iControl;
+            }
+            set
+            {
+                _iControl = value;
+                btSoftBody_AJoint_setIcontrol(_native, value._native);
+            }
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -2771,7 +2812,7 @@ namespace BulletSharp.SoftBody
             set { btSoftBody_Config_setCiterations(_native, value); }
         }
 
-        public Collision Collisions
+        public Collisions Collisions
         {
             get { return btSoftBody_Config_getCollisions(_native); }
             set { btSoftBody_Config_setCollisions(_native, value); }
@@ -2951,7 +2992,7 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btSoftBody_Config_getCiterations(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern Collision btSoftBody_Config_getCollisions(IntPtr obj);
+		static extern Collisions btSoftBody_Config_getCollisions(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btSoftBody_Config_getDiterations(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -3009,7 +3050,7 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_Config_setCiterations(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_Config_setCollisions(IntPtr obj, Collision value);
+		static extern void btSoftBody_Config_setCollisions(IntPtr obj, Collisions value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_Config_setDiterations(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -3946,8 +3987,7 @@ namespace BulletSharp.SoftBody
 
         public int GetFaceVertexNormalData(ref Vector3[] vertices)
         {
-            int vertexCount = Faces.Count * 3;
-            int vertexNormalCount = vertexCount * 2;
+            int vertexNormalCount = Faces.Count * 3 * 2;
 
             if (vertices == null || vertices.Length != vertexNormalCount)
             {
