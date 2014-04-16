@@ -96,17 +96,7 @@ namespace BulletSharp
 			btPoint2PointConstraint_getInfo2NonVirtual(_native, info._native, ref body0_trans, ref body1_trans);
 		}
         */
-		public void SetPivotA(Vector3 pivotA)
-		{
-			btPoint2PointConstraint_setPivotA(_native, ref pivotA);
-		}
-
-		public void SetPivotB(Vector3 pivotB)
-		{
-			btPoint2PointConstraint_setPivotB(_native, ref pivotB);
-		}
-
-		public void UpdateRHS(float timeStep)
+		public void UpdateRhs(float timeStep)
 		{
 			btPoint2PointConstraint_updateRHS(_native, timeStep);
 		}
@@ -124,6 +114,7 @@ namespace BulletSharp
 				btPoint2PointConstraint_getPivotInA(_native, out value);
 				return value;
 			}
+            set { btPoint2PointConstraint_setPivotA(_native, ref value); }
 		}
 
 		public Vector3 PivotInB
@@ -134,6 +125,7 @@ namespace BulletSharp
 				btPoint2PointConstraint_getPivotInB(_native, out value);
 				return value;
 			}
+            set { btPoint2PointConstraint_setPivotB(_native, ref value); }
 		}
 
         public ConstraintSetting Setting

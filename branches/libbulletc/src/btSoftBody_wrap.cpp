@@ -146,6 +146,23 @@ void btSoftBody_sRayCast_delete(btSoftBody_sRayCast* obj)
 }
 
 
+btSoftBody_ImplicitFnWrapper::btSoftBody_ImplicitFnWrapper(pEval evalCallback)
+{
+	_evalCallback = evalCallback;
+}
+
+float btSoftBody_ImplicitFnWrapper::Eval(const btVector3& x)
+{
+	return _evalCallback(x);
+}
+
+
+btSoftBody_ImplicitFn* btSoftBody_ImplicitFnWrapper_new(pEval evalCallback)
+{
+	return new btSoftBody_ImplicitFnWrapper(evalCallback);
+}
+
+
 btScalar btSoftBody_ImplicitFn_Eval(btSoftBody_ImplicitFn* obj, btScalar* x)
 {
 	VECTOR3_CONV(x);
