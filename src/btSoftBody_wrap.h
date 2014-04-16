@@ -1,5 +1,20 @@
 #include "main.h"
 
+#ifndef _BT_SOFT_BODY_H
+#define pEval void*
+#else
+typedef float (*pEval)(const btScalar* x);
+
+class btSoftBody_ImplicitFnWrapper : public btSoftBody::ImplicitFn
+{
+private:
+	pEval _evalCallback;
+public:
+	btSoftBody_ImplicitFnWrapper(pEval evalCallback);
+	virtual float Eval(const btVector3& x);
+};
+#endif
+
 extern "C"
 {
 	EXPORT btSoftBodyWorldInfo* btSoftBodyWorldInfo_new();
@@ -31,6 +46,8 @@ extern "C"
 	EXPORT void btSoftBody_sRayCast_setFraction(btSoftBody_sRayCast* obj, btScalar value);
 	EXPORT void btSoftBody_sRayCast_setIndex(btSoftBody_sRayCast* obj, int value);
 	EXPORT void btSoftBody_sRayCast_delete(btSoftBody_sRayCast* obj);
+
+	EXPORT btSoftBody_ImplicitFn* btSoftBody_ImplicitFnWrapper_new(pEval evalCallback);
 
 	EXPORT btScalar btSoftBody_ImplicitFn_Eval(btSoftBody_ImplicitFn* obj, btScalar* x);
 	EXPORT void btSoftBody_ImplicitFn_delete(btSoftBody_ImplicitFn* obj);
