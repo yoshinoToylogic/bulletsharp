@@ -342,6 +342,7 @@ void btCollisionWorld_LocalConvexResult_delete(btCollisionWorld_LocalConvexResul
 	delete obj;
 }
 
+
 btScalar btCollisionWorld_ConvexResultCallback_addSingleResult(btCollisionWorld_ConvexResultCallback* obj, btCollisionWorld_LocalConvexResult* convexResult, bool normalInWorldSpace)
 {
 	return obj->addSingleResult(*convexResult, normalInWorldSpace);
@@ -389,8 +390,9 @@ void btCollisionWorld_ConvexResultCallback_setCollisionFilterMask(btCollisionWor
 
 void btCollisionWorld_ConvexResultCallback_delete(btCollisionWorld_ConvexResultCallback* obj)
 {
-	delete obj;
+	ALIGNED_FREE(obj);
 }
+
 
 btCollisionWorld_ClosestConvexResultCallback* btCollisionWorld_ClosestConvexResultCallback_new(btScalar* convexFromWorld, btScalar* convexToWorld)
 {
