@@ -14,19 +14,23 @@ btSoftBody* btSoftBodyHelpers_CreateEllipsoid(btSoftBodyWorldInfo* worldInfo, bt
 	VECTOR3_CONV(radius);
 	return btSoftBodyHelpers::CreateEllipsoid(*worldInfo, VECTOR3_USE(center), VECTOR3_USE(radius), res);
 }
-/*
+
 btSoftBody* btSoftBodyHelpers_CreateFromConvexHull(btSoftBodyWorldInfo* worldInfo, btScalar* vertices, int nvertices, bool randomizeConstraints)
 {
-	VECTOR3_CONV(vertices);
-	return btSoftBodyHelpers::CreateFromConvexHull(*worldInfo, VECTOR3_USE(vertices), nvertices, randomizeConstraints);
+	btVector3* verticesTemp = Vector3ArrayIn(vertices, nvertices);
+	btSoftBody* ret = btSoftBodyHelpers::CreateFromConvexHull(*worldInfo, verticesTemp, nvertices, randomizeConstraints);
+	delete[] verticesTemp;
+	return ret;
 }
 
 btSoftBody* btSoftBodyHelpers_CreateFromConvexHull2(btSoftBodyWorldInfo* worldInfo, btScalar* vertices, int nvertices)
 {
-	VECTOR3_CONV(vertices);
-	return btSoftBodyHelpers::CreateFromConvexHull(*worldInfo, VECTOR3_USE(vertices), nvertices);
+	btVector3* verticesTemp = Vector3ArrayIn(vertices, nvertices);
+	btSoftBody* ret = btSoftBodyHelpers::CreateFromConvexHull(*worldInfo, verticesTemp, nvertices);
+	delete[] verticesTemp;
+	return ret;
 }
-*/
+
 btSoftBody* btSoftBodyHelpers_CreateFromTetGenData(btSoftBodyWorldInfo* worldInfo, char* ele, char* face, char* node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 {
 	return btSoftBodyHelpers::CreateFromTetGenData(*worldInfo, ele, face, node, bfacelinks, btetralinks, bfacesfromtetras);

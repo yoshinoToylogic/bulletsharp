@@ -2316,10 +2316,12 @@ namespace BulletSharp.SoftBody
 		}
 
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal Joint(IntPtr native)
+		internal Joint(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public void Prepare(float dt, int iterations)
@@ -2411,7 +2413,10 @@ namespace BulletSharp.SoftBody
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btSoftBody_Joint_delete(_native);
+                if (!_preventDelete)
+                {
+                    btSoftBody_Joint_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -2502,13 +2507,13 @@ namespace BulletSharp.SoftBody
             static extern void btSoftBody_LJoint_Specs_setPosition(IntPtr obj, [In] ref Vector3 value);
         }
 
-		internal LJoint(IntPtr native)
-			: base(native)
+		internal LJoint(IntPtr native, bool preventDelete)
+			: base(native, preventDelete)
 		{
 		}
 
 		public LJoint()
-			: base(btSoftBody_LJoint_new())
+			: base(btSoftBody_LJoint_new(), false)
 		{
 		}
 
@@ -2536,33 +2541,57 @@ namespace BulletSharp.SoftBody
 		public class IControl
 		{
 			internal IntPtr _native;
+            private bool _preventDelete;
 
-			internal IControl(IntPtr native)
+            [UnmanagedFunctionPointer(Native.Conv)]
+            delegate void PrepareUnmanagedDelegate(IntPtr aJoint);
+            [UnmanagedFunctionPointer(Native.Conv)]
+            delegate float SpeedUnmanagedDelegate(IntPtr aJoint, float current);
+
+            PrepareUnmanagedDelegate _prepare;
+            SpeedUnmanagedDelegate _speed;
+
+			internal IControl(IntPtr native, bool preventDelete)
 			{
 				_native = native;
+                _preventDelete = preventDelete;
 			}
 
 			public IControl()
 			{
-				_native = btSoftBody_AJoint_IControl_new();
+                _prepare = new PrepareUnmanagedDelegate(PrepareUnmanaged);
+                _speed = new SpeedUnmanagedDelegate(SpeedUnmanaged);
+
+                _native = btSoftBody_AJoint_IControlWrapper_new(
+                    Marshal.GetFunctionPointerForDelegate(_prepare),
+                    Marshal.GetFunctionPointerForDelegate(_speed));
 			}
 
 			public IControl Default()
 			{
-                return new IControl(btSoftBody_AJoint_IControl_Default());
+                return new IControl(btSoftBody_AJoint_IControl_Default(), true);
 			}
 
-			public virtual void Prepare(AJoint __unnamed0)
-			{
-				btSoftBody_AJoint_IControl_Prepare(_native, __unnamed0._native);
-			}
+            private void PrepareUnmanaged(IntPtr aJoint)
+            {
+                Prepare(new AJoint(aJoint, true));
+            }
 
-			public virtual float Speed(AJoint __unnamed0, float current)
-			{
-				return btSoftBody_AJoint_IControl_Speed(_native, __unnamed0._native, current);
-			}
+            public float SpeedUnmanaged(IntPtr aJoint, float current)
+            {
+                return Speed(new AJoint(aJoint, true), current);
+            }
 
-			public void Dispose()
+            public virtual void Prepare(AJoint aJoint)
+            {
+            }
+
+            public virtual float Speed(AJoint aJoint, float current)
+            {
+                return current;
+            }
+
+            public void Dispose()
 			{
 				Dispose(true);
 				GC.SuppressFinalize(this);
@@ -2582,6 +2611,8 @@ namespace BulletSharp.SoftBody
 				Dispose(false);
 			}
 
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern IntPtr btSoftBody_AJoint_IControlWrapper_new(IntPtr prepareCallback, IntPtr speedCallback);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern IntPtr btSoftBody_AJoint_IControl_new();
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -2625,7 +2656,7 @@ namespace BulletSharp.SoftBody
                 {
                     if (_iControl == null)
                     {
-                        _iControl = new IControl(btSoftBody_AJoint_Specs_getIcontrol(_native));
+                        _iControl = new IControl(btSoftBody_AJoint_Specs_getIcontrol(_native), false);
                     }
                     return _iControl;
                 }
@@ -2650,13 +2681,13 @@ namespace BulletSharp.SoftBody
 
         private IControl _iControl;
 
-		internal AJoint(IntPtr native)
-			: base(native)
+		internal AJoint(IntPtr native, bool preventDelete)
+			: base(native, preventDelete)
 		{
 		}
 
 		public AJoint()
-			: base(btSoftBody_AJoint_new())
+			: base(btSoftBody_AJoint_new(), false)
 		{
 		}
 
@@ -2677,7 +2708,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_iControl == null)
                 {
-                    _iControl = new IControl(btSoftBody_AJoint_getIcontrol(_native));
+                    _iControl = new IControl(btSoftBody_AJoint_getIcontrol(_native), false);
                 }
                 return _iControl;
             }
@@ -2702,13 +2733,13 @@ namespace BulletSharp.SoftBody
 
 	public class CJoint : Joint
 	{
-		internal CJoint(IntPtr native)
-			: base(native)
+		internal CJoint(IntPtr native, bool preventDelete)
+			: base(native, preventDelete)
 		{
 		}
 
 		public CJoint()
-			: base(btSoftBody_CJoint_new())
+			: base(btSoftBody_CJoint_new(), false)
 		{
 		}
 

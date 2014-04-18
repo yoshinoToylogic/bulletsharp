@@ -2,8 +2,23 @@
 
 #ifndef _BT_SOFT_BODY_H
 #define pEval void*
+#define pPrepare void*
+#define pSpeed void*
 #else
-typedef float (*pEval)(const btScalar* x);
+typedef btScalar (*pEval)(const btScalar* x);
+typedef void (*pPrepare)(btSoftBody::AJoint* aJoint);
+typedef btScalar (*pSpeed)(btSoftBody::AJoint* aJoint, btScalar current);
+
+class btSoftBody_AJoint_IControlWrapper : public btSoftBody::AJoint::IControl
+{
+private:
+	pPrepare _prepareCallback;
+	pSpeed _speedCallback;
+public:
+	btSoftBody_AJoint_IControlWrapper(pPrepare prepareCallback, pSpeed speedCallback);
+	virtual void Prepare(btSoftBody::AJoint* aJoint);
+	virtual btScalar Speed(btSoftBody::AJoint* aJoint, btScalar current);
+};
 
 class btSoftBody_ImplicitFnWrapper : public btSoftBody::ImplicitFn
 {
@@ -366,6 +381,8 @@ extern "C"
 	EXPORT btVector3* btSoftBody_LJoint_getRpos(btSoftBody_LJoint* obj);
 	//EXPORT void btSoftBody_LJoint_setRpos(btSoftBody_LJoint* obj, btScalar* value);
 
+	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pPrepare prepareCallback, pSpeed speedCallback);
+
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_new();
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_Default();
 	EXPORT void btSoftBody_AJoint_IControl_Prepare(btSoftBody_AJoint_IControl* obj, btSoftBody_AJoint* __unnamed0);
@@ -374,7 +391,9 @@ extern "C"
 
 	EXPORT btSoftBody_AJoint_Specs* btSoftBody_AJoint_Specs_new();
 	EXPORT void btSoftBody_AJoint_Specs_getAxis(btSoftBody_AJoint_Specs* obj, btScalar* value);
+	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_Specs_getIcontrol(btSoftBody_AJoint_Specs* obj);
 	EXPORT void btSoftBody_AJoint_Specs_setAxis(btSoftBody_AJoint_Specs* obj, btScalar* value);
+	EXPORT void btSoftBody_AJoint_Specs_setIcontrol(btSoftBody_AJoint_Specs* obj, btSoftBody_AJoint_IControl* value);
 
 	EXPORT btSoftBody_AJoint* btSoftBody_AJoint_new();
 	EXPORT btVector3* btSoftBody_AJoint_getAxis(btSoftBody_AJoint* obj);
