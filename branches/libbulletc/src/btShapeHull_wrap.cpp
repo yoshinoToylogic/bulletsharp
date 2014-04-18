@@ -5,7 +5,7 @@
 
 btShapeHull* btShapeHull_new(btConvexShape* shape)
 {
-	return new btShapeHull(shape);
+	return ALIGNED_NEW(btShapeHull) (shape);
 }
 
 bool btShapeHull_buildHull(btShapeHull* obj, btScalar margin)
@@ -40,5 +40,5 @@ int btShapeHull_numVertices(btShapeHull* obj)
 
 void btShapeHull_delete(btShapeHull* obj)
 {
-	delete obj;
+	ALIGNED_FREE(obj);
 }

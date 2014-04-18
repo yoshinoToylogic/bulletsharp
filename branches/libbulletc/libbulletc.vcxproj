@@ -156,6 +156,7 @@
     <ClInclude Include="src\btAlignedBroadphasePairArray_wrap.h" />
     <ClInclude Include="src\btAlignedCollisionObjectArray_wrap.h" />
     <ClInclude Include="src\btAlignedCollisionShapeArray_wrap.h" />
+    <ClInclude Include="src\btAlignedIndexedMeshArray_wrap.h" />
     <ClInclude Include="src\btAlignedManifoldArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyArray_wrap.h" />
     <ClInclude Include="src\btAlignedSoftBodyClusterArray_wrap.h" />
@@ -298,6 +299,7 @@
     <ClCompile Include="src\btAlignedBroadphasePairArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedCollisionObjectArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedCollisionShapeArray_wrap.cpp" />
+    <ClCompile Include="src\btAlignedIndexedMeshArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedManifoldArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyArray_wrap.cpp" />
     <ClCompile Include="src\btAlignedSoftBodyClusterArray_wrap.cpp" />

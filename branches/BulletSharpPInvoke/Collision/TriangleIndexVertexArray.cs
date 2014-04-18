@@ -9,10 +9,12 @@ namespace BulletSharp
 	public class IndexedMesh : IDisposable
 	{
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal IndexedMesh(IntPtr native)
+		internal IndexedMesh(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public IndexedMesh()
@@ -90,7 +92,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btIndexedMesh_delete(_native);
+                if (!_preventDelete)
+                {
+                    btIndexedMesh_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -140,8 +145,9 @@ namespace BulletSharp
 
 	public class TriangleIndexVertexArray : StridingMeshInterface
 	{
-        List<IndexedMesh> _meshes = new List<IndexedMesh>();
-        IndexedMesh _initialMesh;
+        private List<IndexedMesh> _meshes = new List<IndexedMesh>();
+        private IndexedMesh _initialMesh;
+        private AlignedIndexedMeshArray _indexedMeshArray;
 
 		internal TriangleIndexVertexArray(IntPtr native)
 			: base(native)
@@ -235,12 +241,19 @@ namespace BulletSharp
             _meshes.Add(mesh);
 			btTriangleIndexVertexArray_addIndexedMesh2(_native, mesh._native);
 		}
-        /*
-		public IndexedMeshArray IndexedMeshArray
+
+		public AlignedIndexedMeshArray IndexedMeshArray
 		{
-			get { return btTriangleIndexVertexArray_getIndexedMeshArray(_native); }
+            get
+            {
+                // TODO: link _indexedMeshArray to _meshes
+                if (_indexedMeshArray == null)
+                {
+                    _indexedMeshArray = new AlignedIndexedMeshArray(btTriangleIndexVertexArray_getIndexedMeshArray(_native), true);
+                }
+                return _indexedMeshArray;
+            }
 		}
-        */
 
         protected override void Dispose(bool disposing)
         {

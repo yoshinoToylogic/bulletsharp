@@ -80,6 +80,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btAlignedCollisionObjectArray_wrap.h
     src/btAlignedCollisionShapeArray_wrap.cpp
     src/btAlignedCollisionShapeArray_wrap.h
+    src/btAlignedIndexedMeshArray_wrap.cpp
+    src/btAlignedIndexedMeshArray_wrap.h
     src/btAlignedManifoldArray_wrap.cpp
     src/btAlignedManifoldArray_wrap.h
     src/btAlignedSoftBodyArray_wrap.cpp

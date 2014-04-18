@@ -75,7 +75,6 @@
 #define btDynamicsWorld void
 #define btHashedOverlappingPairCache void
 #define btIndexedMesh void
-#define IndexedMeshArray void
 #define btMinkowskiPenetrationDepthSolver void
 #define btMotionState void
 #define btMultiSapBroadphase void
@@ -623,6 +622,12 @@
 #ifndef BT_TRIANGLE_CALLBACK_H
 #define btInternalTriangleIndexCallback void
 #define btTriangleCallback void
+#endif
+
+#ifndef BT_TRIANGLE_INDEX_VERTEX_ARRAY_H
+#define btAlignedIndexedMeshArray void
+#else
+#define btAlignedIndexedMeshArray btAlignedObjectArray<btIndexedMesh>
 #endif
 
 #ifndef _BT_TRIANGLE_INFO_MAP_H
