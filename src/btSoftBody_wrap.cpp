@@ -151,7 +151,7 @@ btSoftBody_ImplicitFnWrapper::btSoftBody_ImplicitFnWrapper(pEval evalCallback)
 	_evalCallback = evalCallback;
 }
 
-float btSoftBody_ImplicitFnWrapper::Eval(const btVector3& x)
+btScalar btSoftBody_ImplicitFnWrapper::Eval(const btVector3& x)
 {
 	return _evalCallback(x);
 }
@@ -1676,6 +1676,30 @@ void btSoftBody_LJoint_setRpos(btSoftBody_LJoint* obj, btScalar* value)
 }
 */
 
+
+btSoftBody_AJoint_IControlWrapper::btSoftBody_AJoint_IControlWrapper(pPrepare prepareCallback, pSpeed speedCallback)
+{
+	_prepareCallback = prepareCallback;
+	_speedCallback = speedCallback;
+}
+
+void btSoftBody_AJoint_IControlWrapper::Prepare(btSoftBody::AJoint* aJoint)
+{
+	return _prepareCallback(aJoint);
+}
+
+btScalar btSoftBody_AJoint_IControlWrapper::Speed(btSoftBody::AJoint* aJoint, btScalar current)
+{
+	return _speedCallback(aJoint, current);
+}
+
+
+btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pPrepare prepareCallback, pSpeed speedCallback)
+{
+	return new btSoftBody_AJoint_IControlWrapper(prepareCallback, speedCallback);
+}
+
+
 btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_new()
 {
 	return new btSoftBody_AJoint_IControl();
@@ -1712,9 +1736,19 @@ void btSoftBody_AJoint_Specs_getAxis(btSoftBody_AJoint_Specs* obj, btScalar* val
 	VECTOR3_OUT(&obj->axis, value);
 }
 
+btSoftBody_AJoint_IControl* btSoftBody_AJoint_Specs_getIcontrol(btSoftBody_AJoint_Specs* obj)
+{
+	return obj->icontrol;
+}
+
 void btSoftBody_AJoint_Specs_setAxis(btSoftBody_AJoint_Specs* obj, btScalar* value)
 {
 	VECTOR3_IN(value, &obj->axis);
+}
+
+void btSoftBody_AJoint_Specs_setIcontrol(btSoftBody_AJoint_Specs* obj, btSoftBody_AJoint_IControl* value)
+{
+	obj->icontrol = value;
 }
 
 

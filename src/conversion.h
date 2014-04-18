@@ -33,6 +33,15 @@ inline void Vector3TobtVector3(const btScalar* s, btVector3* v)
 	v->setZ(s[2]);
 }
 
+inline btVector3* Vector3ArrayIn(const btScalar* va, int n)
+{
+	btVector3* vertices = new btVector3[n];
+	for (int i = 0; i < n; i++) {
+		Vector3TobtVector3(&va[i * 3], &vertices[i]);
+	}
+	return vertices;
+}
+
 inline void btVector4ToVector4(const btVector4* v, btScalar* s)
 {
 	s[0] = v->getX();
