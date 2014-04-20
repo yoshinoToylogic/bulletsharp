@@ -23,9 +23,12 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		internal ContactSolverInfoData(IntPtr native)
+        private bool _preventDelete;
+
+		internal ContactSolverInfoData(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public ContactSolverInfoData()
@@ -169,7 +172,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btContactSolverInfoData_delete(_native);
+                if (!_preventDelete)
+                {
+                    btContactSolverInfoData_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -271,13 +277,13 @@ namespace BulletSharp
 
 	public class ContactSolverInfo : ContactSolverInfoData
 	{
-		internal ContactSolverInfo(IntPtr native)
-			: base(native)
+		internal ContactSolverInfo(IntPtr native, bool preventDelete)
+			: base(native, preventDelete)
 		{
 		}
 
 		public ContactSolverInfo()
-			: base(btContactSolverInfo_new())
+			: base(btContactSolverInfo_new(), false)
 		{
 		}
 

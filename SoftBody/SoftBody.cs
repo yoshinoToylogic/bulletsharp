@@ -3996,9 +3996,12 @@ namespace BulletSharp.SoftBody
 
         public int GetFaceVertexData(ref float[] vertices)
         {
-            if (vertices == null)
+            int floatCount = Faces.Count * 3 * 3;
+
+            // Do not use Array.Resize, because it copies the old data
+            if (vertices == null || vertices.Length != floatCount)
             {
-                vertices = new float[Faces.Count * 3 * 3];
+                vertices = new float[floatCount];
             }
 
             return btSoftBody_getFaceVertexData(_native, vertices);
@@ -4028,6 +4031,22 @@ namespace BulletSharp.SoftBody
             return btSoftBody_getFaceVertexNormalData(_native, vertices);
         }
 
+        public int GetFaceVertexNormalData(ref Vector3[] vertices, ref Vector3[] normals)
+        {
+            int vertexCount = Faces.Count * 3;
+
+            if (vertices == null || vertices.Length != vertexCount)
+            {
+                vertices = new Vector3[vertexCount];
+            }
+            if (normals == null || normals.Length != vertexCount)
+            {
+                normals = new Vector3[vertexCount];
+            }
+
+            return btSoftBody_getFaceVertexNormalData2(_native, vertices, normals);
+        }
+
         public int GetLinkVertexData(ref Vector3[] vertices)
         {
             int vertexCount = Links.Count * 2;
@@ -4042,8 +4061,7 @@ namespace BulletSharp.SoftBody
 
         public int GetLinkVertexNormalData(ref Vector3[] vertices)
         {
-            int vertexCount = Links.Count * 2;
-            int vertexNormalCount = vertexCount * 2;
+            int vertexNormalCount = Links.Count * 2 * 2;
 
             if (vertices == null || vertices.Length != vertexNormalCount)
             {
@@ -4067,8 +4085,7 @@ namespace BulletSharp.SoftBody
 
         int GetTetraVertexNormalData(ref Vector3[] vertices)
         {
-            int vertexCount = Tetras.Count * 12;
-            int vertexNormalCount = vertexCount * 2;
+            int vertexNormalCount = Tetras.Count * 12 * 2;
 
             if (vertices == null || vertices.Length != vertexNormalCount)
             {
@@ -4076,6 +4093,22 @@ namespace BulletSharp.SoftBody
             }
 
             return btSoftBody_getTetraVertexNormalData(_native, vertices);
+        }
+
+        int GetTetraVertexNormalData(ref Vector3[] vertices, ref Vector3[] normals)
+        {
+            int vertexCount = Tetras.Count * 12;
+
+            if (vertices == null || vertices.Length != vertexCount)
+            {
+                vertices = new Vector3[vertexCount];
+            }
+            if (normals == null || normals.Length != vertexCount)
+            {
+                normals = new Vector3[vertexCount];
+            }
+
+            return btSoftBody_getTetraVertexNormalData2(_native, vertices, normals);
         }
 
         public int GetVertexNormalData(ref Vector3[] data)
@@ -4090,6 +4123,21 @@ namespace BulletSharp.SoftBody
             }
             return GetLinkVertexNormalData(ref data);
         }
+
+        public int GetVertexNormalData(ref Vector3[] vertices, ref Vector3[] normals)
+        {
+            if (Faces.Count != 0)
+            {
+                return GetFaceVertexNormalData(ref vertices, ref normals);
+            }
+            else if (Tetras.Count != 0)
+            {
+                return GetTetraVertexNormalData(ref vertices, ref normals);
+            }
+            normals = null;
+            return GetLinkVertexData(ref vertices);
+        }
+
         /*
 		public tAnchorArray Anchors
 		{
@@ -4741,28 +4789,36 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_VSolve_Links(IntPtr psb, float kst);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getFaceVertexData(IntPtr obj, [Out] float[] value);
+        static extern int btSoftBody_getFaceVertexData(IntPtr obj, [Out] float[] vertices);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getFaceVertexData(IntPtr obj, [Out] Vector3[] value);
+        static extern int btSoftBody_getFaceVertexData(IntPtr obj, [Out] Vector3[] vertices);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getFaceVertexNormalData(IntPtr obj, [Out] float[] value);
+        static extern int btSoftBody_getFaceVertexNormalData(IntPtr obj, [Out] float[] data);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getFaceVertexNormalData(IntPtr obj, [Out] Vector3[] value);
+        static extern int btSoftBody_getFaceVertexNormalData2(IntPtr obj, [Out] float[] vertices, [Out] float[] normals);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getLinkVertexData(IntPtr obj, [Out] float[] value);
+        static extern int btSoftBody_getFaceVertexNormalData(IntPtr obj, [Out] Vector3[] data);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getLinkVertexData(IntPtr obj, [Out] Vector3[] value);
+        static extern int btSoftBody_getFaceVertexNormalData2(IntPtr obj, [Out] Vector3[] vertices, [Out] Vector3[] normals);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getLinkVertexNormalData(IntPtr obj, [Out] float[] value);
+        static extern int btSoftBody_getLinkVertexData(IntPtr obj, [Out] float[] vertices);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getLinkVertexNormalData(IntPtr obj, [Out] Vector3[] value);
+        static extern int btSoftBody_getLinkVertexData(IntPtr obj, [Out] Vector3[] vertices);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getTetraVertexData(IntPtr obj, [Out] float[] value);
+        static extern int btSoftBody_getLinkVertexNormalData(IntPtr obj, [Out] float[] data);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getTetraVertexData(IntPtr obj, [Out] Vector3[] value);
+        static extern int btSoftBody_getLinkVertexNormalData(IntPtr obj, [Out] Vector3[] data);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern int btSoftBody_getTetraVertexNormalData(IntPtr obj, [Out] float[] value);
+        static extern int btSoftBody_getTetraVertexData(IntPtr obj, [Out] float[] vertices);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexData(IntPtr obj, [Out] Vector3[] vertices);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexNormalData(IntPtr obj, [Out] float[] data);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexNormalData2(IntPtr obj, [Out] float[] vectors, [Out] float[] normals);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern int btSoftBody_getTetraVertexNormalData(IntPtr obj, [Out] Vector3[] value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btSoftBody_getTetraVertexNormalData2(IntPtr obj, [Out] Vector3[] vectors, [Out] Vector3[] normals);
 	}
 }

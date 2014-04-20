@@ -6,21 +6,18 @@ namespace BulletSharp
 {
 	public class BulletFile : bFile
 	{
-		internal BulletFile(IntPtr native)
-			: base(native)
-		{
-		}
+        protected byte[] _dnaCopy;
 
 		public BulletFile()
 			: base(btBulletFile_new())
 		{
 		}
-        /*
-		public BulletFile(char fileName)
-			: base(btBulletFile_new2(fileName._native))
+        
+		public BulletFile(string fileName)
+            : base(fileName, "BULLET ")
 		{
 		}
-
+        /*
 		public BulletFile(char memoryBuffer, int len)
 			: base(btBulletFile_new3(memoryBuffer._native, len))
 		{
@@ -31,9 +28,36 @@ namespace BulletSharp
 			btBulletFile_addStruct(_native, structType._native, data, len, oldPtr, code);
 		}
         */
-		public void ParseData()
+        public override void Parse(FileVerboseMode verboseMode)
+        {
+            if (IntPtr.Size == 8)
+            {
+                _dnaCopy = new byte[BulletDna.BulletDnaStr64.Length];
+                Buffer.BlockCopy(BulletDna.BulletDnaStr64, 0, _dnaCopy, 0, _dnaCopy.Length);
+            }
+            else
+            {
+                _dnaCopy = new byte[BulletDna.BulletDnaStr.Length];
+                Buffer.BlockCopy(BulletDna.BulletDnaStr, 0, _dnaCopy, 0, _dnaCopy.Length);
+            }
+            ParseInternal(verboseMode, _dnaCopy);
+
+            //the parsing will convert to cpu endian
+            _flags &= ~FileFlags.EndianSwap;
+            
+            _fileBuffer[8] = BitConverter.IsLittleEndian ? (byte)'v' : (byte)'V';
+        }
+
+		public override void ParseData()
 		{
-			btBulletFile_parseData(_native);
+            //Console.WriteLine("Building datablocks");
+            //Console.WriteLine("Chunk size = {0}", CHUNK_HEADER_LEN);
+            //Console.WriteLine("File chunk size = {0}", ChunkUtils.GetOffset(_flags));
+
+            bool brokenDna = (_flags & FileFlags.BrokenDna) == FileFlags.BrokenDna;
+            //bool swap = (_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap;
+
+            throw new NotImplementedException();
 		}
         /*
 		public void Bvhs
@@ -107,7 +131,5 @@ namespace BulletSharp
 		static extern void btBulletFile_getSoftBodies(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBulletFile_getTriangleInfoMaps(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_parseData(IntPtr obj);
 	}
 }
