@@ -703,8 +703,10 @@ extern "C"
 
 	EXPORT int btSoftBody_getFaceVertexData(btSoftBody* obj, btScalar* vertices);
 	EXPORT int btSoftBody_getFaceVertexNormalData(btSoftBody* obj, btScalar* vertices);
+	EXPORT int btSoftBody_getFaceVertexNormalData2(btSoftBody* obj, btScalar* vertices, btScalar* normals);
 	EXPORT int btSoftBody_getLinkVertexData(btSoftBody* obj, btScalar* vertices);
 	EXPORT int btSoftBody_getLinkVertexNormalData(btSoftBody* obj, btScalar* vertices);
 	EXPORT int btSoftBody_getTetraVertexData(btSoftBody* obj, btScalar* vertices);
 	EXPORT int btSoftBody_getTetraVertexNormalData(btSoftBody* obj, btScalar* vertices);
+	EXPORT int btSoftBody_getTetraVertexNormalData2(btSoftBody* obj, btScalar* vertices, btScalar* normals);
 }

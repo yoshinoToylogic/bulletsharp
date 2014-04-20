@@ -74,7 +74,6 @@
 #define btDiscreteCollisionDetectorInterface_Result void
 #define btDynamicsWorld void
 #define btHashedOverlappingPairCache void
-#define btIndexedMesh void
 #define btMinkowskiPenetrationDepthSolver void
 #define btMotionState void
 #define btMultiSapBroadphase void
@@ -626,6 +625,7 @@
 
 #ifndef BT_TRIANGLE_INDEX_VERTEX_ARRAY_H
 #define btAlignedIndexedMeshArray void
+#define btIndexedMesh void
 #else
 #define btAlignedIndexedMeshArray btAlignedObjectArray<btIndexedMesh>
 #endif
