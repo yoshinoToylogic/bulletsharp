@@ -243,9 +243,12 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		internal TranslationalLimitMotor(IntPtr native)
+        private bool _preventDelete;
+
+		internal TranslationalLimitMotor(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public TranslationalLimitMotor()
@@ -428,7 +431,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btTranslationalLimitMotor_delete(_native);
+                if (!_preventDelete)
+                {
+                    btTranslationalLimitMotor_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -518,6 +524,8 @@ namespace BulletSharp
 
 	public class Generic6DofConstraint : TypedConstraint
 	{
+        private TranslationalLimitMotor _translationalLimitMotor;
+
 		internal Generic6DofConstraint(IntPtr native)
 			: base(native)
 		{
@@ -705,7 +713,14 @@ namespace BulletSharp
 
 		public TranslationalLimitMotor TranslationalLimitMotor
 		{
-			get { return new TranslationalLimitMotor(btGeneric6DofConstraint_getTranslationalLimitMotor(_native)); }
+            get
+            {
+                if (_translationalLimitMotor == null)
+                {
+                    _translationalLimitMotor = new TranslationalLimitMotor(btGeneric6DofConstraint_getTranslationalLimitMotor(_native), true);
+                }
+                return _translationalLimitMotor;
+            }
 		}
 
 		public bool UseFrameOffset

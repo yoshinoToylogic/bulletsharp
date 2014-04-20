@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -6,6 +7,12 @@ namespace BulletSharp
 {
 	public class WorldImporter
 	{
+        private DynamicsWorld _world;
+
+        protected List<CollisionObject> _bodyMap;
+        protected List<CollisionShape> _shapeMap;
+        protected FileVerboseMode _verboseMode;
+
 		internal IntPtr _native;
 
 		internal WorldImporter(IntPtr native)
@@ -178,7 +185,7 @@ namespace BulletSharp
 			return new Point2PointConstraint(btWorldImporter_createPoint2PointConstraint2(_native, rbA._native, ref pivotInA));
 		}
 
-		public RigidBody CreateRigidBody(bool isDynamic, float mass, Matrix startTransform, CollisionShape shape, string bodyName)
+		public virtual RigidBody CreateRigidBody(bool isDynamic, float mass, Matrix startTransform, CollisionShape shape, string bodyName)
 		{
             return new RigidBody(btWorldImporter_createRigidBody(_native, isDynamic, mass, ref startTransform, shape._native, bodyName));
 		}

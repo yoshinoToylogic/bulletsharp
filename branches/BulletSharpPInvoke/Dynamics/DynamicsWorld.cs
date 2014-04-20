@@ -23,6 +23,7 @@ namespace BulletSharp
         internal InternalTickCallback _callback;
         internal InternalTickCallbackUnmanaged _callbackUnmanaged;
         protected ConstraintSolver _solver;
+        private ContactSolverInfo _solverInfo;
 
 		internal DynamicsWorld(IntPtr native)
 			: base(native)
@@ -213,7 +214,14 @@ namespace BulletSharp
 
 		public ContactSolverInfo SolverInfo
 		{
-            get { return new ContactSolverInfo(btDynamicsWorld_getSolverInfo(_native)); }
+            get
+            {
+                if (_solverInfo == null)
+                {
+                    _solverInfo = new ContactSolverInfo(btDynamicsWorld_getSolverInfo(_native), true);
+                }
+                return _solverInfo;
+            }
 		}
 
 		public DynamicsWorldType WorldType
