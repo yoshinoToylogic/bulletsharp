@@ -1,9 +1,38 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.IO;
 
 namespace BulletSharp
 {
+    class DnaID
+    {
+        public static readonly int Sdna = MakeID("SDNA");
+
+        public static readonly int Array = MakeID("ARAY");
+        public static readonly int BoxShape = MakeID("BOXS");
+        public static readonly int CollisionObject = MakeID("COBJ");
+        public static readonly int Constraint = MakeID("CONS");
+        public static readonly int Dna = MakeID("DNA1");
+        public static readonly int DynamicsWorld = MakeID("DWLD");
+        public static readonly int QuantizedBvh = MakeID("QBVH");
+        public static readonly int RigidBody = MakeID("RBDY");
+        public static readonly int SBMaterial = MakeID("SBMT");
+        public static readonly int SBNode = MakeID("SBND");
+        public static readonly int Shape = MakeID("SHAP");
+        public static readonly int SoftBody = MakeID("SBDY");
+        public static readonly int TriangleInfoMap = MakeID("TMAP");
+
+        static int MakeID(string id)
+        {
+            if (BitConverter.IsLittleEndian)
+            {
+                return (id[0]) + (id[1]  << 8) + (id[2] << 16) + (id[3] << 24);
+            }
+            return (id[3]) + (id[2] << 8) + (id[1] << 16) + (id[0] << 24);
+        }
+    }
+
 	public class BulletFile : bFile
 	{
         protected byte[] _dnaCopy;
@@ -55,9 +84,60 @@ namespace BulletSharp
             //Console.WriteLine("File chunk size = {0}", ChunkUtils.GetOffset(_flags));
 
             bool brokenDna = (_flags & FileFlags.BrokenDna) == FileFlags.BrokenDna;
-            //bool swap = (_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap;
+            bool swap = (_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap;
 
-            throw new NotImplementedException();
+            MemoryStream memory = new MemoryStream(_fileBuffer);
+            BinaryReader reader = new BinaryReader(memory);
+
+            _dataStart = 12;
+            long dataPtr = _dataStart;
+            memory.Position = dataPtr;
+
+            ChunkInd dataChunk;
+            int seek = GetNextBlock(out dataChunk, reader, _flags);
+
+            if (swap)
+            {
+                //swapLen(dataPtr);
+            }
+
+            while (dataChunk.Code != DnaID.Dna)
+            {
+                if (!brokenDna || dataChunk.Code != DnaID.QuantizedBvh)
+                {
+                    // One behind
+                    if (dataChunk.Code == DnaID.Sdna)
+                    {
+                        break;
+                    }
+
+                    // same as (BHEAD+DATA dependency)
+			        long dataPtrHead = dataPtr + ChunkUtils.GetOffset(_flags);
+                    if (dataChunk.DnaNR >= 0)
+                    {
+
+                    }
+                }
+                else
+                {
+                    //Console.WriteLine("skipping B3_QUANTIZED_BVH_CODE due to broken DNA");
+                }
+
+                dataPtr += seek;
+                memory.Position = dataPtr;
+
+                seek = GetNextBlock(out dataChunk, reader, _flags);
+                if (swap)
+                {
+                    //swapLen(dataPtr);
+                }
+
+                if (seek < 0)
+                    break;
+            }
+
+            reader.Dispose();
+            memory.Dispose();
 		}
         /*
 		public void Bvhs
