@@ -1,11 +1,19 @@
 ﻿using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Diagnostics;
 
 namespace BulletSharp
 {
     public class Dna
     {
+        private enum FileDnaFlags
+        {
+            None = 0,
+            StructNotEqual,
+            StructEqual
+        };
+
         private class NameInfo
         {
             public string Name { get; set; }
@@ -19,6 +27,7 @@ namespace BulletSharp
             }
         }
 
+        private FileDnaFlags[] _cmpFlags;
         private List<short> _lengths = new List<short>();
         private List<NameInfo> _names = new List<NameInfo>();
         private List<long> _structPtrs = new List<long>();
@@ -28,6 +37,12 @@ namespace BulletSharp
 
         public Dna()
         {
+        }
+
+        public bool FlagEqual(int dnaNR)
+        {
+            Debug.Assert(dnaNR < _cmpFlags.Length);
+            return _cmpFlags[dnaNR] == FileDnaFlags.StructEqual;
         }
 
         public object GetName(int i)
@@ -147,6 +162,14 @@ namespace BulletSharp
         {
             // compare the file to memory
             // this ptr should be the file data
+
+            Debug.Assert(_names.Count != 0); // SDNA empty!
+            _cmpFlags = new FileDnaFlags[_structPtrs.Count];
+
+            for (int i = 0; i < _structPtrs.Count; i++)
+            {
+                _cmpFlags[i] = FileDnaFlags.None;
+            }
         }
 
         public bool LessThan(Dna file)

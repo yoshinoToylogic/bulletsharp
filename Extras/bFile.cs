@@ -294,8 +294,26 @@ namespace BulletSharp
 			bFile_preSwap(_native);
 		}
 
+        protected byte[] ReadStruct(byte[] head, ChunkInd dataChunk)
+        {
+            bool ignoreEndianFlag = false;
+
+            if ((_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap)
+            {
+                //swap(head, dataChunk, ignoreEndianFlag);
+            }
+
+            if (!_fileDna.FlagEqual(dataChunk.DnaNR))
+            {
+            }
+
+            return null;
+        }
+
 		public void ResolvePointers(FileVerboseMode verboseMode)
 		{
+            //Console.WriteLine("resolvePointersStructMismatch");
+            
             throw new NotImplementedException();
 		}
 
