@@ -1,7 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
 using System.Text;
 
 namespace BulletSharp
@@ -36,6 +37,7 @@ namespace BulletSharp
 
         const int SizeOfBlenderHeader = 12;
 
+        protected List<ChunkInd> _chunks = new List<ChunkInd>();
         protected long _dataStart;
         protected byte[] _fileBuffer;
         protected Dna _fileDna;
@@ -67,10 +69,78 @@ namespace BulletSharp
 			bFile_dumpChunks(_native, dna._native);
 		}
         */
-		public IntPtr FindLibPointer(IntPtr ptr)
+		public long FindLibPointer(long ptr)
 		{
-			return bFile_findLibPointer(_native, ptr);
+            //throw new NotImplementedException();
+            //bStructHandle** ptrptr = getLibPointers().find(ptr);
+            //if (ptrptr)
+            //    return *ptrptr;
+            return 0;
 		}
+
+        protected long GetFileElement(Dna.StructDecl firstStruct, Dna.ElementDecl lookupElement, long data, out Dna.ElementDecl found)
+        {
+            foreach (Dna.ElementDecl element in firstStruct.Elements)
+            {
+                //if (element.Equals(lookupElement))
+                if (element.Name.Equals(lookupElement.Name))
+                {
+                    if (element.Type.Name.Equals(lookupElement.Type.Name))
+                    {
+                        found = element;
+                        return data;
+                    }
+                    found = null;
+                    return 0;
+                }
+                data += _fileDna.GetElementSize(element);
+            }
+            found = null;
+            return 0;
+        }
+
+        protected void GetMatchingFileDna(Dna.StructDecl dna, Dna.ElementDecl lookupElement, BinaryWriter strcData, long data, bool fixupPointers)
+        {
+            // find the matching memory dna data
+            // to the file being loaded. Fill the
+            // memory with the file data...
+
+            foreach (Dna.ElementDecl element in dna.Elements)
+            {
+                int eleLen = _fileDna.GetElementSize(element);
+
+                if ((_flags & FileFlags.BrokenDna) != 0)
+                {
+                    if (element.Type.Name.Equals("short") && element.Name.Name.Equals("int"))
+                    {
+                        eleLen = 0;
+                    }
+                }
+
+                if (lookupElement.Name.Equals(element.Name))
+                {
+                    int arrayLen = element.Name.ArraySizeNew;
+
+                    if (element.Name.Name[0] == '*')
+                    {
+                        //SafeSwapPtr(strcData, data);
+                        //throw new NotImplementedException();
+                    }
+                    else if (element.Type.Name.Equals(lookupElement.Type.Name))
+                    {
+                        //strcData.Write(data);
+                    }
+                    else
+                    {
+                        throw new NotImplementedException();
+                        //GetElement(arrayLen, lookupType, type, data, strcData);
+                    }
+
+                    return;
+                }
+                data += eleLen;
+            }
+        }
 
         // buffer offset util
 		protected int GetNextBlock(out ChunkInd dataChunk, BinaryReader reader, FileFlags flags)
@@ -289,12 +359,65 @@ namespace BulletSharp
             memory.Dispose();
         }
 
+        protected void ParseStruct(BinaryWriter strc, BinaryReader dt, Dna.StructDecl fileStruct, Dna.StructDecl memoryStruct, bool fixupPointers)
+        {
+            if (fileStruct == null) return;
+            if (memoryStruct == null) return;
+
+            Dna.TypeDecl firstStructType = _memoryDna.GetStruct(0).Type;
+            long cpc = 0;
+
+            foreach (Dna.ElementDecl element in memoryStruct.Elements)
+            {
+                int size = _memoryDna.GetElementSize(element);
+                Dna.StructDecl revType = _memoryDna.GetReverseType(element.Type.Name);
+
+                if (revType != null && element.Type != firstStructType && element.Name.Name[0] != '*')
+                {
+                    Dna.ElementDecl elementOld;
+                    long cpo = GetFileElement(fileStruct, element, dt.BaseStream.Position, out elementOld);
+                    if (cpo != 0)
+                    {
+                        int arrayLen = elementOld.Name.ArraySizeNew;
+                        Dna.StructDecl oldStruct = _fileDna.GetReverseType(element.Type.Name);
+                        int fpLen = _fileDna.GetElementSize(element);
+                        if (arrayLen == 1)
+                        {
+                            oldStruct.ToString();
+                            //ParseStruct(strc, cpo, oldStruct, element.Type, fixupPointers);
+                            dt.BaseStream.Position = cpo;
+                            ParseStruct(strc, dt, oldStruct, revType, fixupPointers);
+                        }
+                        else
+                        {
+                            //throw new NotImplementedException();
+                        }
+                        cpc += size;
+                        cpo += fpLen;
+                    }
+                    else
+                    {
+                        cpc += size;
+                    }
+                }
+                else
+                {
+                    strc.BaseStream.Position = cpc;
+                    GetMatchingFileDna(fileStruct, element, strc, dt.BaseStream.Position, fixupPointers);
+                    cpc += size;
+                    //throw new NotImplementedException();
+                }
+            }
+
+            //throw new NotImplementedException();
+        }
+
 		public void PreSwap()
 		{
 			bFile_preSwap(_native);
 		}
 
-        protected byte[] ReadStruct(byte[] head, ChunkInd dataChunk)
+        protected byte[][] ReadStruct(BinaryReader head, ChunkInd dataChunk)
         {
             bool ignoreEndianFlag = false;
 
@@ -305,21 +428,122 @@ namespace BulletSharp
 
             if (!_fileDna.FlagEqual(dataChunk.DnaNR))
             {
+                // Ouch! need to rebuild the struct
+                Dna.StructDecl oldStruct = _fileDna.GetStruct(dataChunk.DnaNR);
+
+                if ((_flags & FileFlags.BrokenDna) != 0)
+                {
+                    throw new NotImplementedException();
+                }
+
+                // Don't try to convert Link block data, just memcpy it. Other data can be converted.
+                if (oldStruct.Type.Name.Equals("Link"))
+                {
+                    //Console.WriteLine("Link found");
+                }
+                else
+                {
+                    Dna.StructDecl curStruct = _memoryDna.GetReverseType(oldStruct.Type.Name);
+                    if (curStruct != null)
+                    {
+                        if (dataChunk.NR != 1)
+                        {
+                            "".ToString();
+                        }
+
+                        byte[][] structAlloc = new byte[dataChunk.NR][];
+                        for (int block = 0; block < dataChunk.NR; block++)
+                        {
+                            structAlloc[block] = new byte[curStruct.Type.Length];
+                            BinaryWriter structWriter = new BinaryWriter(new MemoryStream(structAlloc[block]));
+                            ParseStruct(structWriter, head, oldStruct, curStruct, true);
+                            //_libPointers.Add(old, cur);
+                        }
+                    }
+                }
+
+                //throw new NotImplementedException();
+            }
+            else
+            {
+#if DEBUG_EQUAL_STRUCTS
+#endif
             }
 
-            return null;
+            byte[][] dataAlloc = new byte[1][];
+            dataAlloc[0] = new byte[dataChunk.Length];
+            head.Read(dataAlloc[0], 0, dataAlloc.Length);
+            return dataAlloc;
         }
 
 		public void ResolvePointers(FileVerboseMode verboseMode)
 		{
-            //Console.WriteLine("resolvePointersStructMismatch");
-            
-            throw new NotImplementedException();
+            Dna fileDna = (_fileDna != null) ? _fileDna : _memoryDna;
+
+            if (true && ((_flags & FileFlags.BitsVaries | FileFlags.VersionVaries) != 0))
+            {
+                ResolvePointersMismatch();
+            }
+
+            if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+            {
+                Console.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
+                //Console.WriteLine("<bullet_physics version={0} itemcount = {1}>", b3GetVersion(), _chunks.Count);
+                throw new NotImplementedException();
+            }
+
+            foreach (ChunkInd dataChunk in _chunks)
+            {
+                if (_fileDna == null || fileDna.FlagEqual(dataChunk.DnaNR))
+                {
+
+                    Dna.StructDecl oldStruct = fileDna.GetStruct(dataChunk.DnaNR);
+
+                    if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                    {
+                        Console.WriteLine(" <{0} pointer={1}>", oldStruct.Type.Name, dataChunk.OldPtr);
+                    }
+
+                    ResolvePointersChunk(dataChunk, verboseMode);
+
+                    if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                    {
+                        Console.WriteLine(" </{0}>", oldStruct.Type.Name);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("skipping struct");
+                }
+            }
+
+            if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+            {
+                Console.WriteLine("</bullet_physics>");
+            }
 		}
+
+        protected void ResolvePointersChunk(ChunkInd dataChunk, FileVerboseMode verboseMode)
+        {
+            Dna fileDna = (_fileDna != null) ? _fileDna : _memoryDna;
+
+            Dna.StructDecl oldStruct = fileDna.GetStruct(dataChunk.DnaNR);
+            int oldLen = oldStruct.Type.Length;
+
+            //throw new NotImplementedException();
+        }
+
+        protected void ResolvePointersMismatch()
+        {
+            //throw new NotImplementedException();
+        }
 
 		public void UpdateOldPointers()
 		{
-			bFile_updateOldPointers(_native);
+            for (int i = 0; i < _chunks.Count; i++)
+            {
+                _chunks[i].OldPtr = FindLibPointer(_chunks[i].OldPtr);
+            }
 		}
         /*
 		public int Write(char fileName, bool fixupPointers)
@@ -392,8 +616,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void bFile_dumpChunks(IntPtr obj, IntPtr dna);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr bFile_findLibPointer(IntPtr obj, IntPtr ptr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr bFile_getFileDNA(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr bFile_getLibPointers(IntPtr obj);
@@ -403,8 +625,6 @@ namespace BulletSharp
 		static extern bool bFile_ok(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void bFile_preSwap(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_updateOldPointers(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int bFile_write(IntPtr obj, IntPtr fileName, bool fixupPointers);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

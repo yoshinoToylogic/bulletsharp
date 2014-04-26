@@ -45,11 +45,15 @@ namespace BulletSharp
 	};
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct ChunkInd
+    public class ChunkInd
     {
+        public ChunkInd()
+        {
+        }
+
         public ChunkInd(ref ChunkPtr4 c)
         {
-            Code = c.Code;
+            Code = (DnaID)c.Code;
             Length = c.Length;
             OldPtr = c.UniqueInt1;
             DnaNR = c.DnaNR;
@@ -58,14 +62,14 @@ namespace BulletSharp
 
         public ChunkInd(ref ChunkPtr8 c)
         {
-            Code = c.Code;
+            Code = (DnaID)c.Code;
             Length = c.Length;
             OldPtr = c.UniqueInt1 + c.UniqueInt2 << 32;
             DnaNR = c.DnaNR;
             NR = c.NR;
         }
 
-        public int Code;
+        public DnaID Code;
         public int Length;
         public long OldPtr;
         public int DnaNR;

@@ -2,9 +2,28 @@ using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.IO;
+using System.Collections.Generic;
 
 namespace BulletSharp
 {
+    public enum DnaID : int
+    {
+        Array = 0x59415241,
+        BoxShape = 0x53584f42,
+        CollisionObject = 0x4a424f43,
+        Constraint = 0x534e4f43,
+        Dna = 0x31414e44,
+        DynamicsWorld = 0x444c5744,
+        QuantizedBvh = 0x48564251,
+        RigidBody = 0x59444252,
+        SBMaterial = 0x544d4253,
+        SBNode = 0x444e4253,
+        Sdna = 0x414e4453,
+        Shape = 0x50414853,
+        SoftBody = 0x59444253,
+        TriangleInfoMap = 0x50414d54
+    }
+    /*
     class DnaID
     {
         public static readonly int Sdna = MakeID("SDNA");
@@ -32,10 +51,14 @@ namespace BulletSharp
             return (id[3]) + (id[2] << 8) + (id[1] << 16) + (id[0] << 24);
         }
     }
-
+    */
 	public class BulletFile : bFile
 	{
         protected byte[] _dnaCopy;
+
+        private List<byte[][]> _collisionShapes = new List<byte[][]>();
+        private List<byte[][]> _constraints = new List<byte[][]>();
+        private List<byte[][]> _rigidBodies = new List<byte[][]>();
 
 		public BulletFile()
 			: base(btBulletFile_new())
@@ -115,7 +138,28 @@ namespace BulletSharp
 			        long dataPtrHead = dataPtr + ChunkUtils.GetOffset(_flags);
                     if (dataChunk.DnaNR >= 0)
                     {
+                        byte[][] id = ReadStruct(reader, dataChunk);
 
+                        //m_chunkPtrPtrMap.insert(dataChunk.oldPtr, dataChunk);
+                        //mLibPointers.insert(dataChunk.oldPtr, (bStructHandle*)id);
+                        _chunks.Add(dataChunk);
+
+                        if (dataChunk.Code == DnaID.Constraint)
+                        {
+                            _constraints.Add(id);
+                        }
+                        else if (dataChunk.Code == DnaID.RigidBody)
+                        {
+                            _rigidBodies.Add(id);
+                        }
+                        else if (dataChunk.Code == DnaID.Shape)
+                        {
+                            _collisionShapes.Add(id);
+                        }
+                        else
+                        {
+                            //Console.WriteLine("unknown chunk " + dataChunk.Code);
+                        }
                     }
                 }
                 else
