@@ -21,7 +21,7 @@ namespace BulletSharp
             _shapeMap.Clear();
             _bodyMap.Clear();
 
-			return btBulletWorldImporter_convertAllObjects(_native, file._native);
+            return true;
 		}
         
         public bool LoadFile(string fileName, string preSwapFilenameOut)
@@ -78,8 +78,6 @@ namespace BulletSharp
 		static extern IntPtr btBulletWorldImporter_new(IntPtr world);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btBulletWorldImporter_new2();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBulletWorldImporter_convertAllObjects(IntPtr obj, IntPtr file);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern bool btBulletWorldImporter_loadFile(IntPtr obj, string fileName, string preSwapFilenameOut);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

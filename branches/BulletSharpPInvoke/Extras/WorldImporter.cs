@@ -9,8 +9,8 @@ namespace BulletSharp
 	{
         private DynamicsWorld _world;
 
-        protected List<CollisionObject> _bodyMap;
-        protected List<CollisionShape> _shapeMap;
+        protected List<CollisionObject> _bodyMap = new List<CollisionObject>();
+        protected List<CollisionShape> _shapeMap = new List<CollisionShape>();
         protected FileVerboseMode _verboseMode;
 
 		internal IntPtr _native;
@@ -22,7 +22,7 @@ namespace BulletSharp
 
 		public WorldImporter(DynamicsWorld world)
 		{
-			_native = btWorldImporter_new(world._native);
+            _world = world;
 		}
 
 		public CollisionShape CreateBoxShape(Vector3 halfExtents)
@@ -331,8 +331,6 @@ namespace BulletSharp
 			Dispose(false);
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btWorldImporter_new(IntPtr world);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_createBoxShape(IntPtr obj, [In] ref Vector3 halfExtents);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
