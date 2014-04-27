@@ -172,7 +172,7 @@ namespace BulletSharp
         
 		public string Name
 		{
-			get { return btCollisionShape_getName(_native); }
+            get { return Marshal.PtrToStringAnsi(btCollisionShape_getName(_native)); }
 		}
         
         public BroadphaseNativeType ShapeType
@@ -226,8 +226,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionShape_getMargin(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.LPStr)]
-		static extern string btCollisionShape_getName(IntPtr obj);
+		static extern IntPtr btCollisionShape_getName(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern BroadphaseNativeType btCollisionShape_getShapeType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

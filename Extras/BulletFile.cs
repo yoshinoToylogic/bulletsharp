@@ -56,9 +56,9 @@ namespace BulletSharp
 	{
         protected byte[] _dnaCopy;
 
-        private List<byte[][]> _collisionShapes = new List<byte[][]>();
-        private List<byte[][]> _constraints = new List<byte[][]>();
-        private List<byte[][]> _rigidBodies = new List<byte[][]>();
+        public List<byte[]> _collisionShapes = new List<byte[]>();
+        public List<byte[]> _constraints = new List<byte[]>();
+        public List<byte[]> _rigidBodies = new List<byte[]>();
 
 		public BulletFile()
 			: base(btBulletFile_new())
@@ -109,7 +109,7 @@ namespace BulletSharp
             bool brokenDna = (_flags & FileFlags.BrokenDna) == FileFlags.BrokenDna;
             bool swap = (_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap;
 
-            MemoryStream memory = new MemoryStream(_fileBuffer);
+            MemoryStream memory = new MemoryStream(_fileBuffer, false);
             BinaryReader reader = new BinaryReader(memory);
 
             _dataStart = 12;
@@ -138,10 +138,10 @@ namespace BulletSharp
 			        long dataPtrHead = dataPtr + ChunkUtils.GetOffset(_flags);
                     if (dataChunk.DnaNR >= 0)
                     {
-                        byte[][] id = ReadStruct(reader, dataChunk);
+                        byte[] id = ReadStruct(reader, dataChunk);
 
                         //m_chunkPtrPtrMap.insert(dataChunk.oldPtr, dataChunk);
-                        //mLibPointers.insert(dataChunk.oldPtr, (bStructHandle*)id);
+                        _libPointers.Add(dataChunk.OldPtr, id);
                         _chunks.Add(dataChunk);
 
                         if (dataChunk.Code == DnaID.Constraint)

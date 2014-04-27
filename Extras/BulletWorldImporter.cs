@@ -1,6 +1,7 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Collections.Generic;
 
 namespace BulletSharp
 {
@@ -20,6 +21,42 @@ namespace BulletSharp
 		{
             _shapeMap.Clear();
             _bodyMap.Clear();
+
+            foreach (byte[] shapeData in file._collisionShapes)
+            {
+                CollisionShape shape = ConvertCollisionShape(shapeData);
+                if (shape != null)
+                {
+                    foreach (KeyValuePair<long, byte[]> lib in file.LibPointers)
+                    {
+                        if (lib.Value == shapeData)
+                        {
+                            _shapeMap.Add(lib.Key, shape);
+                            break;
+                        }
+                    }
+                }
+                /*
+                if (shape && shapeData->m_name)
+                {
+                    char* newname = duplicateName(shapeData->m_name);
+                    m_objectNameMap.insert(shape, newname);
+                    m_nameShapeMap.insert(newname, shape);
+                }*/
+                //throw new NotImplementedException();
+            }
+
+            foreach (byte[] bodyData in file._rigidBodies)
+            {
+                if ((file.Flags & FileFlags.DoublePrecision) != 0)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    ConvertRigidBodyFloat(bodyData);
+                }
+            }
 
             return true;
 		}
@@ -74,10 +111,6 @@ namespace BulletSharp
             return ConvertAllObjects(bulletFile);
 		}
         
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBulletWorldImporter_new(IntPtr world);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBulletWorldImporter_new2();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern bool btBulletWorldImporter_loadFile(IntPtr obj, string fileName, string preSwapFilenameOut);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
