@@ -74,15 +74,10 @@ namespace BulletSharp
     {
         bool _preventDelete;
 
-        internal AlignedIndexedMeshArray(IntPtr native, bool preventDelete = false)
+        internal AlignedIndexedMeshArray(IntPtr native, bool preventDelete)
             : base(native)
         {
             _preventDelete = preventDelete;
-        }
-
-        public AlignedIndexedMeshArray()
-            : base(btAlignedIndexedMeshArray_new())
-        {
         }
 
         public void Dispose()
@@ -184,8 +179,6 @@ namespace BulletSharp
             return new AlignedIndexedMeshArrayEnumerator(this);
         }
 
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedIndexedMeshArray_new();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btAlignedIndexedMeshArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

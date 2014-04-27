@@ -26,18 +26,6 @@ namespace BulletSharp
             _motionState = constructionInfo._motionState;
 		}
 
-		public RigidBody(float mass, MotionState motionState, CollisionShape collisionShape, Vector3 localInertia)
-			: base(btRigidBody_new2(mass, motionState._native, collisionShape._native, ref localInertia))
-		{
-            _motionState = motionState;
-		}
-
-		public RigidBody(float mass, MotionState motionState, CollisionShape collisionShape)
-			: base(btRigidBody_new3(mass, motionState._native, collisionShape._native))
-		{
-            _motionState = motionState;
-		}
-
 		public void AddConstraintRef(TypedConstraint c)
 		{
 			btRigidBody_addConstraintRef(_native, c._native);
@@ -392,10 +380,6 @@ namespace BulletSharp
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btRigidBody_new(IntPtr constructionInfo);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btRigidBody_new2(float mass, IntPtr motionState, IntPtr collisionShape, [In] ref Vector3 localInertia);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btRigidBody_new3(float mass, IntPtr motionState, IntPtr collisionShape);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_addConstraintRef(IntPtr obj, IntPtr c);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

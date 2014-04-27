@@ -347,5 +347,10 @@ namespace BulletSharp
                 return _names.Length;
             }
         }
+
+        public int PointerSize
+        {
+            get { return _ptrLen; }
+        }
     }
 }

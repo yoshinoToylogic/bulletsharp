@@ -42,8 +42,8 @@ extern "C"
 	EXPORT void btRigidBody_btRigidBodyConstructionInfo_setStartWorldTransform(btRigidBody_btRigidBodyConstructionInfo* obj, btScalar* value);
 	EXPORT void btRigidBody_btRigidBodyConstructionInfo_delete(btRigidBody_btRigidBodyConstructionInfo* obj);
 	EXPORT btRigidBody* btRigidBody_new(btRigidBody_btRigidBodyConstructionInfo* constructionInfo);
-	EXPORT btRigidBody* btRigidBody_new2(btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btScalar* localInertia);
-	EXPORT btRigidBody* btRigidBody_new3(btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape);
+	//EXPORT btRigidBody* btRigidBody_new2(btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape, btScalar* localInertia);
+	//EXPORT btRigidBody* btRigidBody_new3(btScalar mass, btMotionState* motionState, btCollisionShape* collisionShape);
 	EXPORT void btRigidBody_addConstraintRef(btRigidBody* obj, btTypedConstraint* c);
 	EXPORT void btRigidBody_applyCentralForce(btRigidBody* obj, btScalar* force);
 	EXPORT void btRigidBody_applyCentralImpulse(btRigidBody* obj, btScalar* impulse);
