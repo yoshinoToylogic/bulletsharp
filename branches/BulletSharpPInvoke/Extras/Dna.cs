@@ -1,7 +1,8 @@
-﻿using System.IO;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 
 namespace BulletSharp
 {
@@ -72,8 +73,9 @@ namespace BulletSharp
 
         public class TypeDecl
         {
-            public string Name { get; private set; }
+            public bool IsStruct { get; set; }
             public short Length { get; set; }
+            public string Name { get; private set; }
 
             public TypeDecl(string name)
             {
@@ -165,6 +167,7 @@ namespace BulletSharp
         private StructDecl[] _structs;
         private TypeDecl[] _types;
         private Dictionary<string, StructDecl> _structReverse;
+        private Dictionary<TypeDecl, StructDecl> _typeLookup;
 
         private int _ptrLen;
 
@@ -197,6 +200,13 @@ namespace BulletSharp
         {
             StructDecl s;
             _structReverse.TryGetValue(typeName, out s);
+            return s;
+        }
+
+        public StructDecl GetReverseType(TypeDecl type)
+        {
+            StructDecl s;
+            _typeLookup.TryGetValue(type, out s);
             return s;
         }
 
@@ -281,11 +291,13 @@ namespace BulletSharp
                 _structs[i] = structDecl;
                 if (swap)
                 {
+                    throw new NotImplementedException();
                 }
                 else
                 {
                     short typeNr = reader.ReadInt16();
                     structDecl.Type = _types[typeNr];
+                    structDecl.Type.IsStruct = true;
                     int numElements = reader.ReadInt16();
                     structDecl.Elements = new ElementDecl[numElements];
                     for (int j = 0; j < numElements; j++)
@@ -299,6 +311,7 @@ namespace BulletSharp
 
             // build reverse lookups
             _structReverse = new Dictionary<string, StructDecl>(_structs.Length);
+            _typeLookup = new Dictionary<TypeDecl, StructDecl>(_structs.Length);
             foreach (StructDecl s in _structs)
             {
                 if (_ptrLen == 0 && s.Type.Name.Equals("ListBase"))
@@ -306,7 +319,7 @@ namespace BulletSharp
                     _ptrLen = s.Type.Length / 2;
                 }
                 _structReverse.Add(s.Type.Name, s);
-                //_typeLookup.insert(b3HashString(mTypes[strc[0]]), i);
+                _typeLookup.Add(s.Type, s);
             }
         }
 
@@ -320,7 +333,7 @@ namespace BulletSharp
 
             for (int i = 0; i < _structs.Length; i++)
             {
-                StructDecl curStruct = memoryDna.GetReverseType(_structs[i].Type.ToString());
+                StructDecl curStruct = memoryDna.GetReverseType(_structs[i].Type);
                 if (curStruct == null)
                 {
                     _cmpFlags[i] = FileDnaFlags.None;
@@ -345,6 +358,18 @@ namespace BulletSharp
                     return 0;
                 }
                 return _names.Length;
+            }
+        }
+
+        public int NumStructs
+        {
+            get
+            {
+                if (_structs == null)
+                {
+                    return 0;
+                }
+                return _structs.Length;
             }
         }
 

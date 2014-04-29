@@ -24,7 +24,7 @@ namespace BulletSharp
 
             foreach (byte[] shapeData in file._collisionShapes)
             {
-                CollisionShape shape = ConvertCollisionShape(shapeData);
+                CollisionShape shape = ConvertCollisionShape(shapeData, file.LibPointers);
                 if (shape != null)
                 {
                     foreach (KeyValuePair<long, byte[]> lib in file.LibPointers)

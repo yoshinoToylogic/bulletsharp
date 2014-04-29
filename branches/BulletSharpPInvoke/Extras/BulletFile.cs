@@ -1,8 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
-using System.Collections.Generic;
 
 namespace BulletSharp
 {
@@ -74,7 +74,14 @@ namespace BulletSharp
 			: base(btBulletFile_new3(memoryBuffer._native, len))
 		{
 		}
+        */
 
+        public override void AddDataBlock(byte[] dataBlock)
+        {
+            //_dataBlocks.push_back(dataBlock);
+        }
+
+        /*
 		public void AddStruct(char structType, IntPtr data, int len, IntPtr oldPtr, int code)
 		{
 			btBulletFile_addStruct(_native, structType._native, data, len, oldPtr, code);
@@ -156,10 +163,12 @@ namespace BulletSharp
                         {
                             _collisionShapes.Add(id);
                         }
-                        else
-                        {
-                            //Console.WriteLine("unknown chunk " + dataChunk.Code);
-                        }
+                    }
+                    else
+                    {
+                        //Console.WriteLine("unknown chunk " + dataChunk.Code);
+                        throw new NotImplementedException();
+                        //_libPointers.Add(dataChunk.OldPtr, dataPtrHead);
                     }
                 }
                 else
