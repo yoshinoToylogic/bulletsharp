@@ -90,7 +90,7 @@ namespace BulletSharp
             return new Vector3(x, y, z);
         }
 
-        protected CollisionShape ConvertCollisionShape(byte[] shapeData)
+        protected CollisionShape ConvertCollisionShape(byte[] shapeData, Dictionary<long, byte[]> libPointers)
         {
             CollisionShape shape = null;
             MemoryStream stream = new MemoryStream(shapeData, false);
@@ -128,8 +128,10 @@ namespace BulletSharp
                         {
                             case BroadphaseNativeType.ConvexHullShape:
                                 int numPoints = ReadInt32(reader, 64);
-                                long unscaledPointsFloatPtr = ReadInt64(reader, 52);
-                                unscaledPointsFloatPtr.ToString();
+                                long unscaledPointsFloatPtr = ReadInt32(reader, 56);
+                                byte[] points = libPointers[unscaledPointsFloatPtr];
+                                points.ToString();
+                                //long unscaledPointsDoublePtr = ReadInt32(reader, 60);
                                 ConvexHullShape hullShape = CreateConvexHullShape();
                                 hullShape.Margin = collisionMargin;
                                 shape = hullShape;

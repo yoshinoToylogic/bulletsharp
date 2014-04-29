@@ -59,24 +59,23 @@ namespace BulletSharp
 		{
 			_native = native;
 		}
+
+        public abstract void AddDataBlock(byte[] dataBlock);
+
         /*
-		public void AddDataBlock(char dataBlock)
-		{
-			bFile_addDataBlock(_native, dataBlock._native);
-		}
-        
 		public void DumpChunks(bDNA dna)
 		{
 			bFile_dumpChunks(_native, dna._native);
 		}
         */
-		public long FindLibPointer(long ptr)
+		public byte[] FindLibPointer(long ptr)
 		{
-            //throw new NotImplementedException();
-            //bStructHandle** ptrptr = getLibPointers().find(ptr);
-            //if (ptrptr)
-            //    return *ptrptr;
-            return 0;
+            byte[] data;
+            if (LibPointers.TryGetValue(ptr, out data))
+            {
+                return data;
+            }
+            return null;
 		}
 
         protected long GetFileElement(Dna.StructDecl firstStruct, Dna.ElementDecl lookupElement, long data, out Dna.ElementDecl found)
@@ -396,14 +395,13 @@ namespace BulletSharp
             if (fileStruct == null) return;
             if (memoryStruct == null) return;
 
-            Dna.TypeDecl firstStructType = _memoryDna.GetStruct(0).Type;
             long dtPtr = dt.BaseStream.Position;
 
             foreach (Dna.ElementDecl element in memoryStruct.Elements)
             {
-                Dna.StructDecl revType = _memoryDna.GetReverseType(element.Type.Name);
+                Dna.StructDecl revType = _memoryDna.GetReverseType(element.Type);
 
-                if (revType != null && element.Type != firstStructType && element.Name.Name[0] != '*')
+                if (revType != null && element.Type.IsStruct && element.Name.Name[0] != '*')
                 {
                     Dna.ElementDecl elementOld;
                     long cpo = GetFileElement(fileStruct, element, dtPtr, out elementOld);
@@ -465,19 +463,22 @@ namespace BulletSharp
                 }
                 else
                 {
-                    Dna.StructDecl curStruct = _memoryDna.GetReverseType(oldStruct.Type.Name);
-                    if (curStruct != null)
+                    Dna.StructDecl reverseOld = _memoryDna.GetReverseType(oldStruct.Type.Name);
+                    if (reverseOld != null)
                     {
-                        byte[] structAlloc = new byte[dataChunk.NR * curStruct.Type.Length];
-                        MemoryStream stream = new MemoryStream(structAlloc);
-                        BinaryWriter writer = new BinaryWriter(stream);
-                        for (int block = 0; block < dataChunk.NR; block++)
+                        byte[] structAlloc = new byte[dataChunk.NR * reverseOld.Type.Length];
+                        AddDataBlock(structAlloc);
+                        using (MemoryStream stream = new MemoryStream(structAlloc))
                         {
-                            ParseStruct(writer, head, oldStruct, curStruct, true);
-                            //_libPointers.Add(old, cur);
+                            using (BinaryWriter writer = new BinaryWriter(stream))
+                            {
+                                for (int block = 0; block < dataChunk.NR; block++)
+                                {
+                                    ParseStruct(writer, head, oldStruct, reverseOld, true);
+                                    //_libPointers.Add(old, cur);
+                                }
+                            }
                         }
-                        writer.Dispose();
-                        stream.Dispose();
                         return structAlloc;
                     }
                 }
@@ -549,12 +550,64 @@ namespace BulletSharp
             Dna.StructDecl oldStruct = fileDna.GetStruct(dataChunk.DnaNR);
             int oldLen = oldStruct.Type.Length;
 
-            //throw new NotImplementedException();
+            byte[] cur = FindLibPointer(dataChunk.OldPtr);
+            using (MemoryStream stream = new MemoryStream(cur))
+            {
+                using (BinaryReader reader = new BinaryReader(stream))
+                {
+                    for (int block = 0; block < dataChunk.NR; block++)
+                    {
+                        ResolvePointersStructRecursive(reader, dataChunk.DnaNR, verboseMode, 1);
+                        reader.BaseStream.Position += oldLen;
+                    }
+                }
+            }
         }
 
         protected void ResolvePointersMismatch()
         {
             //throw new NotImplementedException();
+        }
+
+        protected int ResolvePointersStructRecursive(BinaryReader reader, int dnaNr, FileVerboseMode verboseMode, int recursion)
+        {
+            Dna fileDna = (_fileDna != null) ? _fileDna : _memoryDna;
+            Dna.StructDecl oldStruct = fileDna.GetStruct(dnaNr);
+
+            int totalSize = 0;
+
+            foreach (Dna.ElementDecl element in oldStruct.Elements)
+            {
+                //int arrayLen = oldStruct.N oldStruct.Type. fileDna.GetArraySizeNew(oldStruct);
+                if (element.Name.Name[0] == '*')
+                {
+                    if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    Dna.StructDecl revType = fileDna.GetReverseType(oldStruct.Type);
+                    if (element.Type.IsStruct) // && revType != null
+                    {
+                    }
+
+                    if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                    {
+                        throw new NotImplementedException();
+                    }
+
+                    //throw new NotImplementedException();
+                }
+                int size = fileDna.GetElementSize(element);
+                totalSize += size;
+                //elemPtr += size;
+            }
+
+            return totalSize;
         }
 
         protected void SafeSwapPtr(BinaryWriter strcData, BinaryReader data)
@@ -598,7 +651,9 @@ namespace BulletSharp
 		{
             for (int i = 0; i < _chunks.Count; i++)
             {
-                _chunks[i].OldPtr = FindLibPointer(_chunks[i].OldPtr);
+                //_chunks[i].OldPtr
+                byte[] data = FindLibPointer(_chunks[i].OldPtr);
+                data.ToString();
             }
 		}
         /*
@@ -667,8 +722,6 @@ namespace BulletSharp
 			Dispose(false);
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_addDataBlock(IntPtr obj, IntPtr dataBlock);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void bFile_dumpChunks(IntPtr obj, IntPtr dna);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
