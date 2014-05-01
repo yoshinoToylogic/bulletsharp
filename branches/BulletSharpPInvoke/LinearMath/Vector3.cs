@@ -1654,6 +1654,17 @@ namespace BulletSharp
         }
 
         /// <summary>
+        /// Scales a vector by the given value.
+        /// </summary>
+        /// <param name="left">The vector to scale.</param>
+        /// <param name="right">The amount by which to scale the vector.</param>
+        /// <returns>The scaled vector.</returns>
+        public static Vector3 operator /(Vector3 left, Vector3 right)
+        {
+            return new Vector3(left.X / right.X, left.Y / right.Y, left.Z / right.Z);
+        }
+
+        /// <summary>
         /// Tests for equality between two objects.
         /// </summary>
         /// <param name="left">The first value to compare.</param>

@@ -184,6 +184,11 @@ namespace BulletSharp
             if ((flags & FileFlags.BitsVaries) == FileFlags.BitsVaries)
                 varies = true;
 
+            if (swap)
+            {
+                throw new NotImplementedException();
+            }
+
             dataChunk = new ChunkInd();
 
             if (IntPtr.Size == 8)
@@ -196,6 +201,18 @@ namespace BulletSharp
                 else
                 {
                     ChunkPtr8 c = new ChunkPtr8(reader);
+                    dataChunk = new ChunkInd(ref c);
+                }
+            }
+            else
+            {
+                if (varies)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    ChunkPtr4 c = new ChunkPtr4(reader);
                     dataChunk = new ChunkInd(ref c);
                 }
             }
@@ -340,7 +357,7 @@ namespace BulletSharp
 
             // _fileDna.Init will convert part of DNA file endianness to current CPU endianness if necessary
             memory.Position = dna.OldPtr;
-            _fileDna.Init(reader, (_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap);
+            _fileDna.Init(reader, (_flags & FileFlags.EndianSwap) != 0);
 
             if (_version == 276)
             {
@@ -399,9 +416,7 @@ namespace BulletSharp
 
             foreach (Dna.ElementDecl element in memoryStruct.Elements)
             {
-                Dna.StructDecl revType = _memoryDna.GetReverseType(element.Type);
-
-                if (revType != null && element.Type.IsStruct && element.Name.Name[0] != '*')
+                if (element.Type.Struct != null && element.Name.Name[0] != '*')
                 {
                     Dna.ElementDecl elementOld;
                     long cpo = GetFileElement(fileStruct, element, dtPtr, out elementOld);
@@ -412,14 +427,14 @@ namespace BulletSharp
                         Dna.StructDecl oldStruct = _fileDna.GetReverseType(element.Type.Name);
                         if (arrayLen == 1)
                         {
-                            ParseStruct(strc, dt, oldStruct, revType, fixupPointers);
+                            ParseStruct(strc, dt, oldStruct, element.Type.Struct, fixupPointers);
                         }
                         else
                         {
                             int fpLen = _fileDna.GetElementSize(element) / arrayLen;
                             for (int i = 0; i < arrayLen; i++)
                             {
-                                ParseStruct(strc, dt, oldStruct, revType, fixupPointers);
+                                ParseStruct(strc, dt, oldStruct, element.Type.Struct, fixupPointers);
                                 dt.BaseStream.Position += fpLen;
                             }
                         }
@@ -427,7 +442,7 @@ namespace BulletSharp
                 }
                 else
                 {
-                    GetMatchingFileDna(fileStruct, element, strc, dt.BaseStream.Position, fixupPointers);
+                    GetMatchingFileDna(fileStruct, element, strc, dtPtr, fixupPointers);
                 }
             }
         }
@@ -500,7 +515,7 @@ namespace BulletSharp
 		{
             Dna fileDna = (_fileDna != null) ? _fileDna : _memoryDna;
 
-            if (true && ((_flags & FileFlags.BitsVaries | FileFlags.VersionVaries) != 0))
+            if (true) // && ((_flags & FileFlags.BitsVaries | FileFlags.VersionVaries) != 0))
             {
                 ResolvePointersMismatch();
             }
@@ -578,29 +593,40 @@ namespace BulletSharp
 
             foreach (Dna.ElementDecl element in oldStruct.Elements)
             {
-                //int arrayLen = oldStruct.N oldStruct.Type. fileDna.GetArraySizeNew(oldStruct);
+                int arrayLen = element.Name.ArraySizeNew;
                 if (element.Name.Name[0] == '*')
                 {
-                    if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                    if (arrayLen > 1)
                     {
-                        throw new NotImplementedException();
+                        //throw new NotImplementedException();
                     }
-
-                    throw new NotImplementedException();
+                    else
+                    {
+                        //throw new NotImplementedException();
+                        if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                        {
+                            throw new NotImplementedException();
+                        }
+                    }
                 }
                 else
                 {
-                    Dna.StructDecl revType = fileDna.GetReverseType(oldStruct.Type);
-                    if (element.Type.IsStruct) // && revType != null
+                    if (element.Type.Struct != null)
                     {
+                        for (int i = 0; i < arrayLen; i++)
+                        {
+                            //throw new NotImplementedException();
+                            //byteOffset += ResolvePointersStructRecursive(elemPtr + byteOffset, revType, verboseMode, recursion + 1);
+                        }
                     }
-
-                    if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                    else
                     {
-                        throw new NotImplementedException();
+                        // export a simple type
+                        if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                        {
+                            throw new NotImplementedException();
+                        }
                     }
-
-                    //throw new NotImplementedException();
                 }
                 int size = fileDna.GetElementSize(element);
                 totalSize += size;
@@ -620,7 +646,6 @@ namespace BulletSharp
                 byte[] mem = new byte[ptrMem];
                 data.Read(mem, 0, ptrMem);
                 strcData.Write(mem);
-                throw new NotImplementedException();
             }
             else if (ptrMem == 4 && ptrFile == 8)
             {

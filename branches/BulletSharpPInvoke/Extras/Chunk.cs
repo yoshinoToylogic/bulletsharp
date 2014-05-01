@@ -83,19 +83,18 @@ namespace BulletSharp
             // if the file is saved in a
             // different format, get the
             // file's chunk size
-            int res = Marshal.SizeOf(typeof(ChunkInd));
 
             if (IntPtr.Size == 8)
             {
-                if ((flags & FileFlags.BitsVaries) == FileFlags.BitsVaries)
-                    res = Marshal.SizeOf(typeof(ChunkPtr4));
+                if ((flags & FileFlags.BitsVaries) != 0)
+                    return Marshal.SizeOf(typeof(ChunkPtr4));
+                else
+                    return Marshal.SizeOf(typeof(ChunkPtr8));
             }
-            else
-            {
-                if ((flags & FileFlags.BitsVaries) == FileFlags.BitsVaries)
-                    res = Marshal.SizeOf(typeof(ChunkPtr8));
-            }
-            return res;
+
+            if ((flags & FileFlags.BitsVaries) != 0)
+                return Marshal.SizeOf(typeof(ChunkPtr8));
+            return Marshal.SizeOf(typeof(ChunkPtr4));
         }
     }
 }
