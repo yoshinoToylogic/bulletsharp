@@ -907,7 +907,6 @@ namespace BulletSharp
         {
             if (FuzzyZero(v.LengthSquared))
             {
-                int ibreak = 0;
                 //Debug.Assert(false);
             }
         }
@@ -917,7 +916,6 @@ namespace BulletSharp
         {
             if (float.IsNaN(v.X) || float.IsNaN(v.Y) || float.IsNaN(v.Z))
             {
-                int ibreak = 0;
                 Debug.Assert(false);
             }
         }

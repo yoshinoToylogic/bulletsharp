@@ -73,7 +73,7 @@ namespace BulletSharp
 
         public class TypeDecl
         {
-            public bool IsStruct { get; set; }
+            public Dna.StructDecl Struct { get; set; }
             public short Length { get; set; }
             public string Name { get; private set; }
 
@@ -118,6 +118,19 @@ namespace BulletSharp
             public int Dim1 { get; set; }
 
             public int ArraySizeNew { get { return Dim0 * Dim1; } }
+
+            public string CleanName
+            {
+                get
+                {
+                    int p = Name.IndexOf('[');
+                    if (p != -1)
+                    {
+                        return Name.Substring(0, Name.IndexOf('['));
+                    }
+                    return Name;
+                }
+            }
 
             public NameInfo(string name)
             {
@@ -167,7 +180,6 @@ namespace BulletSharp
         private StructDecl[] _structs;
         private TypeDecl[] _types;
         private Dictionary<string, StructDecl> _structReverse;
-        private Dictionary<TypeDecl, StructDecl> _typeLookup;
 
         private int _ptrLen;
 
@@ -200,13 +212,6 @@ namespace BulletSharp
         {
             StructDecl s;
             _structReverse.TryGetValue(typeName, out s);
-            return s;
-        }
-
-        public StructDecl GetReverseType(TypeDecl type)
-        {
-            StructDecl s;
-            _typeLookup.TryGetValue(type, out s);
             return s;
         }
 
@@ -297,7 +302,7 @@ namespace BulletSharp
                 {
                     short typeNr = reader.ReadInt16();
                     structDecl.Type = _types[typeNr];
-                    structDecl.Type.IsStruct = true;
+                    structDecl.Type.Struct = structDecl;
                     int numElements = reader.ReadInt16();
                     structDecl.Elements = new ElementDecl[numElements];
                     for (int j = 0; j < numElements; j++)
@@ -311,7 +316,6 @@ namespace BulletSharp
 
             // build reverse lookups
             _structReverse = new Dictionary<string, StructDecl>(_structs.Length);
-            _typeLookup = new Dictionary<TypeDecl, StructDecl>(_structs.Length);
             foreach (StructDecl s in _structs)
             {
                 if (_ptrLen == 0 && s.Type.Name.Equals("ListBase"))
@@ -319,7 +323,6 @@ namespace BulletSharp
                     _ptrLen = s.Type.Length / 2;
                 }
                 _structReverse.Add(s.Type.Name, s);
-                _typeLookup.Add(s.Type, s);
             }
         }
 
@@ -333,14 +336,39 @@ namespace BulletSharp
 
             for (int i = 0; i < _structs.Length; i++)
             {
-                StructDecl curStruct = memoryDna.GetReverseType(_structs[i].Type);
-                if (curStruct == null)
-                {
-                    _cmpFlags[i] = FileDnaFlags.None;
-                    continue;
-                }
+                Dna.StructDecl oldStruct = _structs[i];
+                Dna.StructDecl curStruct = memoryDna.GetReverseType(oldStruct.Type.Name);
+                
+                _cmpFlags[i] = oldStruct.Equals(curStruct) ? FileDnaFlags.StructEqual : FileDnaFlags.StructNotEqual;
+            }
 
-                _cmpFlags[i] = _structs[i].Equals(curStruct) ? FileDnaFlags.StructEqual : FileDnaFlags.StructNotEqual;
+            // Recurse in
+            for (int i = 0; i < _structs.Length; i++)
+            {
+                if (_cmpFlags[i] == FileDnaFlags.StructNotEqual)
+                {
+                    InitRecurseCmpFlags(_structs[i]);
+                }
+            }
+        }
+
+        // Structs containing non-equal structs are also non-equal
+        private void InitRecurseCmpFlags(Dna.StructDecl iter)
+        {
+            for (int i = 0; i < _structs.Length; i++)
+            {
+                Dna.StructDecl curStruct = _structs[i];
+                if (curStruct != iter && _cmpFlags[i] == FileDnaFlags.StructEqual)
+                {
+                    foreach (Dna.ElementDecl element in curStruct.Elements)
+                    {
+                        if (curStruct.Type == iter.Type && element.Name.IsPointer)
+                        {
+                            _cmpFlags[i] = FileDnaFlags.StructNotEqual;
+                            InitRecurseCmpFlags(curStruct);
+                        }
+                    }
+                }
             }
         }
 

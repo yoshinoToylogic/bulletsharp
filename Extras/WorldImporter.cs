@@ -29,87 +29,47 @@ namespace BulletSharp
             _dynamicsWorld = world;
 		}
 
-        private float ReadFloat(BinaryReader reader, int position)
-        {
-            reader.BaseStream.Position = position;
-            return reader.ReadSingle();
-        }
-
-        private int ReadInt32(BinaryReader reader, int position)
-        {
-            reader.BaseStream.Position = position;
-            return reader.ReadInt32();
-        }
-
-        private long ReadInt64(BinaryReader reader, int position)
-        {
-            reader.BaseStream.Position = position;
-            return reader.ReadInt64();
-        }
-
-        private Matrix ReadMatrix(BinaryReader reader)
-        {
-            float[] m = new float[16];
-            for (int i = 0; i < 16; i++)
-            {
-                m[i] = reader.ReadSingle();
-            }
-            /* Transpose
-            m[0] = reader.ReadSingle();
-            m[4] = reader.ReadSingle();
-            m[8] = reader.ReadSingle();
-            m[12] = reader.ReadSingle();
-            m[1] = reader.ReadSingle();
-            m[5] = reader.ReadSingle();
-            m[9] = reader.ReadSingle();
-            m[13] = reader.ReadSingle();
-            m[2] = reader.ReadSingle();
-            m[6] = reader.ReadSingle();
-            m[10] = reader.ReadSingle();
-            m[14] = reader.ReadSingle();
-            m[3] = reader.ReadSingle();
-            m[7] = reader.ReadSingle();
-            m[11] = reader.ReadSingle();
-            m[15] = reader.ReadSingle();
-            */
-            return new Matrix(m);
-        }
-
-        private Matrix ReadMatrix(BinaryReader reader, int position)
-        {
-            reader.BaseStream.Position = position;
-            return ReadMatrix(reader);
-        }
-
-        private Vector3 ReadVector3(BinaryReader reader, int position)
-        {
-            reader.BaseStream.Position = position;
-            float x = reader.ReadSingle();
-            float y = reader.ReadSingle();
-            float z = reader.ReadSingle();
-            return new Vector3(x, y, z);
-        }
-
         protected CollisionShape ConvertCollisionShape(byte[] shapeData, Dictionary<long, byte[]> libPointers)
         {
             CollisionShape shape = null;
             MemoryStream stream = new MemoryStream(shapeData, false);
-            BinaryReader reader = new BinaryReader(stream);
+            BulletReader reader = new BulletReader(stream);
 
-            BroadphaseNativeType type = (BroadphaseNativeType) ReadInt32(reader, 8);
+            BroadphaseNativeType type = (BroadphaseNativeType) reader.ReadInt32(IntPtr.Size);
+            stream.Position += 4; // m_padding
             switch (type)
             {
                 case BroadphaseNativeType.StaticPlane:
                     {
-                        Vector3 planeNormal = ReadVector3(reader, 32);
-                        float planeConstant = ReadFloat(reader, 48);
+                        Vector3 localScaling = reader.ReadVector3();
+                        Vector3 planeNormal = reader.ReadVector3();
+                        float planeConstant = reader.ReadSingle();
                         shape = CreatePlaneShape(planeNormal, planeConstant);
-                        shape.LocalScaling = ReadVector3(reader, 16);
+                        shape.LocalScaling = localScaling;
                         break;
                     }
                 case BroadphaseNativeType.CompoundShape:
                     {
+                        long childShapesPtr = reader.ReadPtr();
+                        byte[] childShapes = libPointers[childShapesPtr];
+                        int numChildShapes = reader.ReadInt32();
+                        //float collisionMargin = reader.ReadInt32();
                         CompoundShape compoundShape = CreateCompoundShape();
+                        using (MemoryStream shapeStream = new MemoryStream(childShapes))
+                        {
+                            using (BulletReader shapeReader = new BulletReader(shapeStream))
+                            {
+                                for (int i = 0; i < numChildShapes; i++)
+                                {
+                                    Matrix localTransform = shapeReader.ReadMatrix();
+                                    long childShapePtr = shapeReader.ReadPtr();
+                                    int childShapeType = shapeReader.ReadInt32();
+                                    float childMargin = shapeReader.ReadSingle();
+                                    CollisionShape childShape = ConvertCollisionShape(libPointers[childShapePtr], libPointers);
+                                    compoundShape.AddChildShape(localTransform, childShape);
+                                }
+                            }
+                        }
                         shape = compoundShape;
                         break;
                     }
@@ -121,21 +81,42 @@ namespace BulletSharp
                 case BroadphaseNativeType.MultiSphereShape:
                 case BroadphaseNativeType.ConvexHullShape:
                     {
-                        Vector3 localScaling = ReadVector3(reader, 16);
-                        Vector3 implicitShapeDimensions = ReadVector3(reader, 32);
-                        float collisionMargin = ReadFloat(reader, 48);
+                        Vector3 localScaling = reader.ReadVector3();
+                        Vector3 implicitShapeDimensions = reader.ReadVector3();
+                        float collisionMargin = reader.ReadSingle();
+                        stream.Position += 4; // m_padding
                         switch (type)
                         {
+                            case BroadphaseNativeType.BoxShape:
+                                {
+                                    BoxShape box = CreateBoxShape(implicitShapeDimensions / localScaling + new Vector3(collisionMargin)) as BoxShape;
+                                    //box.InitializePolyhedralFeatures();
+                                    shape = box;
+                                    break;
+                                }
                             case BroadphaseNativeType.ConvexHullShape:
-                                int numPoints = ReadInt32(reader, 64);
-                                long unscaledPointsFloatPtr = ReadInt32(reader, 56);
-                                byte[] points = libPointers[unscaledPointsFloatPtr];
-                                points.ToString();
-                                //long unscaledPointsDoublePtr = ReadInt32(reader, 60);
-                                ConvexHullShape hullShape = CreateConvexHullShape();
-                                hullShape.Margin = collisionMargin;
-                                shape = hullShape;
-                                break;
+                                {
+                                    long unscaledPointsFloatPtr = reader.ReadPtr();
+                                    long unscaledPointsDoublePtr = reader.ReadPtr();
+                                    int numPoints = reader.ReadInt32();
+                                    
+                                    byte[] points = libPointers[unscaledPointsFloatPtr];
+                                    ConvexHullShape hullShape = CreateConvexHullShape();
+                                    using (MemoryStream pointStream = new MemoryStream(points))
+                                    {
+                                        using (BulletReader pointReader = new BulletReader(pointStream))
+                                        {
+                                            for (int i = 0; i < numPoints; i++)
+                                            {
+                                                hullShape.AddPoint(pointReader.ReadVector3());
+                                            }
+                                        }
+                                    }
+                                    hullShape.Margin = collisionMargin;
+                                    //hullShape.InitializePolyhedralFeatures();
+                                    shape = hullShape;
+                                    break;
+                                }
                             default:
                                 throw new NotImplementedException();
                         }
@@ -153,24 +134,15 @@ namespace BulletSharp
         protected void ConvertRigidBodyFloat(byte[] bodyData)
         {
             MemoryStream stream = new MemoryStream(bodyData, false);
-            BinaryReader reader = new BinaryReader(stream);
-            /*
-            float[] f = new float[body.Length / 4];
-            int i = 0;
-            while (true)
-            {
-                f[i] = reader.ReadSingle();
-                i++;
-            }
-            */
+            BulletReader reader = new BulletReader(stream);
 
-            Matrix startTransform = ReadMatrix(reader, 32);
-            startTransform.ToString();
-            float inverseMass = ReadFloat(reader, 464);
+            //long broadphaseHandlePtr = reader.ReadPtr();
+            long collisionShapePtr = reader.ReadPtr(IntPtr.Size);
+            Matrix startTransform = reader.ReadMatrix(IntPtr.Size * 4);
+            float inverseMass = reader.ReadSingle((IntPtr.Size == 8) ? 464 : 448);
+
             float mass = inverseMass.Equals(0) ? 0 : 1.0f / inverseMass;
-
-            long collisionShape = ReadInt64(reader, 8);
-            CollisionShape shape = _shapeMap[collisionShape];
+            CollisionShape shape = _shapeMap[collisionShapePtr];
 
             if (shape.IsNonMoving)
             {
@@ -198,7 +170,9 @@ namespace BulletSharp
 
 		public CollisionShape CreateBoxShape(Vector3 halfExtents)
 		{
-			return new BoxShape(btWorldImporter_createBoxShape(_native, ref halfExtents));
+            BoxShape shape = new BoxShape(halfExtents);
+            _allocatedCollisionShapes.Add(shape);
+            return shape;
 		}
         /*
 		public BvhTriangleMeshShape CreateBvhTriangleMeshShape(StridingMeshInterface trimesh, OptimizedBvh bvh)
@@ -534,8 +508,6 @@ namespace BulletSharp
 			Dispose(false);
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btWorldImporter_createBoxShape(IntPtr obj, [In] ref Vector3 halfExtents);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btWorldImporter_createBvhTriangleMeshShape(IntPtr obj, IntPtr trimesh, IntPtr bvh);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
