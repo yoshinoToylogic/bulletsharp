@@ -59,46 +59,46 @@ DbvtAabbMm::DbvtAabbMm(btDbvtAabbMm* aabbMm)
 
 Vector3 DbvtAabbMm::Center()
 {
-	btVector3* center = new btVector3;
+	btVector3* center = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Center(_native, center);
 	Vector3 v = Math::BtVector3ToVector3(center);
-	delete center;
+	ALIGNED_FREE(center);
 	return v;
 }
 
 Vector3 DbvtAabbMm::Lengths()
 {
-	btVector3* lengths = new btVector3;
+	btVector3* lengths = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Center(_native, lengths);
 	Vector3 v = Math::BtVector3ToVector3(lengths);
-	delete lengths;
+	ALIGNED_FREE(lengths);
 	return v;
 }
 
 Vector3 DbvtAabbMm::Extents()
 {
-	btVector3* extents = new btVector3;
+	btVector3* extents = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Center(_native, extents);
 	Vector3 v = Math::BtVector3ToVector3(extents);
-	delete extents;
+	ALIGNED_FREE(extents);
 	return v;
 }
 
 Vector3 DbvtAabbMm::Mins()
 {
-	btVector3* mins = new btVector3;
+	btVector3* mins = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Center(_native, mins);
 	Vector3 v = Math::BtVector3ToVector3(mins);
-	delete mins;
+	ALIGNED_FREE(mins);
 	return v;
 }
 
 Vector3 DbvtAabbMm::Maxs()
 {
-	btVector3* maxs = new btVector3;
+	btVector3* maxs = ALIGNED_NEW(btVector3);
 	DbvtAabbMm_Center(_native, maxs);
 	Vector3 v = Math::BtVector3ToVector3(maxs);
-	delete maxs;
+	ALIGNED_FREE(maxs);
 	return v;
 }
 
