@@ -512,10 +512,10 @@ void Generic6DofConstraint::UpdateRHS(btScalar timeStep)
 
 Vector3 Generic6DofConstraint::AngularLowerLimit::get()
 {
-	btVector3* limitTemp = new btVector3;
+	btVector3* limitTemp = ALIGNED_NEW(btVector3);
 	Native->getAngularLowerLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
-	delete limitTemp;
+	ALIGNED_FREE(limitTemp);
 	return limit;
 }
 void Generic6DofConstraint::AngularLowerLimit::set(Vector3 value)
@@ -527,10 +527,10 @@ void Generic6DofConstraint::AngularLowerLimit::set(Vector3 value)
 
 Vector3 Generic6DofConstraint::AngularUpperLimit::get()
 {
-	btVector3* limitTemp = new btVector3;
+	btVector3* limitTemp = ALIGNED_NEW(btVector3);
 	Native->getAngularUpperLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
-	delete limitTemp;
+	ALIGNED_FREE(limitTemp);
 	return limit;
 }
 void Generic6DofConstraint::AngularUpperLimit::set(Vector3 value)
@@ -585,10 +585,10 @@ void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 
 Vector3 Generic6DofConstraint::LinearLowerLimit::get()
 {
-	btVector3* limitTemp = new btVector3;
+	btVector3* limitTemp = ALIGNED_NEW(btVector3);
 	Native->getLinearLowerLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
-	delete limitTemp;
+	ALIGNED_FREE(limitTemp);
 	return limit;
 }
 void Generic6DofConstraint::LinearLowerLimit::set(Vector3 linearLower)
@@ -600,10 +600,10 @@ void Generic6DofConstraint::LinearLowerLimit::set(Vector3 linearLower)
 
 Vector3 Generic6DofConstraint::LinearUpperLimit::get()
 {
-	btVector3* limitTemp = new btVector3;
+	btVector3* limitTemp = ALIGNED_NEW(btVector3);
 	Native->getLinearUpperLimit(*limitTemp);
 	Vector3 limit = Math::BtVector3ToVector3(limitTemp);
-	delete limitTemp;
+	ALIGNED_FREE(limitTemp);
 	return limit;
 }
 void Generic6DofConstraint::LinearUpperLimit::set(Vector3 linearUpper)
