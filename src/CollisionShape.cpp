@@ -258,7 +258,7 @@ void CollisionShape::GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aa
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
 
-	delete tTemp;
+	ALIGNED_FREE(tTemp);
 	ALIGNED_FREE(aabbMinTemp);
 	ALIGNED_FREE(aabbMaxTemp);
 }
