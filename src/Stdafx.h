@@ -30,7 +30,7 @@
 //#define DISABLE_VEHICLE
 
 
-// When using CMake to compile Bullet and double precision is specified,
+// When using CMake to compile Bullet and USE_DOUBLE_PRECISION is specified,
 // then this setting isn't applied to BulletSharp automatically.
 // In this case, uncomment this line:
 //#define BT_USE_DOUBLE_PRECISION
