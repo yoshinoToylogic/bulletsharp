@@ -1,9 +1,11 @@
 #include "conversion.h"
 #include "btDefaultMotionState_wrap.h"
 
-btDefaultMotionState* btDefaultMotionState_new()
+btDefaultMotionState* btDefaultMotionState_new(btScalar* startTrans, btScalar* centerOfMassOffset)
 {
-	return ALIGNED_NEW(btDefaultMotionState) ();
+	TRANSFORM_CONV(startTrans);
+	TRANSFORM_CONV(centerOfMassOffset);
+	return ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), TRANSFORM_USE(centerOfMassOffset));
 }
 
 btDefaultMotionState* btDefaultMotionState_new2(btScalar* startTrans)
@@ -12,11 +14,9 @@ btDefaultMotionState* btDefaultMotionState_new2(btScalar* startTrans)
 	return ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans));
 }
 
-btDefaultMotionState* btDefaultMotionState_new3(btScalar* startTrans, btScalar* centerOfMassOffset)
+btDefaultMotionState* btDefaultMotionState_new3()
 {
-	TRANSFORM_CONV(startTrans);
-	TRANSFORM_CONV(centerOfMassOffset);
-	return ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans), TRANSFORM_USE(centerOfMassOffset));
+	return ALIGNED_NEW(btDefaultMotionState) ();
 }
 
 void btDefaultMotionState_getCenterOfMassOffset(btDefaultMotionState* obj, btScalar* value)
