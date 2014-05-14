@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace BulletSharp
+namespace BulletSharp.Math
 {
     /// <summary>
     /// Represents a four dimensional mathematical quaternion.
@@ -164,7 +164,7 @@ namespace BulletSharp
         /// </summary>
         public bool IsNormalized
         {
-            get { return Math.Abs((X * X) + (Y * Y) + (Z * Z) + (W * W) - 1f) < Utilities.ZeroTolerance; }
+            get { return System.Math.Abs((X * X) + (Y * Y) + (Z * Z) + (W * W) - 1f) < Utilities.ZeroTolerance; }
         }
 
         /// <summary>
@@ -179,7 +179,7 @@ namespace BulletSharp
                 if (length < Utilities.ZeroTolerance)
                     return 0.0f;
 
-                return (float)(2.0 * Math.Acos(W));
+                return (float)(2.0 * System.Math.Acos(W));
             }
         }
 
@@ -209,7 +209,7 @@ namespace BulletSharp
         /// </remarks>
         public float Length
         {
-            get { return (float)Math.Sqrt((X * X) + (Y * Y) + (Z * Z) + (W * W)); }
+            get { return (float)System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z) + (W * W)); }
         }
 
         /// <summary>
@@ -589,10 +589,10 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the exponentiated quaternion.</param>
         public static void Exponential(ref Quaternion value, out Quaternion result)
         {
-            float angle = (float)Math.Sqrt((value.X * value.X) + (value.Y * value.Y) + (value.Z * value.Z));
-            float sin = (float)Math.Sin(angle);
+            float angle = (float)System.Math.Sqrt((value.X * value.X) + (value.Y * value.Y) + (value.Z * value.Z));
+            float sin = (float)System.Math.Sin(angle);
 
-            if (Math.Abs(sin) >= Utilities.ZeroTolerance)
+            if (System.Math.Abs(sin) >= Utilities.ZeroTolerance)
             {
                 float coeff = sin / angle;
                 result.X = coeff * value.X;
@@ -604,7 +604,7 @@ namespace BulletSharp
                 result = value;
             }
 
-            result.W = (float)Math.Cos(angle);
+            result.W = (float)System.Math.Cos(angle);
         }
 
         /// <summary>
@@ -702,12 +702,12 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the natural logarithm of the quaternion.</param>
         public static void Logarithm(ref Quaternion value, out Quaternion result)
         {
-            if (Math.Abs(value.W) < 1.0f)
+            if (System.Math.Abs(value.W) < 1.0f)
             {
-                float angle = (float)Math.Acos(value.W);
-                float sin = (float)Math.Sin(angle);
+                float angle = (float)System.Math.Acos(value.W);
+                float sin = (float)System.Math.Sin(angle);
 
-                if (Math.Abs(sin) >= Utilities.ZeroTolerance)
+                if (System.Math.Abs(sin) >= Utilities.ZeroTolerance)
                 {
                     float coeff = angle / sin;
                     result.X = value.X * coeff;
@@ -774,8 +774,8 @@ namespace BulletSharp
             Vector3.Normalize(ref axis, out normalized);
 
             float half = angle * 0.5f;
-            float sin = (float)Math.Sin(half);
-            float cos = (float)Math.Cos(half);
+            float sin = (float)System.Math.Sin(half);
+            float cos = (float)System.Math.Cos(half);
 
             result.X = normalized.X * sin;
             result.Y = normalized.Y * sin;
@@ -809,7 +809,7 @@ namespace BulletSharp
 
             if (scale > 0.0f)
             {
-                sqrt = (float)Math.Sqrt(scale + 1.0f);
+                sqrt = (float)System.Math.Sqrt(scale + 1.0f);
                 result.W = sqrt * 0.5f;
                 sqrt = 0.5f / sqrt;
 
@@ -819,7 +819,7 @@ namespace BulletSharp
             }
             else if ((matrix.M11 >= matrix.M22) && (matrix.M11 >= matrix.M33))
             {
-                sqrt = (float)Math.Sqrt(1.0f + matrix.M11 - matrix.M22 - matrix.M33);
+                sqrt = (float)System.Math.Sqrt(1.0f + matrix.M11 - matrix.M22 - matrix.M33);
                 half = 0.5f / sqrt;
 
                 result.X = 0.5f * sqrt;
@@ -829,7 +829,7 @@ namespace BulletSharp
             }
             else if (matrix.M22 > matrix.M33)
             {
-                sqrt = (float)Math.Sqrt(1.0f + matrix.M22 - matrix.M11 - matrix.M33);
+                sqrt = (float)System.Math.Sqrt(1.0f + matrix.M22 - matrix.M11 - matrix.M33);
                 half = 0.5f / sqrt;
 
                 result.X = (matrix.M21 + matrix.M12) * half;
@@ -839,7 +839,7 @@ namespace BulletSharp
             }
             else
             {
-                sqrt = (float)Math.Sqrt(1.0f + matrix.M33 - matrix.M11 - matrix.M22);
+                sqrt = (float)System.Math.Sqrt(1.0f + matrix.M33 - matrix.M11 - matrix.M22);
                 half = 0.5f / sqrt;
 
                 result.X = (matrix.M31 + matrix.M13) * half;
@@ -874,12 +874,12 @@ namespace BulletSharp
             float halfPitch = pitch * 0.5f;
             float halfYaw = yaw * 0.5f;
 
-            float sinRoll = (float)Math.Sin(halfRoll);
-            float cosRoll = (float)Math.Cos(halfRoll);
-            float sinPitch = (float)Math.Sin(halfPitch);
-            float cosPitch = (float)Math.Cos(halfPitch);
-            float sinYaw = (float)Math.Sin(halfYaw);
-            float cosYaw = (float)Math.Cos(halfYaw);
+            float sinRoll = (float)System.Math.Sin(halfRoll);
+            float cosRoll = (float)System.Math.Cos(halfRoll);
+            float sinPitch = (float)System.Math.Sin(halfPitch);
+            float cosPitch = (float)System.Math.Cos(halfPitch);
+            float sinYaw = (float)System.Math.Sin(halfYaw);
+            float cosYaw = (float)System.Math.Cos(halfYaw);
 
             result.X = (cosYaw * sinPitch * cosRoll) + (sinYaw * cosPitch * sinRoll);
             result.Y = (sinYaw * cosPitch * cosRoll) - (cosYaw * sinPitch * sinRoll);
@@ -914,18 +914,18 @@ namespace BulletSharp
             float inverse;
             float dot = Dot(start, end);
 
-            if (Math.Abs(dot) > 1.0f - Utilities.ZeroTolerance)
+            if (System.Math.Abs(dot) > 1.0f - Utilities.ZeroTolerance)
             {
                 inverse = 1.0f - amount;
-                opposite = amount * Math.Sign(dot);
+                opposite = amount * System.Math.Sign(dot);
             }
             else
             {
-                float acos = (float)Math.Acos(Math.Abs(dot));
-                float invSin = (float)(1.0f / Math.Sin(acos));
+                float acos = (float)System.Math.Acos(System.Math.Abs(dot));
+                float invSin = (float)(1.0f / System.Math.Sin(acos));
 
-                inverse = (float)Math.Sin((1.0f - amount) * acos) * invSin;
-                opposite = (float)Math.Sin(amount * acos) * invSin * Math.Sign(dot);
+                inverse = (float)System.Math.Sin((1.0f - amount) * acos) * invSin;
+                opposite = (float)System.Math.Sin(amount * acos) * invSin * System.Math.Sign(dot);
             }
 
             result.X = (inverse * start.X) + (opposite * end.X);
@@ -1222,10 +1222,10 @@ namespace BulletSharp
         /// </returns>
         public bool Equals(Quaternion other, float epsilon)
         {
-            return ((float)Math.Abs(other.X - X) < epsilon &&
-                (float)Math.Abs(other.Y - Y) < epsilon &&
-                (float)Math.Abs(other.Z - Z) < epsilon &&
-                (float)Math.Abs(other.W - W) < epsilon);
+            return ((float)System.Math.Abs(other.X - X) < epsilon &&
+                (float)System.Math.Abs(other.Y - Y) < epsilon &&
+                (float)System.Math.Abs(other.Z - Z) < epsilon &&
+                (float)System.Math.Abs(other.W - W) < epsilon);
         }
 
         /// <summary>

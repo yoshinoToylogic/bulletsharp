@@ -27,7 +27,7 @@ using System.Runtime.InteropServices;
 using System.ComponentModel;
 using System.Globalization;
 
-namespace BulletSharp
+namespace BulletSharp.Math
 {
     /// <summary>
     /// Represents a 4x4 mathematical matrix.
@@ -567,14 +567,14 @@ namespace BulletSharp
             translation.Z = this.M43;
 
             //Scaling is the length of the rows.
-            scale.X = (float)Math.Sqrt((M11 * M11) + (M12 * M12) + (M13 * M13));
-            scale.Y = (float)Math.Sqrt((M21 * M21) + (M22 * M22) + (M23 * M23));
-            scale.Z = (float)Math.Sqrt((M31 * M31) + (M32 * M32) + (M33 * M33));
+            scale.X = (float)System.Math.Sqrt((M11 * M11) + (M12 * M12) + (M13 * M13));
+            scale.Y = (float)System.Math.Sqrt((M21 * M21) + (M22 * M22) + (M23 * M23));
+            scale.Z = (float)System.Math.Sqrt((M31 * M31) + (M32 * M32) + (M33 * M33));
 
             //If any of the scaling factors are zero, than the rotation matrix can not exist.
-            if (Math.Abs(scale.X) < Utilities.ZeroTolerance ||
-                Math.Abs(scale.Y) < Utilities.ZeroTolerance ||
-                Math.Abs(scale.Z) < Utilities.ZeroTolerance)
+            if (System.Math.Abs(scale.X) < Utilities.ZeroTolerance ||
+                System.Math.Abs(scale.Y) < Utilities.ZeroTolerance ||
+                System.Math.Abs(scale.Z) < Utilities.ZeroTolerance)
             {
                 rotation = Quaternion.Identity;
                 return false;
@@ -1168,7 +1168,7 @@ namespace BulletSharp
             float d14 = value.M21 * b3 + value.M22 * -b1 + value.M23 * b0;
 
             float det = value.M11 * d11 - value.M12 * d12 + value.M13 * d13 - value.M14 * d14;
-            if (Math.Abs(det) <= Utilities.ZeroTolerance)
+            if (System.Math.Abs(det) <= Utilities.ZeroTolerance)
             {
                 result = Matrix.Zero;
                 return;
@@ -1372,7 +1372,7 @@ namespace BulletSharp
 
                 int i = r;
 
-                while (Math.Abs(result[i, lead]) < Utilities.ZeroTolerance)
+                while (System.Math.Abs(result[i, lead]) < Utilities.ZeroTolerance)
                 {
                     i++;
 
@@ -1454,7 +1454,7 @@ namespace BulletSharp
 
                 int i = r;
 
-                while (Math.Abs(result[i, lead]) < Utilities.ZeroTolerance)
+                while (System.Math.Abs(result[i, lead]) < Utilities.ZeroTolerance)
                 {
                     i++;
 
@@ -1532,7 +1532,7 @@ namespace BulletSharp
 
                 int i = r;
 
-                while (Math.Abs(result[i, lead]) < Utilities.ZeroTolerance)
+                while (System.Math.Abs(result[i, lead]) < Utilities.ZeroTolerance)
                 {
                     i++;
 
@@ -1727,7 +1727,7 @@ namespace BulletSharp
             if (lengthsq < Utilities.ZeroTolerance)
                 difference = -cameraForwardVector;
             else
-                difference *= (float)(1.0 / Math.Sqrt(lengthsq));
+                difference *= (float)(1.0 / System.Math.Sqrt(lengthsq));
 
             Vector3.Cross(ref cameraUpVector, ref difference, out crossed);
             crossed.Normalize();
@@ -2057,7 +2057,7 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void PerspectiveFovLH(float fov, float aspect, float znear, float zfar, out Matrix result)
         {
-            float yScale = (float)(1.0 / Math.Tan(fov * 0.5f));
+            float yScale = (float)(1.0 / System.Math.Tan(fov * 0.5f));
             float xScale = yScale / aspect;
 
             float halfWidth = znear / xScale;
@@ -2091,7 +2091,7 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the created projection matrix.</param>
         public static void PerspectiveFovRH(float fov, float aspect, float znear, float zfar, out Matrix result)
         {
-            float yScale = (float)(1.0 / Math.Tan(fov * 0.5f));
+            float yScale = (float)(1.0 / System.Math.Tan(fov * 0.5f));
             float xScale = yScale / aspect;
 
             float halfWidth = znear / xScale;
@@ -2273,8 +2273,8 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the created rotation matrix.</param>
         public static void RotationX(float angle, out Matrix result)
         {
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            float cos = (float)System.Math.Cos(angle);
+            float sin = (float)System.Math.Sin(angle);
 
             result = Matrix.Identity;
             result.M22 = cos;
@@ -2302,8 +2302,8 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the created rotation matrix.</param>
         public static void RotationY(float angle, out Matrix result)
         {
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            float cos = (float)System.Math.Cos(angle);
+            float sin = (float)System.Math.Sin(angle);
 
             result = Matrix.Identity;
             result.M11 = cos;
@@ -2331,8 +2331,8 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains the created rotation matrix.</param>
         public static void RotationZ(float angle, out Matrix result)
         {
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            float cos = (float)System.Math.Cos(angle);
+            float sin = (float)System.Math.Sin(angle);
 
             result = Matrix.Identity;
             result.M11 = cos;
@@ -2364,8 +2364,8 @@ namespace BulletSharp
             float x = axis.X;
             float y = axis.Y;
             float z = axis.Z;
-            float cos = (float)Math.Cos(angle);
-            float sin = (float)Math.Sin(angle);
+            float cos = (float)System.Math.Cos(angle);
+            float sin = (float)System.Math.Sin(angle);
             float xx = x * x;
             float yy = y * y;
             float zz = z * z;
@@ -2864,25 +2864,25 @@ namespace BulletSharp
         /// </returns>
         public bool Equals(Matrix other, float epsilon)
         {
-            return (Math.Abs(other.M11 - M11) < epsilon &&
-                Math.Abs(other.M12 - M12) < epsilon &&
-                Math.Abs(other.M13 - M13) < epsilon &&
-                Math.Abs(other.M14 - M14) < epsilon &&
+            return (System.Math.Abs(other.M11 - M11) < epsilon &&
+                System.Math.Abs(other.M12 - M12) < epsilon &&
+                System.Math.Abs(other.M13 - M13) < epsilon &&
+                System.Math.Abs(other.M14 - M14) < epsilon &&
 
-                Math.Abs(other.M21 - M21) < epsilon &&
-                Math.Abs(other.M22 - M22) < epsilon &&
-                Math.Abs(other.M23 - M23) < epsilon &&
-                Math.Abs(other.M24 - M24) < epsilon &&
+                System.Math.Abs(other.M21 - M21) < epsilon &&
+                System.Math.Abs(other.M22 - M22) < epsilon &&
+                System.Math.Abs(other.M23 - M23) < epsilon &&
+                System.Math.Abs(other.M24 - M24) < epsilon &&
 
-                Math.Abs(other.M31 - M31) < epsilon &&
-                Math.Abs(other.M32 - M32) < epsilon &&
-                Math.Abs(other.M33 - M33) < epsilon &&
-                Math.Abs(other.M34 - M34) < epsilon &&
+                System.Math.Abs(other.M31 - M31) < epsilon &&
+                System.Math.Abs(other.M32 - M32) < epsilon &&
+                System.Math.Abs(other.M33 - M33) < epsilon &&
+                System.Math.Abs(other.M34 - M34) < epsilon &&
 
-                Math.Abs(other.M41 - M41) < epsilon &&
-                Math.Abs(other.M42 - M42) < epsilon &&
-                Math.Abs(other.M43 - M43) < epsilon &&
-                Math.Abs(other.M44 - M44) < epsilon);
+                System.Math.Abs(other.M41 - M41) < epsilon &&
+                System.Math.Abs(other.M42 - M42) < epsilon &&
+                System.Math.Abs(other.M43 - M43) < epsilon &&
+                System.Math.Abs(other.M44 - M44) < epsilon);
         }
 
         /// <summary>

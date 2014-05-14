@@ -3,6 +3,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.IO;
 using System.Collections.Generic;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {

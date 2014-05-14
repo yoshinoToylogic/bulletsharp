@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BulletSharp.Math;
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -18,9 +19,9 @@ namespace BulletSharp
             btMotionState_getWorldTransform(_native, out transform);
         }
 
-        public void setWorldTransform(Matrix t)
+        public void SetWorldTransform(ref Matrix transform)
         {
-            btMotionState_setWorldTransform(_native, ref t);
+            btMotionState_setWorldTransform(_native, ref transform);
         }
 
         public Matrix WorldTransform

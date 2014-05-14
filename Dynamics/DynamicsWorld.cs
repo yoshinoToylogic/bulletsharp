@@ -1,3 +1,4 @@
+using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -82,6 +83,11 @@ namespace BulletSharp
             return TypedConstraint.GetManaged(btDynamicsWorld_getConstraint(_native, index));
 		}
 
+        public void GetGravity(out Vector3 gravity)
+        {
+            btDynamicsWorld_getGravity(_native, out gravity);
+        }
+
 		public void RemoveAction(ActionInterface action)
 		{
 			btDynamicsWorld_removeAction(_native, action._native);
@@ -106,6 +112,11 @@ namespace BulletSharp
 		{
 			btDynamicsWorld_removeVehicle(_native, vehicle._native);
 		}
+
+        public void SetGravity(ref Vector3 gravity)
+        {
+            btDynamicsWorld_setGravity(_native, ref gravity);
+        }
 
         private void InternalTickCallbackNative(IntPtr world, float timeStep)
         {

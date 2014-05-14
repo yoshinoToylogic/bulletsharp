@@ -21,6 +21,7 @@
 // * 3. This notice may not be removed or altered from any source distribution.
 // */
 
+using BulletSharp.Math;
 using System;
 using System.Diagnostics;
 
@@ -135,7 +136,7 @@ namespace BulletSharp
 
         public static Vector4 AbsoluteVector4(ref Vector4 vec)
         {
-            return new Vector4(Math.Abs(vec.X), Math.Abs(vec.Y), Math.Abs(vec.Z), Math.Abs(vec.W));
+            return new Vector4(System.Math.Abs(vec.X), System.Math.Abs(vec.Y), System.Math.Abs(vec.Z), System.Math.Abs(vec.W));
         }
 
         //        public static float VectorComponent(Vector3 v, int i)
@@ -259,22 +260,22 @@ namespace BulletSharp
         //        public static void AbsoluteMatrix(ref Matrix input, out Matrix output)
         //        {
         //            output = new Matrix(
-        //                Math.Abs(input.M11),
-        //                Math.Abs(input.M12),
-        //                Math.Abs(input.M13),
-        //                Math.Abs(input.M14),
-        //                Math.Abs(input.M21),
-        //                Math.Abs(input.M22),
-        //                Math.Abs(input.M23),
-        //                Math.Abs(input.M24),
-        //                Math.Abs(input.M31),
-        //                Math.Abs(input.M32),
-        //                Math.Abs(input.M33),
-        //                Math.Abs(input.M34),
-        //                Math.Abs(input.M41),
-        //                Math.Abs(input.M42),
-        //                Math.Abs(input.M43),
-        //                Math.Abs(input.M44));
+        //                System.Math.Abs(input.M11),
+        //                System.Math.Abs(input.M12),
+        //                System.Math.Abs(input.M13),
+        //                System.Math.Abs(input.M14),
+        //                System.Math.Abs(input.M21),
+        //                System.Math.Abs(input.M22),
+        //                System.Math.Abs(input.M23),
+        //                System.Math.Abs(input.M24),
+        //                System.Math.Abs(input.M31),
+        //                System.Math.Abs(input.M32),
+        //                System.Math.Abs(input.M33),
+        //                System.Math.Abs(input.M34),
+        //                System.Math.Abs(input.M41),
+        //                System.Math.Abs(input.M42),
+        //                System.Math.Abs(input.M43),
+        //                System.Math.Abs(input.M44));
         //        }
 
         //        public static Matrix AbsoluteBasisMatrix(ref Matrix input)
@@ -287,18 +288,18 @@ namespace BulletSharp
         //        public static void AbsoluteBasisMatrix(ref Matrix input, out Matrix output)
         //        {
         //            output = new Matrix(
-        //                Math.Abs(input.M11), Math.Abs(input.M12), Math.Abs(input.M13), 0.0f,
-        //                Math.Abs(input.M21), Math.Abs(input.M22), Math.Abs(input.M23), 0.0f,
-        //                Math.Abs(input.M31), Math.Abs(input.M32), Math.Abs(input.M33), 0.0f,
+        //                System.Math.Abs(input.M11), System.Math.Abs(input.M12), System.Math.Abs(input.M13), 0.0f,
+        //                System.Math.Abs(input.M21), System.Math.Abs(input.M22), System.Math.Abs(input.M23), 0.0f,
+        //                System.Math.Abs(input.M31), System.Math.Abs(input.M32), System.Math.Abs(input.M33), 0.0f,
         //                0.0f, 0.0f, 0.0f, 1.0f);
         //        }
 
         //        public static void AbsoluteVector(ref Vector3 input, out Vector3 output)
         //        {
         //            output = new Vector3(
-        //                Math.Abs(input.X),
-        //                Math.Abs(input.Y),
-        //                Math.Abs(input.Z));
+        //                System.Math.Abs(input.X),
+        //                System.Math.Abs(input.Y),
+        //                System.Math.Abs(input.Z));
         //        }
 
         //        public static void RotateVector(ref Vector3 vec, ref Matrix m, out Vector3 output)
@@ -623,17 +624,17 @@ namespace BulletSharp
 
         public static void VectorClampMax(ref Vector3 input, ref Vector3 bounds)
         {
-            input.X = Math.Min(input.X, bounds.X);
-            input.Y = Math.Min(input.Y, bounds.Y);
-            input.Z = Math.Min(input.Z, bounds.Z);
+            input.X = System.Math.Min(input.X, bounds.X);
+            input.Y = System.Math.Min(input.Y, bounds.Y);
+            input.Z = System.Math.Min(input.Z, bounds.Z);
         }
 
 
         public static void VectorClampMin(ref Vector3 input, ref Vector3 bounds)
         {
-            input.X = Math.Max(input.X, bounds.X);
-            input.Y = Math.Max(input.Y, bounds.Y);
-            input.Z = Math.Max(input.Z, bounds.Z);
+            input.X = System.Math.Max(input.X, bounds.X);
+            input.Y = System.Math.Max(input.Y, bounds.Y);
+            input.Z = System.Math.Max(input.Z, bounds.Z);
         }
 
         public static void VectorMin(Vector3 input, ref Vector3 output)
@@ -643,17 +644,17 @@ namespace BulletSharp
 
         public static void VectorMin(ref Vector3 input, ref Vector3 output)
         {
-            output.X = Math.Min(input.X, output.X);
-            output.Y = Math.Min(input.Y, output.Y);
-            output.Z = Math.Min(input.Z, output.Z);
+            output.X = System.Math.Min(input.X, output.X);
+            output.Y = System.Math.Min(input.Y, output.Y);
+            output.Z = System.Math.Min(input.Z, output.Z);
         }
 
         public static void VectorMin(ref Vector3 input1, ref Vector3 input2, out Vector3 output)
         {
             output = new Vector3(
-                Math.Min(input1.X, input2.X),
-                Math.Min(input1.Y, input2.Y),
-                Math.Min(input1.Z, input2.Z));
+                System.Math.Min(input1.X, input2.X),
+                System.Math.Min(input1.Y, input2.Y),
+                System.Math.Min(input1.Z, input2.Z));
         }
 
         public static void VectorMax(Vector3 input, ref Vector3 output)
@@ -663,32 +664,32 @@ namespace BulletSharp
 
         public static void VectorMax(ref Vector3 input, ref Vector3 output)
         {
-            output.X = Math.Max(input.X, output.X);
-            output.Y = Math.Max(input.Y, output.Y);
-            output.Z = Math.Max(input.Z, output.Z);
+            output.X = System.Math.Max(input.X, output.X);
+            output.Y = System.Math.Max(input.Y, output.Y);
+            output.Z = System.Math.Max(input.Z, output.Z);
         }
 
         public static void VectorMax(ref Vector3 input1, ref Vector3 input2, out Vector3 output)
         {
             output = new Vector3(
-                Math.Max(input1.X, input2.X),
-                Math.Max(input1.Y, input2.Y),
-                Math.Max(input1.Z, input2.Z));
+                System.Math.Max(input1.X, input2.X),
+                System.Math.Max(input1.Y, input2.Y),
+                System.Math.Max(input1.Z, input2.Z));
         }
 
         public static float RecipSqrt(float a)
         {
-            return (float)(1 / Math.Sqrt(a));
+            return (float)(1 / System.Math.Sqrt(a));
         }
 
         public static bool CompareFloat(float val1, float val2)
         {
-            return Math.Abs(val1 - val2) <= SIMD_EPSILON;
+            return System.Math.Abs(val1 - val2) <= SIMD_EPSILON;
         }
 
         public static bool FuzzyZero(float val)
         {
-            return Math.Abs(val) <= SIMD_EPSILON;
+            return System.Math.Abs(val) <= SIMD_EPSILON;
         }
 
         public static uint Select(uint condition, uint valueIfConditionNonZero, uint valueIfConditionZero)
@@ -743,7 +744,7 @@ namespace BulletSharp
                 return new Quaternion(0.0f, 1.0f, 0.0f, 0.0f); // just pick any vector
             }
 
-            float s = (float)Math.Sqrt((1.0f + d) * 2.0f);
+            float s = (float)System.Math.Sqrt((1.0f + d) * 2.0f);
             float rs = 1.0f / s;
 
             return new Quaternion(c.X * rs, c.Y * rs, c.Z * rs, s * 0.5f);
@@ -752,7 +753,7 @@ namespace BulletSharp
 
         public static float QuatAngle(ref Quaternion quat)
         {
-            return 2f * (float)Math.Acos(quat.W);
+            return 2f * (float)System.Math.Acos(quat.W);
         }
 
         public static Quaternion QuatFurthest(ref Quaternion input1, ref Quaternion input2)
@@ -807,15 +808,15 @@ namespace BulletSharp
         //                int p = 0;
         //                int q = 1;
         //                int r = 2;
-        //                float max = Math.Abs(inMatrix.M12);
-        //                float v = Math.Abs(inMatrix.M13);
+        //                float max = System.Math.Abs(inMatrix.M12);
+        //                float v = System.Math.Abs(inMatrix.M13);
         //                if (v > max)
         //                {
         //                   q = 2;
         //                   r = 1;
         //                   max = v;
         //                }
-        //                v = Math.Abs(inMatrix.M23);
+        //                v = System.Math.Abs(inMatrix.M23);
         //                if (v > max)
         //                {
         //                   p = 1;
@@ -824,7 +825,7 @@ namespace BulletSharp
         //                   max = v;
         //                }
 
-        //                float t = threshold * (Math.Abs(inMatrix.M11) + Math.Abs(inMatrix.M22) + Math.Abs(inMatrix.M33));
+        //                float t = threshold * (System.Math.Abs(inMatrix.M11) + System.Math.Abs(inMatrix.M22) + System.Math.Abs(inMatrix.M33));
         //                if (max <= t)
         //                {
         //                   if (max <= SIMD_EPSILON * t)
@@ -842,9 +843,9 @@ namespace BulletSharp
         //                float sin;
         //                if (theta2 * theta2 < 10f / SIMD_EPSILON)
         //                {
-        //                   t = (theta >= 0f) ? (float)(1f / (theta + Math.Sqrt(1 + theta2)))
-        //                                            : (float)(1f / (theta - Math.Sqrt(1 + theta2)));
-        //                   cos = (float)(1f / Math.Sqrt(1 + t * t));
+        //                   t = (theta >= 0f) ? (float)(1f / (theta + System.Math.Sqrt(1 + theta2)))
+        //                                            : (float)(1f / (theta - System.Math.Sqrt(1 + theta2)));
+        //                   cos = (float)(1f / System.Math.Sqrt(1 + t * t));
         //                   sin = cos * t;
         //                }
         //                else
@@ -1192,14 +1193,14 @@ namespace BulletSharp
 
         public static bool IsAlmostZero(Vector3 v)
         {
-            if (Math.Abs(v.X) > 1e-6 || Math.Abs(v.Y) > 1e-6 || Math.Abs(v.Z) > 1e-6) return false;
+            if (System.Math.Abs(v.X) > 1e-6 || System.Math.Abs(v.Y) > 1e-6 || System.Math.Abs(v.Z) > 1e-6) return false;
             return true;
 
         }
 
         public static bool IsAlmostZero(ref Vector3 v)
         {
-            if (Math.Abs(v.X) > 1e-6 || Math.Abs(v.Y) > 1e-6 || Math.Abs(v.Z) > 1e-6) return false;
+            if (System.Math.Abs(v.X) > 1e-6 || System.Math.Abs(v.Y) > 1e-6 || System.Math.Abs(v.Z) > 1e-6) return false;
             return true;
         }
 

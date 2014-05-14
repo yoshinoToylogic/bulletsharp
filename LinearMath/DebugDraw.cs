@@ -24,6 +24,7 @@
 using System;
 using System.Security;
 using System.Runtime.InteropServices;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -226,7 +227,7 @@ namespace BulletSharp
             {
                 nSteps = 1;
             }
-            Vector3 prev = center + radiusA * vx * (float)Math.Cos(minAngle) + radiusB * vy * (float)Math.Sin(minAngle);
+            Vector3 prev = center + radiusA * vx * (float)System.Math.Cos(minAngle) + radiusB * vy * (float)System.Math.Sin(minAngle);
             if (drawSect)
             {
                 DrawLine(ref center, ref prev, ref color);
@@ -234,7 +235,7 @@ namespace BulletSharp
             for (int i = 1; i <= nSteps; i++)
             {
                 float angle = minAngle + (maxAngle - minAngle) * i / nSteps;
-                Vector3 next = center + radiusA * vx * (float)Math.Cos(angle) + radiusB * vy * (float)Math.Sin(angle);
+                Vector3 next = center + radiusA * vx * (float)System.Math.Cos(angle) + radiusB * vy * (float)System.Math.Sin(angle);
                 DrawLine(ref prev, ref next, ref color);
                 prev = next;
             }
@@ -489,13 +490,13 @@ namespace BulletSharp
             for (int i = 0; i < n_hor; i++)
             {
                 float th = minTh + i * step_h;
-                float sth = radius * (float)Math.Sin(th);
-                float cth = radius * (float)Math.Cos(th);
+                float sth = radius * (float)System.Math.Sin(th);
+                float cth = radius * (float)System.Math.Cos(th);
                 for (int j = 0; j < n_vert; j++)
                 {
                     float psi = minPs + (float)j * step_v;
-                    float sps = (float)Math.Sin(psi);
-                    float cps = (float)Math.Cos(psi);
+                    float sps = (float)System.Math.Sin(psi);
+                    float cps = (float)System.Math.Cos(psi);
                     pvB[j] = center + cth * cps * iv + cth * sps * jv + sth * kv;
                     if (i != 0)
                     {
@@ -567,7 +568,7 @@ namespace BulletSharp
 
         public static void PlaneSpace1(ref Vector3 n, out Vector3 p, out Vector3 q)
         {
-            if (Math.Abs(n.Z) > MathUtil.SIMDSQRT12)
+            if (System.Math.Abs(n.Z) > MathUtil.SIMDSQRT12)
             {
                 // choose p in y-z plane
                 float a = n.Y * n.Y + n.Z * n.Z;
