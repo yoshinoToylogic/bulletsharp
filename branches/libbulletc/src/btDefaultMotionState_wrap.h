@@ -4,9 +4,9 @@
 
 extern "C"
 {
-	EXPORT btDefaultMotionState* btDefaultMotionState_new();
+	EXPORT btDefaultMotionState* btDefaultMotionState_new(btScalar* startTrans, btScalar* centerOfMassOffset);
 	EXPORT btDefaultMotionState* btDefaultMotionState_new2(btScalar* startTrans);
-	EXPORT btDefaultMotionState* btDefaultMotionState_new3(btScalar* startTrans, btScalar* centerOfMassOffset);
+	EXPORT btDefaultMotionState* btDefaultMotionState_new3();
 	EXPORT void btDefaultMotionState_getCenterOfMassOffset(btDefaultMotionState* obj, btScalar* value);
 	EXPORT void btDefaultMotionState_getGraphicsWorldTrans(btDefaultMotionState* obj, btScalar* value);
 	EXPORT void btDefaultMotionState_getStartWorldTrans(btDefaultMotionState* obj, btScalar* value);

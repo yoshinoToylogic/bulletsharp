@@ -25,7 +25,7 @@ using System.Globalization;
 using System.Runtime.InteropServices;
 using System.ComponentModel;
 
-namespace BulletSharp
+namespace BulletSharp.Math
 {
     /// <summary>
     /// Represents a three dimensional mathematical vector.
@@ -127,7 +127,7 @@ namespace BulletSharp
         /// </summary>
         public bool IsNormalized
         {
-            get { return Math.Abs((X * X) + (Y * Y) + (Z * Z) - 1f) < Utilities.ZeroTolerance; }
+            get { return System.Math.Abs((X * X) + (Y * Y) + (Z * Z) - 1f) < Utilities.ZeroTolerance; }
         }
 
         /// <summary>
@@ -139,7 +139,7 @@ namespace BulletSharp
         /// </remarks>
         public float Length
         {
-            get { return (float)Math.Sqrt((X * X) + (Y * Y) + (Z * Z)); }
+            get { return (float)System.Math.Sqrt((X * X) + (Y * Y) + (Z * Z)); }
         }
 
         /// <summary>
@@ -217,9 +217,9 @@ namespace BulletSharp
         /// </summary>
         public void Abs()
         {
-            this.X = Math.Abs(X);
-            this.Y = Math.Abs(Y);
-            this.Z = Math.Abs(Z);
+            this.X = System.Math.Abs(X);
+            this.Y = System.Math.Abs(Y);
+            this.Z = System.Math.Abs(Z);
         }
 
         /// <summary>
@@ -239,9 +239,9 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains a vector that is the square root of the input vector.</param>
         public static void Sqrt(ref Vector3 value, out Vector3 result)
         {
-            result.X = (float)Math.Sqrt(value.X);
-            result.Y = (float)Math.Sqrt(value.Y);
-            result.Z = (float)Math.Sqrt(value.Z);
+            result.X = (float)System.Math.Sqrt(value.X);
+            result.Y = (float)System.Math.Sqrt(value.Y);
+            result.Z = (float)System.Math.Sqrt(value.Z);
         }
 
         /// <summary>
@@ -287,9 +287,9 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains a vector that is the square root and reciprocal of the input vector.</param>
         public static void ReciprocalSqrt(ref Vector3 value, out Vector3 result)
         {
-            result.X = 1.0f / (float)Math.Sqrt(value.X);
-            result.Y = 1.0f / (float)Math.Sqrt(value.Y);
-            result.Z = 1.0f / (float)Math.Sqrt(value.Z);
+            result.X = 1.0f / (float)System.Math.Sqrt(value.X);
+            result.Y = 1.0f / (float)System.Math.Sqrt(value.Y);
+            result.Z = 1.0f / (float)System.Math.Sqrt(value.Z);
         }
 
         /// <summary>
@@ -311,9 +311,9 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains a vector that has e raised to each of the components in the input vector.</param>
         public static void Exp(ref Vector3 value, out Vector3 result)
         {
-            result.X = (float)Math.Exp(value.X);
-            result.Y = (float)Math.Exp(value.Y);
-            result.Z = (float)Math.Exp(value.Z);
+            result.X = (float)System.Math.Exp(value.X);
+            result.Y = (float)System.Math.Exp(value.Y);
+            result.Z = (float)System.Math.Exp(value.Z);
         }
 
         /// <summary>
@@ -336,13 +336,13 @@ namespace BulletSharp
         /// <param name="cosResult">When the method completes, contains the cpsome pf each component in the input vector.</param>
         public static void SinCos(ref Vector3 value, out Vector3 sinResult, out Vector3 cosResult)
         {
-            sinResult.X = (float)Math.Sin(value.X);
-            sinResult.Y = (float)Math.Sin(value.Y);
-            sinResult.Z = (float)Math.Sin(value.Z);
+            sinResult.X = (float)System.Math.Sin(value.X);
+            sinResult.Y = (float)System.Math.Sin(value.Y);
+            sinResult.Z = (float)System.Math.Sin(value.Z);
 
-            cosResult.X = (float)Math.Cos(value.X);
-            cosResult.Y = (float)Math.Cos(value.Y);
-            cosResult.Z = (float)Math.Cos(value.Z);
+            cosResult.X = (float)System.Math.Cos(value.X);
+            cosResult.Y = (float)System.Math.Cos(value.Y);
+            cosResult.Z = (float)System.Math.Cos(value.Z);
         }
 
         /// <summary>
@@ -352,9 +352,9 @@ namespace BulletSharp
         /// <param name="result">When the method completes, a vector that contains the sine of each component in the input vector.</param>
         public static void Sin(ref Vector3 value, out Vector3 result)
         {
-            result.X = (float)Math.Sin(value.X);
-            result.Y = (float)Math.Sin(value.Y);
-            result.Z = (float)Math.Sin(value.Z);
+            result.X = (float)System.Math.Sin(value.X);
+            result.Y = (float)System.Math.Sin(value.Y);
+            result.Z = (float)System.Math.Sin(value.Z);
         }
 
         /// <summary>
@@ -376,9 +376,9 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains a vector that contains the cosine of each component in the input vector.</param>
         public static void Cos(ref Vector3 value, out Vector3 result)
         {
-            result.X = (float)Math.Cos(value.X);
-            result.Y = (float)Math.Cos(value.Y);
-            result.Z = (float)Math.Cos(value.Z);
+            result.X = (float)System.Math.Cos(value.X);
+            result.Y = (float)System.Math.Cos(value.Y);
+            result.Z = (float)System.Math.Cos(value.Z);
         }
 
         /// <summary>
@@ -400,9 +400,9 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains a vector that contains the tangent of each component in the input vector.</param>
         public static void Tan(ref Vector3 value, out Vector3 result)
         {
-            result.X = (float)Math.Tan(value.X);
-            result.Y = (float)Math.Tan(value.Y);
-            result.Z = (float)Math.Tan(value.Z);
+            result.X = (float)System.Math.Tan(value.X);
+            result.Y = (float)System.Math.Tan(value.Y);
+            result.Z = (float)System.Math.Tan(value.Z);
         }
 
         /// <summary>
@@ -555,7 +555,7 @@ namespace BulletSharp
         /// <param name="result">When the method completes, contains a vector that has all positive components.</param>
         public static void Abs(ref Vector3 value, out Vector3 result)
         {
-            result = new Vector3(Math.Abs(value.X), Math.Abs(value.Y), Math.Abs(value.Z));
+            result = new Vector3(System.Math.Abs(value.X), System.Math.Abs(value.Y), System.Math.Abs(value.Z));
         }
 
         /// <summary>
@@ -565,7 +565,7 @@ namespace BulletSharp
         /// <returns>A vector that has all positive components.</returns>
         public static Vector3 Abs(Vector3 value)
         {
-            return new Vector3(Math.Abs(value.X), Math.Abs(value.Y), Math.Abs(value.Z));
+            return new Vector3(System.Math.Abs(value.X), System.Math.Abs(value.Y), System.Math.Abs(value.Z));
         }
 
         /// <summary>
@@ -709,7 +709,7 @@ namespace BulletSharp
             float y = value1.Y - value2.Y;
             float z = value1.Z - value2.Z;
 
-            result = (float)Math.Sqrt((x * x) + (y * y) + (z * z));
+            result = (float)System.Math.Sqrt((x * x) + (y * y) + (z * z));
         }
 
         /// <summary>
@@ -728,7 +728,7 @@ namespace BulletSharp
             float y = value1.Y - value2.Y;
             float z = value1.Z - value2.Z;
 
-            return (float)Math.Sqrt((x * x) + (y * y) + (z * z));
+            return (float)System.Math.Sqrt((x * x) + (y * y) + (z * z));
         }
 
         /// <summary>
@@ -1157,7 +1157,7 @@ namespace BulletSharp
             }
             else
             {
-                float cos2 = (float)Math.Sqrt(radicand);
+                float cos2 = (float)System.Math.Sqrt(radicand);
                 result = (index * vector) + ((cos2 - index * cos1) * normal);
             }
         }
@@ -1785,9 +1785,9 @@ namespace BulletSharp
         /// </returns>
         public bool Equals(Vector3 other, float epsilon)
         {
-            return ((float)Math.Abs(other.X - X) < epsilon &&
-                (float)Math.Abs(other.Y - Y) < epsilon &&
-                (float)Math.Abs(other.Z - Z) < epsilon);
+            return ((float)System.Math.Abs(other.X - X) < epsilon &&
+                (float)System.Math.Abs(other.Y - Y) < epsilon &&
+                (float)System.Math.Abs(other.Z - Z) < epsilon);
         }
 
         /// <summary>

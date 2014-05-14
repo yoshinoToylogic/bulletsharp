@@ -41,7 +41,7 @@ namespace BulletSharp
         /// <returns><c>true</c> if <paramref name="left"/> is within epsilon of <paramref name="right"/>; otherwise, <c>false</c>.</returns>
         public static bool EpsilonEquals(float left, float right)
         {
-            return Math.Abs(left - right) <= ZeroTolerance;
+            return System.Math.Abs(left - right) <= ZeroTolerance;
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace BulletSharp
         /// <returns><c>true</c> if <paramref name="left"/> is within epsilon of <paramref name="right"/>; otherwise, <c>false</c>.</returns>
         public static bool EpsilonEquals(float left, float right, float epsilon)
         {
-            return Math.Abs(left - right) <= epsilon;
+            return System.Math.Abs(left - right) <= epsilon;
         }
 
         /// <summary>
