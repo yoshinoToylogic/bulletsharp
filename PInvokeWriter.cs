@@ -563,7 +563,7 @@ namespace BulletSharpGen
             {
                 var del = new MethodDefinition("delete", c, 0);
                 del.ReturnType = new TypeRefDefinition();
-                OutputMethod(del, level, ref overloadIndex, 0);
+                OutputMethod(del, level, ref overloadIndex);
                 c.Methods.Remove(del);
                 overloadIndex = 0;
             }
