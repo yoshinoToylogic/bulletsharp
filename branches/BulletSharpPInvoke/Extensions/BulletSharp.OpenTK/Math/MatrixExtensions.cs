@@ -1,5 +1,5 @@
-﻿using OpenTK;
-using BulletSharp.Math;
+﻿using BulletSharp.Math;
+using OpenTK;
 using System.ComponentModel;
 
 namespace BulletSharp
@@ -7,6 +7,28 @@ namespace BulletSharp
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class MatrixExtensions
     {
+        public static Matrix ToBullet(this Matrix4 m)
+        {
+            Matrix result = new Matrix();
+            result.M11 = m.M11;
+            result.M12 = m.M12;
+            result.M13 = m.M13;
+            result.M14 = m.M14;
+            result.M21 = m.M21;
+            result.M22 = m.M22;
+            result.M23 = m.M23;
+            result.M24 = m.M24;
+            result.M31 = m.M31;
+            result.M32 = m.M32;
+            result.M33 = m.M33;
+            result.M34 = m.M34;
+            result.M41 = m.M41;
+            result.M42 = m.M42;
+            result.M43 = m.M43;
+            result.M44 = m.M44;
+            return result;
+        }
+
         public static Matrix4 ToOpenTK(this Matrix m)
         {
             Matrix4 result = new Matrix4();

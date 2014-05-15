@@ -30,6 +30,9 @@ namespace BulletSharpGen
             {
                 var writer = new PInvokeWriter(parser.HeaderDefinitions, NamespaceName);
                 writer.Output();
+
+                var extensionWriter = new ExtensionsWriter(parser.HeaderDefinitions, NamespaceName);
+                extensionWriter.Output();
             }
 
 

@@ -8,11 +8,11 @@ namespace BulletSharp
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class MotionStateExtensions
     {
-        public unsafe static void SetWorldTransform(this MotionState native, ref Matrix4 transform)
+        public unsafe static void SetWorldTransform(this MotionState obj, ref Matrix4 transform)
         {
             fixed (Matrix4* value = &transform)
             {
-                native.SetWorldTransform(ref *(Matrix*)value);
+                obj.SetWorldTransform(ref *(Matrix*)value);
             }
         }
     }

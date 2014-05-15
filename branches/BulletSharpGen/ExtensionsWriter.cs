@@ -1,0 +1,373 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace BulletSharpGen
+{
+    class ExtensionsWriter : WrapperWriter
+    {
+        Dictionary<string, string> _extensionClassesInternal = new Dictionary<string, string>();
+        Dictionary<string, string> _extensionClassesExternal = new Dictionary<string, string>();
+
+        List<KeyValuePair<string, string>> _extensionMethods = new List<KeyValuePair<string, string>>();
+
+        public ExtensionsWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+            : base(headerDefinitions, namespaceName)
+        {
+            _extensionClassesInternal.Add("Transform", "BulletSharp.Math.Matrix");
+            _extensionClassesInternal.Add("Quaternion", "BulletSharp.Math.Quaternion");
+            _extensionClassesInternal.Add("Vector3", "BulletSharp.Math.Vector3");
+
+            _extensionClassesExternal.Add("Transform", "OpenTK.Matrix4");
+            _extensionClassesExternal.Add("Quaternion", "OpenTK.Quaternion");
+            _extensionClassesExternal.Add("Vector3", "OpenTK.Vector3");
+        }
+
+        bool MethodNeedsExtensions(MethodDefinition method)
+        {
+            // Extension constructors not supported
+            if (method.IsConstructor)
+            {
+                return false;
+            }
+
+            foreach (var param in method.Parameters)
+            {
+                if (_extensionClassesInternal.ContainsKey(param.Type.ManagedName))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        bool ClassNeedsExtensions(ClassDefinition c)
+        {
+            foreach (var prop in c.Properties)
+            {
+                if (_extensionClassesInternal.ContainsKey(prop.Type.ManagedName))
+                {
+                    return true;
+                }
+            }
+
+            foreach (var method in c.Methods)
+            {
+                foreach (var param in method.Parameters)
+                {
+                    if (_extensionClassesInternal.ContainsKey(param.Type.ManagedName))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public void Output()
+        {
+            string outDirectory = NamespaceName + "_extensions";
+
+            foreach (HeaderDefinition header in headerDefinitions.Values)
+            {
+                bool headerNeedsExtensions = false;
+                foreach (var c in header.Classes)
+                {
+                    if (ClassNeedsExtensions(c))
+                    {
+                        headerNeedsExtensions = true;
+                        break;
+                    }
+                }
+
+                if (!headerNeedsExtensions)
+                {
+                    continue;
+                }
+
+                Directory.CreateDirectory(outDirectory);
+
+                // C# extensions file
+                var csFile = new FileStream(outDirectory + "\\" + header.ManagedName + "Extensions.cs", FileMode.Create, FileAccess.Write);
+                csWriter = new StreamWriter(csFile);
+                csWriter.WriteLine("using System.ComponentModel;");
+                csWriter.WriteLine();
+                csWriter.Write("namespace ");
+                csWriter.WriteLine(NamespaceName);
+                csWriter.WriteLine('{');
+                hasCSWhiteSpace = true;
+
+                foreach (var c in header.Classes)
+                {
+                    if (ClassNeedsExtensions(c))
+                    {
+                        _extensionMethods.Clear();
+
+                        EnsureWhiteSpace(WriteTo.CS);
+                        OutputTabs(1, WriteTo.CS);
+                        csWriter.WriteLine("[EditorBrowsable(EditorBrowsableState.Never)]");
+                        OutputTabs(1, WriteTo.CS);
+                        csWriter.Write("public static class ");
+                        csWriter.Write(c.ManagedName);
+                        csWriter.WriteLine("Extensions");
+                        OutputTabs(1, WriteTo.CS);
+                        csWriter.WriteLine('{');
+
+                        foreach (var prop in c.Properties)
+                        {
+                            if (_extensionClassesInternal.ContainsKey(prop.Type.ManagedName))
+                            {
+                                // Getter with out parameter
+                                bufferBuilder.Clear();
+                                OutputTabs(2, WriteTo.Buffer);
+                                Write("public unsafe static void Get", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                Write("(this ", WriteTo.Buffer);
+                                Write(c.ManagedName, WriteTo.Buffer);
+                                Write(" obj, out ", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine(" value)", WriteTo.Buffer);
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+
+                                OutputTabs(3, WriteTo.Buffer);
+                                Write("fixed (", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine("* valuePtr = &value)", WriteTo.Buffer);
+                                OutputTabs(3, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+                                OutputTabs(4, WriteTo.Buffer);
+                                Write("*(", WriteTo.Buffer);
+                                Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                Write("*)valuePtr = obj.", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                WriteLine(';', WriteTo.Buffer);
+                                OutputTabs(3, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+
+                                _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
+
+                                // Getter with return value
+                                bufferBuilder.Clear();
+                                OutputTabs(2, WriteTo.Buffer);
+                                Write("public static ", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                Write(" Get", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                Write("(this ", WriteTo.Buffer);
+                                Write(c.ManagedName, WriteTo.Buffer);
+                                WriteLine(" obj)", WriteTo.Buffer);
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+
+                                OutputTabs(3, WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine(" value;", WriteTo.Buffer);
+                                OutputTabs(3, WriteTo.Buffer);
+                                Write("Get", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                WriteLine("(obj, out value);", WriteTo.Buffer);
+                                OutputTabs(3, WriteTo.Buffer);
+                                WriteLine("return value;", WriteTo.Buffer);
+
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+
+                                _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
+
+                                if (prop.Setter == null)
+                                {
+                                    continue;
+                                }
+
+                                // Setter with ref parameter
+                                bufferBuilder.Clear();
+                                OutputTabs(2, WriteTo.Buffer);
+                                Write("public unsafe static void Set", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                Write("(this ", WriteTo.Buffer);
+                                Write(c.ManagedName, WriteTo.Buffer);
+                                Write(" obj, ref ", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine(" value)", WriteTo.Buffer);
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+
+                                OutputTabs(3, WriteTo.Buffer);
+                                Write("fixed (", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine("* valuePtr = &value)", WriteTo.Buffer);
+                                OutputTabs(3, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+                                OutputTabs(4, WriteTo.Buffer);
+                                Write("obj.", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                Write(" = *(", WriteTo.Buffer);
+                                Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine("*)valuePtr;", WriteTo.Buffer);
+                                OutputTabs(3, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+
+                                _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
+
+                                // Setter with non-ref parameter
+                                bufferBuilder.Clear();
+                                OutputTabs(2, WriteTo.Buffer);
+                                Write("public static void Set", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                Write("(this ", WriteTo.Buffer);
+                                Write(c.ManagedName, WriteTo.Buffer);
+                                Write(" obj, ", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                                WriteLine(" value)", WriteTo.Buffer);
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+
+                                OutputTabs(3, WriteTo.Buffer);
+                                Write("Set", WriteTo.Buffer);
+                                Write(prop.Name, WriteTo.Buffer);
+                                WriteLine("(obj, ref value);", WriteTo.Buffer);
+
+                                OutputTabs(2, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+
+                                _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
+                            }
+                        }
+
+                        foreach (var method in c.Methods)
+                        {
+                            if (!MethodNeedsExtensions(method))
+                            {
+                                continue;
+                            }
+
+                            bufferBuilder.Clear();
+                            OutputTabs(2, WriteTo.Buffer);
+                            Write("public unsafe static ", WriteTo.Buffer);
+                            Write(method.ReturnType.Name, WriteTo.Buffer);
+                            Write(' ', WriteTo.Buffer);
+                            Write(method.ManagedName, WriteTo.Buffer);
+                            Write("(this ", WriteTo.Buffer);
+                            Write(c.ManagedName, WriteTo.Buffer);
+                            Write(" obj", WriteTo.Buffer);
+
+                            List<ParameterDefinition> extendedParams = new List<ParameterDefinition>();
+                            int numParameters = method.Parameters.Length;
+                            for (int i = 0; i < numParameters; i++)
+                            {
+                                Write(", ", WriteTo.Buffer);
+
+                                var param = method.Parameters[i];
+                                if (_extensionClassesInternal.ContainsKey(param.Type.ManagedName))
+                                {
+                                    Write("ref ", WriteTo.Buffer);
+                                    Write(_extensionClassesExternal[param.Type.ManagedName], WriteTo.Buffer);
+                                    Write(' ', WriteTo.Buffer);
+                                    Write(param.Name, WriteTo.Buffer);
+                                    extendedParams.Add(param);
+                                }
+                                else
+                                {
+                                    Write(param.Type.ManagedName, WriteTo.Buffer);
+                                    Write(' ', WriteTo.Buffer);
+                                    Write(param.Name, WriteTo.Buffer);
+                                }
+                            }
+                            WriteLine(')', WriteTo.Buffer);
+
+                            // Fix parameter pointers
+                            OutputTabs(2, WriteTo.Buffer);
+                            WriteLine('{', WriteTo.Buffer);
+                            int tabs = 3;
+                            foreach (var param in extendedParams)
+                            {
+                                OutputTabs(tabs, WriteTo.Buffer);
+                                Write("fixed (", WriteTo.Buffer);
+                                Write(_extensionClassesExternal[param.Type.ManagedName], WriteTo.Buffer);
+                                Write("* ", WriteTo.Buffer);
+                                Write(param.Name, WriteTo.Buffer);
+                                Write("Ptr = &", WriteTo.Buffer);
+                                Write(param.Name, WriteTo.Buffer);
+                                WriteLine(')', WriteTo.Buffer);
+                                OutputTabs(tabs, WriteTo.Buffer);
+                                WriteLine('{', WriteTo.Buffer);
+                                tabs++;
+                            }
+
+                            OutputTabs(tabs, WriteTo.Buffer);
+                            if (method.ReturnType.Name != "void")
+                            {
+                                Write("return ", WriteTo.Buffer);
+                            }
+                            Write("obj.", WriteTo.Buffer);
+                            Write(method.ManagedName, WriteTo.Buffer);
+                            Write('(', WriteTo.Buffer);
+                            for (int i = 0; i < numParameters; i++)
+                            {
+                                var param = method.Parameters[i];
+                                if (_extensionClassesInternal.ContainsKey(param.Type.ManagedName))
+                                {
+                                    Write("ref *(", WriteTo.Buffer);
+                                    Write(_extensionClassesInternal[param.Type.ManagedName], WriteTo.Buffer);
+                                    Write("*)", WriteTo.Buffer);
+                                    Write(param.Name, WriteTo.Buffer);
+                                    Write("Ptr", WriteTo.Buffer);
+                                }
+                                else
+                                {
+                                    Write(param.Name, WriteTo.Buffer);
+                                }
+
+                                if (param.IsOptional)
+                                {
+                                    //hasOptionalParam = true;
+                                }
+
+                                if (i != numParameters - 1)
+                                {
+                                    Write(", ", WriteTo.Buffer);
+                                }
+                            }
+                            WriteLine(");", WriteTo.Buffer);
+
+                            while (tabs != 3)
+                            {
+                                tabs--;
+                                OutputTabs(tabs, WriteTo.Buffer);
+                                WriteLine('}', WriteTo.Buffer);
+                            }
+                            OutputTabs(2, WriteTo.Buffer);
+                            WriteLine('}', WriteTo.Buffer);
+
+                            _extensionMethods.Add(new KeyValuePair<string, string>(method.Name, bufferBuilder.ToString()));
+                        }
+
+                        foreach (KeyValuePair<string, string> method in _extensionMethods.OrderBy(key => key.Key))
+                        {
+                            EnsureWhiteSpace(WriteTo.CS);
+                            csWriter.Write(method.Value);
+                            hasCSWhiteSpace = false;
+                        }
+
+                        OutputTabs(1, WriteTo.CS);
+                        csWriter.WriteLine('}');
+                    }
+                    hasCSWhiteSpace = false;
+                }
+
+                csWriter.WriteLine("}");
+
+                csWriter.Dispose();
+                csFile.Dispose();
+            }
+        }
+    }
+}

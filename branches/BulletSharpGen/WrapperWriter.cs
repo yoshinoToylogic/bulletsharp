@@ -12,7 +12,7 @@ namespace BulletSharpGen
         Header = 1,
         Source = 2,
         CS = 4,
-        DllImport = 8,
+        Buffer = 8,
         All = Header | Source | CS
     }
 
@@ -22,7 +22,7 @@ namespace BulletSharpGen
         protected string NamespaceName { get; private set; }
 
         protected StreamWriter headerWriter, sourceWriter, csWriter;
-        protected StringBuilder dllImport = new StringBuilder();
+        protected StringBuilder bufferBuilder = new StringBuilder();
         protected bool hasHeaderWhiteSpace;
         protected bool hasSourceWhiteSpace;
         protected bool hasCSWhiteSpace;
@@ -33,7 +33,7 @@ namespace BulletSharpGen
             this.NamespaceName = namespaceName;
         }
 
-        public void Write(string s, WriteTo to = WriteTo.All)
+        protected void Write(string s, WriteTo to = WriteTo.All)
         {
             if ((to & WriteTo.Header) == WriteTo.Header)
             {
@@ -47,35 +47,35 @@ namespace BulletSharpGen
             {
                 csWriter.Write(s);
             }
-            if ((to & WriteTo.DllImport) == WriteTo.DllImport)
+            if ((to & WriteTo.Buffer) == WriteTo.Buffer)
             {
-                dllImport.Append(s);
+                bufferBuilder.Append(s);
             }
         }
 
-        public void Write(char c, WriteTo to = WriteTo.All)
+        protected void Write(char c, WriteTo to = WriteTo.All)
         {
             Write(c.ToString(), to);
         }
 
-        public void WriteLine(string s, WriteTo to = WriteTo.All)
+        protected void WriteLine(string s, WriteTo to = WriteTo.All)
         {
             Write(s, to);
             WriteLine(to);
         }
 
-        public void WriteLine(char c, WriteTo to = WriteTo.All)
+        protected void WriteLine(char c, WriteTo to = WriteTo.All)
         {
             Write(c, to);
             WriteLine(to);
         }
 
-        public void WriteLine(WriteTo to = WriteTo.All)
+        protected void WriteLine(WriteTo to = WriteTo.All)
         {
             Write("\r\n", to);
         }
 
-        public void OutputTabs(int n, WriteTo to = WriteTo.Header)
+        protected void OutputTabs(int n, WriteTo to = WriteTo.Header)
         {
             for (int i = 0; i < n; i++)
             {
@@ -83,7 +83,7 @@ namespace BulletSharpGen
             }
         }
 
-        public void EnsureWhiteSpace(WriteTo to = WriteTo.Header)
+        protected void EnsureWhiteSpace(WriteTo to = WriteTo.Header)
         {
             if ((to & WriteTo.Header) == WriteTo.Header)
             {

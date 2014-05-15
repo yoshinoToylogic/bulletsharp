@@ -68,17 +68,27 @@ namespace BulletSharp
 		{
 			return btCollisionShape_calculateSerializeBufferSize(_native);
 		}
-        /*
-		public void CalculateTemporalAabb(Transform curTrans, Vector3 linvel, Vector3 angvel, float timeStep, Vector3 temporalAabbMin, Vector3 temporalAabbMax)
+
+        public void CalculateTemporalAabb(ref Matrix curTrans, ref Vector3 linvel, ref Vector3 angvel, float timeStep, out Vector3 temporalAabbMin, out Vector3 temporalAabbMax)
+        {
+            btCollisionShape_calculateTemporalAabb(_native, ref curTrans, ref linvel, ref angvel, timeStep, out temporalAabbMin, out temporalAabbMax);
+        }
+
+        public void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel, float timeStep, out Vector3 temporalAabbMin, out Vector3 temporalAabbMax)
 		{
-			btCollisionShape_calculateTemporalAabb(_native, curTrans._native, linvel._native, angvel._native, timeStep, temporalAabbMin._native, temporalAabbMax._native);
+            btCollisionShape_calculateTemporalAabb(_native, ref curTrans, ref linvel, ref angvel, timeStep, out temporalAabbMin, out temporalAabbMax);
 		}
 
-		public void GetAabb(Transform t, Vector3 aabbMin, Vector3 aabbMax)
+        public void GetAabb(ref Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
+        {
+            btCollisionShape_getAabb(_native, ref t, out aabbMin, out aabbMax);
+        }
+
+        public void GetAabb(Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-			btCollisionShape_getAabb(_native, t._native, aabbMin._native, aabbMax._native);
+            btCollisionShape_getAabb(_native, ref t, out aabbMin, out aabbMax);
 		}
-        */
+        
 		public void GetBoundingSphere(out Vector3 center, out float radius)
 		{
 			btCollisionShape_getBoundingSphere(_native, out center, out radius);
@@ -211,9 +221,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCollisionShape_calculateSerializeBufferSize(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionShape_calculateTemporalAabb(IntPtr obj, IntPtr curTrans, IntPtr linvel, IntPtr angvel, float timeStep, IntPtr temporalAabbMin, IntPtr temporalAabbMax);
+        static extern void btCollisionShape_calculateTemporalAabb(IntPtr obj, [In] ref Matrix curTrans, [In] ref Vector3 linvel, [In] ref Vector3 angvel, float timeStep, [Out] out Vector3 temporalAabbMin, [Out] out Vector3 temporalAabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionShape_getAabb(IntPtr obj, IntPtr t, IntPtr aabbMin, IntPtr aabbMax);
+        static extern void btCollisionShape_getAabb(IntPtr obj, [In] ref Matrix t, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionShape_getAngularMotionDisc(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -1,25 +1,37 @@
-﻿using OpenTK;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace BulletSharp
 {
+
     [EditorBrowsable(EditorBrowsableState.Never)]
     public static class DynamicsWorldExtensions
     {
-        public unsafe static void GetGravity(this DynamicsWorld native, out OpenTK.Vector3 gravity)
+        public unsafe static void GetGravity(this DynamicsWorld obj, out OpenTK.Vector3 value)
         {
-            fixed (OpenTK.Vector3* value = &gravity)
+            fixed (OpenTK.Vector3* valuePtr = &value)
             {
-                native.GetGravity(out *(BulletSharp.Math.Vector3*)value);
+                obj.GetGravity(out *(BulletSharp.Math.Vector3*)valuePtr);
             }
         }
 
-        public unsafe static void SetGravity(this DynamicsWorld native, ref OpenTK.Vector3 gravity)
+        public static OpenTK.Vector3 GetGravity(this DynamicsWorld obj)
         {
-            fixed (OpenTK.Vector3* value = &gravity)
+            OpenTK.Vector3 value;
+            GetGravity(obj, out value);
+            return value;
+        }
+
+        public unsafe static void SetGravity(this DynamicsWorld obj, ref OpenTK.Vector3 value)
+        {
+            fixed (OpenTK.Vector3* valuePtr = &value)
             {
-                native.SetGravity(ref *(BulletSharp.Math.Vector3*)value);
+                obj.SetGravity(ref *(BulletSharp.Math.Vector3*)valuePtr);
             }
+        }
+
+        public static void SetGravity(this DynamicsWorld obj, OpenTK.Vector3 value)
+        {
+            SetGravity(obj, ref value);
         }
     }
 }

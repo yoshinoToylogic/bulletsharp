@@ -153,10 +153,20 @@ namespace BulletSharp
 			btCollisionObject_serializeSingleObject(_native, serializer._native);
 		}
 
+        public void SetAnisotropicFriction(ref Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
+        {
+            btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction, frictionMode);
+        }
+
         public void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
 		{
 			btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction, frictionMode);
 		}
+
+        public void SetAnisotropicFriction(ref Vector3 anisotropicFriction)
+        {
+            btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction);
+        }
 
 		public void SetAnisotropicFriction(Vector3 anisotropicFriction)
 		{
