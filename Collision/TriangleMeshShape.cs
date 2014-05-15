@@ -14,14 +14,32 @@ namespace BulletSharp
 		{
 		}
 
-		public void LocalGetSupportingVertex(Vector3 vec)
+        public Vector3 LocalGetSupportingVertex(ref Vector3 vec)
+        {
+            Vector3 value;
+            btTriangleMeshShape_localGetSupportingVertex(_native, ref vec, out value);
+            return value;
+        }
+
+		public Vector3 LocalGetSupportingVertex(Vector3 vec)
 		{
-			btTriangleMeshShape_localGetSupportingVertex(_native, ref vec);
+            Vector3 value;
+			btTriangleMeshShape_localGetSupportingVertex(_native, ref vec, out value);
+            return value;
 		}
 
-		public void LocalGetSupportingVertexWithoutMargin(Vector3 vec)
+        public Vector3 LocalGetSupportingVertexWithoutMargin(ref Vector3 vec)
+        {
+            Vector3 value;
+            btTriangleMeshShape_localGetSupportingVertexWithoutMargin(_native, ref vec, out value);
+            return value;
+        }
+
+        public Vector3 LocalGetSupportingVertexWithoutMargin(Vector3 vec)
 		{
-			btTriangleMeshShape_localGetSupportingVertexWithoutMargin(_native, ref vec);
+            Vector3 value;
+            btTriangleMeshShape_localGetSupportingVertexWithoutMargin(_native, ref vec, out value);
+            return value;
 		}
 
 		public void RecalcLocalAabb()
@@ -68,9 +86,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btTriangleMeshShape_getMeshInterface(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTriangleMeshShape_localGetSupportingVertex(IntPtr obj, [In] ref Vector3 vec);
+		static extern void btTriangleMeshShape_localGetSupportingVertex(IntPtr obj, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTriangleMeshShape_localGetSupportingVertexWithoutMargin(IntPtr obj, [In] ref Vector3 vec);
+        static extern void btTriangleMeshShape_localGetSupportingVertexWithoutMargin(IntPtr obj, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTriangleMeshShape_recalcLocalAabb(IntPtr obj);
 	}

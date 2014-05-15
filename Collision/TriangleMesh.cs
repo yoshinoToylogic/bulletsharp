@@ -32,15 +32,30 @@ namespace BulletSharp
 			btTriangleMesh_addIndex(_native, index);
 		}
 
+        public void AddTriangle(ref Vector3 vertex0, ref Vector3 vertex1, ref Vector3 vertex2, bool removeDuplicateVertices)
+        {
+            btTriangleMesh_addTriangle(_native, ref vertex0, ref vertex1, ref vertex2, removeDuplicateVertices);
+        }
+
 		public void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices)
 		{
 			btTriangleMesh_addTriangle(_native, ref vertex0, ref vertex1, ref vertex2, removeDuplicateVertices);
 		}
 
+        public void AddTriangle(ref Vector3 vertex0, ref Vector3 vertex1, ref Vector3 vertex2)
+        {
+            btTriangleMesh_addTriangle2(_native, ref vertex0, ref vertex1, ref vertex2);
+        }
+
 		public void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 		{
 			btTriangleMesh_addTriangle2(_native, ref vertex0, ref vertex1, ref vertex2);
 		}
+
+        public int FindOrAddVertex(ref Vector3 vertex, bool removeDuplicateVertices)
+        {
+            return btTriangleMesh_findOrAddVertex(_native, ref vertex, removeDuplicateVertices);
+        }
 
 		public int FindOrAddVertex(Vector3 vertex, bool removeDuplicateVertices)
 		{

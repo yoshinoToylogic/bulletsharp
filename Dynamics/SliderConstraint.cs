@@ -22,6 +22,11 @@ namespace BulletSharp
 		{
 		}
 
+        public void CalculateTransforms(ref Matrix transA, ref Matrix transB)
+        {
+            btSliderConstraint_calculateTransforms(_native, ref transA, ref transB);
+        }
+
 		public void CalculateTransforms(Matrix transA, Matrix transB)
 		{
 			btSliderConstraint_calculateTransforms(_native, ref transA, ref transB);
@@ -31,6 +36,11 @@ namespace BulletSharp
 		{
 			btSliderConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref linVelA, ref linVelB, rbAinvMass, rbBinvMass);
 		}
+
+        public void SetFrames(ref Matrix frameA, ref Matrix frameB)
+        {
+            btSliderConstraint_setFrames(_native, ref frameA, ref frameB);
+        }
 
 		public void SetFrames(Matrix frameA, Matrix frameB)
 		{

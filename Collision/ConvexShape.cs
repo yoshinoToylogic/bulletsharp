@@ -17,10 +17,21 @@ namespace BulletSharp
 			btConvexShape_batchedUnitVectorGetSupportingVertexWithoutMargin(_native, vectors._native, supportVerticesOut._native, numVectors);
 		}
         */
+
+        public void GetAabbNonVirtual(ref Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
+        {
+            btConvexShape_getAabbNonVirtual(_native, ref t, out aabbMin, out aabbMax);
+        }
+
         public void GetAabbNonVirtual(Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
 		{
 			btConvexShape_getAabbNonVirtual(_native, ref t, out aabbMin, out aabbMax);
 		}
+
+        public void GetAabbSlow(ref Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
+        {
+            btConvexShape_getAabbSlow(_native, ref t, out aabbMin, out aabbMax);
+        }
 
         public void GetAabbSlow(Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
 		{
@@ -32,24 +43,32 @@ namespace BulletSharp
 			btConvexShape_getPreferredPenetrationDirection(_native, index, out penetrationVector);
 		}
 
-		public void LocalGetSupportingVertex(out Vector3 vec)
+        public Vector3 LocalGetSupportingVertex(ref Vector3 vec)
 		{
-			btConvexShape_localGetSupportingVertex(_native, out vec);
+            Vector3 value;
+			btConvexShape_localGetSupportingVertex(_native, ref vec, out value);
+            return value;
 		}
 
-		public void LocalGetSupportingVertexWithoutMargin(out Vector3 vec)
+        public Vector3 LocalGetSupportingVertexWithoutMargin(ref Vector3 vec)
 		{
-			btConvexShape_localGetSupportingVertexWithoutMargin(_native, out vec);
+            Vector3 value;
+            btConvexShape_localGetSupportingVertexWithoutMargin(_native, ref vec, out value);
+            return value;
 		}
 
-		public void LocalGetSupportVertexNonVirtual(out Vector3 vec)
+        public Vector3 LocalGetSupportVertexNonVirtual(ref Vector3 vec)
 		{
-			btConvexShape_localGetSupportVertexNonVirtual(_native, out vec);
+            Vector3 value;
+            btConvexShape_localGetSupportVertexNonVirtual(_native, ref vec, out value);
+            return value;
 		}
 
-		public void LocalGetSupportVertexWithoutMarginNonVirtual(out Vector3 vec)
+        public Vector3 LocalGetSupportVertexWithoutMarginNonVirtual(ref Vector3 vec)
 		{
-			btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(_native, out vec);
+            Vector3 value;
+            btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(_native, ref vec, out value);
+            return value;
 		}
         /*
 		public void Project(Matrix trans, Vector3 dir, float min, float max)
@@ -80,13 +99,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConvexShape_getPreferredPenetrationDirection(IntPtr obj, int index, [Out] out Vector3 penetrationVector);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConvexShape_localGetSupportingVertex(IntPtr obj, [Out] out Vector3 vec);
+        static extern void btConvexShape_localGetSupportingVertex(IntPtr obj, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConvexShape_localGetSupportingVertexWithoutMargin(IntPtr obj, [Out] out Vector3 vec);
+        static extern void btConvexShape_localGetSupportingVertexWithoutMargin(IntPtr obj, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConvexShape_localGetSupportVertexNonVirtual(IntPtr obj, [Out] out Vector3 vec);
+        static extern void btConvexShape_localGetSupportVertexNonVirtual(IntPtr obj, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(IntPtr obj, [Out] out Vector3 vec);
+        static extern void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(IntPtr obj, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConvexShape_project(IntPtr obj, [In] ref Matrix trans, [In] ref Vector3 dir, IntPtr min, IntPtr max);
 	}

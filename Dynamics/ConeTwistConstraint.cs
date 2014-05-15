@@ -27,6 +27,11 @@ namespace BulletSharp
 			btConeTwistConstraint_calcAngleInfo(_native);
 		}
 
+        public void CalcAngleInfo2(ref Matrix transA, ref Matrix transB, ref Matrix invInertiaWorldA, ref Matrix invInertiaWorldB)
+        {
+            btConeTwistConstraint_calcAngleInfo2(_native, ref transA, ref transB, ref invInertiaWorldA, ref invInertiaWorldB);
+        }
+
 		public void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 		{
 			btConeTwistConstraint_calcAngleInfo2(_native, ref transA, ref transB, ref invInertiaWorldA, ref invInertiaWorldB);
@@ -56,6 +61,11 @@ namespace BulletSharp
 		{
 			btConeTwistConstraint_setDamping(_native, damping);
 		}
+
+        public void SetFrames(ref Matrix frameA, ref Matrix frameB)
+        {
+            btConeTwistConstraint_setFrames(_native, ref frameA, ref frameB);
+        }
 
 		public void SetFrames(Matrix frameA, Matrix frameB)
 		{
@@ -97,10 +107,20 @@ namespace BulletSharp
 			btConeTwistConstraint_setMaxMotorImpulseNormalized(_native, maxMotorImpulse);
 		}
 
+        public void SetMotorTarget(ref Quaternion q)
+        {
+            btConeTwistConstraint_setMotorTarget(_native, ref q);
+        }
+
 		public void SetMotorTarget(Quaternion q)
 		{
 			btConeTwistConstraint_setMotorTarget(_native, ref q);
 		}
+
+        public void SetMotorTargetInConstraintSpace(ref Quaternion q)
+        {
+            btConeTwistConstraint_setMotorTargetInConstraintSpace(_native, ref q);
+        }
 
 		public void SetMotorTargetInConstraintSpace(Quaternion q)
 		{
