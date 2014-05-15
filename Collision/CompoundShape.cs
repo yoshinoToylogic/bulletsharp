@@ -124,6 +124,11 @@ namespace BulletSharp
 		{
 		}
 
+        public void AddChildShape(ref Matrix localTransform, CollisionShape shape)
+        {
+            btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
+        }
+
 		public void AddChildShape(Matrix localTransform, CollisionShape shape)
 		{
 			btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
@@ -166,10 +171,20 @@ namespace BulletSharp
 			btCompoundShape_removeChildShapeByIndex(_native, childShapeindex);
 		}
 
+        public void UpdateChildTransform(int childIndex, ref Matrix newChildTransform, bool shouldRecalculateLocalAabb)
+        {
+            btCompoundShape_updateChildTransform(_native, childIndex, ref newChildTransform, shouldRecalculateLocalAabb);
+        }
+
 		public void UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb)
 		{
 			btCompoundShape_updateChildTransform(_native, childIndex, ref newChildTransform, shouldRecalculateLocalAabb);
 		}
+
+        public void UpdateChildTransform(int childIndex, ref Matrix newChildTransform)
+        {
+            btCompoundShape_updateChildTransform2(_native, childIndex, ref newChildTransform);
+        }
 
 		public void UpdateChildTransform(int childIndex, Matrix newChildTransform)
 		{

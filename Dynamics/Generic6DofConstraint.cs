@@ -29,6 +29,11 @@ namespace BulletSharp
 			return btRotationalLimitMotor_needApplyTorques(_native);
 		}
 
+        public float SolveAngularLimits(float timeStep, ref Vector3 axis, float jacDiagABInv, RigidBody body0, RigidBody body1)
+        {
+            return btRotationalLimitMotor_solveAngularLimits(_native, timeStep, ref axis, jacDiagABInv, body0._native, body1._native);
+        }
+
 		public float SolveAngularLimits(float timeStep, Vector3 axis, float jacDiagABInv, RigidBody body0, RigidBody body1)
 		{
 			return btRotationalLimitMotor_solveAngularLimits(_native, timeStep, ref axis, jacDiagABInv, body0._native, body1._native);
@@ -272,9 +277,14 @@ namespace BulletSharp
 			return btTranslationalLimitMotor_needApplyForce(_native, limitIndex);
 		}
 
-		public float SolveLinearAxis(float timeStep, float jacDiagABInv, RigidBody body1, Vector3 pointInA, RigidBody body2, Vector3 pointInB, int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
+        public float SolveLinearAxis(float timeStep, float jacDiagABInv, RigidBody body1, ref Vector3 pointInA, RigidBody body2, ref Vector3 pointInB, int limitIndex, ref Vector3 axisNormalOnA, ref Vector3 anchorPos)
+        {
+            return btTranslationalLimitMotor_solveLinearAxis(_native, timeStep, jacDiagABInv, body1._native, ref pointInA, body2._native, ref pointInB, limitIndex, ref axisNormalOnA, ref anchorPos);
+        }
+
+        public float SolveLinearAxis(float timeStep, float jacDiagABInv, RigidBody body1, Vector3 pointInA, RigidBody body2, Vector3 pointInB, int limitIndex, Vector3 axisNormalOnA, Vector3 anchorPos)
 		{
-			return btTranslationalLimitMotor_solveLinearAxis(_native, timeStep, jacDiagABInv, body1._native, ref pointInA, body2._native, ref pointInB, limit_index, ref axis_normal_on_a, ref anchorPos);
+            return btTranslationalLimitMotor_solveLinearAxis(_native, timeStep, jacDiagABInv, body1._native, ref pointInA, body2._native, ref pointInB, limitIndex, ref axisNormalOnA, ref anchorPos);
 		}
 
 		public int TestLimitValue(int limitIndex, float test_value)
@@ -547,6 +557,11 @@ namespace BulletSharp
 			btGeneric6DofConstraint_calcAnchorPos(_native);
 		}
 
+        public void CalculateTransforms(ref Matrix transA, ref Matrix transB)
+        {
+            btGeneric6DofConstraint_calculateTransforms(_native, ref transA, ref transB);
+        }
+
 		public void CalculateTransforms(Matrix transA, Matrix transB)
 		{
 			btGeneric6DofConstraint_calculateTransforms(_native, ref transA, ref transB);
@@ -597,10 +612,20 @@ namespace BulletSharp
 			return btGeneric6DofConstraint_isLimited(_native, limitIndex);
 		}
 
+        public void SetAxis(ref Vector3 axis1, ref Vector3 axis2)
+        {
+            btGeneric6DofConstraint_setAxis(_native, ref axis1, ref axis2);
+        }
+
 		public void SetAxis(Vector3 axis1, Vector3 axis2)
 		{
 			btGeneric6DofConstraint_setAxis(_native, ref axis1, ref axis2);
 		}
+
+        public void SetFrames(ref Matrix frameA, ref Matrix frameB)
+        {
+            btGeneric6DofConstraint_setFrames(_native, ref frameA, ref frameB);
+        }
 
 		public void SetFrames(Matrix frameA, Matrix frameB)
 		{

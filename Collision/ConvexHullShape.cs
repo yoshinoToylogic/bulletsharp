@@ -18,6 +18,16 @@ namespace BulletSharp
 		{
 		}
 
+        public ConvexHullShape(float[] points, int numPoints)
+            : this(points, numPoints, 3)
+        {
+        }
+
+        public ConvexHullShape(float[] points)
+            : this(points, points.Length, 3)
+        {
+        }
+
         public ConvexHullShape(IEnumerable<Vector3> points, int numPoints)
             : base(btConvexHullShape_new4())
 		{
@@ -52,10 +62,20 @@ namespace BulletSharp
 		{
 		}
 
+        public void AddPoint(ref Vector3 point, bool recalculateLocalAabb)
+        {
+            btConvexHullShape_addPoint(_native, ref point, recalculateLocalAabb);
+        }
+
 		public void AddPoint(Vector3 point, bool recalculateLocalAabb)
 		{
 			btConvexHullShape_addPoint(_native, ref point, recalculateLocalAabb);
 		}
+
+        public void AddPoint(ref Vector3 point)
+        {
+            btConvexHullShape_addPoint2(_native, ref point);
+        }
 
 		public void AddPoint(Vector3 point)
 		{
