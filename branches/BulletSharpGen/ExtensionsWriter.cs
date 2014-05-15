@@ -9,25 +9,33 @@ namespace BulletSharpGen
     {
         Dictionary<string, string> _extensionClassesInternal = new Dictionary<string, string>();
         Dictionary<string, string> _extensionClassesExternal = new Dictionary<string, string>();
+        Dictionary<string, string> _returnTypeConversion = new Dictionary<string, string>();
 
         List<KeyValuePair<string, string>> _extensionMethods = new List<KeyValuePair<string, string>>();
 
         public ExtensionsWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
             : base(headerDefinitions, namespaceName)
         {
-            _extensionClassesInternal.Add("Transform", "BulletSharp.Math.Matrix");
+            _extensionClassesInternal.Add("Matrix3x3", "BulletSharp.Math.Matrix");
             _extensionClassesInternal.Add("Quaternion", "BulletSharp.Math.Quaternion");
+            _extensionClassesInternal.Add("Transform", "BulletSharp.Math.Matrix");
             _extensionClassesInternal.Add("Vector3", "BulletSharp.Math.Vector3");
 
-            _extensionClassesExternal.Add("Transform", "OpenTK.Matrix4");
+            _extensionClassesExternal.Add("Matrix3x3", "OpenTK.Matrix4");
             _extensionClassesExternal.Add("Quaternion", "OpenTK.Quaternion");
+            _extensionClassesExternal.Add("Transform", "OpenTK.Matrix4");
             _extensionClassesExternal.Add("Vector3", "OpenTK.Vector3");
+
+            _returnTypeConversion.Add("Matrix3x3", ".ToOpenTK()");
+            _returnTypeConversion.Add("Quaternion", ".ToOpenTK()");
+            _returnTypeConversion.Add("Transform", ".ToOpenTK()");
+            _returnTypeConversion.Add("Vector3", ".ToOpenTK()");
         }
 
         bool MethodNeedsExtensions(MethodDefinition method)
         {
             // Extension constructors & static extension methods not supported
-            if (method.IsConstructor ||method.IsStatic)
+            if (method.IsConstructor || method.IsStatic)
             {
                 return false;
             }
@@ -273,10 +281,19 @@ namespace BulletSharpGen
 
         private void WriteMethod(MethodDefinition method, int numOptionalParams = 0)
         {
+            bool convertReturnType = _extensionClassesInternal.ContainsKey(method.ReturnType.ManagedName);
+
             bufferBuilder.Clear();
             OutputTabs(2, WriteTo.Buffer);
             Write("public unsafe static ", WriteTo.Buffer);
-            Write(method.ReturnType.Name, WriteTo.Buffer);
+            if (convertReturnType)
+            {
+                Write(_extensionClassesExternal[method.ReturnType.ManagedName], WriteTo.Buffer);
+            }
+            else
+            {
+                Write(method.ReturnType.ManagedName, WriteTo.Buffer);
+            }
             Write(' ', WriteTo.Buffer);
             Write(method.ManagedName, WriteTo.Buffer);
             Write("(this ", WriteTo.Buffer);
@@ -307,9 +324,10 @@ namespace BulletSharpGen
             }
             WriteLine(')', WriteTo.Buffer);
 
-            // Fix parameter pointers
             OutputTabs(2, WriteTo.Buffer);
             WriteLine('{', WriteTo.Buffer);
+
+            // Fix parameter pointers
             int tabs = 3;
             foreach (var param in extendedParams)
             {
@@ -361,8 +379,14 @@ namespace BulletSharpGen
                     Write(", ", WriteTo.Buffer);
                 }
             }
-            WriteLine(");", WriteTo.Buffer);
+            Write(')', WriteTo.Buffer);
+            if (convertReturnType)
+            {
+                Write(_returnTypeConversion[method.ReturnType.ManagedName], WriteTo.Buffer);
+            }
+            WriteLine(';', WriteTo.Buffer);
 
+            // Close fixed blocks
             while (tabs != 2)
             {
                 tabs--;

@@ -47,15 +47,30 @@ namespace BulletSharp
 			btCharacterControllerInterface_setUpInterpolate(_native, value);
 		}
 
+        public void SetWalkDirection(ref Vector3 walkDirection)
+        {
+            btCharacterControllerInterface_setWalkDirection(_native, ref walkDirection);
+        }
+
 		public void SetWalkDirection(Vector3 walkDirection)
 		{
 			btCharacterControllerInterface_setWalkDirection(_native, ref walkDirection);
 		}
 
+        public void SetVelocityForTimeInterval(ref Vector3 velocity, float timeInterval)
+        {
+            btCharacterControllerInterface_setVelocityForTimeInterval(_native, ref velocity, timeInterval);
+        }
+
 		public void SetVelocityForTimeInterval(Vector3 velocity, float timeInterval)
 		{
 			btCharacterControllerInterface_setVelocityForTimeInterval(_native, ref velocity, timeInterval);
 		}
+
+        public void Warp(ref Vector3 origin)
+        {
+            btCharacterControllerInterface_warp(_native, ref origin);
+        }
 
 		public void Warp(Vector3 origin)
 		{

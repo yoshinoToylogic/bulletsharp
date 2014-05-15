@@ -94,6 +94,11 @@ namespace BulletSharp
 			_native = native;
 		}
 
+        public IntPtr CastRay(ref Vector3 from, ref Vector3 to, VehicleRaycasterResult result)
+        {
+            return btVehicleRaycaster_castRay(_native, ref from, ref to, result._native);
+        }
+
 		public IntPtr CastRay(Vector3 from, Vector3 to, VehicleRaycasterResult result)
 		{
 			return btVehicleRaycaster_castRay(_native, ref from, ref to, result._native);

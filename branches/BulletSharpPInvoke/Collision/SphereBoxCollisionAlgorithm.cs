@@ -33,10 +33,20 @@ namespace BulletSharp
 		{
 		}
 
+        public bool GetSphereDistance(CollisionObjectWrapper boxObjWrap, ref Vector3 v3PointOnBox, ref Vector3 normal, out float penetrationDepth, ref Vector3 v3SphereCenter, float fRadius, float maxContactDistance)
+        {
+            return btSphereBoxCollisionAlgorithm_getSphereDistance(_native, boxObjWrap._native, ref v3PointOnBox, ref normal, out penetrationDepth, ref v3SphereCenter, fRadius, maxContactDistance);
+        }
+
 		public bool GetSphereDistance(CollisionObjectWrapper boxObjWrap, Vector3 v3PointOnBox, Vector3 normal, out float penetrationDepth, Vector3 v3SphereCenter, float fRadius, float maxContactDistance)
 		{
 			return btSphereBoxCollisionAlgorithm_getSphereDistance(_native, boxObjWrap._native, ref v3PointOnBox, ref normal, out penetrationDepth, ref v3SphereCenter, fRadius, maxContactDistance);
 		}
+
+        public float GetSpherePenetration(ref Vector3 boxHalfExtent, ref Vector3 sphereRelPos, ref Vector3 closestPoint, ref Vector3 normal)
+        {
+            return btSphereBoxCollisionAlgorithm_getSpherePenetration(_native, ref boxHalfExtent, ref sphereRelPos, ref closestPoint, ref normal);
+        }
 
 		public float GetSpherePenetration(Vector3 boxHalfExtent, Vector3 sphereRelPos, Vector3 closestPoint, Vector3 normal)
 		{

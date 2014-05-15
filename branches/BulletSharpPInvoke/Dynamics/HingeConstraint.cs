@@ -67,6 +67,11 @@ namespace BulletSharp
             return btHingeConstraint_getEnableAngularMotor(_native);
         }
 
+        public float GetHingeAngle(ref Matrix transA, ref Matrix transB)
+        {
+            return btHingeConstraint_getHingeAngle(_native, ref transA, ref transB);
+        }
+
 		public float GetHingeAngle(Matrix transA, Matrix transB)
 		{
 			return btHingeConstraint_getHingeAngle(_native, ref transA, ref transB);
@@ -87,10 +92,20 @@ namespace BulletSharp
 			btHingeConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref angVelA, ref angVelB);
 		}
         */
+        public void SetAxis(ref Vector3 axisInA)
+        {
+            btHingeConstraint_setAxis(_native, ref axisInA);
+        }
+
 		public void SetAxis(Vector3 axisInA)
 		{
 			btHingeConstraint_setAxis(_native, ref axisInA);
 		}
+
+        public void SetFrames(ref Matrix frameA, ref Matrix frameB)
+        {
+            btHingeConstraint_setFrames(_native, ref frameA, ref frameB);
+        }
 
 		public void SetFrames(Matrix frameA, Matrix frameB)
 		{
@@ -122,10 +137,20 @@ namespace BulletSharp
 			btHingeConstraint_setMotorTarget(_native, targetAngle, dt);
 		}
 
+        public void SetMotorTarget(ref Quaternion qAinB, float dt)
+        {
+            btHingeConstraint_setMotorTarget2(_native, ref qAinB, dt);
+        }
+
 		public void SetMotorTarget(Quaternion qAinB, float dt)
 		{
 			btHingeConstraint_setMotorTarget2(_native, ref qAinB, dt);
 		}
+
+        public void TestLimit(ref Matrix transA, ref Matrix transB)
+        {
+            btHingeConstraint_testLimit(_native, ref transA, ref transB);
+        }
 
 		public void TestLimit(Matrix transA, Matrix transB)
 		{

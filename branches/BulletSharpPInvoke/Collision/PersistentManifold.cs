@@ -127,6 +127,11 @@ namespace BulletSharp
 			return new ManifoldPoint(btPersistentManifold_getContactPoint(_native, index), true);
 		}
 
+        public void RefreshContactPoints(ref Matrix trA, ref Matrix trB)
+        {
+            btPersistentManifold_refreshContactPoints(_native, ref trA, ref trB);
+        }
+
 		public void RefreshContactPoints(Matrix trA, Matrix trB)
 		{
 			btPersistentManifold_refreshContactPoints(_native, ref trA, ref trB);

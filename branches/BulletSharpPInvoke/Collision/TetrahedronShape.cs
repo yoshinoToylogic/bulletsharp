@@ -37,6 +37,11 @@ namespace BulletSharp
 		{
 		}
 
+        public void AddVertex(ref Vector3 pt)
+        {
+            btBU_Simplex1to4_addVertex(_native, ref pt);
+        }
+
 		public void AddVertex(Vector3 pt)
 		{
 			btBU_Simplex1to4_addVertex(_native, ref pt);

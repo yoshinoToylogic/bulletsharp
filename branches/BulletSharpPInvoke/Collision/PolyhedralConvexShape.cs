@@ -39,6 +39,11 @@ namespace BulletSharp
 			return btPolyhedralConvexShape_initializePolyhedralFeatures2(_native);
 		}
 
+        public bool IsInside(ref Vector3 pt, float tolerance)
+        {
+            return btPolyhedralConvexShape_isInside(_native, ref pt, tolerance);
+        }
+
 		public bool IsInside(Vector3 pt, float tolerance)
 		{
 			return btPolyhedralConvexShape_isInside(_native, ref pt, tolerance);
@@ -104,6 +109,11 @@ namespace BulletSharp
 			: base(native)
 		{
 		}
+
+        public void GetNonvirtualAabb(ref Matrix trans, out Vector3 aabbMin, out Vector3 aabbMax, float margin)
+        {
+            btPolyhedralConvexAabbCachingShape_getNonvirtualAabb(_native, ref trans, out aabbMin, out aabbMax, margin);
+        }
 
         public void GetNonvirtualAabb(Matrix trans, out Vector3 aabbMin, out Vector3 aabbMax, float margin)
 		{

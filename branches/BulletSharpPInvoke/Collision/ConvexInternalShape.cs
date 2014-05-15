@@ -22,10 +22,20 @@ namespace BulletSharp
 			btConvexInternalShape_setSafeMargin2(_native, minDimension);
 		}
 
+        public void SetSafeMargin(ref Vector3 halfExtents, float defaultMarginMultiplier)
+        {
+            btConvexInternalShape_setSafeMargin3(_native, ref halfExtents, defaultMarginMultiplier);
+        }
+
 		public void SetSafeMargin(Vector3 halfExtents, float defaultMarginMultiplier)
 		{
 			btConvexInternalShape_setSafeMargin3(_native, ref halfExtents, defaultMarginMultiplier);
 		}
+
+        public void SetSafeMargin(ref Vector3 halfExtents)
+        {
+            btConvexInternalShape_setSafeMargin4(_native, ref halfExtents);
+        }
 
 		public void SetSafeMargin(Vector3 halfExtents)
 		{

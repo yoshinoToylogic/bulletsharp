@@ -16,16 +16,16 @@ btStridingMeshInterface* btTriangleMeshShape_getMeshInterface(btTriangleMeshShap
 	return obj->getMeshInterface();
 }
 
-void btTriangleMeshShape_localGetSupportingVertex(btTriangleMeshShape* obj, btScalar* vec)
+void btTriangleMeshShape_localGetSupportingVertex(btTriangleMeshShape* obj, btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	obj->localGetSupportingVertex(VECTOR3_USE(vec));
+	value = obj->localGetSupportingVertex(VECTOR3_USE(vec));
 }
 
-void btTriangleMeshShape_localGetSupportingVertexWithoutMargin(btTriangleMeshShape* obj, btScalar* vec)
+void btTriangleMeshShape_localGetSupportingVertexWithoutMargin(btTriangleMeshShape* obj, btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	obj->localGetSupportingVertexWithoutMargin(VECTOR3_USE(vec));
+	value = obj->localGetSupportingVertexWithoutMargin(VECTOR3_USE(vec));
 }
 
 void btTriangleMeshShape_recalcLocalAabb(btTriangleMeshShape* obj)

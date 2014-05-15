@@ -39,9 +39,9 @@ namespace BulletSharp
             return new UnmanagedMemoryStream((byte*)vertexBase.ToPointer(), length, length, FileAccess.ReadWrite);
         }
 
-		public void CalculateAabbBruteForce(Vector3 aabbMin, Vector3 aabbMax)
+        public void CalculateAabbBruteForce(out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-			btStridingMeshInterface_calculateAabbBruteForce(_native, ref aabbMin, ref aabbMax);
+            btStridingMeshInterface_calculateAabbBruteForce(_native, out aabbMin, out aabbMax);
 		}
 
 		public int CalculateSerializeBufferSize()
@@ -64,9 +64,9 @@ namespace BulletSharp
             btStridingMeshInterface_getLockedVertexIndexBase2(_native, out vertexbase, out numverts, out type, out stride, out indexbase, out indexstride, out numfaces, out indicestype);
 		}
 
-		public void GetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
+        public void GetPremadeAabb(out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-			btStridingMeshInterface_getPremadeAabb(_native, ref aabbMin, ref aabbMax);
+            btStridingMeshInterface_getPremadeAabb(_native, out aabbMin, out aabbMax);
 		}
         /*
 		public void InternalProcessAllTriangles(InternalTriangleIndexCallback callback, Vector3 aabbMin, Vector3 aabbMax)
@@ -89,6 +89,11 @@ namespace BulletSharp
 			return btStridingMeshInterface_serialize(_native, dataBuffer, serializer._native);
 		}
         */
+        public void SetPremadeAabb(ref Vector3 aabbMin, ref Vector3 aabbMax)
+        {
+            btStridingMeshInterface_setPremadeAabb(_native, ref aabbMin, ref aabbMax);
+        }
+
 		public void SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
 		{
 			btStridingMeshInterface_setPremadeAabb(_native, ref aabbMin, ref aabbMax);
@@ -146,7 +151,7 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btStridingMeshInterface_calculateAabbBruteForce(IntPtr obj, [In] ref Vector3 aabbMin, [In] ref Vector3 aabbMax);
+        static extern void btStridingMeshInterface_calculateAabbBruteForce(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btStridingMeshInterface_calculateSerializeBufferSize(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -158,7 +163,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btStridingMeshInterface_getNumSubParts(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btStridingMeshInterface_getPremadeAabb(IntPtr obj, [In] ref Vector3 aabbMin, [In] ref Vector3 aabbMax);
+		static extern void btStridingMeshInterface_getPremadeAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btStridingMeshInterface_getScaling(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

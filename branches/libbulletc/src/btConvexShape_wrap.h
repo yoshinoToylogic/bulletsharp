@@ -8,9 +8,9 @@ extern "C"
 	EXPORT btScalar btConvexShape_getMarginNonVirtual(btConvexShape* obj);
 	EXPORT int btConvexShape_getNumPreferredPenetrationDirections(btConvexShape* obj);
 	EXPORT void btConvexShape_getPreferredPenetrationDirection(btConvexShape* obj, int index, btScalar* penetrationVector);
-	EXPORT void btConvexShape_localGetSupportingVertex(btConvexShape* obj, btScalar* vec);
-	EXPORT void btConvexShape_localGetSupportingVertexWithoutMargin(btConvexShape* obj, btScalar* vec);
-	EXPORT void btConvexShape_localGetSupportVertexNonVirtual(btConvexShape* obj, btScalar* vec);
-	EXPORT void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(btConvexShape* obj, btScalar* vec);
+	EXPORT void btConvexShape_localGetSupportingVertex(btConvexShape* obj, btScalar* vec, btScalar* value);
+	EXPORT void btConvexShape_localGetSupportingVertexWithoutMargin(btConvexShape* obj, btScalar* vec, btScalar* value);
+	EXPORT void btConvexShape_localGetSupportVertexNonVirtual(btConvexShape* obj, btScalar* vec, btScalar* value);
+	EXPORT void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(btConvexShape* obj, btScalar* vec, btScalar* value);
 	EXPORT void btConvexShape_project(btConvexShape* obj, btScalar* trans, btScalar* dir, btScalar* min, btScalar* max);
 }
