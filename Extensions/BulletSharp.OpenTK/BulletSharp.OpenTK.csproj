@@ -40,25 +40,26 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BroadphaseInterfaceExtensions.cs" />
-    <Compile Include="BvhTriangleMeshShapeExtensions.cs" />
-    <Compile Include="CollisionObjectExtensions.cs" />
-    <Compile Include="CollisionShapeExtensions.cs" />
-    <Compile Include="CollisionWorldExtensions.cs" />
-    <Compile Include="CompoundShapeExtensions.cs" />
-    <Compile Include="ConvexHullShapeExtensions.cs" />
+    <Compile Include="Collision\BroadphaseInterfaceExtensions.cs" />
+    <Compile Include="Collision\BvhTriangleMeshShapeExtensions.cs" />
+    <Compile Include="Collision\CollisionShapeExtensions.cs" />
+    <Compile Include="Collision\CollisionWorldExtensions.cs" />
+    <Compile Include="Collision\CompoundShapeExtensions.cs" />
+    <Compile Include="Collision\ConvexHullShapeExtensions.cs" />
+    <Compile Include="Collision\ManifoldPointExtensions.cs" />
+    <Compile Include="Collision\RigidBodyExtensions.cs" />
     <Compile Include="DefaultMotionStateExtensions.cs" />
-    <Compile Include="DynamicsWorldExtensions.cs" />
-    <Compile Include="Generic6DofConstraintExtensions.cs" />
+    <Compile Include="Dynamics\CollisionObjectExtensions.cs" />
+    <Compile Include="Dynamics\DynamicsWorldExtensions.cs" />
+    <Compile Include="Dynamics\Generic6DofConstraintExtensions.cs" />
     <Compile Include="IDebugDrawExtensions.cs" />
-    <Compile Include="ManifoldPointExtensions.cs" />
     <Compile Include="Math\MatrixExtensions.cs" />
     <Compile Include="Math\Vector3Extensions.cs" />
     <Compile Include="MotionStateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RigidBodyConstructionInfoExtensions.cs" />
-    <Compile Include="RigidBodyExtensions.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

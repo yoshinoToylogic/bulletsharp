@@ -133,12 +133,17 @@ namespace BulletSharp
 		{
 			btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
 		}
-        /*
-		public void CalculatePrincipalAxisTransform(float masses, Matrix principal, Vector3 inertia)
+
+        public void CalculatePrincipalAxisTransform(float[] masses, ref Matrix principal, ref Vector3 inertia)
+        {
+            btCompoundShape_calculatePrincipalAxisTransform(_native, masses, ref principal, ref inertia);
+        }
+
+		public void CalculatePrincipalAxisTransform(float[] masses, Matrix principal, Vector3 inertia)
 		{
-			btCompoundShape_calculatePrincipalAxisTransform(_native, masses._native, ref principal, ref inertia);
+			btCompoundShape_calculatePrincipalAxisTransform(_native, masses, ref principal, ref inertia);
 		}
-        */
+        
 		public void CreateAabbTreeFromChildren()
 		{
 			btCompoundShape_createAabbTreeFromChildren(_native);
@@ -225,7 +230,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_addChildShape(IntPtr obj, [In] ref Matrix localTransform, IntPtr shape);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShape_calculatePrincipalAxisTransform(IntPtr obj, IntPtr masses, [In] ref Matrix principal, [In] ref Vector3 inertia);
+		static extern void btCompoundShape_calculatePrincipalAxisTransform(IntPtr obj, float[] masses, [In] ref Matrix principal, [In] ref Vector3 inertia);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_createAabbTreeFromChildren(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

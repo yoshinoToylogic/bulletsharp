@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 
 namespace BulletSharp
@@ -32,7 +32,7 @@ namespace BulletSharp
 
 		public static void SetRayDirectionInverse(this BroadphaseRayCallback obj, OpenTK.Vector3 value)
 		{
-            SetRayDirectionInverse(obj, ref value);
+			SetRayDirectionInverse(obj, ref value);
 		}
 	}
 
@@ -96,6 +96,17 @@ namespace BulletSharp
 							obj.RayTest(ref *(BulletSharp.Math.Vector3*)rayFromPtr, ref *(BulletSharp.Math.Vector3*)rayToPtr, rayCallback, ref *(BulletSharp.Math.Vector3*)aabbMinPtr, ref *(BulletSharp.Math.Vector3*)aabbMaxPtr);
 						}
 					}
+				}
+			}
+		}
+
+		public unsafe static void RayTest(this BroadphaseInterface obj, ref OpenTK.Vector3 rayFrom, ref OpenTK.Vector3 rayTo, BroadphaseRayCallback rayCallback)
+		{
+			fixed (OpenTK.Vector3* rayFromPtr = &rayFrom)
+			{
+				fixed (OpenTK.Vector3* rayToPtr = &rayTo)
+				{
+					obj.RayTest(ref *(BulletSharp.Math.Vector3*)rayFromPtr, ref *(BulletSharp.Math.Vector3*)rayToPtr, rayCallback);
 				}
 			}
 		}
