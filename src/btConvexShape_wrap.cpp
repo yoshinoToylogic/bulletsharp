@@ -41,32 +41,28 @@ void btConvexShape_getPreferredPenetrationDirection(btConvexShape* obj, int inde
 	VECTOR3_DEF_OUT(penetrationVector);
 }
 
-void btConvexShape_localGetSupportingVertex(btConvexShape* obj, btScalar* vec)
+void btConvexShape_localGetSupportingVertex(btConvexShape* obj, btScalar* vec, btScalar* value)
 {
-	VECTOR3_DEF(vec);
-	obj->localGetSupportingVertex(VECTOR3_USE(vec));
-	VECTOR3_DEF_OUT(vec);
+	VECTOR3_CONV(vec);
+	value = obj->localGetSupportingVertex(VECTOR3_USE(vec));
 }
 
-void btConvexShape_localGetSupportingVertexWithoutMargin(btConvexShape* obj, btScalar* vec)
+void btConvexShape_localGetSupportingVertexWithoutMargin(btConvexShape* obj, btScalar* vec, btScalar* value)
 {
-	VECTOR3_DEF(vec);
-	obj->localGetSupportingVertexWithoutMargin(VECTOR3_USE(vec));
-	VECTOR3_DEF_OUT(vec);
+	VECTOR3_CONV(vec);
+	value = obj->localGetSupportingVertexWithoutMargin(VECTOR3_USE(vec));
 }
 
-void btConvexShape_localGetSupportVertexNonVirtual(btConvexShape* obj, btScalar* vec)
+void btConvexShape_localGetSupportVertexNonVirtual(btConvexShape* obj, btScalar* vec, btScalar* value)
 {
-	VECTOR3_DEF(vec);
-	obj->localGetSupportVertexNonVirtual(VECTOR3_USE(vec));
-	VECTOR3_DEF_OUT(vec);
+	VECTOR3_CONV(vec);
+	value = obj->localGetSupportVertexNonVirtual(VECTOR3_USE(vec));
 }
 
-void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(btConvexShape* obj, btScalar* vec)
+void btConvexShape_localGetSupportVertexWithoutMarginNonVirtual(btConvexShape* obj, btScalar* vec, btScalar* value)
 {
-	VECTOR3_DEF(vec);
-	obj->localGetSupportVertexWithoutMarginNonVirtual(VECTOR3_USE(vec));
-	VECTOR3_DEF_OUT(vec);
+	VECTOR3_CONV(vec);
+	value = obj->localGetSupportVertexWithoutMarginNonVirtual(VECTOR3_USE(vec));
 }
 /*
 void btConvexShape_project(btConvexShape* obj, btScalar* trans, btScalar* dir, btScalar* min, btScalar* max)
