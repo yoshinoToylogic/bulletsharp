@@ -5,6 +5,7 @@ using System.IO;
 using System.Windows.Forms;
 using BulletSharp;
 using DemoFramework;
+using BulletSharp.Math;
 
 namespace ConvexDecompositionDemo
 {

@@ -1,3 +1,4 @@
+using BulletSharp.Math;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -5,7 +6,6 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using BulletSharp;
 
 namespace CharacterDemo
 {

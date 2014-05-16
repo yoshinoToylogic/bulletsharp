@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using BulletSharp;
+﻿using BulletSharp;
+using BulletSharp.Math;
 using DemoFramework;
+using System;
+using System.Windows.Forms;
 
 namespace VehicleDemo
 {
@@ -299,7 +300,7 @@ namespace VehicleDemo
             // choose coordinate system
             vehicle.SetCoordinateSystem(rightIndex, upIndex, forwardIndex);
 
-            Vector3 connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
+            BulletSharp.Math.Vector3 connectionPointCS0 = new Vector3(CUBE_HALF_EXTENTS - (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
             vehicle.AddWheel(connectionPointCS0, wheelDirectionCS0, wheelAxleCS, suspensionRestLength, wheelRadius, tuning, isFrontWheel);
 
             connectionPointCS0 = new Vector3(-CUBE_HALF_EXTENTS + (0.3f * wheelWidth), connectionHeight, 2 * CUBE_HALF_EXTENTS - wheelRadius);
