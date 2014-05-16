@@ -105,171 +105,7 @@ namespace BulletSharpGen
 
                 foreach (var c in header.Classes)
                 {
-                    if (!ClassNeedsExtensions(c))
-                    {
-                        continue;
-                    }
-
-                    _extensionMethods.Clear();
-
-                    EnsureWhiteSpace(WriteTo.CS);
-                    OutputTabs(1, WriteTo.CS);
-                    csWriter.WriteLine("[EditorBrowsable(EditorBrowsableState.Never)]");
-                    OutputTabs(1, WriteTo.CS);
-                    csWriter.Write("public static class ");
-                    csWriter.Write(c.ManagedName);
-                    csWriter.WriteLine("Extensions");
-                    OutputTabs(1, WriteTo.CS);
-                    csWriter.WriteLine('{');
-
-                    foreach (var prop in c.Properties)
-                    {
-                        if (_extensionClassesInternal.ContainsKey(prop.Type.ManagedName))
-                        {
-                            // Getter with out parameter
-                            bufferBuilder.Clear();
-                            OutputTabs(2, WriteTo.Buffer);
-                            Write("public unsafe static void Get", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            Write("(this ", WriteTo.Buffer);
-                            Write(c.ManagedName, WriteTo.Buffer);
-                            Write(" obj, out ", WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine(" value)", WriteTo.Buffer);
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('{', WriteTo.Buffer);
-
-                            OutputTabs(3, WriteTo.Buffer);
-                            Write("fixed (", WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine("* valuePtr = &value)", WriteTo.Buffer);
-                            OutputTabs(3, WriteTo.Buffer);
-                            WriteLine('{', WriteTo.Buffer);
-                            OutputTabs(4, WriteTo.Buffer);
-                            Write("*(", WriteTo.Buffer);
-                            Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            Write("*)valuePtr = obj.", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            WriteLine(';', WriteTo.Buffer);
-                            OutputTabs(3, WriteTo.Buffer);
-                            WriteLine('}', WriteTo.Buffer);
-
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('}', WriteTo.Buffer);
-
-                            _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
-
-                            // Getter with return value
-                            bufferBuilder.Clear();
-                            OutputTabs(2, WriteTo.Buffer);
-                            Write("public static ", WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            Write(" Get", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            Write("(this ", WriteTo.Buffer);
-                            Write(c.ManagedName, WriteTo.Buffer);
-                            WriteLine(" obj)", WriteTo.Buffer);
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('{', WriteTo.Buffer);
-
-                            OutputTabs(3, WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine(" value;", WriteTo.Buffer);
-                            OutputTabs(3, WriteTo.Buffer);
-                            Write("Get", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            WriteLine("(obj, out value);", WriteTo.Buffer);
-                            OutputTabs(3, WriteTo.Buffer);
-                            WriteLine("return value;", WriteTo.Buffer);
-
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('}', WriteTo.Buffer);
-
-                            _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
-
-                            if (prop.Setter == null)
-                            {
-                                continue;
-                            }
-
-                            // Setter with ref parameter
-                            bufferBuilder.Clear();
-                            OutputTabs(2, WriteTo.Buffer);
-                            Write("public unsafe static void Set", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            Write("(this ", WriteTo.Buffer);
-                            Write(c.ManagedName, WriteTo.Buffer);
-                            Write(" obj, ref ", WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine(" value)", WriteTo.Buffer);
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('{', WriteTo.Buffer);
-
-                            OutputTabs(3, WriteTo.Buffer);
-                            Write("fixed (", WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine("* valuePtr = &value)", WriteTo.Buffer);
-                            OutputTabs(3, WriteTo.Buffer);
-                            WriteLine('{', WriteTo.Buffer);
-                            OutputTabs(4, WriteTo.Buffer);
-                            Write("obj.", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            Write(" = *(", WriteTo.Buffer);
-                            Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine("*)valuePtr;", WriteTo.Buffer);
-                            OutputTabs(3, WriteTo.Buffer);
-                            WriteLine('}', WriteTo.Buffer);
-
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('}', WriteTo.Buffer);
-
-                            _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
-
-                            // Setter with non-ref parameter
-                            bufferBuilder.Clear();
-                            OutputTabs(2, WriteTo.Buffer);
-                            Write("public static void Set", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            Write("(this ", WriteTo.Buffer);
-                            Write(c.ManagedName, WriteTo.Buffer);
-                            Write(" obj, ", WriteTo.Buffer);
-                            Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
-                            WriteLine(" value)", WriteTo.Buffer);
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('{', WriteTo.Buffer);
-
-                            OutputTabs(3, WriteTo.Buffer);
-                            Write("Set", WriteTo.Buffer);
-                            Write(prop.Name, WriteTo.Buffer);
-                            WriteLine("(obj, ref value);", WriteTo.Buffer);
-
-                            OutputTabs(2, WriteTo.Buffer);
-                            WriteLine('}', WriteTo.Buffer);
-
-                            _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
-                        }
-                    }
-
-                    foreach (var method in c.Methods)
-                    {
-                        if (!MethodNeedsExtensions(method))
-                        {
-                            continue;
-                        }
-
-                        WriteMethod(method);
-                    }
-
-                    foreach (KeyValuePair<string, string> method in _extensionMethods.OrderBy(key => key.Key))
-                    {
-                        EnsureWhiteSpace(WriteTo.CS);
-                        csWriter.Write(method.Value);
-                        hasCSWhiteSpace = false;
-                    }
-
-                    OutputTabs(1, WriteTo.CS);
-                    csWriter.WriteLine('}');
-                    hasCSWhiteSpace = false;
+                    WriteClass(c);
                 }
 
                 csWriter.WriteLine("}");
@@ -277,6 +113,180 @@ namespace BulletSharpGen
                 csWriter.Dispose();
                 csFile.Dispose();
             }
+        }
+
+        private void WriteClass(ClassDefinition c)
+        {
+            foreach (var child in c.Classes)
+            {
+                WriteClass(child);
+            }
+
+            if (!ClassNeedsExtensions(c))
+            {
+                return;
+            }
+
+            _extensionMethods.Clear();
+
+            EnsureWhiteSpace(WriteTo.CS);
+            OutputTabs(1, WriteTo.CS);
+            csWriter.WriteLine("[EditorBrowsable(EditorBrowsableState.Never)]");
+            OutputTabs(1, WriteTo.CS);
+            csWriter.Write("public static class ");
+            csWriter.Write(c.ManagedName);
+            csWriter.WriteLine("Extensions");
+            OutputTabs(1, WriteTo.CS);
+            csWriter.WriteLine('{');
+
+            foreach (var prop in c.Properties)
+            {
+                if (_extensionClassesInternal.ContainsKey(prop.Type.ManagedName))
+                {
+                    // Getter with out parameter
+                    bufferBuilder.Clear();
+                    OutputTabs(2, WriteTo.Buffer);
+                    Write("public unsafe static void Get", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    Write("(this ", WriteTo.Buffer);
+                    Write(c.ManagedName, WriteTo.Buffer);
+                    Write(" obj, out ", WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine(" value)", WriteTo.Buffer);
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('{', WriteTo.Buffer);
+
+                    OutputTabs(3, WriteTo.Buffer);
+                    Write("fixed (", WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine("* valuePtr = &value)", WriteTo.Buffer);
+                    OutputTabs(3, WriteTo.Buffer);
+                    WriteLine('{', WriteTo.Buffer);
+                    OutputTabs(4, WriteTo.Buffer);
+                    Write("*(", WriteTo.Buffer);
+                    Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    Write("*)valuePtr = obj.", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    WriteLine(';', WriteTo.Buffer);
+                    OutputTabs(3, WriteTo.Buffer);
+                    WriteLine('}', WriteTo.Buffer);
+
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('}', WriteTo.Buffer);
+
+                    _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
+
+                    // Getter with return value
+                    bufferBuilder.Clear();
+                    OutputTabs(2, WriteTo.Buffer);
+                    Write("public static ", WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    Write(" Get", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    Write("(this ", WriteTo.Buffer);
+                    Write(c.ManagedName, WriteTo.Buffer);
+                    WriteLine(" obj)", WriteTo.Buffer);
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('{', WriteTo.Buffer);
+
+                    OutputTabs(3, WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine(" value;", WriteTo.Buffer);
+                    OutputTabs(3, WriteTo.Buffer);
+                    Write("Get", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    WriteLine("(obj, out value);", WriteTo.Buffer);
+                    OutputTabs(3, WriteTo.Buffer);
+                    WriteLine("return value;", WriteTo.Buffer);
+
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('}', WriteTo.Buffer);
+
+                    _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
+
+                    if (prop.Setter == null)
+                    {
+                        continue;
+                    }
+
+                    // Setter with ref parameter
+                    bufferBuilder.Clear();
+                    OutputTabs(2, WriteTo.Buffer);
+                    Write("public unsafe static void Set", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    Write("(this ", WriteTo.Buffer);
+                    Write(c.ManagedName, WriteTo.Buffer);
+                    Write(" obj, ref ", WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine(" value)", WriteTo.Buffer);
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('{', WriteTo.Buffer);
+
+                    OutputTabs(3, WriteTo.Buffer);
+                    Write("fixed (", WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine("* valuePtr = &value)", WriteTo.Buffer);
+                    OutputTabs(3, WriteTo.Buffer);
+                    WriteLine('{', WriteTo.Buffer);
+                    OutputTabs(4, WriteTo.Buffer);
+                    Write("obj.", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    Write(" = *(", WriteTo.Buffer);
+                    Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine("*)valuePtr;", WriteTo.Buffer);
+                    OutputTabs(3, WriteTo.Buffer);
+                    WriteLine('}', WriteTo.Buffer);
+
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('}', WriteTo.Buffer);
+
+                    _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
+
+                    // Setter with non-ref parameter
+                    bufferBuilder.Clear();
+                    OutputTabs(2, WriteTo.Buffer);
+                    Write("public static void Set", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    Write("(this ", WriteTo.Buffer);
+                    Write(c.ManagedName, WriteTo.Buffer);
+                    Write(" obj, ", WriteTo.Buffer);
+                    Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
+                    WriteLine(" value)", WriteTo.Buffer);
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('{', WriteTo.Buffer);
+
+                    OutputTabs(3, WriteTo.Buffer);
+                    Write("Set", WriteTo.Buffer);
+                    Write(prop.Name, WriteTo.Buffer);
+                    WriteLine("(obj, ref value);", WriteTo.Buffer);
+
+                    OutputTabs(2, WriteTo.Buffer);
+                    WriteLine('}', WriteTo.Buffer);
+
+                    _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
+                }
+            }
+
+            foreach (var method in c.Methods)
+            {
+                if (!MethodNeedsExtensions(method))
+                {
+                    continue;
+                }
+
+                WriteMethod(method);
+            }
+
+            foreach (KeyValuePair<string, string> method in _extensionMethods.OrderBy(key => key.Key))
+            {
+                EnsureWhiteSpace(WriteTo.CS);
+                csWriter.Write(method.Value);
+                hasCSWhiteSpace = false;
+            }
+
+            OutputTabs(1, WriteTo.CS);
+            csWriter.WriteLine('}');
+            hasCSWhiteSpace = false;
         }
 
         private void WriteMethod(MethodDefinition method, int numOptionalParams = 0)
