@@ -1,9 +1,10 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using BulletSharp;
+﻿using BulletSharp;
+using BulletSharp.Math;
 using BulletSharp.SoftBody;
 using DemoFramework;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 using Face = BulletSharp.SoftBody.Face;
 
 namespace SoftDemo

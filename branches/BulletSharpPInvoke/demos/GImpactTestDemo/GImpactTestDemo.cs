@@ -3,10 +3,11 @@
 #define BULLET_GIMPACT
 //#define BULLET_GIMPACT_CONVEX_DECOMPOSITION
 
+using BulletSharp;
+using BulletSharp.Math;
+using DemoFramework;
 using System;
 using System.Windows.Forms;
-using BulletSharp;
-using DemoFramework;
 
 namespace GImpactTestDemo
 {

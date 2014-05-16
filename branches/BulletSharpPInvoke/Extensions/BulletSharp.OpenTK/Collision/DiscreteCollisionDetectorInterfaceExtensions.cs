@@ -3,6 +3,81 @@ using System.ComponentModel;
 namespace BulletSharp
 {
 	[EditorBrowsable(EditorBrowsableState.Never)]
+	public static class ResultExtensions
+	{
+        public unsafe static void AddContactPoint(this DiscreteCollisionDetectorInterface.Result obj, ref OpenTK.Vector3 normalOnBInWorld, ref OpenTK.Vector3 pointInWorld, float depth)
+		{
+			fixed (OpenTK.Vector3* normalOnBInWorldPtr = &normalOnBInWorld)
+			{
+				fixed (OpenTK.Vector3* pointInWorldPtr = &pointInWorld)
+				{
+					obj.AddContactPoint(ref *(BulletSharp.Math.Vector3*)normalOnBInWorldPtr, ref *(BulletSharp.Math.Vector3*)pointInWorldPtr, depth);
+				}
+			}
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Never)]
+	public static class ClosestPointInputExtensions
+	{
+		public unsafe static void GetTransformA(this DiscreteCollisionDetectorInterface.ClosestPointInput obj, out OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				*(BulletSharp.Math.Matrix*)valuePtr = obj.TransformA;
+			}
+		}
+
+        public static OpenTK.Matrix4 GetTransformA(this DiscreteCollisionDetectorInterface.ClosestPointInput obj)
+		{
+			OpenTK.Matrix4 value;
+			GetTransformA(obj, out value);
+			return value;
+		}
+
+        public unsafe static void GetTransformB(this DiscreteCollisionDetectorInterface.ClosestPointInput obj, out OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				*(BulletSharp.Math.Matrix*)valuePtr = obj.TransformB;
+			}
+		}
+
+        public static OpenTK.Matrix4 GetTransformB(this DiscreteCollisionDetectorInterface.ClosestPointInput obj)
+		{
+			OpenTK.Matrix4 value;
+			GetTransformB(obj, out value);
+			return value;
+		}
+
+        public unsafe static void SetTransformA(this DiscreteCollisionDetectorInterface.ClosestPointInput obj, ref OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				obj.TransformA = *(BulletSharp.Math.Matrix*)valuePtr;
+			}
+		}
+
+        public static void SetTransformA(this DiscreteCollisionDetectorInterface.ClosestPointInput obj, OpenTK.Matrix4 value)
+		{
+			SetTransformA(obj, ref value);
+		}
+
+        public unsafe static void SetTransformB(this DiscreteCollisionDetectorInterface.ClosestPointInput obj, ref OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				obj.TransformB = *(BulletSharp.Math.Matrix*)valuePtr;
+			}
+		}
+
+        public static void SetTransformB(this DiscreteCollisionDetectorInterface.ClosestPointInput obj, OpenTK.Matrix4 value)
+		{
+			SetTransformB(obj, ref value);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public static class StorageResultExtensions
 	{
 		public unsafe static void GetClosestPointInB(this StorageResult obj, out OpenTK.Vector3 value)

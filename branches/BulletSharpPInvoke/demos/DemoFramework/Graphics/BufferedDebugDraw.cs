@@ -1,7 +1,7 @@
-﻿using System;
+﻿using BulletSharp;
+using BulletSharp.Math;
+using System;
 using System.Collections.Generic;
-using System.Drawing;
-using BulletSharp;
 
 namespace DemoFramework
 {

@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using BulletSharp;
+﻿using BulletSharp;
 using BulletSharp.SoftBody;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
 //using Vector3 = OpenTK.Vector3;
-using Vector3 = BulletSharp.Vector3;
+using Vector3 = BulletSharp.Math.Vector3;
 
 namespace DemoFramework.OpenTK
 {
@@ -220,7 +220,7 @@ namespace DemoFramework.OpenTK
         {
             ShapeData shapeData = new ShapeData();
             uint[] indices;
-            BulletSharp.Vector3[] vertexBuffer = CreateShape(shape, out indices);
+            BulletSharp.Math.Vector3[] vertexBuffer = CreateShape(shape, out indices);
             shapeData.VertexCount = vertexBuffer.Length / 2;
 
             Vector3[] vertices = new Vector3[shapeData.VertexCount];
@@ -297,14 +297,14 @@ namespace DemoFramework.OpenTK
             return shapeData;
         }
 
-        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref BulletSharp.Matrix transform)
+        void InitInstanceData(CollisionObject colObj, CollisionShape shape, ref BulletSharp.Math.Matrix transform)
         {
             switch (shape.ShapeType)
             {
                 case BroadphaseNativeType.CompoundShape:
                     foreach (CompoundShapeChild child in (shape as CompoundShape).ChildList)
                     {
-                        BulletSharp.Matrix childTransform = child.Transform * transform;
+                        BulletSharp.Math.Matrix childTransform = child.Transform * transform;
                         InitInstanceData(colObj, child.ChildShape, ref childTransform);
                     }
                     break;
@@ -341,12 +341,12 @@ namespace DemoFramework.OpenTK
             {
                 CollisionObject colObj = objects[i];
 
-                BulletSharp.Matrix transform;
+                BulletSharp.Math.Matrix transform;
                 if (colObj is SoftBody)
                 {
                     if (demo.IsDebugDrawEnabled)
                         continue;
-                    transform = BulletSharp.Matrix.Identity;
+                    transform = BulletSharp.Math.Matrix.Identity;
                 }
                 else
                 {

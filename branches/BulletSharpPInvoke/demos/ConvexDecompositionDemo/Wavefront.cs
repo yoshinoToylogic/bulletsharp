@@ -1,7 +1,7 @@
+using BulletSharp.Math;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using BulletSharp;
 
 namespace ConvexDecompositionDemo
 {

@@ -1,7 +1,8 @@
-﻿using System;
-using System.Windows.Forms;
-using BulletSharp;
+﻿using BulletSharp;
+using BulletSharp.Math;
 using DemoFramework;
+using System;
+using System.Windows.Forms;
 
 namespace CharacterDemo
 {

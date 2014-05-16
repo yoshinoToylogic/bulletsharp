@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
+using BulletSharp.Math;
 
 namespace DemoFramework
 {

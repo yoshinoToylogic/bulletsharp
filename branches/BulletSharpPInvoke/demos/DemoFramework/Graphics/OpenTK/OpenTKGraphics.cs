@@ -112,7 +112,7 @@ namespace DemoFramework.OpenTK
             Version req = new Version(3, 1, 0, 0);
 
             if (ver < req)
-                MessageBox.Show(string.Format("Need OpenGL {0:0.0} or newer to run. Have {0:0.0}.", req.ToString(), ver.ToString()));
+                MessageBox.Show(string.Format("Need OpenGL {0:0.0} or newer to run. Have {1:0.0}.", req.ToString(), ver.ToString()));
 
             GL.ClearColor(Color.Gray);
 
