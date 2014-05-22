@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -34,6 +35,81 @@ namespace BulletSharp
 		{
 			btDiscreteDynamicsWorld_debugDrawConstraint(_native, constraint._native);
 		}
+
+        private unsafe void SerializeDynamicsWorldInfo(Serializer serializer)
+        {
+            int len = 88;
+            Chunk chunk = serializer.Allocate((uint)len, 1);
+
+            using (UnmanagedMemoryStream stream = new UnmanagedMemoryStream((byte*)chunk.OldPtr.ToPointer(), len, len, FileAccess.Write))
+            {
+                using (BinaryWriter writer = new BinaryWriter(stream))
+                {
+                    ContactSolverInfo solverInfo = SolverInfo;
+                    writer.Write(solverInfo.Tau);
+                    writer.Write(solverInfo.Damping);
+                    writer.Write(solverInfo.Friction);
+                    writer.Write(solverInfo.TimeStep);
+
+                    writer.Write(solverInfo.Restitution);
+                    writer.Write(solverInfo.MaxErrorReduction);
+                    writer.Write(solverInfo.Sor);
+                    writer.Write(solverInfo.Erp);
+
+                    writer.Write(solverInfo.Erp2);
+                    writer.Write(solverInfo.GlobalCfm);
+                    writer.Write(solverInfo.SplitImpulsePenetrationThreshold);
+                    writer.Write(solverInfo.SplitImpulseTurnErp);
+
+                    writer.Write(solverInfo.LinearSlop);
+                    writer.Write(solverInfo.WarmStartingFactor);
+                    writer.Write(solverInfo.MaxGyroscopicForce);
+                    writer.Write(solverInfo.SingleAxisRollingFrictionThreshold);
+
+                    writer.Write(solverInfo.NumIterations);
+                    writer.Write((int)solverInfo.SolverMode);
+                    writer.Write(solverInfo.RestingContactRestitutionThreshold);
+                    writer.Write(solverInfo.MinimumSolverBatchSize);
+
+                    writer.Write(solverInfo.SplitImpulse);
+                    writer.Write((int)0); // padding
+                }
+            }
+
+            serializer.FinalizeChunk(chunk, "btDynamicsWorldFloatData", DnaID.DynamicsWorld, chunk.OldPtr);
+        }
+
+        void SerializeRigidBodies(Serializer serializer)
+        {
+            foreach (CollisionObject colObj in CollisionObjectArray)
+            {
+                if (colObj.InternalType == CollisionObjectTypes.RigidBody)
+                {
+                    int len = colObj.CalculateSerializeBufferSize();
+                    Chunk chunk = serializer.Allocate((uint)len, 1);
+                    string structType = colObj.Serialize(chunk.OldPtr, serializer);
+                    serializer.FinalizeChunk(chunk, structType, DnaID.RigidBody, colObj._native);
+                }
+            }
+
+            for (int i = 0; i < NumConstraints; i++)
+            {
+                TypedConstraint constraint = GetConstraint(i);
+                int len = constraint.CalculateSerializeBufferSize();
+                Chunk chunk = serializer.Allocate((uint)len, 1);
+                string structType = constraint.Serialize(chunk.OldPtr, serializer);
+                serializer.FinalizeChunk(chunk, structType, DnaID.Constraint, constraint._native);
+            }
+        }
+
+        public override void Serialize(Serializer serializer)
+        {
+            serializer.StartSerialization();
+            SerializeDynamicsWorldInfo(serializer);
+            SerializeRigidBodies(serializer);
+            SerializeCollisionObjects(serializer);
+            serializer.FinishSerialization();
+        }
 
 		public void SetNumTasks(int numTasks)
 		{

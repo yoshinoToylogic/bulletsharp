@@ -1,5 +1,6 @@
 using BulletSharp.Math;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -33,7 +34,38 @@ namespace BulletSharp
 		{
 			return btMultiSphereShape_getSphereRadius(_native, index);
 		}
+        /*
+        public unsafe override string Serialize(IntPtr dataBuffer, Serializer serializer)
+        {
+            base.Serialize(dataBuffer, serializer);
 
+            int numElem = SphereCount;
+            if (numElem != 0)
+            {
+                Chunk chunk = serializer.Allocate(16 + sizeof(int), numElem);
+                Marshal.WriteInt64(dataBuffer, 0, serializer.GetUniquePointer(_native + 4));
+                using (UnmanagedMemoryStream stream = new UnmanagedMemoryStream((byte*)chunk.OldPtr.ToPointer(), chunk.Length, chunk.Length, FileAccess.Write))
+                {
+                    using (BulletWriter writer = new BulletWriter(stream))
+                    {
+                        for (int i = 0; i < SphereCount; i++)
+                        {
+                            writer.Write(GetSpherePosition(i));
+                            writer.Write(GetSphereRadius(i));
+                        }
+                    }
+                }
+                serializer.FinalizeChunk(chunk, "btPositionAndRadius", DnaID.Array, _native + 4);
+            }
+            else
+            {
+                Marshal.WriteInt64(dataBuffer, 0, 0);
+            }
+            Marshal.WriteInt32(dataBuffer, 4, numElem);
+
+            return "btMultiSphereShapeData";
+        }
+        */
 		public int SphereCount
 		{
 			get { return btMultiSphereShape_getSphereCount(_native); }
@@ -49,70 +81,5 @@ namespace BulletSharp
 		static extern void btMultiSphereShape_getSpherePosition(IntPtr obj, int index, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultiSphereShape_getSphereRadius(IntPtr obj, int index);
-	}
-
-	public class PositionAndRadius
-	{
-		internal IntPtr _native;
-
-		internal PositionAndRadius(IntPtr native)
-		{
-			_native = native;
-		}
-
-		public PositionAndRadius()
-		{
-			_native = btPositionAndRadius_new();
-		}
-        /*
-		public Vector3 Pos
-		{
-            get
-            {
-                Vector3 value;
-                btPositionAndRadius_getPos(_native, out value);
-                return value;
-            }
-			set { btPositionAndRadius_setPos(_native, ref value); }
-		}
-        */
-		public float Radius
-		{
-			get { return btPositionAndRadius_getRadius(_native); }
-			set { btPositionAndRadius_setRadius(_native, value); }
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btPositionAndRadius_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~PositionAndRadius()
-		{
-			Dispose(false);
-		}
-
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btPositionAndRadius_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPositionAndRadius_getPos(IntPtr obj, [Out] out Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btPositionAndRadius_getRadius(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPositionAndRadius_setPos(IntPtr obj, [In] ref Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPositionAndRadius_setRadius(IntPtr obj, float value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPositionAndRadius_delete(IntPtr obj);
 	}
 }

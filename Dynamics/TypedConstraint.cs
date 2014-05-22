@@ -452,12 +452,12 @@ namespace BulletSharp
 		{
 			return btTypedConstraint_needsFeedback(_native);
 		}
-        /*
-		public char Serialize(IntPtr dataBuffer, Serializer serializer)
+
+		public string Serialize(IntPtr dataBuffer, Serializer serializer)
 		{
-			return btTypedConstraint_serialize(_native, dataBuffer, serializer._native);
+			return Marshal.PtrToStringAnsi(btTypedConstraint_serialize(_native, dataBuffer, serializer._native));
 		}
-        */
+
         public void SetParam(ConstraintParam num, float value, int axis)
 		{
 			btTypedConstraint_setParam(_native, num, value, axis);

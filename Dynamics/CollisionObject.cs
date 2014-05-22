@@ -70,7 +70,7 @@ namespace BulletSharp
             }
 
             throw new NotImplementedException();
-            return new CollisionObject(obj);
+            //return new CollisionObject(obj);
         }
 
         internal CollisionObject(IntPtr obj)
@@ -142,12 +142,12 @@ namespace BulletSharp
 		{
 			return btCollisionObject_mergesSimulationIslands(_native);
 		}
-        /*
-		public char Serialize(IntPtr dataBuffer, Serializer serializer)
+        
+		public string Serialize(IntPtr dataBuffer, Serializer serializer)
 		{
-			return btCollisionObject_serialize(_native, dataBuffer, serializer._native);
+			return Marshal.PtrToStringAnsi(btCollisionObject_serialize(_native, dataBuffer, serializer._native));
 		}
-        */
+
 		public void SerializeSingleObject(Serializer serializer)
 		{
 			btCollisionObject_serializeSingleObject(_native, serializer._native);

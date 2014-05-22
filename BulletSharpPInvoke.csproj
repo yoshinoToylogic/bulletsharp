@@ -57,6 +57,7 @@
     <Compile Include="Dynamics\FixedConstraint.cs" />
     <Compile Include="Dynamics\NncgConstraintSolver.cs" />
     <Compile Include="Extras\BulletReader.cs" />
+    <Compile Include="Extras\BulletWriter.cs" />
     <Compile Include="Extras\Chunk.cs" />
     <Compile Include="Extras\Dna.cs" />
     <Compile Include="Extras\BulletDna.cs" />

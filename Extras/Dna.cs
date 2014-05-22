@@ -29,6 +29,11 @@ namespace BulletSharp
                 return Type.Equals(other.Type) && Name.Equals(other.Name);
             }
 
+            public override int GetHashCode()
+            {
+                return Type.GetHashCode() + Name.GetHashCode();
+            }
+
             public override string ToString()
             {
                 return Type + ": " + Name.ToString();
@@ -63,6 +68,11 @@ namespace BulletSharp
                 }
 
                 return Type.Equals(other.Type);
+            }
+
+            public override int GetHashCode()
+            {
+                return Type.GetHashCode() + Elements.Length;
             }
 
             public override string ToString()
@@ -167,6 +177,11 @@ namespace BulletSharp
                 }
                 NameInfo other = obj as NameInfo;
                 return Name.Equals(other.Name);
+            }
+
+            public override int GetHashCode()
+            {
+                return Name.GetHashCode();
             }
 
             public override string ToString()

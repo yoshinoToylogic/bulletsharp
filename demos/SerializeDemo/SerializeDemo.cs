@@ -2,6 +2,8 @@
 using BulletSharp.Math;
 using DemoFramework;
 using System;
+using System.IO;
+using System.Runtime.InteropServices;
 
 namespace SerializeDemo
 {
@@ -131,7 +133,8 @@ namespace SerializeDemo
                     }
                 }
 
-                DefaultSerializer serializer = new DefaultSerializer();
+                const int maxSerializeBufferSize = 1024 * 1024 * 5;
+                DefaultSerializer serializer = new DefaultSerializer(maxSerializeBufferSize);
 
                 serializer.RegisterNameForObject(ground, "GroundName");
 
@@ -144,14 +147,13 @@ namespace SerializeDemo
                 serializer.RegisterNameForObject(p2p, "constraintje");
 
                 World.Serialize(serializer);
-                /*
-                BulletSharp.DataStream data = serializer.LockBuffer();
-                byte[] dataBytes = new byte[data.Length];
-                data.Read(dataBytes, 0, dataBytes.Length);
+
+                byte[] dataBytes = new byte[serializer.CurrentBufferSize];
+                Marshal.Copy(serializer.BufferPointer, dataBytes, 0, dataBytes.Length);
 
                 FileStream file = new FileStream("testFile.bullet", FileMode.Create);
                 file.Write(dataBytes, 0, dataBytes.Length);
-                file.Close();*/
+                file.Dispose();
             }
         }
     }

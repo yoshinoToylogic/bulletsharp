@@ -74,6 +74,11 @@ namespace BulletSharp
         public long OldPtr;
         public int DnaNR;
         public int NR;
+
+        public static int Size
+        {
+            get { return Marshal.SizeOf((IntPtr.Size == 8) ? typeof(ChunkPtr8) : typeof(ChunkPtr4)); }
+        }
     }
 
     public static class ChunkUtils
