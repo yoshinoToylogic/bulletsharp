@@ -61,20 +61,20 @@ namespace BulletSharp
         public List<byte[]> _rigidBodies = new List<byte[]>();
 
 		public BulletFile()
-			: base(btBulletFile_new())
+			: base("", "BULLET ")
 		{
+            throw new NotImplementedException();
 		}
         
 		public BulletFile(string fileName)
             : base(fileName, "BULLET ")
 		{
 		}
-        /*
-		public BulletFile(char memoryBuffer, int len)
-			: base(btBulletFile_new3(memoryBuffer._native, len))
+
+		public BulletFile(byte[] memoryBuffer, int len)
+            : base(memoryBuffer, len, "BULLET ")
 		{
 		}
-        */
 
         public override void AddDataBlock(byte[] dataBlock)
         {
@@ -238,31 +238,5 @@ namespace BulletSharp
 			get { return btBulletFile_getTriangleInfoMaps(_native); }
 		}
         */
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBulletFile_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBulletFile_new2(IntPtr fileName);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBulletFile_new3(IntPtr memoryBuffer, int len);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_addStruct(IntPtr obj, IntPtr structType, IntPtr data, int len, IntPtr oldPtr, int code);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getBvhs(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getCollisionObjects(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getCollisionShapes(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getConstraints(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getDataBlocks(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getDynamicsWorldInfo(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getRigidBodies(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getSoftBodies(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletFile_getTriangleInfoMaps(IntPtr obj);
 	}
 }

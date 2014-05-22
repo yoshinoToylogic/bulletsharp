@@ -60,40 +60,38 @@ namespace BulletSharp
 
             return true;
 		}
-        
-        public bool LoadFile(string fileName, string preSwapFilenameOut)
-		{
-			return btBulletWorldImporter_loadFile(_native, fileName, preSwapFilenameOut);
-		}
 
-        public bool LoadFile(string fileName)
+        public bool LoadFile(string fileName, string preSwapFilenameOut)
 		{
 			BulletFile bulletFile = new BulletFile(fileName);
             bool result = LoadFileFromMemory(bulletFile);
 
-            /*
             //now you could save the file in 'native' format using
-            //bulletFile2->writeFile("native.bullet");
+            //bulletFile.WriteFile("native.bullet");
             if (result)
             {
-                    if (preSwapFilenameOut)
+                    if (preSwapFilenameOut != null)
                     {
-                            bulletFile2->preSwap();
-                            bulletFile2->writeFile(preSwapFilenameOut);
+                        bulletFile.PreSwap();
+                        //bulletFile.WriteFile(preSwapFilenameOut);
                     }
                 
             }
-            */
 
-            bulletFile.Dispose();
             return result;
 		}
-        /*
-		public bool LoadFileFromMemory(char memoryBuffer, int len)
+
+        public bool LoadFile(string fileName)
+        {
+            return LoadFile(fileName, null);
+        }
+        
+		public bool LoadFileFromMemory(byte[] memoryBuffer, int len)
 		{
-			return btBulletWorldImporter_loadFileFromMemory(_native, memoryBuffer._native, len);
+            BulletFile bulletFile = new BulletFile(memoryBuffer, len);
+            return LoadFileFromMemory(bulletFile);
 		}
-        */
+        
         public bool LoadFileFromMemory(BulletFile bulletFile)
 		{
             if ((bulletFile.Flags & FileFlags.OK) != FileFlags.OK)
@@ -110,12 +108,5 @@ namespace BulletSharp
 
             return ConvertAllObjects(bulletFile);
 		}
-        
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btBulletWorldImporter_loadFile(IntPtr obj, string fileName, string preSwapFilenameOut);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btBulletWorldImporter_loadFile2(IntPtr obj, string fileName);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBulletWorldImporter_loadFileFromMemory(IntPtr obj, IntPtr memoryBuffer, int len);
 	}
 }

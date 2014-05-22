@@ -1,5 +1,6 @@
 using BulletSharp.Math;
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -948,9 +949,35 @@ namespace BulletSharp
 			btCollisionWorld_removeCollisionObject(_native, collisionObject._native);
 		}
 
-		public void Serialize(Serializer serializer)
+        protected void SerializeCollisionObjects(Serializer serializer)
+        {
+            foreach (CollisionObject colObj in CollisionObjectArray)
+            {
+                if (colObj.InternalType == CollisionObjectTypes.CollisionObject)
+                {
+                    colObj.SerializeSingleObject(serializer);
+                }
+            }
+
+	        // keep track of shapes already serialized
+            Dictionary<CollisionShape, int> serializedShapes = new Dictionary<CollisionShape, int>();
+
+            foreach (CollisionObject colObj in CollisionObjectArray)
+            {
+                CollisionShape shape = colObj.CollisionShape;
+                if (!serializedShapes.ContainsKey(shape))
+                {
+                    serializedShapes.Add(shape, 0);
+                    shape.SerializeSingleShape(serializer);
+                }
+            }
+        }
+
+		public virtual void Serialize(Serializer serializer)
 		{
-			btCollisionWorld_serialize(_native, serializer._native);
+            serializer.StartSerialization();
+            SerializeCollisionObjects(serializer);
+            serializer.FinishSerialization();
 		}
 
 		public void UpdateAabbs()
@@ -1124,8 +1151,6 @@ namespace BulletSharp
 		static extern void btCollisionWorld_rayTestSingleInternal([In] ref Matrix rayFromTrans, [In] ref Matrix rayToTrans, IntPtr collisionObjectWrap, IntPtr resultCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_removeCollisionObject(IntPtr obj, IntPtr collisionObject);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_serialize(IntPtr obj, IntPtr serializer);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_setBroadphase(IntPtr obj, IntPtr pairCache);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

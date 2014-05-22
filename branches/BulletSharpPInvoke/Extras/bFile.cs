@@ -33,8 +33,6 @@ namespace BulletSharp
 
 	public abstract class bFile
 	{
-		internal IntPtr _native;
-
         const int SizeOfBlenderHeader = 12;
 
         protected List<ChunkInd> _chunks = new List<ChunkInd>();
@@ -50,15 +48,24 @@ namespace BulletSharp
         public bFile(string filename, string headerString)
         {
             _headerString = headerString;
-            _fileBuffer = File.ReadAllBytes(filename);
+            try
+            {
+                _fileBuffer = File.ReadAllBytes(filename);
+                ParseHeader();
+            }
+            catch
+            {
+
+            }
+        }
+
+        public bFile(byte[] memoryBuffer, int len, string headerString)
+        {
+            _headerString = headerString;
+            _fileBuffer = memoryBuffer;
 
             ParseHeader();
         }
-
-		internal bFile(IntPtr native)
-		{
-			_native = native;
-		}
 
         public abstract void AddDataBlock(byte[] dataBlock);
 
@@ -223,9 +230,9 @@ namespace BulletSharp
             return dataChunk.Length + ChunkUtils.GetOffset(flags);
         }
 
-		public bool Ok()
+		public bool OK
 		{
-			return bFile_ok(_native);
+            get { return (_flags & FileFlags.OK) != 0; }
 		}
 
 		public abstract void Parse(FileVerboseMode verboseMode);
@@ -449,7 +456,7 @@ namespace BulletSharp
 
 		public void PreSwap()
 		{
-			bFile_preSwap(_native);
+            throw new NotImplementedException();
 		}
 
         protected byte[] ReadStruct(BinaryReader head, ChunkInd dataChunk)
@@ -724,50 +731,7 @@ namespace BulletSharp
         
 		public int Version
 		{
-			get { return bFile_getVersion(_native); }
+            get { return _version; }
 		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				bFile_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~bFile()
-		{
-			Dispose(false);
-		}
-
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_dumpChunks(IntPtr obj, IntPtr dna);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr bFile_getFileDNA(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int bFile_getVersion(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool bFile_ok(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_preSwap(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int bFile_write(IntPtr obj, IntPtr fileName, bool fixupPointers);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int bFile_write2(IntPtr obj, IntPtr fileName);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_writeChunks(IntPtr obj, IntPtr fp, bool fixupPointers);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_writeDNA(IntPtr obj, IntPtr fp);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_writeFile(IntPtr obj, IntPtr fileName);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void bFile_delete(IntPtr obj);
 	}
 }

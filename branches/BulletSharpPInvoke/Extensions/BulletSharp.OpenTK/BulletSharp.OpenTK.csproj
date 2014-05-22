@@ -40,6 +40,7 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collision\Box2dShapeExtensions.cs" />
     <Compile Include="Collision\BoxShapeExtensions.cs" />
     <Compile Include="Collision\BroadphaseInterfaceExtensions.cs" />
     <Compile Include="Collision\BroadphaseProxyExtensions.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Collision\ConvexInternalShapeExtensions.cs" />
     <Compile Include="Collision\ConvexPenetrationDepthSolverExtensions.cs" />
     <Compile Include="Collision\ConvexPlaneCollisionAlgorithmExtensions.cs" />
+    <Compile Include="Collision\ConvexPointCloudShapeExtensions.cs" />
     <Compile Include="Collision\ConvexPolyhedronExtensions.cs" />
     <Compile Include="Collision\ConvexShapeExtensions.cs" />
     <Compile Include="Collision\ConvexTriangleMeshShapeExtensions.cs" />
@@ -63,6 +65,8 @@
     <Compile Include="Collision\GhostObjectExtensions.cs" />
     <Compile Include="Collision\GjkPairDetectorExtensions.cs" />
     <Compile Include="Collision\ManifoldPointExtensions.cs" />
+    <Compile Include="Collision\MinkowskiSumShapeExtensions.cs" />
+    <Compile Include="Collision\MultimaterialTriangleMeshShapeExtensions.cs" />
     <Compile Include="Collision\MultiSphereShapeExtensions.cs" />
     <Compile Include="Collision\PersistentManifoldExtensions.cs" />
     <Compile Include="Collision\PointCollectorExtensions.cs" />
@@ -77,6 +81,7 @@
     <Compile Include="Collision\TetrahedronShapeExtensions.cs" />
     <Compile Include="Collision\TriangleMeshExtensions.cs" />
     <Compile Include="Collision\TriangleMeshShapeExtensions.cs" />
+    <Compile Include="Collision\TriangleShapeExtensions.cs" />
     <Compile Include="Collision\VoronoiSimplexSolverExtensions.cs" />
     <Compile Include="DefaultMotionStateExtensions.cs" />
     <Compile Include="Dynamics\CharacterControllerInterfaceExtensions.cs" />
@@ -102,7 +107,6 @@
     <Compile Include="Math\Vector3Extensions.cs" />
     <Compile Include="MotionStateExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RigidBodyConstructionInfoExtensions.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

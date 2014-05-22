@@ -118,6 +118,27 @@ namespace BulletSharp
                                     shape = hullShape;
                                     break;
                                 }
+                            case BroadphaseNativeType.MultiSphereShape:
+                                {
+                                    long localPositionArrayPtr = reader.ReadPtr();
+                                    byte[] localPositionArray = libPointers[localPositionArrayPtr];
+                                    int localPositionArraySize = reader.ReadInt32();
+                                    Vector3[] positions = new Vector3[localPositionArraySize];
+                                    float[] radi = new float[localPositionArraySize];
+                                    using (MemoryStream localPositionArrayStream = new MemoryStream(localPositionArray))
+                                    {
+                                        using (BulletReader localPositionArrayReader = new BulletReader(localPositionArrayStream))
+                                        {
+                                            for (int i = 0; i < localPositionArraySize; i++)
+                                            {
+                                                positions[i] = localPositionArrayReader.ReadVector3();
+                                                radi[i] = localPositionArrayReader.ReadSingle();
+                                            }
+                                        }
+                                    }
+                                    shape = CreateMultiSphereShape(positions, radi);
+                                    break;
+                                }
                             default:
                                 throw new NotImplementedException();
                         }
@@ -309,12 +330,14 @@ namespace BulletSharp
 		{
 			return btWorldImporter_createMeshInterface(_native, meshData._native);
 		}
-
-		public MultiSphereShape CreateMultiSphereShape(Vector3 positions, float radi, int numSpheres)
+        */
+		public MultiSphereShape CreateMultiSphereShape(Vector3[] positions, float[] radi)
 		{
-			return new MultiSphereShape(_native, ref positions, radi._native, numSpheres);
+			MultiSphereShape shape = new MultiSphereShape(positions, radi);
+            _allocatedCollisionShapes.Add(shape);
+            return shape;
 		}
-
+        /*
 		public OptimizedBvh CreateOptimizedBvh()
 		{
 			return new OptimizedBvh(_native);

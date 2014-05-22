@@ -156,7 +156,7 @@ namespace BulletSharp
 			set { btContactSolverInfoData_setTimeStep(_native, value); }
 		}
 
-		public float WarmstartingFactor
+		public float WarmStartingFactor
 		{
 			get { return btContactSolverInfoData_getWarmstartingFactor(_native); }
 			set { btContactSolverInfoData_setWarmstartingFactor(_native, value); }

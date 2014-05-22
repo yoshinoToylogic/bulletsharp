@@ -6,7 +6,7 @@ namespace BulletSharp
 {
     class BulletReader : BinaryReader
     {
-        public BulletReader(MemoryStream stream)
+        public BulletReader(Stream stream)
             : base(stream)
         {
         }

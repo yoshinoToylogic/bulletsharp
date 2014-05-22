@@ -33,26 +33,27 @@ btScalar btMultiSphereShape_getSphereRadius(btMultiSphereShape* obj, int index)
 	return obj->getSphereRadius(index);
 }
 
+/*
 btPositionAndRadius* btPositionAndRadius_new()
 {
 	return new btPositionAndRadius();
 }
-/*
+
 void btPositionAndRadius_getPos(btPositionAndRadius* obj, btScalar* value)
 {
-	obj->m_pos;
+	VECTOR3_OUT((btVector3*)&obj->m_pos, value);
 }
-*/
+
 float btPositionAndRadius_getRadius(btPositionAndRadius* obj)
 {
 	return obj->m_radius;
 }
-/*
+
 void btPositionAndRadius_setPos(btPositionAndRadius* obj, btScalar* value)
 {
-	obj->m_pos = value;
+	VECTOR3_IN(value, (btVector3*)&obj->m_pos);
 }
-*/
+
 void btPositionAndRadius_setRadius(btPositionAndRadius* obj, float value)
 {
 	obj->m_radius = value;
@@ -62,3 +63,4 @@ void btPositionAndRadius_delete(btPositionAndRadius* obj)
 {
 	delete obj;
 }
+*/

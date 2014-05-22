@@ -40,7 +40,7 @@ extern "C"
 	EXPORT bool btCollisionObject_isStaticObject(btCollisionObject* obj);
 	EXPORT bool btCollisionObject_isStaticOrKinematicObject(btCollisionObject* obj);
 	EXPORT bool btCollisionObject_mergesSimulationIslands(btCollisionObject* obj);
-	EXPORT char* btCollisionObject_serialize(btCollisionObject* obj, void* dataBuffer, btSerializer* serializer);
+	EXPORT const char* btCollisionObject_serialize(btCollisionObject* obj, void* dataBuffer, btSerializer* serializer);
 	EXPORT void btCollisionObject_serializeSingleObject(btCollisionObject* obj, btSerializer* serializer);
 	EXPORT void btCollisionObject_setActivationState(btCollisionObject* obj, int newState);
 	EXPORT void btCollisionObject_setAnisotropicFriction(btCollisionObject* obj, btScalar* anisotropicFriction, int frictionMode);

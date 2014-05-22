@@ -196,12 +196,12 @@ bool btCollisionObject_mergesSimulationIslands(btCollisionObject* obj)
 {
 	return obj->mergesSimulationIslands();
 }
-/*
-char* btCollisionObject_serialize(btCollisionObject* obj, void* dataBuffer, btSerializer* serializer)
+
+const char* btCollisionObject_serialize(btCollisionObject* obj, void* dataBuffer, btSerializer* serializer)
 {
 	return obj->serialize(dataBuffer, serializer);
 }
-*/
+
 void btCollisionObject_serializeSingleObject(btCollisionObject* obj, btSerializer* serializer)
 {
 	obj->serializeSingleObject(serializer);

@@ -3,6 +3,66 @@ using System.ComponentModel;
 namespace BulletSharp
 {
 	[EditorBrowsable(EditorBrowsableState.Never)]
+	public static class RigidBodyConstructionInfoExtensions
+	{
+		public unsafe static void GetLocalInertia(this RigidBodyConstructionInfo obj, out OpenTK.Vector3 value)
+		{
+			fixed (OpenTK.Vector3* valuePtr = &value)
+			{
+				*(BulletSharp.Math.Vector3*)valuePtr = obj.LocalInertia;
+			}
+		}
+
+		public static OpenTK.Vector3 GetLocalInertia(this RigidBodyConstructionInfo obj)
+		{
+			OpenTK.Vector3 value;
+			GetLocalInertia(obj, out value);
+			return value;
+		}
+
+		public unsafe static void GetStartWorldTransform(this RigidBodyConstructionInfo obj, out OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				*(BulletSharp.Math.Matrix*)valuePtr = obj.StartWorldTransform;
+			}
+		}
+
+		public static OpenTK.Matrix4 GetStartWorldTransform(this RigidBodyConstructionInfo obj)
+		{
+			OpenTK.Matrix4 value;
+			GetStartWorldTransform(obj, out value);
+			return value;
+		}
+
+		public unsafe static void SetLocalInertia(this RigidBodyConstructionInfo obj, ref OpenTK.Vector3 value)
+		{
+			fixed (OpenTK.Vector3* valuePtr = &value)
+			{
+				obj.LocalInertia = *(BulletSharp.Math.Vector3*)valuePtr;
+			}
+		}
+
+		public static void SetLocalInertia(this RigidBodyConstructionInfo obj, OpenTK.Vector3 value)
+		{
+			SetLocalInertia(obj, ref value);
+		}
+
+		public unsafe static void SetStartWorldTransform(this RigidBodyConstructionInfo obj, ref OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				obj.StartWorldTransform = *(BulletSharp.Math.Matrix*)valuePtr;
+			}
+		}
+
+		public static void SetStartWorldTransform(this RigidBodyConstructionInfo obj, OpenTK.Matrix4 value)
+		{
+			SetStartWorldTransform(obj, ref value);
+		}
+	}
+
+	[EditorBrowsable(EditorBrowsableState.Never)]
 	public static class RigidBodyExtensions
 	{
 		public unsafe static void ApplyCentralForce(this RigidBody obj, ref OpenTK.Vector3 force)
@@ -179,6 +239,21 @@ namespace BulletSharp
 			return value;
 		}
 
+		public unsafe static void GetInvInertiaTensorWorld(this RigidBody obj, out OpenTK.Matrix4 value)
+		{
+			fixed (OpenTK.Matrix4* valuePtr = &value)
+			{
+				*(BulletSharp.Math.Matrix*)valuePtr = obj.InvInertiaTensorWorld;
+			}
+		}
+
+		public static OpenTK.Matrix4 GetInvInertiaTensorWorld(this RigidBody obj)
+		{
+			OpenTK.Matrix4 value;
+			GetInvInertiaTensorWorld(obj, out value);
+			return value;
+		}
+
 		public unsafe static void GetLinearFactor(this RigidBody obj, out OpenTK.Vector3 value)
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
@@ -256,12 +331,10 @@ namespace BulletSharp
 
 		public unsafe static OpenTK.Vector3 GetVelocityInLocalPoint(this RigidBody obj, ref OpenTK.Vector3 rel_pos)
 		{
-            BulletSharp.Math.Vector3 vel;
 			fixed (OpenTK.Vector3* rel_posPtr = &rel_pos)
 			{
-				vel = obj.GetVelocityInLocalPoint(ref *(BulletSharp.Math.Vector3*)rel_posPtr);
+				return obj.GetVelocityInLocalPoint(ref *(BulletSharp.Math.Vector3*)rel_posPtr).ToOpenTK();
 			}
-			return new OpenTK.Vector3(vel.X, vel.Y, vel.Z);
 		}
 
 		public unsafe static void PredictIntegratedTransform(this RigidBody obj, float step, out OpenTK.Matrix4 predictedTransform)

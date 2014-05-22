@@ -1,16 +1,22 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Text;
 
 namespace BulletSharp
 {
 	public class Chunk
 	{
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal Chunk(IntPtr native)
+		internal Chunk(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public Chunk()
@@ -94,86 +100,140 @@ namespace BulletSharp
 		static extern void btChunk_delete(IntPtr obj);
 	}
 
-	public class Serializer
+    [Flags]
+    public enum SerializationFlags
+    {
+        NoBvh = 1,
+        NoTriangleInfoMap = 2,
+        NoDuplicateAssert = 4
+    }
+
+	public abstract class Serializer
 	{
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate IntPtr AllocateUnmanagedDelegate(uint size, int numElements);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void FinalizeChunkUnmanagedDelegate(IntPtr chunk, string structType, DnaID chunkCode, IntPtr oldPtr);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate IntPtr FindNameForPointerUnmanagedDelegate(IntPtr ptr);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate IntPtr FindPointerUnmanagedDelegate(IntPtr ptr);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void FinishSerializationUnmanagedDelegate();
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate IntPtr GetBufferPointerUnmanagedDelegate();
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate int GetCurrentBufferSizeUnmanagedDelegate();
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate int GetSerializationFlagsUnmanagedDelegate();
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate IntPtr GetUniquePointerUnmanagedDelegate(IntPtr oldPtr);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void RegisterNameForPointerUnmanagedDelegate(IntPtr ptr, string name);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void SerializeNameUnmanagedDelegate(IntPtr ptr);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void SetSerializationFlagsUnmanagedDelegate(int flags);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void StartSerializationUnmanagedDelegate();
+
+        AllocateUnmanagedDelegate _allocate;
+        FinalizeChunkUnmanagedDelegate _finalizeChunk;
+        FindNameForPointerUnmanagedDelegate _findNameForPointer;
+        FindPointerUnmanagedDelegate _findPointer;
+        FinishSerializationUnmanagedDelegate _finishSerialization;
+        GetBufferPointerUnmanagedDelegate _getBufferPointer;
+        GetCurrentBufferSizeUnmanagedDelegate _getCurrentBufferSize;
+        GetSerializationFlagsUnmanagedDelegate _getSerializationFlags;
+        GetUniquePointerUnmanagedDelegate _getuniquePointer;
+        RegisterNameForPointerUnmanagedDelegate _registernameForPointer;
+        SerializeNameUnmanagedDelegate _serializeName;
+        SetSerializationFlagsUnmanagedDelegate _setSerializationFlags;
+        StartSerializationUnmanagedDelegate _startSerialization;
+
 		internal IntPtr _native;
 
-		internal Serializer(IntPtr native)
+		public Serializer()
 		{
-			_native = native;
+            _allocate = new AllocateUnmanagedDelegate(AllocateUnmanaged);
+            _finalizeChunk = new FinalizeChunkUnmanagedDelegate(FinalizeChunk);
+            _findNameForPointer = new FindNameForPointerUnmanagedDelegate(FindNameForPointer);
+            _findPointer = new FindPointerUnmanagedDelegate(FindPointer);
+            _finishSerialization = new FinishSerializationUnmanagedDelegate(FinishSerialization);
+            _getBufferPointer = new GetBufferPointerUnmanagedDelegate(GetBufferPointer);
+            _getCurrentBufferSize = new GetCurrentBufferSizeUnmanagedDelegate(GetCurrentBufferSize);
+            _getSerializationFlags = new GetSerializationFlagsUnmanagedDelegate(GetSerializationFlags);
+            _getuniquePointer = new GetUniquePointerUnmanagedDelegate(GetUniquePointer);
+            _registernameForPointer = new RegisterNameForPointerUnmanagedDelegate(RegisterNameForPointer);
+            _serializeName = new SerializeNameUnmanagedDelegate(SerializeName);
+            _setSerializationFlags = new SetSerializationFlagsUnmanagedDelegate(SetSerializationFlags);
+            _startSerialization = new StartSerializationUnmanagedDelegate(StartSerialization);
+
+            _native = btSerializerWrapper_new(
+                GCHandle.ToIntPtr(GCHandle.Alloc(this)),
+                Marshal.GetFunctionPointerForDelegate(_allocate),
+                Marshal.GetFunctionPointerForDelegate(_finalizeChunk),
+                Marshal.GetFunctionPointerForDelegate(_findNameForPointer),
+                Marshal.GetFunctionPointerForDelegate(_findPointer),
+                Marshal.GetFunctionPointerForDelegate(_finishSerialization),
+                Marshal.GetFunctionPointerForDelegate(_getBufferPointer),
+                Marshal.GetFunctionPointerForDelegate(_getCurrentBufferSize),
+                Marshal.GetFunctionPointerForDelegate(_getSerializationFlags),
+                Marshal.GetFunctionPointerForDelegate(_getuniquePointer),
+                Marshal.GetFunctionPointerForDelegate(_registernameForPointer),
+                Marshal.GetFunctionPointerForDelegate(_serializeName),
+                Marshal.GetFunctionPointerForDelegate(_setSerializationFlags),
+                Marshal.GetFunctionPointerForDelegate(_startSerialization));
 		}
 
-		public Chunk Allocate(uint size, int numElements)
-		{
-            return new Chunk(btSerializer_allocate(_native, size, numElements));
-		}
-        /*
-		public void FinalizeChunk(Chunk chunk, char structType, int chunkCode, IntPtr oldPtr)
-		{
-			btSerializer_finalizeChunk(_native, chunk._native, structType, chunkCode, oldPtr);
-		}
-        */
-		public string FindNameForPointer(IntPtr ptr)
-		{
-			return btSerializer_findNameForPointer(_native, ptr);
-		}
+        private IntPtr AllocateUnmanaged(uint size, int numElements)
+        {
+            return Allocate(size, numElements)._native;
+        }
 
-		public IntPtr FindPointer(IntPtr oldPtr)
-		{
-			return btSerializer_findPointer(_native, oldPtr);
-		}
+        private void FinalizeChunk(IntPtr chunkPtr, string structType, DnaID chunkCode, IntPtr oldPtr)
+        {
+            FinalizeChunk(new Chunk(chunkPtr, true), structType, chunkCode, oldPtr);
+        }
 
-		public void FinishSerialization()
-		{
-			btSerializer_finishSerialization(_native);
-		}
+        private IntPtr GetBufferPointer()
+        {
+            throw new NotImplementedException();
+        }
 
-		public IntPtr GetUniquePointer(IntPtr oldPtr)
-		{
-			return btSerializer_getUniquePointer(_native, oldPtr);
-		}
+        private int GetCurrentBufferSize()
+        {
+            return CurrentBufferSize;
+        }
 
-		public void RegisterNameForObject(Object obj, string name)
-		{
-            if (obj is CollisionShape)
-            {
-                btSerializer_registerNameForPointer(_native, (obj as CollisionShape)._native, name);
-            }
-            else if (obj is CollisionObject)
-            {
-                btSerializer_registerNameForPointer(_native, (obj as CollisionObject)._native, name);
-            }
-            else
-            {
-                throw new NotImplementedException();
-            }
-		}
-        /*
-		public void SerializeName(char ptr)
-		{
-			btSerializer_serializeName(_native, ptr);
-		}
-        */
-		public void StartSerialization()
-		{
-			btSerializer_startSerialization(_native);
-		}
-        /*
-		public byte BufferPointer
-		{
-			get { return btSerializer_getBufferPointer(_native); }
-		}
-        */
-		public int CurrentBufferSize
-		{
-			get { return btSerializer_getCurrentBufferSize(_native); }
-		}
+        private int GetSerializationFlags()
+        {
+            return (int)SerializationFlags;
+        }
 
-		public int SerializationFlags
-		{
-			get { return btSerializer_getSerializationFlags(_native); }
-			set { btSerializer_setSerializationFlags(_native, value); }
-		}
+        private void RegisterNameForPointer(IntPtr ptr, string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void SetSerializationFlags(int flags)
+        {
+            SerializationFlags = (SerializationFlags)flags;
+        }
+
+        public abstract Chunk Allocate(uint size, int numElements);
+        public abstract void FinalizeChunk(Chunk chunkPtr, string structType, DnaID chunkCode, IntPtr oldPtr);
+        public abstract IntPtr FindNameForPointer(IntPtr ptr);
+        public abstract IntPtr FindPointer(IntPtr oldPtr);
+		public abstract void FinishSerialization();
+        public abstract IntPtr GetUniquePointer(IntPtr oldPtr);
+        public abstract void RegisterNameForObject(Object obj, string name);
+        public abstract void SerializeName(IntPtr ptr);
+        public abstract void StartSerialization();
+        
+        public abstract IntPtr BufferPointer { get; }
+        public abstract int CurrentBufferSize { get; }
+        public abstract SerializationFlags SerializationFlags { get; set; }
 
 		public void Dispose()
 		{
@@ -185,6 +245,9 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
+                IntPtr handlePtr = btSerializerWrapper_getSerializerGCHandle(_native);
+                GCHandle.FromIntPtr(handlePtr).Free();
+
 				btSerializer_delete(_native);
 				_native = IntPtr.Zero;
 			}
@@ -195,110 +258,430 @@ namespace BulletSharp
 			Dispose(false);
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSerializer_allocate(IntPtr obj, uint size, int numElements);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSerializer_finalizeChunk(IntPtr obj, IntPtr chunk, IntPtr structType, int chunkCode, IntPtr oldPtr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern string btSerializer_findNameForPointer(IntPtr obj, IntPtr ptr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSerializer_findPointer(IntPtr obj, IntPtr oldPtr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSerializer_finishSerialization(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSerializer_getBufferPointer(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btSerializer_getCurrentBufferSize(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btSerializer_getSerializationFlags(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSerializer_getUniquePointer(IntPtr obj, IntPtr oldPtr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSerializer_registerNameForPointer(IntPtr obj, IntPtr ptr, string name);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSerializer_serializeName(IntPtr obj, IntPtr ptr);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSerializer_setSerializationFlags(IntPtr obj, int flags);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSerializer_startSerialization(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btSerializerWrapper_new(IntPtr serializerGCHandle, IntPtr drawAabbCallback,
+            IntPtr drawArcCallback, IntPtr drawBoxCallback, IntPtr drawCapsuleCallback, IntPtr drawContactPointCallback,
+            IntPtr drawCylinderCallback, IntPtr drawLineCallback, IntPtr drawPlaneCallback, IntPtr drawSphereCallback, IntPtr drawSpherePatchCallback, IntPtr drawTransformCallback, IntPtr drawTriangleCallback, IntPtr getDebugModeCallback);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btSerializerWrapper_getSerializerGCHandle(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSerializer_delete(IntPtr obj);
 	}
 
-	public class PointerUid
-	{
-		internal IntPtr _native;
-
-		internal PointerUid(IntPtr native)
-		{
-			_native = native;
-		}
-
-		public PointerUid()
-		{
-			_native = btPointerUid_new();
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btPointerUid_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~PointerUid()
-		{
-			Dispose(false);
-		}
-
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btPointerUid_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPointerUid_delete(IntPtr obj);
-	}
-
 	public class DefaultSerializer : Serializer
 	{
-		internal DefaultSerializer(IntPtr native)
-			: base(native)
-		{
-		}
+        private IntPtr _buffer;
+        private int _currentSize;
+        private IntPtr _uniqueIdGenerator;
+        private int _totalSize;
+        private SerializationFlags _serializationFlags;
+
+        private Dictionary<IntPtr, IntPtr> _chunkP = new Dictionary<IntPtr, IntPtr>();
+        private Dictionary<IntPtr, IntPtr> _uniquePointers = new Dictionary<IntPtr, IntPtr>();
+        private Dictionary<Object, IntPtr> _nameMap = new Dictionary<object, IntPtr>();
+        private List<Chunk> _chunkPtrs = new List<Chunk>();
+
+        IntPtr _dna;
+        int _dnaLength;
+
+        private Dna.NameInfo[] _names;
+        private Dna.StructDecl[] _structs;
+        private Dna.TypeDecl[] _types;
+        private Dictionary<string, Dna.StructDecl> _structReverse;
 
 		public DefaultSerializer(int totalSize)
-			: base(btDefaultSerializer_new(totalSize))
 		{
+            _currentSize = 0;
+            _totalSize = totalSize;
+
+            _buffer = (_totalSize != 0) ? Marshal.AllocHGlobal(_totalSize) : IntPtr.Zero;
+
+            InitDna((IntPtr.Size == 8) ? BulletDna.BulletDnaStr64 : BulletDna.BulletDnaStr);
 		}
 
 		public DefaultSerializer()
-			: base(btDefaultSerializer_new2())
+            : this(0)
 		{
-		}
-        /*
-		public byte InternalAlloc(uint size)
-		{
-			return btDefaultSerializer_internalAlloc(_native, size);
 		}
 
-		public void WriteHeader(byte buffer)
+        protected override void Dispose(bool disposing)
+        {
+            if (_buffer != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_buffer);
+                _buffer = IntPtr.Zero;
+            }
+
+            if (_dna != IntPtr.Zero)
+            {
+                Marshal.FreeHGlobal(_dna);
+                _dna = IntPtr.Zero;
+            }
+
+            base.Dispose(disposing);
+        }
+
+        private IntPtr InternalAlloc(int size)
+        {
+            IntPtr ptr;
+            if (_totalSize != 0)
+            {
+                ptr = _buffer + _currentSize;
+                _currentSize += size;
+                Debug.Assert(_currentSize < _totalSize);
+            }
+            else
+            {
+                ptr = Marshal.AllocHGlobal(size);
+                _currentSize += size;
+            }
+            return ptr;
+        }
+
+        public override Chunk Allocate(uint size, int numElements)
+        {
+            int length = (int)size * numElements;
+            IntPtr ptr = InternalAlloc(length + ChunkInd.Size);
+            IntPtr data = ptr + ChunkInd.Size;
+            Chunk chunk = new Chunk(ptr, true)
+            {
+                ChunkCode = 0,
+                OldPtr = data,
+                Length = length,
+                Number = numElements
+            };
+            _chunkPtrs.Add(chunk);
+            return chunk;
+        }
+
+        public override void FinalizeChunk(Chunk chunk, string structType, DnaID chunkCode, IntPtr oldPtr)
+        {
+            if ((SerializationFlags & SerializationFlags.NoDuplicateAssert) == 0)
+            {
+                Debug.Assert(FindPointer(oldPtr) == IntPtr.Zero);
+            }
+
+            //chunk.Dna_nr = GetReverseType(structType);
+            chunk.ChunkCode = (int)chunkCode;
+            IntPtr uniquePtr = GetUniquePointer(oldPtr);
+
+            _chunkP.Add(oldPtr, uniquePtr);//chunk->m_oldPtr);
+            chunk.OldPtr = uniquePtr;//oldPtr;
+        }
+
+        public override IntPtr FindNameForPointer(IntPtr ptr)
+        {
+            IntPtr name;
+            _nameMap.TryGetValue(ptr, out name);
+            return name;
+        }
+
+        public override IntPtr FindPointer(IntPtr oldPtr)
+        {
+            IntPtr ptr;
+            _chunkP.TryGetValue(oldPtr, out ptr);
+            return ptr;
+        }
+
+        public override void FinishSerialization()
 		{
-			btDefaultSerializer_writeHeader(_native, buffer._native);
+            WriteDna();
+
+			//if we didn't pre-allocate a buffer, we need to create a contiguous buffer now
+			int mysize = 0;
+			if (_totalSize == 0)
+			{
+				if (_buffer != IntPtr.Zero)
+                {
+                    Marshal.FreeHGlobal(_buffer);
+                }
+
+				_currentSize += 12; // header
+				_buffer = Marshal.AllocHGlobal(_currentSize);
+
+				IntPtr currentPtr = _buffer;
+                WriteHeader(_buffer);
+				currentPtr += 12;
+                mysize += 12;
+				for (int i=0;i<	_chunkPtrs.Count;i++)
+				{
+					int curLength = ChunkInd.Size + _chunkPtrs[i].Length;
+                    Marshal.StructureToPtr(_chunkPtrs[i], currentPtr, false);
+					currentPtr+=curLength;
+					mysize+=curLength;
+				}
+			}
+
+            foreach (IntPtr ptr in _nameMap.Values)
+            {
+                GCHandle.FromIntPtr(ptr).Free();
+            }
+
+			_structReverse.Clear();
+			_chunkP.Clear();
+			_nameMap.Clear();
+			_uniquePointers.Clear();
+			_chunkPtrs.Clear();
 		}
-        */
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDefaultSerializer_new(int totalSize);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDefaultSerializer_new2();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDefaultSerializer_internalAlloc(IntPtr obj, uint size);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDefaultSerializer_writeHeader(IntPtr obj, IntPtr buffer);
-	}
+
+        public Dna.StructDecl GetReverseType(string typeName)
+        {
+            Dna.StructDecl s;
+            _structReverse.TryGetValue(typeName, out s);
+            return s;
+        }
+
+        public override IntPtr GetUniquePointer(IntPtr oldPtr)
+        {
+            if (oldPtr == IntPtr.Zero)
+                return IntPtr.Zero;
+
+            IntPtr uniquePtr;
+            if (_uniquePointers.TryGetValue(oldPtr, out uniquePtr))
+            {
+                return uniquePtr;
+            }
+            
+            _uniqueIdGenerator = IntPtr.Add(_uniqueIdGenerator, 1);
+            _uniquePointers.Add(oldPtr, _uniqueIdGenerator);
+
+            return _uniqueIdGenerator;
+        }
+
+        protected unsafe void InitDna(sbyte[] bdnaOrg)
+        {
+            if (_dna != IntPtr.Zero)
+            {
+                return;
+            }
+
+            _dnaLength = bdnaOrg.Length;
+            _dna = Marshal.AllocHGlobal(bdnaOrg.Length);
+            Marshal.Copy((bdnaOrg as Array) as byte[], 0, _dna, _dnaLength);
+            Marshal.Copy((byte[])(Array)bdnaOrg, 0, _dna, _dnaLength);
+
+            Stream stream = new UnmanagedMemoryStream((byte*)_dna.ToPointer(), _dnaLength);
+            BinaryReader reader = new BinaryReader(stream);
+
+            // SDNA
+            byte[] code = reader.ReadBytes(8);
+            string codes = ASCIIEncoding.ASCII.GetString(code);
+
+            // NAME
+            if (!codes.Equals("SDNANAME"))
+            {
+                throw new InvalidDataException();
+            }
+            int dataLen = reader.ReadInt32();
+            _names = new Dna.NameInfo[dataLen];
+            for (int i = 0; i < dataLen; i++)
+            {
+                List<byte> name = new List<byte>();
+                byte ch = reader.ReadByte();
+                while (ch != 0)
+                {
+                    name.Add(ch);
+                    ch = reader.ReadByte();
+                }
+
+                _names[i] = new Dna.NameInfo(ASCIIEncoding.ASCII.GetString(name.ToArray()));
+            }
+            stream.Position = (stream.Position + 3) & ~3;
+
+            // TYPE
+            code = reader.ReadBytes(4);
+            codes = ASCIIEncoding.ASCII.GetString(code);
+            if (!codes.Equals("TYPE"))
+            {
+                throw new InvalidDataException();
+            }
+            dataLen = reader.ReadInt32();
+            _types = new Dna.TypeDecl[dataLen];
+            for (int i = 0; i < dataLen; i++)
+            {
+                List<byte> name = new List<byte>();
+                byte ch = reader.ReadByte();
+                while (ch != 0)
+                {
+                    name.Add(ch);
+                    ch = reader.ReadByte();
+                }
+                string type = ASCIIEncoding.ASCII.GetString(name.ToArray());
+                _types[i] = new Dna.TypeDecl(type);
+            }
+            stream.Position = (stream.Position + 3) & ~3;
+
+            // TLEN
+            code = reader.ReadBytes(4);
+            codes = ASCIIEncoding.ASCII.GetString(code);
+            if (!codes.Equals("TLEN"))
+            {
+                throw new InvalidDataException();
+            }
+            for (int i = 0; i < _types.Length; i++)
+            {
+                _types[i].Length = reader.ReadInt16();
+            }
+            stream.Position = (stream.Position + 3) & ~3;
+
+            // STRC
+            code = reader.ReadBytes(4);
+            codes = ASCIIEncoding.ASCII.GetString(code);
+            if (!codes.Equals("STRC"))
+            {
+                throw new InvalidDataException();
+            }
+            dataLen = reader.ReadInt32();
+            _structs = new Dna.StructDecl[dataLen];
+            long shtPtr = stream.Position;
+            for (int i = 0; i < dataLen; i++)
+            {
+                Dna.StructDecl structDecl = new Dna.StructDecl();
+                _structs[i] = structDecl;
+                if (!BitConverter.IsLittleEndian)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    short typeNr = reader.ReadInt16();
+                    structDecl.Type = _types[typeNr];
+                    structDecl.Type.Struct = structDecl;
+                    int numElements = reader.ReadInt16();
+                    structDecl.Elements = new Dna.ElementDecl[numElements];
+                    for (int j = 0; j < numElements; j++)
+                    {
+                        typeNr = reader.ReadInt16();
+                        short nameNr = reader.ReadInt16();
+                        structDecl.Elements[j] = new Dna.ElementDecl(_types[typeNr], _names[nameNr]);
+                    }
+                }
+            }
+
+            reader.Dispose();
+            stream.Dispose();
+
+            // build reverse lookups
+            _structReverse = new Dictionary<string, Dna.StructDecl>(_structs.Length);
+            foreach (Dna.StructDecl s in _structs)
+            {
+                _structReverse.Add(s.Type.Name, s);
+            }
+        }
+
+        public override void RegisterNameForObject(Object obj, string name)
+		{
+            IntPtr ptr;
+            if (obj is CollisionObject)
+            {
+                ptr = (obj as CollisionObject)._native;
+            }
+            else if (obj is CollisionShape)
+            {
+                ptr = (obj as CollisionShape)._native;
+            }
+            else if (obj is TypedConstraint)
+            {
+                ptr = (obj as TypedConstraint)._native;
+            }
+            else
+            {
+                throw new NotImplementedException();
+            }
+            IntPtr namePtr = GCHandle.ToIntPtr(GCHandle.Alloc(name));
+            _nameMap.Add(ptr, namePtr);
+		}
+
+        public override void SerializeName(IntPtr namePtr)
+        {
+            if (namePtr == IntPtr.Zero)
+            {
+                return;
+            }
+
+            //don't serialize name twice
+            if (FindPointer(namePtr) != IntPtr.Zero)
+            {
+                return;
+            }
+
+            string name = GCHandle.FromIntPtr(namePtr).Target as string;
+            int length = name.Length;
+            if (length == 0)
+            {
+                return;
+            }
+
+            int newLen = length + 1;
+            int padding = ((newLen + 3) & ~3) - newLen;
+            newLen += padding;
+
+            //serialize name string now
+            Chunk chunk = Allocate(sizeof(char), newLen);
+            IntPtr destPtr = chunk.OldPtr;
+            for (int i = 0; i < length; i++)
+            {
+                Marshal.WriteByte(destPtr, i, (byte)name[i]);
+            }
+            FinalizeChunk(chunk, "char", DnaID.Array, namePtr);
+        }
+
+        public override void StartSerialization()
+		{
+            _uniqueIdGenerator = new IntPtr(1);
+			if (_totalSize != 0)
+			{
+				IntPtr buffer = InternalAlloc(12);
+				WriteHeader(buffer);
+			}
+		}
+
+        public void WriteDna()
+        {
+            Chunk dnaChunk = Allocate((uint)_dnaLength, 1);
+            byte[] tempDna = new byte[_dnaLength];
+            Marshal.Copy(_dna, tempDna, 0, _dnaLength);
+            Marshal.Copy(tempDna, 0, dnaChunk.OldPtr, _dnaLength);
+            FinalizeChunk(dnaChunk, "DNA1", DnaID.Dna, _dna);
+        }
+
+		public unsafe void WriteHeader(IntPtr buffer)
+		{
+            byte[] header = new byte[] {
+                (byte)'B', (byte)'U', (byte)'L', (byte)'L', (byte)'E', (byte)'T',
+                (byte)'f', (byte)'_',
+                (byte)'v', (byte)'2', (byte)'8', (byte)'2' };
+            if (IntPtr.Size == 8)
+            {
+                header[7] = (byte)'-';
+            }
+            if (!BitConverter.IsLittleEndian)
+            {
+                header[8] = (byte)'V';
+            }
+            Marshal.Copy(header, 0, buffer, header.Length);
+		}
+
+        public override IntPtr BufferPointer
+        {
+            get { return _buffer; }
+        }
+
+        public override int CurrentBufferSize
+        {
+            get { return _currentSize; }
+        }
+
+        public override SerializationFlags SerializationFlags
+        {
+            get
+            {
+                return _serializationFlags;
+            }
+            set
+            {
+                _serializationFlags = value;
+            }
+        }
+    }
 }

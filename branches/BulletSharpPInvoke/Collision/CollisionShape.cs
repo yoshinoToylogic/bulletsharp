@@ -1,5 +1,6 @@
 ﻿using BulletSharp.Math;
 using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 
@@ -98,15 +99,30 @@ namespace BulletSharp
 		{
 			return btCollisionShape_getContactBreakingThreshold(_native, defaultContactThresholdFactor);
 		}
-        /*
-		public char Serialize(IntPtr dataBuffer, Serializer serializer)
+
+		public virtual string Serialize(IntPtr dataBuffer, Serializer serializer)
 		{
-			return btCollisionShape_serialize(_native, dataBuffer, serializer._native);
+            return Marshal.PtrToStringAnsi(btCollisionShape_serialize(_native, dataBuffer, serializer._native));
+            /*
+            IntPtr name = serializer.FindNameForPointer(_native);
+            IntPtr namePtr = serializer.GetUniquePointer(name);
+            Marshal.WriteIntPtr(dataBuffer, namePtr);
+            if (namePtr != IntPtr.Zero)
+            {
+                serializer.SerializeName(name);
+            }
+            Marshal.WriteInt32(dataBuffer, IntPtr.Size, (int)ShapeType);
+            //Marshal.WriteInt32(dataBuffer, IntPtr.Size + sizeof(int), 0); //padding
+            return "btCollisionShapeData";
+            */
 		}
-        */
+
 		public void SerializeSingleShape(Serializer serializer)
 		{
-			btCollisionShape_serializeSingleShape(_native, serializer._native);
+            int len = CalculateSerializeBufferSize();
+            Chunk chunk = serializer.Allocate((uint)len, 1);
+            string structType = Serialize(chunk.OldPtr, serializer);
+            serializer.FinalizeChunk(chunk, structType, DnaID.Shape, _native);
 		}
 
 		public float AngularMotionDisc
@@ -260,8 +276,6 @@ namespace BulletSharp
 		static extern bool btCollisionShape_isSoftBody(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionShape_serialize(IntPtr obj, IntPtr dataBuffer, IntPtr serializer);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionShape_serializeSingleShape(IntPtr obj, IntPtr serializer);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionShape_setLocalScaling(IntPtr obj, [In] ref Vector3 scaling);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
