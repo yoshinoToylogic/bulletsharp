@@ -18,22 +18,22 @@
 
 #define btIDebugDrawWrapper void
 #else
-typedef void (*pDrawAabb)(const btScalar* from, const btScalar* to, const btScalar* color);
-typedef void (*pDrawArc)(const btScalar* center, const btScalar* normal, const btScalar* axis,
+typedef void(*pDrawAabb)(const btScalar* from, const btScalar* to, const btScalar* color);
+typedef void(*pDrawArc)(const btScalar* center, const btScalar* normal, const btScalar* axis,
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle, const btScalar* color, bool drawSect, btScalar stepDegrees);
-typedef void (*pDrawBox)(const btScalar* bbMin, const btScalar* bbMax, const btScalar* trans, const btScalar* color);
-typedef void (*pDrawCapsule)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btScalar* color);
-typedef void (*pDrawContactPoint)(const btScalar* PointOnB, const btScalar* normalOnB, btScalar distance, int lifeTime, const btScalar* color);
-typedef void (*pDrawCylinder)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btScalar* color);
-typedef void (*pDrawLine)(const btScalar* from, const btScalar* to, const btScalar* color);
-typedef void (*pDrawPlane)(const btScalar* planeNormal, btScalar planeConst, const btScalar* transform, const btScalar* color);
-typedef void (*pDrawSphere)(btScalar radius, const btScalar* transform, const btScalar* color);
-typedef void (*pDrawSpherePatch)(const btScalar* center, const btScalar* up, const btScalar* axis, btScalar radius,
+typedef void(*pDrawBox)(const btScalar* bbMin, const btScalar* bbMax, const btScalar* trans, const btScalar* color);
+typedef void(*pDrawCapsule)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btScalar* color);
+typedef void(*pDrawContactPoint)(const btScalar* PointOnB, const btScalar* normalOnB, btScalar distance, int lifeTime, const btScalar* color);
+typedef void(*pDrawCylinder)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btScalar* color);
+typedef void(*pDrawLine)(const btScalar* from, const btScalar* to, const btScalar* color);
+typedef void(*pDrawPlane)(const btScalar* planeNormal, btScalar planeConst, const btScalar* transform, const btScalar* color);
+typedef void(*pDrawSphere)(btScalar radius, const btScalar* transform, const btScalar* color);
+typedef void(*pDrawSpherePatch)(const btScalar* center, const btScalar* up, const btScalar* axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btScalar* color, btScalar stepDegrees);
-typedef void (*pDrawTransform)(const btScalar* transform, btScalar orthoLen);
-typedef void (*pDrawTriangle)(const btScalar* v0, const btScalar* v1, const btScalar* v2, const btScalar* color, btScalar);
-typedef int (*pGetDebugMode)();
-typedef void (*pSimpleCallback)(int x);
+typedef void(*pDrawTransform)(const btScalar* transform, btScalar orthoLen);
+typedef void(*pDrawTriangle)(const btScalar* v0, const btScalar* v1, const btScalar* v2, const btScalar* color, btScalar);
+typedef int(*pGetDebugMode)();
+typedef void(*pSimpleCallback)(int x);
 
 class btIDebugDrawWrapper : public btIDebugDraw
 {

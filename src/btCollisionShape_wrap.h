@@ -23,7 +23,7 @@ extern "C"
 	EXPORT bool btCollisionShape_isNonMoving(btCollisionShape* obj);
 	EXPORT bool btCollisionShape_isPolyhedral(btCollisionShape* obj);
 	EXPORT bool btCollisionShape_isSoftBody(btCollisionShape* obj);
-	EXPORT char* btCollisionShape_serialize(btCollisionShape* obj, void* dataBuffer, btSerializer* serializer);
+	EXPORT const char* btCollisionShape_serialize(btCollisionShape* obj, void* dataBuffer, btSerializer* serializer);
 	EXPORT void btCollisionShape_serializeSingleShape(btCollisionShape* obj, btSerializer* serializer);
 	EXPORT void btCollisionShape_setLocalScaling(btCollisionShape* obj, btScalar* scaling);
 	EXPORT void btCollisionShape_setMargin(btCollisionShape* obj, btScalar margin);

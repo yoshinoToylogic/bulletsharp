@@ -123,12 +123,12 @@ bool btCollisionShape_isSoftBody(btCollisionShape* obj)
 {
 	return obj->isSoftBody();
 }
-/*
-char* btCollisionShape_serialize(btCollisionShape* obj, void* dataBuffer, btSerializer* serializer)
+
+const char* btCollisionShape_serialize(btCollisionShape* obj, void* dataBuffer, btSerializer* serializer)
 {
 	return obj->serialize(dataBuffer, serializer);
 }
-*/
+
 void btCollisionShape_serializeSingleShape(btCollisionShape* obj, btSerializer* serializer)
 {
 	obj->serializeSingleShape(serializer);
