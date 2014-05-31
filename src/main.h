@@ -72,7 +72,6 @@
 #define btDiscreteCollisionDetectorInterface void
 #define btDiscreteCollisionDetectorInterface_ClosestPointInput void
 #define btDiscreteCollisionDetectorInterface_Result void
-#define btDynamicsWorld void
 #define btHashedOverlappingPairCache void
 #define btMinkowskiPenetrationDepthSolver void
 #define btMotionState void
@@ -98,8 +97,9 @@
 #define btVector3 void
 #define btVector4 void
 #define btAlignedBoolArray void
-#define btAligendBroadphasePairArray void
+#define btAlignedBroadphasePairArray void
 #define btAlignedCollisionObjectArray void
+#define btAlignedConstCollisionObjectArray void
 #define btAlignedCollisionShapeArray void
 #define btAlignedIntArray void
 #define btAlignedScalarArray void
@@ -302,6 +302,10 @@
 #define btConvexShape void
 #endif
 
+#ifndef BT_DEFAULT_COLLISION_CONFIGURATION
+#define btDefaultCollisionConstructionInfo void
+#endif
+
 #ifndef BT_DBVT_BROADPHASE_H
 #define btDbvtProxy void
 #endif
@@ -314,6 +318,11 @@
 #ifndef BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
 #define btDbvt void
 #define btDbvtNode void
+#endif
+
+#ifndef BT_DYNAMICS_WORLD_H
+#define btDynamicsWorld void
+#define btInternalTickCallback void*
 #endif
 
 #ifndef BT_EMPTY_ALGORITH
@@ -335,6 +344,9 @@
 
 #ifndef BT_GIMPACT_BVH_CONCAVE_COLLISION_ALGORITHM_H
 #define btGImpactCollisionAlgorithm void
+#define btGImpactCollisionAlgorithm_CreateFunc void
+#else
+#define btGImpactCollisionAlgorithm_CreateFunc btGImpactCollisionAlgorithm::CreateFunc
 #endif
 
 #ifndef BT_GJK_PAIR_DETECTOR_H
@@ -347,7 +359,7 @@
 
 #ifndef BT_MANIFOLD_CONTACT_POINT_H
 #define btManifoldPoint void
-#define ContactAddedCallback void
+#define ContactAddedCallback void*
 #endif
 
 #ifndef BT_MANIFOLD_RESULT_H
@@ -368,8 +380,8 @@
 
 #ifndef BT_PERSISTENT_MANIFOLD_H
 #define btPersistentManifold void
-#define ContactDestroyedCallback void
-#define ContactProcessedCallback void
+#define ContactDestroyedCallback void*
+#define ContactProcessedCallback void*
 #endif
 
 #ifndef BT_POINT_COLLECTOR_H
@@ -429,6 +441,7 @@
 #define btAlignedSoftBodyPSolverArray void
 #define btAlignedSoftBodyRContactArray void
 #define btAlignedSoftBodySContactArray void
+#define btAlignedSoftBodyTetraArray void
 #define btAlignedSoftBodyVSolverArray void
 #define btSoftBodyNodePtrArray void
 #define btSoftBody void
@@ -618,6 +631,10 @@
 #define btThreadSupportInterface void
 #endif
 
+#ifndef BT_TRANSFORM_UTIL_H
+#define btConvexSeparatingDistanceUtil void
+#endif
+
 #ifndef BT_TRIANGLE_CALLBACK_H
 #define btInternalTriangleIndexCallback void
 #define btTriangleCallback void
@@ -626,6 +643,7 @@
 #ifndef BT_TRIANGLE_INDEX_VERTEX_ARRAY_H
 #define btAlignedIndexedMeshArray void
 #define btIndexedMesh void
+#define IndexedMeshArray void
 #else
 #define btAlignedIndexedMeshArray btAlignedObjectArray<btIndexedMesh>
 #endif
