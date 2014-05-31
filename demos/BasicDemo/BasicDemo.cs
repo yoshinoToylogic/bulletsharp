@@ -1,7 +1,7 @@
-﻿using BulletSharp;
+﻿using System;
+using BulletSharp;
 using BulletSharp.Math;
 using DemoFramework;
-using System;
 
 namespace BasicDemo
 {
@@ -52,17 +52,10 @@ namespace BasicDemo
             // create a few dynamic rigidbodies
             const float mass = 1.0f;
 
-            CompoundShape colShape = new CompoundShape();
-            CollisionShape cylShape = new CylinderShape(1, 0.7f, 0.8f);
-            BoxShape boxShape = new BoxShape(0.5f);
-            colShape.AddChildShape(Matrix.Identity, cylShape);
-            colShape.AddChildShape(Matrix.Translation(0,-0.5f,0), boxShape);
+            BoxShape colShape = new BoxShape(1);
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
-            Vector3 a = new Vector3(1,1,1);
-            float b;
-            colShape.GetBoundingSphere(out a, out b);
-            a.ToString(); b.ToString();
+
             const float start_x = StartPosX - ArraySizeX / 2;
             const float start_y = StartPosY;
             const float start_z = StartPosZ - ArraySizeZ / 2;
