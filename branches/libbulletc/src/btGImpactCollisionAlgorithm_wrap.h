@@ -2,7 +2,7 @@
 
 extern "C"
 {
-	EXPORT btGImpactCollisionAlgorithm::CreateFunc* btGImpactCollisionAlgorithm_CreateFunc_new();
+	EXPORT btGImpactCollisionAlgorithm_CreateFunc* btGImpactCollisionAlgorithm_CreateFunc_new();
 	EXPORT btGImpactCollisionAlgorithm* btGImpactCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap);
 	EXPORT int btGImpactCollisionAlgorithm_getFace0(btGImpactCollisionAlgorithm* obj);
 	EXPORT int btGImpactCollisionAlgorithm_getFace1(btGImpactCollisionAlgorithm* obj);

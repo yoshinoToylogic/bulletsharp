@@ -12,7 +12,7 @@ int main(int argc, char* argv[])
 	btSequentialImpulseConstraintSolver* solver = btSequentialImpulseConstraintSolver_new();
 	btDiscreteDynamicsWorld* world = btDiscreteDynamicsWorld_new(dispatcher,broadphase,solver,collisionConfiguration);
 	btSphereShape* shape = btSphereShape_new(1);
-	btDefaultMotionState* ms = btDefaultMotionState_new();
+	btDefaultMotionState* ms = btDefaultMotionState_new3();
 	btRigidBody_btRigidBodyConstructionInfo* ci = btRigidBody_btRigidBodyConstructionInfo_new2(0,ms,shape);
 	btRigidBody* body = btRigidBody_new(ci);
 	btDynamicsWorld_addRigidBody(world,body);
