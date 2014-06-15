@@ -1,0 +1,10 @@
+#labels Featured
+There are different ways to run the Bullet physics library in .NET depending on your requirements.
+
+||  || *!BulletSharp (C++/CLI)* || *!BulletSharp (P/invoke)* || *Bullet-XNA* ||
+|| Windows || *Yes* || *Yes* || *Yes* ||
+|| Linux/Unix || No || *Yes* || *Yes* ||
+|| Xbox || No || No || *Yes* ||
+|| Windows Phone || No || No || *Yes* ||
+|| Fast native code || *Yes* || *Yes* || No ||
+|| Single DLL file || *Yes* || No || *Yes* ||
