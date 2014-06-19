@@ -209,6 +209,18 @@ namespace BulletSharp.Math
         }
 
         /// <summary>
+        /// Gets or sets the basis matrix for the rotation.
+        /// </summary>
+        public Matrix Basis
+        {
+            get { return new Matrix(
+                M11, M12, M13, 0,
+                M21, M22, M23, 0,
+                M31, M32, M33, 0,
+                0, 0, 0, 1); }
+        }
+
+        /// <summary>
         /// Gets or sets the first row in the matrix; that is M11, M12, M13, and M14.
         /// </summary>
         public Vector4 Row1

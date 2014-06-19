@@ -11,6 +11,7 @@ namespace BulletSharp
 		internal IntPtr _native;
 
         private bool _preventDelete;
+        private bool _isDisposed;
 
         internal static CollisionShape GetManaged(IntPtr obj)
         {
@@ -160,6 +161,11 @@ namespace BulletSharp
 			get { return btCollisionShape_isConvex2d(_native); }
 		}
 
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
 		public bool IsInfinite
 		{
 			get { return btCollisionShape_isInfinite(_native); }
@@ -238,7 +244,7 @@ namespace BulletSharp
                 {
                     btCollisionShape_delete(_native);
                 }
-				_native = IntPtr.Zero;
+                _isDisposed = true;
 			}
 		}
 

@@ -102,6 +102,7 @@ namespace DemoFramework.SharpDX
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
 
+                VertexCount = vectors.Length;
                 BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
             }
         }
@@ -332,7 +333,6 @@ namespace DemoFramework.SharpDX
             // Clear instance data
             foreach (ShapeData s in shapes.Values)
                 s.InstanceDataList.Clear();
-            removeList.Clear();
 
             int i = objects.Count - 1;
             for (; i >= 0; i--)
@@ -400,6 +400,7 @@ namespace DemoFramework.SharpDX
                 {
                     shapes.Remove(removeList[i]);
                 }
+                removeList.Clear();
             }
         }
 
@@ -433,7 +434,7 @@ namespace DemoFramework.SharpDX
         {
             // Could just allocate a Vector3 array here at each frame, but reusing shapeData.SoftBodyData is faster.
             // Probably uses more memory though.
-            shapeData.VertexCount = softBody.GetVertexNormalData(ref shapeData.SoftBodyData);
+            softBody.GetVertexNormalData(ref shapeData.SoftBodyData);
             shapeData.SetDynamicVertexBuffer(device, shapeData.SoftBodyData);
             
             if (softBody.Faces.Count == 0 && softBody.Tetras.Count == 0)
