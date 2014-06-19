@@ -1,14 +1,17 @@
+#include <BulletCollision/CollisionShapes/btConvexTriangleMeshShape.h>
+#include <BulletCollision/CollisionShapes/btStridingMeshInterface.h>
+
 #include "conversion.h"
 #include "btConvexTriangleMeshShape_wrap.h"
 
-btConvexTriangleMeshShape* btConvexTriangleMeshShape_new(btStridingMeshInterface* meshInterface, bool calcAabb)
-{
-	return new btConvexTriangleMeshShape(meshInterface, calcAabb);
-}
-
-btConvexTriangleMeshShape* btConvexTriangleMeshShape_new2(btStridingMeshInterface* meshInterface)
+btConvexTriangleMeshShape* btConvexTriangleMeshShape_new(btStridingMeshInterface* meshInterface)
 {
 	return new btConvexTriangleMeshShape(meshInterface);
+}
+
+btConvexTriangleMeshShape* btConvexTriangleMeshShape_new2(btStridingMeshInterface* meshInterface, bool calcAabb)
+{
+	return new btConvexTriangleMeshShape(meshInterface, calcAabb);
 }
 
 void btConvexTriangleMeshShape_calculatePrincipalAxisTransform(btConvexTriangleMeshShape* obj, btScalar* principal, btScalar* inertia, btScalar* volume)

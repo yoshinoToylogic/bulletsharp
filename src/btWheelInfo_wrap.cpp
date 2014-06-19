@@ -3,6 +3,8 @@
 #include "conversion.h"
 #include "btWheelInfo_wrap.h"
 
+#ifndef DISABLE_VEHICLE
+
 btWheelInfoConstructionInfo* btWheelInfoConstructionInfo_new()
 {
 	return new btWheelInfoConstructionInfo();
@@ -492,3 +494,5 @@ void btWheelInfo_delete(btWheelInfo* obj)
 {
 	delete obj;
 }
+
+#endif

@@ -4,6 +4,8 @@
 #include "conversion.h"
 #include "btKinematicCharacterController_wrap.h"
 
+#ifndef DISABLE_CHARACTER_CONTROLLER
+
 btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight, int upAxis)
 {
 	return new btKinematicCharacterController(ghostObject, convexShape, stepHeight, upAxis);
@@ -63,3 +65,5 @@ void btKinematicCharacterController_setUseGhostSweepTest(btKinematicCharacterCon
 {
 	obj->setUseGhostSweepTest(useGhostObjectSweepTest);
 }
+
+#endif

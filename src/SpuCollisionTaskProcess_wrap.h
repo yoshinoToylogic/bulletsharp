@@ -4,7 +4,7 @@ extern "C"
 {
 	EXPORT SpuGatherAndProcessWorkUnitInput* SpuGatherAndProcessWorkUnitInput_new();
 	EXPORT int SpuGatherAndProcessWorkUnitInput_getEndIndex(SpuGatherAndProcessWorkUnitInput* obj);
-	EXPORT unsigned long SpuGatherAndProcessWorkUnitInput_getPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj);
+	//EXPORT uint64_t SpuGatherAndProcessWorkUnitInput_getPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj);
 	EXPORT int SpuGatherAndProcessWorkUnitInput_getStartIndex(SpuGatherAndProcessWorkUnitInput* obj);
 	EXPORT void SpuGatherAndProcessWorkUnitInput_setEndIndex(SpuGatherAndProcessWorkUnitInput* obj, int value);
 	EXPORT void SpuGatherAndProcessWorkUnitInput_setPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj, unsigned long value);

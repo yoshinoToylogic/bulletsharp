@@ -2,12 +2,12 @@
 
 #include "btSphereSphereCollisionAlgorithm_wrap.h"
 
-btSphereSphereCollisionAlgorithm::CreateFunc* btSphereSphereCollisionAlgorithm_CreateFunc_new()
+btSphereSphereCollisionAlgorithm::CreateFunc* CreateFunc_new()
 {
 	return new btSphereSphereCollisionAlgorithm::CreateFunc();
 }
 
-btSphereSphereCollisionAlgorithm* btSphereSphereCollisionAlgorithm_new(btPersistentManifold* mf, btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* col0Wrap, btCollisionObjectWrapper* col1Wrap)
+btSphereSphereCollisionAlgorithm* btSphereSphereCollisionAlgorithm_new(btPersistentManifold* mf, const btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* col0Wrap, btCollisionObjectWrapper* col1Wrap)
 {
 	return new btSphereSphereCollisionAlgorithm(mf, *ci, col0Wrap, col1Wrap);
 }

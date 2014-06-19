@@ -9,19 +9,19 @@ btPersistentManifold* btPersistentManifold_new()
 	return new btPersistentManifold();
 }
 
-btPersistentManifold* btPersistentManifold_new2(btCollisionObject* body0, btCollisionObject* body1, int __unnamed2, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
+btPersistentManifold* btPersistentManifold_new2(btCollisionObject* body0, btCollisionObject* body1, int __unnamed, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
 {
-	return new btPersistentManifold(body0, body1, __unnamed2, contactBreakingThreshold, contactProcessingThreshold);
+	return new btPersistentManifold(body0, body1, __unnamed, contactBreakingThreshold, contactProcessingThreshold);
 }
 
-int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, btManifoldPoint* newPoint, bool isPredictive)
-{
-	return obj->addManifoldPoint(*newPoint, isPredictive);
-}
-
-int btPersistentManifold_addManifoldPoint2(btPersistentManifold* obj, btManifoldPoint* newPoint)
+int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, btManifoldPoint* newPoint)
 {
 	return obj->addManifoldPoint(*newPoint);
+}
+
+int btPersistentManifold_addManifoldPoint2(btPersistentManifold* obj, btManifoldPoint* newPoint, bool isPredictive)
+{
+	return obj->addManifoldPoint(*newPoint, isPredictive);
 }
 
 void btPersistentManifold_clearManifold(btPersistentManifold* obj)

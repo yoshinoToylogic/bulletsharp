@@ -5,6 +5,7 @@
 #define pDrawArc void*
 #define pDrawBox void*
 #define pDrawCapsule void*
+#define pDrawCone void*
 #define pDrawContactPoint void*
 #define pDrawCylinder void*
 #define pDrawLine void*
@@ -23,6 +24,7 @@ typedef void(*pDrawArc)(const btScalar* center, const btScalar* normal, const bt
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle, const btScalar* color, bool drawSect, btScalar stepDegrees);
 typedef void(*pDrawBox)(const btScalar* bbMin, const btScalar* bbMax, const btScalar* trans, const btScalar* color);
 typedef void(*pDrawCapsule)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btScalar* color);
+typedef void(*pDrawCone)(btScalar radius, btScalar height, int upAxis, const btScalar* transform, const btScalar* color);
 typedef void(*pDrawContactPoint)(const btScalar* PointOnB, const btScalar* normalOnB, btScalar distance, int lifeTime, const btScalar* color);
 typedef void(*pDrawCylinder)(btScalar radius, btScalar halfHeight, int upAxis, const btScalar* transform, const btScalar* color);
 typedef void(*pDrawLine)(const btScalar* from, const btScalar* to, const btScalar* color);
@@ -42,6 +44,7 @@ private:
 	pDrawArc _drawArcCallback;
 	pDrawBox _drawBoxCallback;
 	pDrawCapsule _drawCapsuleCallback;
+	pDrawCone _drawConeCallback;
 	pDrawContactPoint _drawContactPointCallback;
 	pDrawCylinder _drawCylinderCallback;
 	pDrawLine _drawLineCallback;
@@ -54,11 +57,12 @@ private:
 
 public:
 	void* _debugDrawGCHandle;
+	void* getGCHandle();
 	
 	pSimpleCallback _cb;
 
 	btIDebugDrawWrapper(void* debugDrawGCHandle, pDrawAabb drawAabbCallback, pDrawArc drawArcCallback, pDrawBox drawBoxCallback,
-		pDrawCapsule drawCapsuleCallback, pDrawContactPoint drawContactPointCallback, pDrawCylinder drawCylinderCallback, pDrawLine drawLineCallback,
+		pDrawCapsule drawCapsuleCallback, pDrawCone drawConeCallback, pDrawContactPoint drawContactPointCallback, pDrawCylinder drawCylinderCallback, pDrawLine drawLineCallback,
 		pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback, pDrawSpherePatch drawSpherePatch, pDrawTransform drawTransformCallback,
 		pDrawTriangle drawTriangleCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb);
 
@@ -110,10 +114,10 @@ public:
 extern "C"
 {
 	EXPORT btIDebugDrawWrapper* btIDebugDrawWrapper_new(void* debugDrawGCHandle, pDrawAabb drawAabbCallback,
-		pDrawArc drawArcCallback, pDrawBox drawBoxCallback, pDrawCapsule drawCapsule, pDrawContactPoint drawContactPointCallback,
+		pDrawArc drawArcCallback, pDrawBox drawBoxCallback, pDrawCapsule drawCapsule, pDrawCone drawCone, pDrawContactPoint drawContactPointCallback,
 		pDrawCylinder drawCylinderCallback, pDrawLine drawLineCallback, pDrawPlane drawPlaneCallback, pDrawSphere drawSphereCallback,
 		pDrawSpherePatch drawSpherePatchCallback, pDrawTransform drawTransformCallback, pDrawTriangle drawTriangleCallback, pGetDebugMode getDebugModeCallback, pSimpleCallback cb);
-	EXPORT void* btIDebugDrawWrapper_getDebugDrawGCHandle(btIDebugDrawWrapper* obj);
+	EXPORT void* btIDebugDrawWrapper_getGCHandle(btIDebugDrawWrapper* obj);
 
 	EXPORT void btIDebugDraw_delete(btIDebugDraw* obj);
 }
