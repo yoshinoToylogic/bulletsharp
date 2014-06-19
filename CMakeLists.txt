@@ -16,6 +16,8 @@ FIND_PATH(BULLET_INCLUDE_DIR NAMES btBulletCollisionCommon.h
   PATHS
   ${PROJECT_SOURCE_DIR}/../../bullet/src/
   ${PROJECT_SOURCE_DIR}/../bullet/src/
+  ${PROJECT_SOURCE_DIR}/../../bullet3/src/
+  ${PROJECT_SOURCE_DIR}/../bullet3/src/
   ENV CPATH
   /usr/include
   /usr/local/include
