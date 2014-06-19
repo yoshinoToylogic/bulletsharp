@@ -2,6 +2,7 @@ using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Collections.Generic;
 
 namespace BulletSharp
 {
@@ -26,26 +27,36 @@ namespace BulletSharp
         protected ConstraintSolver _solver;
         private ContactSolverInfo _solverInfo;
 
+        private Dictionary<IAction, ActionInterfaceWrapper> _actions;
+
+        internal static DynamicsWorld GetManagedDynamicsWorld(IntPtr collisionWorld)
+        {
+            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(collisionWorld);
+            return GCHandle.FromIntPtr(nativeUserInfo).Target as DynamicsWorld;
+        }
+
 		internal DynamicsWorld(IntPtr native)
 			: base(native)
 		{
+            // Store GC handle in user info (not available for btCollisionWorld)
+            GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
+            btDynamicsWorld_setWorldUserInfo(_native, GCHandle.ToIntPtr(handle));
 		}
 
-		public void AddAction(IActionInterface action)
+		public void AddAction(IAction action)
 		{
-            if (action is ActionInterface)
+            if (_actions == null)
             {
-                btDynamicsWorld_addAction(_native, (action as ActionInterface)._native);
+                _actions = new Dictionary<IAction, ActionInterfaceWrapper>();
             }
-            else
+            else if (!_actions.ContainsKey(action))
             {
-                throw new NotImplementedException();
+                return;
             }
-		}
 
-		public void AddCharacter(ActionInterface character)
-		{
-			btDynamicsWorld_addCharacter(_native, character._native);
+            ActionInterfaceWrapper wrapper = new ActionInterfaceWrapper(action, this);
+            _actions.Add(action, wrapper);
+            btDynamicsWorld_addAction(_native, wrapper._native);
 		}
 
 		public void AddConstraint(TypedConstraint constraint, bool disableCollisionsBetweenLinkedBodies)
@@ -68,11 +79,6 @@ namespace BulletSharp
 			btDynamicsWorld_addRigidBody2(_native, body._native, group, mask);
 		}
 
-		public void AddVehicle(ActionInterface vehicle)
-		{
-			btDynamicsWorld_addVehicle(_native, vehicle._native);
-		}
-
 		public void ClearForces()
 		{
 			btDynamicsWorld_clearForces(_native);
@@ -88,14 +94,23 @@ namespace BulletSharp
             btDynamicsWorld_getGravity(_native, out gravity);
         }
 
-		public void RemoveAction(ActionInterface action)
+		public void RemoveAction(IAction action)
 		{
-			btDynamicsWorld_removeAction(_native, action._native);
-		}
+            if (_actions == null)
+            {
+                // No actions have been added
+                return;
+            }
 
-		public void RemoveCharacter(ActionInterface character)
-		{
-			btDynamicsWorld_removeCharacter(_native, character._native);
+            if (!_actions.ContainsKey(action))
+            {
+                return;
+            }
+
+            ActionInterfaceWrapper wrapper = _actions[action];
+            btDynamicsWorld_removeAction(_native, wrapper._native);
+            _actions.Remove(action);
+            wrapper.Dispose();
 		}
 
 		public void RemoveConstraint(TypedConstraint constraint)
@@ -106,11 +121,6 @@ namespace BulletSharp
 		public void RemoveRigidBody(RigidBody body)
 		{
 			btDynamicsWorld_removeRigidBody(_native, body._native);
-		}
-
-		public void RemoveVehicle(ActionInterface vehicle)
-		{
-			btDynamicsWorld_removeVehicle(_native, vehicle._native);
 		}
 
         public void SetGravity(ref Vector3 gravity)
@@ -129,35 +139,24 @@ namespace BulletSharp
 		{
             if (_callback != cb)
             {
+                IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
                 if (cb != null)
                 {
                     _callback = cb;
                     _callbackUnmanaged = new InternalTickCallbackUnmanaged(InternalTickCallbackNative);
+                    btDynamicsWorld_setInternalTickCallback(_native,
+                        Marshal.GetFunctionPointerForDelegate(_callbackUnmanaged),
+                        nativeUserInfo, isPreTick);
                 }
                 else
                 {
                     _callback = null;
                     _callbackUnmanaged = null;
+                    btDynamicsWorld_setInternalTickCallback(_native, IntPtr.Zero, nativeUserInfo, isPreTick);
                 }
             }
 
 	        WorldUserInfo = worldUserInfo;
-
-            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
-	        if (cb != null) {
-		        if (nativeUserInfo == IntPtr.Zero) {
-			        GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
-			        nativeUserInfo = GCHandle.ToIntPtr(handle);
-		        }
-                btDynamicsWorld_setInternalTickCallback(_native,
-                    Marshal.GetFunctionPointerForDelegate(_callbackUnmanaged),
-                    nativeUserInfo, isPreTick);
-	        } else {
-		        if (nativeUserInfo != IntPtr.Zero) {
-                    GCHandle.FromIntPtr(nativeUserInfo).Free();
-		        }
-                btDynamicsWorld_setInternalTickCallback(_native, IntPtr.Zero, IntPtr.Zero, isPreTick);
-	        }
 		}
 
 		public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo)
@@ -245,8 +244,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addAction(IntPtr obj, IntPtr action);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addCharacter(IntPtr obj, IntPtr character);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addConstraint(IntPtr obj, IntPtr constraint, bool disableCollisionsBetweenLinkedBodies);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint);
@@ -254,8 +251,6 @@ namespace BulletSharp
 		static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, short group, short mask);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addVehicle(IntPtr obj, IntPtr vehicle);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_clearForces(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -275,13 +270,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_removeAction(IntPtr obj, IntPtr action);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_removeCharacter(IntPtr obj, IntPtr character);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_removeConstraint(IntPtr obj, IntPtr constraint);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_removeRigidBody(IntPtr obj, IntPtr body);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_removeVehicle(IntPtr obj, IntPtr vehicle);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_setConstraintSolver(IntPtr obj, IntPtr solver);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -302,5 +293,21 @@ namespace BulletSharp
 		static extern int btDynamicsWorld_stepSimulation3(IntPtr obj, float timeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_synchronizeMotionStates(IntPtr obj);
+
+        protected override void Dispose(bool disposing)
+        {
+            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
+            GCHandle.FromIntPtr(nativeUserInfo).Free();
+
+            if (_actions != null)
+            {
+                foreach (ActionInterfaceWrapper wrapper in _actions.Values)
+                {
+                    wrapper.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
 	}
 }

@@ -1,3 +1,5 @@
+#include <LinearMath/btTransformUtil.h>
+
 #include "conversion.h"
 #include "btTransformUtil_wrap.h"
 
@@ -52,6 +54,7 @@ void btTransformUtil_integrateTransform(btScalar* curTrans, btScalar* linvel, bt
 	btTransformUtil::integrateTransform(TRANSFORM_USE(curTrans), VECTOR3_USE(linvel), VECTOR3_USE(angvel), timeStep, TRANSFORM_USE(predictedTransform));
 	TRANSFORM_DEF_OUT(predictedTransform);
 }
+
 
 btConvexSeparatingDistanceUtil* btConvexSeparatingDistanceUtil_new(btScalar boundingRadiusA, btScalar boundingRadiusB)
 {

@@ -191,11 +191,10 @@ namespace BulletSharp.Math
         {
             get
             {
-                float length = (X * X) + (Y * Y) + (Z * Z);
-                if (length < Utilities.ZeroTolerance)
+                float inv = 1.0f / (W * W);
+                if (inv < 10.0f * Utilities.ZeroTolerance)
                     return Vector3.UnitX;
 
-                float inv = 1.0f / length;
                 return new Vector3(X * inv, Y * inv, Z * inv);
             }
         }

@@ -4,8 +4,8 @@ extern "C"
 {
 	EXPORT btPersistentManifold* btPersistentManifold_new();
 	EXPORT btPersistentManifold* btPersistentManifold_new2(btCollisionObject* body0, btCollisionObject* body1, int __unnamed2, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold);
-	EXPORT int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, btManifoldPoint* newPoint, bool isPredictive);
-	EXPORT int btPersistentManifold_addManifoldPoint2(btPersistentManifold* obj, btManifoldPoint* newPoint);
+	EXPORT int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, btManifoldPoint* newPoint);
+	EXPORT int btPersistentManifold_addManifoldPoint2(btPersistentManifold* obj, btManifoldPoint* newPoint, bool isPredictive);
 	EXPORT void btPersistentManifold_clearManifold(btPersistentManifold* obj);
 	EXPORT void btPersistentManifold_clearUserCache(btPersistentManifold* obj, btManifoldPoint* pt);
 	EXPORT const btCollisionObject* btPersistentManifold_getBody0(btPersistentManifold* obj);

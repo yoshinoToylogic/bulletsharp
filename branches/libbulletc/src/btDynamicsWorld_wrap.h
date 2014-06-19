@@ -3,12 +3,10 @@
 extern "C"
 {
 	EXPORT void btDynamicsWorld_addAction(btDynamicsWorld* obj, btActionInterface* action);
-	EXPORT void btDynamicsWorld_addCharacter(btDynamicsWorld* obj, btActionInterface* character);
 	EXPORT void btDynamicsWorld_addConstraint(btDynamicsWorld* obj, btTypedConstraint* constraint, bool disableCollisionsBetweenLinkedBodies);
 	EXPORT void btDynamicsWorld_addConstraint2(btDynamicsWorld* obj, btTypedConstraint* constraint);
 	EXPORT void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body);
 	EXPORT void btDynamicsWorld_addRigidBody2(btDynamicsWorld* obj, btRigidBody* body, short group, short mask);
-	EXPORT void btDynamicsWorld_addVehicle(btDynamicsWorld* obj, btActionInterface* vehicle);
 	EXPORT void btDynamicsWorld_clearForces(btDynamicsWorld* obj);
 	EXPORT btTypedConstraint* btDynamicsWorld_getConstraint(btDynamicsWorld* obj, int index);
 	EXPORT btTypedConstraint* btDynamicsWorld_getConstraint2(btDynamicsWorld* obj, int index);
@@ -19,10 +17,8 @@ extern "C"
 	EXPORT btDynamicsWorldType btDynamicsWorld_getWorldType(btDynamicsWorld* obj);
 	EXPORT void* btDynamicsWorld_getWorldUserInfo(btDynamicsWorld* obj);
 	EXPORT void btDynamicsWorld_removeAction(btDynamicsWorld* obj, btActionInterface* action);
-	EXPORT void btDynamicsWorld_removeCharacter(btDynamicsWorld* obj, btActionInterface* character);
 	EXPORT void btDynamicsWorld_removeConstraint(btDynamicsWorld* obj, btTypedConstraint* constraint);
 	EXPORT void btDynamicsWorld_removeRigidBody(btDynamicsWorld* obj, btRigidBody* body);
-	EXPORT void btDynamicsWorld_removeVehicle(btDynamicsWorld* obj, btActionInterface* vehicle);
 	EXPORT void btDynamicsWorld_setConstraintSolver(btDynamicsWorld* obj, btConstraintSolver* solver);
 	EXPORT void btDynamicsWorld_setGravity(btDynamicsWorld* obj, btScalar* gravity);
 	EXPORT void btDynamicsWorld_setInternalTickCallback(btDynamicsWorld* obj, btInternalTickCallback cb, void* worldUserInfo, bool isPreTick);

@@ -71,6 +71,7 @@ namespace DistanceDemo
             rotBody.ActivationState = ActivationState.DisableDeactivation;
         }
 
+        static Vector3 red = new Vector3(1.0f, 0.0f, 0.0f);
         public override void OnUpdate()
         {
             base.OnUpdate();
@@ -93,7 +94,7 @@ namespace DistanceDemo
                 distanceFrom = result.PointInWorld;
                 distanceTo = result.PointInWorld + result.NormalOnBInWorld * result.Distance;
                 distance = result.Distance;
-                World.DebugDrawer.DrawLine(ref distanceFrom, ref distanceTo, ref distanceTo);
+                World.DebugDrawer.DrawLine(ref distanceFrom, ref distanceTo, ref red);
             }
         }
     }

@@ -3,6 +3,8 @@
 #include "conversion.h"
 #include "btVehicleRaycaster_wrap.h"
 
+#ifndef DISABLE_VEHICLE
+
 btVehicleRaycaster_btVehicleRaycasterResult* btVehicleRaycaster_btVehicleRaycasterResult_new()
 {
 	return new btVehicleRaycaster_btVehicleRaycasterResult();
@@ -54,3 +56,5 @@ void btVehicleRaycaster_delete(btVehicleRaycaster* obj)
 {
 	delete obj;
 }
+
+#endif

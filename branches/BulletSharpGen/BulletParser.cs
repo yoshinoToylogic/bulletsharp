@@ -177,7 +177,7 @@ namespace BulletSharpGen
                     }
                     else if (method.Parameters.Length == 1 &&
                         method.Name.StartsWith("get", StringComparison.InvariantCultureIgnoreCase) &&
-                        method.ReturnType.IsBasic && method.ReturnType.ManagedName == "void")
+                        method.ReturnType.IsBasic && method.ReturnType.ManagedName.Equals("void"))
                     {
                         // function writes the result to a given pointer
                         new PropertyDefinition(method);
@@ -335,8 +335,9 @@ namespace BulletSharpGen
         {
             switch (type.ManagedName)
             {
-                case "Vector3":
+                case "Quaternion":
                 case "Transform":
+                case "Vector3":
                     return "btScalar";
                 default:
                     return type.FullName;

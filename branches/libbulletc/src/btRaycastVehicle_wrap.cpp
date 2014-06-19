@@ -3,6 +3,8 @@
 #include "conversion.h"
 #include "btRaycastVehicle_wrap.h"
 
+#ifndef DISABLE_VEHICLE
+
 btRaycastVehicle_btVehicleTuning* btRaycastVehicle_btVehicleTuning_new()
 {
 	return new btRaycastVehicle_btVehicleTuning();
@@ -242,3 +244,5 @@ btDefaultVehicleRaycaster* btDefaultVehicleRaycaster_new(btDynamicsWorld* world)
 {
 	return new btDefaultVehicleRaycaster(world);
 }
+
+#endif

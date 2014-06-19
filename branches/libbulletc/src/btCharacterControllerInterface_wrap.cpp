@@ -3,6 +3,8 @@
 #include "conversion.h"
 #include "btCharacterControllerInterface_wrap.h"
 
+#ifndef DISABLE_CHARACTER_CONTROLLER
+
 bool btCharacterControllerInterface_canJump(btCharacterControllerInterface* obj)
 {
 	return obj->canJump();
@@ -55,3 +57,5 @@ void btCharacterControllerInterface_warp(btCharacterControllerInterface* obj, bt
 	VECTOR3_CONV(origin);
 	obj->warp(VECTOR3_USE(origin));
 }
+
+#endif

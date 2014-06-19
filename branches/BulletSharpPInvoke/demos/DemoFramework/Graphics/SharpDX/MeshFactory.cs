@@ -430,16 +430,16 @@ namespace DemoFramework.SharpDX
         }
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
-        {/*
+        {
             // Could just allocate a Vector3 array here at each frame, but reusing shapeData.SoftBodyData is faster.
             // Probably uses more memory though.
-            shapeData.VertexCount = softBody.GetVertexNormalData(out shapeData.SoftBodyData);
+            shapeData.VertexCount = softBody.GetVertexNormalData(ref shapeData.SoftBodyData);
             shapeData.SetDynamicVertexBuffer(device, shapeData.SoftBodyData);
             
             if (softBody.Faces.Count == 0 && softBody.Tetras.Count == 0)
             {
                 shapeData.PrimitiveTopology = PrimitiveTopology.LineList;
-            }*/
+            }
         }
 
         /*

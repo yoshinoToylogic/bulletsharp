@@ -37,7 +37,6 @@
 #define btStaticPlaneShape void
 #define btConvexHullShape void
 #define btTriangleMesh void
-#define btConvexTriangleMeshShape void
 #define btBvhTriangleMeshShape void
 #define btScaledBvhTriangleMeshShape void
 #define btTriangleMeshShape void
@@ -300,6 +299,10 @@
 
 #ifndef BT_CONVEX_SHAPE_INTERFACE1
 #define btConvexShape void
+#endif
+
+#ifndef BT_CONVEX_TRIANGLEMESH_SHAPE_H
+#define btConvexTriangleMeshShape void
 #endif
 
 #ifndef BT_DEFAULT_COLLISION_CONFIGURATION

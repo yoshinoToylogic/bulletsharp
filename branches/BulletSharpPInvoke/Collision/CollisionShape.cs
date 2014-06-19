@@ -209,6 +209,21 @@ namespace BulletSharp
 
         public Object UserObject { get; set; }
 
+        public override bool Equals(object obj)
+        {
+            CollisionShape shape = obj as CollisionShape;
+            if (shape == null)
+            {
+                return false;
+            }
+            return _native.Equals(shape._native);
+        }
+
+        public override int GetHashCode()
+        {
+            return _native.ToInt32();
+        }
+
 		public void Dispose()
 		{
 			Dispose(true);

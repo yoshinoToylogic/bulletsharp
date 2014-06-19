@@ -12,12 +12,12 @@ int SpuGatherAndProcessWorkUnitInput_getEndIndex(SpuGatherAndProcessWorkUnitInpu
 {
 	return obj->m_endIndex;
 }
-
-unsigned long SpuGatherAndProcessWorkUnitInput_getPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj)
+/*
+uint64_t SpuGatherAndProcessWorkUnitInput_getPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj)
 {
 	return obj->m_pairArrayPtr;
 }
-
+*/
 int SpuGatherAndProcessWorkUnitInput_getStartIndex(SpuGatherAndProcessWorkUnitInput* obj)
 {
 	return obj->m_startIndex;

@@ -347,7 +347,7 @@ namespace BulletSharpGen
                 }
                 else
                 {
-                    if (!(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
+                    if (!(method.ReturnType.IsBasic && method.ReturnType.Name.Equals("void")))
                     {
                         //if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
                         SourceWrite("return ");
@@ -402,7 +402,7 @@ namespace BulletSharpGen
                     }
                     OutputMethodMarshal(method, numParameters);
                 }
-                if (!method.IsConstructor && !(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
+                if (!method.IsConstructor && !(method.ReturnType.IsBasic && method.ReturnType.Name.Equals("void")))
                 {
                     SourceWrite(BulletParser.GetTypeMarshalConstructorEnd(method));
                 }

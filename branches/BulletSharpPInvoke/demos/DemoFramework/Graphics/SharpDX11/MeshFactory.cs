@@ -10,8 +10,8 @@ using Buffer = SharpDX.Direct3D11.Buffer;
 using Color = System.Drawing.Color;
 using DataStream = SharpDX.DataStream;
 using Device = SharpDX.Direct3D11.Device;
-using Matrix = BulletSharp.Matrix;
-using Vector3 = BulletSharp.Vector3;
+using Matrix = BulletSharp.Math.Matrix;
+using Vector3 = BulletSharp.Math.Vector3;
 
 namespace DemoFramework.SharpDX11
 {

@@ -164,18 +164,22 @@ namespace ConcaveConvexCastDemo
             }
         }
 
+        static Vector3 green = new Vector3(0.0f, 1.0f, 0.0f);
+        static Vector3 white = new Vector3(1.0f, 1.0f, 1.0f);
+        static Vector3 cyan = new Vector3(0.0f, 1.0f, 1.0f);
+
         public void Draw(IDebugDraw drawer)
         {
             int i;
             for (i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                drawer.DrawLine(ref source[i], ref hit_com[i], ref hit_com[i]);
+                drawer.DrawLine(ref source[i], ref hit_com[i], ref green);
             }
             const float normalScale = 10.0f; // easier to see if this is big
             for (i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 Vector3 to = hit_surface[i] + normalScale * normal[i];
-                drawer.DrawLine(ref hit_surface[i], ref to, ref to);
+                drawer.DrawLine(ref hit_surface[i], ref to, ref white);
             }
             Quaternion qFrom = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.0f);
             Quaternion qTo = Quaternion.RotationAxis(new Vector3(1.0f, 0.0f, 0.0f), 0.7f);
@@ -190,7 +194,7 @@ namespace ConcaveConvexCastDemo
                 TransformUtil.IntegrateTransform(ref from, ref linVel, ref angVel, hit_fraction[i], out T);
                 Vector3 box1 = boxShapeHalfExtents;
                 Vector3 box2 = -boxShapeHalfExtents;
-                drawer.DrawBox(ref box1, ref box2, ref T, ref box1);
+                drawer.DrawBox(ref box1, ref box2, ref T, ref cyan);
             }
         }
     }
@@ -265,19 +269,18 @@ namespace ConcaveConvexCastDemo
         void SetVertexPositions(float waveheight, float offset)
         {
             var vertexStream = indexVertexArrays.GetVertexStream();
-            var vertexWriter = new BinaryWriter(vertexStream);
-
-            for (int i = 0; i < NumVertsX; i++)
+            using (var vertexWriter = new BinaryWriter(vertexStream))
             {
-                for (int j = 0; j < NumVertsY; j++)
+                for (int i = 0; i < NumVertsX; i++)
                 {
-                    vertexWriter.Write((i - NumVertsX * 0.5f) * TriangleSize);
-                    vertexWriter.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
-                    vertexWriter.Write((j - NumVertsY * 0.5f) * TriangleSize);
+                    for (int j = 0; j < NumVertsY; j++)
+                    {
+                        vertexWriter.Write((i - NumVertsX * 0.5f) * TriangleSize);
+                        vertexWriter.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
+                        vertexWriter.Write((j - NumVertsY * 0.5f) * TriangleSize);
+                    }
                 }
             }
-
-            vertexStream.Dispose();
         }
 
         protected override void OnInitializePhysics()

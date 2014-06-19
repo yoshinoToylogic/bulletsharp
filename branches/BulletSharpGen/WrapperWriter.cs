@@ -13,7 +13,7 @@ namespace BulletSharpGen
         Source = 2,
         CS = 4,
         Buffer = 8,
-        All = Header | Source | CS
+        AllFiles = Header | Source | CS
     }
 
     class WrapperWriter
@@ -33,44 +33,44 @@ namespace BulletSharpGen
             this.NamespaceName = namespaceName;
         }
 
-        protected void Write(string s, WriteTo to = WriteTo.All)
+        protected void Write(string s, WriteTo to = WriteTo.AllFiles)
         {
-            if ((to & WriteTo.Header) == WriteTo.Header)
+            if ((to & WriteTo.Header) != 0)
             {
                 headerWriter.Write(s);
             }
-            if ((to & WriteTo.Source) == WriteTo.Source)
+            if ((to & WriteTo.Source) != 0)
             {
                 sourceWriter.Write(s);
             }
-            if ((to & WriteTo.CS) == WriteTo.CS)
+            if ((to & WriteTo.CS) != 0)
             {
                 csWriter.Write(s);
             }
-            if ((to & WriteTo.Buffer) == WriteTo.Buffer)
+            if ((to & WriteTo.Buffer) != 0)
             {
                 bufferBuilder.Append(s);
             }
         }
 
-        protected void Write(char c, WriteTo to = WriteTo.All)
+        protected void Write(char c, WriteTo to = WriteTo.AllFiles)
         {
             Write(c.ToString(), to);
         }
 
-        protected void WriteLine(string s, WriteTo to = WriteTo.All)
+        protected void WriteLine(string s, WriteTo to = WriteTo.AllFiles)
         {
             Write(s, to);
             WriteLine(to);
         }
 
-        protected void WriteLine(char c, WriteTo to = WriteTo.All)
+        protected void WriteLine(char c, WriteTo to = WriteTo.AllFiles)
         {
             Write(c, to);
             WriteLine(to);
         }
 
-        protected void WriteLine(WriteTo to = WriteTo.All)
+        protected void WriteLine(WriteTo to = WriteTo.AllFiles)
         {
             Write("\r\n", to);
         }
@@ -85,7 +85,7 @@ namespace BulletSharpGen
 
         protected void EnsureWhiteSpace(WriteTo to = WriteTo.Header)
         {
-            if ((to & WriteTo.Header) == WriteTo.Header)
+            if ((to & WriteTo.Header) != 0)
             {
                 if (!hasHeaderWhiteSpace)
                 {
@@ -93,7 +93,7 @@ namespace BulletSharpGen
                     hasHeaderWhiteSpace = true;
                 }
             }
-            if ((to & WriteTo.Source) == WriteTo.Source)
+            if ((to & WriteTo.Source) != 0)
             {
                 if (!hasSourceWhiteSpace)
                 {
@@ -101,7 +101,7 @@ namespace BulletSharpGen
                     hasSourceWhiteSpace = true;
                 }
             }
-            if ((to & WriteTo.CS) == WriteTo.CS)
+            if ((to & WriteTo.CS) != 0)
             {
                 if (!hasCSWhiteSpace)
                 {

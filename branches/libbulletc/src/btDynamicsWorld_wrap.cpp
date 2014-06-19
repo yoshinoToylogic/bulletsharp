@@ -6,11 +6,6 @@ void btDynamicsWorld_addAction(btDynamicsWorld* obj, btActionInterface* action)
 	obj->addAction(action);
 }
 
-void btDynamicsWorld_addCharacter(btDynamicsWorld* obj, btActionInterface* character)
-{
-	obj->addCharacter(character);
-}
-
 void btDynamicsWorld_addConstraint(btDynamicsWorld* obj, btTypedConstraint* constraint, bool disableCollisionsBetweenLinkedBodies)
 {
 	obj->addConstraint(constraint, disableCollisionsBetweenLinkedBodies);
@@ -29,11 +24,6 @@ void btDynamicsWorld_addRigidBody(btDynamicsWorld* obj, btRigidBody* body)
 void btDynamicsWorld_addRigidBody2(btDynamicsWorld* obj, btRigidBody* body, short group, short mask)
 {
 	obj->addRigidBody(body, group, mask);
-}
-
-void btDynamicsWorld_addVehicle(btDynamicsWorld* obj, btActionInterface* vehicle)
-{
-	obj->addVehicle(vehicle);
 }
 
 void btDynamicsWorld_clearForces(btDynamicsWorld* obj)
@@ -86,11 +76,6 @@ void btDynamicsWorld_removeAction(btDynamicsWorld* obj, btActionInterface* actio
 	obj->removeAction(action);
 }
 
-void btDynamicsWorld_removeCharacter(btDynamicsWorld* obj, btActionInterface* character)
-{
-	obj->removeCharacter(character);
-}
-
 void btDynamicsWorld_removeConstraint(btDynamicsWorld* obj, btTypedConstraint* constraint)
 {
 	obj->removeConstraint(constraint);
@@ -99,11 +84,6 @@ void btDynamicsWorld_removeConstraint(btDynamicsWorld* obj, btTypedConstraint* c
 void btDynamicsWorld_removeRigidBody(btDynamicsWorld* obj, btRigidBody* body)
 {
 	obj->removeRigidBody(body);
-}
-
-void btDynamicsWorld_removeVehicle(btDynamicsWorld* obj, btActionInterface* vehicle)
-{
-	obj->removeVehicle(vehicle);
 }
 
 void btDynamicsWorld_setConstraintSolver(btDynamicsWorld* obj, btConstraintSolver* solver)

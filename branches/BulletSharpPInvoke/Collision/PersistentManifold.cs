@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -97,14 +97,14 @@ namespace BulletSharp
             _native = btPersistentManifold_new2(body0._native, body1._native, __unnamed2, contactBreakingThreshold, contactProcessingThreshold);
 		}
 
-		public int AddManifoldPoint(ManifoldPoint newPoint, bool isPredictive)
-		{
-			return btPersistentManifold_addManifoldPoint(_native, newPoint._native, isPredictive);
-		}
-
 		public int AddManifoldPoint(ManifoldPoint newPoint)
 		{
-			return btPersistentManifold_addManifoldPoint2(_native, newPoint._native);
+			return btPersistentManifold_addManifoldPoint(_native, newPoint._native);
+		}
+
+		public int AddManifoldPoint(ManifoldPoint newPoint, bool isPredictive)
+		{
+			return btPersistentManifold_addManifoldPoint2(_native, newPoint._native, isPredictive);
 		}
 
 		public void ClearManifold()
@@ -208,9 +208,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btPersistentManifold_new2(IntPtr body0, IntPtr body1, int __unnamed2, float contactBreakingThreshold, float contactProcessingThreshold);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btPersistentManifold_addManifoldPoint(IntPtr obj, IntPtr newPoint, bool isPredictive);
+		static extern int btPersistentManifold_addManifoldPoint(IntPtr obj, IntPtr newPoint);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btPersistentManifold_addManifoldPoint2(IntPtr obj, IntPtr newPoint);
+		static extern int btPersistentManifold_addManifoldPoint2(IntPtr obj, IntPtr newPoint, bool isPredictive);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPersistentManifold_clearManifold(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

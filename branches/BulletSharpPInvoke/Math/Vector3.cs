@@ -671,12 +671,12 @@ namespace BulletSharp.Math
         /// <param name="value1">First source vector.</param>
         /// <param name="value2">Second source vector.</param>
         /// <param name="value3">Third source vector.</param>
-        /// <param name="result">When the method completes, contains the tripple cross product of the three vectors.</param>
-        public static void TripleProduct(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3, out float result)
+        /// <returns>The tripple cross product of the three vectors.</returns>
+        public static float TripleProduct(ref Vector3 value1, ref Vector3 value2, ref Vector3 value3)
         {
             Vector3 temp;
             Vector3.Cross(ref value2, ref value3, out temp);
-            Vector3.Dot(ref value1, ref temp, out result);
+            return Vector3.Dot(ref value1, ref temp);
         }
 
         /// <summary>
@@ -688,9 +688,7 @@ namespace BulletSharp.Math
         /// <returns>The tripple cross product of the three vectors.</returns>
         public static float TripleProduct(Vector3 value1, Vector3 value2, Vector3 value3)
         {
-            float result;
-            TripleProduct(ref value1, ref value2, ref value3, out result);
-            return result;
+            return TripleProduct(ref value1, ref value2, ref value3);
         }
 
         /// <summary>
@@ -780,10 +778,10 @@ namespace BulletSharp.Math
         /// </summary>
         /// <param name="left">First source vector.</param>
         /// <param name="right">Second source vector.</param>
-        /// <param name="result">When the method completes, contains the dot product of the two vectors.</param>
-        public static void Dot(ref Vector3 left, ref Vector3 right, out float result)
+        /// <returns>The dot product of the two vectors.</returns>
+        public static float Dot(ref Vector3 left, ref Vector3 right)
         {
-            result = (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z);
+            return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z);
         }
 
         /// <summary>
@@ -1146,8 +1144,7 @@ namespace BulletSharp.Math
         /// <param name="result">When the method completes, contains the refracted vector.</param>
         public static void Refract(ref Vector3 vector, ref Vector3 normal, float index, out Vector3 result)
         {
-            float cos1;
-            Dot(ref vector, ref normal, out cos1);
+            float cos1 = Dot(ref vector, ref normal);
 
             float radicand = 1.0f - (index * index) * (1.0f - (cos1 * cos1));
 

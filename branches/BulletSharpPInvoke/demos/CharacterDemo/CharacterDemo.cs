@@ -115,7 +115,7 @@ namespace CharacterDemo
             Vector3 upDir = new Vector3(xform.M21, xform.M22, xform.M23);
             forwardDir.Normalize();
             upDir.Normalize();
-            Vector3 pos = xform.TranslationVector;
+            Vector3 pos = xform.Origin;
 
             Vector3 walkDirection = Vector3.Zero;
             const float walkVelocity = 1.1f * 4.0f;
