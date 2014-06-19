@@ -9,8 +9,8 @@ using BulletSharp.Math;
 
 namespace VehicleDemo
 {
-    // This class is equivalent to btRaycastVehicle, but is used to test IActionInterface
-    class CustomVehicle : IActionInterface
+    // This class is equivalent to btRaycastVehicle, but is used to test the IAction interface
+    class CustomVehicle : IAction
     {
         List<WheelInfo> wheelInfo = new List<WheelInfo>();
 
@@ -122,7 +122,6 @@ namespace VehicleDemo
             ci.MaxSuspensionForce = tuning.MaxSuspensionForce;
 
             wheelInfo.Add(new WheelInfo(ci));
-            ci.Dispose();
 
             WheelInfo wheel = wheelInfo[NumWheels - 1];
 
@@ -181,7 +180,7 @@ namespace VehicleDemo
                 }
 
                 Matrix transform = wheelInfo.WorldTransform;
-                Vector3 wheelPosWS = transform.TranslationVector;
+                Vector3 wheelPosWS = transform.Origin;
 
                 Vector3 axle = new Vector3(
                     transform[0, RightAxis],
@@ -221,7 +220,7 @@ namespace VehicleDemo
             VehicleRaycasterResult rayResults = new VehicleRaycasterResult();
 
             Debug.Assert(vehicleRaycaster != null);
-            object obj = vehicleRaycaster.CastRay(source, target, rayResults);
+            object obj = vehicleRaycaster.CastRay(ref source, ref target, rayResults);
 
             wheel.RaycastInfo.GroundObject = null;
 
@@ -282,8 +281,6 @@ namespace VehicleDemo
                 wheel.ClippedInvContactDotSuspension = 1.0f;
             }
 
-            rayResults.Dispose();
-
             return depth;
         }
 
@@ -304,10 +301,10 @@ namespace VehicleDemo
             Vector3 vel = vel1 - vel2;
 
             Matrix world2A = body1.CenterOfMassTransform;
-            world2A.TranslationVector = Vector3.Zero;
+            world2A.Origin = Vector3.Zero;
             world2A = Matrix.Transpose(world2A);
             Matrix world2B = body2.CenterOfMassTransform;
-            world2B.TranslationVector = Vector3.Zero;
+            world2B.Origin = Vector3.Zero;
             world2B = Matrix.Transpose(world2B);
             Vector3 m_aJ = Vector3.TransformCoordinate(Vector3.Cross(rel_pos1, normal), world2A);
             Vector3 m_bJ = Vector3.TransformCoordinate(Vector3.Cross(rel_pos2, -normal), world2B);
@@ -663,7 +660,7 @@ namespace VehicleDemo
             basis2.M13 = up[2];
 
             Matrix transform = steeringMat * rotatingMat * basis2;
-            transform.TranslationVector = wheel.RaycastInfo.HardPointWS + wheel.RaycastInfo.WheelDirectionWS * wheel.RaycastInfo.SuspensionLength;
+            transform.Origin = wheel.RaycastInfo.HardPointWS + wheel.RaycastInfo.WheelDirectionWS * wheel.RaycastInfo.SuspensionLength;
             wheel.WorldTransform = transform;
         }
 
@@ -679,7 +676,7 @@ namespace VehicleDemo
 
             wheel.RaycastInfo.HardPointWS = Vector3.TransformCoordinate(wheel.ChassisConnectionPointCS, chassisTrans);
             Matrix chassisTransBasis = chassisTrans;
-            chassisTransBasis.TranslationVector = Vector3.Zero;
+            chassisTransBasis.Origin = Vector3.Zero;
             wheel.RaycastInfo.WheelDirectionWS = Vector3.TransformCoordinate(wheel.WheelDirectionCS, chassisTransBasis);
             wheel.RaycastInfo.WheelAxleWS = Vector3.TransformCoordinate(wheel.WheelAxleCS, chassisTransBasis);
         }

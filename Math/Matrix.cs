@@ -283,7 +283,7 @@ namespace BulletSharp.Math
         /// <summary>
         /// Gets or sets the translation of the matrix; that is M41, M42, and M43.
         /// </summary>
-        public Vector3 TranslationVector
+        public Vector3 Origin
         {
             get { return new Vector3(M41, M42, M43); }
             set { M41 = value.X; M42 = value.Y; M43 = value.Z; }
@@ -1785,13 +1785,9 @@ namespace BulletSharp.Math
             result.M12 = yaxis.X; result.M22 = yaxis.Y; result.M32 = yaxis.Z;
             result.M13 = zaxis.X; result.M23 = zaxis.Y; result.M33 = zaxis.Z;
 
-            Vector3.Dot(ref xaxis, ref eye, out result.M41);
-            Vector3.Dot(ref yaxis, ref eye, out result.M42);
-            Vector3.Dot(ref zaxis, ref eye, out result.M43);
-
-            result.M41 = -result.M41;
-            result.M42 = -result.M42;
-            result.M43 = -result.M43;
+            result.M41 = -Vector3.Dot(ref xaxis, ref eye);
+            result.M42 = -Vector3.Dot(ref yaxis, ref eye);
+            result.M43 = -Vector3.Dot(ref zaxis, ref eye);
         }
 
         /// <summary>
@@ -1827,13 +1823,9 @@ namespace BulletSharp.Math
             result.M12 = yaxis.X; result.M22 = yaxis.Y; result.M32 = yaxis.Z;
             result.M13 = zaxis.X; result.M23 = zaxis.Y; result.M33 = zaxis.Z;
 
-            Vector3.Dot(ref xaxis, ref eye, out result.M41);
-            Vector3.Dot(ref yaxis, ref eye, out result.M42);
-            Vector3.Dot(ref zaxis, ref eye, out result.M43);
-
-            result.M41 = -result.M41;
-            result.M42 = -result.M42;
-            result.M43 = -result.M43;
+            result.M41 = -Vector3.Dot(ref xaxis, ref eye);
+            result.M42 = -Vector3.Dot(ref yaxis, ref eye);
+            result.M43 = -Vector3.Dot(ref zaxis, ref eye);
         }
 
         /// <summary>

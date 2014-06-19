@@ -95,14 +95,14 @@ namespace BulletSharp
 			_native = btBroadphaseProxy_new();
 		}
 
-		public BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr, short collisionFilterGroup, short collisionFilterMask, IntPtr multiSapParentProxy)
+        public BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask, IntPtr multiSapParentProxy)
 		{
-			_native = btBroadphaseProxy_new2(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask, multiSapParentProxy);
+            _native = btBroadphaseProxy_new2(ref aabbMin, ref aabbMax, userPtr, (short)collisionFilterGroup, (short)collisionFilterMask, multiSapParentProxy);
 		}
 
-		public BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr, short collisionFilterGroup, short collisionFilterMask)
+        public BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 		{
-			_native = btBroadphaseProxy_new3(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask);
+            _native = btBroadphaseProxy_new3(ref aabbMin, ref aabbMax, userPtr, (short)collisionFilterGroup, (short)collisionFilterMask);
 		}
 
 		public bool IsCompound(int proxyType)
@@ -173,16 +173,16 @@ namespace BulletSharp
 			set { btBroadphaseProxy_setClientObject(_native, (value as CollisionObject)._native); }
 		}
 
-		public short CollisionFilterGroup
+        public CollisionFilterGroups CollisionFilterGroup
 		{
-			get { return btBroadphaseProxy_getCollisionFilterGroup(_native); }
-			set { btBroadphaseProxy_setCollisionFilterGroup(_native, value); }
+            get { return (CollisionFilterGroups)btBroadphaseProxy_getCollisionFilterGroup(_native); }
+            set { btBroadphaseProxy_setCollisionFilterGroup(_native, (short)value); }
 		}
 
-		public short CollisionFilterMask
+        public CollisionFilterGroups CollisionFilterMask
 		{
-			get { return btBroadphaseProxy_getCollisionFilterMask(_native); }
-			set { btBroadphaseProxy_setCollisionFilterMask(_native, value); }
+            get { return (CollisionFilterGroups)btBroadphaseProxy_getCollisionFilterMask(_native); }
+			set { btBroadphaseProxy_setCollisionFilterMask(_native, (short)value); }
 		}
 
 		public IntPtr MultiSapParentProxy

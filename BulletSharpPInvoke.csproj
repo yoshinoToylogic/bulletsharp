@@ -55,6 +55,8 @@
     <Compile Include="Collision\SphereTriangleCollisionAlgorithm.cs" />
     <Compile Include="Collision\UniformScalingShape.cs" />
     <Compile Include="Dynamics\FixedConstraint.cs" />
+    <Compile Include="Dynamics\IAction.cs" />
+    <Compile Include="Dynamics\ICharacterController.cs" />
     <Compile Include="Dynamics\NncgConstraintSolver.cs" />
     <Compile Include="Extras\BulletReader.cs" />
     <Compile Include="Extras\BulletWriter.cs" />
@@ -111,15 +113,12 @@
     <Compile Include="Collision\TriangleMesh.cs" />
     <Compile Include="Collision\TriangleMeshShape.cs" />
     <Compile Include="Collision\VoronoiSimplexSolver.cs" />
-    <Compile Include="Dynamics\CharacterControllerInterface.cs" />
     <Compile Include="Dynamics\CollisionConfiguration.cs" />
     <Compile Include="Dynamics\CollisionDispatcher.cs" />
     <Compile Include="Dynamics\CollisionObject.cs" />
     <Compile Include="Dynamics\ConeTwistConstraint.cs" />
     <Compile Include="Dynamics\ConstraintSolver.cs" />
-    <Compile Include="Dynamics\ActionInterface.cs" />
     <Compile Include="Dynamics\ContactSolverInfo.cs" />
-    <Compile Include="Dynamics\IActionInterface.cs" />
     <Compile Include="Dynamics\DiscreteDynamicsWorld.cs" />
     <Compile Include="Dynamics\DynamicsWorld.cs" />
     <Compile Include="Dynamics\GearConstraint.cs" />

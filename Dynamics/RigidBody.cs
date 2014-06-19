@@ -226,7 +226,7 @@ namespace BulletSharp
 			btRigidBody_translate(_native, ref v);
 		}
 
-		public RigidBody Upcast(CollisionObject colObj)
+		public static RigidBody Upcast(CollisionObject colObj)
 		{
             return RigidBody.GetManaged(btRigidBody_upcast(colObj._native)) as RigidBody;
 		}

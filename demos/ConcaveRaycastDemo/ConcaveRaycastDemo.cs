@@ -1,9 +1,11 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using BulletSharp;
 using BulletSharp.Math;
 using DemoFramework;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 
 namespace ConcaveRaycastDemo
 {
@@ -163,17 +165,21 @@ namespace ConcaveRaycastDemo
 #endif
         }
 
+        static Vector3 green = new Vector3(0.0f, 1.0f, 0.0f);
+        static Vector3 white = new Vector3(1.0f, 1.0f, 1.0f);
+        static Vector3 cyan = new Vector3(0.0f, 1.0f, 1.0f);
+
         public void Draw(IDebugDraw drawer)
         {
             int i;
             for (i = 0; i < NUMRAYS_IN_BAR; i++)
             {
-                drawer.DrawLine(ref source[i], ref hit[i], ref hit[i]);
+                drawer.DrawLine(ref source[i], ref hit[i], ref green);
             }
             for (i = 0; i < NUMRAYS_IN_BAR; i++)
             {
                 Vector3 to = hit[i] + normal[i];
-                drawer.DrawLine(ref hit[i], ref to, ref hit[i]);
+                drawer.DrawLine(ref hit[i], ref to, ref white);
             }
         }
     }
@@ -185,9 +191,9 @@ namespace ConcaveRaycastDemo
 
         const DebugDrawModes debugMode = DebugDrawModes.None;
 
-        const float TRIANGLE_SIZE = 8.0f;
-        const int NUM_VERTS_X = 30;
-        const int NUM_VERTS_Y = 30;
+        const float TriangleSize = 8.0f;
+        const int NumVertsX = 30;
+        const int NumVertsY = 30;
         const float waveHeight = 5.0f;
         static float offset = 0.0f;
         bool animatedMesh = false;
@@ -209,24 +215,30 @@ namespace ConcaveRaycastDemo
 
             DebugDrawMode = debugMode;
 
-            const int totalVerts = NUM_VERTS_X * NUM_VERTS_Y;
-            const int totalTriangles = 2 * (NUM_VERTS_X - 1) * (NUM_VERTS_Y - 1);
+            const int totalVerts = NumVertsX * NumVertsY;
+            const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
             indexVertexArrays = new TriangleIndexVertexArray();
 
             IndexedMesh mesh = new IndexedMesh();
-            mesh.Allocate(totalVerts, Vector3.SizeInBytes, totalTriangles * 3, 3 * sizeof(int));
-            DataStream indices = mesh.LockIndices();
-            for (int i = 0; i < NUM_VERTS_X - 1; i++)
+            mesh.NumTriangles = totalTriangles;
+            mesh.NumVertices = totalVerts;
+            mesh.TriangleIndexStride = 3 * sizeof(int);
+            mesh.VertexStride = Vector3.SizeInBytes;
+            mesh.TriangleIndexBase = Marshal.AllocHGlobal(mesh.TriangleIndexStride * totalTriangles);
+            mesh.VertexBase = Marshal.AllocHGlobal(mesh.VertexStride * totalVerts);
+            var indicesStream = mesh.GetTriangleStream();
+            var indices = new BinaryWriter(indicesStream);
+            for (int i = 0; i < NumVertsX - 1; i++)
             {
-                for (int j = 0; j < NUM_VERTS_Y - 1; j++)
+                for (int j = 0; j < NumVertsY - 1; j++)
                 {
-                    indices.Write(j * NUM_VERTS_X + i);
-                    indices.Write(j * NUM_VERTS_X + i + 1);
-                    indices.Write((j + 1) * NUM_VERTS_X + i + 1);
+                    indices.Write(j * NumVertsX + i);
+                    indices.Write(j * NumVertsX + i + 1);
+                    indices.Write((j + 1) * NumVertsX + i + 1);
 
-                    indices.Write(j * NUM_VERTS_X + i);
-                    indices.Write((j + 1) * NUM_VERTS_X + i + 1);
-                    indices.Write((j + 1) * NUM_VERTS_X + i);
+                    indices.Write(j * NumVertsX + i);
+                    indices.Write((j + 1) * NumVertsX + i + 1);
+                    indices.Write((j + 1) * NumVertsX + i);
                 }
             }
             indices.Dispose();
@@ -239,25 +251,19 @@ namespace ConcaveRaycastDemo
 
         void SetVertexPositions(float waveheight, float offset)
         {
-            BulletSharp.DataStream vertexBuffer, indexBuffer;
-            int numVerts, numFaces;
-            PhyScalarType vertsType, indicesType;
-            int vertexStride, indexStride;
-            indexVertexArrays.GetLockedVertexIndexData(out vertexBuffer, out numVerts, out vertsType, out vertexStride,
-                out indexBuffer, out indexStride, out numFaces, out indicesType);
-
-            for (int i = 0; i < NUM_VERTS_X; i++)
+            var vertexStream = indexVertexArrays.GetVertexStream();
+            using (var vertexWriter = new BinaryWriter(vertexStream))
             {
-                for (int j = 0; j < NUM_VERTS_Y; j++)
+                for (int i = 0; i < NumVertsX; i++)
                 {
-                    vertexBuffer.Write((i - NUM_VERTS_X * 0.5f) * TRIANGLE_SIZE);
-                    vertexBuffer.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
-                    vertexBuffer.Write((j - NUM_VERTS_Y * 0.5f) * TRIANGLE_SIZE);
+                    for (int j = 0; j < NumVertsY; j++)
+                    {
+                        vertexWriter.Write((i - NumVertsX * 0.5f) * TriangleSize);
+                        vertexWriter.Write(waveheight * (float)Math.Sin((float)i + offset) * (float)Math.Cos((float)j + offset));
+                        vertexWriter.Write((j - NumVertsY * 0.5f) * TriangleSize);
+                    }
                 }
             }
-
-            vertexBuffer.Dispose();
-            indexBuffer.Dispose();
         }
 
         protected override void OnInitializePhysics()
