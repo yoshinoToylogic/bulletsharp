@@ -386,7 +386,7 @@ namespace BulletSharpGen
                     Cursor arg = cursor.GetArgument(i);
 
                     string parameterName = arg.Spelling;
-                    if (parameterName == "")
+                    if (parameterName.Length == 0)
                     {
                         parameterName = "__unnamed" + i;
                     }

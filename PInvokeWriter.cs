@@ -11,7 +11,7 @@ namespace BulletSharpGen
         {
         }
 
-        void WriteType(TypeRefDefinition type, WriteTo to = WriteTo.All)
+        void WriteType(TypeRefDefinition type, WriteTo to = WriteTo.AllFiles)
         {
             if (type.IsBasic)
             {
@@ -146,7 +146,7 @@ namespace BulletSharpGen
             else
             {
                 Write(method.Name, WriteTo.Header | WriteTo.Source | WriteTo.Buffer);
-                if (method.Name == "delete")
+                if (method.Name.Equals("delete"))
                 {
                     OutputDeleteMethod(method, level);
                 }
@@ -164,13 +164,14 @@ namespace BulletSharpGen
 
 
             // Parameters
-            if (method.Name != "delete")
+            if (!method.Name.Equals("delete"))
             {
                 Write('(', WriteTo.CS & propertyTo);
             }
             Write('(', WriteTo.Header | WriteTo.Source | WriteTo.Buffer);
 
-            int numParameters = method.Parameters.Length - numOptionalParams;
+            int numOptionalParamsTotal = method.NumOptionalParameters;
+            int numParameters = method.Parameters.Length - numOptionalParamsTotal + numOptionalParams;
 
             // The first parameter is the instance pointer (if not constructor or static method)
             if (!method.IsConstructor && !method.IsStatic)
@@ -185,38 +186,29 @@ namespace BulletSharpGen
                 }
             }
 
-            bool hasOptionalParam = false;
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
                 WriteType(param.Type, propertyTo);
                 Write(BulletParser.GetTypeDllImport(param.Type), WriteTo.Buffer);
 
-                Write(' ', propertyTo);
-                Write(param.Name, propertyTo);
-                Write(' ', WriteTo.Buffer);
-                Write(param.Name, WriteTo.Buffer);
-
-                if (param.IsOptional)
-                {
-                    hasOptionalParam = true;
-                }
+                Write(' ', propertyTo | WriteTo.Buffer);
+                Write(param.Name, propertyTo | WriteTo.Buffer);
 
                 if (i != numParameters - 1)
                 {
-                    Write(", ");
-                    Write(", ", WriteTo.Buffer);
+                    Write(", ", WriteTo.AllFiles | WriteTo.Buffer);
                 }
             }
             WriteLine(");", WriteTo.Header | WriteTo.Buffer);
-            if (method.Name != "delete")
+            if (!method.Name.Equals("delete"))
             {
                 WriteLine(')', WriteTo.CS & propertyTo);
             }
             WriteLine(')', WriteTo.Source);
             hasHeaderWhiteSpace = false;
 
-            if (method.Name == "delete")
+            if (method.Name.Equals("delete"))
             {
                 WriteLine('{', WriteTo.Source);
                 OutputTabs(1, WriteTo.Source);
@@ -269,7 +261,7 @@ namespace BulletSharpGen
             }
             else
             {
-                if (!(method.ReturnType.IsBasic && method.ReturnType.Name == "void"))
+                if (!(method.ReturnType.IsBasic && method.ReturnType.Name.Equals("void")))
                 {
                     if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
                     {
@@ -346,11 +338,6 @@ namespace BulletSharpGen
                     }
                 }
 
-                if (param.IsOptional)
-                {
-                    hasOptionalParam = true;
-                }
-
                 if (i != numParameters - 1)
                 {
                     Write(", ", WriteTo.Source | WriteTo.CS & propertyTo);
@@ -392,7 +379,7 @@ namespace BulletSharpGen
             }
 
             // If there are optional parameters, then output all possible combinations of calls
-            if (hasOptionalParam)
+            if (numOptionalParams < numOptionalParamsTotal)
             {
                 OutputMethod(method, level, ref overloadIndex, numOptionalParams + 1);
             }

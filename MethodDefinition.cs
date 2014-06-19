@@ -20,6 +20,23 @@
             }
         }
 
+        public int NumOptionalParameters
+        {
+            get
+            {
+                int count = 0;
+                for (int i = Parameters.Length - 1; i >= 0; i--)
+                {
+                    if (!Parameters[i].IsOptional)
+                    {
+                        break;
+                    }
+                    count++;
+                }
+                return count;
+            }
+        }
+
         public MethodDefinition(string name, ClassDefinition parent, int numArgs)
         {
             Name = name;
