@@ -209,7 +209,7 @@ namespace DemoFramework.SharpDX11
             };
 
             // Create Device and SwapChain
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
+            SharpDX.Direct3D11.Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
             _immediateContext = _device.ImmediateContext;
             outputMerger = _immediateContext.OutputMerger;
             inputAssembler = _immediateContext.InputAssembler;
@@ -371,7 +371,7 @@ namespace DemoFramework.SharpDX11
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Could not create DirectX 10 device.");
+                MessageBox.Show(e.ToString(), "Could not create DirectX 11 device.");
                 return;
             }
 

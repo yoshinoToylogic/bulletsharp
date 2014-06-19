@@ -317,12 +317,8 @@ namespace BulletSharp
             Vector3 vel2 = body2.GetVelocityInLocalPoint(rel_pos2);
             Vector3 vel = vel1 - vel2;
 
-            Matrix world2A = body1.CenterOfMassTransform;
-            world2A.Origin = Vector3.Zero;
-            world2A = Matrix.Transpose(world2A);
-            Matrix world2B = body2.CenterOfMassTransform;
-            world2B.Origin = Vector3.Zero;
-            world2B = Matrix.Transpose(world2B);
+            Matrix world2A = Matrix.Transpose(body1.CenterOfMassTransform.Basis);
+            Matrix world2B = Matrix.Transpose(body2.CenterOfMassTransform.Basis);
             Vector3 m_aJ = Vector3.TransformCoordinate(Vector3.Cross(rel_pos1, normal), world2A);
             Vector3 m_bJ = Vector3.TransformCoordinate(Vector3.Cross(rel_pos2, -normal), world2B);
             Vector3 m_0MinvJt = body1.InvInertiaDiagLocal * m_aJ;
@@ -697,8 +693,7 @@ namespace BulletSharp
             }
 
             wheel.RaycastInfo.HardPointWS = Vector3.TransformCoordinate(wheel.ChassisConnectionPointCS, chassisTrans);
-            Matrix chassisTransBasis = chassisTrans;
-            chassisTransBasis.Origin = Vector3.Zero;
+            Matrix chassisTransBasis = chassisTrans.Basis;
             wheel.RaycastInfo.WheelDirectionWS = Vector3.TransformCoordinate(wheel.WheelDirectionCS, chassisTransBasis);
             wheel.RaycastInfo.WheelAxleWS = Vector3.TransformCoordinate(wheel.WheelAxleCS, chassisTransBasis);
         }

@@ -313,9 +313,7 @@ namespace BulletSharp
             else
             {
                 // need to transform normal into worldspace
-                Matrix basis = CollisionObject.WorldTransform;
-                basis.Origin = Vector3.Zero;
-                HitNormalWorld = Vector3.TransformCoordinate(rayResult.HitNormalLocal, basis);
+                HitNormalWorld = Vector3.TransformCoordinate(rayResult.HitNormalLocal, CollisionObject.WorldTransform.Basis);
             }
             HitPointWorld = Vector3.Lerp(RayFromWorld, RayToWorld, rayResult.HitFraction);
             return rayResult.HitFraction;
@@ -352,9 +350,7 @@ namespace BulletSharp
             else
             {
                 // need to transform normal into worldspace
-                Matrix basis = CollisionObject.WorldTransform;
-                basis.Origin = Vector3.Zero;
-                HitNormalWorld.Add(Vector3.TransformCoordinate(rayResult.HitNormalLocal, basis));
+                HitNormalWorld.Add(Vector3.TransformCoordinate(rayResult.HitNormalLocal, CollisionObject.WorldTransform.Basis));
             }
             HitPointWorld.Add(Vector3.Lerp(RayFromWorld, RayToWorld, rayResult.HitFraction));
             HitFractions.Add(rayResult.HitFraction);
@@ -610,9 +606,7 @@ namespace BulletSharp
             else
             {
                 // need to transform normal into worldspace
-                Matrix basis = HitCollisionObject.WorldTransform;
-                basis.Origin = Vector3.Zero;
-                HitNormalWorld = Vector3.TransformCoordinate(convexResult.HitNormalLocal, basis);
+                HitNormalWorld = Vector3.TransformCoordinate(convexResult.HitNormalLocal, HitCollisionObject.WorldTransform.Basis);
             }
             HitPointWorld = convexResult.HitPointLocal;
             return convexResult.HitFraction;

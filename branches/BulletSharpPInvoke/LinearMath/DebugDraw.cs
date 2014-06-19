@@ -316,8 +316,7 @@ namespace BulletSharp
 
             // Draw some additional lines
             Vector3 start = transform.Origin;
-            Matrix basis = transform;
-            basis.Origin = Vector3.Zero;
+            Matrix basis = transform.Basis;
 
             capStart[(upAxis + 1) % 3] = radius;
             capEnd[(upAxis + 1) % 3] = radius;
@@ -348,8 +347,7 @@ namespace BulletSharp
             Vector3 offset2Radius = Vector3.Zero;
             offsetRadius[(upAxis + 2) % 3] = radius;
 
-            Matrix basis = transform;
-            basis.Origin = Vector3.Zero;
+            Matrix basis = transform.Basis;
             Vector3 from = start + Vector3.TransformCoordinate(offsetHeight, basis);
             DrawLine(from, start + Vector3.TransformCoordinate(-offsetHeight, basis) + offsetRadius, color);
             DrawLine(from, start + Vector3.TransformCoordinate(-offsetHeight, basis) - offsetRadius, color);
@@ -366,8 +364,7 @@ namespace BulletSharp
         public virtual void DrawCylinder(float radius, float halfHeight, int upAxis, ref Matrix transform, ref Vector3 color)
         {
             Vector3 start = transform.Origin;
-            Matrix basis = transform;
-            basis.Origin = Vector3.Zero;
+            Matrix basis = transform.Basis;
             Vector3 offsetHeight = Vector3.Zero;
             offsetHeight[upAxis] = halfHeight;
             Vector3 offsetRadius = Vector3.Zero;
@@ -393,8 +390,7 @@ namespace BulletSharp
         public virtual void DrawSphere(float radius, ref Matrix transform, ref Vector3 color)
         {
             Vector3 start = transform.Origin;
-            Matrix basis = transform;
-            basis.Origin = Vector3.Zero;
+            Matrix basis = transform.Basis;
 
             Vector3 xoffs = Vector3.TransformCoordinate(new Vector3(radius, 0, 0), basis);
             Vector3 yoffs = Vector3.TransformCoordinate(new Vector3(0, radius, 0), basis);
@@ -560,16 +556,15 @@ namespace BulletSharp
         public virtual void DrawTransform(ref Matrix transform, float orthoLen)
         {
             Vector3 start = transform.Origin;
-            Matrix origin = transform;
-            origin.Origin = Vector3.Zero;
+            Matrix basis = transform.Basis;
 
-            Vector3 temp = start + Vector3.TransformCoordinate(new Vector3(orthoLen, 0, 0), origin);
+            Vector3 temp = start + Vector3.TransformCoordinate(new Vector3(orthoLen, 0, 0), basis);
             Vector3 colour = new Vector3(0.7f, 0, 0);
             DrawLine(ref start, ref temp, ref colour);
-            temp = start + Vector3.TransformCoordinate(new Vector3(0, orthoLen, 0), origin);
+            temp = start + Vector3.TransformCoordinate(new Vector3(0, orthoLen, 0), basis);
             colour = new Vector3(0, 0.7f, 0);
             DrawLine(ref start, ref temp, ref colour);
-            temp = start + Vector3.TransformCoordinate(new Vector3(0, 0, orthoLen), origin);
+            temp = start + Vector3.TransformCoordinate(new Vector3(0, 0, orthoLen), basis);
             colour = new Vector3(0, 0, 0.7f);
             DrawLine(ref start, ref temp, ref colour);
         }

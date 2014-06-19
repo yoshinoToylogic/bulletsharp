@@ -776,9 +776,7 @@ namespace BulletSharp
             else
             {
                 ///need to transform normal into worldspace
-                Matrix basis = convexResult.HitCollisionObject.WorldTransform;
-                basis.Origin = Vector3.Zero;
-                hitNormalWorld = Vector3.TransformCoordinate(convexResult.HitNormalLocal, basis);
+                hitNormalWorld = Vector3.TransformCoordinate(convexResult.HitNormalLocal, convexResult.HitCollisionObject.WorldTransform.Basis);
             }
 
             float dotUp = Vector3.Dot(m_up, hitNormalWorld);
