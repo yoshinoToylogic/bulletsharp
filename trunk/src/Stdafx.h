@@ -365,6 +365,7 @@ using namespace System::Runtime::InteropServices;
 
 #include "Math.h"
 #include "Enums.h"
+#include "ITrackingDisposable.h"
 #include "ObjectTable.h"
 
 inline void* GCHandleToVoidPtr(GCHandle handle)

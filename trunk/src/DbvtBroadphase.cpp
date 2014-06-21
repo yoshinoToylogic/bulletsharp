@@ -169,7 +169,7 @@ BulletSharp::OverlappingPairCache^ DbvtBroadphase::PairCache::get()
 }
 void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
 {
-	Native->m_paircache = value->_native;
+	Native->m_paircache = (btOverlappingPairCache*)value->_native;
 }
 
 int DbvtBroadphase::CId::get()

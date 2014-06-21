@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class Aabb;
@@ -55,12 +53,8 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class PrimitiveManagerBase : BulletSharp::IDisposable
+	public ref class PrimitiveManagerBase : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	internal:
 		btPrimitiveManagerBase* _native;
 

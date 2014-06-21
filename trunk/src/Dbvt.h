@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class DbvtNode;
@@ -90,7 +88,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class Dbvt : BulletSharp::IDisposable
+	public ref class Dbvt : ITrackingDisposable
 	{
 	public:
 		ref class StkNn
@@ -151,14 +149,10 @@ namespace BulletSharp
 			StkCln(DbvtNode^ na, DbvtNode^ nb);
 		};
 
-		ref class ICollide : BulletSharp::IDisposable
+		ref class ICollide : IDisposable
 		{
 		internal:
 			btDbvt::ICollide* _native;
-
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
 
 		internal:
 			ICollide(btDbvt::ICollide* iCollide);
@@ -181,16 +175,10 @@ namespace BulletSharp
 			}
 		};
 
-		ref class IWriter : BulletSharp::IDisposable
+		ref class IWriter : IDisposable
 		{
 		internal:
 			btDbvt::IWriter* _native;
-
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
-		internal:
 			IWriter(btDbvt::IWriter* iWriter);
 
 		public:
@@ -209,16 +197,10 @@ namespace BulletSharp
 			}
 		};
 
-		ref class IClone : BulletSharp::IDisposable
+		ref class IClone : IDisposable
 		{
 		internal:
 			btDbvt::IClone* _native;
-
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
-		internal:
 			IClone(btDbvt::IClone* iCollide);
 
 		public:

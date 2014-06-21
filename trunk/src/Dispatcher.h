@@ -1,7 +1,6 @@
 #pragma once
 
 #include "CollisionObject.h"
-#include "IDisposable.h"
 
 namespace BulletSharp
 {
@@ -105,7 +104,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class Dispatcher : BulletSharp::IDisposable
+	public ref class Dispatcher : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

@@ -20,15 +20,19 @@ ConvexTriangleMeshShape::ConvexTriangleMeshShape(StridingMeshInterface^ meshInte
 {
 }
 
-void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix principal, Vector3 inertia, btScalar volume)
+void ConvexTriangleMeshShape::CalculatePrincipalAxisTransform(Matrix% principal, [Out] Vector3% inertia, [Out] btScalar% volume)
 {
 	btTransform* principalTemp = Math::MatrixToBtTransform(principal);
 	VECTOR3_DEF(inertia);
+	btScalar volumeTemp;
 
-	Native->calculatePrincipalAxisTransform(*principalTemp, VECTOR3_USE(inertia), volume);
+	Native->calculatePrincipalAxisTransform(*principalTemp, VECTOR3_USE(inertia), volumeTemp);
 
+	Math::BtTransformToMatrix(principalTemp, principal);
 	ALIGNED_FREE(principalTemp);
+	Math::BtVector3ToVector3(VECTOR3_PTR(inertia), inertia);
 	VECTOR3_DEL(inertia);
+	volume = volumeTemp;
 }
 
 StridingMeshInterface^ ConvexTriangleMeshShape::MeshInterface::get()

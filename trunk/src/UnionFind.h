@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	public ref class Element
@@ -28,12 +26,8 @@ namespace BulletSharp
 		Element(btElement* element);
 	};
 
-	public ref class UnionFind : BulletSharp::IDisposable
+	public ref class UnionFind : IDisposable
 	{
-	public:
-		virtual event EventHandler^ OnDisposing;
-		virtual event EventHandler^ OnDisposed;
-
 	private:
 		btUnionFind* _unionFind;
 

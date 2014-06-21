@@ -18,12 +18,8 @@ SimulationIslandManager::IslandCallback::!IslandCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	delete _native;
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 SimulationIslandManager::IslandCallback::IslandCallback()

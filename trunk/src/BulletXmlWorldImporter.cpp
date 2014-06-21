@@ -50,12 +50,8 @@ Serialize::BulletXmlWorldImporter::!BulletXmlWorldImporter()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _importer;
 	_importer = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 CollisionObject^ Serialize::BulletXmlWorldImporter::CreateCollisionObject(Matrix startTransform, CollisionShape^ shape, String^ bodyName)

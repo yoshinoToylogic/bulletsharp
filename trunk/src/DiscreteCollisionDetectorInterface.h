@@ -1,12 +1,10 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	interface class IDebugDraw;
 
-	public ref class DiscreteCollisionDetectorInterface : BulletSharp::IDisposable
+	public ref class DiscreteCollisionDetectorInterface : ITrackingDisposable
 	{
 	public:
 		ref class ClosestPointInput
@@ -41,12 +39,8 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Result : BulletSharp::IDisposable
+		ref class Result : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btDiscreteCollisionDetectorInterface::Result* _native;
 			Result(btDiscreteCollisionDetectorInterface::Result* result);

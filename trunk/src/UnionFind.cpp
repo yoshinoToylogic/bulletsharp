@@ -53,11 +53,8 @@ UnionFind::!UnionFind()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
+	delete _unionFind;
 	_unionFind = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 void UnionFind::Allocate(int N)
