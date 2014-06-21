@@ -98,7 +98,7 @@ void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Mat
 	
 	Native->calculatePrincipalAxisTransform(massesPtr, *principalTemp, *inertiaTemp);
 	Math::BtTransformToMatrix(principalTemp, principal);
-	inertia = Math::BtVector3ToVector3(inertiaTemp);
+	Math::BtVector3ToVector3(inertiaTemp, inertia);
 	
 	ALIGNED_FREE(principalTemp);
 	ALIGNED_FREE(inertiaTemp);

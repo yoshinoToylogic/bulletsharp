@@ -270,12 +270,8 @@ Dbvt::ICollide::!ICollide()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 bool Dbvt::ICollide::AllLeaves(DbvtNode^ n)
@@ -324,12 +320,8 @@ Dbvt::IWriter::!IWriter()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void Dbvt::IWriter::Prepare(DbvtNode^ root, int numnodes)
@@ -368,12 +360,8 @@ Dbvt::IClone::!IClone()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	delete _native;
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 void Dbvt::IClone::CloneLeaf(DbvtNode^ n)

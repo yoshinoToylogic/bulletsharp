@@ -961,9 +961,6 @@
     <ClInclude Include="src\IDebugDraw.h">
       <Filter>Header Files\LinearMath</Filter>
     </ClInclude>
-    <ClInclude Include="src\IDisposable.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\InternalEdgeUtility.h">
       <Filter>Header Files\BulletCollision\CollisionDispatch</Filter>
     </ClInclude>
@@ -1248,6 +1245,9 @@
     </ClInclude>
     <ClInclude Include="src\VoronoiSimplexSolver.h">
       <Filter>Header Files\BulletCollision\NarrowPhaseCollision</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ITrackingDisposable.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

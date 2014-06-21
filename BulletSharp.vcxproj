@@ -1589,10 +1589,10 @@
     <ResourceCompile Include="src\Resources.rc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ITrackingDisposable.h" />
     <ClInclude Include="src\Stdafx.h" />
     <ClInclude Include="src\Collections.h" />
     <ClInclude Include="src\Enums.h" />
-    <ClInclude Include="src\IDisposable.h" />
     <ClInclude Include="src\Math.h" />
     <ClInclude Include="src\ObjectTable.h" />
     <ClInclude Include="src\StringConv.h" />

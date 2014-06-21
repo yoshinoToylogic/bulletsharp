@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class RigidBody;
@@ -46,7 +44,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TypedConstraint : BulletSharp::IDisposable
+	public ref class TypedConstraint : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

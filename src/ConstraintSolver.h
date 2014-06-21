@@ -1,7 +1,5 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
 	ref class CollisionObject;
@@ -11,7 +9,7 @@ namespace BulletSharp
 	ref class TypedConstraint;
 	interface class IDebugDraw;
 
-	public ref class ConstraintSolver : BulletSharp::IDisposable
+	public ref class ConstraintSolver : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;

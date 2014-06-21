@@ -1,10 +1,8 @@
 #pragma once
 
-#include "IDisposable.h"
-
 namespace BulletSharp
 {
-	public ref class QuantizedBvh : BulletSharp::IDisposable
+	public ref class QuantizedBvh : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
