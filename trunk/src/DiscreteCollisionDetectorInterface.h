@@ -2,6 +2,8 @@
 
 namespace BulletSharp
 {
+	struct btStorageResultWrapper;
+
 	interface class IDebugDraw;
 
 	public ref class DiscreteCollisionDetectorInterface : ITrackingDisposable
@@ -39,7 +41,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class Result : IDisposable
+		ref class Result abstract : IDisposable
 		{
 		internal:
 			btDiscreteCollisionDetectorInterface::Result* _native;
@@ -51,9 +53,9 @@ namespace BulletSharp
 			~Result();
 
 		public:
-			virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth);
-			virtual void SetShapeIdentifiersA(int partId0, int index0);
-			virtual void SetShapeIdentifiersB(int partId1, int index1);
+			virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth) abstract;
+			virtual void SetShapeIdentifiersA(int partId0, int index0) abstract;
+			virtual void SetShapeIdentifiersB(int partId1, int index1) abstract;
 
 			property bool IsDisposed
 			{
@@ -88,10 +90,7 @@ namespace BulletSharp
 		}
 	};
 
-	class btStorageResultWrapper;
-
-	//public
-	ref class StorageResult : DiscreteCollisionDetectorInterface::Result
+	public ref class StorageResult abstract : DiscreteCollisionDetectorInterface::Result
 	{
 	internal:
 		StorageResult(btStorageResultWrapper* result);
@@ -99,9 +98,7 @@ namespace BulletSharp
 	public:
 		StorageResult();
 
-		//virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth);
-		virtual void SetShapeIdentifiersA(int partId0, int index0) new;
-		virtual void SetShapeIdentifiersB(int partId1, int index1) new;
+		virtual void AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth) new;
 
 		property Vector3 ClosestPointInB
 		{
@@ -122,13 +119,13 @@ namespace BulletSharp
 		}
 	};
 
-	class btStorageResultWrapper : public btStorageResult
+	struct btStorageResultWrapper : public btStorageResult
 	{
 	private:
 		gcroot<StorageResult^> _storageResult;
 
 	public:
-//		btStorageResultWrapper(StorageResult^ storageResult);
+		btStorageResultWrapper(gcroot<StorageResult^> storageResult);
 
 		virtual void setShapeIdentifiersA(int partId0, int index0);
 		virtual void setShapeIdentifiersB(int partId1, int index1);

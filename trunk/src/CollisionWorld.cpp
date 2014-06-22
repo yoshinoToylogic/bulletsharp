@@ -3,7 +3,6 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
-#include "CharacterControllerInterface.h"
 #include "CollisionConfiguration.h"
 #include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
@@ -27,6 +26,9 @@
 #endif
 #ifndef DISABLE_SOFTBODY
 #include "SoftRigidDynamicsWorld.h"
+#endif
+#ifndef DISABLE_UNCOMMON
+#include "CharacterControllerInterface.h"
 #endif
 
 int CollisionWorld::LocalShapeInfo::ShapePart::get()
@@ -61,11 +63,11 @@ CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObjec
 	VECTOR3_DEL(hitPointLocal);
 }
 
-BulletSharp::CollisionObject^ CollisionWorld::LocalConvexResult::CollisionObject::get()
+CollisionObject^ CollisionWorld::LocalConvexResult::HitCollisionObject::get()
 {
 	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_hitCollisionObject);
 }
-void CollisionWorld::LocalConvexResult::CollisionObject::set(BulletSharp::CollisionObject^ value)
+void CollisionWorld::LocalConvexResult::HitCollisionObject::set(CollisionObject^ value)
 {
 	_native->m_hitCollisionObject = value->_native;
 }
@@ -88,6 +90,15 @@ void CollisionWorld::LocalConvexResult::HitNormalLocal::set(Vector3 value)
 	Math::Vector3ToBtVector3(value, &_native->m_hitNormalLocal);
 }
 
+Vector3 CollisionWorld::LocalConvexResult::HitPointLocal::get()
+{
+	return Math::BtVector3ToVector3(&_native->m_hitPointLocal);
+}
+void CollisionWorld::LocalConvexResult::HitPointLocal::set(Vector3 value)
+{
+	Math::Vector3ToBtVector3(value, &_native->m_hitPointLocal);
+}
+
 CollisionWorld::LocalShapeInfo^ CollisionWorld::LocalConvexResult::LocalShapeInfo::get()
 {
 	return gcnew CollisionWorld::LocalShapeInfo(_native->m_localShapeInfo);
@@ -98,9 +109,9 @@ void CollisionWorld::LocalConvexResult::LocalShapeInfo::set(CollisionWorld::Loca
 }
 
 
-CollisionWorld::ConvexResultCallback::ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback)
+CollisionWorld::ConvexResultCallback::ConvexResultCallback(btCollisionWorld::ConvexResultCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 CollisionWorld::ConvexResultCallback::~ConvexResultCallback()
@@ -113,12 +124,8 @@ CollisionWorld::ConvexResultCallback::!ConvexResultCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	ALIGNED_FREE(_native);
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 btScalar CollisionWorld::ConvexResultCallback::AddSingleResult(LocalConvexResult^ convexResult, bool normalInWorldSpace)
@@ -195,15 +202,6 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 	VECTOR3_DEL(convexToWorld);
 }
 
-BulletSharp::CollisionObject^ CollisionWorld::ClosestConvexResultCallback::CollisionObject::get()
-{
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Native->m_hitCollisionObject);
-}
-void CollisionWorld::ClosestConvexResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
-{
-	Native->m_hitCollisionObject = value->_native;
-}
-
 Vector3 CollisionWorld::ClosestConvexResultCallback::ConvexFromWorld::get()
 {
 	return Math::BtVector3ToVector3(&Native->m_convexFromWorld);
@@ -220,6 +218,15 @@ Vector3 CollisionWorld::ClosestConvexResultCallback::ConvexToWorld::get()
 void CollisionWorld::ClosestConvexResultCallback::ConvexToWorld::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &Native->m_convexToWorld);
+}
+
+CollisionObject^ CollisionWorld::ClosestConvexResultCallback::HitCollisionObject::get()
+{
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)Native->m_hitCollisionObject);
+}
+void CollisionWorld::ClosestConvexResultCallback::HitCollisionObject::set(CollisionObject^ value)
+{
+	Native->m_hitCollisionObject = value->_native;
 }
 
 Vector3 CollisionWorld::ClosestConvexResultCallback::HitNormalWorld::get()
@@ -241,9 +248,9 @@ void CollisionWorld::ClosestConvexResultCallback::HitPointWorld::set(Vector3 val
 }
 
 
-CollisionWorld::ContactResultCallback::ContactResultCallback(ContactResultCallbackWrapper* callback)
+CollisionWorld::ContactResultCallback::ContactResultCallback(ContactResultCallbackWrapper* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 CollisionWorld::ContactResultCallback::~ContactResultCallback()
@@ -256,12 +263,8 @@ CollisionWorld::ContactResultCallback::!ContactResultCallback()
 	if (this->IsDisposed)
 		return;
 	
-	OnDisposing(this, nullptr);
-	
 	delete _native;
 	_native = NULL;
-	
-	OnDisposed(this, nullptr);
 }
 
 CollisionWorld::ContactResultCallback::ContactResultCallback()
@@ -352,9 +355,9 @@ void CollisionWorld::LocalRayResult::LocalShapeInfo::set(CollisionWorld::LocalSh
 }
 
 
-CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* callback)
+CollisionWorld::RayResultCallback::RayResultCallback(btCollisionWorld::RayResultCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 CollisionWorld::RayResultCallback::~RayResultCallback()
@@ -376,15 +379,6 @@ btScalar CollisionWorld::RayResultCallback::AddSingleResult(LocalRayResult^ rayR
 bool CollisionWorld::RayResultCallback::NeedsCollision(BroadphaseProxy^ proxy0)
 {
 	return _native->needsCollision(proxy0->_native);
-}
-
-BulletSharp::CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
-{
-	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_collisionObject);
-}
-void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
-{
-	_native->m_collisionObject = value->_native;
 }
 
 btScalar CollisionWorld::RayResultCallback::ClosestHitFraction::get()
@@ -412,6 +406,15 @@ CollisionFilterGroups CollisionWorld::RayResultCallback::CollisionFilterMask::ge
 void CollisionWorld::RayResultCallback::CollisionFilterMask::set(CollisionFilterGroups value)
 {
 	_native->m_collisionFilterMask = (short int)value;
+}
+
+CollisionObject^ CollisionWorld::RayResultCallback::CollisionObject::get()
+{
+	return BulletSharp::CollisionObject::GetManaged((btCollisionObject*)_native->m_collisionObject);
+}
+void CollisionWorld::RayResultCallback::CollisionObject::set(BulletSharp::CollisionObject^ value)
+{
+	_native->m_collisionObject = value->_native;
 }
 
 unsigned int CollisionWorld::RayResultCallback::Flags::get()
@@ -568,17 +571,18 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 }
 
 
-CollisionWorld::CollisionWorld(btCollisionWorld* world)
+CollisionWorld::CollisionWorld(btCollisionWorld* native)
 {
-	_native = world;
+	_native = native;
 }
 
-CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration)
+CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
+	BulletSharp::CollisionConfiguration^ collisionConfiguration)
 {
-	_native = new btCollisionWorld(dispatcher->_native, pairCache->_native, collisionConfiguration->_native);
-	_collisionConfiguration = collisionConfiguration;
+	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
+		collisionConfiguration->_native);
 	_dispatcher = dispatcher;
-	_broadphase = pairCache;
+	_broadphase = broadphasePairCache;
 }
 
 CollisionWorld::~CollisionWorld()
@@ -614,10 +618,12 @@ CollisionWorld::!CollisionWorld()
 					continue;
 				}
 #endif
+#ifndef DISABLE_UNCOMMON
 				CharacterControllerInterface^ character = dynamic_cast<CharacterControllerInterface^>(action);
 				if (character) {
 					continue;
 				}
+#endif
 				ActionInterfaceWrapper* wrapper = (ActionInterfaceWrapper*)ObjectTable::GetUnmanagedObject(action);
 				ObjectTable::Remove(wrapper);
 				delete wrapper;
@@ -639,19 +645,13 @@ CollisionWorld::!CollisionWorld()
 	OnDisposed(this, nullptr);
 }
 
-bool CollisionWorld::IsDisposed::get()
-{
-	return (_native == NULL);
-}
-
-void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
-	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
+void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
+	CollisionFilterGroups collisionFilterMask)
 {
 	_native->addCollisionObject(collisionObject->_native, (short int)collisionFilterGroup, (short int)collisionFilterMask);
 }
 
-void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject,
-	CollisionFilterGroups collisionFilterGroup)
+void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup)
 {
 	_native->addCollisionObject(collisionObject->_native, (short int)collisionFilterGroup);
 }
@@ -666,7 +666,8 @@ void CollisionWorld::ComputeOverlappingPairs()
 	_native->computeOverlappingPairs();
 }
 
-void CollisionWorld::ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback)
+void CollisionWorld::ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB,
+	ContactResultCallback^ resultCallback)
 {
 	_native->contactPairTest(colObjA->_native, colObjB->_native, *resultCallback->_native);
 }
@@ -676,37 +677,35 @@ void CollisionWorld::ContactTest(CollisionObject^ colObj, ContactResultCallback^
 	_native->contactTest(colObj->_native, *resultCallback->_native);
 }
 
-void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
+void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to,
+	ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration)
 {
-	btTransform* fromTemp = Math::MatrixToBtTransform(from);
-	btTransform* toTemp = Math::MatrixToBtTransform(to);
-
-	_native->convexSweepTest((btConvexShape*)castShape->_native, *fromTemp, *toTemp, *resultCallback->_native, allowedCcdPenetration);
-
-	ALIGNED_FREE(toTemp);
-	ALIGNED_FREE(fromTemp);
+	TRANSFORM_CONV(from);
+	TRANSFORM_CONV(to);
+	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from), TRANSFORM_USE(to),
+		*resultCallback->_native, allowedCcdPenetration);
+	TRANSFORM_DEL(from);
+	TRANSFORM_DEL(to);
 }
 
-void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback)
+void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to,
+	ConvexResultCallback^ resultCallback)
 {
-	btTransform* fromTemp = Math::MatrixToBtTransform(from);
-	btTransform* toTemp = Math::MatrixToBtTransform(to);
-
-	_native->convexSweepTest((btConvexShape*)castShape->_native, *fromTemp, *toTemp, *resultCallback->_native);
-
-	ALIGNED_FREE(toTemp);
-	ALIGNED_FREE(fromTemp);
+	TRANSFORM_CONV(from);
+	TRANSFORM_CONV(to);
+	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from), TRANSFORM_USE(to),
+		*resultCallback->_native);
+	TRANSFORM_DEL(from);
+	TRANSFORM_DEL(to);
 }
 
 #ifndef DISABLE_DEBUGDRAW
 void CollisionWorld::DebugDrawObject(Matrix worldTransform, CollisionShape^ shape, BtColor color)
 {
-	btTransform* worldTransformTemp = Math::MatrixToBtTransform(worldTransform);
+	TRANSFORM_CONV(worldTransform);
 	btVector3* colorTemp = BtColorToBtVector(color);
-	
-	_native->debugDrawObject(*worldTransformTemp, shape->_native, *colorTemp);
-	
-	ALIGNED_FREE(worldTransformTemp);
+	_native->debugDrawObject(TRANSFORM_USE(worldTransform), shape->_native, *colorTemp);
+	TRANSFORM_DEL(worldTransform);
 	delete colorTemp;
 }
 
@@ -716,21 +715,19 @@ void CollisionWorld::DebugDrawWorld()
 }
 #endif
 
-void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTrans, Matrix rayToTrans,
-	CollisionObject^ collisionObject, CollisionShape^ collisionShape, Matrix colObjWorldTransform,
-	ConvexResultCallback^ resultCallback, btScalar allowedPenetration)
+void CollisionWorld::ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTrans,
+	Matrix rayToTrans, CollisionObject^ collisionObject, CollisionShape^ collisionShape,
+	Matrix colObjWorldTransform, ConvexResultCallback^ resultCallback, btScalar allowedPenetration)
 {
-	btTransform* rayFromTransTemp = Math::MatrixToBtTransform(rayFromTrans);
-	btTransform* rayToTransTemp = Math::MatrixToBtTransform(rayToTrans);
-	btTransform* colObjWorldTransformTemp = Math::MatrixToBtTransform(colObjWorldTransform);
-
-	btCollisionWorld::objectQuerySingle((btConvexShape*)castShape->_native, *rayFromTransTemp, *rayToTransTemp,
-		collisionObject->_native, collisionShape->_native,
-		*colObjWorldTransformTemp, *resultCallback->_native, allowedPenetration);
-
-	ALIGNED_FREE(colObjWorldTransformTemp);
-	ALIGNED_FREE(rayToTransTemp);
-	ALIGNED_FREE(rayFromTransTemp);
+	TRANSFORM_CONV(rayFromTrans);
+	TRANSFORM_CONV(rayToTrans);
+	TRANSFORM_CONV(colObjWorldTransform);
+	btCollisionWorld::objectQuerySingle((btConvexShape*)castShape->_native, TRANSFORM_USE(rayFromTrans),
+		TRANSFORM_USE(rayToTrans), collisionObject->_native, collisionShape->_native,
+		TRANSFORM_USE(colObjWorldTransform), *resultCallback->_native, allowedPenetration);
+	TRANSFORM_DEL(rayFromTrans);
+	TRANSFORM_DEL(rayToTrans);
+	TRANSFORM_DEL(colObjWorldTransform);
 }
 
 void CollisionWorld::PerformDiscreteCollisionDetection()
@@ -742,9 +739,7 @@ void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResult
 {
 	VECTOR3_DEF(rayFromWorld);
 	VECTOR3_DEF(rayToWorld);
-
 	_native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
-
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
 }
@@ -753,9 +748,7 @@ void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResu
 {
 	VECTOR3_DEF(rayFromWorld);
 	VECTOR3_DEF(rayToWorld);
-
 	_native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
-
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
 }
@@ -763,23 +756,28 @@ void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResu
 void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
 	CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback)
 {
-	btTransform* rayFromTransTemp = Math::MatrixToBtTransform(rayFromTrans);
-	btTransform* rayToTransTemp = Math::MatrixToBtTransform(rayToTrans);
-	btTransform* colObjWorldTransformTemp = Math::MatrixToBtTransform(colObjWorldTransform);
-
-	btCollisionWorld::rayTestSingle(*rayFromTransTemp, *rayToTransTemp,
-		collisionObject->_native, collisionShape->_native,
-		*colObjWorldTransformTemp, *resultCallback->_native);
-
-	ALIGNED_FREE(rayFromTransTemp);
-	ALIGNED_FREE(rayToTransTemp);
-	ALIGNED_FREE(colObjWorldTransformTemp);
+	TRANSFORM_CONV(rayFromTrans);
+	TRANSFORM_CONV(rayToTrans);
+	TRANSFORM_CONV(colObjWorldTransform);
+	btCollisionWorld::rayTestSingle(TRANSFORM_USE(rayFromTrans), TRANSFORM_USE(rayToTrans),
+		collisionObject->_native, collisionShape->_native, TRANSFORM_USE(colObjWorldTransform),
+		*resultCallback->_native);
+	TRANSFORM_DEL(rayFromTrans);
+	TRANSFORM_DEL(rayToTrans);
+	TRANSFORM_DEL(colObjWorldTransform);
 }
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
 {
 	_native->removeCollisionObject(collisionObject->_native);
 }
+
+#ifndef DISABLE_SERIALIZE
+void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
+{
+	_native->serialize(serializer->_native);
+}
+#endif
 
 void CollisionWorld::UpdateAabbs()
 {
@@ -791,21 +789,14 @@ void CollisionWorld::UpdateSingleAabb(CollisionObject^ colObj)
 	_native->updateSingleAabb(colObj->_native);
 }
 
-#ifndef DISABLE_SERIALIZE
-void CollisionWorld::Serialize(BulletSharp::Serializer^ serializer)
-{
-	_native->serialize(serializer->_native);
-}
-#endif
-
 BroadphaseInterface^ CollisionWorld::Broadphase::get()
 {
 	return _broadphase;
 }
-void CollisionWorld::Broadphase::set(BroadphaseInterface^ value)
+void CollisionWorld::Broadphase::set(BroadphaseInterface^ pairCache)
 {
-	_native->setBroadphase(value->_native);
-	_broadphase = value;
+	_native->setBroadphase(pairCache->_native);
+	_broadphase = pairCache;
 }
 
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
@@ -842,9 +833,14 @@ bool CollisionWorld::ForceUpdateAllAabbs::get()
 {
 	return _native->getForceUpdateAllAabbs();
 }
-void CollisionWorld::ForceUpdateAllAabbs::set(bool value)
+void CollisionWorld::ForceUpdateAllAabbs::set(bool forceUpdateAllAabbs)
 {
-	_native->setForceUpdateAllAabbs(value);
+	_native->setForceUpdateAllAabbs(forceUpdateAllAabbs);
+}
+
+bool CollisionWorld::IsDisposed::get()
+{
+	return (_native == NULL);
 }
 
 int CollisionWorld::NumCollisionObjects::get()

@@ -25,8 +25,7 @@ namespace BulletSharp
 
 	internal:
 		btDispatcherInfo* _native;
-
-		DispatcherInfo(btDispatcherInfo* info);
+		DispatcherInfo(btDispatcherInfo* native);
 
 	public:
 		property btScalar AllowedCcdPenetration
@@ -104,7 +103,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class Dispatcher : ITrackingDisposable
+	public ref class Dispatcher abstract : ITrackingDisposable
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -112,7 +111,7 @@ namespace BulletSharp
 
 	internal:
 		btDispatcher* _native;
-		Dispatcher(btDispatcher* dispatcher);
+		Dispatcher(btDispatcher* native);
 
 	public:
 		!Dispatcher();
@@ -122,27 +121,27 @@ namespace BulletSharp
 	public:
 		IntPtr AllocateCollisionAlgorithm(int size);
 		void ClearManifold(PersistentManifold^ manifold);
-		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache,
-			DispatcherInfo^ dispatchInfo, Dispatcher^ dispatcher);
-		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap,
-			CollisionObjectWrapper^ body1Wrap, PersistentManifold^ sharedManifold);
-		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap,
-			CollisionObjectWrapper^ body1Wrap);
+		void DispatchAllCollisionPairs(OverlappingPairCache^ pairCache, DispatcherInfo^ dispatchInfo,
+			Dispatcher^ dispatcher);
+		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			PersistentManifold^ sharedManifold);
+		CollisionAlgorithm^ FindAlgorithm(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap);
 		void FreeCollisionAlgorithm(IntPtr ptr);
 #ifndef DISABLE_INTERNAL
-		//array<PersistentManifold^>^ GetInternalManifoldPointer();
 		PersistentManifold^ GetManifoldByIndexInternal(int index);
 #endif
 		PersistentManifold^ GetNewManifold(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsCollision(CollisionObject^ body0, CollisionObject^ body1);
 		bool NeedsResponse(CollisionObject^ body0, CollisionObject^ body1);
 		void ReleaseManifold(PersistentManifold^ manifold);
-
-		property int NumManifolds
+/*
+#ifndef DISABLE_INTERNAL
+		property PersistentManifold^ InternalManifoldPointer
 		{
-			int get();
+			PersistentManifold^ get();
 		}
-
+#endif
+*/
 #ifndef DISABLE_UNCOMMON
 		property PoolAllocator^ InternalManifoldPool
 		{
@@ -153,6 +152,11 @@ namespace BulletSharp
 		property bool IsDisposed
 		{
 			virtual bool get();
+		}
+
+		property int NumManifolds
+		{
+			int get();
 		}
 	};
 };

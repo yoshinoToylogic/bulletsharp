@@ -27,7 +27,7 @@
 #include "Serializer.h"
 #endif
 #ifndef DISABLE_UNCOMMON
-#include "Box2dShape.h"
+#include "Box2DShape.h"
 #include "Convex2DShape.h"
 #include "ConvexPointCloudShape.h"
 #include "HeightfieldTerrainShape.h"
@@ -35,15 +35,17 @@
 #include "MultimaterialTriangleMeshShape.h"
 #include "StringConv.h"
 #include "TriangleShape.h"
+#ifndef DISABLE_GIMPACT
 #include "TriangleShapeEx.h"
 #endif
+#endif
 
-CollisionShape::CollisionShape(btCollisionShape* collisionShape)
+CollisionShape::CollisionShape(btCollisionShape* native)
 {
 	// UnmanagedPointer may be set later if a child constructor does
 	// extra processing, so check for NULL here.
-	if (collisionShape)
-		UnmanagedPointer = collisionShape;
+	if (native)
+		UnmanagedPointer = native;
 }
 
 CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
@@ -128,13 +130,25 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 
 #ifndef DISABLE_GIMPACT
 	case BroadphaseNativeType::GImpactShape:
-		shape = gcnew GImpactMeshShape((btGImpactMeshShape*) collisionShape);
+		{
+		btGImpactCompoundShape* gImpactCompoundShape = dynamic_cast<btGImpactCompoundShape*>(collisionShape);
+		if (gImpactCompoundShape) {
+			shape = gcnew GImpactCompoundShape(gImpactCompoundShape);
+			break;
+		}
+		btGImpactMeshShape* gImpactMeshShape = dynamic_cast<btGImpactMeshShape*>(collisionShape);
+		if (gImpactMeshShape) {
+			shape = gcnew GImpactMeshShape(gImpactMeshShape);
+			break;
+		}
+		shape = gcnew GImpactMeshShapePart(static_cast<btGImpactMeshShapePart*>(collisionShape));
 		break;
+		}
 #endif
 
 #ifndef DISABLE_UNCOMMON
-	case BroadphaseNativeType::Box2dShape:
-		shape = gcnew Box2dShape((btBox2dShape*) collisionShape);
+	case BroadphaseNativeType::Box2DShape:
+		shape = gcnew Box2DShape((btBox2dShape*) collisionShape);
 		break;
 	case BroadphaseNativeType::Convex2DShape:
 		shape = gcnew Convex2DShape((btConvex2dShape*) collisionShape);
@@ -156,12 +170,14 @@ CollisionShape^ CollisionShape::GetManaged(btCollisionShape* collisionShape)
 		break;
 	case BroadphaseNativeType::TriangleShape:
 		{
+#ifndef DISABLE_GIMPACT
 		btTriangleShapeEx* triangleShapeEx = dynamic_cast<btTriangleShapeEx*>(collisionShape);
 		if (triangleShapeEx) {
 			shape = gcnew TriangleShapeEx(triangleShapeEx);
-		} else {
-			shape = gcnew TriangleShape((btTriangleShape*) collisionShape);
+			break;
 		}
+#endif
+		shape = gcnew TriangleShape((btTriangleShape*) collisionShape);
 		break;
 		}
 #endif
@@ -201,11 +217,6 @@ CollisionShape::!CollisionShape()
 	OnDisposed(this, nullptr);
 }
 
-bool CollisionShape::IsDisposed::get()
-{
-	return _flags & 1;
-}
-
 void CollisionShape::CalculateLocalInertia(btScalar mass, [Out] Vector3% inertia)
 {
 	btVector3* inertiaTemp = ALIGNED_NEW(btVector3);
@@ -223,15 +234,22 @@ Vector3 CollisionShape::CalculateLocalInertia(btScalar mass)
 	return inertia;
 }
 
+#ifndef DISABLE_SERIALIZE
+int CollisionShape::CalculateSerializeBufferSize()
+{
+	return _native->calculateSerializeBufferSize();
+}
+#endif
+
 void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
 	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
 {
-	btTransform* curTransTemp = Math::MatrixToBtTransform(curTrans);
-	btVector3* temporalAabbMinTemp = ALIGNED_NEW(btVector3);
-	btVector3* temporalAabbMaxTemp = ALIGNED_NEW(btVector3);
+	TRANSFORM_CONV(curTrans);
 	VECTOR3_DEF(linvel);
 	VECTOR3_DEF(angvel);
+	btVector3* temporalAabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* temporalAabbMaxTemp = ALIGNED_NEW(btVector3);
 
 	_native->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
 		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
@@ -240,25 +258,25 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	temporalAabbMin = Math::BtVector3ToVector3(temporalAabbMaxTemp);
 	temporalAabbMax = Math::BtVector3ToVector3(temporalAabbMaxTemp);
 
-	delete curTransTemp;
-	ALIGNED_FREE(temporalAabbMinTemp);
-	ALIGNED_FREE(temporalAabbMaxTemp);
+	TRANSFORM_DEL(curTrans);
 	VECTOR3_DEL(linvel);
 	VECTOR3_DEL(angvel);
+	ALIGNED_FREE(temporalAabbMinTemp);
+	ALIGNED_FREE(temporalAabbMaxTemp);
 }
 
 void CollisionShape::GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
-	btTransform* tTemp = Math::MatrixToBtTransform(t);
+	TRANSFORM_CONV(t);
 	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
 	
-	_native->getAabb(*tTemp, *aabbMinTemp, *aabbMaxTemp);
+	_native->getAabb(TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
 
 	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
 	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
 
-	ALIGNED_FREE(tTemp);
+	TRANSFORM_DEL(t);
 	ALIGNED_FREE(aabbMinTemp);
 	ALIGNED_FREE(aabbMaxTemp);
 }
@@ -275,21 +293,15 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 	ALIGNED_FREE(centerTemp);
 }
 
-btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThreshold)
+btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThresholdFactor)
 {
-	return _native->getContactBreakingThreshold(defaultContactThreshold);
+	return _native->getContactBreakingThreshold(defaultContactThresholdFactor);
 }
 
 #ifndef DISABLE_SERIALIZE
-int CollisionShape::CalculateSerializeBufferSize()
-{
-	return _native->calculateSerializeBufferSize();
-}
-
 String^ CollisionShape::Serialize(IntPtr dataBuffer, BulletSharp::Serializer^ serializer)
 {
-	const char* name = _native->serialize(dataBuffer.ToPointer(), serializer->_native);
-	return gcnew String(name);
+	return gcnew String(_native->serialize(dataBuffer.ToPointer(), serializer->_native));
 }
 
 void CollisionShape::SerializeSingleShape(BulletSharp::Serializer^ serializer)
@@ -338,9 +350,19 @@ bool CollisionShape::IsConvex2d::get()
 	return _native->isConvex2d();
 }
 
+bool CollisionShape::IsDisposed::get()
+{
+	return _flags & 1;
+}
+
 bool CollisionShape::IsInfinite::get()
 {
 	return _native->isInfinite();
+}
+
+bool CollisionShape::IsNonMoving::get()
+{
+	return _native->isNonMoving();
 }
 
 bool CollisionShape::IsPolyhedral::get()
@@ -357,11 +379,11 @@ Vector3 CollisionShape::LocalScaling::get()
 {
 	return Math::BtVector3ToVector3(&_native->getLocalScaling());
 }
-void CollisionShape::LocalScaling::set(Vector3 value)
+void CollisionShape::LocalScaling::set(Vector3 scaling)
 {
-	VECTOR3_DEF(value);
-	_native->setLocalScaling(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(scaling);
+	_native->setLocalScaling(VECTOR3_USE(scaling));
+	VECTOR3_DEL(scaling);
 }
 
 btScalar CollisionShape::Margin::get()

@@ -4,8 +4,8 @@
 
 #define Native static_cast<btBoxShape*>(_native)
 
-BoxShape::BoxShape(btBoxShape* shape)
-: PolyhedralConvexShape(shape)
+BoxShape::BoxShape(btBoxShape* native)
+: PolyhedralConvexShape(native)
 {
 }
 

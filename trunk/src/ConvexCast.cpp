@@ -7,9 +7,9 @@
 #include "DebugDraw.h"
 #endif
 
-ConvexCast::CastResult::CastResult(btConvexCast::CastResult* castResult)
+ConvexCast::CastResult::CastResult(btConvexCast::CastResult* native)
 {
-	_native = castResult;
+	_native = native;
 }
 
 ConvexCast::CastResult::CastResult()
@@ -118,9 +118,9 @@ bool ConvexCast::CastResult::IsDisposed::get()
 }
 
 
-ConvexCast::ConvexCast(btConvexCast* convexCast)
+ConvexCast::ConvexCast(btConvexCast* native)
 {
-	_native = convexCast;
+	_native = native;
 }
 
 ConvexCast::~ConvexCast()

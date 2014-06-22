@@ -6,9 +6,11 @@
 #include "CollisionConfiguration.h"
 #include "Dispatcher.h"
 #include "MultiBody.h"
-#include "MultiBodyConstraint.h"
 #include "MultiBodyConstraintSolver.h"
 #include "MultiBodyDynamicsWorld.h"
+#ifndef DISABLE_CONSTRAINTS
+#include "MultiBodyConstraint.h"
+#endif
 
 #define Native static_cast<btMultiBodyDynamicsWorld*>(_native)
 
@@ -17,10 +19,12 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native)
 {
 }
 
-MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
-	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native, (btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
+MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
+	MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration)
+	: DiscreteDynamicsWorld(new btMultiBodyDynamicsWorld(dispatcher->_native, pairCache->_native,
+		(btMultiBodyConstraintSolver*)constraintSolver->_native, collisionConfiguration->_native))
 {
-	_collisionConfiguration = collisionConfiguration;
+	_constraintSolver = constraintSolver;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
 }
@@ -39,20 +43,21 @@ void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body)
 {
 	Native->addMultiBody(body->_native);
 }
-
+#ifndef DISABLE_CONSTRAINTS
 void MultiBodyDynamicsWorld::AddMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
 	Native->addMultiBodyConstraint(constraint->_native);
 }
-
+#endif
 void MultiBodyDynamicsWorld::RemoveMultiBody(MultiBody^ body)
 {
 	Native->removeMultiBody(body->_native);
 }
-
+#ifndef DISABLE_CONSTRAINTS
 void MultiBodyDynamicsWorld::RemoveMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
 	Native->removeMultiBodyConstraint(constraint->_native);
 }
+#endif
 
 #endif

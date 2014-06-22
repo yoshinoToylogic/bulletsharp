@@ -15,25 +15,21 @@
 
 #define Native static_cast<btDbvtProxy*>(_native)
 
-DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
-: BroadphaseProxy(0)
+DbvtProxy::DbvtProxy(btDbvtProxy* native)
+	: BroadphaseProxy(native)
+{
+}
+
+DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
+	CollisionFilterGroups collisionFilterMask)
+	: BroadphaseProxy(0)
 {
 	VECTOR3_DEF(aabbMin);
 	VECTOR3_DEF(aabbMax);
-
-	_clientObject = userObject;
-
-	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), 0,
+	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
 		(short int)collisionFilterGroup, (short int)collisionFilterMask);
-
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
-}
-
-DbvtProxy::DbvtProxy(btDbvtProxy* proxy)
-: BroadphaseProxy(proxy)
-{
 }
 
 DbvtNode^ DbvtProxy::Leaf::get()
@@ -66,24 +62,23 @@ void DbvtProxy::Stage::set(int value)
 #undef Native
 #define Native static_cast<btDbvtBroadphase*>(_native)
 
-DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* broadphase)
-: BroadphaseInterface(broadphase)
-{
-}
-
-DbvtBroadphase::DbvtBroadphase()
-: BroadphaseInterface(new btDbvtBroadphase())
+DbvtBroadphase::DbvtBroadphase(btDbvtBroadphase* native)
+	: BroadphaseInterface(native)
 {
 }
 
 DbvtBroadphase::DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache)
-: BroadphaseInterface(new btDbvtBroadphase((btOverlappingPairCache*)pairCache->_native))
+	: BroadphaseInterface(new btDbvtBroadphase((btOverlappingPairCache*)pairCache->_native))
 {
 	_pairCache = pairCache;
 }
 
-#ifndef DISABLE_DBVT
+DbvtBroadphase::DbvtBroadphase()
+	: BroadphaseInterface(new btDbvtBroadphase())
+{
+}
 
+#ifndef DISABLE_DBVT
 void DbvtBroadphase::Benchmark(BroadphaseInterface^ broadphase)
 {
 	btDbvtBroadphase::benchmark(broadphase->_native);
@@ -94,6 +89,36 @@ void DbvtBroadphase::Collide(Dispatcher^ dispatcher)
 	Native->collide(dispatcher->_native);
 }
 
+void DbvtBroadphase::Optimize()
+{
+	Native->optimize();
+}
+
+void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
+{
+	Native->performDeferredRemoval(dispatcher->_native);
+}
+
+void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin,
+	Vector3 aabbMax, Dispatcher^ dispatcher)
+{
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	Native->setAabbForceUpdate(absproxy->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		dispatcher->_native);
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+}
+
+int DbvtBroadphase::CId::get()
+{
+	return Native->m_cid;
+}
+void DbvtBroadphase::CId::set(int value)
+{
+	Native->m_cid = value;
+}
+
 int DbvtBroadphase::CUpdates::get()
 {
 	return Native->m_cupdates;
@@ -101,6 +126,15 @@ int DbvtBroadphase::CUpdates::get()
 void DbvtBroadphase::CUpdates::set(int value)
 {
 	Native->m_cupdates = value;
+}
+
+bool DbvtBroadphase::DeferredCollide::get()
+{
+	return Native->m_deferedcollide;
+}
+void DbvtBroadphase::DeferredCollide::set(bool value)
+{
+	Native->m_deferedcollide = value;
 }
 
 int DbvtBroadphase::DUpdates::get()
@@ -130,66 +164,6 @@ void DbvtBroadphase::FUpdates::set(int value)
 	Native->m_fupdates = value;
 }
 
-int DbvtBroadphase::NewPairs::get()
-{
-	return Native->m_newpairs;
-}
-void DbvtBroadphase::NewPairs::set(int value)
-{
-	Native->m_newpairs = value;
-}
-
-void DbvtBroadphase::Optimize()
-{
-	Native->optimize();
-}
-
-void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
-{
-	Native->performDeferredRemoval(dispatcher->_native);
-}
-
-void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy,
-	Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher)
-{
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
-
-	Native->setAabbForceUpdate(absproxy->_native,
-		VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), dispatcher->_native);
-
-	VECTOR3_DEL(aabbMin);
-	VECTOR3_DEL(aabbMax);
-}
-
-BulletSharp::OverlappingPairCache^ DbvtBroadphase::PairCache::get()
-{
-	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
-		BulletSharp::OverlappingPairCache::GetManaged(Native->m_paircache));
-}
-void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
-{
-	Native->m_paircache = (btOverlappingPairCache*)value->_native;
-}
-
-int DbvtBroadphase::CId::get()
-{
-	return Native->m_cid;
-}
-void DbvtBroadphase::CId::set(int value)
-{
-	Native->m_cid = value;
-}
-
-bool DbvtBroadphase::DeferredCollide::get()
-{
-	return Native->m_deferedcollide;
-}
-void DbvtBroadphase::DeferredCollide::set(bool value)
-{
-	Native->m_deferedcollide = value;
-}
-
 int DbvtBroadphase::GId::get()
 {
 	return Native->m_gid;
@@ -206,6 +180,25 @@ bool DbvtBroadphase::NeedCleanup::get()
 void DbvtBroadphase::NeedCleanup::set(bool value)
 {
 	Native->m_needcleanup = value;
+}
+
+int DbvtBroadphase::NewPairs::get()
+{
+	return Native->m_newpairs;
+}
+void DbvtBroadphase::NewPairs::set(int value)
+{
+	Native->m_newpairs = value;
+}
+
+OverlappingPairCache^ DbvtBroadphase::PairCache::get()
+{
+	return dynamic_cast<BulletSharp::OverlappingPairCache^>(
+		BulletSharp::OverlappingPairCache::GetManaged(Native->m_paircache));
+}
+void DbvtBroadphase::PairCache::set(BulletSharp::OverlappingPairCache^ value)
+{
+	Native->m_paircache = (btOverlappingPairCache*)value->_native;
 }
 
 int DbvtBroadphase::PId::get()
@@ -285,9 +278,9 @@ btScalar DbvtBroadphase::VelocityPrediction::get()
 {
 	return Native->getVelocityPrediction();
 }
-void DbvtBroadphase::VelocityPrediction::set(btScalar value)
+void DbvtBroadphase::VelocityPrediction::set(btScalar prediction)
 {
-	Native->setVelocityPrediction(value);
+	Native->setVelocityPrediction(prediction);
 }
 
 #endif

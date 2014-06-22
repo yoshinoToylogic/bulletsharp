@@ -6,7 +6,7 @@ namespace BulletSharp
 {
 	ref class AlignedBroadphasePairArray;
 
-	public ref class OverlapCallback : IDisposable
+	public ref class OverlapCallback abstract : IDisposable
 	{
 	internal:
 		btOverlapCallback* _native;
@@ -29,10 +29,8 @@ namespace BulletSharp
 	{
 	internal:
 		btOverlapFilterCallback* _native;
-
-		OverlapFilterCallback(btOverlapFilterCallback* callback);
+		OverlapFilterCallback(btOverlapFilterCallback* native);
 		static OverlapFilterCallback^ GetManaged(btOverlapFilterCallback* callback);
-
 	public:
 		!OverlapFilterCallback();
 	protected:
@@ -41,7 +39,7 @@ namespace BulletSharp
 	public:
 		OverlapFilterCallback();
 
-		virtual bool NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) = 0;
+		virtual bool NeedBroadphaseCollision(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1) abstract;
 
 		property bool IsDisposed
 		{
@@ -49,10 +47,10 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class OverlappingPairCache : OverlappingPairCallback
+	public ref class OverlappingPairCache abstract : OverlappingPairCallback
 	{
 	internal:
-		OverlappingPairCache(btOverlappingPairCache* pairCache);
+		OverlappingPairCache(btOverlappingPairCache* native);
 
 	private:
 		AlignedBroadphasePairArray^ _overlappingPairArray;
@@ -82,12 +80,18 @@ namespace BulletSharp
 		{
 			AlignedBroadphasePairArray^ get();
 		}
+		/*
+		property BroadphasePair^ OverlappingPairArrayPtr
+		{
+			BroadphasePair^ get();
+		}
+		*/
 	};
 
 	public ref class HashedOverlappingPairCache : OverlappingPairCache
 	{
 	internal:
-		HashedOverlappingPairCache(btHashedOverlappingPairCache* pairCache);
+		HashedOverlappingPairCache(btHashedOverlappingPairCache* native);
 
 	public:
 		HashedOverlappingPairCache();
@@ -109,7 +113,7 @@ namespace BulletSharp
 	public ref class SortedOverlappingPairCache : OverlappingPairCache
 	{
 	internal:
-		SortedOverlappingPairCache(btSortedOverlappingPairCache* sortedPairCache);
+		SortedOverlappingPairCache(btSortedOverlappingPairCache* native);
 
 	public:
 		SortedOverlappingPairCache();
@@ -126,7 +130,7 @@ namespace BulletSharp
 	public ref class NullPairCache : OverlappingPairCache
 	{
 	internal:
-		NullPairCache(btNullPairCache* nullPairCache);
+		NullPairCache(btNullPairCache* native);
 
 	public:
 		NullPairCache();

@@ -6,29 +6,27 @@
 #include "Generic6DofConstraint.h"
 #include "RigidBody.h"
 
+RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* native)
+{
+	_native = native;
+}
+
 RotationalLimitMotor::RotationalLimitMotor()
 {
 	_native = new btRotationalLimitMotor();
 }
 
-RotationalLimitMotor::RotationalLimitMotor(RotationalLimitMotor^ _native)
+RotationalLimitMotor::RotationalLimitMotor(RotationalLimitMotor^ limitMotor)
 {
-	this->_native = new btRotationalLimitMotor(*_native->_native);
-}
-
-RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* _native)
-{
-	this->_native = _native;
+	_native = new btRotationalLimitMotor(*limitMotor->_native);
 }
 
 btScalar RotationalLimitMotor::SolveAngularLimits(btScalar timeStep, Vector3 axis,
 	btScalar jacDiagABInv, RigidBody^ body0, RigidBody^ body1)
 {
 	VECTOR3_DEF(axis);
-	
-	btScalar ret = _native->solveAngularLimits(timeStep, VECTOR3_USE(axis),
-		jacDiagABInv, (btRigidBody*)body0->_native, (btRigidBody*)body1->_native);
-
+	btScalar ret = _native->solveAngularLimits(timeStep, VECTOR3_USE(axis), jacDiagABInv,
+		(btRigidBody*)body0->_native, (btRigidBody*)body1->_native);
 	VECTOR3_DEL(axis);
 	return ret;
 }
@@ -38,21 +36,10 @@ int RotationalLimitMotor::TestLimitValue(btScalar test_value)
 	return _native->testLimitValue(test_value);
 }
 
-bool RotationalLimitMotor::IsLimited::get()
-{
-	return _native->isLimited();
-}
-
-bool RotationalLimitMotor::NeedApplyTorques::get()
-{
-	return _native->needApplyTorques();
-}
-
 btScalar RotationalLimitMotor::AccumulatedImpulse::get()
 {
 	return _native->m_accumulatedImpulse;
 }
-
 void RotationalLimitMotor::AccumulatedImpulse::set(btScalar value)
 {
 	_native->m_accumulatedImpulse = value;
@@ -62,7 +49,6 @@ btScalar RotationalLimitMotor::Bounce::get()
 {
 	return _native->m_bounce;
 }
-
 void RotationalLimitMotor::Bounce::set(btScalar value)
 {
 	_native->m_bounce = value;
@@ -72,7 +58,6 @@ int RotationalLimitMotor::CurrentLimit::get()
 {
 	return _native->m_currentLimit;
 }
-
 void RotationalLimitMotor::CurrentLimit::set(int value)
 {
 	_native->m_currentLimit = value;
@@ -82,7 +67,6 @@ btScalar RotationalLimitMotor::CurrentLimitError::get()
 {
 	return _native->m_currentLimitError;
 }
-
 void RotationalLimitMotor::CurrentLimitError::set(btScalar value)
 {
 	_native->m_currentLimitError = value;
@@ -92,7 +76,6 @@ btScalar RotationalLimitMotor::CurrentPosition::get()
 {
 	return _native->m_currentPosition;
 }
-
 void RotationalLimitMotor::CurrentPosition::set(btScalar value)
 {
 	_native->m_currentPosition = value;
@@ -102,7 +85,6 @@ btScalar RotationalLimitMotor::Damping::get()
 {
 	return _native->m_damping;
 }
-
 void RotationalLimitMotor::Damping::set(btScalar value)
 {
 	_native->m_damping = value;
@@ -112,7 +94,6 @@ bool RotationalLimitMotor::EnableMotor::get()
 {
 	return _native->m_enableMotor;
 }
-
 void RotationalLimitMotor::EnableMotor::set(bool value)
 {
 	_native->m_enableMotor = value;
@@ -122,17 +103,20 @@ btScalar RotationalLimitMotor::HiLimit::get()
 {
 	return _native->m_hiLimit;
 }
-
 void RotationalLimitMotor::HiLimit::set(btScalar value)
 {
 	_native->m_hiLimit = value;
+}
+
+bool RotationalLimitMotor::IsLimited::get()
+{
+	return _native->isLimited();
 }
 
 btScalar RotationalLimitMotor::LimitSoftness::get()
 {
 	return _native->m_limitSoftness;
 }
-
 void RotationalLimitMotor::LimitSoftness::set(btScalar value)
 {
 	_native->m_limitSoftness = value;
@@ -142,7 +126,6 @@ btScalar RotationalLimitMotor::LoLimit::get()
 {
 	return _native->m_loLimit;
 }
-
 void RotationalLimitMotor::LoLimit::set(btScalar value)
 {
 	_native->m_loLimit = value;
@@ -152,7 +135,6 @@ btScalar RotationalLimitMotor::MaxLimitForce::get()
 {
 	return _native->m_maxLimitForce;
 }
-
 void RotationalLimitMotor::MaxLimitForce::set(btScalar value)
 {
 	_native->m_maxLimitForce = value;
@@ -162,17 +144,20 @@ btScalar RotationalLimitMotor::MaxMotorForce::get()
 {
 	return _native->m_maxMotorForce;
 }
-
 void RotationalLimitMotor::MaxMotorForce::set(btScalar value)
 {
 	_native->m_maxMotorForce = value;
+}
+
+bool RotationalLimitMotor::NeedApplyTorques::get()
+{
+	return _native->needApplyTorques();
 }
 
 btScalar RotationalLimitMotor::NormalCFM::get()
 {
 	return _native->m_normalCFM;
 }
-
 void RotationalLimitMotor::NormalCFM::set(btScalar value)
 {
 	_native->m_normalCFM = value;
@@ -182,7 +167,6 @@ btScalar RotationalLimitMotor::StopCFM::get()
 {
 	return _native->m_stopCFM;
 }
-
 void RotationalLimitMotor::StopCFM::set(btScalar value)
 {
 	_native->m_stopCFM = value;
@@ -192,7 +176,6 @@ btScalar RotationalLimitMotor::StopERP::get()
 {
 	return _native->m_stopERP;
 }
-
 void RotationalLimitMotor::StopERP::set(btScalar value)
 {
 	_native->m_stopERP = value;
@@ -202,63 +185,57 @@ btScalar RotationalLimitMotor::TargetVelocity::get()
 {
 	return _native->m_targetVelocity;
 }
-
 void RotationalLimitMotor::TargetVelocity::set(btScalar value)
 {
 	_native->m_targetVelocity = value;
 }
 
+TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* native)
+{
+	_native = native;
+}
 
 TranslationalLimitMotor::TranslationalLimitMotor()
 {
 	_native = new btTranslationalLimitMotor();
 }
 
-TranslationalLimitMotor::TranslationalLimitMotor(TranslationalLimitMotor^ _native)
+TranslationalLimitMotor::TranslationalLimitMotor(TranslationalLimitMotor^ other)
 {
-	this->_native = new btTranslationalLimitMotor(*_native->_native);
-}
-
-TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* _native)
-{
-	this->_native = _native;
-}
-
-btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv,
-	RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB,
-	int limit_index, Vector3 axis_normal_on_a, Vector3 anchorPos)
-{
-	VECTOR3_DEF(pointInA);
-	VECTOR3_DEF(pointInB);
-	VECTOR3_DEF(axis_normal_on_a);
-	VECTOR3_DEF(anchorPos);
-
-	btScalar ret =  _native->solveLinearAxis(timeStep, jacDiagABInv,
-		*(btRigidBody*)body1->_native, VECTOR3_USE(pointInA),
-		*(btRigidBody*)body2->_native, VECTOR3_USE(pointInB),
-		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos)
-	);
-
-	VECTOR3_DEL(pointInA);
-	VECTOR3_DEL(pointInB);
-	VECTOR3_DEL(axis_normal_on_a);
-	VECTOR3_DEL(anchorPos);
-
-	return ret;
-}
-
-int TranslationalLimitMotor::TestLimitValue(int limitIndex, btScalar test_value)
-{
-	return _native->testLimitValue(limitIndex, test_value);
+	_native = new btTranslationalLimitMotor(*other->_native);
 }
 
 bool TranslationalLimitMotor::IsLimited(int limitIndex)
 {
 	return _native->isLimited(limitIndex);
 }
+
 bool TranslationalLimitMotor::NeedApplyForce(int limitIndex)
 {
 	return _native->needApplyForce(limitIndex);
+}
+
+btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar jacDiagABInv,
+	RigidBody^ body1, Vector3 pointInA, RigidBody^ body2, Vector3 pointInB, int limit_index,
+	Vector3 axis_normal_on_a, Vector3 anchorPos)
+{
+	VECTOR3_DEF(pointInA);
+	VECTOR3_DEF(pointInB);
+	VECTOR3_DEF(axis_normal_on_a);
+	VECTOR3_DEF(anchorPos);
+	btScalar ret =  _native->solveLinearAxis(timeStep, jacDiagABInv, *(btRigidBody*)body1->_native,
+		VECTOR3_USE(pointInA), *(btRigidBody*)body2->_native, VECTOR3_USE(pointInB),
+		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos));
+	VECTOR3_DEL(pointInA);
+	VECTOR3_DEL(pointInB);
+	VECTOR3_DEL(axis_normal_on_a);
+	VECTOR3_DEL(anchorPos);
+	return ret;
+}
+
+int TranslationalLimitMotor::TestLimitValue(int limitIndex, btScalar test_value)
+{
+	return _native->testLimitValue(limitIndex, test_value);
 }
 
 Vector3 TranslationalLimitMotor::AccumulatedImpulse::get()
@@ -391,33 +368,30 @@ void TranslationalLimitMotor::UpperLimit::set(Vector3 value)
 
 #define Native static_cast<btGeneric6DofConstraint*>(_native)
 
-Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* constraint)
-: TypedConstraint(constraint)
+Generic6DofConstraint::Generic6DofConstraint(btGeneric6DofConstraint* native)
+	: TypedConstraint(native)
 {
 }
 
-Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
-	Matrix frameInA, Matrix frameInB, bool useReferenceFrameA)
-: TypedConstraint(0)
+Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Matrix frameInA,
+	Matrix frameInB, bool useLinearReferenceFrameA)
+	: TypedConstraint(0)
 {
-	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
-	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
-
-	UnmanagedPointer = new btGeneric6DofConstraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		*frameInATemp, *frameInBTemp, useReferenceFrameA);
-
-	ALIGNED_FREE(frameInATemp);
-	ALIGNED_FREE(frameInBTemp);
+	TRANSFORM_CONV(frameInA);
+	TRANSFORM_CONV(frameInB);
+	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
+	TRANSFORM_DEL(frameInA);
+	TRANSFORM_DEL(frameInB);
 }
 
-Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB,
-	bool useReferenceFrameA)
-: TypedConstraint(0)
+Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB)
+	: TypedConstraint(0)
 {
-	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
-	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useReferenceFrameA);
-	ALIGNED_FREE(frameInBTemp);
+	TRANSFORM_CONV(frameInB);
+	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
+		useLinearReferenceFrameB);
+	TRANSFORM_DEL(frameInB);
 }
 
 void Generic6DofConstraint::CalcAnchorPos()
@@ -425,22 +399,68 @@ void Generic6DofConstraint::CalcAnchorPos()
 	Native->calcAnchorPos();
 }
 
+void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
+{
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	Native->calculateTransforms(TRANSFORM_USE(transA), TRANSFORM_USE(transB));
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+}
+
 void Generic6DofConstraint::CalculateTransforms()
 {
 	Native->calculateTransforms();
 }
-
-void Generic6DofConstraint::CalculateTransforms(Matrix transA, Matrix transB)
+/*
+int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, Matrix transA,
+	Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB,
+	btConstraintInfo2^ info, int row, Vector3 ax1, int rotational, int rotAllowed)
 {
-	btTransform* transATemp = Math::MatrixToBtTransform(transA);
-	btTransform* transBTemp = Math::MatrixToBtTransform(transB);
-
-	Native->calculateTransforms(*transATemp, *transBTemp);
-	
-	ALIGNED_FREE(transATemp);
-	ALIGNED_FREE(transBTemp);
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	VECTOR3_DEF(linVelA);
+	VECTOR3_DEF(linVelB);
+	VECTOR3_DEF(angVelA);
+	VECTOR3_DEF(angVelB);
+	VECTOR3_DEF(ax1);
+	int ret = _native->get_limit_motor_info2(limitMotor->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB),
+		info->_native, row, VECTOR3_USE(ax1), rotational, rotAllowed);
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	VECTOR3_DEL(linVelA);
+	VECTOR3_DEL(linVelB);
+	VECTOR3_DEL(angVelA);
+	VECTOR3_DEL(angVelB);
+	VECTOR3_DEL(ax1);
+	return ret;
 }
 
+int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, Matrix transA,
+	Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB,
+	btConstraintInfo2^ info, int row, Vector3 ax1, int rotational)
+{
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	VECTOR3_DEF(linVelA);
+	VECTOR3_DEF(linVelB);
+	VECTOR3_DEF(angVelA);
+	VECTOR3_DEF(angVelB);
+	VECTOR3_DEF(ax1);
+	int ret = _native->get_limit_motor_info2(limitMotor->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB),
+		info->_native, row, VECTOR3_USE(ax1), rotational);
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	VECTOR3_DEL(linVelA);
+	VECTOR3_DEL(linVelB);
+	VECTOR3_DEL(angVelA);
+	VECTOR3_DEL(angVelB);
+	VECTOR3_DEL(ax1);
+	return ret;
+}
+*/
 btScalar Generic6DofConstraint::GetAngle(int axis_index)
 {
 	return Native->getAngle(axis_index);
@@ -452,12 +472,30 @@ btVector3* Generic6DofConstraint_GetAxis(btGeneric6DofConstraint* constraint, in
 	return &constraint->getAxis(axis_index);
 }
 #pragma managed(pop)
-
 Vector3 Generic6DofConstraint::GetAxis(int axis_index)
 {
 	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(Native, axis_index));
 }
-
+/*
+void Generic6DofConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
+	Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB)
+{
+	TRANSFORM_CONV(transA);
+	TRANSFORM_CONV(transB);
+	VECTOR3_DEF(linVelA);
+	VECTOR3_DEF(linVelB);
+	VECTOR3_DEF(angVelA);
+	VECTOR3_DEF(angVelB);
+	_native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
+	TRANSFORM_DEL(transA);
+	TRANSFORM_DEL(transB);
+	VECTOR3_DEL(linVelA);
+	VECTOR3_DEL(linVelB);
+	VECTOR3_DEL(angVelA);
+	VECTOR3_DEL(angVelB);
+}
+*/
 btScalar Generic6DofConstraint::GetRelativePivotPosition(int axis_index)
 {
 	return Native->getRelativePivotPosition(axis_index);
@@ -477,22 +515,18 @@ void Generic6DofConstraint::SetAxis(Vector3 axis1, Vector3 axis2)
 {
 	VECTOR3_DEF(axis1);
 	VECTOR3_DEF(axis2);
-
 	Native->setAxis(VECTOR3_USE(axis1), VECTOR3_USE(axis2));
-
 	VECTOR3_DEL(axis1);
 	VECTOR3_DEL(axis2);
 }
 
 void Generic6DofConstraint::SetFrames(Matrix frameA, Matrix frameB)
 {
-	btTransform* frameATemp = Math::MatrixToBtTransform(frameA);
-	btTransform* frameBTemp = Math::MatrixToBtTransform(frameB);
-
-	Native->setFrames(*frameATemp, *frameBTemp);
-
-	ALIGNED_FREE(frameBTemp);
-	ALIGNED_FREE(frameATemp);
+	TRANSFORM_CONV(frameA);
+	TRANSFORM_CONV(frameB);
+	Native->setFrames(TRANSFORM_USE(frameA), TRANSFORM_USE(frameB));
+	TRANSFORM_DEL(frameA);
+	TRANSFORM_DEL(frameB);
 }
 
 void Generic6DofConstraint::SetLimit(int axis, btScalar lo, btScalar hi)
@@ -518,11 +552,11 @@ Vector3 Generic6DofConstraint::AngularLowerLimit::get()
 	ALIGNED_FREE(limitTemp);
 	return limit;
 }
-void Generic6DofConstraint::AngularLowerLimit::set(Vector3 value)
+void Generic6DofConstraint::AngularLowerLimit::set(Vector3 angularLower)
 {
-	VECTOR3_DEF(value);
-	Native->setAngularLowerLimit(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(angularLower);
+	Native->setAngularLowerLimit(VECTOR3_USE(angularLower));
+	VECTOR3_DEL(angularLower);
 }
 
 Vector3 Generic6DofConstraint::AngularUpperLimit::get()
@@ -533,11 +567,11 @@ Vector3 Generic6DofConstraint::AngularUpperLimit::get()
 	ALIGNED_FREE(limitTemp);
 	return limit;
 }
-void Generic6DofConstraint::AngularUpperLimit::set(Vector3 value)
+void Generic6DofConstraint::AngularUpperLimit::set(Vector3 angularUpper)
 {
-	VECTOR3_DEF(value);
-	Native->setAngularUpperLimit(VECTOR3_USE(value));
-	VECTOR3_DEL(value);
+	VECTOR3_DEF(angularUpper);
+	Native->setAngularUpperLimit(VECTOR3_USE(angularUpper));
+	VECTOR3_DEL(angularUpper);
 }
 
 Matrix Generic6DofConstraint::CalculatedTransformA::get()
@@ -582,7 +616,12 @@ void Generic6DofConstraint::FrameOffsetB::set(Matrix value)
 	Native->getFrameOffsetB().setFromOpenGLMatrix(m);
 	ALIGNED_FREE(a);
 }
-
+/*
+void Generic6DofConstraint::Info1NonVirtual::get(btConstraintInfo1^ info)
+{
+	_native->getInfo1NonVirtual(info->_native);
+}
+*/
 Vector3 Generic6DofConstraint::LinearLowerLimit::get()
 {
 	btVector3* limitTemp = ALIGNED_NEW(btVector3);
@@ -622,9 +661,9 @@ bool Generic6DofConstraint::UseFrameOffset::get()
 {
 	return Native->getUseFrameOffset();
 }
-void Generic6DofConstraint::UseFrameOffset::set(bool value)
+void Generic6DofConstraint::UseFrameOffset::set(bool frameOffsetOnOff)
 {
-	Native->setUseFrameOffset(value);
+	Native->setUseFrameOffset(frameOffsetOnOff);
 }
 
 #endif

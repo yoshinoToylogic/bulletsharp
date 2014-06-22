@@ -14,15 +14,13 @@ namespace BulletSharp
 
 	internal:
 		btCollisionObject* _native;
+		CollisionObject(btCollisionObject* native);
 
 	private:
 		bool _doesNotOwnObject;
 		
 		BroadphaseProxy^ _broadphaseHandle;
 		Object^ _userObject;
-
-	internal:
-		CollisionObject(btCollisionObject* collisionObject);
 
 	public:
 		!CollisionObject();
@@ -32,26 +30,22 @@ namespace BulletSharp
 	public:
 		CollisionObject();
 
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
-
-		void Activate();
 		void Activate(bool forceActivation);
+		void Activate();
+#ifndef DISABLE_SERIALIZE
+		int CalculateSerializeBufferSize();
+#endif
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
 		void GetWorldTransform([Out] Matrix% transform);
-		bool HasAnisotropicFriction();
 		bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode);
-		void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
-		void SetAnisotropicFriction(Vector3 anisotropicFriction);
-
+		bool HasAnisotropicFriction();
 #ifndef DISABLE_SERIALIZE
-		int CalculateSerializeBufferSize();
 		String^ Serialize(IntPtr dataBuffer, Serializer^ serializer);
 		void SerializeSingleObject(Serializer^ serializer);
 #endif
+		void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
+		void SetAnisotropicFriction(Vector3 anisotropicFriction);
 
 	internal:
 		static CollisionObject^ GetManaged(btCollisionObject* collisionObject);
@@ -72,6 +66,7 @@ namespace BulletSharp
 		property BroadphaseProxy^ BroadphaseHandle
 		{
 			BroadphaseProxy^ get();
+			void set(BroadphaseProxy^ handle);
 		}
 
 		property btScalar CcdMotionThreshold
@@ -159,6 +154,11 @@ namespace BulletSharp
 		property bool IsActive
 		{
 			bool get();
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
 		}
 
 		property bool IsKinematicObject

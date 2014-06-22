@@ -59,12 +59,11 @@ void SoftBodyWorldInfo::Broadphase::set(BroadphaseInterface^ value)
 
 Dispatcher^ SoftBodyWorldInfo::Dispatcher::get()
 {
-	if (_native->m_dispatcher == nullptr)
-		return nullptr;
-	return gcnew BulletSharp::Dispatcher(_native->m_dispatcher);
+	return _dispatcher;
 }
 void SoftBodyWorldInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
+	_dispatcher = value;
 	_native->m_dispatcher = GetUnmanagedNullable(value);
 }
 
@@ -3362,8 +3361,7 @@ BulletSharp::SoftBody::AlignedRigidContactArray^ BulletSharp::SoftBody::SoftBody
 
 SoftBodySolver^ BulletSharp::SoftBody::SoftBody::SoftBodySolver::get()
 {
-	btSoftBodySolver* solver = Native->getSoftBodySolver();
-	return solver ? gcnew BulletSharp::SoftBody::SoftBodySolver(solver) : nullptr;
+	return BulletSharp::SoftBody::SoftBodySolver::GetManaged(Native->getSoftBodySolver());
 }
 void BulletSharp::SoftBody::SoftBody::SoftBodySolver::set(BulletSharp::SoftBody::SoftBodySolver^ value)
 {

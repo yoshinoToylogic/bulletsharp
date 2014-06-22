@@ -4,13 +4,14 @@
 
 #define Native static_cast<btUniformScalingShape*>(_native)
 
-UniformScalingShape::UniformScalingShape(btUniformScalingShape* shape)
-: ConvexShape(shape)
+UniformScalingShape::UniformScalingShape(btUniformScalingShape* native)
+	: ConvexShape(native)
 {
 }
 
 UniformScalingShape::UniformScalingShape(ConvexShape^ convexChildShape, btScalar uniformScalingFactor)
-: ConvexShape(new btUniformScalingShape((btConvexShape*)convexChildShape->_native, uniformScalingFactor))
+	: ConvexShape(new btUniformScalingShape((btConvexShape*)convexChildShape->_native,
+		uniformScalingFactor))
 {
 }
 

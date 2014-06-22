@@ -1,5 +1,6 @@
 #pragma once
 
+#include "BroadphaseProxy.h"
 #include "BroadphaseInterface.h"
 #include "BroadphaseProxy.h"
 
@@ -17,15 +18,14 @@ namespace BulletSharp
 	public ref class DbvtProxy : BroadphaseProxy
 	{
 	internal:
-		DbvtProxy(btDbvtProxy* proxy);
+		DbvtProxy(btDbvtProxy* native);
 
 	private:
 		DbvtNode^ _leaf;
 		DbvtProxyPtrArray^ _links;
 
 	public:
-		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
-			CollisionFilterGroups collisionFilterGroup,
+		DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
 
 		property DbvtNode^ Leaf
@@ -57,7 +57,7 @@ namespace BulletSharp
 #endif
 
 	internal:
-		DbvtBroadphase(btDbvtBroadphase* broadphase);
+		DbvtBroadphase(btDbvtBroadphase* native);
 
 	public:
 		DbvtBroadphase(BulletSharp::OverlappingPairCache^ pairCache);
@@ -68,13 +68,25 @@ namespace BulletSharp
 		void Collide(Dispatcher^ dispatcher);
 		void Optimize();
 		void PerformDeferredRemoval(Dispatcher^ dispatcher);
-		void SetAabbForceUpdate(BroadphaseProxy^ absproxy,
-			Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
+		void SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin, Vector3 aabbMax,
+			Dispatcher^ dispatcher);
+
+		property int CId
+		{
+			int get();
+			void set(int value);
+		}
 
 		property int CUpdates
 		{
 			int get();
 			void set(int value);
+		}
+
+		property bool DeferredCollide
+		{
+			bool get();
+			void set(bool value);
 		}
 
 		property int DUpdates
@@ -95,30 +107,6 @@ namespace BulletSharp
 			void set(int value);
 		}
 
-		property int NewPairs
-		{
-			int get();
-			void set(int value);
-		}
-
-		property BulletSharp::OverlappingPairCache^ PairCache
-		{
-			BulletSharp::OverlappingPairCache^ get();
-			void set(BulletSharp::OverlappingPairCache^ value);
-		}
-
-		property int CId
-		{
-			int get();
-			void set(int value);
-		}
-
-		property bool DeferredCollide
-		{
-			bool get();
-			void set(bool value);
-		}
-
 		property int GId
 		{
 			int get();
@@ -129,6 +117,18 @@ namespace BulletSharp
 		{
 			bool get();
 			void set(bool value);
+		}
+
+		property int NewPairs
+		{
+			int get();
+			void set(int value);
+		}
+
+		property BulletSharp::OverlappingPairCache^ PairCache
+		{
+			BulletSharp::OverlappingPairCache^ get();
+			void set(BulletSharp::OverlappingPairCache^ value);
 		}
 
 		property int PId
@@ -186,8 +186,8 @@ namespace BulletSharp
 		property btScalar VelocityPrediction
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar prediction);
 		}
 #endif
 	};
-}
+};
