@@ -16,7 +16,7 @@ namespace BulletSharp
 
 	internal:
 		btConvexPenetrationDepthSolver* _native;
-		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* depthSolver);
+		ConvexPenetrationDepthSolver(btConvexPenetrationDepthSolver* native);
 
 	public:
 		!ConvexPenetrationDepthSolver();

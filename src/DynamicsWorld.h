@@ -10,7 +10,7 @@ namespace BulletSharp
 	ref class TypedConstraint;
 	interface class IActionInterface;
 
-	public ref class DynamicsWorld : CollisionWorld
+	public ref class DynamicsWorld abstract : CollisionWorld
 	{
 	public:
 		delegate void InternalTickCallback(DynamicsWorld^ world, btScalar timeStep);
@@ -20,23 +20,28 @@ namespace BulletSharp
 	internal:
 		InternalTickCallback^ _callback;
 		System::Collections::Generic::List<IActionInterface^>^ _actions;
-
-		DynamicsWorld(btDynamicsWorld* world);
+		ConstraintSolver^ _constraintSolver;
+		DynamicsWorld(btDynamicsWorld* native);
 
 	public:
-		void AddAction(IActionInterface^ actionInterface);
+		void AddAction(IActionInterface^ action);
 #ifndef DISABLE_CONSTRAINTS
-		void AddConstraint(TypedConstraint^ constraint,	bool disableCollisionsBetweenLinkedBodies);
+		void AddConstraint(TypedConstraint^ constraint, bool disableCollisionsBetweenLinkedBodies);
 		void AddConstraint(TypedConstraint^ constraint);
-		void RemoveConstraint(TypedConstraint^ constraint);
+#endif
+		void AddRigidBody(RigidBody^ body);
+		void AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask);
+		void ClearForces();
+#ifndef DISABLE_CONSTRAINTS
 		TypedConstraint^ GetConstraint(int index);
 #endif
-		void AddRigidBody(RigidBody^ rigidBody, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
-		void AddRigidBody(RigidBody^ rigidBody);
-		void ClearForces();
-		void RemoveAction(IActionInterface^ actionInterface);
-		void RemoveRigidBody(RigidBody^ rigidBody);
-		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo, bool isPreTick);
+		void RemoveAction(IActionInterface^ action);
+#ifndef DISABLE_CONSTRAINTS
+		void RemoveConstraint(TypedConstraint^ constraint);
+#endif
+		void RemoveRigidBody(RigidBody^ body);
+		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo,
+			bool isPreTick);
 		void SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo);
 		void SetInternalTickCallback(InternalTickCallback^ cb);
 		int StepSimulation(btScalar timeStep, int maxSubSteps, btScalar fixedTimeStep);
@@ -48,24 +53,26 @@ namespace BulletSharp
 		property ConstraintSolver^ ConstraintSolver
 		{
 			BulletSharp::ConstraintSolver^ get();
-			void set(BulletSharp::ConstraintSolver^ value);
+			void set(BulletSharp::ConstraintSolver^ solver);
 		}
+#endif
 
-		property ContactSolverInfo^ SolverInfo
+		property Vector3 Gravity
 		{
-			ContactSolverInfo^ get();
+			Vector3 get();
+			void set(Vector3 gravity);
 		}
 
+#ifndef DISABLE_CONSTRAINTS
 		property int NumConstraints
 		{
 			int get();
 		}
 #endif
 
-		virtual property Vector3 Gravity
+		property ContactSolverInfo^ SolverInfo
 		{
-			Vector3 get();
-			void set(Vector3 value);
+			ContactSolverInfo^ get();
 		}
 
 		property DynamicsWorldType WorldType

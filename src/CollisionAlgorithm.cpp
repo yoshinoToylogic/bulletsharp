@@ -24,19 +24,21 @@ CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo()
 	_native = new btCollisionAlgorithmConstructionInfo();
 }
 
-CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(
-	BulletSharp::Dispatcher^ dispatcher, int temp)
+CollisionAlgorithmConstructionInfo::CollisionAlgorithmConstructionInfo(BulletSharp::Dispatcher^ dispatcher,
+	int temp)
 {
+	_dispatcher = dispatcher;
 	_native = new btCollisionAlgorithmConstructionInfo(dispatcher->_native, temp);
 }
 
 BulletSharp::Dispatcher^ CollisionAlgorithmConstructionInfo::Dispatcher::get()
 {
-	return gcnew BulletSharp::Dispatcher(_native->m_dispatcher1);
+	return _dispatcher;
 }
 void CollisionAlgorithmConstructionInfo::Dispatcher::set(BulletSharp::Dispatcher^ value)
 {
-	_native->m_dispatcher1 = value->_native;
+	_dispatcher = value;
+	_native->m_dispatcher1 = GetUnmanagedNullable(value);
 }
 
 PersistentManifold^ CollisionAlgorithmConstructionInfo::Manifold::get()
@@ -49,9 +51,9 @@ void CollisionAlgorithmConstructionInfo::Manifold::set(PersistentManifold^ value
 }
 
 
-CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* algorithm)
+CollisionAlgorithm::CollisionAlgorithm(btCollisionAlgorithm* native)
 {
-	_native = algorithm;
+	_native = native;
 }
 
 CollisionAlgorithm::~CollisionAlgorithm()
@@ -68,11 +70,11 @@ CollisionAlgorithm::!CollisionAlgorithm()
 	_native = NULL;
 }
 
-btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0,
-	CollisionObject^ body1, DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
+btScalar CollisionAlgorithm::CalculateTimeOfImpact(CollisionObject^ body0, CollisionObject^ body1,
+	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	return _native->calculateTimeOfImpact(body0->_native, body1->_native,
-		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
+	return _native->calculateTimeOfImpact(body0->_native, body1->_native, *dispatchInfo->_native,
+		(btManifoldResult*)resultOut->_native);
 }
 
 void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldArray)
@@ -83,8 +85,8 @@ void CollisionAlgorithm::GetAllContactManifolds(AlignedManifoldArray^ manifoldAr
 void CollisionAlgorithm::ProcessCollision(CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
 	DispatcherInfo^ dispatchInfo, ManifoldResult^ resultOut)
 {
-	_native->processCollision(body0Wrap->_native, body1Wrap->_native,
-		*dispatchInfo->_native, (btManifoldResult*)resultOut->_native);
+	_native->processCollision(body0Wrap->_native, body1Wrap->_native, *dispatchInfo->_native,
+		(btManifoldResult*)resultOut->_native);
 }
 
 bool CollisionAlgorithm::IsDisposed::get()

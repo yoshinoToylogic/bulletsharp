@@ -2,11 +2,11 @@
 
 namespace BulletSharp
 {
-	public ref class TriangleCallback : IDisposable
+	public ref class TriangleCallback abstract : IDisposable
 	{
 	internal:
 		btTriangleCallback* _native;
-		TriangleCallback(btTriangleCallback* callback);
+		TriangleCallback(btTriangleCallback* native);
 
 	public:
 		!TriangleCallback();
@@ -14,7 +14,7 @@ namespace BulletSharp
 		~TriangleCallback();
 
 	public:
-		void ProcessTriangle(Vector3 triangle, int partId, int triangleIndex);
+		//void ProcessTriangle(Vector3 triangle, int partId, int triangleIndex);
 
 		property bool IsDisposed
 		{
@@ -23,12 +23,11 @@ namespace BulletSharp
 	};
 
 #ifndef DISABLE_INTERNAL
-	public ref class InternalTriangleIndexCallback : IDisposable
+	public ref class InternalTriangleIndexCallback abstract : IDisposable
 	{
 	internal:
 		btInternalTriangleIndexCallback* _native;
-
-		InternalTriangleIndexCallback(btInternalTriangleIndexCallback* callback);
+		InternalTriangleIndexCallback(btInternalTriangleIndexCallback* native);
 
 	public:
 		!InternalTriangleIndexCallback();
@@ -36,7 +35,7 @@ namespace BulletSharp
 		~InternalTriangleIndexCallback();
 
 	public:
-		void InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex);
+		//void InternalProcessTriangleIndex(Vector3 triangle, int partId, int triangleIndex);
 
 		property bool IsDisposed
 		{

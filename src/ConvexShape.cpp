@@ -4,8 +4,8 @@
 
 #define Native static_cast<btConvexShape*>(_native)
 
-ConvexShape::ConvexShape(btConvexShape* convexShape)
-: CollisionShape(convexShape)
+ConvexShape::ConvexShape(btConvexShape* native)
+	: CollisionShape(native)
 {
 }
 

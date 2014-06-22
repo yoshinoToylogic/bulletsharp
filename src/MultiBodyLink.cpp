@@ -62,7 +62,7 @@ Quaternion MultibodyLink::CachedRotParentToThis::get()
 }
 void MultibodyLink::CachedRotParentToThis::set(Quaternion value)
 {
-	return Math::QuaternionToBt(value, &_native->cached_rot_parent_to_this);
+	return Math::QuaternionToBtQuat(value, &_native->cached_rot_parent_to_this);
 }
 
 Vector3 MultibodyLink::CachedRVector::get()
@@ -170,7 +170,7 @@ Quaternion MultibodyLink::ZeroRotParentToThis::get()
 }
 void MultibodyLink::ZeroRotParentToThis::set(Quaternion value)
 {
-	return Math::QuaternionToBt(value, &_native->zero_rot_parent_to_this);
+	return Math::QuaternionToBtQuat(value, &_native->zero_rot_parent_to_this);
 }
 
 #endif

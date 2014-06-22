@@ -2,12 +2,12 @@
 
 #include "EmptyShape.h"
 
-EmptyShape::EmptyShape(btEmptyShape* shape)
-: ConcaveShape(shape)
+EmptyShape::EmptyShape(btEmptyShape* native)
+	: ConcaveShape(native)
 {
 }
 
 EmptyShape::EmptyShape()
-: ConcaveShape(new btEmptyShape())
+	: ConcaveShape(new btEmptyShape())
 {
 }

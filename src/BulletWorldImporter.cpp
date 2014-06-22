@@ -438,7 +438,7 @@ CollisionObject^ Serialize::BulletWorldImporter::GetRigidBodyByIndex(int index)
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 {
 	btTypedConstraint* constraint = _importer->getConstraintByIndex(index);
-	return TypedConstraint::Upcast(constraint);
+	return TypedConstraint::GetManaged(constraint);
 }
 #endif
 
@@ -492,7 +492,7 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ nam
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
 	constraint = _importer->getConstraintByName(nameTemp);
-	ret = TypedConstraint::Upcast(constraint);
+	ret = TypedConstraint::GetManaged(constraint);
 
 	StringConv::FreeUnmanagedString(nameTemp);
 	return ret;
@@ -661,19 +661,19 @@ class btTriangleIndexVertexArray* Serialize::BulletWorldImporterWrapper::createT
 #ifndef DISABLE_BVH
 btBvhTriangleMeshShape* Serialize::BulletWorldImporterWrapper::createBvhTriangleMeshShape(btStridingMeshInterface* trimesh, btOptimizedBvh* bvh)
 {
-	return (btBvhTriangleMeshShape*)_importer->CreateBvhTriangleMeshShape(gcnew StridingMeshInterface(trimesh), gcnew OptimizedBvh(bvh))->_native;
+	return (btBvhTriangleMeshShape*)_importer->CreateBvhTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh), gcnew OptimizedBvh(bvh))->_native;
 }
 #endif
 
 btCollisionShape* Serialize::BulletWorldImporterWrapper::createConvexTriangleMeshShape(btStridingMeshInterface* trimesh)
 {
-	return _importer->CreateConvexTriangleMeshShape(gcnew StridingMeshInterface(trimesh))->_native;
+	return _importer->CreateConvexTriangleMeshShape(StridingMeshInterface::GetManaged(trimesh))->_native;
 }
 
 #ifndef DISABLE_GIMPACT
 btGImpactMeshShape* Serialize::BulletWorldImporterWrapper::createGimpactShape(btStridingMeshInterface* trimesh)
 {
-	return (btGImpactMeshShape*)_importer->CreateGImpactShape(gcnew StridingMeshInterface(trimesh))->_native;
+	return (btGImpactMeshShape*)_importer->CreateGImpactShape(StridingMeshInterface::GetManaged(trimesh))->_native;
 }
 #endif
 

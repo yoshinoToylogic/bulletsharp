@@ -44,5 +44,15 @@ namespace BulletSharp
 		{
 			int get();
 		}
+
+		property IntPtr PoolAddress
+		{
+			IntPtr get();
+		}
+
+		property int UsedCount
+		{
+			int get();
+		}
 	};
 };

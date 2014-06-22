@@ -9,9 +9,9 @@
 #include "OverlappingPairCache.h"
 #include "SimpleBroadphase.h"
 
-BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* callback)
+BroadphaseAabbCallback::BroadphaseAabbCallback(btBroadphaseAabbCallback* native)
 {
-	_native = callback;
+	_native = native;
 }
 
 BroadphaseAabbCallback::BroadphaseAabbCallback()

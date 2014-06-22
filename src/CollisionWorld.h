@@ -1,9 +1,8 @@
 #pragma once
 
-using namespace System::Drawing;
-
 namespace BulletSharp
 {
+	ref class AlignedCollisionObjectArray;
 	ref class AlignedScalarArray;
 	ref class AlignedVector3Array;
 	ref class BroadphaseInterface;
@@ -11,7 +10,6 @@ namespace BulletSharp
 	ref class CollisionConfiguration;
 	ref class CollisionObject;
 	ref class CollisionObjectWrapper;
-	ref class AlignedCollisionObjectArray;
 	ref class CollisionShape;
 	ref class ConvexShape;
 	ref class Dispatcher;
@@ -31,9 +29,7 @@ namespace BulletSharp
 		{
 		internal:
 			btCollisionWorld::LocalShapeInfo* _native;
-
-		internal:
-			LocalShapeInfo(btCollisionWorld::LocalShapeInfo* info);
+			LocalShapeInfo(btCollisionWorld::LocalShapeInfo* native);
 
 		public:
 			property int ShapePart
@@ -55,10 +51,10 @@ namespace BulletSharp
 			btCollisionWorld::LocalConvexResult* _native;
 
 		public:
-			LocalConvexResult(CollisionObject^ collisionObject, LocalShapeInfo^ localShapeInfo,
+			LocalConvexResult(CollisionObject^ hitCollisionObject, LocalShapeInfo^ localShapeInfo,
 				Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction);
 
-			property BulletSharp::CollisionObject^ CollisionObject
+			property BulletSharp::CollisionObject^ HitCollisionObject
 			{
 				BulletSharp::CollisionObject^ get();
 				void set(BulletSharp::CollisionObject^ value);
@@ -76,19 +72,21 @@ namespace BulletSharp
 				void set(Vector3 value);
 			}
 
-			property LocalShapeInfo^ LocalShapeInfo
+			property Vector3 HitPointLocal
+			{
+				Vector3 get();
+				void set(Vector3 value);
+			}
+
+			property CollisionWorld::LocalShapeInfo^ LocalShapeInfo
 			{
 				CollisionWorld::LocalShapeInfo^ get();
 				void set(CollisionWorld::LocalShapeInfo^ value);
 			}
 		};
 
-		ref class ConvexResultCallback : ITrackingDisposable
+		ref class ConvexResultCallback : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			btCollisionWorld::ConvexResultCallback* _native;
 			ConvexResultCallback(btCollisionWorld::ConvexResultCallback* callback);
@@ -137,12 +135,6 @@ namespace BulletSharp
 			ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld);
 			ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld);
 
-			property BulletSharp::CollisionObject^ CollisionObject
-			{
-				BulletSharp::CollisionObject^ get();
-				void set(BulletSharp::CollisionObject^ value);
-			}
-
 			property Vector3 ConvexFromWorld
 			{
 				Vector3 get();
@@ -153,6 +145,12 @@ namespace BulletSharp
 			{
 				Vector3 get();
 				void set(Vector3 value);
+			}
+
+			property CollisionObject^ HitCollisionObject
+			{
+				CollisionObject^ get();
+				void set(CollisionObject^ value);
 			}
 
 			property Vector3 HitNormalWorld
@@ -168,12 +166,8 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ContactResultCallback abstract : ITrackingDisposable
+		ref class ContactResultCallback abstract : IDisposable
 		{
-		public:
-			virtual event EventHandler^ OnDisposing;
-			virtual event EventHandler^ OnDisposed;
-
 		internal:
 			ContactResultCallbackWrapper* _native;
 
@@ -236,7 +230,7 @@ namespace BulletSharp
 				void set(Vector3 value);
 			}
 
-			property LocalShapeInfo^ LocalShapeInfo
+			property CollisionWorld::LocalShapeInfo^ LocalShapeInfo
 			{
 				CollisionWorld::LocalShapeInfo^ get();
 				void set(CollisionWorld::LocalShapeInfo^ value);
@@ -247,7 +241,7 @@ namespace BulletSharp
 		{
 		internal:
 			btCollisionWorld::RayResultCallback* _native;
-			RayResultCallback(btCollisionWorld::RayResultCallback* callback);
+			RayResultCallback(btCollisionWorld::RayResultCallback* native);
 
 		public:
 			~RayResultCallback();
@@ -257,12 +251,6 @@ namespace BulletSharp
 		public:
 			btScalar AddSingleResult(LocalRayResult^ rayResult, bool normalInWorldSpace);
 			bool NeedsCollision(BroadphaseProxy^ proxy0);
-
-			property BulletSharp::CollisionObject^ CollisionObject
-			{
-				BulletSharp::CollisionObject^ get();
-				void set(BulletSharp::CollisionObject^ value);
-			}
 
 			property btScalar ClosestHitFraction
 			{
@@ -280,6 +268,12 @@ namespace BulletSharp
 			{
 				CollisionFilterGroups get();
 				void set(CollisionFilterGroups value);
+			}
+
+			property BulletSharp::CollisionObject^ CollisionObject
+			{
+				BulletSharp::CollisionObject^ get();
+				void set(BulletSharp::CollisionObject^ value);
 			}
 
 			property unsigned int Flags
@@ -380,17 +374,14 @@ namespace BulletSharp
 
 	internal:
 		btCollisionWorld* _native;
+		CollisionWorld(btCollisionWorld* native);
 
 	private:
 		AlignedCollisionObjectArray^ _collisionObjectArray;
 
 	protected:
-		CollisionConfiguration^ _collisionConfiguration;
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
-
-	internal:
-		CollisionWorld(btCollisionWorld* world);
 
 	public:
 		!CollisionWorld();
@@ -398,48 +389,42 @@ namespace BulletSharp
 		~CollisionWorld();
 
 	public:
-		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache, CollisionConfiguration^ collisionConfiguration);
+		CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
+			BulletSharp::CollisionConfiguration^ collisionConfiguration);
 
-		static void ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTrans, Matrix rayToTrans,
-			CollisionObject^ collisionObject, CollisionShape^ collisionShape,
-			Matrix colObjWorldTransform, ConvexResultCallback^ resultCallback,
-			btScalar allowedPenetration);
-		static void RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans,
-			CollisionObject^ collisionObject, CollisionShape^ collisionShape,
-			Matrix colObjWorldTransform, RayResultCallback^ resultCallback);
-
-		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
+		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
+			CollisionFilterGroups collisionFilterMask);
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup);
 		void AddCollisionObject(CollisionObject^ collisionObject);
 		void ComputeOverlappingPairs();
 		void ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback);
 		void ContactTest(CollisionObject^ colObj, ContactResultCallback^ resultCallback);
-		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback, btScalar allowedCcdPenetration);
+		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback,
+			btScalar allowedCcdPenetration);
 		void ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix to, ConvexResultCallback^ resultCallback);
 #ifndef DISABLE_DEBUGDRAW
 		void DebugDrawObject(Matrix worldTransform, CollisionShape^ shape, BtColor color);
 		void DebugDrawWorld();
 #endif
+		static void ObjectQuerySingle(ConvexShape^ castShape, Matrix rayFromTrans,
+			Matrix rayToTrans, CollisionObject^ collisionObject, CollisionShape^ collisionShape,
+			Matrix colObjWorldTransform, ConvexResultCallback^ resultCallback, btScalar allowedPenetration);
 		void PerformDiscreteCollisionDetection();
 		void RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback);
 		void RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback);
+		static void RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, CollisionObject^ collisionObject,
+			CollisionShape^ collisionShape, Matrix colObjWorldTransform, RayResultCallback^ resultCallback);
 		void RemoveCollisionObject(CollisionObject^ collisionObject);
-		void UpdateAabbs();
-		void UpdateSingleAabb(CollisionObject^ colObj);
-
 #ifndef DISABLE_SERIALIZE
 		void Serialize(Serializer^ serializer);
 #endif
-
-		property bool IsDisposed
-		{
-			virtual bool get();
-		}
+		void UpdateAabbs();
+		void UpdateSingleAabb(CollisionObject^ colObj);
 
 		property BroadphaseInterface^ Broadphase
 		{
 			BroadphaseInterface^ get();
-			void set(BroadphaseInterface^ value);
+			void set(BroadphaseInterface^ pairCache);
 		}
 
 		property AlignedCollisionObjectArray^ CollisionObjectArray
@@ -466,7 +451,12 @@ namespace BulletSharp
 		property bool ForceUpdateAllAabbs
 		{
 			bool get();
-			void set(bool value);
+			void set(bool forceUpdateAllAabbs);
+		}
+
+		property bool IsDisposed
+		{
+			virtual bool get();
 		}
 
 		property int NumCollisionObjects
