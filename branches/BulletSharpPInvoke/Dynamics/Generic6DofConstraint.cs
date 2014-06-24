@@ -5,13 +5,15 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class RotationalLimitMotor
+	public class RotationalLimitMotor : IDisposable
 	{
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal RotationalLimitMotor(IntPtr native)
+		internal RotationalLimitMotor(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public RotationalLimitMotor()
@@ -155,7 +157,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btRotationalLimitMotor_delete(_native);
+                if (!_preventDelete)
+                {
+                    btRotationalLimitMotor_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -535,7 +540,8 @@ namespace BulletSharp
 
 	public class Generic6DofConstraint : TypedConstraint
 	{
-        private TranslationalLimitMotor _translationalLimitMotor;
+        private RotationalLimitMotor[] _angularLimits = new RotationalLimitMotor[3];
+        private TranslationalLimitMotor _linearLimits;
 
 		internal Generic6DofConstraint(IntPtr native)
 			: base(native)
@@ -604,7 +610,11 @@ namespace BulletSharp
 
 		public RotationalLimitMotor GetRotationalLimitMotor(int index)
 		{
-			return new RotationalLimitMotor(btGeneric6DofConstraint_getRotationalLimitMotor(_native, index));
+            if (_angularLimits[index] == null)
+            {
+                _angularLimits[index] = new RotationalLimitMotor(btGeneric6DofConstraint_getRotationalLimitMotor(_native, index), true);
+            }
+            return _angularLimits[index];
 		}
 
 		public bool IsLimited(int limitIndex)
@@ -741,11 +751,11 @@ namespace BulletSharp
 		{
             get
             {
-                if (_translationalLimitMotor == null)
+                if (_linearLimits == null)
                 {
-                    _translationalLimitMotor = new TranslationalLimitMotor(btGeneric6DofConstraint_getTranslationalLimitMotor(_native), true);
+                    _linearLimits = new TranslationalLimitMotor(btGeneric6DofConstraint_getTranslationalLimitMotor(_native), true);
                 }
-                return _translationalLimitMotor;
+                return _linearLimits;
             }
 		}
 
