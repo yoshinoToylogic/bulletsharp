@@ -4,9 +4,12 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class CollisionAlgorithmConstructionInfo
+	public class CollisionAlgorithmConstructionInfo : IDisposable
 	{
 		internal IntPtr _native;
+
+	    private Dispatcher _dispatcher;
+        private PersistentManifold _manifold;
 
 		internal CollisionAlgorithmConstructionInfo(IntPtr native)
 		{
@@ -20,21 +23,30 @@ namespace BulletSharp
 
 		public CollisionAlgorithmConstructionInfo(Dispatcher dispatcher, int temp)
 		{
-			_native = btCollisionAlgorithmConstructionInfo_new2(dispatcher._native, temp);
+		    _dispatcher = dispatcher;
+            _native = btCollisionAlgorithmConstructionInfo_new2((dispatcher != null) ? dispatcher._native : IntPtr.Zero, temp);
 		}
 
 		public Dispatcher Dispatcher1
 		{
-            get { return new Dispatcher(btCollisionAlgorithmConstructionInfo_getDispatcher1(_native)); }
-			set { btCollisionAlgorithmConstructionInfo_setDispatcher1(_native, value._native); }
+            get { return _dispatcher; }
+		    set
+		    {
+		        _dispatcher = value;
+                btCollisionAlgorithmConstructionInfo_setDispatcher1(_native, (value != null) ? value._native : IntPtr.Zero);
+		    }
 		}
-        /*
+
 		public PersistentManifold Manifold
 		{
-			get { return btCollisionAlgorithmConstructionInfo_getManifold(_native); }
-			set { btCollisionAlgorithmConstructionInfo_setManifold(_native, value._native); }
+            get { return _manifold; }
+		    set
+		    {
+		        _manifold = value;
+		        btCollisionAlgorithmConstructionInfo_setManifold(_native, (value != null) ? value._native : IntPtr.Zero);
+		    }
 		}
-        */
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -71,7 +83,7 @@ namespace BulletSharp
 		static extern void btCollisionAlgorithmConstructionInfo_delete(IntPtr obj);
 	}
 
-	public class CollisionAlgorithm
+	public class CollisionAlgorithm : IDisposable
 	{
 		internal IntPtr _native;
         bool _preventDelete;
