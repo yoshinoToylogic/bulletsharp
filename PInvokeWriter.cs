@@ -435,6 +435,10 @@ namespace BulletSharpGen
                 Write(" : ", WriteTo.CS);
                 Write(c.BaseClass.ManagedName, WriteTo.CS);
             }
+            else
+            {
+                Write(" : IDisposable", WriteTo.CS);
+            }
             WriteLine(WriteTo.CS);
             OutputTabs(level, WriteTo.CS);
             WriteLine("{", WriteTo.CS);
@@ -567,7 +571,8 @@ namespace BulletSharpGen
 
         public void Output()
         {
-            string outDirectory = NamespaceName + "_pinvoke";
+            string outDirectoryPInvoke = NamespaceName + "_pinvoke";
+            string outDirectoryC = NamespaceName + "_c";
 
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {
@@ -576,11 +581,12 @@ namespace BulletSharpGen
                     continue;
                 }
 
-                Directory.CreateDirectory(outDirectory);
+                Directory.CreateDirectory(outDirectoryPInvoke);
+                Directory.CreateDirectory(outDirectoryC);
 
                 // Header file
                 string headerFilename = header.Name + "_wrap.h";
-                var headerFile = new FileStream(outDirectory + "\\" + headerFilename, FileMode.Create, FileAccess.Write);
+                var headerFile = new FileStream(outDirectoryC + "\\" + headerFilename, FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#include \"main.h\"");
                 headerWriter.WriteLine();
@@ -590,14 +596,14 @@ namespace BulletSharpGen
                 hasHeaderWhiteSpace = true;
 
                 // C++ source file
-                var sourceFile = new FileStream(outDirectory + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
+                var sourceFile = new FileStream(outDirectoryC + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
                 sourceWriter.Write("#include \"");
                 sourceWriter.Write(headerFilename);
                 sourceWriter.WriteLine("\"");
 
                 // C# source file
-                var csFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cs", FileMode.Create, FileAccess.Write);
+                var csFile = new FileStream(outDirectoryPInvoke + "\\" + header.ManagedName + ".cs", FileMode.Create, FileAccess.Write);
                 csWriter = new StreamWriter(csFile);
                 csWriter.WriteLine("using System;");
                 csWriter.WriteLine("using System.Runtime.InteropServices;");
