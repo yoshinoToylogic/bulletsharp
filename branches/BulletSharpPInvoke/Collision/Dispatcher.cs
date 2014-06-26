@@ -5,7 +5,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class DispatcherInfo
+	public class DispatcherInfo : IDisposable
 	{
 		internal IntPtr _native;
         private bool _preventDelete;
@@ -170,7 +170,7 @@ namespace BulletSharp
 		static extern void btDispatcherInfo_delete(IntPtr obj);
 	}
 
-	public class Dispatcher
+	public class Dispatcher : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -196,32 +196,32 @@ namespace BulletSharp
 		{
 			btDispatcher_dispatchAllCollisionPairs(_native, pairCache._native, dispatchInfo._native, dispatcher._native);
 		}
-        /*
-		public CollisionAlgorithm FindAlgorithm(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, PersistentManifold sharedManifold)
-		{
-			return btDispatcher_findAlgorithm(_native, body0Wrap._native, body1Wrap._native, sharedManifold._native);
-		}
 
 		public CollisionAlgorithm FindAlgorithm(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap)
 		{
-			return btDispatcher_findAlgorithm2(_native, body0Wrap._native, body1Wrap._native);
+            return new CollisionAlgorithm(btDispatcher_findAlgorithm(_native, body0Wrap._native, body1Wrap._native));
 		}
-        */
+
+		public CollisionAlgorithm FindAlgorithm(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, PersistentManifold sharedManifold)
+		{
+            return new CollisionAlgorithm(btDispatcher_findAlgorithm2(_native, body0Wrap._native, body1Wrap._native, sharedManifold._native));
+		}
+
 		public void FreeCollisionAlgorithm(IntPtr ptr)
 		{
 			btDispatcher_freeCollisionAlgorithm(_native, ptr);
 		}
-        
+
 		public PersistentManifold GetManifoldByIndexInternal(int index)
 		{
             return new PersistentManifold(btDispatcher_getManifoldByIndexInternal(_native, index), true);
 		}
-        /*
+
 		public PersistentManifold GetNewManifold(CollisionObject b0, CollisionObject b1)
 		{
-			return btDispatcher_getNewManifold(_native, b0._native, b1._native);
+			return new PersistentManifold(btDispatcher_getNewManifold(_native, b0._native, b1._native), true);
 		}
-        */
+
 		public bool NeedsCollision(CollisionObject body0, CollisionObject body1)
 		{
 			return btDispatcher_needsCollision(_native, body0._native, body1._native);
@@ -231,7 +231,7 @@ namespace BulletSharp
 		{
 			return btDispatcher_needsResponse(_native, body0._native, body1._native);
 		}
-        
+
 		public void ReleaseManifold(PersistentManifold manifold)
 		{
 			btDispatcher_releaseManifold(_native, manifold._native);
@@ -288,9 +288,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcher_dispatchAllCollisionPairs(IntPtr obj, IntPtr pairCache, IntPtr dispatchInfo, IntPtr dispatcher);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDispatcher_findAlgorithm(IntPtr obj, IntPtr body0Wrap, IntPtr body1Wrap, IntPtr sharedManifold);
+		static extern IntPtr btDispatcher_findAlgorithm(IntPtr obj, IntPtr body0Wrap, IntPtr body1Wrap);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDispatcher_findAlgorithm2(IntPtr obj, IntPtr body0Wrap, IntPtr body1Wrap);
+		static extern IntPtr btDispatcher_findAlgorithm2(IntPtr obj, IntPtr body0Wrap, IntPtr body1Wrap, IntPtr sharedManifold);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcher_freeCollisionAlgorithm(IntPtr obj, IntPtr ptr);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

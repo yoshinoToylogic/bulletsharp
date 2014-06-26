@@ -4,6 +4,7 @@
 #define pBroadphaseAabbCallback_Process void*
 
 #define btBroadphaseAabbCallbackWrapper void
+#define btBroadphaseRayCallbackWrapper void
 #else
 typedef bool (*pBroadphaseAabbCallback_Process)(const btBroadphaseProxy* proxy);
 

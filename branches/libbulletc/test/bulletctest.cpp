@@ -6,7 +6,7 @@ using namespace std;
 
 int main(int argc, char* argv[])
 {
-	btDbvtBroadphase* broadphase = btDbvtBroadphase_new2();
+	btDbvtBroadphase* broadphase = btDbvtBroadphase_new();
 	btDefaultCollisionConfiguration* collisionConfiguration = btDefaultCollisionConfiguration_new2();
 	btCollisionDispatcher* dispatcher = btCollisionDispatcher_new(collisionConfiguration);
 	btSequentialImpulseConstraintSolver* solver = btSequentialImpulseConstraintSolver_new();

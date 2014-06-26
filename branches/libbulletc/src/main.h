@@ -76,7 +76,6 @@
 #define btOverlapCallback void
 #define btOverlapFilterCallback void
 #define btOverlappingPairCache void
-#define btOverlappingPairCallback void
 #define btPolyhedralConvexAabbCachingShape void
 #define btPolyhedralConvexShape void
 #define btPositionAndRadius void
@@ -378,6 +377,10 @@
 
 #ifndef BT_OPTIMIZED_BVH_H
 #define btOptimizedBvh void
+#endif
+
+#ifndef OVERLAPPING_PAIR_CALLBACK_H
+#define btOverlappingPairCallback void
 #endif
 
 #ifndef __BT_PARALLEL_CONSTRAINT_SOLVER_H

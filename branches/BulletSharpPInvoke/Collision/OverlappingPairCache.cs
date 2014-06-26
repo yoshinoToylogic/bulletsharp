@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class OverlapCallback
+	public class OverlapCallback : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -44,7 +44,7 @@ namespace BulletSharp
 		static extern void btOverlapCallback_delete(IntPtr obj);
 	}
 
-	public class OverlapFilterCallback
+	public class OverlapFilterCallback : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -190,14 +190,14 @@ namespace BulletSharp
 		{
 		}
 
-		public int GetCount()
-		{
-			return btHashedOverlappingPairCache_GetCount(_native);
-		}
-
 		public bool NeedsBroadphaseCollision(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
 		{
 			return btHashedOverlappingPairCache_needsBroadphaseCollision(_native, proxy0._native, proxy1._native);
+		}
+
+		public int Count
+		{
+			get { return btHashedOverlappingPairCache_GetCount(_native); }
 		}
 
 		public OverlapFilterCallback OverlapFilterCallback

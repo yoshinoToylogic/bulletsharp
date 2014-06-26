@@ -4,7 +4,7 @@
 
 extern "C"
 {
-	EXPORT btDbvtProxy* btDbvtProxy_new(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask);
+	EXPORT btDbvtProxy* btDbvtProxy_new(const btScalar* aabbMin, const btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask);
 	EXPORT btDbvtNode* btDbvtProxy_getLeaf(btDbvtProxy* obj);
 	//EXPORT * btDbvtProxy_getLinks(btDbvtProxy* obj);
 	EXPORT int btDbvtProxy_getStage(btDbvtProxy* obj);
@@ -12,8 +12,8 @@ extern "C"
 	//EXPORT void btDbvtProxy_setLinks(btDbvtProxy* obj, * value);
 	EXPORT void btDbvtProxy_setStage(btDbvtProxy* obj, int value);
 
-	EXPORT btDbvtBroadphase* btDbvtBroadphase_new(btOverlappingPairCache* paircache);
-	EXPORT btDbvtBroadphase* btDbvtBroadphase_new2();
+	EXPORT btDbvtBroadphase* btDbvtBroadphase_new();
+	EXPORT btDbvtBroadphase* btDbvtBroadphase_new2(btOverlappingPairCache* paircache);
 	EXPORT void btDbvtBroadphase_benchmark(btBroadphaseInterface* __unnamed0);
 	EXPORT void btDbvtBroadphase_collide(btDbvtBroadphase* obj, btDispatcher* dispatcher);
 	EXPORT int btDbvtBroadphase_getCid(btDbvtBroadphase* obj);
@@ -38,7 +38,7 @@ extern "C"
 	EXPORT btScalar btDbvtBroadphase_getVelocityPrediction(btDbvtBroadphase* obj);
 	EXPORT void btDbvtBroadphase_optimize(btDbvtBroadphase* obj);
 	EXPORT void btDbvtBroadphase_performDeferredRemoval(btDbvtBroadphase* obj, btDispatcher* dispatcher);
-	EXPORT void btDbvtBroadphase_setAabbForceUpdate(btDbvtBroadphase* obj, btBroadphaseProxy* absproxy, btScalar* aabbMin, btScalar* aabbMax, btDispatcher* __unnamed3);
+	EXPORT void btDbvtBroadphase_setAabbForceUpdate(btDbvtBroadphase* obj, btBroadphaseProxy* absproxy, const btScalar* aabbMin, const btScalar* aabbMax, btDispatcher* __unnamed3);
 	EXPORT void btDbvtBroadphase_setCid(btDbvtBroadphase* obj, int value);
 	EXPORT void btDbvtBroadphase_setCupdates(btDbvtBroadphase* obj, int value);
 	EXPORT void btDbvtBroadphase_setDeferedcollide(btDbvtBroadphase* obj, bool value);

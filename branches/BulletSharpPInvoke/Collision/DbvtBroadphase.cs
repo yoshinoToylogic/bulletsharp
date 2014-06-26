@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -12,8 +12,13 @@ namespace BulletSharp
 		{
 		}
 
+        public DbvtProxy(ref Vector3 aabbMin, ref Vector3 aabbMax, IntPtr userPtr, short collisionFilterGroup, short collisionFilterMask)
+            : base(btDbvtProxy_new(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask))
+        {
+        }
+
 		public DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPtr, short collisionFilterGroup, short collisionFilterMask)
-			: base(btDbvtProxy_new(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask))
+			: this(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask)
 		{
 		}
         /*
@@ -58,20 +63,20 @@ namespace BulletSharp
 		{
 		}
 
+		public DbvtBroadphase()
+			: base(btDbvtBroadphase_new())
+		{
+		}
+
 		public DbvtBroadphase(OverlappingPairCache paircache)
-			: base(btDbvtBroadphase_new(paircache._native))
+			: base(btDbvtBroadphase_new2(paircache._native))
 		{
             _pairCache = paircache;
 		}
 
-		public DbvtBroadphase()
-			: base(btDbvtBroadphase_new2())
+		public static void Benchmark(BroadphaseInterface broadphase)
 		{
-		}
-
-		public void Benchmark(BroadphaseInterface __unnamed0)
-		{
-			btDbvtBroadphase_benchmark(__unnamed0._native);
+            btDbvtBroadphase_benchmark(broadphase._native);
 		}
 
 		public void Collide(Dispatcher dispatcher)
@@ -99,67 +104,67 @@ namespace BulletSharp
 			btDbvtBroadphase_setAabbForceUpdate(_native, absproxy._native, ref aabbMin, ref aabbMax, __unnamed3._native);
 		}
 
-		public int Cid
+        public int CId
 		{
 			get { return btDbvtBroadphase_getCid(_native); }
 			set { btDbvtBroadphase_setCid(_native, value); }
 		}
 
-		public int Cupdates
+        public int CUpdates
 		{
 			get { return btDbvtBroadphase_getCupdates(_native); }
 			set { btDbvtBroadphase_setCupdates(_native, value); }
 		}
 
-		public bool Deferedcollide
+        public bool DeferredCollide
 		{
 			get { return btDbvtBroadphase_getDeferedcollide(_native); }
 			set { btDbvtBroadphase_setDeferedcollide(_native, value); }
 		}
 
-		public int Dupdates
+        public int DUpdates
 		{
 			get { return btDbvtBroadphase_getDupdates(_native); }
 			set { btDbvtBroadphase_setDupdates(_native, value); }
 		}
 
-		public int Fixedleft
+        public int FixedLeft
 		{
 			get { return btDbvtBroadphase_getFixedleft(_native); }
 			set { btDbvtBroadphase_setFixedleft(_native, value); }
 		}
 
-		public int Fupdates
+        public int FUpdates
 		{
 			get { return btDbvtBroadphase_getFupdates(_native); }
 			set { btDbvtBroadphase_setFupdates(_native, value); }
 		}
 
-		public int Gid
+        public int GId
 		{
 			get { return btDbvtBroadphase_getGid(_native); }
 			set { btDbvtBroadphase_setGid(_native, value); }
 		}
 
-		public bool Needcleanup
+        public bool NeedCleanup
 		{
 			get { return btDbvtBroadphase_getNeedcleanup(_native); }
 			set { btDbvtBroadphase_setNeedcleanup(_native, value); }
 		}
 
-		public int Newpairs
+        public int NewPairs
 		{
 			get { return btDbvtBroadphase_getNewpairs(_native); }
 			set { btDbvtBroadphase_setNewpairs(_native, value); }
 		}
 
-		public OverlappingPairCache Paircache
+        public OverlappingPairCache PairCache
 		{
-            get { return new OverlappingPairCache(btDbvtBroadphase_getPaircache(_native), true); }
+            get { return new OverlappingPairCache(btDbvtBroadphase_getPaircache(_native)); }
 			set { btDbvtBroadphase_setPaircache(_native, value._native); }
 		}
 
-		public int Pid
+        public int PId
 		{
 			get { return btDbvtBroadphase_getPid(_native); }
 			set { btDbvtBroadphase_setPid(_native, value); }
@@ -171,7 +176,7 @@ namespace BulletSharp
 			set { btDbvtBroadphase_setPrediction(_native, value); }
 		}
 
-		public bool Releasepaircache
+        public bool ReleasePairCache
 		{
 			get { return btDbvtBroadphase_getReleasepaircache(_native); }
 			set { btDbvtBroadphase_setReleasepaircache(_native, value); }
@@ -220,9 +225,9 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDbvtBroadphase_new(IntPtr paircache);
+		static extern IntPtr btDbvtBroadphase_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDbvtBroadphase_new2();
+		static extern IntPtr btDbvtBroadphase_new2(IntPtr paircache);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtBroadphase_benchmark(IntPtr __unnamed0);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

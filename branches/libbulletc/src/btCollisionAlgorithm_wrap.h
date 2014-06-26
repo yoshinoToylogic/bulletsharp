@@ -10,8 +10,8 @@ extern "C"
 	EXPORT void btCollisionAlgorithmConstructionInfo_setManifold(btCollisionAlgorithmConstructionInfo* obj, btPersistentManifold* value);
 	EXPORT void btCollisionAlgorithmConstructionInfo_delete(btCollisionAlgorithmConstructionInfo* obj);
 
-	EXPORT btScalar btCollisionAlgorithm_calculateTimeOfImpact(btCollisionAlgorithm* obj, btCollisionObject* body0, btCollisionObject* body1, btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut);
+	EXPORT btScalar btCollisionAlgorithm_calculateTimeOfImpact(btCollisionAlgorithm* obj, btCollisionObject* body0, btCollisionObject* body1, const btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut);
 	EXPORT void btCollisionAlgorithm_getAllContactManifolds(btCollisionAlgorithm* obj, btManifoldArray* manifoldArray);
-	EXPORT void btCollisionAlgorithm_processCollision(btCollisionAlgorithm* obj, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut);
+	EXPORT void btCollisionAlgorithm_processCollision(btCollisionAlgorithm* obj, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, const btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut);
 	EXPORT void btCollisionAlgorithm_delete(btCollisionAlgorithm* obj);
 }
