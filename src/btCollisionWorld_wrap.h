@@ -7,6 +7,7 @@
 #define pRayResultCallback_AddSingleResult void*
 
 #define btCollisionWorld_ContactResultCallbackWrapper void
+#define btCollisionWorld_ConvexResultCallbackWrapper void
 #define btCollisionWorld_RayResultCallbackWrapper void
 #else
 typedef bool (*pNeedsCollision)(btBroadphaseProxy* proxy0);

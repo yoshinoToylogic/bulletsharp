@@ -1,4 +1,5 @@
-#include "conversion.h"
+#include <BulletCollision/BroadphaseCollision/btDispatcher.h>
+#include <BulletCollision/BroadphaseCollision/btOverlappingPairCache.h>
 #include "btOverlappingPairCallback_wrap.h"
 
 btBroadphasePair* btOverlappingPairCallback_addOverlappingPair(btOverlappingPairCallback* obj, btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1)

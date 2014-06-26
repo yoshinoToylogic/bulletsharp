@@ -1,7 +1,7 @@
 #include "conversion.h"
 #include "btDbvtBroadphase_wrap.h"
 
-btDbvtProxy* btDbvtProxy_new(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask)
+btDbvtProxy* btDbvtProxy_new(const btScalar* aabbMin, const btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
@@ -38,14 +38,15 @@ void btDbvtProxy_setStage(btDbvtProxy* obj, int value)
 	obj->stage = value;
 }
 
-btDbvtBroadphase* btDbvtBroadphase_new(btOverlappingPairCache* paircache)
-{
-	return new btDbvtBroadphase(paircache);
-}
 
-btDbvtBroadphase* btDbvtBroadphase_new2()
+btDbvtBroadphase* btDbvtBroadphase_new()
 {
 	return new btDbvtBroadphase();
+}
+
+btDbvtBroadphase* btDbvtBroadphase_new2(btOverlappingPairCache* paircache)
+{
+	return new btDbvtBroadphase(paircache);
 }
 
 void btDbvtBroadphase_benchmark(btBroadphaseInterface* __unnamed0)
@@ -168,7 +169,7 @@ void btDbvtBroadphase_performDeferredRemoval(btDbvtBroadphase* obj, btDispatcher
 	obj->performDeferredRemoval(dispatcher);
 }
 
-void btDbvtBroadphase_setAabbForceUpdate(btDbvtBroadphase* obj, btBroadphaseProxy* absproxy, btScalar* aabbMin, btScalar* aabbMax, btDispatcher* __unnamed3)
+void btDbvtBroadphase_setAabbForceUpdate(btDbvtBroadphase* obj, btBroadphaseProxy* absproxy, const btScalar* aabbMin, const btScalar* aabbMax, btDispatcher* __unnamed3)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);

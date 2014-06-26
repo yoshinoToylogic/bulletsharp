@@ -1,14 +1,20 @@
 #include "conversion.h"
 #include "btOverlappingPairCache_wrap.h"
 
+bool btOverlapCallback_processOverlap(btOverlapCallback* obj, btBroadphasePair* pair)
+{
+	return obj->processOverlap(*pair);
+}
+
 void btOverlapCallback_delete(btOverlapCallback* obj)
 {
 	delete obj;
 }
 
-bool btOverlapCallback_processOverlap(btOverlapCallback* obj, btBroadphasePair* pair)
+
+bool btOverlapFilterCallback_needBroadphaseCollision(btOverlapFilterCallback* obj, btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1)
 {
-	return obj->processOverlap(*pair);
+	return obj->needBroadphaseCollision(proxy0, proxy1);
 }
 
 void btOverlapFilterCallback_delete(btOverlapFilterCallback* obj)
@@ -16,10 +22,6 @@ void btOverlapFilterCallback_delete(btOverlapFilterCallback* obj)
 	delete obj;
 }
 
-bool btOverlapFilterCallback_needBroadphaseCollision(btOverlapFilterCallback* obj, btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1)
-{
-	return obj->needBroadphaseCollision(proxy0, proxy1);
-}
 
 void btOverlappingPairCache_cleanOverlappingPair(btOverlappingPairCache* obj, btBroadphasePair* pair, btDispatcher* dispatcher)
 {
@@ -56,9 +58,9 @@ bool btOverlappingPairCache_hasDeferredRemoval(btOverlappingPairCache* obj)
 	return obj->hasDeferredRemoval();
 }
 
-void btOverlappingPairCache_processAllOverlappingPairs(btOverlappingPairCache* obj, btOverlapCallback* __unnamed, btDispatcher* dispatcher)
+void btOverlappingPairCache_processAllOverlappingPairs(btOverlappingPairCache* obj, btOverlapCallback* __unnamed0, btDispatcher* dispatcher)
 {
-	obj->processAllOverlappingPairs(__unnamed, dispatcher);
+	obj->processAllOverlappingPairs(__unnamed0, dispatcher);
 }
 
 void btOverlappingPairCache_setInternalGhostPairCallback(btOverlappingPairCache* obj, btOverlappingPairCallback* ghostPairCallback)
@@ -75,6 +77,7 @@ void btOverlappingPairCache_sortOverlappingPairs(btOverlappingPairCache* obj, bt
 {
 	obj->sortOverlappingPairs(dispatcher);
 }
+
 
 btHashedOverlappingPairCache* btHashedOverlappingPairCache_new()
 {
@@ -96,6 +99,7 @@ bool btHashedOverlappingPairCache_needsBroadphaseCollision(btHashedOverlappingPa
 	return obj->needsBroadphaseCollision(proxy0, proxy1);
 }
 
+
 btSortedOverlappingPairCache* btSortedOverlappingPairCache_new()
 {
 	return new btSortedOverlappingPairCache();
@@ -110,6 +114,7 @@ bool btSortedOverlappingPairCache_needsBroadphaseCollision(btSortedOverlappingPa
 {
 	return obj->needsBroadphaseCollision(proxy0, proxy1);
 }
+
 
 btNullPairCache* btNullPairCache_new()
 {

@@ -36,7 +36,7 @@ void btCollisionAlgorithmConstructionInfo_delete(btCollisionAlgorithmConstructio
 	delete obj;
 }
 
-btScalar btCollisionAlgorithm_calculateTimeOfImpact(btCollisionAlgorithm* obj, btCollisionObject* body0, btCollisionObject* body1, btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
+btScalar btCollisionAlgorithm_calculateTimeOfImpact(btCollisionAlgorithm* obj, btCollisionObject* body0, btCollisionObject* body1, const btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
 {
 	return obj->calculateTimeOfImpact(body0, body1, *dispatchInfo, resultOut);
 }
@@ -46,7 +46,7 @@ void btCollisionAlgorithm_getAllContactManifolds(btCollisionAlgorithm* obj, btMa
 	obj->getAllContactManifolds(*manifoldArray);
 }
 
-void btCollisionAlgorithm_processCollision(btCollisionAlgorithm* obj, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
+void btCollisionAlgorithm_processCollision(btCollisionAlgorithm* obj, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, const btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
 {
 	obj->processCollision(body0Wrap, body1Wrap, *dispatchInfo, resultOut);
 }

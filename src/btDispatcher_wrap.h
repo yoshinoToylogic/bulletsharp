@@ -31,17 +31,17 @@ extern "C"
 
 	EXPORT void* btDispatcher_allocateCollisionAlgorithm(btDispatcher* obj, int size);
 	EXPORT void btDispatcher_clearManifold(btDispatcher* obj, btPersistentManifold* manifold);
-	EXPORT void btDispatcher_dispatchAllCollisionPairs(btDispatcher* obj, btOverlappingPairCache* pairCache, btDispatcherInfo* dispatchInfo, btDispatcher* dispatcher);
-	EXPORT btCollisionAlgorithm* btDispatcher_findAlgorithm(btDispatcher* obj, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, btPersistentManifold* sharedManifold);
-	EXPORT btCollisionAlgorithm* btDispatcher_findAlgorithm2(btDispatcher* obj, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap);
+	EXPORT void btDispatcher_dispatchAllCollisionPairs(btDispatcher* obj, btOverlappingPairCache* pairCache, const btDispatcherInfo* dispatchInfo, btDispatcher* dispatcher);
+	EXPORT btCollisionAlgorithm* btDispatcher_findAlgorithm(btDispatcher* obj, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap);
+	EXPORT btCollisionAlgorithm* btDispatcher_findAlgorithm2(btDispatcher* obj, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, btPersistentManifold* sharedManifold);
 	EXPORT void btDispatcher_freeCollisionAlgorithm(btDispatcher* obj, void* ptr);
 	//EXPORT * btDispatcher_getInternalManifoldPointer(btDispatcher* obj);
 	EXPORT btPoolAllocator* btDispatcher_getInternalManifoldPool(btDispatcher* obj);
 	EXPORT btPersistentManifold* btDispatcher_getManifoldByIndexInternal(btDispatcher* obj, int index);
-	EXPORT btPersistentManifold* btDispatcher_getNewManifold(btDispatcher* obj, btCollisionObject* b0, btCollisionObject* b1);
+	EXPORT btPersistentManifold* btDispatcher_getNewManifold(btDispatcher* obj, const btCollisionObject* b0, const btCollisionObject* b1);
 	EXPORT int btDispatcher_getNumManifolds(btDispatcher* obj);
-	EXPORT bool btDispatcher_needsCollision(btDispatcher* obj, btCollisionObject* body0, btCollisionObject* body1);
-	EXPORT bool btDispatcher_needsResponse(btDispatcher* obj, btCollisionObject* body0, btCollisionObject* body1);
+	EXPORT bool btDispatcher_needsCollision(btDispatcher* obj, const btCollisionObject* body0, const btCollisionObject* body1);
+	EXPORT bool btDispatcher_needsResponse(btDispatcher* obj, const btCollisionObject* body0, const btCollisionObject* body1);
 	EXPORT void btDispatcher_releaseManifold(btDispatcher* obj, btPersistentManifold* manifold);
 	EXPORT void btDispatcher_delete(btDispatcher* obj);
 }
