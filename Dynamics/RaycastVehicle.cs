@@ -730,7 +730,6 @@ namespace BulletSharp
             }
             else
             {
-                int ibreak = 0;
                 ClosestRayResultCallback rayCallback2 = new ClosestRayResultCallback(ref from, ref to);
 
                 m_dynamicsWorld.RayTest(ref from, ref to, rayCallback2);

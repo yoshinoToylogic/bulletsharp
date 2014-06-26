@@ -1,24 +1,39 @@
-﻿using BulletSharp.Math;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class BroadphaseAabbCallback
+	public abstract class BroadphaseAabbCallback : IDisposable
 	{
 		internal IntPtr _native;
 
-		internal BroadphaseAabbCallback(IntPtr native)
+        [UnmanagedFunctionPointer(Native.Conv)]
+        internal delegate bool ProcessUnmanagedDelegate(IntPtr proxy);
+
+        internal ProcessUnmanagedDelegate _process;
+
+        internal BroadphaseAabbCallback(IntPtr native)
+        {
+            _native = native;
+            _process = ProcessUnmanaged;
+        }
+
+	    protected BroadphaseAabbCallback()
 		{
-			_native = native;
+            _process = ProcessUnmanaged;
+		    _native = btBroadphaseAabbCallbackWrapper_new(
+		        Marshal.GetFunctionPointerForDelegate(_process));
 		}
 
-		public bool Process(BroadphaseProxy proxy)
-		{
-			return btBroadphaseAabbCallback_process(_native, proxy._native);
-		}
+	    private bool ProcessUnmanaged(IntPtr proxy)
+	    {
+	        return Process(BroadphaseProxy.GetManaged(proxy));
+	    }
+
+		public abstract bool Process(BroadphaseProxy proxy);
 
 		public void Dispose()
 		{
@@ -41,24 +56,23 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseAabbCallback_process(IntPtr obj, IntPtr proxy);
+        static extern IntPtr btBroadphaseAabbCallbackWrapper_new(IntPtr process);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseAabbCallback_delete(IntPtr obj);
 	}
 
-	public class BroadphaseRayCallback : BroadphaseAabbCallback
+	public abstract class BroadphaseRayCallback : BroadphaseAabbCallback
 	{
-		internal BroadphaseRayCallback(IntPtr native)
-			: base(native)
-		{
-		}
+	    private UIntArray _signs;
 
-		public BroadphaseRayCallback()
-			: base(btBroadphaseRayCallback_new())
-		{
-		}
+	    protected BroadphaseRayCallback()
+            : base(IntPtr.Zero)
+	    {
+            _native = btBroadphaseRayCallbackWrapper_new(
+                Marshal.GetFunctionPointerForDelegate(_process));
+	    }
 
-		public float Lambda_max
+		public float LambdaMax
 		{
 			get { return btBroadphaseRayCallback_getLambda_max(_native); }
 			set { btBroadphaseRayCallback_setLambda_max(_native, value); }
@@ -74,15 +88,21 @@ namespace BulletSharp
             }
 			set { btBroadphaseRayCallback_setRayDirectionInverse(_native, ref value); }
 		}
-        /*
-		public uint Signs
+
+		public UIntArray Signs
 		{
-			get { return btBroadphaseRayCallback_getSigns(_native); }
-			set { btBroadphaseRayCallback_setSigns(_native, value._native); }
+            get
+            {
+                if (_signs == null)
+                {
+                    _signs = new UIntArray(btBroadphaseRayCallback_getSigns(_native), 3);
+                }
+                return _signs;
+            }
 		}
-        */
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBroadphaseRayCallback_new();
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btBroadphaseRayCallbackWrapper_new(IntPtr process);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btBroadphaseRayCallback_getLambda_max(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -93,11 +113,9 @@ namespace BulletSharp
 		static extern void btBroadphaseRayCallback_setLambda_max(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseRayCallback_setRayDirectionInverse(IntPtr obj, [In] ref Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBroadphaseRayCallback_setSigns(IntPtr obj, IntPtr value);
 	}
 
-	public class BroadphaseInterface
+	public class BroadphaseInterface : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -165,24 +183,24 @@ namespace BulletSharp
 			btBroadphaseInterface_printStats(_native);
 		}
 
+        public void RayTest(ref Vector3 rayFrom, ref Vector3 rayTo, BroadphaseRayCallback rayCallback)
+        {
+            btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native);
+        }
+
+        public void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback rayCallback)
+        {
+            btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native);
+        }
+
         public void RayTest(ref Vector3 rayFrom, ref Vector3 rayTo, BroadphaseRayCallback rayCallback, ref Vector3 aabbMin, ref Vector3 aabbMax)
         {
-            btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native, ref aabbMin, ref aabbMax);
+            btBroadphaseInterface_rayTest3(_native, ref rayFrom, ref rayTo, rayCallback._native, ref aabbMin, ref aabbMax);
         }
 
 		public void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback rayCallback, Vector3 aabbMin, Vector3 aabbMax)
 		{
-			btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native, ref aabbMin, ref aabbMax);
-		}
-
-        public void RayTest(ref Vector3 rayFrom, ref Vector3 rayTo, BroadphaseRayCallback rayCallback)
-        {
-            btBroadphaseInterface_rayTest3(_native, ref rayFrom, ref rayTo, rayCallback._native);
-        }
-
-		public void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback rayCallback)
-		{
-			btBroadphaseInterface_rayTest3(_native, ref rayFrom, ref rayTo, rayCallback._native);
+			btBroadphaseInterface_rayTest3(_native, ref rayFrom, ref rayTo, rayCallback._native, ref aabbMin, ref aabbMax);
 		}
 
 		public void ResetPool(Dispatcher dispatcher)
@@ -258,11 +276,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseInterface_printStats(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBroadphaseInterface_rayTest(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr rayCallback, [In] ref Vector3 aabbMin, [In] ref Vector3 aabbMax);
+		static extern void btBroadphaseInterface_rayTest(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr rayCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBroadphaseInterface_rayTest2(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr rayCallback, [In] ref Vector3 aabbMin);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBroadphaseInterface_rayTest3(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr rayCallback);
+		static extern void btBroadphaseInterface_rayTest3(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr rayCallback, [In] ref Vector3 aabbMin, [In] ref Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseInterface_resetPool(IntPtr obj, IntPtr dispatcher);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
