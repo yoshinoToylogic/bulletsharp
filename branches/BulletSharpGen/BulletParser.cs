@@ -9,6 +9,9 @@ namespace BulletSharpGen
         Dictionary<string, ClassDefinition> classDefinitions = new Dictionary<string, ClassDefinition>();
         public Dictionary<string, HeaderDefinition> HeaderDefinitions = new Dictionary<string, HeaderDefinition>();
 
+        public Dictionary<string, string> HeaderNameMapping = new Dictionary<string, string>();
+        public Dictionary<string, string> ClassNameMapping = new Dictionary<string, string>();
+
         public BulletParser(Dictionary<string, ClassDefinition> classDefinitions, Dictionary<string, HeaderDefinition> headerDefinitions)
         {
             this.classDefinitions = classDefinitions;
@@ -220,61 +223,58 @@ namespace BulletSharpGen
                 }
             }
 
-            // Get managed header/class/method names
+            // Get managed header names
+            HeaderNameMapping.Add("btSparseSDF", "SparseSdf");
+            HeaderNameMapping.Add("btCompoundFromGimpact", "CompoundFromGImpact");
+            HeaderNameMapping.Add("btNNCGConstraintSolver", "NncgConstraintSolver");
+            HeaderNameMapping.Add("btBox2dBox2dCollisionAlgorithm", "Box2DBox2DCollisionAlgorithm");
+            HeaderNameMapping.Add("btBox2dShape", "Box2DShape");
+            HeaderNameMapping.Add("btConvex2dConvex2dAlgorithm", "Convex2DConvex2DAlgorithm");
+            HeaderNameMapping.Add("btConvex2dShape", "Convex2DShape");
+            HeaderNameMapping.Add("hacdHACD", "Hacd");
+
             foreach (HeaderDefinition header in HeaderDefinitions.Values)
             {
                 string name = header.Name;
-                if (name.StartsWith("bt"))
+                string mapping;
+                if (HeaderNameMapping.TryGetValue(name, out mapping))
                 {
-                    if (name.Equals("btSparseSDF"))
-                    {
-                        header.ManagedName = "SparseSdf";
-                        continue;
-                    }
-                    else if (name.Equals("btCompoundFromGimpact"))
-                    {
-                        header.ManagedName = "CompoundFromGImpact";
-                        continue;
-                    }
-                    else if (name.Equals("btNNCGConstraintSolver"))
-                    {
-                        header.ManagedName = "NncgConstraintSolver";
-                        continue;
-                    }
+                    header.ManagedName = mapping;
+                }
+                else if (name.StartsWith("bt"))
+                {
                     header.ManagedName = name.Substring(2);
                 }
                 else if (name.StartsWith("hacd"))
                 {
-                    if (name.Equals("hacdHACD"))
-                    {
-                        header.ManagedName = "Hacd";
-                    }
-                    else
-                    {
-                        header.ManagedName = "Hacd" + name.Substring(4);
-                    }
+                    header.ManagedName = "Hacd" + name.Substring(4);
                 }
             }
 
-            // Apply some transformations
+            // Get managed class names
+            ClassNameMapping.Add("btAABB", "Aabb");
+            ClassNameMapping.Add("btBox2dBox2dCollisionAlgorithm", "Box2DBox2DCollisionAlgorithm");
+            ClassNameMapping.Add("btBox2dShape", "Box2DShape");
+            ClassNameMapping.Add("btConvex2dConvex2dAlgorithm", "Convex2DConvex2DAlgorithm");
+            ClassNameMapping.Add("btConvex2dShape", "Convex2DShape");
+            ClassNameMapping.Add("btNNCGConstraintSolver", "NncgConstraintSolver");
+
             foreach (ClassDefinition c in classDefinitions.Values)
             {
                 string name = c.Name;
-                if (name.StartsWith("bt"))
+                string mapping;
+                if (ClassNameMapping.TryGetValue(name, out mapping))
                 {
-                    if (name.Equals("btNNCGConstraintSolver"))
-                    {
-                        name = "NncgConstraintSolver";
-                    }
-                    else if (name.Equals("btScalar"))
-                    {
-                    }
-                    else
-                    {
-                        name = name.Substring(2);
-                    }
+                    c.ManagedName = mapping;
                 }
-                c.ManagedName = name;
+                else if (name.StartsWith("bt") && !name.Equals("btScalar"))
+                {
+                    c.ManagedName = name.Substring(2);
+                }
+                else
+                {
+                    c.ManagedName = name;
+                }
             }
 
             // Sort methods and properties alphabetically

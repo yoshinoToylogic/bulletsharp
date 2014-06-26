@@ -1,24 +1,24 @@
 #include "main.h"
 
 #ifndef _BT_ACTION_INTERFACE_H
-#define pDebugDraw void*
-#define pUpdateAction void*
+#define pActionInterface_DebugDraw void*
+#define pActionInterface_UpdateAction void*
 
 #define btActionInterfaceWrapper void
 #else
-typedef void (*pDebugDraw)(btIDebugDraw* debugDrawer);
-typedef void (*pUpdateAction)(btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
+typedef void (*pActionInterface_DebugDraw)(btIDebugDraw* debugDrawer);
+typedef void (*pActionInterface_UpdateAction)(btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
 
 class btActionInterfaceWrapper : public btActionInterface
 {
 private:
-	pDebugDraw _debugDrawCallback;
-	pUpdateAction _updateActionCallback;
+	pActionInterface_DebugDraw _debugDrawCallback;
+	pActionInterface_UpdateAction _updateActionCallback;
 
 public:
 	void* _actionInterfaceGCHandle;
 
-	btActionInterfaceWrapper(void* actionInterfaceGCHandle, pDebugDraw debugDrawCallback, pUpdateAction updateActionCallback);
+	btActionInterfaceWrapper(void* actionInterfaceGCHandle, pActionInterface_DebugDraw debugDrawCallback, pActionInterface_UpdateAction updateActionCallback);
 
 	virtual void debugDraw(btIDebugDraw* debugDrawer);
 	virtual void updateAction(btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
@@ -27,9 +27,10 @@ public:
 
 extern "C"
 {
-	EXPORT btActionInterfaceWrapper* btActionInterfaceWrapper_new(void* actionInterfaceGCHandle, pDebugDraw debugDrawCallback, pUpdateAction updateActionCallback);
-	EXPORT void btActionInterfaceWrapper_debugDraw(btActionInterface* obj, btIDebugDraw* debugDrawer);
-	EXPORT void btActionInterfaceWrapper_updateAction(btActionInterface* obj, btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
+	EXPORT btActionInterfaceWrapper* btActionInterfaceWrapper_new(void* actionInterfaceGCHandle, pActionInterface_DebugDraw debugDrawCallback, pActionInterface_UpdateAction updateActionCallback);
 	EXPORT void* btActionInterfaceWrapper_getGCHandle(btActionInterfaceWrapper* obj);
+
+	EXPORT void btActionInterface_debugDraw(btActionInterface* obj, btIDebugDraw* debugDrawer);
+	EXPORT void btActionInterface_updateAction(btActionInterface* obj, btCollisionWorld* collisionWorld, btScalar deltaTimeStep);
 	EXPORT void btActionInterface_delete(btActionInterface* obj);
 }

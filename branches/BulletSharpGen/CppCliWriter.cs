@@ -15,7 +15,8 @@ namespace BulletSharpGen
     {
         Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
         StreamWriter headerWriter, sourceWriter;
-        bool hasWhiteSpace;
+        bool hasHeaderWhiteSpace;
+        bool hasSourceWhiteSpace;
         string namespaceName;
 
         int _headerLineLength;
@@ -113,7 +114,7 @@ namespace BulletSharpGen
             {
                 if (withWhiteSpace)
                 {
-                    EnsureWhiteSpace();
+                    EnsureHeaderWhiteSpace();
                 }
 
                 WriteTabs(level);
@@ -133,18 +134,34 @@ namespace BulletSharpGen
             }
         }
 
-        void EnsureWhiteSpace()
+        void EnsureHeaderWhiteSpace()
         {
-            if (!hasWhiteSpace)
+            if (!hasHeaderWhiteSpace)
             {
                 HeaderWriteLine();
-                hasWhiteSpace = true;
+                hasHeaderWhiteSpace = true;
+            }
+        }
+
+        void EnsureSourceWhiteSpace()
+        {
+            if (!hasSourceWhiteSpace)
+            {
+                SourceWriteLine();
+                hasSourceWhiteSpace = true;
             }
         }
 
         void OutputMethodMarshal(MethodDefinition method, int numParameters)
         {
-            SourceWrite(method.Name);
+            if (method.IsConstructor)
+            {
+                SourceWrite(method.Parent.FullName);
+            }
+            else
+            {
+                SourceWrite(method.Name);
+            }
             SourceWrite('(');
             for (int i = 0; i < numParameters; i++)
             {
@@ -178,7 +195,14 @@ namespace BulletSharpGen
                         }
                     }
                     SourceWrite(param.Name);
-                    SourceWrite("->_native");
+                    if (param.Type.IsPointer && param.Type.ManagedName.Equals("void"))
+                    {
+                        SourceWrite(".ToPointer()");
+                    }
+                    else
+                    {
+                        SourceWrite("->_native");
+                    }
                 }
 
                 // Any more parameters?
@@ -200,6 +224,14 @@ namespace BulletSharpGen
 
         void OutputMethod(MethodDefinition method, int level, int numOptionalParams = 0)
         {
+            // No whitespace between get/set methods
+            if (!(method.Property != null &&
+                method.Equals(method.Property.Setter)))
+            {
+                EnsureSourceWhiteSpace();
+                hasHeaderWhiteSpace = false;
+            }
+
             WriteTabs(level + 1);
 
             // "static"
@@ -424,13 +456,7 @@ namespace BulletSharpGen
                 }
             }
             SourceWriteLine('}');
-
-            // No whitespace between get/set methods
-            if (!(method.Property != null && method.Property.Getter.Equals(method) && method.Property.Setter != null))
-            {
-                SourceWriteLine();
-                hasWhiteSpace = false;
-            }
+            hasSourceWhiteSpace = false;
 
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
@@ -446,7 +472,7 @@ namespace BulletSharpGen
                 return;
             }
 
-            EnsureWhiteSpace();
+            EnsureHeaderWhiteSpace();
 
             // Write access modifier
             WriteTabs(level);
@@ -470,7 +496,7 @@ namespace BulletSharpGen
             HeaderWriteLine();
             WriteTabs(level);
             headerWriter.WriteLine("{");
-            hasWhiteSpace = true;
+            hasHeaderWhiteSpace = true;
 
             // Default access for ref class
             var currentAccess = RefAccessSpecifier.Private;
@@ -499,7 +525,7 @@ namespace BulletSharpGen
                 EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
                 WriteTabs(level + 1);
-                HeaderWrite(c.Name);
+                HeaderWrite(c.FullName);
                 headerWriter.WriteLine("* _native;");
             }
 
@@ -513,10 +539,10 @@ namespace BulletSharpGen
             SourceWrite("::");
             Write(c.ManagedName);
             Write('(');
-            Write(c.Name);
+            Write(c.FullName);
             Write("* native)");
             headerWriter.WriteLine(';');
-            hasWhiteSpace = false;
+            hasHeaderWhiteSpace = false;
             SourceWriteLine();
             if (c.BaseClass != null)
             {
@@ -532,7 +558,6 @@ namespace BulletSharpGen
                 SourceWriteLine("_native = native;");
             }
             SourceWriteLine('}');
-            SourceWriteLine();
 
             // TODO: write destructor & finalizer
 
@@ -563,7 +588,7 @@ namespace BulletSharpGen
             // Write methods
             if (c.Methods.Count - constructorCount != 0)
             {
-                EnsureWhiteSpace();
+                EnsureHeaderWhiteSpace();
 
                 foreach (MethodDefinition method in c.Methods)
                 {
@@ -577,7 +602,7 @@ namespace BulletSharpGen
             // Write properties (includes unmanaged fields and getters/setters)
             foreach (PropertyDefinition prop in c.Properties)
             {
-                EnsureWhiteSpace();
+                EnsureHeaderWhiteSpace();
 
                 string typeRefName = BulletParser.GetTypeRefName(prop.Type);
 
@@ -607,12 +632,12 @@ namespace BulletSharpGen
                 WriteTabs(level + 1);
                 headerWriter.WriteLine("}");
 
-                hasWhiteSpace = false;
+                hasHeaderWhiteSpace = false;
             }
 
             WriteTabs(level);
             headerWriter.WriteLine("};");
-            hasWhiteSpace = false;
+            hasHeaderWhiteSpace = false;
         }
 
         public void Output()
@@ -653,7 +678,7 @@ namespace BulletSharpGen
                 HeaderWrite("namespace ");
                 headerWriter.WriteLine(namespaceName);
                 headerWriter.WriteLine("{");
-                hasWhiteSpace = true;
+                hasHeaderWhiteSpace = true;
 
                 // Find forward references
                 var forwardRefs = new List<ClassDefinition>();
@@ -661,6 +686,9 @@ namespace BulletSharpGen
                 {
                     FindForwardReferences(forwardRefs, c);
                 }
+
+                // Remove redundant forward references (header file already included)
+                forwardRefs.RemoveAll(fr => header.Includes.Contains(fr.Header));
                 forwardRefs.Sort((r1, r2) => r1.ManagedName.CompareTo(r2.ManagedName));
 
                 // Write forward references
@@ -675,7 +703,7 @@ namespace BulletSharpGen
                     {
                         forwardRefHeaders.Add(c.Header);
                     }
-                    hasWhiteSpace = false;
+                    hasHeaderWhiteSpace = false;
                 }
                 forwardRefHeaders.Add(header);
                 forwardRefHeaders.Sort((r1, r2) => r1.ManagedName.CompareTo(r2.ManagedName));
@@ -708,7 +736,10 @@ namespace BulletSharpGen
             Console.WriteLine("Write complete");
         }
 
-        static void AddForwardReference(List<ClassDefinition> forwardRefs, TypeRefDefinition type, HeaderDefinition header)
+        // These do no need forward references
+        public List<string> PrecompiledHeaderReferences = new List<string>(new[] { "Vector3", "Quaternion", "Transform" });
+
+        void AddForwardReference(List<ClassDefinition> forwardRefs, TypeRefDefinition type, HeaderDefinition header)
         {
             if (type.IsBasic)
             {
@@ -721,20 +752,23 @@ namespace BulletSharpGen
                 return;
             }
 
-            if (type.Target != null)
+            if (type.Target == null)
             {
-                if (!forwardRefs.Contains(type.Target))
-                {
-                    if (type.Target.Header != header)
-                    {
-                        // Forward ref to class in another header
-                        forwardRefs.Add(type.Target);
-                    }
-                }
+                return;
+            }
+            if (forwardRefs.Contains(type.Target) || PrecompiledHeaderReferences.Contains(type.Target.ManagedName))
+            {
+                return;
+            }
+
+            // Forward ref to class in another header
+            if (type.Target.Header != header)
+            {
+                forwardRefs.Add(type.Target);
             }
         }
 
-        static void FindForwardReferences(List<ClassDefinition> forwardRefs, ClassDefinition c)
+        void FindForwardReferences(List<ClassDefinition> forwardRefs, ClassDefinition c)
         {
             foreach (PropertyDefinition prop in c.Properties)
             {

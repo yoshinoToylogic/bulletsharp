@@ -114,7 +114,7 @@ namespace BulletSharp
 
         public void RemoveAt(int index)
         {
-            throw new InvalidOperationException();
+            throw new NotSupportedException();
         }
 
         public int Count
@@ -137,7 +137,7 @@ namespace BulletSharp
 
         public void Add(CompoundShapeChild item)
         {
-            throw new InvalidOperationException();
+            throw new NotSupportedException();
         }
 
         public int IndexOf(CompoundShapeChild item)
@@ -188,7 +188,7 @@ namespace BulletSharp
 
         public bool Remove(CompoundShapeChild item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -204,7 +204,7 @@ namespace BulletSharp
 
         public void Add(uint item)
         {
-            throw new InvalidOperationException();
+            throw new NotSupportedException();
         }
 
         public int IndexOf(uint item)
@@ -220,11 +220,11 @@ namespace BulletSharp
                 {
                     throw new ArgumentOutOfRangeException("index");
                 }
-                return uint_array_at(_native, index);
+                return (uint)Marshal.ReadInt32(_native + index * sizeof(uint));
             }
             set
             {
-                throw new NotImplementedException();
+                Marshal.WriteInt32(_native, index * sizeof(uint), (int)value);
             }
         }
 
@@ -255,11 +255,8 @@ namespace BulletSharp
 
         public bool Remove(uint item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
-
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern uint uint_array_at(IntPtr obj, int n);
     }
 
     public class Vector3Array : FixedSizeArray, IList<Vector3>
@@ -299,7 +296,7 @@ namespace BulletSharp
 
         public void Add(Vector3 item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public bool Contains(Vector3 item)
@@ -314,7 +311,7 @@ namespace BulletSharp
 
         public bool Remove(Vector3 item)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         public IEnumerator<Vector3> GetEnumerator()

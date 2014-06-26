@@ -93,6 +93,10 @@ namespace BulletSharpGen
                     {
                         return ManagedName + '*';
                     }
+                    if (ManagedName.Equals("void"))
+                    {
+                        return "IntPtr";
+                    }
                     return ManagedName + '^';
                 }
                 return ManagedName;
