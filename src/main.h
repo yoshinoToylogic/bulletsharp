@@ -50,12 +50,9 @@
 #define btAxisSweep3 void
 #define bt32BitAxisSweep3 void
 #define BT_BOX_BOX_TRANSFORM_CACHE void
-#define btBroadphaseAabbCallback void
-#define btBroadphaseInterface void
 #define btBroadphasePair void
 #define btBroadphasePairArray void
 #define btBroadphasePairSortPredicate void
-#define btBroadphaseRayCallback void
 #define btCollisionWorld_AllHitsRayResultCallback void
 #define btCollisionWorld_ClosestConvexResultCallback void
 #define btCollisionWorld_ClosestRayResultCallback void
@@ -177,6 +174,12 @@
 #define btBoxBoxCollisionAlgorithm_CreateFunc void
 #else
 #define btBoxBoxCollisionAlgorithm_CreateFunc btBoxBoxCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_BROADPHASE_INTERFACE_H
+#define btBroadphaseAabbCallback void
+#define btBroadphaseInterface void
+#define btBroadphaseRayCallback void
 #endif
 
 #ifndef BT_BROADPHASE_PROXY_H

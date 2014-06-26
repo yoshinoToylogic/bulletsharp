@@ -6,18 +6,18 @@ btBroadphaseProxy* btBroadphaseProxy_new()
 	return new btBroadphaseProxy();
 }
 
-btBroadphaseProxy* btBroadphaseProxy_new2(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask, void* multiSapParentProxy)
-{
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
-	return new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPtr, collisionFilterGroup, collisionFilterMask, multiSapParentProxy);
-}
-
-btBroadphaseProxy* btBroadphaseProxy_new3(btScalar* aabbMin, btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask)
+btBroadphaseProxy* btBroadphaseProxy_new2(const btScalar* aabbMin, const btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	return new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPtr, collisionFilterGroup, collisionFilterMask);
+}
+
+btBroadphaseProxy* btBroadphaseProxy_new3(const btScalar* aabbMin, const btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask, void* multiSapParentProxy)
+{
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
+	return new btBroadphaseProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPtr, collisionFilterGroup, collisionFilterMask, multiSapParentProxy);
 }
 
 void btBroadphaseProxy_getAabbMax(btBroadphaseProxy* obj, btScalar* value)
@@ -100,12 +100,12 @@ bool btBroadphaseProxy_isSoftBody(int proxyType)
 	return btBroadphaseProxy::isSoftBody(proxyType);
 }
 
-void btBroadphaseProxy_setAabbMax(btBroadphaseProxy* obj, btScalar* value)
+void btBroadphaseProxy_setAabbMax(btBroadphaseProxy* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_aabbMax);
 }
 
-void btBroadphaseProxy_setAabbMin(btBroadphaseProxy* obj, btScalar* value)
+void btBroadphaseProxy_setAabbMin(btBroadphaseProxy* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_aabbMin);
 }
@@ -139,6 +139,7 @@ void btBroadphaseProxy_delete(btBroadphaseProxy* obj)
 {
 	delete obj;
 }
+
 
 btBroadphasePair* btBroadphasePair_new()
 {
@@ -186,16 +187,6 @@ void btBroadphasePair_setPProxy1(btBroadphasePair* obj, btBroadphaseProxy* value
 }
 
 void btBroadphasePair_delete(btBroadphasePair* obj)
-{
-	delete obj;
-}
-
-btBroadphasePairSortPredicate* btBroadphasePairSortPredicate_new()
-{
-	return new btBroadphasePairSortPredicate();
-}
-
-void btBroadphasePairSortPredicate_delete(btBroadphasePairSortPredicate* obj)
 {
 	delete obj;
 }
