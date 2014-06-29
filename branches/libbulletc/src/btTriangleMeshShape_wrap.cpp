@@ -11,21 +11,21 @@ void btTriangleMeshShape_getLocalAabbMin(btTriangleMeshShape* obj, btScalar* val
 	VECTOR3_OUT(&obj->getLocalAabbMin(), value);
 }
 
-btStridingMeshInterface* btTriangleMeshShape_getMeshInterface(btTriangleMeshShape* obj)
+const btStridingMeshInterface* btTriangleMeshShape_getMeshInterface(btTriangleMeshShape* obj)
 {
 	return obj->getMeshInterface();
 }
 
-void btTriangleMeshShape_localGetSupportingVertex(btTriangleMeshShape* obj, btScalar* vec, btScalar* value)
+void btTriangleMeshShape_localGetSupportingVertex(btTriangleMeshShape* obj, const btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	value = obj->localGetSupportingVertex(VECTOR3_USE(vec));
+	VECTOR3_OUT(obj->localGetSupportingVertex(VECTOR3_USE(vec)), value);
 }
 
-void btTriangleMeshShape_localGetSupportingVertexWithoutMargin(btTriangleMeshShape* obj, btScalar* vec, btScalar* value)
+void btTriangleMeshShape_localGetSupportingVertexWithoutMargin(btTriangleMeshShape* obj, const btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	value = obj->localGetSupportingVertexWithoutMargin(VECTOR3_USE(vec));
+	VECTOR3_OUT(obj->localGetSupportingVertexWithoutMargin(VECTOR3_USE(vec)), value);
 }
 
 void btTriangleMeshShape_recalcLocalAabb(btTriangleMeshShape* obj)

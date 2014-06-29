@@ -63,7 +63,7 @@ namespace BulletSharp
 
                         float dist = pt.Distance;
 
-                        if (dist < 0.0)
+                        if (dist < 0.0f)
                         {
                             if (dist < maxPen)
                             {
@@ -156,13 +156,14 @@ namespace BulletSharp
                 perpindicularDir = PerpindicularComponent(ref reflectDir, ref hitNormal);
 
                 m_targetPosition = m_currentPosition;
-                if (false)//tangentMag != 0.0)
+                /*
+                if (tangentMag != 0.0)
                 {
                     Vector3 parComponent = parallelDir * (tangentMag * movementLength);
                     //			printf("parComponent=%f,%f,%f\n",parComponent[0],parComponent[1],parComponent[2]);
                     m_targetPosition += parComponent;
                 }
-
+                */
                 if (normalMag != 0.0f)
                 {
                     Vector3 perpComponent = perpindicularDir * (normalMag * movementLength);
@@ -189,7 +190,7 @@ namespace BulletSharp
 
             if (m_touchingContact)
             {
-                if (Vector3.Dot(m_normalizedDirection, m_touchingNormal) > 0.0f)
+                if (Vector3.Dot(ref m_normalizedDirection, ref m_touchingNormal) > 0.0f)
                 {
                     //interferes with step movement
                     //UpdateTargetPositionBasedOnCollision(ref m_touchingNormal, 0.0f, 1.0f);
@@ -241,7 +242,7 @@ namespace BulletSharp
                     {
                         currentDir.Normalize();
                         /* See Quake2: "If velocity is against original velocity, stop ead to avoid tiny oscilations in sloping corners." */
-                        if (Vector3.Dot(currentDir, m_normalizedDirection) <= 0.0f)
+                        if (Vector3.Dot(ref currentDir, ref m_normalizedDirection) <= 0.0f)
                         {
                             break;
                         }
@@ -656,12 +657,11 @@ namespace BulletSharp
 
         public static Vector3 GetNormalizedVector(ref Vector3 v)
         {
-            Vector3 n = Vector3.Normalize(v);
-            if (n.Length < MathUtil.SIMD_EPSILON)
+            if (v.Length < MathUtil.SIMD_EPSILON)
             {
-                n = Vector3.Zero;
+                return Vector3.Zero;
             }
-            return n;
+            return Vector3.Normalize(v);
         }
 
 
@@ -728,7 +728,6 @@ namespace BulletSharp
     ///Support ducking
     public class KinematicClosestNotMeRayResultCallback : ClosestRayResultCallback
     {
-
         public KinematicClosestNotMeRayResultCallback(CollisionObject me)
             : base(Vector3.Zero, Vector3.Zero)
         {
@@ -751,14 +750,14 @@ namespace BulletSharp
         public KinematicClosestNotMeConvexResultCallback(CollisionObject me, Vector3 up, float minSlopeDot)
             : base(Vector3.Zero, Vector3.Zero)
         {
-            m_me = me;
-            m_up = up;
-            m_minSlopeDot = minSlopeDot;
+            _me = me;
+            _up = up;
+            _minSlopeDot = minSlopeDot;
         }
 
         public override float AddSingleResult(LocalConvexResult convexResult, bool normalInWorldSpace)
         {
-            if (convexResult.HitCollisionObject == m_me)
+            if (convexResult.HitCollisionObject == _me)
             {
                 return 1.0f;
             }
@@ -775,12 +774,12 @@ namespace BulletSharp
             }
             else
             {
-                ///need to transform normal into worldspace
+                // need to transform normal into worldspace
                 hitNormalWorld = Vector3.TransformCoordinate(convexResult.HitNormalLocal, convexResult.HitCollisionObject.WorldTransform.Basis);
             }
 
-            float dotUp = Vector3.Dot(m_up, hitNormalWorld);
-            if (dotUp < m_minSlopeDot)
+            float dotUp = Vector3.Dot(ref _up, ref hitNormalWorld);
+            if (dotUp < _minSlopeDot)
             {
                 return 1.0f;
             }
@@ -788,8 +787,8 @@ namespace BulletSharp
             return base.AddSingleResult(convexResult, normalInWorldSpace);
         }
 
-        protected CollisionObject m_me;
-        protected Vector3 m_up;
-        protected float m_minSlopeDot;
+        protected CollisionObject _me;
+        protected Vector3 _up;
+        protected float _minSlopeDot;
     }
 }

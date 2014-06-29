@@ -106,6 +106,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btAxisSweep3_wrap.h
     src/btBox2dBox2dCollisionAlgorithm_wrap.cpp
     src/btBox2dBox2dCollisionAlgorithm_wrap.h
+    src/btBox2dShape_wrap.cpp
+    src/btBox2dShape_wrap.h
     src/btBoxBoxCollisionAlgorithm_wrap.cpp
     src/btBoxBoxCollisionAlgorithm_wrap.h
     src/btBoxCollision_wrap.cpp
@@ -150,6 +152,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btCompoundCompoundCollisionAlgorithm_wrap.h
     src/btCompoundShape_wrap.cpp
     src/btCompoundShape_wrap.h
+    src/btConcaveShape_wrap.cpp
+    src/btConcaveShape_wrap.h
     src/btConeShape_wrap.cpp
     src/btConeShape_wrap.h
     src/btConeTwistConstraint_wrap.cpp
@@ -174,6 +178,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btConvexPenetrationDepthSolver_wrap.h
     src/btConvexPlaneCollisionAlgorithm_wrap.cpp
     src/btConvexPlaneCollisionAlgorithm_wrap.h
+    src/btConvexPointCloudShape_wrap.cpp
+    src/btConvexPointCloudShape_wrap.h
     src/btConvexPolyhedron_wrap.cpp
     src/btConvexPolyhedron_wrap.h
     src/btConvexShape_wrap.cpp
@@ -196,6 +202,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDispatcher_wrap.h
     src/btEmptyCollisionAlgorithm_wrap.cpp
     src/btEmptyCollisionAlgorithm_wrap.h
+    src/btEmptyShape_wrap.cpp
+    src/btEmptyShape_wrap.h
     src/btDynamicsWorld_wrap.cpp
     src/btDynamicsWorld_wrap.h
     src/btFixedConstraint_wrap.cpp
@@ -216,6 +224,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btGImpactShape_wrap.h
     src/btGjkPairDetector_wrap.cpp
     src/btGjkPairDetector_wrap.h
+    src/btHeightFieldTerrainShape_wrap.cpp
+    src/btHeightFieldTerrainShape_wrap.h
     src/btHinge2Constraint_wrap.cpp
     src/btHinge2Constraint_wrap.h
     src/btHingeConstraint_wrap.cpp
@@ -226,12 +236,20 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btKinematicCharacterController_wrap.h
     src/btManifoldPoint_wrap.cpp
     src/btManifoldPoint_wrap.h
+    src/btManifoldResult_wrap.cpp
+    src/btManifoldResult_wrap.h
     src/btMinkowskiPenetrationDepthSolver_wrap.cpp
     src/btMinkowskiPenetrationDepthSolver_wrap.h
+    src/btMinkowskiSumShape_wrap.cpp
+    src/btMinkowskiSumShape_wrap.h
+    src/btMultiMaterialTriangleMeshShape_wrap.cpp
+    src/btMultiMaterialTriangleMeshShape_wrap.h
     src/btMultiSphereShape_wrap.cpp
     src/btMultiSphereShape_wrap.h
     src/btNNCGConstraintSolver_wrap.cpp
     src/btNNCGConstraintSolver_wrap.h
+    src/btOptimizedBvh_wrap.cpp
+    src/btOptimizedBvh_wrap.h
     src/btOverlappingPairCache_wrap.cpp
     src/btOverlappingPairCache_wrap.h
     src/btOverlappingPairCallback_wrap.cpp
@@ -290,18 +308,30 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btStaticPlaneShape_wrap.h
     src/btStridingMeshInterface_wrap.cpp
     src/btStridingMeshInterface_wrap.h
+    src/btTetrahedronShape_wrap.cpp
+    src/btTetrahedronShape_wrap.h
     src/btTransformUtil_wrap.cpp
     src/btTransformUtil_wrap.h
+    src/btTriangleBuffer_wrap.cpp
+    src/btTriangleBuffer_wrap.h
+    src/btTriangleCallback_wrap.cpp
+    src/btTriangleCallback_wrap.h
     src/btTriangleIndexVertexArray_wrap.cpp
     src/btTriangleIndexVertexArray_wrap.h
+    src/btTriangleIndexVertexMaterialArray_wrap.cpp
+    src/btTriangleIndexVertexMaterialArray_wrap.h
     src/btTriangleMesh_wrap.cpp
     src/btTriangleMesh_wrap.h
     src/btTriangleMeshShape_wrap.cpp
     src/btTriangleMeshShape_wrap.h
+    src/btTriangleShape_wrap.cpp
+    src/btTriangleShape_wrap.h
     src/btTypedConstraint_wrap.cpp
     src/btTypedConstraint_wrap.h
     src/btUniformScalingShape_wrap.cpp
     src/btUniformScalingShape_wrap.h
+    src/btUnionFind_wrap.cpp
+    src/btUnionFind_wrap.h
     src/btUniversalConstraint_wrap.cpp
     src/btUniversalConstraint_wrap.h
     src/btVehicleRaycaster_wrap.cpp

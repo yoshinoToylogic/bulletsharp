@@ -7,7 +7,7 @@ btUniformScalingShape* btUniformScalingShape_new(btConvexShape* convexChildShape
 	return new btUniformScalingShape(convexChildShape, uniformScalingFactor);
 }
 
-btConvexShape* btUniformScalingShape_getChildShape(btUniformScalingShape* obj)
+const btConvexShape* btUniformScalingShape_getChildShape(btUniformScalingShape* obj)
 {
 	return obj->getChildShape();
 }

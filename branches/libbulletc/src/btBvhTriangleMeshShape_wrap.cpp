@@ -1,28 +1,28 @@
 #include "conversion.h"
 #include "btBvhTriangleMeshShape_wrap.h"
 
-btBvhTriangleMeshShape* btBvhTriangleMeshShape_new(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
-{
-	return new btBvhTriangleMeshShape(meshInterface, useQuantizedAabbCompression, buildBvh);
-}
-
-btBvhTriangleMeshShape* btBvhTriangleMeshShape_new2(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression)
+btBvhTriangleMeshShape* btBvhTriangleMeshShape_new(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression)
 {
 	return new btBvhTriangleMeshShape(meshInterface, useQuantizedAabbCompression);
 }
 
-btBvhTriangleMeshShape* btBvhTriangleMeshShape_new3(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, btScalar* bvhAabbMin, btScalar* bvhAabbMax, bool buildBvh)
+btBvhTriangleMeshShape* btBvhTriangleMeshShape_new2(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, bool buildBvh)
 {
-	VECTOR3_CONV(bvhAabbMin);
-	VECTOR3_CONV(bvhAabbMax);
-	return new btBvhTriangleMeshShape(meshInterface, useQuantizedAabbCompression, VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
+	return new btBvhTriangleMeshShape(meshInterface, useQuantizedAabbCompression, buildBvh);
 }
 
-btBvhTriangleMeshShape* btBvhTriangleMeshShape_new4(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, btScalar* bvhAabbMin, btScalar* bvhAabbMax)
+btBvhTriangleMeshShape* btBvhTriangleMeshShape_new3(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, const btScalar* bvhAabbMin, const btScalar* bvhAabbMax)
 {
 	VECTOR3_CONV(bvhAabbMin);
 	VECTOR3_CONV(bvhAabbMax);
 	return new btBvhTriangleMeshShape(meshInterface, useQuantizedAabbCompression, VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
+}
+
+btBvhTriangleMeshShape* btBvhTriangleMeshShape_new4(btStridingMeshInterface* meshInterface, bool useQuantizedAabbCompression, const btScalar* bvhAabbMin, const btScalar* bvhAabbMax, bool buildBvh)
+{
+	VECTOR3_CONV(bvhAabbMin);
+	VECTOR3_CONV(bvhAabbMax);
+	return new btBvhTriangleMeshShape(meshInterface, useQuantizedAabbCompression, VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
 }
 
 void btBvhTriangleMeshShape_buildOptimizedBvh(btBvhTriangleMeshShape* obj)
@@ -45,14 +45,14 @@ btTriangleInfoMap* btBvhTriangleMeshShape_getTriangleInfoMap(btBvhTriangleMeshSh
 	return obj->getTriangleInfoMap();
 }
 
-void btBvhTriangleMeshShape_partialRefitTree(btBvhTriangleMeshShape* obj, btScalar* aabbMin, btScalar* aabbMax)
+void btBvhTriangleMeshShape_partialRefitTree(btBvhTriangleMeshShape* obj, const btScalar* aabbMin, const btScalar* aabbMax)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	obj->partialRefitTree(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 }
 
-void btBvhTriangleMeshShape_performConvexcast(btBvhTriangleMeshShape* obj, btTriangleCallback* callback, btScalar* boxSource, btScalar* boxTarget, btScalar* boxMin, btScalar* boxMax)
+void btBvhTriangleMeshShape_performConvexcast(btBvhTriangleMeshShape* obj, btTriangleCallback* callback, const btScalar* boxSource, const btScalar* boxTarget, const btScalar* boxMin, const btScalar* boxMax)
 {
 	VECTOR3_CONV(boxSource);
 	VECTOR3_CONV(boxTarget);
@@ -61,14 +61,14 @@ void btBvhTriangleMeshShape_performConvexcast(btBvhTriangleMeshShape* obj, btTri
 	obj->performConvexcast(callback, VECTOR3_USE(boxSource), VECTOR3_USE(boxTarget), VECTOR3_USE(boxMin), VECTOR3_USE(boxMax));
 }
 
-void btBvhTriangleMeshShape_performRaycast(btBvhTriangleMeshShape* obj, btTriangleCallback* callback, btScalar* raySource, btScalar* rayTarget)
+void btBvhTriangleMeshShape_performRaycast(btBvhTriangleMeshShape* obj, btTriangleCallback* callback, const btScalar* raySource, const btScalar* rayTarget)
 {
 	VECTOR3_CONV(raySource);
 	VECTOR3_CONV(rayTarget);
 	obj->performRaycast(callback, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
 }
 
-void btBvhTriangleMeshShape_refitTree(btBvhTriangleMeshShape* obj, btScalar* aabbMin, btScalar* aabbMax)
+void btBvhTriangleMeshShape_refitTree(btBvhTriangleMeshShape* obj, const btScalar* aabbMin, const btScalar* aabbMax)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
@@ -85,15 +85,15 @@ void btBvhTriangleMeshShape_serializeSingleTriangleInfoMap(btBvhTriangleMeshShap
 	obj->serializeSingleTriangleInfoMap(serializer);
 }
 
-void btBvhTriangleMeshShape_setOptimizedBvh(btBvhTriangleMeshShape* obj, btOptimizedBvh* bvh, btScalar* localScaling)
+void btBvhTriangleMeshShape_setOptimizedBvh(btBvhTriangleMeshShape* obj, btOptimizedBvh* bvh)
+{
+	obj->setOptimizedBvh(bvh);
+}
+
+void btBvhTriangleMeshShape_setOptimizedBvh2(btBvhTriangleMeshShape* obj, btOptimizedBvh* bvh, const btScalar* localScaling)
 {
 	VECTOR3_CONV(localScaling);
 	obj->setOptimizedBvh(bvh, VECTOR3_USE(localScaling));
-}
-
-void btBvhTriangleMeshShape_setOptimizedBvh2(btBvhTriangleMeshShape* obj, btOptimizedBvh* bvh)
-{
-	obj->setOptimizedBvh(bvh);
 }
 
 void btBvhTriangleMeshShape_setTriangleInfoMap(btBvhTriangleMeshShape* obj, btTriangleInfoMap* triangleInfoMap)

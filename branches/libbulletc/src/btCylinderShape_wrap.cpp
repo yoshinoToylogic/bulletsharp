@@ -1,7 +1,7 @@
 #include "conversion.h"
 #include "btCylinderShape_wrap.h"
 
-btCylinderShape* btCylinderShape_new(btScalar* halfExtents)
+btCylinderShape* btCylinderShape_new(const btScalar* halfExtents)
 {
 	VECTOR3_CONV(halfExtents);
 	return new btCylinderShape(VECTOR3_USE(halfExtents));
@@ -32,7 +32,7 @@ int btCylinderShape_getUpAxis(btCylinderShape* obj)
 	return obj->getUpAxis();
 }
 
-btCylinderShapeX* btCylinderShapeX_new(btScalar* halfExtents)
+btCylinderShapeX* btCylinderShapeX_new(const btScalar* halfExtents)
 {
 	VECTOR3_CONV(halfExtents);
 	return new btCylinderShapeX(VECTOR3_USE(halfExtents));
@@ -43,7 +43,7 @@ btCylinderShapeX* btCylinderShapeX_new2(btScalar halfExtentX, btScalar halfExten
 	return new btCylinderShapeX(btVector3(halfExtentX, halfExtentY, halfExtentZ));
 }
 
-btCylinderShapeZ* btCylinderShapeZ_new(btScalar* halfExtents)
+btCylinderShapeZ* btCylinderShapeZ_new(const btScalar* halfExtents)
 {
 	VECTOR3_CONV(halfExtents);
 	return new btCylinderShapeZ(VECTOR3_USE(halfExtents));

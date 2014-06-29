@@ -7,7 +7,7 @@ btEmptyAlgorithm::CreateFunc* btEmptyAlgorithm_CreateFunc_new()
 	return new btEmptyAlgorithm::CreateFunc();
 }
 
-btEmptyAlgorithm* btEmptyAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci)
+btEmptyAlgorithm* btEmptyAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci)
 {
 	return new btEmptyAlgorithm(*ci);
 }

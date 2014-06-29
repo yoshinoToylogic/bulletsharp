@@ -7,7 +7,7 @@ using namespace std;
 int main(int argc, char* argv[])
 {
 	btDbvtBroadphase* broadphase = btDbvtBroadphase_new();
-	btDefaultCollisionConfiguration* collisionConfiguration = btDefaultCollisionConfiguration_new2();
+	btDefaultCollisionConfiguration* collisionConfiguration = btDefaultCollisionConfiguration_new();
 	btCollisionDispatcher* dispatcher = btCollisionDispatcher_new(collisionConfiguration);
 	btSequentialImpulseConstraintSolver* solver = btSequentialImpulseConstraintSolver_new();
 	btDiscreteDynamicsWorld* world = btDiscreteDynamicsWorld_new(dispatcher,broadphase,solver,collisionConfiguration);

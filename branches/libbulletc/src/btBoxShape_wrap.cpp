@@ -1,7 +1,7 @@
 #include "conversion.h"
 #include "btBoxShape_wrap.h"
 
-btBoxShape* btBoxShape_new(btScalar* boxHalfExtents)
+btBoxShape* btBoxShape_new(const btScalar* boxHalfExtents)
 {
 	VECTOR3_CONV(boxHalfExtents);
 	return new btBoxShape(VECTOR3_USE(boxHalfExtents));

@@ -16,13 +16,17 @@ namespace BulletSharpGen
             if (type.IsBasic)
             {
                 Write(type.Name, (WriteTo.Header | WriteTo.Source) & to);
-                Write(type.ManagedName, WriteTo.CS & to);
+                Write(type.ManagedNameCS, WriteTo.CS & to);
             }
             else if (type.Referenced != null)
             {
+                if (type.IsConst)
+                {
+                    Write("const ", (WriteTo.Header | WriteTo.Source) & to);
+                }
                 Write(BulletParser.GetTypeName(type.Referenced), (WriteTo.Header | WriteTo.Source) & to);
                 Write('*', (WriteTo.Header | WriteTo.Source) & to);
-                if (type.IsPointer && type.Referenced.ManagedName.Equals("void")) // void*
+                if (type.IsPointer && type.Referenced.ManagedNameCS.Equals("void")) // void*
                 {
                     Write("IntPtr", WriteTo.CS & to);
                 }
@@ -121,7 +125,7 @@ namespace BulletSharpGen
                 Write(' ', propertyTo);
                 if (method.ReturnType.IsBasic)
                 {
-                    Write(method.ReturnType.ManagedName, WriteTo.Buffer);
+                    Write(method.ReturnType.ManagedNameCS, WriteTo.Buffer);
                 }
                 else if (method.ReturnType.Referenced != null)
                 {
@@ -433,13 +437,12 @@ namespace BulletSharpGen
             if (c.BaseClass != null)
             {
                 Write(" : ", WriteTo.CS);
-                Write(c.BaseClass.ManagedName, WriteTo.CS);
+                WriteLine(c.BaseClass.ManagedNameCS, WriteTo.CS);
             }
             else
             {
-                Write(" : IDisposable", WriteTo.CS);
+                WriteLine(" : IDisposable", WriteTo.CS);
             }
-            WriteLine(WriteTo.CS);
             OutputTabs(level, WriteTo.CS);
             WriteLine("{", WriteTo.CS);
             hasCSWhiteSpace = true;
@@ -489,7 +492,7 @@ namespace BulletSharpGen
             hasCSWhiteSpace = false;
 
             // Write constructors
-            int constructorCount = 0;
+            bool hasConstructors = false;
             if (!c.IsAbstract)
             {
                 foreach (MethodDefinition method in c.Methods)
@@ -497,17 +500,16 @@ namespace BulletSharpGen
                     if (method.IsConstructor)
                     {
                         OutputMethod(method, level, ref overloadIndex);
-                        constructorCount++;
+                        hasConstructors = true;
                     }
                 }
 
                 // Write default constructor
-                if (constructorCount == 0 && !c.IsAbstract)
+                if (!hasConstructors && !c.IsAbstract)
                 {
                     var constructor = new MethodDefinition(c.Name, c, 0);
                     constructor.IsConstructor = true;
-                    OutputMethod(constructor, level, ref overloadIndex, constructorCount);
-                    constructorCount++;
+                    OutputMethod(constructor, level, ref overloadIndex);
                 }
                 overloadIndex = 0;
             }

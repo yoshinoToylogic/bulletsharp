@@ -103,12 +103,11 @@ namespace BulletSharp
         {
             btCollisionAlgorithm_getAllContactManifolds(_native, manifoldArray._native);
         }
-        /*
+
 		public void ProcessCollision(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, DispatcherInfo dispatchInfo, ManifoldResult resultOut)
 		{
 			btCollisionAlgorithm_processCollision(_native, body0Wrap._native, body1Wrap._native, dispatchInfo._native, resultOut._native);
 		}
-        */
         
 		public void Dispose()
 		{

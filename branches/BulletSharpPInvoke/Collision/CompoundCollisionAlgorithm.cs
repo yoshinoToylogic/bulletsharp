@@ -47,12 +47,12 @@ namespace BulletSharp
 			: base(btCompoundCollisionAlgorithm_new(ci._native, body0Wrap._native, body1Wrap._native, isSwapped))
 		{
 		}
-        /*
+
 		public CollisionAlgorithm GetChildAlgorithm(int n)
 		{
-			return btCompoundCollisionAlgorithm_getChildAlgorithm(_native, n);
+			return new CollisionAlgorithm(btCompoundCollisionAlgorithm_getChildAlgorithm(_native, n));
 		}
-        */
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCompoundCollisionAlgorithm_new(IntPtr ci, IntPtr body0Wrap, IntPtr body1Wrap, bool isSwapped);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

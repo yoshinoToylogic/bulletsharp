@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -12,18 +12,18 @@ namespace BulletSharp
 		{
 		}
 
-		public TriangleMesh(bool use32bitIndices, bool use4componentVertices)
-			: base(btTriangleMesh_new(use32bitIndices, use4componentVertices))
-		{
-		}
-
-		public TriangleMesh(bool use32bitIndices)
-			: base(btTriangleMesh_new2(use32bitIndices))
-		{
-		}
-
 		public TriangleMesh()
-			: base(btTriangleMesh_new3())
+			: base(btTriangleMesh_new())
+		{
+		}
+
+		public TriangleMesh(bool use32BitIndices)
+            : base(btTriangleMesh_new2(use32BitIndices))
+		{
+		}
+
+		public TriangleMesh(bool use32BitIndices, bool use4ComponentVertices)
+			: base(btTriangleMesh_new3(use32BitIndices, use4ComponentVertices))
 		{
 		}
 
@@ -32,24 +32,24 @@ namespace BulletSharp
 			btTriangleMesh_addIndex(_native, index);
 		}
 
-        public void AddTriangle(ref Vector3 vertex0, ref Vector3 vertex1, ref Vector3 vertex2, bool removeDuplicateVertices)
-        {
-            btTriangleMesh_addTriangle(_native, ref vertex0, ref vertex1, ref vertex2, removeDuplicateVertices);
-        }
-
-		public void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices)
-		{
-			btTriangleMesh_addTriangle(_native, ref vertex0, ref vertex1, ref vertex2, removeDuplicateVertices);
-		}
-
         public void AddTriangle(ref Vector3 vertex0, ref Vector3 vertex1, ref Vector3 vertex2)
         {
-            btTriangleMesh_addTriangle2(_native, ref vertex0, ref vertex1, ref vertex2);
+            btTriangleMesh_addTriangle(_native, ref vertex0, ref vertex1, ref vertex2);
         }
 
 		public void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2)
 		{
-			btTriangleMesh_addTriangle2(_native, ref vertex0, ref vertex1, ref vertex2);
+			btTriangleMesh_addTriangle(_native, ref vertex0, ref vertex1, ref vertex2);
+		}
+
+        public void AddTriangle(ref Vector3 vertex0, ref Vector3 vertex1, ref Vector3 vertex2, bool removeDuplicateVertices)
+        {
+            btTriangleMesh_addTriangle2(_native, ref vertex0, ref vertex1, ref vertex2, removeDuplicateVertices);
+        }
+
+		public void AddTriangle(Vector3 vertex0, Vector3 vertex1, Vector3 vertex2, bool removeDuplicateVertices)
+		{
+			btTriangleMesh_addTriangle2(_native, ref vertex0, ref vertex1, ref vertex2, removeDuplicateVertices);
 		}
 
         public int FindOrAddVertex(ref Vector3 vertex, bool removeDuplicateVertices)
@@ -67,12 +67,12 @@ namespace BulletSharp
 			get { return btTriangleMesh_getNumTriangles(_native); }
 		}
 
-		public bool Use32bitIndices
+		public bool Use32BitIndices
 		{
 			get { return btTriangleMesh_getUse32bitIndices(_native); }
 		}
 
-		public bool Use4componentVertices
+		public bool Use4ComponentVertices
 		{
 			get { return btTriangleMesh_getUse4componentVertices(_native); }
 		}
@@ -84,17 +84,17 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleMesh_new(bool use32bitIndices, bool use4componentVertices);
+		static extern IntPtr btTriangleMesh_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleMesh_new2(bool use32bitIndices);
+		static extern IntPtr btTriangleMesh_new2(bool use32BitIndices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleMesh_new3();
+		static extern IntPtr btTriangleMesh_new3(bool use32BitIndices, bool use4ComponentVertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTriangleMesh_addIndex(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTriangleMesh_addTriangle(IntPtr obj, [In] ref Vector3 vertex0, [In] ref Vector3 vertex1, [In] ref Vector3 vertex2, bool removeDuplicateVertices);
+		static extern void btTriangleMesh_addTriangle(IntPtr obj, [In] ref Vector3 vertex0, [In] ref Vector3 vertex1, [In] ref Vector3 vertex2);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTriangleMesh_addTriangle2(IntPtr obj, [In] ref Vector3 vertex0, [In] ref Vector3 vertex1, [In] ref Vector3 vertex2);
+		static extern void btTriangleMesh_addTriangle2(IntPtr obj, [In] ref Vector3 vertex0, [In] ref Vector3 vertex1, [In] ref Vector3 vertex2, bool removeDuplicateVertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btTriangleMesh_findOrAddVertex(IntPtr obj, [In] ref Vector3 vertex, bool removeDuplicateVertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

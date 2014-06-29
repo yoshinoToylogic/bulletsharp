@@ -1,9 +1,9 @@
-using BulletSharp.Math;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.Diagnostics;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -171,8 +171,8 @@ namespace BulletSharp
 
 		public RayResultCallback()
 		{
-			_addSingleResult = new AddSingleResultUnmanagedDelegate(AddSingleResultUnmanaged);
-			_needsCollision = new NeedsCollisionUnmanagedDelegate(NeedsCollisionUnmanaged);
+			_addSingleResult = AddSingleResultUnmanaged;
+			_needsCollision = NeedsCollisionUnmanaged;
 			_native = btCollisionWorld_RayResultCallbackWrapper_new(
 				Marshal.GetFunctionPointerForDelegate(_addSingleResult),
 				Marshal.GetFunctionPointerForDelegate(_needsCollision));
@@ -251,8 +251,6 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btCollisionWorld_RayResultCallback_addSingleResult(IntPtr obj, IntPtr rayResult, bool normalInWorldSpace);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionWorld_RayResultCallback_getClosestHitFraction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern short btCollisionWorld_RayResultCallback_getCollisionFilterGroup(IntPtr obj);
@@ -264,8 +262,6 @@ namespace BulletSharp
 		static extern uint btCollisionWorld_RayResultCallback_getFlags(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btCollisionWorld_RayResultCallback_hasHit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btCollisionWorld_RayResultCallback_needsCollision(IntPtr obj, IntPtr proxy0);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_RayResultCallback_setClosestHitFraction(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -484,8 +480,8 @@ namespace BulletSharp
 
         public ConvexResultCallback()
 		{
-			_addSingleResult = new AddSingleResultUnmanagedDelegate(AddSingleResultUnmanaged);
-			_needsCollision = new NeedsCollisionUnmanagedDelegate(NeedsCollisionUnmanaged);
+			_addSingleResult = AddSingleResultUnmanaged;
+			_needsCollision = NeedsCollisionUnmanaged;
 			_native = btCollisionWorld_ConvexResultCallbackWrapper_new(
 				Marshal.GetFunctionPointerForDelegate(_addSingleResult),
 				Marshal.GetFunctionPointerForDelegate(_needsCollision));
@@ -528,7 +524,9 @@ namespace BulletSharp
 
 		public bool HasHit
 		{
-			get { return btCollisionWorld_ConvexResultCallback_hasHit(_native); }
+            // FIXME: Why does this always return true?
+			//get { return btCollisionWorld_ConvexResultCallback_hasHit(_native); }
+            get { return ClosestHitFraction < 1.0f; }
 		}
 
 		public void Dispose()
@@ -552,8 +550,6 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btCollisionWorld_ConvexResultCallback_addSingleResult(IntPtr obj, IntPtr convexResult, bool normalInWorldSpace);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionWorld_ConvexResultCallback_getClosestHitFraction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern short btCollisionWorld_ConvexResultCallback_getCollisionFilterGroup(IntPtr obj);
@@ -561,8 +557,6 @@ namespace BulletSharp
 		static extern short btCollisionWorld_ConvexResultCallback_getCollisionFilterMask(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btCollisionWorld_ConvexResultCallback_hasHit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btCollisionWorld_ConvexResultCallback_needsCollision(IntPtr obj, IntPtr proxy0);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_ConvexResultCallback_setClosestHitFraction(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -633,8 +627,8 @@ namespace BulletSharp
 
 		public ContactResultCallback()
 		{
-			_addSingleResult = new AddSingleResultUnmanagedDelegate(AddSingleResultUnmanaged);
-			_needsCollision = new NeedsCollisionUnmanagedDelegate(NeedsCollisionUnmanaged);
+			_addSingleResult = AddSingleResultUnmanaged;
+			_needsCollision = NeedsCollisionUnmanaged;
 			_native = btCollisionWorld_ContactResultCallbackWrapper_new(
 				Marshal.GetFunctionPointerForDelegate(_addSingleResult),
 				Marshal.GetFunctionPointerForDelegate(_needsCollision));
@@ -692,13 +686,9 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btCollisionWorld_ContactResultCallback_addSingleResult(IntPtr obj, IntPtr cp, IntPtr colObj0Wrap, int partId0, int index0, IntPtr colObj1Wrap, int partId1, int index1);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern short btCollisionWorld_ContactResultCallback_getCollisionFilterGroup(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern short btCollisionWorld_ContactResultCallback_getCollisionFilterMask(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btCollisionWorld_ContactResultCallback_needsCollision(IntPtr obj, IntPtr proxy0);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_ContactResultCallback_setCollisionFilterGroup(IntPtr obj, short value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -733,20 +723,20 @@ namespace BulletSharp
 			Broadphase = broadphasePairCache;
 		}
 
-		public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
-		{
-			btCollisionWorld_addCollisionObject(_native, collisionObject._native, (short)collisionFilterGroup, (short)collisionFilterMask);
-		}
-
-		public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup)
-		{
-			btCollisionWorld_addCollisionObject2(_native, collisionObject._native, (short)collisionFilterGroup);
-		}
-
 		public void AddCollisionObject(CollisionObject collisionObject)
 		{
-			btCollisionWorld_addCollisionObject3(_native, collisionObject._native);
+			btCollisionWorld_addCollisionObject(_native, collisionObject._native);
 		}
+
+        public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup)
+        {
+            btCollisionWorld_addCollisionObject2(_native, collisionObject._native, (short)collisionFilterGroup);
+        }
+
+        public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
+        {
+            btCollisionWorld_addCollisionObject3(_native, collisionObject._native, (short)collisionFilterGroup, (short)collisionFilterMask);
+        }
 
 		public void ComputeOverlappingPairs()
 		{
@@ -763,25 +753,25 @@ namespace BulletSharp
 			btCollisionWorld_contactTest(_native, colObj._native, resultCallback._native);
 		}
 
-        public void ConvexSweepTest(ConvexShape castShape, ref Matrix from, ref Matrix to, ConvexResultCallback resultCallback, float allowedCcdPenetration)
-        {
-            btCollisionWorld_convexSweepTest(_native, castShape._native, ref from, ref to, resultCallback._native, allowedCcdPenetration);
-        }
-
-		public void ConvexSweepTest(ConvexShape castShape, Matrix from, Matrix to, ConvexResultCallback resultCallback, float allowedCcdPenetration)
-		{
-            btCollisionWorld_convexSweepTest(_native, castShape._native, ref from, ref to, resultCallback._native, allowedCcdPenetration);
-		}
-
         public void ConvexSweepTest(ConvexShape castShape, ref Matrix from, ref Matrix to, ConvexResultCallback resultCallback)
         {
-            btCollisionWorld_convexSweepTest2(_native, castShape._native, ref from, ref to, resultCallback._native);
+            btCollisionWorld_convexSweepTest(_native, castShape._native, ref from, ref to, resultCallback._native);
         }
 
 		public void ConvexSweepTest(ConvexShape castShape, Matrix from, Matrix to, ConvexResultCallback resultCallback)
 		{
-            btCollisionWorld_convexSweepTest2(_native, castShape._native, ref from, ref to, resultCallback._native);
+            btCollisionWorld_convexSweepTest(_native, castShape._native, ref from, ref to, resultCallback._native);
 		}
+
+        public void ConvexSweepTest(ConvexShape castShape, ref Matrix from, ref Matrix to, ConvexResultCallback resultCallback, float allowedCcdPenetration)
+        {
+            btCollisionWorld_convexSweepTest2(_native, castShape._native, ref from, ref to, resultCallback._native, allowedCcdPenetration);
+        }
+
+        public void ConvexSweepTest(ConvexShape castShape, Matrix from, Matrix to, ConvexResultCallback resultCallback, float allowedCcdPenetration)
+        {
+            btCollisionWorld_convexSweepTest2(_native, castShape._native, ref from, ref to, resultCallback._native, allowedCcdPenetration);
+        }
 
         public void DebugDrawObject(ref Matrix worldTransform, CollisionShape shape, ref Vector3 color)
         {
@@ -1011,11 +1001,11 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionWorld_new(IntPtr dispatcher, IntPtr broadphasePairCache, IntPtr collisionConfiguration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_addCollisionObject(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup, short collisionFilterMask);
+		static extern void btCollisionWorld_addCollisionObject(IntPtr obj, IntPtr collisionObject);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_addCollisionObject2(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject);
+		static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup, short collisionFilterMask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_computeOverlappingPairs(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -1023,9 +1013,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_contactTest(IntPtr obj, IntPtr colObj, IntPtr resultCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_convexSweepTest(IntPtr obj, IntPtr castShape, [In] ref Matrix from, [In] ref Matrix to, IntPtr resultCallback, float allowedCcdPenetration);
+		static extern void btCollisionWorld_convexSweepTest(IntPtr obj, IntPtr castShape, [In] ref Matrix from, [In] ref Matrix to, IntPtr resultCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_convexSweepTest2(IntPtr obj, IntPtr castShape, [In] ref Matrix from, [In] ref Matrix to, IntPtr resultCallback);
+		static extern void btCollisionWorld_convexSweepTest2(IntPtr obj, IntPtr castShape, [In] ref Matrix from, [In] ref Matrix to, IntPtr resultCallback, float allowedCcdPenetration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_debugDrawObject(IntPtr obj, [In] ref Matrix worldTransform, IntPtr shape, [In] ref Vector3 color);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -1072,5 +1062,5 @@ namespace BulletSharp
 		static extern void btCollisionWorld_updateSingleAabb(IntPtr obj, IntPtr colObj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_delete(IntPtr obj);
-    }
+	}
 }

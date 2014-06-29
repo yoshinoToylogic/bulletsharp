@@ -1,39 +1,59 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class BU_Simplex1to4 : PolyhedralConvexAabbCachingShape
+	public class BuSimplex1To4 : PolyhedralConvexAabbCachingShape
 	{
-		internal BU_Simplex1to4(IntPtr native)
+		internal BuSimplex1To4(IntPtr native)
 			: base(native)
 		{
 		}
 
-		public BU_Simplex1to4()
+		public BuSimplex1To4()
 			: base(btBU_Simplex1to4_new())
 		{
 		}
 
-		public BU_Simplex1to4(Vector3 pt0)
-			: base(btBU_Simplex1to4_new2(ref pt0))
+        public BuSimplex1To4(ref Vector3 pt0)
+            : base(btBU_Simplex1to4_new2(ref pt0))
+        {
+        }
+
+		public BuSimplex1To4(Vector3 pt0)
+			: this(ref pt0)
 		{
 		}
 
-		public BU_Simplex1to4(Vector3 pt0, Vector3 pt1)
-			: base(btBU_Simplex1to4_new3(ref pt0, ref pt1))
+        public BuSimplex1To4(ref Vector3 pt0, ref Vector3 pt1)
+            : base(btBU_Simplex1to4_new3(ref pt0, ref pt1))
+        {
+        }
+
+		public BuSimplex1To4(Vector3 pt0, Vector3 pt1)
+			: this(ref pt0, ref pt1)
 		{
 		}
 
-		public BU_Simplex1to4(Vector3 pt0, Vector3 pt1, Vector3 pt2)
-			: base(btBU_Simplex1to4_new4(ref pt0, ref pt1, ref pt2))
+        public BuSimplex1To4(ref Vector3 pt0, ref Vector3 pt1, ref Vector3 pt2)
+            : base(btBU_Simplex1to4_new4(ref pt0, ref pt1, ref pt2))
+        {
+        }
+
+		public BuSimplex1To4(Vector3 pt0, Vector3 pt1, Vector3 pt2)
+			: this(ref pt0, ref pt1, ref pt2)
 		{
 		}
 
-		public BU_Simplex1to4(Vector3 pt0, Vector3 pt1, Vector3 pt2, Vector3 pt3)
-			: base(btBU_Simplex1to4_new5(ref pt0, ref pt1, ref pt2, ref pt3))
+        public BuSimplex1To4(ref Vector3 pt0, ref Vector3 pt1, ref Vector3 pt2, ref Vector3 pt3)
+            : base(btBU_Simplex1to4_new5(ref pt0, ref pt1, ref pt2, ref pt3))
+        {
+        }
+
+		public BuSimplex1To4(Vector3 pt0, Vector3 pt1, Vector3 pt2, Vector3 pt3)
+            : this(ref pt0, ref pt1, ref pt2, ref pt3)
 		{
 		}
 

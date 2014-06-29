@@ -73,7 +73,7 @@ void btConvexPolyhedron_initialize(btConvexPolyhedron* obj)
 	obj->initialize();
 }
 
-void btConvexPolyhedron_project(btConvexPolyhedron* obj, btScalar* trans, btScalar* dir, btScalar* minProj, btScalar* maxProj, btScalar* witnesPtMin, btScalar* witnesPtMax)
+void btConvexPolyhedron_project(btConvexPolyhedron* obj, const btScalar* trans, const btScalar* dir, btScalar* minProj, btScalar* maxProj, btScalar* witnesPtMin, btScalar* witnesPtMax)
 {
 	TRANSFORM_CONV(trans);
 	VECTOR3_CONV(dir);
@@ -84,22 +84,22 @@ void btConvexPolyhedron_project(btConvexPolyhedron* obj, btScalar* trans, btScal
 	VECTOR3_DEF_OUT(witnesPtMax);
 }
 
-void btConvexPolyhedron_setExtents(btConvexPolyhedron* obj, btScalar* value)
+void btConvexPolyhedron_setExtents(btConvexPolyhedron* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_extents);
 }
 
-void btConvexPolyhedron_setLocalCenter(btConvexPolyhedron* obj, btScalar* value)
+void btConvexPolyhedron_setLocalCenter(btConvexPolyhedron* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_localCenter);
 }
 
-void btConvexPolyhedron_setMC(btConvexPolyhedron* obj, btScalar* value)
+void btConvexPolyhedron_setMC(btConvexPolyhedron* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->mC);
 }
 
-void btConvexPolyhedron_setME(btConvexPolyhedron* obj, btScalar* value)
+void btConvexPolyhedron_setME(btConvexPolyhedron* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->mE);
 }

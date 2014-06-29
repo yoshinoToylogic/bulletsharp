@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BulletSharpGen
 {
     enum RefAccessSpecifier
     {
         Public,
+        Protected,
         Private,
         Internal
     }
@@ -14,7 +16,7 @@ namespace BulletSharpGen
     class CppCliWriter
     {
         Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
-        StreamWriter headerWriter, sourceWriter;
+        StreamWriter _headerWriter, _sourceWriter;
         bool hasHeaderWhiteSpace;
         bool hasSourceWhiteSpace;
         string namespaceName;
@@ -37,12 +39,12 @@ namespace BulletSharpGen
             {
                 if (source)
                 {
-                    sourceWriter.Write('\t');
+                    _sourceWriter.Write('\t');
                     _sourceLineLength += TabWidth;
                 }
                 else
                 {
-                    headerWriter.Write('\t');
+                    _headerWriter.Write('\t');
                     _headerLineLength += TabWidth;
                 }
             }
@@ -50,38 +52,44 @@ namespace BulletSharpGen
 
         void HeaderWrite(string s)
         {
-            headerWriter.Write(s);
+            _headerWriter.Write(s);
             _headerLineLength += s.Length;
         }
 
         void HeaderWriteLine(string s = "")
         {
             HeaderWrite(s);
-            headerWriter.WriteLine();
+            _headerWriter.WriteLine();
+            _headerLineLength = 0;
+        }
+
+        void HeaderWriteLine(char c)
+        {
+            _headerWriter.WriteLine(c);
             _headerLineLength = 0;
         }
 
         void SourceWrite(string s)
         {
-            sourceWriter.Write(s);
+            _sourceWriter.Write(s);
             _sourceLineLength += s.Length;
         }
 
         void SourceWrite(char c)
         {
-            sourceWriter.Write(c);
+            _sourceWriter.Write(c);
             _sourceLineLength += 1;
         }
 
         void SourceWriteLine(string s = "")
         {
-            sourceWriter.WriteLine(s);
+            _sourceWriter.WriteLine(s);
             _sourceLineLength = 0;
         }
 
         void SourceWriteLine(char c)
         {
-            sourceWriter.WriteLine(c);
+            _sourceWriter.WriteLine(c);
             _sourceLineLength = 0;
         }
 
@@ -93,11 +101,11 @@ namespace BulletSharpGen
 
         void Write(char c, bool source = true)
         {
-            headerWriter.Write(c);
+            _headerWriter.Write(c);
             _headerLineLength += 1;
             if (source)
             {
-                sourceWriter.Write(c);
+                _sourceWriter.Write(c);
                 _sourceLineLength += 1;
             }
         }
@@ -129,6 +137,10 @@ namespace BulletSharpGen
                 else if (required == RefAccessSpecifier.Public)
                 {
                     HeaderWriteLine("public:");
+                }
+                else if (required == RefAccessSpecifier.Protected)
+                {
+                    HeaderWriteLine("protected:");
                 }
                 current = required;
             }
@@ -387,12 +399,15 @@ namespace BulletSharpGen
                     }
                 }
 
+                // Native is defined as static_cast<className*>(_native)
+                string nativePointer = (method.Parent.BaseClass != null) ? "Native" : "_native";
 
                 if (method.Field != null)
                 {
                     if (method.Equals(method.Property.Getter))
                     {
-                        SourceWrite("_native->");
+                        SourceWrite(nativePointer);
+                        SourceWrite("->");
                         SourceWrite(method.Field.Name);
                     }
 
@@ -407,7 +422,8 @@ namespace BulletSharpGen
                         }
                         else
                         {
-                            SourceWrite("_native->");
+                            SourceWrite(nativePointer);
+                            SourceWrite("->");
                             SourceWrite(method.Field.Name);
                             SourceWrite(" = ");
                             SourceWrite(param.Name);
@@ -429,7 +445,8 @@ namespace BulletSharpGen
                         }
                         else
                         {
-                            SourceWrite("_native->");
+                            SourceWrite(nativePointer);
+                            SourceWrite("->");
                         }
                     }
                     OutputMethodMarshal(method, numParameters);
@@ -473,6 +490,7 @@ namespace BulletSharpGen
             }
 
             EnsureHeaderWhiteSpace();
+            EnsureSourceWhiteSpace();
 
             // Write access modifier
             WriteTabs(level);
@@ -491,11 +509,14 @@ namespace BulletSharpGen
             if (c.BaseClass != null)
             {
                 HeaderWrite(" : ");
-                HeaderWrite(c.BaseClass.ManagedName);
+                HeaderWriteLine(c.BaseClass.ManagedName);
             }
-            HeaderWriteLine();
+            else
+            {
+                HeaderWriteLine(" : IDisposable");
+            }
             WriteTabs(level);
-            headerWriter.WriteLine("{");
+            HeaderWriteLine("{");
             hasHeaderWhiteSpace = true;
 
             // Default access for ref class
@@ -515,6 +536,15 @@ namespace BulletSharpGen
                 currentAccess = RefAccessSpecifier.Public;
             }
 
+            // Downcast native pointer if any methods in a derived class use it
+            if (c.BaseClass != null && c.Methods.Any(m => !m.IsConstructor && !m.IsStatic))
+            {
+                SourceWrite("#define Native static_cast<");
+                SourceWrite(c.FullName);
+                SourceWriteLine("*>(_native)");
+                SourceWriteLine();
+            }
+
             // Write the unmanaged pointer to the base class
             if (c.BaseClass == null)
             {
@@ -526,7 +556,7 @@ namespace BulletSharpGen
 
                 WriteTabs(level + 1);
                 HeaderWrite(c.FullName);
-                headerWriter.WriteLine("* _native;");
+                HeaderWriteLine("* _native;");
             }
 
             // TODO: Write constructor from unmanaged pointer only if the class is ever instantiated in this way.
@@ -541,8 +571,7 @@ namespace BulletSharpGen
             Write('(');
             Write(c.FullName);
             Write("* native)");
-            headerWriter.WriteLine(';');
-            hasHeaderWhiteSpace = false;
+            HeaderWriteLine(';');
             SourceWriteLine();
             if (c.BaseClass != null)
             {
@@ -558,8 +587,47 @@ namespace BulletSharpGen
                 SourceWriteLine("_native = native;");
             }
             SourceWriteLine('}');
+            hasHeaderWhiteSpace = false;
+            hasSourceWhiteSpace = false;
 
-            // TODO: write destructor & finalizer
+            // Write destructor & finalizer
+            if (c.BaseClass == null)
+            {
+                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
+                WriteTabs(level + 1);
+                HeaderWrite("!");
+                HeaderWrite(c.ManagedName);
+                HeaderWriteLine("();");
+                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Protected);
+                WriteTabs(level + 1);
+                HeaderWrite("~");
+                HeaderWrite(c.ManagedName);
+                HeaderWriteLine("();");
+                hasHeaderWhiteSpace = false;
+
+                EnsureSourceWhiteSpace();
+                SourceWrite(c.ManagedName);
+                SourceWrite("::~");
+                SourceWrite(c.ManagedName);
+                SourceWriteLine("()");
+                SourceWriteLine('{');
+                SourceWrite('\t');
+                SourceWrite("this->!");
+                SourceWrite(c.ManagedName);
+                SourceWriteLine("();");
+                SourceWriteLine('}');
+                SourceWriteLine();
+                
+                SourceWrite(c.ManagedName);
+                SourceWrite("::!");
+                SourceWrite(c.ManagedName);
+                SourceWriteLine("()");
+                SourceWriteLine('{');
+                SourceWriteLine("\tdelete _native;");
+                SourceWriteLine("\t_native = NULL;");
+                SourceWriteLine('}');
+                hasSourceWhiteSpace = false;
+            }
 
             // Write constructors
             int constructorCount = 0;
@@ -618,9 +686,9 @@ namespace BulletSharpGen
                 HeaderWrite("property ");
                 HeaderWrite(typeRefName);
                 HeaderWrite(" ");
-                headerWriter.WriteLine(prop.Name);
+                HeaderWriteLine(prop.Name);
                 WriteTabs(level + 1);
-                headerWriter.WriteLine("{");
+                HeaderWriteLine("{");
                 
                 // Getter/Setter
                 OutputMethod(prop.Getter, level + 1);
@@ -630,13 +698,13 @@ namespace BulletSharpGen
                 }
 
                 WriteTabs(level + 1);
-                headerWriter.WriteLine("}");
+                HeaderWriteLine("}");
 
                 hasHeaderWhiteSpace = false;
             }
 
             WriteTabs(level);
-            headerWriter.WriteLine("};");
+            HeaderWriteLine("};");
             hasHeaderWhiteSpace = false;
         }
 
@@ -653,12 +721,12 @@ namespace BulletSharpGen
 
                 Directory.CreateDirectory(outDirectory);
                 var headerFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".h", FileMode.Create, FileAccess.Write);
-                headerWriter = new StreamWriter(headerFile);
-                headerWriter.WriteLine("#pragma once");
+                _headerWriter = new StreamWriter(headerFile);
+                HeaderWriteLine("#pragma once");
                 HeaderWriteLine();
 
                 var sourceFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cpp", FileMode.Create, FileAccess.Write);
-                sourceWriter = new StreamWriter(sourceFile);
+                _sourceWriter = new StreamWriter(sourceFile);
                 SourceWriteLine("#include \"StdAfx.h\"");
                 SourceWriteLine();
 
@@ -669,15 +737,15 @@ namespace BulletSharpGen
                     {
                         HeaderWrite("#include \"");
                         HeaderWrite(include.ManagedName);
-                        headerWriter.WriteLine(".h\"");
+                        HeaderWriteLine(".h\"");
                     }
                     HeaderWriteLine();
                 }
 
                 // Write namespace
                 HeaderWrite("namespace ");
-                headerWriter.WriteLine(namespaceName);
-                headerWriter.WriteLine("{");
+                HeaderWriteLine(namespaceName);
+                HeaderWriteLine("{");
                 hasHeaderWhiteSpace = true;
 
                 // Find forward references
@@ -698,7 +766,7 @@ namespace BulletSharpGen
                     WriteTabs(1);
                     HeaderWrite("ref class ");
                     HeaderWrite(c.ManagedName);
-                    headerWriter.WriteLine(";");
+                    HeaderWriteLine(";");
                     if (!forwardRefHeaders.Contains(c.Header))
                     {
                         forwardRefHeaders.Add(c.Header);
@@ -717,7 +785,6 @@ namespace BulletSharpGen
                         SourceWrite(h.ManagedName);
                         SourceWriteLine(".h\"");
                     }
-                    SourceWriteLine();
                 }
 
                 // Write classes
@@ -726,10 +793,10 @@ namespace BulletSharpGen
                     OutputClass(c, 1);
                 }
 
-                headerWriter.WriteLine("};");
-                headerWriter.Dispose();
+                HeaderWriteLine("};");
+                _headerWriter.Dispose();
                 headerFile.Dispose();
-                sourceWriter.Dispose();
+                _sourceWriter.Dispose();
                 sourceFile.Dispose();
             }
 

@@ -9,12 +9,12 @@ btBox2dBox2dCollisionAlgorithm::CreateFunc* btBox2dBox2dCollisionAlgorithm_Creat
 	return new btBox2dBox2dCollisionAlgorithm::CreateFunc();
 }
 
-btBox2dBox2dCollisionAlgorithm* btBox2dBox2dCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci)
+btBox2dBox2dCollisionAlgorithm* btBox2dBox2dCollisionAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci)
 {
 	return new btBox2dBox2dCollisionAlgorithm(*ci);
 }
 
-btBox2dBox2dCollisionAlgorithm* btBox2dBox2dCollisionAlgorithm_new2(btPersistentManifold* mf, btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap)
+btBox2dBox2dCollisionAlgorithm* btBox2dBox2dCollisionAlgorithm_new2(btPersistentManifold* mf, const btCollisionAlgorithmConstructionInfo* ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap)
 {
 	return new btBox2dBox2dCollisionAlgorithm(mf, *ci, body0Wrap, body1Wrap);
 }

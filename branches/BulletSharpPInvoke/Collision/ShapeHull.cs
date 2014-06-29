@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class ShapeHull
+	public class ShapeHull : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -41,25 +41,35 @@ namespace BulletSharp
             get { return btShapeHull_numVertices(_native); }
 		}
 
+		public IntPtr IndexPointer
+		{
+			get { return btShapeHull_getIndexPointer(_native); }
+		}
+
 		public UIntArray Indices
 		{
             get
             {
                 if (_indices == null)
                 {
-                    _indices = new UIntArray(btShapeHull_getIndexPointer(_native), NumIndices);
+                    _indices = new UIntArray(IndexPointer, NumIndices);
                 }
                 return _indices;
             }
+		}
+
+        public IntPtr VertexPointer
+		{
+            get { return btShapeHull_getVertexPointer(_native); }
 		}
 
 		public Vector3Array Vertices
 		{
             get
             {
-                if (_vertices == null)
+                if (_vertices == null || _vertices.Count != NumVertices)
                 {
-                    _vertices = new Vector3Array(btShapeHull_getVertexPointer(_native), NumVertices);
+                    _vertices = new Vector3Array(VertexPointer, NumVertices);
                 }
                 return _vertices;
             }

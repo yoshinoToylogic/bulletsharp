@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -46,7 +46,7 @@ namespace BulletSharp
         UserType = 32
     }
 
-	public class CollisionObject
+	public class CollisionObject : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -88,14 +88,14 @@ namespace BulletSharp
 		{
 		}
 
-		public void Activate(bool forceActivation)
-		{
-			btCollisionObject_activate(_native, forceActivation);
-		}
-
 		public void Activate()
 		{
-			btCollisionObject_activate2(_native);
+			btCollisionObject_activate(_native);
+		}
+
+		public void Activate(bool forceActivation)
+		{
+			btCollisionObject_activate2(_native, forceActivation);
 		}
 
 		public int CalculateSerializeBufferSize()
@@ -118,14 +118,14 @@ namespace BulletSharp
             btCollisionObject_getWorldTransform(_native, out transform);
         }
 
-        public bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode)
-		{
-			return btCollisionObject_hasAnisotropicFriction(_native, frictionMode);
-		}
-
 		public bool HasAnisotropicFriction()
 		{
-			return btCollisionObject_hasAnisotropicFriction2(_native);
+			return btCollisionObject_hasAnisotropicFriction(_native);
+		}
+
+        public bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode)
+		{
+			return btCollisionObject_hasAnisotropicFriction2(_native, frictionMode);
 		}
 
 		public IntPtr InternalGetExtensionPointer()
@@ -142,7 +142,7 @@ namespace BulletSharp
 		{
 			return btCollisionObject_mergesSimulationIslands(_native);
 		}
-        
+
 		public string Serialize(IntPtr dataBuffer, Serializer serializer)
 		{
 			return Marshal.PtrToStringAnsi(btCollisionObject_serialize(_native, dataBuffer, serializer._native));
@@ -153,25 +153,25 @@ namespace BulletSharp
 			btCollisionObject_serializeSingleObject(_native, serializer._native);
 		}
 
-        public void SetAnisotropicFriction(ref Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
-        {
-            btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction, frictionMode);
-        }
-
-        public void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
-		{
-			btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction, frictionMode);
-		}
-
         public void SetAnisotropicFriction(ref Vector3 anisotropicFriction)
         {
-            btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction);
+            btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction);
         }
 
 		public void SetAnisotropicFriction(Vector3 anisotropicFriction)
 		{
-			btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction);
+			btCollisionObject_setAnisotropicFriction(_native, ref anisotropicFriction);
 		}
+
+        public void SetAnisotropicFriction(ref Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
+        {
+            btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction, frictionMode);
+        }
+
+        public void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
+        {
+            btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction, frictionMode);
+        }
 
         public ActivationState ActivationState
 		{
@@ -187,7 +187,7 @@ namespace BulletSharp
 				btCollisionObject_getAnisotropicFriction(_native, out value);
 				return value;
 			}
-            set { btCollisionObject_setAnisotropicFriction2(_native, ref value); }
+            set { btCollisionObject_setAnisotropicFriction(_native, ref value); }
 		}
 
 		public BroadphaseProxy BroadphaseHandle
@@ -379,9 +379,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionObject_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionObject_activate(IntPtr obj, bool forceActivation);
+		static extern void btCollisionObject_activate(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionObject_activate2(IntPtr obj);
+		static extern void btCollisionObject_activate2(IntPtr obj, bool forceActivation);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCollisionObject_calculateSerializeBufferSize(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -433,9 +433,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionObject_getWorldTransform(IntPtr obj, [Out] out Matrix transform);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btCollisionObject_hasAnisotropicFriction(IntPtr obj, AnisotropicFrictionFlags frictionMode);
+		static extern bool btCollisionObject_hasAnisotropicFriction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btCollisionObject_hasAnisotropicFriction2(IntPtr obj);
+        static extern bool btCollisionObject_hasAnisotropicFriction2(IntPtr obj, AnisotropicFrictionFlags frictionMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btCollisionObject_hasContactResponse(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -459,9 +459,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionObject_setActivationState(IntPtr obj, ActivationState newState);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_setAnisotropicFriction(IntPtr obj, [In] ref Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
+		static extern void btCollisionObject_setAnisotropicFriction(IntPtr obj, [In] ref Vector3 anisotropicFriction);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionObject_setAnisotropicFriction2(IntPtr obj, [In] ref Vector3 anisotropicFriction);
+        static extern void btCollisionObject_setAnisotropicFriction2(IntPtr obj, [In] ref Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_setBroadphaseHandle(IntPtr obj, IntPtr handle);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

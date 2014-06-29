@@ -5,7 +5,7 @@
 #include "conversion.h"
 #include "btConvexConcaveCollisionAlgorithm_wrap.h"
 
-btConvexTriangleCallback* btConvexTriangleCallback_new(btDispatcher* dispatcher, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, bool isSwapped)
+btConvexTriangleCallback* btConvexTriangleCallback_new(btDispatcher* dispatcher, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped)
 {
 	return new btConvexTriangleCallback(dispatcher, body0Wrap, body1Wrap, isSwapped);
 }
@@ -45,7 +45,7 @@ void btConvexTriangleCallback_setManifoldPtr(btConvexTriangleCallback* obj, btPe
 	obj->m_manifoldPtr = value;
 }
 
-void btConvexTriangleCallback_setTimeStepAndCounters(btConvexTriangleCallback* obj, btScalar collisionMarginTriangle, btDispatcherInfo* dispatchInfo, btCollisionObjectWrapper* convexBodyWrap, btCollisionObjectWrapper* triBodyWrap, btManifoldResult* resultOut)
+void btConvexTriangleCallback_setTimeStepAndCounters(btConvexTriangleCallback* obj, btScalar collisionMarginTriangle, const btDispatcherInfo* dispatchInfo, const btCollisionObjectWrapper* convexBodyWrap, const btCollisionObjectWrapper* triBodyWrap, btManifoldResult* resultOut)
 {
 	obj->setTimeStepAndCounters(collisionMarginTriangle, *dispatchInfo, convexBodyWrap, triBodyWrap, resultOut);
 }
@@ -65,7 +65,7 @@ btConvexConcaveCollisionAlgorithm::SwappedCreateFunc* btConvexConcaveCollisionAl
 	return new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc();
 }
 
-btConvexConcaveCollisionAlgorithm* btConvexConcaveCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, bool isSwapped)
+btConvexConcaveCollisionAlgorithm* btConvexConcaveCollisionAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped)
 {
 	return new btConvexConcaveCollisionAlgorithm(*ci, body0Wrap, body1Wrap, isSwapped);
 }

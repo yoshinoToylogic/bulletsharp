@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class CollisionAlgorithmCreateFunc
+	public class CollisionAlgorithmCreateFunc : IDisposable
 	{
 		internal IntPtr _native;
 

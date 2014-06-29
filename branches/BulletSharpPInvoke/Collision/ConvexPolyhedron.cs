@@ -1,11 +1,11 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class Face
+	public class Face : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -21,14 +21,12 @@ namespace BulletSharp
         /*
 		public AlignedIntArray Indices
 		{
-			get { return btFace_getIndices(_native); }
-			set { btFace_setIndices(_native, value._native); }
+            get { return new AlignedIntArray(btFace_getIndices(_native)); }
 		}
 
-		public float Plane
+		public ScalarArray Plane
 		{
-			get { return btFace_getPlane(_native); }
-			set { btFace_setPlane(_native, value._native); }
+            get { return new ScalarArray(btFace_getPlane(_native)); }
 		}
         */
 		public void Dispose()
@@ -53,19 +51,19 @@ namespace BulletSharp
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btFace_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btFace_getIndices(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btFace_getPlane(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btFace_setIndices(IntPtr obj, AlignedObjectArray value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btFace_setPlane(IntPtr obj, IntPtr value);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        //static extern IntPtr btFace_getIndices(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btFace_getPlane(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern void btFace_setIndices(IntPtr obj, AlignedObjectArray value);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern void btFace_setPlane(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btFace_delete(IntPtr obj);
 	}
 
-	public class ConvexPolyhedron
+	public class ConvexPolyhedron : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -130,7 +128,7 @@ namespace BulletSharp
 			set { btConvexPolyhedron_setLocalCenter(_native, ref value); }
 		}
 
-        public Vector3 MC
+        public Vector3 C
 		{
             get
             {
@@ -141,7 +139,7 @@ namespace BulletSharp
 			set { btConvexPolyhedron_setMC(_native, ref value); }
 		}
 
-		public Vector3 ME
+		public Vector3 E
 		{
             get
             {

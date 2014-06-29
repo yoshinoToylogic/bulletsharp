@@ -4,9 +4,9 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class SimulationIslandManager
+	public class SimulationIslandManager : IDisposable
 	{
-		public class IslandCallback
+		public class IslandCallback : IDisposable
 		{
 			internal IntPtr _native;
 
@@ -40,8 +40,8 @@ namespace BulletSharp
 				Dispose(false);
 			}
 
-			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-			static extern void btSimulationIslandManager_IslandCallback_processIsland(IntPtr obj, IntPtr bodies, int numBodies, IntPtr manifolds, int numManifolds, int islandId);
+			//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+			//static extern void btSimulationIslandManager_IslandCallback_processIsland(IntPtr obj, IntPtr bodies, int numBodies, IntPtr manifolds, int numManifolds, int islandId);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern void btSimulationIslandManager_IslandCallback_delete(IntPtr obj);
 		}
@@ -95,12 +95,12 @@ namespace BulletSharp
 			get { return btSimulationIslandManager_getSplitIslands(_native); }
 			set { btSimulationIslandManager_setSplitIslands(_native, value); }
 		}
-        /*
+
 		public UnionFind UnionFind
 		{
-			get { return btSimulationIslandManager_getUnionFind(_native); }
+			get { return new UnionFind(btSimulationIslandManager_getUnionFind(_native)); }
 		}
-        */
+
 		public void Dispose()
 		{
 			Dispose(true);

@@ -1,7 +1,7 @@
 #include "conversion.h"
 #include "btStaticPlaneShape_wrap.h"
 
-btStaticPlaneShape* btStaticPlaneShape_new(btScalar* planeNormal, btScalar planeConstant)
+btStaticPlaneShape* btStaticPlaneShape_new(const btScalar* planeNormal, btScalar planeConstant)
 {
 	VECTOR3_CONV(planeNormal);
 	return new btStaticPlaneShape(VECTOR3_USE(planeNormal), planeConstant);

@@ -1,4 +1,6 @@
-#include "conversion.h"
+#include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
+#include <BulletCollision/CollisionDispatch/btCollisionDispatcher.h>
+
 #include "btCollisionDispatcher_wrap.h"
 
 btCollisionDispatcher* btCollisionDispatcher_new(btCollisionConfiguration* collisionConfiguration)
@@ -6,17 +8,12 @@ btCollisionDispatcher* btCollisionDispatcher_new(btCollisionConfiguration* colli
 	return new btCollisionDispatcher(collisionConfiguration);
 }
 
-void btCollisionDispatcher_defaultNearCallback(btBroadphasePair* collisionPair, btCollisionDispatcher* dispatcher, btDispatcherInfo* dispatchInfo)
+void btCollisionDispatcher_defaultNearCallback(btBroadphasePair* collisionPair, btCollisionDispatcher* dispatcher, const btDispatcherInfo* dispatchInfo)
 {
 	btCollisionDispatcher::defaultNearCallback(*collisionPair, *dispatcher, *dispatchInfo);
 }
 
 btCollisionConfiguration* btCollisionDispatcher_getCollisionConfiguration(btCollisionDispatcher* obj)
-{
-	return obj->getCollisionConfiguration();
-}
-
-btCollisionConfiguration* btCollisionDispatcher_getCollisionConfiguration2(btCollisionDispatcher* obj)
 {
 	return obj->getCollisionConfiguration();
 }
