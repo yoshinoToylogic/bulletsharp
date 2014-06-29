@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -29,14 +29,14 @@ namespace BulletSharp
 			btPolyhedralConvexShape_getVertex(_native, i, out vtx);
 		}
 
-		public bool InitializePolyhedralFeatures(int shiftVerticesByMargin)
-		{
-			return btPolyhedralConvexShape_initializePolyhedralFeatures(_native, shiftVerticesByMargin);
-		}
-
 		public bool InitializePolyhedralFeatures()
 		{
-			return btPolyhedralConvexShape_initializePolyhedralFeatures2(_native);
+			return btPolyhedralConvexShape_initializePolyhedralFeatures(_native);
+		}
+
+		public bool InitializePolyhedralFeatures(int shiftVerticesByMargin)
+		{
+			return btPolyhedralConvexShape_initializePolyhedralFeatures2(_native, shiftVerticesByMargin);
 		}
 
         public bool IsInside(ref Vector3 pt, float tolerance)
@@ -84,7 +84,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btPolyhedralConvexShape_getConvexPolyhedron(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btPolyhedralConvexShape_getEdge(IntPtr obj, int i, [Out] out Vector3 pa, [Out] out Vector3 pb);
+		static extern void btPolyhedralConvexShape_getEdge(IntPtr obj, int i, [Out] out Vector3 pa, [Out] out Vector3 pb);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btPolyhedralConvexShape_getNumEdges(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -92,13 +92,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btPolyhedralConvexShape_getNumVertices(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btPolyhedralConvexShape_getPlane(IntPtr obj, [Out] out Vector3 planeNormal, [Out] out Vector3 planeSupport, int i);
+		static extern void btPolyhedralConvexShape_getPlane(IntPtr obj, [Out] out Vector3 planeNormal, [Out] out Vector3 planeSupport, int i);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btPolyhedralConvexShape_getVertex(IntPtr obj, int i, [Out] out Vector3 vtx);
+		static extern void btPolyhedralConvexShape_getVertex(IntPtr obj, int i, [Out] out Vector3 vtx);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btPolyhedralConvexShape_initializePolyhedralFeatures(IntPtr obj, int shiftVerticesByMargin);
+		static extern bool btPolyhedralConvexShape_initializePolyhedralFeatures(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btPolyhedralConvexShape_initializePolyhedralFeatures2(IntPtr obj);
+		static extern bool btPolyhedralConvexShape_initializePolyhedralFeatures2(IntPtr obj, int shiftVerticesByMargin);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btPolyhedralConvexShape_isInside(IntPtr obj, [In] ref Vector3 pt, float tolerance);
 	}
@@ -126,7 +126,7 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btPolyhedralConvexAabbCachingShape_getNonvirtualAabb(IntPtr obj, [In] ref Matrix trans, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax, float margin);
+		static extern void btPolyhedralConvexAabbCachingShape_getNonvirtualAabb(IntPtr obj, [In] ref Matrix trans, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax, float margin);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPolyhedralConvexAabbCachingShape_recalcLocalAabb(IntPtr obj);
 	}

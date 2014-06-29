@@ -24,12 +24,12 @@ namespace BulletSharp
 
 		public Vector3 PlaneNormal
 		{
-            get
-            {
-                Vector3 value;
-                btStaticPlaneShape_getPlaneNormal(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btStaticPlaneShape_getPlaneNormal(_native, out value);
+				return value;
+			}
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

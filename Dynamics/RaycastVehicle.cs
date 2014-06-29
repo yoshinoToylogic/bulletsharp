@@ -168,7 +168,7 @@ namespace BulletSharp
             Vector3 vel2 = body1.GetVelocityInLocalPoint(rel_pos2);
             Vector3 vel = vel1 - vel2;
 
-            float vrel = Vector3.Dot(frictionDirectionWorld, vel);
+            float vrel = Vector3.Dot(ref frictionDirectionWorld, ref vel);
 
             // calculate j that moves us to zero relative velocity
             j1 = -vrel * jacDiagABInv;
@@ -323,10 +323,10 @@ namespace BulletSharp
             Vector3 m_bJ = Vector3.TransformCoordinate(Vector3.Cross(rel_pos2, -normal), world2B);
             Vector3 m_0MinvJt = body1.InvInertiaDiagLocal * m_aJ;
             Vector3 m_1MinvJt = body2.InvInertiaDiagLocal * m_bJ;
-            float jacDiagAB = body1.InvMass + Vector3.Dot(m_0MinvJt, m_aJ) + body2.InvMass + Vector3.Dot(m_1MinvJt, m_bJ);
+            float jacDiagAB = body1.InvMass + Vector3.Dot(ref m_0MinvJt, ref m_aJ) + body2.InvMass + Vector3.Dot(ref m_1MinvJt, ref m_bJ);
             float jacDiagABInv = 1.0f / jacDiagAB;
 
-            float rel_vel = Vector3.Dot(normal, vel);
+            float rel_vel = Vector3.Dot(ref normal, ref vel);
 
             //todo: move this into proper structure
             const float contactDamping = 0.2f;
@@ -385,7 +385,7 @@ namespace BulletSharp
                         wheelTrans[2, indexRightAxis]);
 
                     Vector3 surfNormalWS = wheel.RaycastInfo.ContactNormalWS;
-                    float proj = Vector3.Dot(axle[i], surfNormalWS);
+                    float proj = Vector3.Dot(ref axle[i], ref surfNormalWS);
                     axle[i] -= surfNormalWS * proj;
                     axle[i].Normalize();
 
@@ -504,7 +504,7 @@ namespace BulletSharp
                         RigidBody.CenterOfMassTransform.Row3[indexUpAxis],
                         RigidBody.CenterOfMassTransform.Row4[indexUpAxis]);
                     Vector3 vChassisWorldUp3 = new Vector3(vChassisWorldUp.X, vChassisWorldUp.Y, vChassisWorldUp.Z);
-                    rel_pos -= vChassisWorldUp3 * (Vector3.Dot(vChassisWorldUp3, rel_pos) * (1.0f - wheel.RollInfluence));
+                    rel_pos -= vChassisWorldUp3 * (Vector3.Dot(ref vChassisWorldUp3, ref rel_pos) * (1.0f - wheel.RollInfluence));
 #else
                     rel_pos[indexUpAxis] *= wheel.RollInfluence;
 #endif
@@ -637,7 +637,7 @@ namespace BulletSharp
                     float proj = Vector3.Dot(fwd, wheel.RaycastInfo.ContactNormalWS);
                     fwd -= wheel.RaycastInfo.ContactNormalWS * proj;
 
-                    float proj2 = Vector3.Dot(fwd, vel);
+                    float proj2 = Vector3.Dot(ref fwd, ref vel);
 
                     wheel.DeltaRotation = (proj2 * step) / (wheel.WheelsRadius);
                     wheel.Rotation += wheel.DeltaRotation;

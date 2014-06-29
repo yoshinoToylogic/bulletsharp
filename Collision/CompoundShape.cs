@@ -1,11 +1,11 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class CompoundShapeChild
+	public class CompoundShapeChild : IDisposable
 	{
 		internal IntPtr _native;
         bool _preventDelete;
@@ -114,13 +114,13 @@ namespace BulletSharp
 		{
 		}
 
-		public CompoundShape(bool enableDynamicAabbTree)
-			: base(btCompoundShape_new(enableDynamicAabbTree))
+		public CompoundShape()
+			: base(btCompoundShape_new())
 		{
 		}
 
-		public CompoundShape()
-			: base(btCompoundShape_new2())
+		public CompoundShape(bool enableDynamicAabbTree)
+			: base(btCompoundShape_new2(enableDynamicAabbTree))
 		{
 		}
 
@@ -143,7 +143,7 @@ namespace BulletSharp
 		{
 			btCompoundShape_calculatePrincipalAxisTransform(_native, masses, ref principal, ref inertia);
 		}
-        
+
 		public void CreateAabbTreeFromChildren()
 		{
 			btCompoundShape_createAabbTreeFromChildren(_native);
@@ -153,6 +153,11 @@ namespace BulletSharp
 		{
             return CollisionShape.GetManaged(btCompoundShape_getChildShape(_native, index));
 		}
+
+        public void GetChildTransform(int index, out Matrix value)
+        {
+            btCompoundShape_getChildTransform(_native, index, out value);
+        }
 
 		public Matrix GetChildTransform(int index)
 		{
@@ -176,24 +181,14 @@ namespace BulletSharp
 			btCompoundShape_removeChildShapeByIndex(_native, childShapeindex);
 		}
 
-        public void UpdateChildTransform(int childIndex, ref Matrix newChildTransform, bool shouldRecalculateLocalAabb)
-        {
-            btCompoundShape_updateChildTransform(_native, childIndex, ref newChildTransform, shouldRecalculateLocalAabb);
-        }
+		public void UpdateChildTransform(int childIndex, Matrix newChildTransform)
+		{
+			btCompoundShape_updateChildTransform(_native, childIndex, ref newChildTransform);
+		}
 
 		public void UpdateChildTransform(int childIndex, Matrix newChildTransform, bool shouldRecalculateLocalAabb)
 		{
-			btCompoundShape_updateChildTransform(_native, childIndex, ref newChildTransform, shouldRecalculateLocalAabb);
-		}
-
-        public void UpdateChildTransform(int childIndex, ref Matrix newChildTransform)
-        {
-            btCompoundShape_updateChildTransform2(_native, childIndex, ref newChildTransform);
-        }
-
-		public void UpdateChildTransform(int childIndex, Matrix newChildTransform)
-		{
-			btCompoundShape_updateChildTransform2(_native, childIndex, ref newChildTransform);
+			btCompoundShape_updateChildTransform2(_native, childIndex, ref newChildTransform, shouldRecalculateLocalAabb);
 		}
 
 		public CompoundShapeChildArray ChildList
@@ -224,9 +219,9 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCompoundShape_new(bool enableDynamicAabbTree);
+		static extern IntPtr btCompoundShape_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCompoundShape_new2();
+		static extern IntPtr btCompoundShape_new2(bool enableDynamicAabbTree);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_addChildShape(IntPtr obj, [In] ref Matrix localTransform, IntPtr shape);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -252,8 +247,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_removeChildShapeByIndex(IntPtr obj, int childShapeindex);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShape_updateChildTransform(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform, bool shouldRecalculateLocalAabb);
+		static extern void btCompoundShape_updateChildTransform(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShape_updateChildTransform2(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform);
+		static extern void btCompoundShape_updateChildTransform2(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform, bool shouldRecalculateLocalAabb);
 	}
 }

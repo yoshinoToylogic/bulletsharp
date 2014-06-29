@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class CollisionShape
+	public class CollisionShape : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -129,7 +129,7 @@ namespace BulletSharp
 		{
 			get { return btCollisionShape_getAngularMotionDisc(_native); }
 		}
-        
+
 		public Vector3 AnisotropicRollingFrictionDirection
 		{
             get
@@ -139,7 +139,7 @@ namespace BulletSharp
                 return value;
             }
 		}
-        
+
 		public bool IsCompound
 		{
 			get { return btCollisionShape_isCompound(_native); }
@@ -185,28 +185,28 @@ namespace BulletSharp
 			get { return btCollisionShape_isSoftBody(_native); }
 		}
 
-        public Vector3 LocalScaling
-        {
-            get
-            {
-                Vector3 scaling;
-                btCollisionShape_getLocalScaling(_native, out scaling);
-                return scaling;
-            }
-            set { btCollisionShape_setLocalScaling(_native, ref value); }
-        }
+		public Vector3 LocalScaling
+		{
+			get
+			{
+				Vector3 value;
+				btCollisionShape_getLocalScaling(_native, out value);
+				return value;
+			}
+			set { btCollisionShape_setLocalScaling(_native, ref value); }
+		}
 
 		public float Margin
 		{
 			get { return btCollisionShape_getMargin(_native); }
 			set { btCollisionShape_setMargin(_native, value); }
 		}
-        
+
 		public string Name
 		{
             get { return Marshal.PtrToStringAnsi(btCollisionShape_getName(_native)); }
 		}
-        
+
         public BroadphaseNativeType ShapeType
 		{
 			get { return btCollisionShape_getShapeType(_native); }

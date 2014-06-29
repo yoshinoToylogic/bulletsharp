@@ -5,7 +5,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class TetrahedronShapeEx : BU_Simplex1to4
+	public class TetrahedronShapeEx : BuSimplex1To4
 	{
 		internal TetrahedronShapeEx(IntPtr native)
 			: base(native)

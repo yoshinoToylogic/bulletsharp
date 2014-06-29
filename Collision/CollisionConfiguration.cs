@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class CollisionConfiguration
+	public class CollisionConfiguration : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -12,12 +12,12 @@ namespace BulletSharp
 		{
 			_native = native;
 		}
-        /*
+
 		public CollisionAlgorithmCreateFunc GetCollisionAlgorithmCreateFunc(int proxyType0, int proxyType1)
 		{
-			return btCollisionConfiguration_getCollisionAlgorithmCreateFunc(_native, proxyType0, proxyType1);
+			return new CollisionAlgorithmCreateFunc(btCollisionConfiguration_getCollisionAlgorithmCreateFunc(_native, proxyType0, proxyType1));
 		}
-
+        /*
 		public PoolAllocator CollisionAlgorithmPool
 		{
 			get { return btCollisionConfiguration_getCollisionAlgorithmPool(_native); }

@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -12,8 +12,13 @@ namespace BulletSharp
 		{
 		}
 
+        public BoxShape(ref Vector3 boxHalfExtents)
+            : base(btBoxShape_new(ref boxHalfExtents))
+        {
+        }
+
 		public BoxShape(Vector3 boxHalfExtents)
-			: base(btBoxShape_new(ref boxHalfExtents))
+			: this(ref boxHalfExtents)
 		{
 		}
 

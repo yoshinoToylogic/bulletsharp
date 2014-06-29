@@ -737,7 +737,7 @@ namespace BulletSharp
         public static Quaternion ShortestArcQuat(ref Vector3 axisInA, ref Vector3 axisInB)
         {
             Vector3 c = Vector3.Cross(axisInA, axisInB);
-            float d = Vector3.Dot(axisInA, axisInB);
+            float d = Vector3.Dot(ref axisInA, ref axisInB);
 
             if (d < -1.0 + SIMD_EPSILON)
             {

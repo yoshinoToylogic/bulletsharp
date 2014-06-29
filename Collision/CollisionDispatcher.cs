@@ -12,6 +12,8 @@ namespace BulletSharp
         DisableContactPoolDynamicAllocation = 4
     }
 
+    public delegate void NearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo);
+
 	public class CollisionDispatcher : Dispatcher
 	{
         protected CollisionConfiguration _collisionConfiguration;
