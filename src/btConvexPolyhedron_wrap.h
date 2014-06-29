@@ -17,11 +17,11 @@ extern "C"
 	EXPORT btAlignedVector3Array* btConvexPolyhedron_getUniqueEdges(btConvexPolyhedron* obj);
 	EXPORT btAlignedVector3Array* btConvexPolyhedron_getVertices(btConvexPolyhedron* obj);
 	EXPORT void btConvexPolyhedron_initialize(btConvexPolyhedron* obj);
-	EXPORT void btConvexPolyhedron_project(btConvexPolyhedron* obj, btScalar* trans, btScalar* dir, btScalar* minProj, btScalar* maxProj, btScalar* witnesPtMin, btScalar* witnesPtMax);
-	EXPORT void btConvexPolyhedron_setExtents(btConvexPolyhedron* obj, btScalar* value);
-	EXPORT void btConvexPolyhedron_setLocalCenter(btConvexPolyhedron* obj, btScalar* value);
-	EXPORT void btConvexPolyhedron_setMC(btConvexPolyhedron* obj, btScalar* value);
-	EXPORT void btConvexPolyhedron_setME(btConvexPolyhedron* obj, btScalar* value);
+	EXPORT void btConvexPolyhedron_project(btConvexPolyhedron* obj, const btScalar* trans, const btScalar* dir, btScalar* minProj, btScalar* maxProj, btScalar* witnesPtMin, btScalar* witnesPtMax);
+	EXPORT void btConvexPolyhedron_setExtents(btConvexPolyhedron* obj, const btScalar* value);
+	EXPORT void btConvexPolyhedron_setLocalCenter(btConvexPolyhedron* obj, const btScalar* value);
+	EXPORT void btConvexPolyhedron_setMC(btConvexPolyhedron* obj, const btScalar* value);
+	EXPORT void btConvexPolyhedron_setME(btConvexPolyhedron* obj, const btScalar* value);
 	EXPORT void btConvexPolyhedron_setRadius(btConvexPolyhedron* obj, btScalar value);
 	EXPORT bool btConvexPolyhedron_testContainment(btConvexPolyhedron* obj);
 	EXPORT void btConvexPolyhedron_delete(btConvexPolyhedron* obj);

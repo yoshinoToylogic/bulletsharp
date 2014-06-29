@@ -3,7 +3,7 @@
 #include "conversion.h"
 #include "btShapeHull_wrap.h"
 
-btShapeHull* btShapeHull_new(btConvexShape* shape)
+btShapeHull* btShapeHull_new(const btConvexShape* shape)
 {
 	return ALIGNED_NEW(btShapeHull) (shape);
 }

@@ -6,14 +6,14 @@ btCollisionObject* btCollisionObject_new()
 	return new btCollisionObject();
 }
 
-void btCollisionObject_activate(btCollisionObject* obj, bool forceActivation)
-{
-	obj->activate(forceActivation);
-}
-
-void btCollisionObject_activate2(btCollisionObject* obj)
+void btCollisionObject_activate(btCollisionObject* obj)
 {
 	obj->activate();
+}
+
+void btCollisionObject_activate2(btCollisionObject* obj, bool forceActivation)
+{
+	obj->activate(forceActivation);
 }
 
 int btCollisionObject_calculateSerializeBufferSize(btCollisionObject* obj)
@@ -21,7 +21,7 @@ int btCollisionObject_calculateSerializeBufferSize(btCollisionObject* obj)
 	return obj->calculateSerializeBufferSize();
 }
 
-bool btCollisionObject_checkCollideWith(btCollisionObject* obj, btCollisionObject* co)
+bool btCollisionObject_checkCollideWith(btCollisionObject* obj, const btCollisionObject* co)
 {
 	return obj->checkCollideWith(co);
 }
@@ -147,14 +147,14 @@ void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* trans
 	btTransformToMatrix(&obj->getWorldTransform(), transform);
 }
 
-bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj, int frictionMode)
-{
-	return obj->hasAnisotropicFriction(frictionMode);
-}
-
-bool btCollisionObject_hasAnisotropicFriction2(btCollisionObject* obj)
+bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj)
 {
 	return obj->hasAnisotropicFriction();
+}
+
+bool btCollisionObject_hasAnisotropicFriction2(btCollisionObject* obj, int frictionMode)
+{
+	return obj->hasAnisotropicFriction(frictionMode);
 }
 
 bool btCollisionObject_hasContactResponse(btCollisionObject* obj)
@@ -212,16 +212,16 @@ void btCollisionObject_setActivationState(btCollisionObject* obj, int newState)
 	obj->setActivationState(newState);
 }
 
-void btCollisionObject_setAnisotropicFriction(btCollisionObject* obj, btScalar* anisotropicFriction, int frictionMode)
-{
-	VECTOR3_CONV(anisotropicFriction);
-	obj->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), frictionMode);
-}
-
-void btCollisionObject_setAnisotropicFriction2(btCollisionObject* obj, btScalar* anisotropicFriction)
+void btCollisionObject_setAnisotropicFriction(btCollisionObject* obj, const btScalar* anisotropicFriction)
 {
 	VECTOR3_CONV(anisotropicFriction);
 	obj->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
+}
+
+void btCollisionObject_setAnisotropicFriction2(btCollisionObject* obj, const btScalar* anisotropicFriction, int frictionMode)
+{
+	VECTOR3_CONV(anisotropicFriction);
+	obj->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), frictionMode);
 }
 
 void btCollisionObject_setBroadphaseHandle(btCollisionObject* obj, btBroadphaseProxy* handle)
@@ -274,19 +274,19 @@ void btCollisionObject_setHitFraction(btCollisionObject* obj, btScalar hitFracti
 	obj->setHitFraction(hitFraction);
 }
 
-void btCollisionObject_setInterpolationAngularVelocity(btCollisionObject* obj, btScalar* angvel)
+void btCollisionObject_setInterpolationAngularVelocity(btCollisionObject* obj, const btScalar* angvel)
 {
 	VECTOR3_CONV(angvel);
 	obj->setInterpolationAngularVelocity(VECTOR3_USE(angvel));
 }
 
-void btCollisionObject_setInterpolationLinearVelocity(btCollisionObject* obj, btScalar* linvel)
+void btCollisionObject_setInterpolationLinearVelocity(btCollisionObject* obj, const btScalar* linvel)
 {
 	VECTOR3_CONV(linvel);
 	obj->setInterpolationLinearVelocity(VECTOR3_USE(linvel));
 }
 
-void btCollisionObject_setInterpolationWorldTransform(btCollisionObject* obj, btScalar* trans)
+void btCollisionObject_setInterpolationWorldTransform(btCollisionObject* obj, const btScalar* trans)
 {
 	TRANSFORM_CONV(trans);
 	obj->setInterpolationWorldTransform(TRANSFORM_USE(trans));
@@ -317,7 +317,7 @@ void btCollisionObject_setUserPointer(btCollisionObject* obj, void* userPointer)
 	obj->setUserPointer(userPointer);
 }
 
-void btCollisionObject_setWorldTransform(btCollisionObject* obj, btScalar* worldTrans)
+void btCollisionObject_setWorldTransform(btCollisionObject* obj, const btScalar* worldTrans)
 {
 	TRANSFORM_CONV(worldTrans);
 	obj->setWorldTransform(TRANSFORM_USE(worldTrans));

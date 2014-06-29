@@ -13,22 +13,26 @@ int btStridingMeshInterface_calculateSerializeBufferSize(btStridingMeshInterface
 	return obj->calculateSerializeBufferSize();
 }
 
-void btStridingMeshInterface_getLockedReadOnlyVertexIndexBase(btStridingMeshInterface* obj, const unsigned char ** vertexbase, int* numverts, PHY_ScalarType* type, int* stride, const unsigned char** indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype, int subpart)
+void btStridingMeshInterface_getLockedReadOnlyVertexIndexBase(btStridingMeshInterface* obj, const unsigned char** vertexbase, int* numverts, PHY_ScalarType* type, int* stride, const unsigned char** indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype)
+{
+	obj->getLockedReadOnlyVertexIndexBase(vertexbase, *numverts, *type, *stride, indexbase, *indexstride, *numfaces, *indicestype);
+}
+
+void btStridingMeshInterface_getLockedReadOnlyVertexIndexBase2(btStridingMeshInterface* obj, const unsigned char** vertexbase, int* numverts, PHY_ScalarType* type, int* stride, const unsigned char** indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype, int subpart)
 {
 	obj->getLockedReadOnlyVertexIndexBase(vertexbase, *numverts, *type, *stride, indexbase, *indexstride, *numfaces, *indicestype, subpart);
 }
 
-/*
-void btStridingMeshInterface_getLockedVertexIndexBase(btStridingMeshInterface* obj, * vertexbase, int* numverts, PHY_ScalarType* type, int* stride, * indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype, int subpart)
+void btStridingMeshInterface_getLockedVertexIndexBase(btStridingMeshInterface* obj, unsigned char** vertexbase, int* numverts, PHY_ScalarType* type, int* stride, unsigned char** indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype)
+{
+	obj->getLockedVertexIndexBase(vertexbase, *numverts, *type, *stride, indexbase, *indexstride, *numfaces, *indicestype);
+}
+
+void btStridingMeshInterface_getLockedVertexIndexBase2(btStridingMeshInterface* obj, unsigned char** vertexbase, int* numverts, PHY_ScalarType* type, int* stride, unsigned char** indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype, int subpart)
 {
 	obj->getLockedVertexIndexBase(vertexbase, *numverts, *type, *stride, indexbase, *indexstride, *numfaces, *indicestype, subpart);
 }
 
-void btStridingMeshInterface_getLockedVertexIndexBase2(btStridingMeshInterface* obj, * vertexbase, int* numverts, PHY_ScalarType* type, int* stride, * indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype)
-{
-	obj->getLockedVertexIndexBase(vertexbase, *numverts, *type, *stride, indexbase, *indexstride, *numfaces, *indicestype);
-}
-*/
 int btStridingMeshInterface_getNumSubParts(btStridingMeshInterface* obj)
 {
 	return obj->getNumSubParts();
@@ -53,7 +57,7 @@ bool btStridingMeshInterface_hasPremadeAabb(btStridingMeshInterface* obj)
 	return obj->hasPremadeAabb();
 }
 
-void btStridingMeshInterface_InternalProcessAllTriangles(btStridingMeshInterface* obj, btInternalTriangleIndexCallback* callback, btScalar* aabbMin, btScalar* aabbMax)
+void btStridingMeshInterface_InternalProcessAllTriangles(btStridingMeshInterface* obj, btInternalTriangleIndexCallback* callback, const btScalar* aabbMin, const btScalar* aabbMax)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
@@ -75,14 +79,14 @@ const char* btStridingMeshInterface_serialize(btStridingMeshInterface* obj, void
 	return obj->serialize(dataBuffer, serializer);
 }
 
-void btStridingMeshInterface_setPremadeAabb(btStridingMeshInterface* obj, btScalar* aabbMin, btScalar* aabbMax)
+void btStridingMeshInterface_setPremadeAabb(btStridingMeshInterface* obj, const btScalar* aabbMin, const btScalar* aabbMax)
 {
 	VECTOR3_CONV(aabbMin);
 	VECTOR3_CONV(aabbMax);
 	obj->setPremadeAabb(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 }
 
-void btStridingMeshInterface_setScaling(btStridingMeshInterface* obj, btScalar* scaling)
+void btStridingMeshInterface_setScaling(btStridingMeshInterface* obj, const btScalar* scaling)
 {
 	VECTOR3_CONV(scaling);
 	obj->setScaling(VECTOR3_USE(scaling));

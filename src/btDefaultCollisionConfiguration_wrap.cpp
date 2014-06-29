@@ -1,6 +1,6 @@
+#include <BulletCollision/CollisionDispatch/btDefaultCollisionConfiguration.h>
 #include <LinearMath/btPoolAllocator.h>
 
-#include "conversion.h"
 #include "btDefaultCollisionConfiguration_wrap.h"
 
 btDefaultCollisionConstructionInfo* btDefaultCollisionConstructionInfo_new()
@@ -73,14 +73,15 @@ void btDefaultCollisionConstructionInfo_delete(btDefaultCollisionConstructionInf
 	delete obj;
 }
 
-btDefaultCollisionConfiguration* btDefaultCollisionConfiguration_new(btDefaultCollisionConstructionInfo* constructionInfo)
-{
-	return new btDefaultCollisionConfiguration(*constructionInfo);
-}
 
-btDefaultCollisionConfiguration* btDefaultCollisionConfiguration_new2()
+btDefaultCollisionConfiguration* btDefaultCollisionConfiguration_new()
 {
 	return new btDefaultCollisionConfiguration();
+}
+
+btDefaultCollisionConfiguration* btDefaultCollisionConfiguration_new2(const btDefaultCollisionConstructionInfo* constructionInfo)
+{
+	return new btDefaultCollisionConfiguration(*constructionInfo);
 }
 
 btVoronoiSimplexSolver* btDefaultCollisionConfiguration_getSimplexSolver(btDefaultCollisionConfiguration* obj)
@@ -88,9 +89,9 @@ btVoronoiSimplexSolver* btDefaultCollisionConfiguration_getSimplexSolver(btDefau
 	return obj->getSimplexSolver();
 }
 
-void btDefaultCollisionConfiguration_setConvexConvexMultipointIterations(btDefaultCollisionConfiguration* obj, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+void btDefaultCollisionConfiguration_setConvexConvexMultipointIterations(btDefaultCollisionConfiguration* obj)
 {
-	obj->setConvexConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
+	obj->setConvexConvexMultipointIterations();
 }
 
 void btDefaultCollisionConfiguration_setConvexConvexMultipointIterations2(btDefaultCollisionConfiguration* obj, int numPerturbationIterations)
@@ -98,14 +99,14 @@ void btDefaultCollisionConfiguration_setConvexConvexMultipointIterations2(btDefa
 	obj->setConvexConvexMultipointIterations(numPerturbationIterations);
 }
 
-void btDefaultCollisionConfiguration_setConvexConvexMultipointIterations3(btDefaultCollisionConfiguration* obj)
+void btDefaultCollisionConfiguration_setConvexConvexMultipointIterations3(btDefaultCollisionConfiguration* obj, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 {
-	obj->setConvexConvexMultipointIterations();
+	obj->setConvexConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
 }
 
-void btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations(btDefaultCollisionConfiguration* obj, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
+void btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations(btDefaultCollisionConfiguration* obj)
 {
-	obj->setPlaneConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
+	obj->setPlaneConvexMultipointIterations();
 }
 
 void btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations2(btDefaultCollisionConfiguration* obj, int numPerturbationIterations)
@@ -113,7 +114,7 @@ void btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations2(btDefau
 	obj->setPlaneConvexMultipointIterations(numPerturbationIterations);
 }
 
-void btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations3(btDefaultCollisionConfiguration* obj)
+void btDefaultCollisionConfiguration_setPlaneConvexMultipointIterations3(btDefaultCollisionConfiguration* obj, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 {
-	obj->setPlaneConvexMultipointIterations();
+	obj->setPlaneConvexMultipointIterations(numPerturbationIterations, minimumPointsPerturbationThreshold);
 }

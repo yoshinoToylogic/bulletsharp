@@ -61,29 +61,29 @@ void btCompoundShapeChild_delete(btCompoundShapeChild* obj)
 	delete obj;
 }
 
-btCompoundShape* btCompoundShape_new(bool enableDynamicAabbTree)
-{
-	return new btCompoundShape(enableDynamicAabbTree);
-}
-
-btCompoundShape* btCompoundShape_new2()
+btCompoundShape* btCompoundShape_new()
 {
 	return new btCompoundShape();
 }
 
-void btCompoundShape_addChildShape(btCompoundShape* obj, btScalar* localTransform, btCollisionShape* shape)
+btCompoundShape* btCompoundShape_new2(bool enableDynamicAabbTree)
+{
+	return new btCompoundShape(enableDynamicAabbTree);
+}
+
+void btCompoundShape_addChildShape(btCompoundShape* obj, const btScalar* localTransform, btCollisionShape* shape)
 {
 	TRANSFORM_CONV(localTransform);
 	obj->addChildShape(TRANSFORM_USE(localTransform), shape);
 }
-/*
+
 void btCompoundShape_calculatePrincipalAxisTransform(btCompoundShape* obj, btScalar* masses, btScalar* principal, btScalar* inertia)
 {
 	TRANSFORM_CONV(principal);
 	VECTOR3_CONV(inertia);
 	obj->calculatePrincipalAxisTransform(masses, TRANSFORM_USE(principal), VECTOR3_USE(inertia));
 }
-*/
+
 void btCompoundShape_createAabbTreeFromChildren(btCompoundShape* obj)
 {
 	obj->createAabbTreeFromChildren();
@@ -134,14 +134,14 @@ void btCompoundShape_removeChildShapeByIndex(btCompoundShape* obj, int childShap
 	obj->removeChildShapeByIndex(childShapeindex);
 }
 
-void btCompoundShape_updateChildTransform(btCompoundShape* obj, int childIndex, btScalar* newChildTransform, bool shouldRecalculateLocalAabb)
-{
-	TRANSFORM_CONV(newChildTransform);
-	obj->updateChildTransform(childIndex, TRANSFORM_USE(newChildTransform), shouldRecalculateLocalAabb);
-}
-
-void btCompoundShape_updateChildTransform2(btCompoundShape* obj, int childIndex, btScalar* newChildTransform)
+void btCompoundShape_updateChildTransform(btCompoundShape* obj, int childIndex, const btScalar* newChildTransform)
 {
 	TRANSFORM_CONV(newChildTransform);
 	obj->updateChildTransform(childIndex, TRANSFORM_USE(newChildTransform));
+}
+
+void btCompoundShape_updateChildTransform2(btCompoundShape* obj, int childIndex, const btScalar* newChildTransform, bool shouldRecalculateLocalAabb)
+{
+	TRANSFORM_CONV(newChildTransform);
+	obj->updateChildTransform(childIndex, TRANSFORM_USE(newChildTransform), shouldRecalculateLocalAabb);
 }

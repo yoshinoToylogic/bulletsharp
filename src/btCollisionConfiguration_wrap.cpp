@@ -1,4 +1,5 @@
-#include "conversion.h"
+#include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
+
 #include "btCollisionConfiguration_wrap.h"
 
 btCollisionAlgorithmCreateFunc* btCollisionConfiguration_getCollisionAlgorithmCreateFunc(btCollisionConfiguration* obj, int proxyType0, int proxyType1)

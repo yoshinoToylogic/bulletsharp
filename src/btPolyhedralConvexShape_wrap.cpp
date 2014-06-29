@@ -45,23 +45,23 @@ void btPolyhedralConvexShape_getVertex(btPolyhedralConvexShape* obj, int i, btSc
 	obj->getVertex(i, VECTOR3_USE(vtx));
 }
 
-bool btPolyhedralConvexShape_initializePolyhedralFeatures(btPolyhedralConvexShape* obj, int shiftVerticesByMargin)
-{
-	return obj->initializePolyhedralFeatures(shiftVerticesByMargin);
-}
-
-bool btPolyhedralConvexShape_initializePolyhedralFeatures2(btPolyhedralConvexShape* obj)
+bool btPolyhedralConvexShape_initializePolyhedralFeatures(btPolyhedralConvexShape* obj)
 {
 	return obj->initializePolyhedralFeatures();
 }
 
-bool btPolyhedralConvexShape_isInside(btPolyhedralConvexShape* obj, btScalar* pt, btScalar tolerance)
+bool btPolyhedralConvexShape_initializePolyhedralFeatures2(btPolyhedralConvexShape* obj, int shiftVerticesByMargin)
+{
+	return obj->initializePolyhedralFeatures(shiftVerticesByMargin);
+}
+
+bool btPolyhedralConvexShape_isInside(btPolyhedralConvexShape* obj, const btScalar* pt, btScalar tolerance)
 {
 	VECTOR3_CONV(pt);
 	return obj->isInside(VECTOR3_USE(pt), tolerance);
 }
 
-void btPolyhedralConvexAabbCachingShape_getNonvirtualAabb(btPolyhedralConvexAabbCachingShape* obj, btScalar* trans, btScalar* aabbMin, btScalar* aabbMax, btScalar margin)
+void btPolyhedralConvexAabbCachingShape_getNonvirtualAabb(btPolyhedralConvexAabbCachingShape* obj, const btScalar* trans, btScalar* aabbMin, btScalar* aabbMax, btScalar margin)
 {
 	TRANSFORM_CONV(trans);
 	VECTOR3_DEF(aabbMin);

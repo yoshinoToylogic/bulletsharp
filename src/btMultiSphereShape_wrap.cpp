@@ -1,7 +1,7 @@
 #include "conversion.h"
 #include "btMultiSphereShape_wrap.h"
 
-btMultiSphereShape* btMultiSphereShape_new(btScalar* positions, btScalar* radi, int numSpheres)
+btMultiSphereShape* btMultiSphereShape_new(const btScalar* positions, const btScalar* radi, int numSpheres)
 {
 	btVector3* positionsTemp = new btVector3[numSpheres];
 	for (int i = 0; i < numSpheres; i++)
@@ -13,7 +13,7 @@ btMultiSphereShape* btMultiSphereShape_new(btScalar* positions, btScalar* radi, 
 	return shape;
 }
 
-btMultiSphereShape* btMultiSphereShape_new2(btVector3* positions, btScalar* radi, int numSpheres)
+btMultiSphereShape* btMultiSphereShape_new2(const btVector3* positions, const btScalar* radi, int numSpheres)
 {
 	return new btMultiSphereShape(positions, radi, numSpheres);
 }
@@ -49,7 +49,7 @@ float btPositionAndRadius_getRadius(btPositionAndRadius* obj)
 	return obj->m_radius;
 }
 
-void btPositionAndRadius_setPos(btPositionAndRadius* obj, btScalar* value)
+void btPositionAndRadius_setPos(btPositionAndRadius* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, (btVector3*)&obj->m_pos);
 }

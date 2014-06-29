@@ -8,7 +8,7 @@ void btSimulationIslandManager_IslandCallback_processIsland(btSimulationIslandMa
 	obj->processIsland(bodies, numBodies, manifolds, numManifolds, islandId);
 }
 */
-void btSimulationIslandManager_IslandCallback_delete(btSimulationIslandManager_IslandCallback* obj)
+void btSimulationIslandManager_IslandCallback_delete(btSimulationIslandManager::IslandCallback* obj)
 {
 	delete obj;
 }
@@ -18,7 +18,7 @@ btSimulationIslandManager* btSimulationIslandManager_new()
 	return new btSimulationIslandManager();
 }
 
-void btSimulationIslandManager_buildAndProcessIslands(btSimulationIslandManager* obj, btDispatcher* dispatcher, btCollisionWorld* collisionWorld, btSimulationIslandManager_IslandCallback* callback)
+void btSimulationIslandManager_buildAndProcessIslands(btSimulationIslandManager* obj, btDispatcher* dispatcher, btCollisionWorld* collisionWorld, btSimulationIslandManager::IslandCallback* callback)
 {
 	obj->buildAndProcessIslands(dispatcher, collisionWorld, callback);
 }

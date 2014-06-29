@@ -21,7 +21,7 @@ void btConvexTriangleMeshShape_calculatePrincipalAxisTransform(btConvexTriangleM
 	obj->calculatePrincipalAxisTransform(TRANSFORM_USE(principal), VECTOR3_USE(inertia), *volume);
 }
 
-btStridingMeshInterface* btConvexTriangleMeshShape_getMeshInterface(btConvexTriangleMeshShape* obj)
+const btStridingMeshInterface* btConvexTriangleMeshShape_getMeshInterface(btConvexTriangleMeshShape* obj)
 {
 	return obj->getMeshInterface();
 }

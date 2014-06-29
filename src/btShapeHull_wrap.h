@@ -2,7 +2,7 @@
 
 extern "C"
 {
-	EXPORT btShapeHull* btShapeHull_new(btConvexShape* shape);
+	EXPORT btShapeHull* btShapeHull_new(const btConvexShape* shape);
 	EXPORT bool btShapeHull_buildHull(btShapeHull* obj, btScalar margin);
 	EXPORT const unsigned int* btShapeHull_getIndexPointer(btShapeHull* obj);
 	EXPORT const btVector3* btShapeHull_getVertexPointer(btShapeHull* obj);

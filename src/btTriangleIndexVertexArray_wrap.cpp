@@ -1,4 +1,5 @@
-#include "conversion.h"
+#include <BulletCollision/CollisionShapes/btTriangleIndexVertexArray.h>
+
 #include "btTriangleIndexVertexArray_wrap.h"
 
 btIndexedMesh* btIndexedMesh_new()
@@ -91,6 +92,7 @@ void btIndexedMesh_delete(btIndexedMesh* obj)
 	delete obj;
 }
 
+
 btTriangleIndexVertexArray* btTriangleIndexVertexArray_new(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride)
 {
 	return new btTriangleIndexVertexArray(numTriangles, triangleIndexBase, triangleIndexStride, numVertices, vertexBase, vertexStride);
@@ -101,17 +103,17 @@ btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2()
 	return new btTriangleIndexVertexArray();
 }
 
-void btTriangleIndexVertexArray_addIndexedMesh(btTriangleIndexVertexArray* obj, btIndexedMesh* mesh, PHY_ScalarType indexType)
-{
-	obj->addIndexedMesh(*mesh, indexType);
-}
-
-void btTriangleIndexVertexArray_addIndexedMesh2(btTriangleIndexVertexArray* obj, btIndexedMesh* mesh)
+void btTriangleIndexVertexArray_addIndexedMesh(btTriangleIndexVertexArray* obj, const btIndexedMesh* mesh)
 {
 	obj->addIndexedMesh(*mesh);
 }
 
-IndexedMeshArray* btTriangleIndexVertexArray_getIndexedMeshArray(btTriangleIndexVertexArray* obj)
+void btTriangleIndexVertexArray_addIndexedMesh2(btTriangleIndexVertexArray* obj, const btIndexedMesh* mesh, PHY_ScalarType indexType)
+{
+	obj->addIndexedMesh(*mesh, indexType);
+}
+
+const IndexedMeshArray* btTriangleIndexVertexArray_getIndexedMeshArray(btTriangleIndexVertexArray* obj)
 {
 	return &obj->getIndexedMeshArray();
 }

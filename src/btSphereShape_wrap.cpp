@@ -1,4 +1,5 @@
-#include "conversion.h"
+#include <BulletCollision/CollisionShapes/btSphereShape.h>
+
 #include "btSphereShape_wrap.h"
 
 btSphereShape* btSphereShape_new(btScalar radius)

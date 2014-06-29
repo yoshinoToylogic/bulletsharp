@@ -1,12 +1,10 @@
 #pragma once
 
-#include <iostream>
 #include <LinearMath/btAlignedAllocator.h>
 #include <LinearMath/btVector3.h>
 #include <LinearMath/btMatrix3x3.h>
 #include <LinearMath/btQuickprof.h>
 #include "LinearMath/btTransform.h"
-#include <btBulletCollisionCommon.h>
 #include <btBulletDynamicsCommon.h>
 
 #define BTTRANSFORM_TRANSPOSE
@@ -250,7 +248,7 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define TEMP(var) var ## Temp
 #if defined(BT_USE_SSE) //&& defined(BT_USE_SSE_IN_API) && defined(BT_USE_SIMD_VECTOR3)
 #define VECTOR3_DEF(vec) ATTRIBUTE_ALIGNED16(btVector3) TEMP(vec)
-#define VECTOR3_IN(invec, vec) Vector3TobtVector3(invec, vec)
+#define VECTOR3_IN(from, to) Vector3TobtVector3(from, to)
 #define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
 #define VECTOR3_USE(vec) TEMP(vec)
 #define VECTOR3_OUT(vec, outvec) btVector3ToVector3(vec, outvec)
