@@ -39,20 +39,6 @@ namespace BulletSharpGen
                     {
                         return "byte";
                     }
-                    /*
-                    if (Name.Equals("unsigned short"))
-                    {
-                        return "ushort";
-                    }
-                    if (Name.Equals("unsigned int"))
-                    {
-                        return "uint";
-                    }
-                    if (Name.Equals("unsigned long"))
-                    {
-                        return "ulong";
-                    }
-                    */
                     if (Referenced != null)
                     {
                         return Referenced.ManagedName;
@@ -83,6 +69,30 @@ namespace BulletSharpGen
                 return Target.ManagedName;
             }
         }
+
+        public string ManagedNameCS
+        {
+            get
+            {
+                if (IsBasic)
+                {
+                    if (Name.Equals("unsigned short"))
+                    {
+                        return "ushort";
+                    }
+                    if (Name.Equals("unsigned int"))
+                    {
+                        return "uint";
+                    }
+                    if (Name.Equals("unsigned long"))
+                    {
+                        return "ulong";
+                    }
+                }
+                return ManagedName;
+            }
+        }
+
         public string ManagedTypeRefName
         {
             get
@@ -210,7 +220,7 @@ namespace BulletSharpGen
             }
 
             TypeRefDefinition t = obj as TypeRefDefinition;
-            if ((System.Object)t == null)
+            if (t == null)
             {
                 return false;
             }

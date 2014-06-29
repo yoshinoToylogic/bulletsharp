@@ -524,19 +524,25 @@ namespace BulletSharpGen
         {
             if (type.Referenced != null && !type.IsBasic)
             {
-                switch (type.ManagedName)
+                switch (type.ManagedNameCS)
                 {
                     case "Matrix3x3":
                     case "Quaternion":
                     case "Transform":
                     case "Vector3":
-                        return "[In] ref " + GetTypeNameCS(type);
+                    {
+                        if (type.IsConst)
+                        {
+                            return "[In] ref " + GetTypeNameCS(type);
+                        }
+                        return "[Out] out " + GetTypeNameCS(type);
+                    }
                     default:
                         return "IntPtr";
                 }
             }
 
-            return type.ManagedName;
+            return type.ManagedNameCS;
         }
 
         public static string GetTypeCSMarshal(ParameterDefinition parameter)
@@ -545,7 +551,7 @@ namespace BulletSharpGen
 
             if (type.Referenced != null && !type.IsBasic)
             {
-                switch (type.ManagedName)
+                switch (type.ManagedNameCS)
                 {
                     case "Matrix3x3":
                     case "Quaternion":
@@ -570,9 +576,9 @@ namespace BulletSharpGen
             StringBuilder output = new StringBuilder();
             TypeRefDefinition type = prop.Type;
 
-            if (type.Referenced != null && !type.IsBasic)
+            if (!type.IsBasic)
             {
-                switch (type.ManagedName)
+                switch (type.ManagedNameCS)
                 {
                     case "Transform":
                     case "Vector3":
@@ -592,20 +598,21 @@ namespace BulletSharpGen
 
         public static string GetTypeSetterCSMarshal(TypeRefDefinition type)
         {
-            if (type.Referenced != null && !type.IsBasic)
+            if (!type.IsBasic)
             {
-                switch (type.ManagedName)
+                switch (type.ManagedNameCS)
                 {
                     case "Transform":
                     case "Vector3":
                         return "ref value";
                 }
-            }
-
-            if (!type.IsBasic)
-            {
+                if (type.ManagedTypeRefName.Equals("IntPtr"))
+                {
+                    return "value";
+                }
                 return "value._native";
             }
+
             return "value";
         }
 
