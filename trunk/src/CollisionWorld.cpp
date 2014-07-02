@@ -682,8 +682,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
-	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from), TRANSFORM_USE(to),
-		*resultCallback->_native, allowedCcdPenetration);
+	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from),
+		TRANSFORM_USE(to), *resultCallback->_native, allowedCcdPenetration);
 	TRANSFORM_DEL(from);
 	TRANSFORM_DEL(to);
 }
@@ -693,8 +693,8 @@ void CollisionWorld::ConvexSweepTest(ConvexShape^ castShape, Matrix from, Matrix
 {
 	TRANSFORM_CONV(from);
 	TRANSFORM_CONV(to);
-	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from), TRANSFORM_USE(to),
-		*resultCallback->_native);
+	_native->convexSweepTest((btConvexShape*)castShape->_native, TRANSFORM_USE(from),
+		TRANSFORM_USE(to), *resultCallback->_native);
 	TRANSFORM_DEL(from);
 	TRANSFORM_DEL(to);
 }
@@ -813,9 +813,9 @@ IDebugDraw^ CollisionWorld::DebugDrawer::get()
 {
 	return DebugDraw::GetManaged(_native->getDebugDrawer());
 }
-void CollisionWorld::DebugDrawer::set(IDebugDraw^ value)
+void CollisionWorld::DebugDrawer::set(IDebugDraw^ debugDrawer)
 {
-	_native->setDebugDrawer(DebugDraw::GetUnmanaged(value));
+	_native->setDebugDrawer(DebugDraw::GetUnmanaged(debugDrawer));
 }
 #endif
 
@@ -868,7 +868,7 @@ btScalar ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
 	const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0,
 	const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
-	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp),
+	return _callback->AddSingleResult(gcnew ManifoldPoint(&cp, true),
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj0Wrap), partId0, index0,
 		gcnew CollisionObjectWrapper((btCollisionObjectWrapper*)colObj1Wrap), partId1, index1);
 }

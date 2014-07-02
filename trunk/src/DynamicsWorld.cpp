@@ -221,7 +221,7 @@ int DynamicsWorld::NumConstraints::get()
 #endif
 ContactSolverInfo^ DynamicsWorld::SolverInfo::get()
 {
-	return gcnew ContactSolverInfo(&Native->getSolverInfo());
+	return gcnew ContactSolverInfo(&Native->getSolverInfo(), true);
 }
 
 DynamicsWorldType DynamicsWorld::WorldType::get()

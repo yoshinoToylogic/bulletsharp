@@ -10,12 +10,12 @@
 #define Native static_cast<btTetrahedronShapeEx*>(_native)
 
 TetrahedronShapeEx::TetrahedronShapeEx(btTetrahedronShapeEx* native)
-	: BU_Simplex1to4(native)
+	: BuSimplex1To4(native)
 {
 }
 
 TetrahedronShapeEx::TetrahedronShapeEx()
-	: BU_Simplex1to4(new btTetrahedronShapeEx())
+	: BuSimplex1To4(new btTetrahedronShapeEx())
 {
 }
 
@@ -55,14 +55,14 @@ void GImpactShapeInterface::GetChildAabb(int child_index, Matrix t, Vector3% aab
 	Vector3% aabbMax)
 {
 	TRANSFORM_CONV(t);
-	btVector3* aabbMinTemp = new btVector3;
-	btVector3* aabbMaxTemp = new btVector3;
-	Native->getChildAabb(child_index, TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
+	Native->getChildAabb(child_index, TRANSFORM_USE(t), VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 	TRANSFORM_DEL(t);
 	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
 	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
-	delete aabbMinTemp;
-	delete aabbMaxTemp;
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
 }
 
 CollisionShape^ GImpactShapeInterface::GetChildShape(int index)
@@ -106,8 +106,7 @@ void GImpactShapeInterface::ProcessAllTrianglesRay(TriangleCallback^ callback, V
 {
 	VECTOR3_DEF(rayFrom);
 	VECTOR3_DEF(rayTo);
-	Native->processAllTrianglesRay(callback->_native, VECTOR3_USE(rayFrom),
-		VECTOR3_USE(rayTo));
+	Native->processAllTrianglesRay(callback->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo));
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
 }
@@ -162,7 +161,7 @@ bool GImpactShapeInterface::HasBoxSet::get()
 
 Aabb^ GImpactShapeInterface::LocalBox::get()
 {
-	return gcnew Aabb((btAABB*)&Native->getLocalBox());
+	return gcnew Aabb((btAABB*)&Native->getLocalBox(), false);
 }
 
 bool GImpactShapeInterface::NeedsRetrieveTetrahedrons::get()
@@ -185,7 +184,7 @@ int GImpactShapeInterface::NumChildShapes::get()
 #ifndef DISABLE_BVH
 
 #undef Native
-#define Native (static_cast<btGImpactCompoundShape::CompoundPrimitiveManager*>(_native))
+#define Native static_cast<btGImpactCompoundShape::CompoundPrimitiveManager*>(_native)
 
 GImpactCompoundShape::CompoundPrimitiveManager::CompoundPrimitiveManager(btGImpactCompoundShape::CompoundPrimitiveManager* native)
 	: PrimitiveManagerBase(native)
@@ -220,7 +219,7 @@ void GImpactCompoundShape::CompoundPrimitiveManager::CompoundShape::set(GImpactC
 
 
 #undef Native
-#define Native (static_cast<btGImpactCompoundShape*>(_native))
+#define Native static_cast<btGImpactCompoundShape*>(_native)
 
 GImpactCompoundShape::GImpactCompoundShape(btGImpactCompoundShape* native)
 	: GImpactShapeInterface(native)
@@ -287,7 +286,8 @@ GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(TrimeshPr
 
 GImpactMeshShapePart::TrimeshPrimitiveManager::TrimeshPrimitiveManager(StridingMeshInterface^ meshInterface,
 	int part)
-	: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(meshInterface->_native, part))
+	: PrimitiveManagerBase(new btGImpactMeshShapePart::TrimeshPrimitiveManager(meshInterface->_native,
+		part))
 {
 }
 

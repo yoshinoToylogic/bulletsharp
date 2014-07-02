@@ -19,7 +19,7 @@ namespace BulletSharp
 		void CalcAngleInfo2(Matrix transA, Matrix transB, Matrix invInertiaWorldA,
 			Matrix invInertiaWorldB);
 		void EnableMotor(bool b);
-		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+		//void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 		//	Matrix invInertiaWorldA, Matrix invInertiaWorldB);
 		Vector3 GetPointForAngle(btScalar fAngleInRadians, btScalar fLength);
 		void SetAngularOnly(bool angularOnly);

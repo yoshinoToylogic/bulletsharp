@@ -13,9 +13,10 @@ JointFeedback::JointFeedback(btJointFeedback* native)
 	_native = native;
 }
 
-JointFeedback::JointFeedback()
+JointFeedback::JointFeedback(btJointFeedback* native, bool preventDelete)
 {
-	_native = new btJointFeedback();
+	_native = native;
+	_preventDelete = preventDelete;
 }
 
 JointFeedback::~JointFeedback()
@@ -25,8 +26,16 @@ JointFeedback::~JointFeedback()
 
 JointFeedback::!JointFeedback()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
+}
+
+JointFeedback::JointFeedback()
+{
+	_native = new btJointFeedback();
 }
 
 Vector3 JointFeedback::AppliedForceBodyA::get()
@@ -66,9 +75,24 @@ void JointFeedback::AppliedTorqueBodyB::set(Vector3 value)
 }
 
 
-TypedConstraint::ConstraintInfo1::ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native)
+TypedConstraint::ConstraintInfo1::ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+TypedConstraint::ConstraintInfo1::~ConstraintInfo1()
+{
+	this->!ConstraintInfo1();
+}
+
+TypedConstraint::ConstraintInfo1::!ConstraintInfo1()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 TypedConstraint::ConstraintInfo1::ConstraintInfo1()
@@ -94,10 +118,24 @@ void TypedConstraint::ConstraintInfo1::NumConstraintRows::set(int value)
 	_native->m_numConstraintRows = value;
 }
 
-
-TypedConstraint::ConstraintInfo2::ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native)
+TypedConstraint::ConstraintInfo2::ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+TypedConstraint::ConstraintInfo2::~ConstraintInfo2()
+{
+	this->!ConstraintInfo2();
+}
+
+TypedConstraint::ConstraintInfo2::!ConstraintInfo2()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 TypedConstraint::ConstraintInfo2::ConstraintInfo2()
@@ -233,9 +271,9 @@ void TypedConstraint::ConstraintInfo2::UpperLimit::set(float^ value)
 */
 
 
-TypedConstraint::TypedConstraint(btTypedConstraint* native, bool doesNotOwnObject)
+TypedConstraint::TypedConstraint(btTypedConstraint* native, bool preventDelete)
 {
-	_doesNotOwnObject = doesNotOwnObject;
+	_preventDelete = preventDelete;
 
 	if (native)
 		UnmanagedPointer = native;
@@ -270,7 +308,7 @@ TypedConstraint::!TypedConstraint()
 	
 	OnDisposing(this, nullptr);
 	
-	if (_doesNotOwnObject == false)
+	if (!_preventDelete)
 	{
 		if (_native->getUserConstraintId() != -1)
 			VoidPtrToGCHandle(_native->getUserConstraintPtr()).Free();
@@ -482,9 +520,24 @@ void TypedConstraint::UnmanagedPointer::set(btTypedConstraint* value)
 #ifdef _BT_USE_CENTER_LIMIT_
 #ifdef IN_PARALLELL_SOLVER
 
-AngularLimit::AngularLimit(btAngularLimit* native)
+AngularLimit::AngularLimit(btAngularLimit* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+AngularLimit::~AngularLimit()
+{
+	this->!AngularLimit();
+}
+
+AngularLimit::!AngularLimit()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 AngularLimit::AngularLimit()

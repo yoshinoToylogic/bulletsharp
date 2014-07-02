@@ -4,7 +4,7 @@ namespace BulletSharp
 {
 	ref class Serializer;
 
-	public ref class CollisionShape : ITrackingDisposable
+	public ref class CollisionShape : ITrackingDisposable // abstract
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -33,8 +33,11 @@ namespace BulletSharp
 #ifndef DISABLE_SERIALIZE
 		int CalculateSerializeBufferSize();
 #endif
+		void CalculateTemporalAabb(Matrix% curTrans, Vector3% linvel, Vector3% angvel,
+			btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
 		void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel,
 			btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax);
+		void GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBoundingSphere([Out] Vector3% center, [Out] btScalar% radius);
 		btScalar GetContactBreakingThreshold(btScalar defaultContactThresholdFactor);
@@ -68,7 +71,7 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property bool IsConvex2d
+		property bool IsConvex2D
 		{
 			bool get();
 		}

@@ -30,7 +30,7 @@ namespace BulletSharp
 		static bool IsCompound(int proxyType);
 		static bool IsConcave(int proxyType);
 		static bool IsConvex(int proxyType);
-		static bool IsConvex2d(int proxyType);
+		static bool IsConvex2D(int proxyType);
 		static bool IsInfinite(int proxyType);
 		static bool IsNonMoving(int proxyType);
 		static bool IsPolyhedral(int proxyType);

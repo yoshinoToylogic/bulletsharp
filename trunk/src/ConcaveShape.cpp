@@ -3,7 +3,7 @@
 #include "ConcaveShape.h"
 #include "TriangleCallback.h"
 
-#define Native (static_cast<btConcaveShape*>(_native))
+#define Native static_cast<btConcaveShape*>(_native)
 
 ConcaveShape::ConcaveShape(btConcaveShape* native)
 	: CollisionShape(native)

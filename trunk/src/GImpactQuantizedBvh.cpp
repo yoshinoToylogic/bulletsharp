@@ -15,6 +15,17 @@ GImpactQuantizedBvhNode::GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native)
 	_native = native;
 }
 
+GImpactQuantizedBvhNode::~GImpactQuantizedBvhNode()
+{
+	this->!GImpactQuantizedBvhNode();
+}
+
+GImpactQuantizedBvhNode::!GImpactQuantizedBvhNode()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GImpactQuantizedBvhNode::GImpactQuantizedBvhNode()
 {
 	_native = new BT_QUANTIZED_BVH_NODE();
@@ -87,6 +98,17 @@ QuantizedBvhTree::QuantizedBvhTree(btQuantizedBvhTree* native)
 	_native = native;
 }
 
+QuantizedBvhTree::~QuantizedBvhTree()
+{
+	this->!QuantizedBvhTree();
+}
+
+QuantizedBvhTree::!QuantizedBvhTree()
+{
+	delete _native;
+	_native = NULL;
+}
+
 QuantizedBvhTree::QuantizedBvhTree()
 {
 	_native = new btQuantizedBvhTree();
@@ -112,34 +134,34 @@ GImpactQuantizedBvhNode^ QuantizedBvhTree::GetNodePointer()
 	return _native->get_node_pointer();
 }
 */
-int QuantizedBvhTree::GetEscapeNodeIndex(int NodeIndex)
+int QuantizedBvhTree::GetEscapeNodeIndex(int nodeIndex)
 {
-	return _native->getEscapeNodeIndex(NodeIndex);
+	return _native->getEscapeNodeIndex(nodeIndex);
 }
 
-int QuantizedBvhTree::GetLeftNode(int NodeIndex)
+int QuantizedBvhTree::GetLeftNode(int nodeIndex)
 {
-	return _native->getLeftNode(NodeIndex);
+	return _native->getLeftNode(nodeIndex);
 }
 
-void QuantizedBvhTree::GetNodeBound(int NodeIndex, Aabb^ bound)
+void QuantizedBvhTree::GetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_native->getNodeBound(NodeIndex, *bound->_native);
+	_native->getNodeBound(nodeIndex, *bound->_native);
 }
 
-int QuantizedBvhTree::GetNodeData(int NodeIndex)
+int QuantizedBvhTree::GetNodeData(int nodeIndex)
 {
-	return _native->getNodeData(NodeIndex);
+	return _native->getNodeData(nodeIndex);
 }
 
-int QuantizedBvhTree::GetRightNode(int NodeIndex)
+int QuantizedBvhTree::GetRightNode(int nodeIndex)
 {
-	return _native->getRightNode(NodeIndex);
+	return _native->getRightNode(nodeIndex);
 }
 
-bool QuantizedBvhTree::IsLeafNode(int NodeIndex)
+bool QuantizedBvhTree::IsLeafNode(int nodeIndex)
 {
-	return _native->isLeafNode(NodeIndex);
+	return _native->isLeafNode(nodeIndex);
 }
 
 void QuantizedBvhTree::QuantizePoint(UShortArray^ quantizedpoint, Vector3 point)
@@ -149,15 +171,15 @@ void QuantizedBvhTree::QuantizePoint(UShortArray^ quantizedpoint, Vector3 point)
 	VECTOR3_DEL(point);
 }
 
-void QuantizedBvhTree::SetNodeBound(int NodeIndex, Aabb^ bound)
+void QuantizedBvhTree::SetNodeBound(int nodeIndex, Aabb^ bound)
 {
-	_native->setNodeBound(NodeIndex, *bound->_native);
+	_native->setNodeBound(nodeIndex, *bound->_native);
 }
 
-bool QuantizedBvhTree::TestQuantizedBoxOverlap(int NodeIndex, UShortArray^ quantizedMin,
+bool QuantizedBvhTree::TestQuantizedBoxOverlap(int nodeIndex, UShortArray^ quantizedMin,
 	UShortArray^ quantizedMax)
 {
-	return _native->testQuantizedBoxOverlapp(NodeIndex, (unsigned short*)quantizedMin->_native, (unsigned short*)quantizedMax->_native);
+	return _native->testQuantizedBoxOverlapp(nodeIndex, (unsigned short*)quantizedMin->_native, (unsigned short*)quantizedMax->_native);
 }
 
 int QuantizedBvhTree::NodeCount::get()
@@ -169,6 +191,17 @@ int QuantizedBvhTree::NodeCount::get()
 GImpactQuantizedBvh::GImpactQuantizedBvh(btGImpactQuantizedBvh* native)
 {
 	_native = native;
+}
+
+GImpactQuantizedBvh::~GImpactQuantizedBvh()
+{
+	this->!GImpactQuantizedBvh();
+}
+
+GImpactQuantizedBvh::!GImpactQuantizedBvh()
+{
+	delete _native;
+	_native = NULL;
 }
 
 GImpactQuantizedBvh::GImpactQuantizedBvh()
@@ -285,7 +318,7 @@ Aabb^ GImpactQuantizedBvh::GlobalBox::get()
 {
 	btAABB* aabb = new btAABB;
 	GImpactQuantizedBvh_GlobalBox(_native, aabb);
-	return gcnew Aabb(aabb);
+	return gcnew Aabb(aabb, true);
 }
 
 bool GImpactQuantizedBvh::HasHierarchy::get()

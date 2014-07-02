@@ -17,7 +17,7 @@ namespace BulletSharp
 		CollisionObject(btCollisionObject* native);
 
 	private:
-		bool _doesNotOwnObject;
+		bool _preventDelete;
 		
 		BroadphaseProxy^ _broadphaseHandle;
 		Object^ _userObject;
@@ -72,7 +72,7 @@ namespace BulletSharp
 		property btScalar CcdMotionThreshold
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar ccdMotionThreshold);
 		}
 
 		property btScalar CcdSquareMotionThreshold
@@ -83,43 +83,43 @@ namespace BulletSharp
 		property btScalar CcdSweptSphereRadius
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar radius);
 		}
 
 		property CollisionFlags CollisionFlags
 		{
 			BulletSharp::CollisionFlags get();
-			void set(BulletSharp::CollisionFlags value);
+			void set(BulletSharp::CollisionFlags flags);
 		}
 
 		property BulletSharp::CollisionShape^ CollisionShape
 		{
 			BulletSharp::CollisionShape^ get();
-			void set(BulletSharp::CollisionShape^ value);
+			void set(BulletSharp::CollisionShape^ collisionShape);
 		}
 
 		property int CompanionId
 		{
 			int get();
-			void set(int value);
+			void set(int id);
 		}
 
 		property btScalar ContactProcessingThreshold
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar contactProcessingThreshold);
 		}
 
 		property btScalar DeactivationTime
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar time);
 		}
 
 		property btScalar Friction
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar frict);
 		}
 
 		property bool HasContactResponse
@@ -130,25 +130,25 @@ namespace BulletSharp
 		property btScalar HitFraction
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar hitFraction);
 		}
 
 		property Vector3 InterpolationAngularVelocity
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 angvel);
 		}
 
 		property Vector3 InterpolationLinearVelocity
 		{
 			Vector3 get();
-			void set(Vector3 value);
+			void set(Vector3 linvel);
 		}
 
 		property Matrix InterpolationWorldTransform
 		{
 			Matrix get();
-			void set(Matrix value);
+			void set(Matrix trans);
 		}
 
 		property bool IsActive
@@ -169,7 +169,7 @@ namespace BulletSharp
 		property int IslandTag
 		{
 			int get();
-			void set(int value);
+			void set(int tag);
 		}
 
 		property bool IsStaticObject
@@ -190,13 +190,13 @@ namespace BulletSharp
 		property btScalar Restitution
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar rest);
 		}
 
 		property btScalar RollingFriction
 		{
 			btScalar get();
-			void set(btScalar value);
+			void set(btScalar frict);
 		}
 
 		property int UpdateRevisionInternal
@@ -207,7 +207,7 @@ namespace BulletSharp
 		property int UserIndex
 		{
 			int get();
-			void set(int value);
+			void set(int index);
 		}
 
 		// UserPointer implemented as UserObject
@@ -220,7 +220,7 @@ namespace BulletSharp
 		property Matrix WorldTransform
 		{
 			Matrix get();
-			void set(Matrix value);
+			void set(Matrix worldTrans);
 		}
 
 	internal:

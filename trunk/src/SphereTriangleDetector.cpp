@@ -2,8 +2,8 @@
 
 #ifndef DISABLE_UNCOMMON
 
-#include "SphereTriangleDetector.h"
 #include "SphereShape.h"
+#include "SphereTriangleDetector.h"
 #include "TriangleShape.h"
 
 #define Native static_cast<::SphereTriangleDetector*>(_native)

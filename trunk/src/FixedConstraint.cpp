@@ -5,8 +5,6 @@
 #include "FixedConstraint.h"
 #include "RigidBody.h"
 
-#define Native static_cast<btFixedConstraint*>(_native)
-
 FixedConstraint::FixedConstraint(btFixedConstraint* native)
 	: TypedConstraint(native)
 {
@@ -16,15 +14,12 @@ FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 	Matrix frameInB)
 	: TypedConstraint(0)
 {
-	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
-	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
-
-	UnmanagedPointer = new btFixedConstraint(
-		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
-		*frameInATemp, *frameInBTemp);
-
-	ALIGNED_FREE(frameInATemp);
-	ALIGNED_FREE(frameInBTemp);
+	TRANSFORM_CONV(frameInA);
+	TRANSFORM_CONV(frameInB);
+	UnmanagedPointer = new btFixedConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
+		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB));
+	TRANSFORM_DEL(frameInA);
+	TRANSFORM_DEL(frameInB);
 }
 
 #endif

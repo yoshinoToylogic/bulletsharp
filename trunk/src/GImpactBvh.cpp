@@ -14,12 +14,23 @@ GimPair::GimPair(GIM_PAIR* native)
 	_native = native;
 }
 
+GimPair::~GimPair()
+{
+	this->!GimPair();
+}
+
+GimPair::!GimPair()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GimPair::GimPair()
 {
 	_native = new GIM_PAIR();
 }
 
-GimPair::GimPair(GIM_PAIR^ p)
+GimPair::GimPair(GimPair^ p)
 {
 	_native = new GIM_PAIR(*p->_native);
 }
@@ -75,6 +86,17 @@ GimBvhData::GimBvhData(GIM_BVH_DATA* native)
 	_native = native;
 }
 
+GimBvhData::~GimBvhData()
+{
+	this->!GimBvhData();
+}
+
+GimBvhData::!GimBvhData()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GimBvhData::GimBvhData()
 {
 	_native = new GIM_BVH_DATA();
@@ -105,6 +127,17 @@ GimBvhTreeNode::GimBvhTreeNode(GIM_BVH_TREE_NODE* native)
 	_native = native;
 }
 
+GimBvhTreeNode::~GimBvhTreeNode()
+{
+	this->!GimBvhTreeNode();
+}
+
+GimBvhTreeNode::!GimBvhTreeNode()
+{
+	delete _native;
+	_native = NULL;
+}
+
 GimBvhTreeNode::GimBvhTreeNode()
 {
 	_native = new GIM_BVH_TREE_NODE();
@@ -118,7 +151,7 @@ void GImpactQuantizedBvh_SetBound(GIM_BVH_TREE_NODE* node, btAABB* aabb)
 #pragma managed(pop)
 Aabb^ GimBvhTreeNode::Bound::get()
 {
-	return gcnew Aabb(&_native->m_bound);
+	return gcnew Aabb(&_native->m_bound, true);
 }
 void GimBvhTreeNode::Bound::set(Aabb^ value)
 {
@@ -176,6 +209,17 @@ GimBvhTreeNodeArray::GimBvhTreeNodeArray()
 BvhTree::BvhTree(btBvhTree* native)
 {
 	_native = native;
+}
+
+BvhTree::~BvhTree()
+{
+	this->!BvhTree();
+}
+
+BvhTree::!BvhTree()
+{
+	delete _native;
+	_native = NULL;
 }
 
 BvhTree::BvhTree()
@@ -292,6 +336,17 @@ int PrimitiveManagerBase::PrimitiveCount::get()
 GImpactBvh::GImpactBvh(btGImpactBvh* native)
 {
 	_native = native;
+}
+
+GImpactBvh::~GImpactBvh()
+{
+	this->!GImpactBvh();
+}
+
+GImpactBvh::!GImpactBvh()
+{
+	delete _native;
+	_native = NULL;
 }
 
 GImpactBvh::GImpactBvh()
@@ -419,7 +474,7 @@ Aabb^ GImpactBvh::GlobalBox::get()
 {
 	btAABB* aabb = new btAABB;
 	GImpactBvh_GlobalBox(_native, aabb);
-	return gcnew Aabb(aabb);
+	return gcnew Aabb(aabb, false);
 }
 
 bool GImpactBvh::HasHierarchy::get()

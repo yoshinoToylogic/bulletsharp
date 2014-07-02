@@ -8,9 +8,9 @@
 #include "DebugDraw.h"
 #endif
 
-CharacterControllerInterface::CharacterControllerInterface(btCharacterControllerInterface* controllerInterface)
+CharacterControllerInterface::CharacterControllerInterface(btCharacterControllerInterface* native)
 {
-	_native = controllerInterface;
+	_native = native;
 }
 
 CharacterControllerInterface::~CharacterControllerInterface()
@@ -43,14 +43,19 @@ void CharacterControllerInterface::UpdateAction(CollisionWorld^ collisionWorld, 
 	_native->updateAction(collisionWorld->_native, deltaTimeStep);
 }
 
+void CharacterControllerInterface::Jump()
+{
+	_native->jump();
+}
+
 void CharacterControllerInterface::PlayerStep(CollisionWorld^ collisionWorld, btScalar dt)
 {
 	_native->playerStep(collisionWorld->_native, dt);
 }
 
-void CharacterControllerInterface::Jump()
+void CharacterControllerInterface::PreStep(CollisionWorld^ collisionWorld)
 {
-	_native->jump();
+	_native->preStep(collisionWorld->_native);
 }
 
 void CharacterControllerInterface::Reset(CollisionWorld^ collisionWorld)

@@ -74,7 +74,7 @@ namespace BulletSharp
 		virtual bool process(const btBroadphaseProxy* proxy);
 	};
 
-	public ref class BroadphaseInterface : ITrackingDisposable
+	public ref class BroadphaseInterface : ITrackingDisposable // abstract
 	{
 	public:
 		virtual event EventHandler^ OnDisposing;
@@ -99,8 +99,12 @@ namespace BulletSharp
 		}
 
 	public:
+		void AabbTest(Vector3% aabbMin, Vector3% aabbMax, BroadphaseAabbCallback^ callback);
 		void AabbTest(Vector3 aabbMin, Vector3 aabbMax, BroadphaseAabbCallback^ callback);
 		void CalculateOverlappingPairs(Dispatcher^ dispatcher);
+		BroadphaseProxy^ CreateProxy(Vector3% aabbMin, Vector3% aabbMax,
+			int shapeType, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup,
+			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
 		BroadphaseProxy^ CreateProxy(Vector3 aabbMin, Vector3 aabbMax,
 			int shapeType, IntPtr userPtr, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask, Dispatcher^ dispatcher, IntPtr multiSapProxy);
@@ -108,10 +112,14 @@ namespace BulletSharp
 		void GetAabb(BroadphaseProxy^ proxy, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void GetBroadphaseAabb([Out] Vector3% aabbMin, [Out] Vector3% aabbMax);
 		void PrintStats();
+		void RayTest(Vector3% rayFrom, Vector3% rayTo, BroadphaseRayCallback^ rayCallback,
+			Vector3% aabbMin, Vector3% aabbMax);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback,
 			Vector3 aabbMin, Vector3 aabbMax);
+		void RayTest(Vector3% rayFrom, Vector3% rayTo, BroadphaseRayCallback^ rayCallback);
 		void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback^ rayCallback);
 		void ResetPool(Dispatcher^ dispatcher);
+		void SetAabb(BroadphaseProxy^ proxy, Vector3% aabbMin, Vector3% aabbMax, Dispatcher^ dispatcher);
 		void SetAabb(BroadphaseProxy^ proxy, Vector3 aabbMin, Vector3 aabbMax, Dispatcher^ dispatcher);
 
 		property BulletSharp::OverlappingPairCache^ OverlappingPairCache

@@ -5,12 +5,20 @@
 #define Native static_cast<btBoxShape*>(_native)
 
 BoxShape::BoxShape(btBoxShape* native)
-: PolyhedralConvexShape(native)
+	: PolyhedralConvexShape(native)
 {
 }
 
+BoxShape::BoxShape(Vector3% boxHalfExtents)
+	: PolyhedralConvexShape(0)
+{
+	VECTOR3_DEF(boxHalfExtents);
+	UnmanagedPointer = new btBoxShape(VECTOR3_USE(boxHalfExtents));
+	VECTOR3_DEL(boxHalfExtents);
+}
+
 BoxShape::BoxShape(Vector3 boxHalfExtents)
-: PolyhedralConvexShape(0)
+	: PolyhedralConvexShape(0)
 {
 	VECTOR3_DEF(boxHalfExtents);
 	UnmanagedPointer = new btBoxShape(VECTOR3_USE(boxHalfExtents));

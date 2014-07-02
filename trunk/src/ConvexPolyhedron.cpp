@@ -71,25 +71,46 @@ void ConvexPolyhedron::Initialize()
 	_native->initialize();
 }
 
-void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
+void ConvexPolyhedron::Project(Matrix% transform, Vector3% direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
 {
-	btTransform* transformTemp = Math::MatrixToBtTransform(transform);
+	TRANSFORM_CONV(transform);
 	VECTOR3_DEF(direction);
 	btScalar minProjTemp;
 	btScalar maxProjTemp;
 	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
 	
-	_native->project(*transformTemp, VECTOR3_USE(direction), minProjTemp, maxProjTemp, VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
+	_native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp, VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
 	minProj = minProjTemp;
 	maxProj = maxProjTemp;
 	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
 	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
 
+	TRANSFORM_DEL(transform);
 	ALIGNED_FREE(witnesPtMaxTemp);
 	ALIGNED_FREE(witnesPtMinTemp);
 	VECTOR3_DEL(direction);
-	ALIGNED_FREE(transformTemp);
+}
+
+void ConvexPolyhedron::Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax)
+{
+	TRANSFORM_CONV(transform);
+	VECTOR3_DEF(direction);
+	btScalar minProjTemp;
+	btScalar maxProjTemp;
+	btVector3* witnesPtMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* witnesPtMaxTemp = ALIGNED_NEW(btVector3);
+	
+	_native->project(TRANSFORM_USE(transform), VECTOR3_USE(direction), minProjTemp, maxProjTemp, VECTOR3_USE(witnesPtMin), VECTOR3_USE(witnesPtMax));
+	minProj = minProjTemp;
+	maxProj = maxProjTemp;
+	witnesPtMin = Math::BtVector3ToVector3(witnesPtMinTemp);
+	witnesPtMax = Math::BtVector3ToVector3(witnesPtMaxTemp);
+
+	TRANSFORM_DEL(transform);
+	ALIGNED_FREE(witnesPtMaxTemp);
+	ALIGNED_FREE(witnesPtMinTemp);
+	VECTOR3_DEL(direction);
 }
 
 bool ConvexPolyhedron::TestContainment()

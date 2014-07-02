@@ -8,19 +8,19 @@
 #include "PersistentManifold.h"
 
 BoxBoxCollisionAlgorithm::CreateFunc::CreateFunc()
-: CollisionAlgorithmCreateFunc(new btBoxBoxCollisionAlgorithm::CreateFunc())
+	: CollisionAlgorithmCreateFunc(new btBoxBoxCollisionAlgorithm::CreateFunc())
 {
 }
 
 BoxBoxCollisionAlgorithm::BoxBoxCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci)
-: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm(*ci->_native))
+	: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm(*ci->_native))
 {
 }
 
 BoxBoxCollisionAlgorithm::BoxBoxCollisionAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
 	CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap)
-: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
-	*ci->_native, body0Wrap->_native, body1Wrap->_native))
+	: ActivatingCollisionAlgorithm(new btBoxBoxCollisionAlgorithm((btPersistentManifold*)GetUnmanagedNullable(mf),
+		*ci->_native, body0Wrap->_native, body1Wrap->_native))
 {
 }
 

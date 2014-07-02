@@ -42,8 +42,8 @@ void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)
 	TRANSFORM_DEL(transB);
 }
 /*
-void SliderConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
-	Matrix transB, Vector3 linVelA, Vector3 linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
+void SliderConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
+	Vector3 linVelA, Vector3 linVelB, btScalar rbAinvMass, btScalar rbBinvMass)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -194,9 +194,9 @@ Matrix SliderConstraint::FrameOffsetB::get()
 	return Math::BtTransformToMatrix(&Native->getFrameOffsetB());
 }
 /*
-void SliderConstraint::Info1NonVirtual::get(btConstraintInfo1^ info)
+void SliderConstraint::Info1NonVirtual::get(ConstraintInfo1^ info)
 {
-	_native->getInfo1NonVirtual(info->_native);
+	Native->getInfo1NonVirtual(info->_native);
 }
 */
 btScalar SliderConstraint::LinDepth::get()

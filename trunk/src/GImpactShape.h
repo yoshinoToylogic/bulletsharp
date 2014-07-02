@@ -25,7 +25,7 @@ namespace BulletSharp
 		TrimeshShape = CONST_GIMPACT_TRIMESH_SHAPE
 	};
 
-	public ref class TetrahedronShapeEx : BU_Simplex1to4
+	public ref class TetrahedronShapeEx : BuSimplex1To4
 	{
 	internal:
 		TetrahedronShapeEx(btTetrahedronShapeEx* native);

@@ -6,11 +6,16 @@ namespace BulletSharp
 	ref class AlignedIntArray;
 	ref class PrimitiveTriangle;
 /*
-	public ref class GimPair
+	public ref class GimPair : IDisposable
 	{
 	internal:
 		GIM_PAIR* _native;
 		GimPair(GIM_PAIR* native);
+
+	public:
+		!GimPair();
+	protected:
+		~GimPair();
 
 	public:
 		GimPair();
@@ -43,11 +48,16 @@ namespace BulletSharp
 		void PushPairInv(int index1, int index2);
 	};
 /*
-	public ref class GimBvhData
+	public ref class GimBvhData : IDisposable
 	{
 	internal:
 		GIM_BVH_DATA* _native;
 		GimBvhData(GIM_BVH_DATA* native);
+
+	public:
+		!GimBvhData();
+	protected:
+		~GimBvhData();
 
 	public:
 		GimBvhData();
@@ -65,11 +75,16 @@ namespace BulletSharp
 		}
 	};
 */
-	public ref class GimBvhTreeNode
+	public ref class GimBvhTreeNode : IDisposable
 	{
 	internal:
 		GIM_BVH_TREE_NODE* _native;
 		GimBvhTreeNode(GIM_BVH_TREE_NODE* native);
+
+	public:
+		!GimBvhTreeNode();
+	protected:
+		~GimBvhTreeNode();
 
 	public:
 		GimBvhTreeNode();
@@ -118,11 +133,16 @@ namespace BulletSharp
 		GimBvhTreeNodeArray();
 	};
 */
-	public ref class BvhTree
+	public ref class BvhTree : IDisposable
 	{
 	internal:
 		btBvhTree* _native;
 		BvhTree(btBvhTree* native);
+
+	public:
+		!BvhTree();
+	protected:
+		~BvhTree();
 
 	public:
 		BvhTree();
@@ -176,7 +196,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class GImpactBvh
+	public ref class GImpactBvh : IDisposable
 	{
 	internal:
 		btGImpactBvh* _native;
@@ -184,6 +204,11 @@ namespace BulletSharp
 
 	private:
 		PrimitiveManagerBase^ _primitiveManagerBase;
+
+	public:
+		!GImpactBvh();
+	protected:
+		~GImpactBvh();
 
 	public:
 		GImpactBvh();

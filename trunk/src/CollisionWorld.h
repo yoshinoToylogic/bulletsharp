@@ -85,7 +85,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ConvexResultCallback : IDisposable
+		ref class ConvexResultCallback abstract : IDisposable
 		{
 		internal:
 			btCollisionWorld::ConvexResultCallback* _native;
@@ -237,7 +237,7 @@ namespace BulletSharp
 			}
 		};
 
-		ref class RayResultCallback
+		ref class RayResultCallback abstract
 		{
 		internal:
 			btCollisionWorld::RayResultCallback* _native;
@@ -435,7 +435,7 @@ namespace BulletSharp
 		property IDebugDraw^ DebugDrawer
 		{
 			IDebugDraw^ get();
-			void set(IDebugDraw^ value);
+			void set(IDebugDraw^ debugDrawer);
 		}
 #endif
 		property BulletSharp::Dispatcher^ Dispatcher

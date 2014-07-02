@@ -3,6 +3,7 @@
 #include "BvhTriangleMeshShape.h"
 #include "StridingMeshInterface.h"
 #include "TriangleCallback.h"
+#include "TriangleInfoMap.h"
 #ifndef DISABLE_BVH
 #include "OptimizedBvh.h"
 #endif
@@ -30,6 +31,18 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 }
 
 BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+	Vector3% bvhAabbMin, Vector3% bvhAabbMax, bool buildBvh)
+	: TriangleMeshShape(0)
+{
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
+		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
+}
+
+BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
 	Vector3 bvhAabbMin, Vector3 bvhAabbMax, bool buildBvh)
 	: TriangleMeshShape(0)
 {
@@ -37,6 +50,18 @@ BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface,
 	VECTOR3_DEF(bvhAabbMax);
 	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
 		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax), buildBvh);
+	VECTOR3_DEL(bvhAabbMin);
+	VECTOR3_DEL(bvhAabbMax);
+}
+
+BvhTriangleMeshShape::BvhTriangleMeshShape(StridingMeshInterface^ meshInterface, bool useQuantizedAabbCompression,
+	Vector3% bvhAabbMin, Vector3% bvhAabbMax)
+	: TriangleMeshShape(0)
+{
+	VECTOR3_DEF(bvhAabbMin);
+	VECTOR3_DEF(bvhAabbMax);
+	UnmanagedPointer = new btBvhTriangleMeshShape(meshInterface->_native, useQuantizedAabbCompression,
+		VECTOR3_USE(bvhAabbMin), VECTOR3_USE(bvhAabbMax));
 	VECTOR3_DEL(bvhAabbMin);
 	VECTOR3_DEL(bvhAabbMax);
 }
@@ -58,6 +83,15 @@ void BvhTriangleMeshShape::BuildOptimizedBvh()
 	Native->buildOptimizedBvh();
 }
 
+void BvhTriangleMeshShape::PartialRefitTree(Vector3% aabbMin, Vector3% aabbMax)
+{
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	Native->partialRefitTree(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+}
+
 void BvhTriangleMeshShape::PartialRefitTree(Vector3 aabbMin, Vector3 aabbMax)
 {
 	VECTOR3_DEF(aabbMin);
@@ -65,6 +99,21 @@ void BvhTriangleMeshShape::PartialRefitTree(Vector3 aabbMin, Vector3 aabbMax)
 	Native->partialRefitTree(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
+}
+
+void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3% boxSource,
+	Vector3% boxTarget, Vector3% boxMin, Vector3% boxMax)
+{
+	VECTOR3_DEF(boxSource);
+	VECTOR3_DEF(boxTarget);
+	VECTOR3_DEF(boxMin);
+	VECTOR3_DEF(boxMax);
+	Native->performConvexcast(callback->_native, VECTOR3_USE(boxSource), VECTOR3_USE(boxTarget),
+		VECTOR3_USE(boxMin), VECTOR3_USE(boxMax));
+	VECTOR3_DEL(boxSource);
+	VECTOR3_DEL(boxTarget);
+	VECTOR3_DEL(boxMin);
+	VECTOR3_DEL(boxMax);
 }
 
 void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3 boxSource,
@@ -82,6 +131,16 @@ void BvhTriangleMeshShape::PerformConvexcast(TriangleCallback^ callback, Vector3
 	VECTOR3_DEL(boxMax);
 }
 
+void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3% raySource,
+	Vector3% rayTarget)
+{
+	VECTOR3_DEF(raySource);
+	VECTOR3_DEF(rayTarget);
+	Native->performRaycast(callback->_native, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
+	VECTOR3_DEL(raySource);
+	VECTOR3_DEL(rayTarget);
+}
+
 void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 raySource,
 	Vector3 rayTarget)
 {
@@ -90,6 +149,15 @@ void BvhTriangleMeshShape::PerformRaycast(TriangleCallback^ callback, Vector3 ra
 	Native->performRaycast(callback->_native, VECTOR3_USE(raySource), VECTOR3_USE(rayTarget));
 	VECTOR3_DEL(raySource);
 	VECTOR3_DEL(rayTarget);
+}
+
+void BvhTriangleMeshShape::RefitTree(Vector3% aabbMin, Vector3% aabbMax)
+{
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	Native->refitTree(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void BvhTriangleMeshShape::RefitTree(Vector3 aabbMin, Vector3 aabbMax)
@@ -143,16 +211,20 @@ bool BvhTriangleMeshShape::OwnsBvh::get()
 {
 	return Native->getOwnsBvh();
 }
-/*
-TriangleInfoMap^ BvhTriangleMeshShape::TriangleInfoMap::get()
+
+BulletSharp::TriangleInfoMap^ BvhTriangleMeshShape::TriangleInfoMap::get()
 {
-	return Native->getTriangleInfoMap();
+	if (_triangleInfoMap == nullptr)
+	{
+		_triangleInfoMap = gcnew BulletSharp::TriangleInfoMap(Native->getTriangleInfoMap(), true);
+	}
+	return _triangleInfoMap;
 }
-void BvhTriangleMeshShape::TriangleInfoMap::set(TriangleInfoMap^ triangleInfoMap)
+void BvhTriangleMeshShape::TriangleInfoMap::set(BulletSharp::TriangleInfoMap^ triangleInfoMap)
 {
+	_triangleInfoMap = triangleInfoMap;
 	Native->setTriangleInfoMap(triangleInfoMap->_native);
 }
-*/
 
 bool BvhTriangleMeshShape::UsesQuantizedAabbCompression::get()
 {

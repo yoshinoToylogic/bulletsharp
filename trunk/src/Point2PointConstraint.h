@@ -6,14 +6,22 @@ namespace BulletSharp
 {
 	ref class RigidBody;
 
-	public ref class ConstraintSetting
+	public ref class ConstraintSetting : IDisposable
 	{
 	internal:
 		btConstraintSetting* _native;
-		ConstraintSetting(btConstraintSetting* native);
+		ConstraintSetting(btConstraintSetting* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
 
 	public:
-		//ConstraintSetting();
+		!ConstraintSetting();
+	protected:
+		~ConstraintSetting();
+
+	public:
+		ConstraintSetting();
 
 		property btScalar Damping
 		{
@@ -43,8 +51,8 @@ namespace BulletSharp
 		Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA);
 
-		//GetInfo1NonVirtual(btConstraintInfo1^ info)
-		//void GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix body0_trans, Matrix body1_trans);
+		//GetInfo1NonVirtual(ConstraintInfo1^ info)
+		//void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0_trans, Matrix body1_trans);
 		void UpdateRhs(btScalar timeStep);
 
 		property Vector3 PivotInA
