@@ -5,11 +5,6 @@
 #include "DebugDraw.h"
 #endif
 
-DiscreteCollisionDetectorInterface::ClosestPointInput::ClosestPointInput()
-{
-	_native = ALIGNED_NEW(btDiscreteCollisionDetectorInterface::ClosestPointInput) ();
-}
-
 DiscreteCollisionDetectorInterface::ClosestPointInput::~ClosestPointInput()
 {
 	this->!ClosestPointInput();
@@ -19,6 +14,11 @@ DiscreteCollisionDetectorInterface::ClosestPointInput::!ClosestPointInput()
 {
 	ALIGNED_FREE(_native);
 	_native = NULL;
+}
+
+DiscreteCollisionDetectorInterface::ClosestPointInput::ClosestPointInput()
+{
+	_native = ALIGNED_NEW(btDiscreteCollisionDetectorInterface::ClosestPointInput) ();
 }
 
 btScalar DiscreteCollisionDetectorInterface::ClosestPointInput::MaximumDistanceSquared::get()
@@ -49,15 +49,14 @@ void DiscreteCollisionDetectorInterface::ClosestPointInput::TransformB::set(Matr
 }
 
 
-DiscreteCollisionDetectorInterface::Result::Result(
-	btDiscreteCollisionDetectorInterface::Result* result)
+DiscreteCollisionDetectorInterface::Result::Result(btDiscreteCollisionDetectorInterface::Result* native)
 {
-	_native = result;
+	_native = native;
 }
 
 DiscreteCollisionDetectorInterface::Result::~Result()
 {
-	this->DiscreteCollisionDetectorInterface::Result::!Result();
+	this->!Result();
 }
 
 DiscreteCollisionDetectorInterface::Result::!Result()
@@ -76,9 +75,9 @@ bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
 
 
 DiscreteCollisionDetectorInterface::DiscreteCollisionDetectorInterface(
-	btDiscreteCollisionDetectorInterface* detectorInterface)
+	btDiscreteCollisionDetectorInterface* native)
 {
-	_native = detectorInterface;
+	_native = native;
 }
 
 DiscreteCollisionDetectorInterface::~DiscreteCollisionDetectorInterface()
@@ -91,12 +90,8 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 	if (this->IsDisposed)
 		return;
 
-	OnDisposing(this, nullptr);
-
 	ALIGNED_FREE(_native);
 	_native = NULL;
-
-	OnDisposed(this, nullptr);
 }
 
 #ifndef DISABLE_DEBUGDRAW

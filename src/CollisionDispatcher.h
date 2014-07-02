@@ -36,9 +36,8 @@ namespace BulletSharp
 		CollisionDispatcher(CollisionConfiguration^ collisionConfiguration);
 		CollisionDispatcher();
 
-		static void DefaultNearCallback(BroadphasePair^ collisionPair,
-			CollisionDispatcher^ dispatcher, DispatcherInfo^ dispatchInfo);
-
+		static void DefaultNearCallback(BroadphasePair^ collisionPair, CollisionDispatcher^ dispatcher,
+			DispatcherInfo^ dispatchInfo);
 		void RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0,
 			BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc^ createFunc);
 

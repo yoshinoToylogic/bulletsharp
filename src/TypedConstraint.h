@@ -7,11 +7,15 @@ namespace BulletSharp
 	ref class Serializer;
 	#endif
 
-	public ref class JointFeedback
+	public ref class JointFeedback : IDisposable
 	{
 	internal:
 		btJointFeedback* _native;
 		JointFeedback(btJointFeedback* native);
+		JointFeedback(btJointFeedback* native, bool preventDelete);
+
+	public:
+		bool _preventDelete;
 
 	public:
 		!JointFeedback();
@@ -46,14 +50,22 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class TypedConstraint abstract: ITrackingDisposable
+	public ref class TypedConstraint abstract : ITrackingDisposable
 	{
 	public:
-		ref class ConstraintInfo1
+		ref class ConstraintInfo1 : IDisposable
 		{
 		internal:
 			btTypedConstraint::btConstraintInfo1* _native;
-			ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native);
+			ConstraintInfo1(btTypedConstraint::btConstraintInfo1* native, bool preventDelete);
+
+		public:
+			bool _preventDelete;
+
+		public:
+			!ConstraintInfo1();
+		protected:
+			~ConstraintInfo1();
 
 		public:
 			ConstraintInfo1();
@@ -71,11 +83,19 @@ namespace BulletSharp
 			}
 		};
 
-		ref class ConstraintInfo2
+		ref class ConstraintInfo2 : IDisposable
 		{
 		internal:
 			btTypedConstraint::btConstraintInfo2* _native;
-			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native);
+			ConstraintInfo2(btTypedConstraint::btConstraintInfo2* native, bool preventDelete);
+
+		public:
+			bool _preventDelete;
+
+		public:
+			!ConstraintInfo2();
+		protected:
+			~ConstraintInfo2();
 
 		public:
 			ConstraintInfo2();
@@ -171,15 +191,15 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	private:
-		bool _doesNotOwnObject;
+		bool _preventDelete;
 		Object^ _userObject;
 		JointFeedback^ _jointFeedback;
 
 	internal:
 		btTypedConstraint* _native;
-		TypedConstraint(btTypedConstraint* typedConstraint, bool doesNotOwnObject);
+		TypedConstraint(btTypedConstraint* typedConstraint, bool preventDelete);
 		TypedConstraint(btTypedConstraint* typedConstraint);
-		static TypedConstraint^ GetManaged(btTypedConstraint* typedConstraint);
+		static TypedConstraint^ GetManaged(btTypedConstraint* native);
 
 	public:
 		!TypedConstraint();
@@ -302,11 +322,19 @@ namespace BulletSharp
 
 #ifdef _BT_USE_CENTER_LIMIT_
 #ifdef IN_PARALLELL_SOLVER
-	public ref class AngularLimit
+	public ref class AngularLimit : IDisposable
 	{
 	internal:
 		btAngularLimit* _native;
-		AngularLimit(btAngularLimit* native);
+		AngularLimit(btAngularLimit* native, bool preventDelete);
+
+	public:
+		bool _preventDelete;
+
+	public:
+		!AngularLimit();
+	protected:
+		~AngularLimit();
 
 	public:
 		AngularLimit();

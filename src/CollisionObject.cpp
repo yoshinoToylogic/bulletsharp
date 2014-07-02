@@ -36,7 +36,7 @@ CollisionObject::!CollisionObject()
 	
 	OnDisposing(this, nullptr);
 
-	if (_doesNotOwnObject == false)
+	if (!_preventDelete)
 	{
 		void* userObj = _native->getUserPointer();
 		if (userObj)
@@ -136,7 +136,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (rigidBody)
 	{
 		RigidBody^ body = gcnew RigidBody(rigidBody);
-		body->_doesNotOwnObject = true;
+		body->_preventDelete = true;
 		return body;
 	}
 
@@ -145,7 +145,7 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (softBody)
 	{
 		SoftBody::SoftBody^ body = gcnew SoftBody::SoftBody(softBody);
-		body->_doesNotOwnObject = true;
+		body->_preventDelete = true;
 		return body;
 	}
 #endif
@@ -155,13 +155,13 @@ CollisionObject^ CollisionObject::GetManaged(btCollisionObject* collisionObject)
 	if (multiBody)
 	{
 		MultiBodyLinkCollider^ body = gcnew MultiBodyLinkCollider(multiBody);
-		body->_doesNotOwnObject = true;
+		body->_preventDelete = true;
 		return body;
 	}
 #endif
 
 	CollisionObject^ colObject = gcnew CollisionObject(collisionObject);
-	colObject->_doesNotOwnObject = true;
+	colObject->_preventDelete = true;
 	return colObject;
 }
 

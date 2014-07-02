@@ -103,7 +103,7 @@ bool BroadphaseProxy::IsConvex(int proxyType)
 	return btBroadphaseProxy::isConvex(proxyType);
 }
 
-bool BroadphaseProxy::IsConvex2d(int proxyType)
+bool BroadphaseProxy::IsConvex2D(int proxyType)
 {
 	return btBroadphaseProxy::isConvex2d(proxyType);
 }
@@ -230,7 +230,7 @@ BroadphasePair::BroadphasePair(BroadphaseProxy^ proxy0, BroadphaseProxy^ proxy1)
 */
 CollisionAlgorithm^ BroadphasePair::Algorithm::get()
 {
-	return _native->m_algorithm ? gcnew CollisionAlgorithm(_native->m_algorithm) : nullptr;
+	return CollisionAlgorithm::GetManaged(_native->m_algorithm);
 }
 void BroadphasePair::Algorithm::set(CollisionAlgorithm^ value)
 {

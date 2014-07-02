@@ -4,10 +4,10 @@ namespace BulletSharp
 {
 	interface class IDebugDraw;
 
-	public ref class ConvexCast : IDisposable
+	public ref class ConvexCast abstract : IDisposable
 	{
 	public:
-		ref class CastResult
+		ref class CastResult : IDisposable
 		{
 		internal:
 			btConvexCast::CastResult* _native;
@@ -87,7 +87,8 @@ namespace BulletSharp
 		~ConvexCast();
 
 	public:
-		bool CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix toB, CastResult^ result);
+		bool CalcTimeOfImpact(Matrix fromA, Matrix toA, Matrix fromB, Matrix toB,
+			CastResult^ result);
 
 		property bool IsDisposed
 		{

@@ -42,7 +42,7 @@ namespace BulletSharp
 	internal:
 		btConvexPolyhedron* _native;
 
-		ConvexPolyhedron(btConvexPolyhedron* convexPolyhedron);
+		ConvexPolyhedron(btConvexPolyhedron* native);
 
 	public:
 		!ConvexPolyhedron();
@@ -53,7 +53,10 @@ namespace BulletSharp
 		ConvexPolyhedron();
 
 		void Initialize();
-		void Project(Matrix transform, Vector3 direction, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin, [Out] Vector3% witnesPtMax);
+		void Project(Matrix% trans, Vector3% dir, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
+			[Out] Vector3% witnesPtMax);
+		void Project(Matrix trans, Vector3 dir, [Out] btScalar% minProj, [Out] btScalar% maxProj, [Out] Vector3% witnesPtMin,
+			[Out] Vector3% witnesPtMax);
 		bool TestContainment();
 
 		property Vector3 C

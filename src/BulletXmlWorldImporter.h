@@ -22,6 +22,7 @@ namespace BulletSharp
 	ref class SliderConstraint;
 	ref class TypedConstraint;
 	ref class GImpactMeshShape;
+	ref class TriangleInfoMap;
 
 	namespace Serialize
 	{
@@ -80,7 +81,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 			virtual OptimizedBvh^ CreateOptimizedBvh();
 #endif
-			//virtual TriangleInfoMap^ CreateTriangleInfoMap();
+			virtual TriangleInfoMap^ CreateTriangleInfoMap();
 
 #ifndef DISABLE_CONSTRAINTS
 			// constraints
@@ -111,7 +112,7 @@ namespace BulletSharp
 #ifndef DISABLE_BVH
 			OptimizedBvh^ GetBvhByIndex(int index);
 #endif
-			//TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
+			TriangleInfoMap^ GetTriangleInfoMapByIndex(int index);
 
 			// queries involving named objects
 			CollisionShape^ GetCollisionShapeByName(String^ name);

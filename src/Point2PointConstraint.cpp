@@ -4,15 +4,30 @@
 
 #include "Point2PointConstraint.h"
 #include "RigidBody.h"
-/*
+
+ConstraintSetting::ConstraintSetting(btConstraintSetting* native, bool preventDelete)
+{
+	_native = native;
+	_preventDelete = preventDelete;
+}
+
+ConstraintSetting::~ConstraintSetting()
+{
+	this->!ConstraintSetting();
+}
+
+ConstraintSetting::!ConstraintSetting()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
+}
+
 ConstraintSetting::ConstraintSetting()
 {
 	_native = new btConstraintSetting();
-}
-*/
-ConstraintSetting::ConstraintSetting(btConstraintSetting* setting)
-{
-	_native = setting;
 }
 
 btScalar ConstraintSetting::Damping::get()
@@ -71,12 +86,12 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivo
 }
 
 /*
-void Point2PointConstraint::GetInfo1NonVirtual(btConstraintInfo1^ info)
+void Point2PointConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
 {
 	Native->getInfo1NonVirtual(info->_native);
 }
 
-void Point2PointConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix body0_trans,
+void Point2PointConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0_trans,
 	Matrix body1_trans)
 {
 	TRANSFORM_CONV(body0_trans);
@@ -118,7 +133,7 @@ void Point2PointConstraint::PivotInB::set(Vector3 value)
 
 ConstraintSetting^ Point2PointConstraint::Setting::get()
 {
-	return gcnew ConstraintSetting(&Native->m_setting);
+	return gcnew ConstraintSetting(&Native->m_setting, true);
 }
 void Point2PointConstraint::Setting::set(ConstraintSetting^ setting)
 {

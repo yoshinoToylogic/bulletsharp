@@ -8,11 +8,16 @@ namespace BulletSharp
 	ref class PrimitiveTriangle;
 	ref class UShortArray;
 
-	public ref class GImpactQuantizedBvhNode
+	public ref class GImpactQuantizedBvhNode : IDisposable
 	{
 	internal:
 		BT_QUANTIZED_BVH_NODE* _native;
 		GImpactQuantizedBvhNode(BT_QUANTIZED_BVH_NODE* native);
+
+	public:
+		!GImpactQuantizedBvhNode();
+	protected:
+		~GImpactQuantizedBvhNode();
 
 	public:
 		GImpactQuantizedBvhNode();
@@ -63,11 +68,16 @@ namespace BulletSharp
 		GimGImpactQuantizedBvhNodeArray();
 	};
 
-	public ref class QuantizedBvhTree
+	public ref class QuantizedBvhTree : IDisposable
 	{
 	internal:
 		btQuantizedBvhTree* _native;
 		QuantizedBvhTree(btQuantizedBvhTree* native);
+
+	public:
+		!QuantizedBvhTree();
+	protected:
+		~QuantizedBvhTree();
 
 	public:
 		QuantizedBvhTree();
@@ -76,15 +86,15 @@ namespace BulletSharp
 		void ClearNodes();
 		//GImpactQuantizedBvhNode^ GetNodePointer(int index);
 		//GImpactQuantizedBvhNode^ GetNodePointer();
-		int GetEscapeNodeIndex(int NodeIndex);
-		int GetLeftNode(int NodeIndex);
-		void GetNodeBound(int NodeIndex, Aabb^ bound);
-		int GetNodeData(int NodeIndex);
-		int GetRightNode(int NodeIndex);
-		bool IsLeafNode(int NodeIndex);
+		int GetEscapeNodeIndex(int nodeIndex);
+		int GetLeftNode(int nodeIndex);
+		void GetNodeBound(int nodeIndex, Aabb^ bound);
+		int GetNodeData(int nodeIndex);
+		int GetRightNode(int nodeIndex);
+		bool IsLeafNode(int nodeIndex);
 		void QuantizePoint(UShortArray^ quantizedpoint, Vector3 point);
-		void SetNodeBound(int NodeIndex, Aabb^ bound);
-		bool TestQuantizedBoxOverlap(int NodeIndex, UShortArray^ quantizedMin,
+		void SetNodeBound(int nodeIndex, Aabb^ bound);
+		bool TestQuantizedBoxOverlap(int nodeIndex, UShortArray^ quantizedMin,
 			UShortArray^ quantizedMax);
 
 		property int NodeCount
@@ -93,7 +103,7 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class GImpactQuantizedBvh
+	public ref class GImpactQuantizedBvh : IDisposable
 	{
 	internal:
 		btGImpactQuantizedBvh* _native;
@@ -101,6 +111,11 @@ namespace BulletSharp
 
 	private:
 		PrimitiveManagerBase^ _primitiveManagerBase;
+
+	public:
+		!GImpactQuantizedBvh();
+	protected:
+		~GImpactQuantizedBvh();
 
 	public:
 		GImpactQuantizedBvh();

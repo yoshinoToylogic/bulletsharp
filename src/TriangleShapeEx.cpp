@@ -43,9 +43,7 @@ void GimTriangleContact::MergePoints(Vector4 plane, btScalar margin, array<Vecto
 {
 	btVector3* pointsTemp = Math::Vector3ArrayToUnmanaged(points);
 	btVector4* planeTemp = Math::Vector4ToBtVector4(plane);
-
 	_native->merge_points(*planeTemp, margin, pointsTemp, points->Length);
-
 	delete[] pointsTemp;
 	delete planeTemp;
 }
@@ -85,6 +83,17 @@ void GimTriangleContact::SeparatingNormal::set(Vector4 value)
 PrimitiveTriangle::PrimitiveTriangle(btPrimitiveTriangle* native)
 {
 	_native = native;
+}
+
+PrimitiveTriangle::~PrimitiveTriangle()
+{
+	this->!PrimitiveTriangle();
+}
+
+PrimitiveTriangle::!PrimitiveTriangle()
+{
+	delete _native;
+	_native = NULL;
 }
 
 PrimitiveTriangle::PrimitiveTriangle()

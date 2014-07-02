@@ -60,7 +60,7 @@ void ConeTwistConstraint::EnableMotor(bool b)
 	Native->enableMotor(b);
 }
 /*
-void ConeTwistConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
+void ConeTwistConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA,
 	Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 {
 	TRANSFORM_CONV(transA);
@@ -183,9 +183,9 @@ btScalar ConeTwistConstraint::FixThresh::get()
 {
 	return Native->getFixThresh();
 }
-void ConeTwistConstraint::FixThresh::set(btScalar value)
+void ConeTwistConstraint::FixThresh::set(btScalar fixThresh)
 {
-	Native->setFixThresh(value);
+	Native->setFixThresh(fixThresh);
 }
 
 Matrix ConeTwistConstraint::FrameOffsetA::get()

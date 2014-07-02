@@ -20,13 +20,13 @@ namespace BulletSharp
 			ConvexPenetrationDepthSolver^ _pdSolver;
 
 		public:
-			CreateFunc(SimplexSolverInterface^ simplexSolver,
-				ConvexPenetrationDepthSolver^ pdSolver);
+			CreateFunc(SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver);
 		};
 
 		Convex2DConvex2DAlgorithm(PersistentManifold^ mf, CollisionAlgorithmConstructionInfo^ ci,
-			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap, SimplexSolverInterface^ simplexSolver,
-			ConvexPenetrationDepthSolver^ pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold);
+			CollisionObjectWrapper^ body0Wrap, CollisionObjectWrapper^ body1Wrap,
+			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver,
+			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
 		property PersistentManifold^ Manifold
 		{

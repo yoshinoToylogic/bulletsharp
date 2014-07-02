@@ -12,6 +12,7 @@
 #include "StridingMeshInterface.h"
 #include "StringConv.h"
 #include "TriangleIndexVertexArray.h"
+#include "TriangleInfoMap.h"
 #ifndef DISABLE_BVH
 #include "BvhTriangleMeshShape.h"
 #include "OptimizedBvh.h"
@@ -215,10 +216,10 @@ MultiSphereShape^ Serialize::BulletXmlWorldImporter::CreateMultiSphereShape(arra
 	return ret;
 }
 
-//TriangleInfoMap^ Serialize::BulletXmlWorldImporter::CreateTriangleInfoMap()
-//{
-//	return gcnew TriangleInfoMap(_importer->baseCreateTriangleInfoMap());
-//}
+TriangleInfoMap^ Serialize::BulletXmlWorldImporter::CreateTriangleInfoMap()
+{
+	return gcnew TriangleInfoMap(_importer->baseCreateTriangleInfoMap(), true);
+}
 
 #ifndef DISABLE_CONSTRAINTS
 
@@ -434,10 +435,10 @@ OptimizedBvh^ Serialize::BulletXmlWorldImporter::GetBvhByIndex(int index)
 }
 #endif
 
-//TriangleInfoMap^ Serialize::BulletXmlWorldImporter::GetTriangleInfoMapByIndex(int index)
-//{
-//	return gcnew TriangleInfoMap(_importer->getTriangleInfoMapByIndex(index));
-//}
+TriangleInfoMap^ Serialize::BulletXmlWorldImporter::GetTriangleInfoMapByIndex(int index)
+{
+	return gcnew TriangleInfoMap(_importer->getTriangleInfoMapByIndex(index), true);
+}
 
 CollisionShape^ Serialize::BulletXmlWorldImporter::GetCollisionShapeByName(String^ name)
 {
@@ -680,8 +681,7 @@ btOptimizedBvh* Serialize::BulletXmlWorldImporterWrapper::createOptimizedBvh()
 
 btTriangleInfoMap* Serialize::BulletXmlWorldImporterWrapper::createTriangleInfoMap()
 {
-	return baseCreateTriangleInfoMap();
-	//return _importer->CreateTriangleInfoMap()->_native;
+	return _importer->CreateTriangleInfoMap()->_native;
 }
 
 #ifndef DISABLE_CONSTRAINTS

@@ -15,6 +15,10 @@ namespace BulletSharp
 		btIndexedMesh* _native;
 		IndexedMesh(btIndexedMesh* native);
 
+	public:
+		!IndexedMesh();
+	protected:
+		~IndexedMesh();
 
 	private:
 		IntArray^ _triangleIndices;

@@ -19,16 +19,17 @@ GjkPairDetector::GjkPairDetector(btGjkPairDetector* native)
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native, (btConvexShape*)objectB->_native,
-		simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
+		(btConvexShape*)objectB->_native, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
 GjkPairDetector::GjkPairDetector(ConvexShape^ objectA, ConvexShape^ objectB, BroadphaseNativeType shapeTypeA,
 	BroadphaseNativeType shapeTypeB, btScalar marginA, btScalar marginB, SimplexSolverInterface^ simplexSolver,
 	ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native, (btConvexShape*)objectB->_native,
-		(int)shapeTypeA, (int)shapeTypeB, marginA, marginB, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
+	: DiscreteCollisionDetectorInterface(ALIGNED_NEW(btGjkPairDetector) ((btConvexShape*)objectA->_native,
+		(btConvexShape*)objectB->_native, (int)shapeTypeA, (int)shapeTypeB, marginA, marginB,
+		simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 
@@ -44,7 +45,12 @@ void GjkPairDetector::GetClosestPointsNonVirtual(ClosestPointInput^ input, Resul
 	Native->getClosestPointsNonVirtual(*input->_native, *output->_native, 0);
 }
 #endif
-
+#ifndef DISABLE_INTERNAL
+void GjkPairDetector::SetIgnoreMargin(bool ignoreMargin)
+{
+	Native->setIgnoreMargin(ignoreMargin);
+}
+#endif
 void GjkPairDetector::SetMinkowskiA(ConvexShape^ minkA)
 {
 	Native->setMinkowskiA((btConvexShape*)minkA->_native);

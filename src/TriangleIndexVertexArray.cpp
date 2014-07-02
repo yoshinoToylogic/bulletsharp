@@ -10,6 +10,17 @@ IndexedMesh::IndexedMesh(btIndexedMesh* native)
 	_native = native;
 }
 
+IndexedMesh::~IndexedMesh()
+{
+	this->!IndexedMesh();
+}
+
+IndexedMesh::!IndexedMesh()
+{
+	delete _native;
+	_native = NULL;
+}
+
 IndexedMesh::IndexedMesh()
 {
 	_native = new btIndexedMesh();

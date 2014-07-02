@@ -6,9 +6,21 @@
 #include "Generic6DofConstraint.h"
 #include "RigidBody.h"
 
-RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* native)
+RotationalLimitMotor::RotationalLimitMotor(btRotationalLimitMotor* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+RotationalLimitMotor::~RotationalLimitMotor()
+{
+	this->!RotationalLimitMotor();
+}
+
+RotationalLimitMotor::!RotationalLimitMotor()
+{
+	delete _native;
+	_native = NULL;
 }
 
 RotationalLimitMotor::RotationalLimitMotor()
@@ -190,9 +202,22 @@ void RotationalLimitMotor::TargetVelocity::set(btScalar value)
 	_native->m_targetVelocity = value;
 }
 
-TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* native)
+
+TranslationalLimitMotor::TranslationalLimitMotor(btTranslationalLimitMotor* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+TranslationalLimitMotor::~TranslationalLimitMotor()
+{
+	this->!TranslationalLimitMotor();
+}
+
+TranslationalLimitMotor::!TranslationalLimitMotor()
+{
+	delete _native;
+	_native = NULL;
 }
 
 TranslationalLimitMotor::TranslationalLimitMotor()
@@ -223,7 +248,7 @@ btScalar TranslationalLimitMotor::SolveLinearAxis(btScalar timeStep, btScalar ja
 	VECTOR3_DEF(pointInB);
 	VECTOR3_DEF(axis_normal_on_a);
 	VECTOR3_DEF(anchorPos);
-	btScalar ret =  _native->solveLinearAxis(timeStep, jacDiagABInv, *(btRigidBody*)body1->_native,
+	btScalar ret = _native->solveLinearAxis(timeStep, jacDiagABInv, *(btRigidBody*)body1->_native,
 		VECTOR3_USE(pointInA), *(btRigidBody*)body2->_native, VECTOR3_USE(pointInB),
 		limit_index, VECTOR3_USE(axis_normal_on_a), VECTOR3_USE(anchorPos));
 	VECTOR3_DEL(pointInA);
@@ -415,7 +440,7 @@ void Generic6DofConstraint::CalculateTransforms()
 /*
 int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, Matrix transA,
 	Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB,
-	btConstraintInfo2^ info, int row, Vector3 ax1, int rotational, int rotAllowed)
+	ConstraintInfo2^ info, int row, Vector3 ax1, int rotational, int rotAllowed)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -424,7 +449,7 @@ int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, 
 	VECTOR3_DEF(angVelA);
 	VECTOR3_DEF(angVelB);
 	VECTOR3_DEF(ax1);
-	int ret = _native->get_limit_motor_info2(limitMotor->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+	int ret = Native->get_limit_motor_info2(limitMotor->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
 		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB),
 		info->_native, row, VECTOR3_USE(ax1), rotational, rotAllowed);
 	TRANSFORM_DEL(transA);
@@ -439,7 +464,7 @@ int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, 
 
 int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, Matrix transA,
 	Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB,
-	btConstraintInfo2^ info, int row, Vector3 ax1, int rotational)
+	ConstraintInfo2^ info, int row, Vector3 ax1, int rotational)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -448,7 +473,7 @@ int Generic6DofConstraint::GetLimitMotorInfo2(RotationalLimitMotor^ limitMotor, 
 	VECTOR3_DEF(angVelA);
 	VECTOR3_DEF(angVelB);
 	VECTOR3_DEF(ax1);
-	int ret = _native->get_limit_motor_info2(limitMotor->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+	int ret = Native->get_limit_motor_info2(limitMotor->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
 		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB),
 		info->_native, row, VECTOR3_USE(ax1), rotational);
 	TRANSFORM_DEL(transA);
@@ -477,7 +502,7 @@ Vector3 Generic6DofConstraint::GetAxis(int axis_index)
 	return Math::BtVector3ToVector3(Generic6DofConstraint_GetAxis(Native, axis_index));
 }
 /*
-void Generic6DofConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA,
+void Generic6DofConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA,
 	Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);
@@ -486,7 +511,7 @@ void Generic6DofConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix t
 	VECTOR3_DEF(linVelB);
 	VECTOR3_DEF(angVelA);
 	VECTOR3_DEF(angVelB);
-	_native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
+	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
 		VECTOR3_USE(linVelA), VECTOR3_USE(linVelB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
 	TRANSFORM_DEL(transA);
 	TRANSFORM_DEL(transB);
@@ -503,7 +528,7 @@ btScalar Generic6DofConstraint::GetRelativePivotPosition(int axis_index)
 
 RotationalLimitMotor^ Generic6DofConstraint::GetRotationalLimitMotor(int index)
 {
-	return gcnew RotationalLimitMotor(Native->getRotationalLimitMotor(index));
+	return gcnew RotationalLimitMotor(Native->getRotationalLimitMotor(index), true);
 }
 
 bool Generic6DofConstraint::IsLimited(int limitIndex)
@@ -654,7 +679,7 @@ void Generic6DofConstraint::LinearUpperLimit::set(Vector3 linearUpper)
 
 BulletSharp::TranslationalLimitMotor^ Generic6DofConstraint::TranslationalLimitMotor::get()
 {
-	return gcnew BulletSharp::TranslationalLimitMotor(Native->getTranslationalLimitMotor());
+	return gcnew BulletSharp::TranslationalLimitMotor(Native->getTranslationalLimitMotor(), true);
 }
 
 bool Generic6DofConstraint::UseFrameOffset::get()

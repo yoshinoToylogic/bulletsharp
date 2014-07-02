@@ -241,23 +241,18 @@ int CollisionShape::CalculateSerializeBufferSize()
 }
 #endif
 
-void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
-	Vector3 linvel,	Vector3 angvel, btScalar timeStep,
-	Vector3% temporalAabbMin, Vector3% temporalAabbMax)
+void CollisionShape::CalculateTemporalAabb(Matrix% curTrans, Vector3% linvel, Vector3% angvel,
+	btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax)
 {
 	TRANSFORM_CONV(curTrans);
 	VECTOR3_DEF(linvel);
 	VECTOR3_DEF(angvel);
 	btVector3* temporalAabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* temporalAabbMaxTemp = ALIGNED_NEW(btVector3);
-
-	_native->calculateTemporalAabb(*curTransTemp, VECTOR3_USE(linvel), VECTOR3_USE(angvel),
-		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp
-	);
-
-	temporalAabbMin = Math::BtVector3ToVector3(temporalAabbMaxTemp);
-	temporalAabbMax = Math::BtVector3ToVector3(temporalAabbMaxTemp);
-
+	_native->calculateTemporalAabb(TRANSFORM_USE(curTrans), VECTOR3_USE(linvel), VECTOR3_USE(angvel),
+		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp);
+	Math::BtVector3ToVector3(temporalAabbMaxTemp, temporalAabbMin);
+	Math::BtVector3ToVector3(temporalAabbMaxTemp, temporalAabbMax);
 	TRANSFORM_DEL(curTrans);
 	VECTOR3_DEL(linvel);
 	VECTOR3_DEL(angvel);
@@ -265,17 +260,46 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans,
 	ALIGNED_FREE(temporalAabbMaxTemp);
 }
 
+void CollisionShape::CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel,
+	btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax)
+{
+	TRANSFORM_CONV(curTrans);
+	VECTOR3_DEF(linvel);
+	VECTOR3_DEF(angvel);
+	btVector3* temporalAabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* temporalAabbMaxTemp = ALIGNED_NEW(btVector3);
+	_native->calculateTemporalAabb(TRANSFORM_USE(curTrans), VECTOR3_USE(linvel), VECTOR3_USE(angvel),
+		timeStep, *temporalAabbMinTemp,	*temporalAabbMaxTemp);
+	Math::BtVector3ToVector3(temporalAabbMaxTemp, temporalAabbMin);
+	Math::BtVector3ToVector3(temporalAabbMaxTemp, temporalAabbMax);
+	TRANSFORM_DEL(curTrans);
+	VECTOR3_DEL(linvel);
+	VECTOR3_DEL(angvel);
+	ALIGNED_FREE(temporalAabbMinTemp);
+	ALIGNED_FREE(temporalAabbMaxTemp);
+}
+
+void CollisionShape::GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
+{
+	TRANSFORM_CONV(t);
+	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
+	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
+	_native->getAabb(TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
+	TRANSFORM_DEL(t);
+	ALIGNED_FREE(aabbMinTemp);
+	ALIGNED_FREE(aabbMaxTemp);
+}
+
 void CollisionShape::GetAabb(Matrix t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
 	TRANSFORM_CONV(t);
 	btVector3* aabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* aabbMaxTemp = ALIGNED_NEW(btVector3);
-	
 	_native->getAabb(TRANSFORM_USE(t), *aabbMinTemp, *aabbMaxTemp);
-
-	aabbMin = Math::BtVector3ToVector3(aabbMinTemp);
-	aabbMax = Math::BtVector3ToVector3(aabbMaxTemp);
-
+	Math::BtVector3ToVector3(aabbMinTemp, aabbMin);
+	Math::BtVector3ToVector3(aabbMaxTemp, aabbMax);
 	TRANSFORM_DEL(t);
 	ALIGNED_FREE(aabbMinTemp);
 	ALIGNED_FREE(aabbMaxTemp);
@@ -285,9 +309,7 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 {
 	btVector3* centerTemp = ALIGNED_NEW(btVector3);
 	btScalar radiusTemp;
-	
 	_native->getBoundingSphere(*centerTemp, radiusTemp);
-	
 	center = Math::BtVector3ToVector3(centerTemp);
 	radius = radiusTemp;
 	ALIGNED_FREE(centerTemp);
@@ -345,7 +367,7 @@ bool CollisionShape::IsConvex::get()
 	return _native->isConvex();
 }
 
-bool CollisionShape::IsConvex2d::get()
+bool CollisionShape::IsConvex2D::get()
 {
 	return _native->isConvex2d();
 }

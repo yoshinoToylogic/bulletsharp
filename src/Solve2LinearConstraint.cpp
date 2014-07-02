@@ -5,9 +5,24 @@
 #include "RigidBody.h"
 #include "Solve2LinearConstraint.h"
 
-Solve2LinearConstraint::Solve2LinearConstraint(btSolve2LinearConstraint* native)
+Solve2LinearConstraint::Solve2LinearConstraint(btSolve2LinearConstraint* native, bool preventDelete)
 {
 	_native = native;
+	_preventDelete = preventDelete;
+}
+
+Solve2LinearConstraint::~Solve2LinearConstraint()
+{
+	this->!Solve2LinearConstraint();
+}
+
+Solve2LinearConstraint::!Solve2LinearConstraint()
+{
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
+	_native = NULL;
 }
 
 Solve2LinearConstraint::Solve2LinearConstraint(btScalar tau, btScalar damping)

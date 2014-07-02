@@ -20,6 +20,18 @@ DbvtProxy::DbvtProxy(btDbvtProxy* native)
 {
 }
 
+DbvtProxy::DbvtProxy(Vector3% aabbMin, Vector3% aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
+	CollisionFilterGroups collisionFilterMask)
+	: BroadphaseProxy(0)
+{
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	UnmanagedPointer = new btDbvtProxy(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax), userPointer.ToPointer(),
+		(short int)collisionFilterGroup, (short int)collisionFilterMask);
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
+}
+
 DbvtProxy::DbvtProxy(Vector3 aabbMin, Vector3 aabbMax, IntPtr userPointer, CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
 	: BroadphaseProxy(0)
@@ -97,6 +109,17 @@ void DbvtBroadphase::Optimize()
 void DbvtBroadphase::PerformDeferredRemoval(Dispatcher^ dispatcher)
 {
 	Native->performDeferredRemoval(dispatcher->_native);
+}
+
+void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3% aabbMin,
+	Vector3% aabbMax, Dispatcher^ dispatcher)
+{
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
+	Native->setAabbForceUpdate(absproxy->_native, VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax),
+		dispatcher->_native);
+	VECTOR3_DEL(aabbMin);
+	VECTOR3_DEL(aabbMax);
 }
 
 void DbvtBroadphase::SetAabbForceUpdate(BroadphaseProxy^ absproxy, Vector3 aabbMin,

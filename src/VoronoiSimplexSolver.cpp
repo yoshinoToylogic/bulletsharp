@@ -10,6 +10,17 @@ SubSimplexClosestResult::SubSimplexClosestResult(btSubSimplexClosestResult* nati
 	_native = native;
 }
 
+SubSimplexClosestResult::~SubSimplexClosestResult()
+{
+	this->!SubSimplexClosestResult();
+}
+
+SubSimplexClosestResult::!SubSimplexClosestResult()
+{
+	delete _native;
+	_native = NULL;
+}
+
 SubSimplexClosestResult::SubSimplexClosestResult()
 {
 	_native = new btSubSimplexClosestResult();
@@ -139,8 +150,9 @@ void VoronoiSimplexSolver::BackupClosest(Vector3 v)
 bool VoronoiSimplexSolver::Closest(Vector3 v)
 {
 	VECTOR3_DEF(v);
-	return _native->closest(VECTOR3_USE(v));
+	bool ret = _native->closest(VECTOR3_USE(v));
 	VECTOR3_DEL(v);
+	return ret;
 }
 
 bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p, Vector3 a, Vector3 b,
@@ -151,13 +163,14 @@ bool VoronoiSimplexSolver::ClosestPtPointTetrahedron(Vector3 p, Vector3 a, Vecto
 	VECTOR3_DEF(b);
 	VECTOR3_DEF(c);
 	VECTOR3_DEF(d);
-	return _native->closestPtPointTetrahedron(VECTOR3_USE(p), VECTOR3_USE(a), VECTOR3_USE(b),
-		VECTOR3_USE(c), VECTOR3_USE(d), *finalResult->_native);
+	bool ret = _native->closestPtPointTetrahedron(VECTOR3_USE(p), VECTOR3_USE(a),
+		VECTOR3_USE(b), VECTOR3_USE(c), VECTOR3_USE(d), *finalResult->_native);
 	VECTOR3_DEL(p);
 	VECTOR3_DEL(a);
 	VECTOR3_DEL(b);
 	VECTOR3_DEL(c);
 	VECTOR3_DEL(d);
+	return ret;
 }
 
 bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p, Vector3 a, Vector3 b,
@@ -167,12 +180,13 @@ bool VoronoiSimplexSolver::ClosestPtPointTriangle(Vector3 p, Vector3 a, Vector3 
 	VECTOR3_DEF(a);
 	VECTOR3_DEF(b);
 	VECTOR3_DEF(c);
-	return _native->closestPtPointTriangle(VECTOR3_USE(p), VECTOR3_USE(a), VECTOR3_USE(b),
+	bool ret = _native->closestPtPointTriangle(VECTOR3_USE(p), VECTOR3_USE(a), VECTOR3_USE(b),
 		VECTOR3_USE(c), *result->_native);
 	VECTOR3_DEL(p);
 	VECTOR3_DEL(a);
 	VECTOR3_DEL(b);
 	VECTOR3_DEL(c);
+	return ret;
 }
 
 void VoronoiSimplexSolver::ComputePoints(Vector3 p1, Vector3 p2)

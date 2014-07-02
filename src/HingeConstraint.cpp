@@ -119,20 +119,20 @@ btScalar HingeConstraint::GetHingeAngle(Matrix transA, Matrix transB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	btScalar angle = Native->getHingeAngle(TRANSFORM_USE(transA), TRANSFORM_USE(transB));
+	btScalar ret = Native->getHingeAngle(TRANSFORM_USE(transA), TRANSFORM_USE(transB));
 	TRANSFORM_DEL(transA);
 	TRANSFORM_DEL(transB);
-	return angle;
+	return ret;
 }
 /*
-void HingeConstraint::GetInfo1NonVirtual(btConstraintInfo1^ info)
+void HingeConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
 {
 	Native->getInfo1NonVirtual(info->_native);
 }
 */
 /*
 #ifndef DISABLE_INTERNAL
-void HingeConstraint::GetInfo2Internal(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+void HingeConstraint::GetInfo2Internal(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 	Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);
@@ -147,7 +147,7 @@ void HingeConstraint::GetInfo2Internal(btConstraintInfo2^ info, Matrix transA, M
 	VECTOR3_DEL(angVelB);
 }
 
-void HingeConstraint::GetInfo2InternalUsingFrameOffset(btConstraintInfo2^ info, Matrix transA,
+void HingeConstraint::GetInfo2InternalUsingFrameOffset(ConstraintInfo2^ info, Matrix transA,
 	Matrix transB, Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);
@@ -162,7 +162,7 @@ void HingeConstraint::GetInfo2InternalUsingFrameOffset(btConstraintInfo2^ info, 
 	VECTOR3_DEL(angVelB);
 }
 
-void HingeConstraint::GetInfo2NonVirtual(btConstraintInfo2^ info, Matrix transA, Matrix transB,
+void HingeConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA, Matrix transB,
 	Vector3 angVelA, Vector3 angVelB)
 {
 	TRANSFORM_CONV(transA);

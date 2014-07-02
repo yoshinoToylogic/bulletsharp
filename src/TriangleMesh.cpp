@@ -9,13 +9,13 @@ TriangleMesh::TriangleMesh(btTriangleMesh* native)
 {
 }
 
-TriangleMesh::TriangleMesh(bool use32BitIndexes, bool use4ComponentVertices)
-	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndexes, use4ComponentVertices))
+TriangleMesh::TriangleMesh(bool use32BitIndices, bool use4ComponentVertices)
+	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndices, use4ComponentVertices))
 {
 }
 
-TriangleMesh::TriangleMesh(bool use32BitIndexes)
-	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndexes))
+TriangleMesh::TriangleMesh(bool use32BitIndices)
+	: TriangleIndexVertexArray(new btTriangleMesh(use32BitIndices))
 {
 }
 
@@ -70,7 +70,7 @@ int TriangleMesh::NumTriangles::get()
 	return Native->getNumTriangles();
 }
 
-bool TriangleMesh::Use32BitIndexes::get()
+bool TriangleMesh::Use32BitIndices::get()
 {
 	return Native->getUse32bitIndices();
 }
