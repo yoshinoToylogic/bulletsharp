@@ -20,8 +20,8 @@ ContactSolverInfoData::!ContactSolverInfoData()
 	if (!_preventDelete)
 	{
 		delete _native;
-		_native = NULL;
 	}
+	_native = NULL;
 }
 
 ContactSolverInfoData::ContactSolverInfoData()

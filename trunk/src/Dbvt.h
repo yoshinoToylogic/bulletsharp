@@ -261,7 +261,10 @@ namespace BulletSharp
 
 	internal:
 		btDbvt* _native;
-		Dbvt(btDbvt* native);
+		Dbvt(btDbvt* native, bool preventDelete);
+
+	private:
+		bool _preventDelete;
 
 	public:
 		!Dbvt();

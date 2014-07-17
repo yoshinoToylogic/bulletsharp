@@ -70,21 +70,21 @@ void CharacterControllerInterface::SetUpInterpolate(bool value)
 
 void CharacterControllerInterface::SetVelocityForTimeInterval(Vector3 velocity, btScalar timeInterval)
 {
-	VECTOR3_DEF(velocity);
+	VECTOR3_CONV(velocity);
 	_native->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
 	VECTOR3_DEL(velocity);
 }
 
 void CharacterControllerInterface::SetWalkDirection(Vector3 walkDirection)
 {
-	VECTOR3_DEF(walkDirection);
+	VECTOR3_CONV(walkDirection);
 	_native->setWalkDirection(VECTOR3_USE(walkDirection));
 	VECTOR3_DEL(walkDirection);
 }
 
 void CharacterControllerInterface::Warp(Vector3 origin)
 {
-	VECTOR3_DEF(origin);
+	VECTOR3_CONV(origin);
 	_native->warp(VECTOR3_USE(origin));
 	VECTOR3_DEL(origin);
 }

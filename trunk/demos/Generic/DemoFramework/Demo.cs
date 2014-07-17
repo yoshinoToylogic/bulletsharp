@@ -341,7 +341,7 @@ namespace DemoFramework
                                         */
                                     }
 
-                                    oldPickingDist = (pickPos - rayFrom).Length();
+                                    oldPickingDist = (pickPos - rayFrom).Length;
                                 }
                             }
                         }

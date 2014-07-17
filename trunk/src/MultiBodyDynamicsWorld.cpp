@@ -27,36 +27,45 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_constraintSolver = constraintSolver;
 	_dispatcher = dispatcher;
 	_broadphase = pairCache;
+
+	_bodies = gcnew System::Collections::Generic::List<MultiBody^>();
+	_constraints = gcnew System::Collections::Generic::List<MultiBodyConstraint^>();
 }
 
 void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, short group, short mask)
 {
 	Native->addMultiBody(body->_native, group, mask);
+	_bodies->Add(body);
 }
 
 void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, short group)
 {
 	Native->addMultiBody(body->_native, group);
+	_bodies->Add(body);
 }
 
 void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body)
 {
 	Native->addMultiBody(body->_native);
+	_bodies->Add(body);
 }
 #ifndef DISABLE_CONSTRAINTS
 void MultiBodyDynamicsWorld::AddMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
 	Native->addMultiBodyConstraint(constraint->_native);
+	_constraints->Add(constraint);
 }
 #endif
 void MultiBodyDynamicsWorld::RemoveMultiBody(MultiBody^ body)
 {
 	Native->removeMultiBody(body->_native);
+	_bodies->Remove(body);
 }
 #ifndef DISABLE_CONSTRAINTS
 void MultiBodyDynamicsWorld::RemoveMultiBodyConstraint(MultiBodyConstraint^ constraint)
 {
 	Native->removeMultiBodyConstraint(constraint->_native);
+	_constraints->Remove(constraint);
 }
 #endif
 

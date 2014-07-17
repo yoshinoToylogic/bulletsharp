@@ -109,14 +109,14 @@ void CollisionObject::SerializeSingleObject(BulletSharp::Serializer^ serializer)
 
 void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
 {
-	VECTOR3_DEF(anisotropicFriction);
+	VECTOR3_CONV(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction), (int)frictionMode);
 	VECTOR3_DEL(anisotropicFriction);
 }
 
 void CollisionObject::SetAnisotropicFriction(Vector3 anisotropicFriction)
 {
-	VECTOR3_DEF(anisotropicFriction);
+	VECTOR3_CONV(anisotropicFriction);
 	_native->setAnisotropicFriction(VECTOR3_USE(anisotropicFriction));
 	VECTOR3_DEL(anisotropicFriction);
 }
@@ -180,7 +180,7 @@ Vector3 CollisionObject::AnisotropicFriction::get()
 }
 void CollisionObject::AnisotropicFriction::set(Vector3 value)
 {
-	VECTOR3_DEF(value);
+	VECTOR3_CONV(value);
 	_native->setAnisotropicFriction(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
@@ -293,7 +293,7 @@ Vector3 CollisionObject::InterpolationAngularVelocity::get()
 }
 void CollisionObject::InterpolationAngularVelocity::set(Vector3 angvel)
 {
-	VECTOR3_DEF(angvel);
+	VECTOR3_CONV(angvel);
 	_native->setInterpolationAngularVelocity(VECTOR3_USE(angvel));
 	VECTOR3_DEL(angvel);
 }
@@ -304,7 +304,7 @@ Vector3 CollisionObject::InterpolationLinearVelocity::get()
 }
 void CollisionObject::InterpolationLinearVelocity::set(Vector3 linvel)
 {
-	VECTOR3_DEF(linvel);
+	VECTOR3_CONV(linvel);
 	_native->setInterpolationLinearVelocity(VECTOR3_USE(linvel));
 	VECTOR3_DEL(linvel);
 }

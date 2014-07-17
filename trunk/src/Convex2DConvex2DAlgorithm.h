@@ -28,6 +28,8 @@ namespace BulletSharp
 			SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ pdSolver,
 			int numPerturbationIterations, int minimumPointsPerturbationThreshold);
 
+		void SetLowLevelOfDetail(bool useLowLevel);
+
 		property PersistentManifold^ Manifold
 		{
 			PersistentManifold^ get();

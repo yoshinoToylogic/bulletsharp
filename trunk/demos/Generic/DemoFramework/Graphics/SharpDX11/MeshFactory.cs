@@ -102,6 +102,7 @@ namespace DemoFramework.SharpDX11
                     VertexBuffer = new Buffer(device, data, vertexBufferDesc);
                 }
 
+                VertexCount = vectors.Length;
                 BufferBindings[0] = new VertexBufferBinding(VertexBuffer, 24, 0);
             }
         }
@@ -433,7 +434,7 @@ namespace DemoFramework.SharpDX11
         {
             // Could just allocate a Vector3 array here at each frame, but reusing shapeData.SoftBodyData is faster.
             // Probably uses more memory though.
-            shapeData.VertexCount = softBody.GetVertexNormalData(out shapeData.SoftBodyData);
+            softBody.GetVertexNormalData(out shapeData.SoftBodyData);
             shapeData.SetDynamicVertexBuffer(device, shapeData.SoftBodyData);
 
             if (softBody.Faces.Count == 0 && softBody.Tetras.Count == 0)

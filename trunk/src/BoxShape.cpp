@@ -12,7 +12,7 @@ BoxShape::BoxShape(btBoxShape* native)
 BoxShape::BoxShape(Vector3% boxHalfExtents)
 	: PolyhedralConvexShape(0)
 {
-	VECTOR3_DEF(boxHalfExtents);
+	VECTOR3_CONV(boxHalfExtents);
 	UnmanagedPointer = new btBoxShape(VECTOR3_USE(boxHalfExtents));
 	VECTOR3_DEL(boxHalfExtents);
 }
@@ -20,13 +20,13 @@ BoxShape::BoxShape(Vector3% boxHalfExtents)
 BoxShape::BoxShape(Vector3 boxHalfExtents)
 	: PolyhedralConvexShape(0)
 {
-	VECTOR3_DEF(boxHalfExtents);
+	VECTOR3_CONV(boxHalfExtents);
 	UnmanagedPointer = new btBoxShape(VECTOR3_USE(boxHalfExtents));
 	VECTOR3_DEL(boxHalfExtents);
 }
 
 BoxShape::BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar boxHalfExtentsZ)
-: PolyhedralConvexShape(0)
+	: PolyhedralConvexShape(0)
 {
 	btVector3* boxHalfExtentsTemp = ALIGNED_NEW(btVector3) (boxHalfExtentsX,boxHalfExtentsY,boxHalfExtentsZ);
 	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);
@@ -34,7 +34,7 @@ BoxShape::BoxShape(btScalar boxHalfExtentsX, btScalar boxHalfExtentsY, btScalar 
 }
 
 BoxShape::BoxShape(btScalar boxHalfExtents)
-: PolyhedralConvexShape(0)
+	: PolyhedralConvexShape(0)
 {
 	btVector3* boxHalfExtentsTemp = ALIGNED_NEW(btVector3) (boxHalfExtents, boxHalfExtents, boxHalfExtents);
 	UnmanagedPointer = new btBoxShape(*boxHalfExtentsTemp);

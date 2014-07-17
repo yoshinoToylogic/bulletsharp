@@ -32,12 +32,12 @@
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
 {
-	_importer = new BulletWorldImporterWrapper((btDynamicsWorld*)GetUnmanagedNullable(world), this);
+	_native = new BulletWorldImporterWrapper((btDynamicsWorld*)GetUnmanagedNullable(world), this);
 }
 
 Serialize::BulletWorldImporter::BulletWorldImporter()
 {
-	_importer = new BulletWorldImporterWrapper(0, this);
+	_native = new BulletWorldImporterWrapper(0, this);
 }
 
 Serialize::BulletWorldImporter::~BulletWorldImporter()
@@ -50,8 +50,8 @@ Serialize::BulletWorldImporter::!BulletWorldImporter()
 	if (this->IsDisposed)
 		return;
 
-	delete _importer;
-	_importer = NULL;
+	delete _native;
+	_native = NULL;
 }
 
 CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix startTransform, CollisionShape^ shape, String^ bodyName)
@@ -60,7 +60,7 @@ CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix st
 	const char* bodyNameTemp = StringConv::ManagedToUnmanaged(bodyName);
 
 	CollisionObject^ ret = CollisionObject::GetManaged(
-		_importer->baseCreateCollisionObject(*startTransformTemp, shape->_native, bodyNameTemp));
+		_native->baseCreateCollisionObject(*startTransformTemp, shape->_native, bodyNameTemp));
 
 	ALIGNED_FREE(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
@@ -74,7 +74,7 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 	const char* bodyNameTemp = StringConv::ManagedToUnmanaged(bodyName);
 
 	RigidBody^ ret = (RigidBody^)CollisionObject::GetManaged(
-		_importer->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->_native, bodyNameTemp));
+		_native->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->_native, bodyNameTemp));
 
 	ALIGNED_FREE(startTransformTemp);
 	StringConv::FreeUnmanagedString(bodyNameTemp);
@@ -84,8 +84,8 @@ RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btSca
 
 CollisionShape^ Serialize::BulletWorldImporter::CreatePlaneShape(Vector3 planeNormal, btScalar planeConstant)
 {
-	VECTOR3_DEF(planeNormal);
-	CollisionShape^ ret = CollisionShape::GetManaged(_importer->baseCreatePlaneShape(VECTOR3_USE(planeNormal), planeConstant));
+	VECTOR3_CONV(planeNormal);
+	CollisionShape^ ret = CollisionShape::GetManaged(_native->baseCreatePlaneShape(VECTOR3_USE(planeNormal), planeConstant));
 	VECTOR3_DEL(planeNormal);
 	return ret;
 
@@ -93,109 +93,109 @@ CollisionShape^ Serialize::BulletWorldImporter::CreatePlaneShape(Vector3 planeNo
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateBoxShape(Vector3 halfExtents)
 {
-	VECTOR3_DEF(halfExtents);
-	CollisionShape^ ret = CollisionShape::GetManaged(_importer->baseCreateBoxShape(VECTOR3_USE(halfExtents)));
+	VECTOR3_CONV(halfExtents);
+	CollisionShape^ ret = CollisionShape::GetManaged(_native->baseCreateBoxShape(VECTOR3_USE(halfExtents)));
 	VECTOR3_DEL(halfExtents);
 	return ret;
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateSphereShape(btScalar radius)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateSphereShape(radius));
+	return CollisionShape::GetManaged(_native->baseCreateSphereShape(radius));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateCapsuleShapeX(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateCapsuleShapeX(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateCapsuleShapeX(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateCapsuleShapeY(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateCapsuleShapeY(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateCapsuleShapeY(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateCapsuleShapeZ(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateCapsuleShapeZ(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateCapsuleShapeZ(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateCylinderShapeX(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateCylinderShapeX(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateCylinderShapeX(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateCylinderShapeY(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateCylinderShapeY(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateCylinderShapeY(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateCylinderShapeZ(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateCylinderShapeZ(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateCylinderShapeZ(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateConeShapeX(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateConeShapeX(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateConeShapeX(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateConeShapeY(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateConeShapeY(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateConeShapeY(radius, height));
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateConeShapeZ(btScalar radius, btScalar height)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateConeShapeZ(radius, height));
+	return CollisionShape::GetManaged(_native->baseCreateConeShapeZ(radius, height));
 }
 
 TriangleIndexVertexArray^ Serialize::BulletWorldImporter::CreateTriangleMeshContainer()
 {
-	return gcnew TriangleIndexVertexArray(_importer->baseCreateTriangleMeshContainer());
+	return gcnew TriangleIndexVertexArray(_native->baseCreateTriangleMeshContainer());
 }
 
 #ifndef DISABLE_BVH
 BvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateBvhTriangleMeshShape(StridingMeshInterface^ trimesh, OptimizedBvh^ bvh)
 {
-	return gcnew BvhTriangleMeshShape(_importer->baseCreateBvhTriangleMeshShape(trimesh->_native, (btOptimizedBvh*)bvh->_native));
+	return gcnew BvhTriangleMeshShape(_native->baseCreateBvhTriangleMeshShape(trimesh->_native, (btOptimizedBvh*)bvh->_native));
 }
 #endif
 
 CollisionShape^ Serialize::BulletWorldImporter::CreateConvexTriangleMeshShape(StridingMeshInterface^ trimesh)
 {
-	return CollisionShape::GetManaged(_importer->baseCreateConvexTriangleMeshShape(trimesh->_native));
+	return CollisionShape::GetManaged(_native->baseCreateConvexTriangleMeshShape(trimesh->_native));
 }
 
 #ifndef DISABLE_GIMPACT
 GImpactMeshShape^ Serialize::BulletWorldImporter::CreateGImpactShape(StridingMeshInterface^ trimesh)
 {
-	return gcnew GImpactMeshShape(_importer->baseCreateGimpactShape(trimesh->_native));
+	return gcnew GImpactMeshShape(_native->baseCreateGimpactShape(trimesh->_native));
 }
 #endif
 
 ConvexHullShape^ Serialize::BulletWorldImporter::CreateConvexHullShape()
 {
-	return gcnew ConvexHullShape(_importer->baseCreateConvexHullShape());
+	return gcnew ConvexHullShape(_native->baseCreateConvexHullShape());
 }
 
 CompoundShape^ Serialize::BulletWorldImporter::CreateCompoundShape()
 {
-	return gcnew CompoundShape(_importer->baseCreateCompoundShape());
+	return gcnew CompoundShape(_native->baseCreateCompoundShape());
 }
 
 #ifndef DISABLE_BVH
 ScaledBvhTriangleMeshShape^ Serialize::BulletWorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
 {
-	VECTOR3_DEF(localScaling);
+	VECTOR3_CONV(localScaling);
 	ScaledBvhTriangleMeshShape^ ret = gcnew ScaledBvhTriangleMeshShape(
-		_importer->baseCreateScaledTrangleMeshShape((btBvhTriangleMeshShape*)meshShape->_native, VECTOR3_USE(localScaling)));
+		_native->baseCreateScaledTrangleMeshShape((btBvhTriangleMeshShape*)meshShape->_native, VECTOR3_USE(localScaling)));
 	VECTOR3_DEL(localScaling);
 	return ret;
 }
 
 OptimizedBvh^ Serialize::BulletWorldImporter::CreateOptimizedBvh()
 {
-	return gcnew OptimizedBvh(_importer->baseCreateOptimizedBvh());
+	return gcnew OptimizedBvh(_native->baseCreateOptimizedBvh());
 }
 #endif
 
@@ -207,7 +207,7 @@ MultiSphereShape^ Serialize::BulletWorldImporter::CreateMultiSphereShape(array<V
 	btScalar* radiTemp = Math::BtScalarArrayToUnmanaged(radi, numSpheres);
 
 	MultiSphereShape^ ret = gcnew MultiSphereShape(
-		_importer->baseCreateMultiSphereShape(positionsTemp, radiTemp, numSpheres));
+		_native->baseCreateMultiSphereShape(positionsTemp, radiTemp, numSpheres));
 
 	delete[] positionsTemp;
 	delete[] radiTemp;
@@ -217,7 +217,7 @@ MultiSphereShape^ Serialize::BulletWorldImporter::CreateMultiSphereShape(array<V
 
 //TriangleInfoMap^ Serialize::BulletWorldImporter::CreateTriangleInfoMap()
 //{
-//	return gcnew TriangleInfoMap(_importer->baseCreateTriangleInfoMap());
+//	return gcnew TriangleInfoMap(_native->baseCreateTriangleInfoMap());
 //}
 
 #ifndef DISABLE_CONSTRAINTS
@@ -225,10 +225,10 @@ MultiSphereShape^ Serialize::BulletWorldImporter::CreateMultiSphereShape(array<V
 Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 pivotInA, Vector3 pivotInB)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(pivotInB);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
 
-	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_importer->baseCreatePoint2PointConstraint(
+	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_native->baseCreatePoint2PointConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB)));
 
 	VECTOR3_DEL(pivotInA);
@@ -239,9 +239,9 @@ Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstrai
 
 Point2PointConstraint^ Serialize::BulletWorldImporter::CreatePoint2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
 {
-	VECTOR3_DEF(pivotInA);
+	VECTOR3_CONV(pivotInA);
 
-	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_importer->baseCreatePoint2PointConstraint(
+	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_native->baseCreatePoint2PointConstraint(
 		*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA)));
 
 	VECTOR3_DEL(pivotInA);
@@ -253,7 +253,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
-	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
+	HingeConstraint^ ret = gcnew HingeConstraint(_native->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp, useReferenceFrameA));
 
@@ -268,7 +268,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
-	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
+	HingeConstraint^ ret = gcnew HingeConstraint(_native->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
@@ -282,7 +282,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
+	HingeConstraint^ ret = gcnew HingeConstraint(_native->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp, useReferenceFrameA));
 
 	ALIGNED_FREE(rigidBodyAFrameTemp);
@@ -293,7 +293,7 @@ HingeConstraint^ Serialize::BulletWorldImporter::CreateHingeConstraint(RigidBody
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	HingeConstraint^ ret = gcnew HingeConstraint(_importer->baseCreateHingeConstraint(
+	HingeConstraint^ ret = gcnew HingeConstraint(_native->baseCreateHingeConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp));
 
 	ALIGNED_FREE(rigidBodyAFrameTemp);
@@ -305,7 +305,7 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 	btTransform* rigidBodyBFrameTemp = Math::MatrixToBtTransform(rigidBodyBFrame);
 
-	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
+	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_native->baseCreateConeTwistConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*rigidBodyAFrameTemp, *rigidBodyBFrameTemp));
 
@@ -319,7 +319,7 @@ ConeTwistConstraint^ Serialize::BulletWorldImporter::CreateConeTwistConstraint(R
 {
 	btTransform* rigidBodyAFrameTemp = Math::MatrixToBtTransform(rigidBodyAFrame);
 
-	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_importer->baseCreateConeTwistConstraint(
+	ConeTwistConstraint^ ret = gcnew ConeTwistConstraint(_native->baseCreateConeTwistConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *rigidBodyAFrameTemp));
 
 	ALIGNED_FREE(rigidBodyAFrameTemp);
@@ -331,7 +331,7 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
+	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_native->baseCreateGeneric6DofConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
@@ -345,7 +345,7 @@ Generic6DofConstraint^ Serialize::BulletWorldImporter::CreateGeneric6DofConstrai
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_importer->baseCreateGeneric6DofConstraint(
+	Generic6DofConstraint^ ret = gcnew Generic6DofConstraint(_native->baseCreateGeneric6DofConstraint(
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameB));
 
 	ALIGNED_FREE(frameInBTemp);
@@ -357,7 +357,7 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 	btTransform* frameInATemp = Math::MatrixToBtTransform(frameInA);
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	SliderConstraint^ ret = gcnew SliderConstraint(_importer->baseCreateSliderConstraint(
+	SliderConstraint^ ret = gcnew SliderConstraint(_native->baseCreateSliderConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		*frameInATemp, *frameInBTemp, useLinearReferenceFrameA));
 
@@ -371,7 +371,7 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 {
 	btTransform* frameInBTemp = Math::MatrixToBtTransform(frameInB);
 
-	SliderConstraint^ ret = gcnew SliderConstraint(_importer->baseCreateSliderConstraint(
+	SliderConstraint^ ret = gcnew SliderConstraint(_native->baseCreateSliderConstraint(
 		*(btRigidBody*)rigidBodyB->_native, *frameInBTemp, useLinearReferenceFrameA));
 	
 	ALIGNED_FREE(frameInBTemp);
@@ -380,10 +380,10 @@ SliderConstraint^ Serialize::BulletWorldImporter::CreateSliderConstraint(RigidBo
 
 GearConstraint^ Serialize::BulletWorldImporter::CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio)
 {
-	VECTOR3_DEF(axisInA);
-	VECTOR3_DEF(axisInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
 
-	GearConstraint^ ret = gcnew GearConstraint(_importer->baseCreateGearConstraint(*(btRigidBody*)rigidBodyA->_native,
+	GearConstraint^ ret = gcnew GearConstraint(_native->baseCreateGearConstraint(*(btRigidBody*)rigidBodyA->_native,
 		*(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), ratio));
 	
 	VECTOR3_DEL(axisInA);
@@ -397,14 +397,14 @@ GearConstraint^ Serialize::BulletWorldImporter::CreateGearConstraint(RigidBody^ 
 
 void Serialize::BulletWorldImporter::DeleteAllData()
 {
-	_importer->deleteAllData();
+	_native->deleteAllData();
 }
 
 bool Serialize::BulletWorldImporter::LoadFile(String^ filename, String^ preSwapFilenameOut)
 {
 	const char* filenameTemp = StringConv::ManagedToUnmanaged(filename);
 	const char* preSwapFilenameOutTemp = StringConv::ManagedToUnmanaged(preSwapFilenameOut);
-	bool ret = _importer->loadFile(filenameTemp, preSwapFilenameOutTemp);
+	bool ret = _native->loadFile(filenameTemp, preSwapFilenameOutTemp);
 	StringConv::FreeUnmanagedString(filenameTemp);
 	StringConv::FreeUnmanagedString(preSwapFilenameOutTemp);
 	return ret;
@@ -413,7 +413,7 @@ bool Serialize::BulletWorldImporter::LoadFile(String^ filename, String^ preSwapF
 bool Serialize::BulletWorldImporter::LoadFile(String^ filename)
 {
 	const char* filenameTemp = StringConv::ManagedToUnmanaged(filename);
-	bool ret = _importer->loadFile(filenameTemp);
+	bool ret = _native->loadFile(filenameTemp);
 	StringConv::FreeUnmanagedString(filenameTemp);
 	return ret;
 }
@@ -421,23 +421,23 @@ bool Serialize::BulletWorldImporter::LoadFile(String^ filename)
 bool Serialize::BulletWorldImporter::LoadFileFromMemory(array<Byte>^ memoryBuffer)
 {
 	pin_ptr<Byte> memoryBufferPtr = &memoryBuffer[0];
-	return _importer->loadFileFromMemory((char*)memoryBufferPtr, memoryBuffer->Length);
+	return _native->loadFileFromMemory((char*)memoryBufferPtr, memoryBuffer->Length);
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByIndex(int index)
 {
-	return CollisionShape::GetManaged(_importer->getCollisionShapeByIndex(index));
+	return CollisionShape::GetManaged(_native->getCollisionShapeByIndex(index));
 }
 
 CollisionObject^ Serialize::BulletWorldImporter::GetRigidBodyByIndex(int index)
 {
-	return CollisionObject::GetManaged(_importer->getRigidBodyByIndex(index));
+	return CollisionObject::GetManaged(_native->getRigidBodyByIndex(index));
 }
 
 #ifndef DISABLE_CONSTRAINTS
 TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 {
-	btTypedConstraint* constraint = _importer->getConstraintByIndex(index);
+	btTypedConstraint* constraint = _native->getConstraintByIndex(index);
 	return TypedConstraint::GetManaged(constraint);
 }
 #endif
@@ -445,14 +445,14 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByIndex(int index)
 #ifndef DISABLE_BVH
 OptimizedBvh^ Serialize::BulletWorldImporter::GetBvhByIndex(int index)
 {
-	btOptimizedBvh* bvh = _importer->getBvhByIndex(index);
+	btOptimizedBvh* bvh = _native->getBvhByIndex(index);
 	return bvh ? gcnew OptimizedBvh(bvh) : nullptr;
 }
 #endif
 
 //TriangleInfoMap^ Serialize::BulletWorldImporter::GetTriangleInfoMapByIndex(int index)
 //{
-//	return gcnew TriangleInfoMap(_importer->getTriangleInfoMapByIndex(index));
+//	return gcnew TriangleInfoMap(_native->getTriangleInfoMapByIndex(index));
 //}
 
 CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByName(String^ name)
@@ -462,7 +462,7 @@ CollisionShape^ Serialize::BulletWorldImporter::GetCollisionShapeByName(String^ 
 
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
-	shape = _importer->getCollisionShapeByName(nameTemp);
+	shape = _native->getCollisionShapeByName(nameTemp);
 	ret = CollisionShape::GetManaged(shape);
 
 	StringConv::FreeUnmanagedString(nameTemp);
@@ -476,7 +476,7 @@ RigidBody^ Serialize::BulletWorldImporter::GetRigidBodyByName(String^ name)
 
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
-	body = _importer->getRigidBodyByName(nameTemp);
+	body = _native->getRigidBodyByName(nameTemp);
 	ret = (RigidBody^)CollisionObject::GetManaged(body);
 
 	StringConv::FreeUnmanagedString(nameTemp);
@@ -491,7 +491,7 @@ TypedConstraint^ Serialize::BulletWorldImporter::GetConstraintByName(String^ nam
 
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
 
-	constraint = _importer->getConstraintByName(nameTemp);
+	constraint = _native->getConstraintByName(nameTemp);
 	ret = TypedConstraint::GetManaged(constraint);
 
 	StringConv::FreeUnmanagedString(nameTemp);
@@ -529,47 +529,47 @@ String^	Serialize::BulletWorldImporter::GetNameForObject(Object^ obj)
 	return nullptr;
 
 returnName:
-	const char* name = _importer->getNameForPointer(pointer);
+	const char* name = _native->getNameForPointer(pointer);
 	return name ? StringConv::UnmanagedToManaged(name) : nullptr;
 }
 
 bool Serialize::BulletWorldImporter::IsDisposed::get()
 {
-	return (_importer == NULL);
+	return (_native == NULL);
 }
 
 int Serialize::BulletWorldImporter::BvhCount::get()
 {
-	return _importer->getNumBvhs();
+	return _native->getNumBvhs();
 }
 
 int Serialize::BulletWorldImporter::ConstraintCount::get()
 {
-	return _importer->getNumConstraints();
+	return _native->getNumConstraints();
 }
 
 int Serialize::BulletWorldImporter::CollisionShapeCount::get()
 {
-	return _importer->getNumCollisionShapes();
+	return _native->getNumCollisionShapes();
 }
 
 int Serialize::BulletWorldImporter::RigidBodyCount::get()
 {
-	return _importer->getNumRigidBodies();
+	return _native->getNumRigidBodies();
 }
 
 int Serialize::BulletWorldImporter::TriangleInfoMapCount::get()
 {
-	return _importer->getNumTriangleInfoMaps();
+	return _native->getNumTriangleInfoMaps();
 }
 
 int Serialize::BulletWorldImporter::VerboseMode::get()
 {
-	return _importer->getVerboseMode();
+	return _native->getVerboseMode();
 }
 void Serialize::BulletWorldImporter::VerboseMode::set(int value)
 {
-	_importer->setVerboseMode(value);
+	_native->setVerboseMode(value);
 }
 
 

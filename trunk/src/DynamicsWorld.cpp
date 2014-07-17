@@ -209,7 +209,7 @@ Vector3 DynamicsWorld::Gravity::get()
 }
 void DynamicsWorld::Gravity::set(Vector3 gravity)
 {
-	VECTOR3_DEF(gravity);
+	VECTOR3_CONV(gravity);
 	Native->setGravity(VECTOR3_USE(gravity));
 	VECTOR3_DEL(gravity);
 }

@@ -74,8 +74,7 @@ bool DiscreteCollisionDetectorInterface::Result::IsDisposed::get()
 }
 
 
-DiscreteCollisionDetectorInterface::DiscreteCollisionDetectorInterface(
-	btDiscreteCollisionDetectorInterface* native)
+DiscreteCollisionDetectorInterface::DiscreteCollisionDetectorInterface(btDiscreteCollisionDetectorInterface* native)
 {
 	_native = native;
 }
@@ -95,30 +94,29 @@ DiscreteCollisionDetectorInterface::!DiscreteCollisionDetectorInterface()
 }
 
 #ifndef DISABLE_DEBUGDRAW
-void DiscreteCollisionDetectorInterface::GetClosestPoints(
-	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw)
+void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,
+	Result^ output, IDebugDraw^ debugDraw, bool swapResults)
 {
-	_native->getClosestPoints(*input->_native, *output->_native,
-		DebugDraw::GetUnmanaged(debugDraw));
+	_native->getClosestPoints(*input->_native, *output->_native, DebugDraw::GetUnmanaged(debugDraw),
+		swapResults);
 }
 
-void DiscreteCollisionDetectorInterface::GetClosestPoints(
-	ClosestPointInput^ input, Result^ output, IDebugDraw^ debugDraw, bool swapResults)
+void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,
+	Result^ output, IDebugDraw^ debugDraw)
 {
-	_native->getClosestPoints(*input->_native, *output->_native,
-		DebugDraw::GetUnmanaged(debugDraw), swapResults);
+	_native->getClosestPoints(*input->_native, *output->_native, DebugDraw::GetUnmanaged(debugDraw));
 }
 #else
-void DiscreteCollisionDetectorInterface::GetClosestPoints(
-	ClosestPointInput^ input, Result^ output)
-{
-	_native->getClosestPoints(*input->_native, *output->_native, 0);
-}
-
-void DiscreteCollisionDetectorInterface::GetClosestPoints(
-	ClosestPointInput^ input, Result^ output, bool swapResults)
+void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,
+	Result^ output, bool swapResults)
 {
 	_native->getClosestPoints(*input->_native, *output->_native, 0, swapResults);
+}
+
+void DiscreteCollisionDetectorInterface::GetClosestPoints(ClosestPointInput^ input,
+	Result^ output)
+{
+	_native->getClosestPoints(*input->_native, *output->_native, 0);
 }
 #endif
 
@@ -143,8 +141,8 @@ StorageResult::StorageResult()
 
 void StorageResult::AddContactPoint(Vector3 normalOnBInWorld, Vector3 pointInWorld, btScalar depth)
 {
-	VECTOR3_DEF(normalOnBInWorld);
-	VECTOR3_DEF(pointInWorld);
+	VECTOR3_CONV(normalOnBInWorld);
+	VECTOR3_CONV(pointInWorld);
 	Native->addContactPoint(VECTOR3_USE(normalOnBInWorld), VECTOR3_USE(pointInWorld), depth);
 	VECTOR3_DEL(normalOnBInWorld);
 	VECTOR3_DEL(pointInWorld);

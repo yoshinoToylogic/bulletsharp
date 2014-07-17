@@ -12,13 +12,6 @@ ContactConstraint::ContactConstraint(btContactConstraint* native)
 {
 }
 
-ContactConstraint::ContactConstraint(PersistentManifold^ contactManifold, RigidBody^ rigidBodyA,
-	RigidBody^ rigidBodyB)
-	: TypedConstraint(new btContactConstraint((btPersistentManifold*)contactManifold->_native,
-		*(btRigidBody*)rbA->_native, *(btRigidBody*)rbB->_native))
-{
-}
-
 PersistentManifold^ ContactConstraint::ContactManifold::get()
 {
 	return gcnew PersistentManifold(Native->getContactManifold());

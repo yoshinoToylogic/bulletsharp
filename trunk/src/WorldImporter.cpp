@@ -86,7 +86,7 @@ RigidBody^ Serialize::WorldImporter::CreateRigidBody(bool isDynamic, btScalar ma
 
 CollisionShape^ Serialize::WorldImporter::CreatePlaneShape(Vector3 planeNormal, btScalar planeConstant)
 {
-	VECTOR3_DEF(planeNormal);
+	VECTOR3_CONV(planeNormal);
 	CollisionShape^ ret = CollisionShape::GetManaged(_native->baseCreatePlaneShape(VECTOR3_USE(planeNormal), planeConstant));
 	VECTOR3_DEL(planeNormal);
 	return ret;
@@ -95,7 +95,7 @@ CollisionShape^ Serialize::WorldImporter::CreatePlaneShape(Vector3 planeNormal, 
 
 CollisionShape^ Serialize::WorldImporter::CreateBoxShape(Vector3 halfExtents)
 {
-	VECTOR3_DEF(halfExtents);
+	VECTOR3_CONV(halfExtents);
 	CollisionShape^ ret = CollisionShape::GetManaged(_native->baseCreateBoxShape(VECTOR3_USE(halfExtents)));
 	VECTOR3_DEL(halfExtents);
 	return ret;
@@ -188,7 +188,7 @@ CompoundShape^ Serialize::WorldImporter::CreateCompoundShape()
 #ifndef DISABLE_BVH
 ScaledBvhTriangleMeshShape^ Serialize::WorldImporter::CreateScaledTrangleMeshShape(BvhTriangleMeshShape^ meshShape, Vector3 localScaling)
 {
-	VECTOR3_DEF(localScaling);
+	VECTOR3_CONV(localScaling);
 	ScaledBvhTriangleMeshShape^ ret = gcnew ScaledBvhTriangleMeshShape(
 		_native->baseCreateScaledTrangleMeshShape(meshShape->_native, VECTOR3_USE(localScaling)));
 	VECTOR3_DEL(localScaling);
@@ -227,8 +227,8 @@ TriangleInfoMap^ Serialize::WorldImporter::CreateTriangleInfoMap()
 Point2PointConstraint^ Serialize::WorldImporter::CreatePoint2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	Vector3 pivotInA, Vector3 pivotInB)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(pivotInB);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
 
 	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_native->baseCreatePoint2PointConstraint(
 		*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB)));
@@ -241,7 +241,7 @@ Point2PointConstraint^ Serialize::WorldImporter::CreatePoint2PointConstraint(Rig
 
 Point2PointConstraint^ Serialize::WorldImporter::CreatePoint2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
 {
-	VECTOR3_DEF(pivotInA);
+	VECTOR3_CONV(pivotInA);
 
 	Point2PointConstraint^ ret = gcnew Point2PointConstraint(_native->baseCreatePoint2PointConstraint(
 		*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA)));
@@ -382,8 +382,8 @@ SliderConstraint^ Serialize::WorldImporter::CreateSliderConstraint(RigidBody^ ri
 
 GearConstraint^ Serialize::WorldImporter::CreateGearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB, btScalar ratio)
 {
-	VECTOR3_DEF(axisInA);
-	VECTOR3_DEF(axisInB);
+	VECTOR3_CONV(axisInA);
+	VECTOR3_CONV(axisInB);
 
 	GearConstraint^ ret = gcnew GearConstraint(_importer->baseCreateGearConstraint(*(btRigidBody*)rigidBodyA->_native,
 		*(btRigidBody*)rigidBodyB->_native, VECTOR3_USE(axisInA), VECTOR3_USE(axisInB), ratio));

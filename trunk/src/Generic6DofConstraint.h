@@ -112,19 +112,19 @@ namespace BulletSharp
 			bool get();
 		}
 
-		property btScalar NormalCFM
+		property btScalar NormalCfm
 		{
 			btScalar get();
 			void set(btScalar value);
 		}
 
-		property btScalar StopCFM
+		property btScalar StopCfm
 		{
 			btScalar get();
 			void set(btScalar value);
 		}
 
-		property btScalar StopERP
+		property btScalar StopErp
 		{
 			btScalar get();
 			void set(btScalar value);

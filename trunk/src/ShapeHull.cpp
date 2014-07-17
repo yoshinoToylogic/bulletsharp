@@ -20,7 +20,7 @@ ShapeHull::~ShapeHull()
 ShapeHull::!ShapeHull()
 {
 	delete _native;
-	_native = nullptr;
+	_native = NULL;
 }
 
 ShapeHull::ShapeHull(ConvexShape^ shape)

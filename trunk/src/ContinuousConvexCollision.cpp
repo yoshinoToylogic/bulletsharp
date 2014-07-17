@@ -9,8 +9,8 @@
 
 ContinuousConvexCollision::ContinuousConvexCollision(ConvexShape^ shapeA, ConvexShape^ shapeB,
 	SimplexSolverInterface^ simplexSolver, ConvexPenetrationDepthSolver^ penetrationDepthSolver)
-	: ConvexCast(new btContinuousConvexCollision((btConvexShape*)shapeA->_native, (btConvexShape*)shapeB->_native,
-		simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
+	: ConvexCast(new btContinuousConvexCollision((btConvexShape*)shapeA->_native,
+		(btConvexShape*)shapeB->_native, simplexSolver->_native, GetUnmanagedNullable(penetrationDepthSolver)))
 {
 }
 

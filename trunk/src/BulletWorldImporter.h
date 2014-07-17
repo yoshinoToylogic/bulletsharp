@@ -30,7 +30,7 @@ namespace BulletSharp
 		public ref class BulletWorldImporter : IDisposable
 		{
 		private:
-			BulletWorldImporterWrapper* _importer;
+			BulletWorldImporterWrapper* _native;
 
 		public:
 			!BulletWorldImporter();

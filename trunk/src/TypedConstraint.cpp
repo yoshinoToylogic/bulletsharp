@@ -552,20 +552,20 @@ void AngularLimit::Fit(btScalar% angle)
 	angle = angleTemp;
 }
 
-void AngularLimit::Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor,
-	btScalar _relaxationFactor)
+void AngularLimit::Set(btScalar low, btScalar high, btScalar softness, btScalar biasFactor,
+	btScalar relaxationFactor)
 {
-	_native->set(low, high, _softness, _biasFactor, _relaxationFactor);
+	_native->set(low, high, softness, biasFactor, relaxationFactor);
 }
 
-void AngularLimit::Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor)
+void AngularLimit::Set(btScalar low, btScalar high, btScalar softness, btScalar biasFactor)
 {
-	_native->set(low, high, _softness, _biasFactor);
+	_native->set(low, high, softness, biasFactor);
 }
 
-void AngularLimit::Set(btScalar low, btScalar high, btScalar _softness)
+void AngularLimit::Set(btScalar low, btScalar high, btScalar softness)
 {
-	_native->set(low, high, _softness);
+	_native->set(low, high, softness);
 }
 
 void AngularLimit::Set(btScalar low, btScalar high)

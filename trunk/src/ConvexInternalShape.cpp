@@ -21,28 +21,28 @@ void ConvexInternalShape::SetSafeMargin(btScalar minDimension)
 
 void ConvexInternalShape::SetSafeMargin(Vector3% halfExtents, btScalar defaultMarginMultiplier)
 {
-	VECTOR3_DEF(halfExtents);
+	VECTOR3_CONV(halfExtents);
 	Native->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
 	VECTOR3_DEL(halfExtents);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents, btScalar defaultMarginMultiplier)
 {
-	VECTOR3_DEF(halfExtents);
+	VECTOR3_CONV(halfExtents);
 	Native->setSafeMargin(VECTOR3_USE(halfExtents), defaultMarginMultiplier);
 	VECTOR3_DEL(halfExtents);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3% halfExtents)
 {
-	VECTOR3_DEF(halfExtents);
+	VECTOR3_CONV(halfExtents);
 	Native->setSafeMargin(VECTOR3_USE(halfExtents));
 	VECTOR3_DEL(halfExtents);
 }
 
 void ConvexInternalShape::SetSafeMargin(Vector3 halfExtents)
 {
-	VECTOR3_DEF(halfExtents);
+	VECTOR3_CONV(halfExtents);
 	Native->setSafeMargin(VECTOR3_USE(halfExtents));
 	VECTOR3_DEL(halfExtents);
 }
@@ -53,7 +53,7 @@ Vector3 ConvexInternalShape::ImplicitShapeDimensions::get()
 }
 void ConvexInternalShape::ImplicitShapeDimensions::set(Vector3 dimensions)
 {
-	VECTOR3_DEF(dimensions);
+	VECTOR3_CONV(dimensions);
 	Native->setImplicitShapeDimensions(VECTOR3_USE(dimensions));
 	VECTOR3_DEL(dimensions);
 }

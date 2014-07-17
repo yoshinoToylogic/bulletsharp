@@ -138,7 +138,7 @@ namespace ConvexDecompositionDemo
 
         public Vector3 centroid;
         Vector3 convexDecompositionObjectOffset;
-        public AlignedTriangleMeshArray trimeshes = new AlignedTriangleMeshArray();
+        public List<TriangleMesh> trimeshes = new List<TriangleMesh>();
         public bool sEnableSAT = false;
 
         protected override void OnInitialize()

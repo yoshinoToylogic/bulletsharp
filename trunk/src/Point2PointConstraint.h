@@ -51,8 +51,8 @@ namespace BulletSharp
 		Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 pivotInA, Vector3 pivotInB);
 		Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA);
 
-		//GetInfo1NonVirtual(ConstraintInfo1^ info)
-		//void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0_trans, Matrix body1_trans);
+		void GetInfo1NonVirtual(ConstraintInfo1^ info);
+		void GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0Trans, Matrix body1Trans);
 		void UpdateRhs(btScalar timeStep);
 
 		property Vector3 PivotInA

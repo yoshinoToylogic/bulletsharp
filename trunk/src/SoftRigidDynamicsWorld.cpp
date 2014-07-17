@@ -5,7 +5,6 @@
 #include "AlignedObjectArray.h"
 #include "BroadphaseInterface.h"
 #include "CollisionConfiguration.h"
-#include "CollisionShape.h"
 #include "ConstraintSolver.h"
 #include "Dispatcher.h"
 #include "SoftRigidDynamicsWorld.h"
@@ -23,14 +22,9 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
-	CollisionConfiguration^ collisionConfiguration)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
-#ifndef DISABLE_CONSTRAINTS
-		GetUnmanagedNullable(constraintSolver),
-#else
-		nullptr,
-#endif
-		collisionConfiguration->_native))
+	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
+	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+		constraintSolver->_native, collisionConfiguration->_native, softBodySolver->_native))
 {
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
@@ -43,14 +37,14 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #ifndef DISABLE_CONSTRAINTS
 	BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
-	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
-: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
+	CollisionConfiguration^ collisionConfiguration)
+	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
 #ifndef DISABLE_CONSTRAINTS
 		GetUnmanagedNullable(constraintSolver),
 #else
 		nullptr,
 #endif
-		collisionConfiguration->_native, softBodySolver->_native))
+		collisionConfiguration->_native))
 {
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
@@ -81,6 +75,15 @@ void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
 	Native->removeSoftBody((btSoftBody*)body->_native);
+}
+
+BulletSharp::SoftBody::DrawFlags SoftRigidDynamicsWorld::DrawFlags::get()
+{
+	return (BulletSharp::SoftBody::DrawFlags)Native->getDrawFlags();
+}
+void SoftRigidDynamicsWorld::DrawFlags::set(BulletSharp::SoftBody::DrawFlags f)
+{
+	Native->setDrawFlags((int)f);
 }
 
 AlignedSoftBodyArray^ SoftRigidDynamicsWorld::SoftBodyArray::get()

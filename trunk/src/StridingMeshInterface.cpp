@@ -192,8 +192,8 @@ void StridingMeshInterface::GetPremadeAabb(Vector3% aabbMin, Vector3% aabbMax)
 void StridingMeshInterface::InternalProcessAllTriangles(InternalTriangleIndexCallback^ callback,
 	Vector3 aabbMin, Vector3 aabbMax)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	_native->InternalProcessAllTriangles(callback->_native, VECTOR3_USE(aabbMin),
 		VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(aabbMin);
@@ -220,8 +220,8 @@ String^ StridingMeshInterface::Serialize(IntPtr dataBuffer, BulletSharp::Seriali
 
 void StridingMeshInterface::SetPremadeAabb(Vector3 aabbMin, Vector3 aabbMax)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 	_native->setPremadeAabb(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
 	VECTOR3_DEL(aabbMin);
 	VECTOR3_DEL(aabbMax);
@@ -258,7 +258,7 @@ Vector3 StridingMeshInterface::Scaling::get()
 }
 void StridingMeshInterface::Scaling::set(Vector3 scaling)
 {
-	VECTOR3_DEF(scaling);
+	VECTOR3_CONV(scaling);
 	_native->setScaling(VECTOR3_USE(scaling));
 	VECTOR3_DEL(scaling);
 }

@@ -177,8 +177,8 @@ namespace BulletSharp
 		~PrimitiveManagerBase();
 
 	public:
-		void GetPrimitiveBox(int prim_index, Aabb^ primbox);
-		void GetPrimitiveTriangle(int prim_index, PrimitiveTriangle^ triangle);
+		void GetPrimitiveBox(int primIndex, Aabb^ primbox);
+		void GetPrimitiveTriangle(int primIndex, PrimitiveTriangle^ triangle);
 
 		property bool IsTrimesh
 		{
@@ -212,13 +212,13 @@ namespace BulletSharp
 
 	public:
 		GImpactBvh();
-		GImpactBvh(PrimitiveManagerBase^ primitive_manager);
+		GImpactBvh(PrimitiveManagerBase^ primitiveManager);
 
-		bool BoxQuery(Aabb^ box, AlignedIntArray^ collided_results);
-		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results);
+		bool BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collidedResults);
 		void BuildSet();
 		static void FindCollision(GImpactBvh^ boxset1, Matrix trans1, GImpactBvh^ boxset2,
-			Matrix trans2, PairSet^ collision_pairs);
+			Matrix trans2, PairSet^ collisionPairs);
 		int GetEscapeNodeIndex(int nodeIndex);
 		int GetLeftNode(int nodeIndex);
 		void GetNodeBound(int nodeIndex, Aabb^ bound);
@@ -228,8 +228,8 @@ namespace BulletSharp
 		void GetNodeTriangle(int nodeIndex, PrimitiveTriangle^ triangle);
 		int GetRightNode(int nodeIndex);
 		bool IsLeafNode(int nodeIndex);
-		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results);
-		void SetNodeBound(int nodeIndex, Aabb^ bound);
+		bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults);
+		void SetNodeBound(int nodeindex, Aabb^ bound);
 		void Update();
 
 		property Aabb^ GlobalBox
@@ -255,7 +255,7 @@ namespace BulletSharp
 		property PrimitiveManagerBase^ PrimitiveManager
 		{
 			PrimitiveManagerBase^ get();
-			void set(PrimitiveManagerBase^ primitive_manager);
+			void set(PrimitiveManagerBase^ primitiveManager);
 		}
 	};
 };

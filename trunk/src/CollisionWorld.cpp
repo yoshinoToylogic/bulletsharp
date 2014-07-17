@@ -53,8 +53,8 @@ void CollisionWorld::LocalShapeInfo::TriangleIndex::set(int value)
 CollisionWorld::LocalConvexResult::LocalConvexResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, Vector3 hitPointLocal, btScalar hitFraction)
 {
-	VECTOR3_DEF(hitNormalLocal);
-	VECTOR3_DEF(hitPointLocal);
+	VECTOR3_CONV(hitNormalLocal);
+	VECTOR3_CONV(hitPointLocal);
 
 	_native = new btCollisionWorld::LocalConvexResult(collisionObject->_native, localShapeInfo->_native,
 		VECTOR3_USE(hitNormalLocal), VECTOR3_USE(hitPointLocal), hitFraction);
@@ -181,8 +181,8 @@ bool CollisionWorld::ConvexResultCallback::IsDisposed::get()
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3 convexFromWorld, Vector3 convexToWorld)
 : ConvexResultCallback(0)
 {
-	VECTOR3_DEF(convexFromWorld);
-	VECTOR3_DEF(convexToWorld);
+	VECTOR3_CONV(convexFromWorld);
+	VECTOR3_CONV(convexToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
@@ -193,8 +193,8 @@ CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3
 CollisionWorld::ClosestConvexResultCallback::ClosestConvexResultCallback(Vector3% convexFromWorld, Vector3% convexToWorld)
 : ConvexResultCallback(0)
 {
-	VECTOR3_DEF(convexFromWorld);
-	VECTOR3_DEF(convexToWorld);
+	VECTOR3_CONV(convexFromWorld);
+	VECTOR3_CONV(convexToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestConvexResultCallback) (VECTOR3_USE(convexFromWorld), VECTOR3_USE(convexToWorld));
 
@@ -310,7 +310,7 @@ CollisionWorld::LocalShapeInfo::LocalShapeInfo(btCollisionWorld::LocalShapeInfo*
 CollisionWorld::LocalRayResult::LocalRayResult(BulletSharp::CollisionObject^ collisionObject, CollisionWorld::LocalShapeInfo^ localShapeInfo,
 	Vector3 hitNormalLocal, btScalar hitFraction)
 {
-	VECTOR3_DEF(hitNormalLocal);
+	VECTOR3_CONV(hitNormalLocal);
 
 	_native = new btCollisionWorld::LocalRayResult(collisionObject->_native, localShapeInfo->_native,
 		VECTOR3_USE(hitNormalLocal), hitFraction);
@@ -443,8 +443,8 @@ bool CollisionWorld::RayResultCallback::IsDisposed::get()
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestRayResultCallback) (VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
@@ -455,8 +455,8 @@ CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3 rayFr
 CollisionWorld::ClosestRayResultCallback::ClosestRayResultCallback(Vector3% rayFromWorld, Vector3% rayToWorld)
 : RayResultCallback(0)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 
 	_native = ALIGNED_NEW(btCollisionWorld::ClosestRayResultCallback) (VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
@@ -507,8 +507,8 @@ void CollisionWorld::ClosestRayResultCallback::RayToWorld::set(Vector3 value)
 CollisionWorld::AllHitsRayResultCallback::AllHitsRayResultCallback(Vector3 rayFromWorld, Vector3 rayToWorld)
 : RayResultCallback(0)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 
 	_native = new btCollisionWorld::AllHitsRayResultCallback(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld));
 
@@ -737,8 +737,8 @@ void CollisionWorld::PerformDiscreteCollisionDetection()
 
 void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResultCallback^ resultCallback)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 	_native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);
@@ -746,8 +746,8 @@ void CollisionWorld::RayTest(Vector3 rayFromWorld, Vector3 rayToWorld, RayResult
 
 void CollisionWorld::RayTest(Vector3% rayFromWorld, Vector3% rayToWorld, RayResultCallback^ resultCallback)
 {
-	VECTOR3_DEF(rayFromWorld);
-	VECTOR3_DEF(rayToWorld);
+	VECTOR3_CONV(rayFromWorld);
+	VECTOR3_CONV(rayToWorld);
 	_native->rayTest(VECTOR3_USE(rayFromWorld), VECTOR3_USE(rayToWorld), *resultCallback->_native);
 	VECTOR3_DEL(rayFromWorld);
 	VECTOR3_DEL(rayToWorld);

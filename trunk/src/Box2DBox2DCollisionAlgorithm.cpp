@@ -3,7 +3,6 @@
 #ifndef DISABLE_COLLISION_ALGORITHMS
 
 #include "Box2DBox2DCollisionAlgorithm.h"
-#include "CollisionObject.h"
 #include "CollisionObjectWrapper.h"
 #include "PersistentManifold.h"
 

@@ -5,172 +5,167 @@
 #include "MultiBodyLink.h"
 #include "MultiBodyLinkCollider.h"
 
-MultibodyLink::MultibodyLink(btMultibodyLink* native)
+MultiBodyLink::MultiBodyLink(btMultibodyLink* native)
 {
 	_native = native;
 }
 
-MultibodyLink::MultibodyLink()
-{
-	_native = new btMultibodyLink();
-}
-
-void MultibodyLink::UpdateCache()
+void MultiBodyLink::UpdateCache()
 {
 	_native->updateCache();
 }
 
-Vector3 MultibodyLink::AppliedForce::get()
+Vector3 MultiBodyLink::AppliedForce::get()
 {
 	return Math::BtVector3ToVector3(&_native->applied_force);
 }
-void MultibodyLink::AppliedForce::set(Vector3 value)
+void MultiBodyLink::AppliedForce::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->applied_force);
 }
 
-Vector3 MultibodyLink::AppliedTorque::get()
+Vector3 MultiBodyLink::AppliedTorque::get()
 {
 	return Math::BtVector3ToVector3(&_native->applied_torque);
 }
-void MultibodyLink::AppliedTorque::set(Vector3 value)
+void MultiBodyLink::AppliedTorque::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->applied_torque);
 }
 
-Vector3 MultibodyLink::AxisBottom::get()
+Vector3 MultiBodyLink::AxisBottom::get()
 {
 	return Math::BtVector3ToVector3(&_native->axis_bottom);
 }
-void MultibodyLink::AxisBottom::set(Vector3 value)
+void MultiBodyLink::AxisBottom::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->axis_bottom);
 }
 
-Vector3 MultibodyLink::AxisTop::get()
+Vector3 MultiBodyLink::AxisTop::get()
 {
 	return Math::BtVector3ToVector3(&_native->axis_top);
 }
-void MultibodyLink::AxisTop::set(Vector3 value)
+void MultiBodyLink::AxisTop::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->axis_top);
 }
 
-Quaternion MultibodyLink::CachedRotParentToThis::get()
+Quaternion MultiBodyLink::CachedRotParentToThis::get()
 {
 	return Math::BtQuatToQuaternion(&_native->cached_rot_parent_to_this);
 }
-void MultibodyLink::CachedRotParentToThis::set(Quaternion value)
+void MultiBodyLink::CachedRotParentToThis::set(Quaternion value)
 {
-	return Math::QuaternionToBtQuat(value, &_native->cached_rot_parent_to_this);
+	Math::QuaternionToBtQuat(value, &_native->cached_rot_parent_to_this);
 }
 
-Vector3 MultibodyLink::CachedRVector::get()
+Vector3 MultiBodyLink::CachedRVector::get()
 {
 	return Math::BtVector3ToVector3(&_native->cached_r_vector);
 }
-void MultibodyLink::CachedRVector::set(Vector3 value)
+void MultiBodyLink::CachedRVector::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->cached_r_vector);
 }
 
-MultiBodyLinkCollider^ MultibodyLink::Collider::get()
+MultiBodyLinkCollider^ MultiBodyLink::Collider::get()
 {
 	return (MultiBodyLinkCollider^)CollisionObject::GetManaged(_native->m_collider);
 }
-void MultibodyLink::Collider::set(MultiBodyLinkCollider^ value)
+void MultiBodyLink::Collider::set(MultiBodyLinkCollider^ value)
 {
 	_native->m_collider = (btMultiBodyLinkCollider*)value->_native;
 }
 
-Vector3 MultibodyLink::DVector::get()
+Vector3 MultiBodyLink::DVector::get()
 {
 	return Math::BtVector3ToVector3(&_native->d_vector);
 }
-void MultibodyLink::DVector::set(Vector3 value)
+void MultiBodyLink::DVector::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->d_vector);
 }
 
-Vector3 MultibodyLink::EVector::get()
+Vector3 MultiBodyLink::EVector::get()
 {
 	return Math::BtVector3ToVector3(&_native->e_vector);
 }
-void MultibodyLink::EVector::set(Vector3 value)
+void MultiBodyLink::EVector::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->e_vector);
 }
 
-int MultibodyLink::Flags::get()
+int MultiBodyLink::Flags::get()
 {
 	return _native->m_flags;
 }
-void MultibodyLink::Flags::set(int value)
+void MultiBodyLink::Flags::set(int value)
 {
 	_native->m_flags = value;
 }
 
-Vector3 MultibodyLink::Inertia::get()
+Vector3 MultiBodyLink::Inertia::get()
 {
 	return Math::BtVector3ToVector3(&_native->inertia);
 }
-void MultibodyLink::Inertia::set(Vector3 value)
+void MultiBodyLink::Inertia::set(Vector3 value)
 {
 	Math::Vector3ToBtVector3(value, &_native->inertia);
 }
 
-bool MultibodyLink::IsRevolute::get()
+bool MultiBodyLink::IsRevolute::get()
 {
 	return _native->is_revolute;
 }
-void MultibodyLink::IsRevolute::set(bool value)
+void MultiBodyLink::IsRevolute::set(bool value)
 {
 	_native->is_revolute = value;
 }
 
-float MultibodyLink::JointPos::get()
+btScalar MultiBodyLink::JointPos::get()
 {
 	return _native->joint_pos;
 }
-void MultibodyLink::JointPos::set(float value)
+void MultiBodyLink::JointPos::set(btScalar value)
 {
 	_native->joint_pos = value;
 }
 
-float MultibodyLink::JointTorque::get()
+btScalar MultiBodyLink::JointTorque::get()
 {
 	return _native->joint_torque;
 }
-void MultibodyLink::JointTorque::set(float value)
+void MultiBodyLink::JointTorque::set(btScalar value)
 {
 	_native->joint_torque = value;
 }
 
-float MultibodyLink::Mass::get()
+btScalar MultiBodyLink::Mass::get()
 {
 	return _native->mass;
 }
-void MultibodyLink::Mass::set(float value)
+void MultiBodyLink::Mass::set(btScalar value)
 {
 	_native->mass = value;
 }
 
-int MultibodyLink::Parent::get()
+int MultiBodyLink::Parent::get()
 {
 	return _native->parent;
 }
-void MultibodyLink::Parent::set(int value)
+void MultiBodyLink::Parent::set(int value)
 {
 	_native->parent = value;
 }
 
-Quaternion MultibodyLink::ZeroRotParentToThis::get()
+Quaternion MultiBodyLink::ZeroRotParentToThis::get()
 {
 	return Math::BtQuatToQuaternion(&_native->zero_rot_parent_to_this);
 }
-void MultibodyLink::ZeroRotParentToThis::set(Quaternion value)
+void MultiBodyLink::ZeroRotParentToThis::set(Quaternion value)
 {
-	return Math::QuaternionToBtQuat(value, &_native->zero_rot_parent_to_this);
+	Math::QuaternionToBtQuat(value, &_native->zero_rot_parent_to_this);
 }
 
 #endif

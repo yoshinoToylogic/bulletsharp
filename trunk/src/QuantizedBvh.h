@@ -7,11 +7,16 @@ namespace BulletSharp
 	ref class Serializer;
 	#endif
 
-	public ref class QuantizedBvhNode
+	public ref class QuantizedBvhNode : IDisposable
 	{
 	internal:
 		btQuantizedBvhNode* _native;
 		QuantizedBvhNode(btQuantizedBvhNode* native);
+
+	public:
+		!QuantizedBvhNode();
+	protected:
+		~QuantizedBvhNode();
 
 	public:
 		QuantizedBvhNode();
@@ -53,11 +58,16 @@ namespace BulletSharp
 		}
 	};
 
-	public ref class OptimizedBvhNode
+	public ref class OptimizedBvhNode : IDisposable
 	{
 	internal:
 		btOptimizedBvhNode* _native;
 		OptimizedBvhNode(btOptimizedBvhNode* native);
+
+	public:
+		!OptimizedBvhNode();
+	protected:
+		~OptimizedBvhNode();
 
 	public:
 		OptimizedBvhNode();
@@ -92,12 +102,17 @@ namespace BulletSharp
 			void set(int value);
 		}
 	};
-	
-	public ref class NodeOverlapCallback abstract
+
+	public ref class NodeOverlapCallback abstract : IDisposable
 	{
 	internal:
 		btNodeOverlapCallback* _native;
 		NodeOverlapCallback(btNodeOverlapCallback* native);
+
+	public:
+		!NodeOverlapCallback();
+	protected:
+		~NodeOverlapCallback();
 
 	public:
 		void ProcessNode(int subPart, int triangleIndex);

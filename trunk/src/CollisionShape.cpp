@@ -245,8 +245,8 @@ void CollisionShape::CalculateTemporalAabb(Matrix% curTrans, Vector3% linvel, Ve
 	btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax)
 {
 	TRANSFORM_CONV(curTrans);
-	VECTOR3_DEF(linvel);
-	VECTOR3_DEF(angvel);
+	VECTOR3_CONV(linvel);
+	VECTOR3_CONV(angvel);
 	btVector3* temporalAabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* temporalAabbMaxTemp = ALIGNED_NEW(btVector3);
 	_native->calculateTemporalAabb(TRANSFORM_USE(curTrans), VECTOR3_USE(linvel), VECTOR3_USE(angvel),
@@ -264,8 +264,8 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vect
 	btScalar timeStep, [Out] Vector3% temporalAabbMin, [Out] Vector3% temporalAabbMax)
 {
 	TRANSFORM_CONV(curTrans);
-	VECTOR3_DEF(linvel);
-	VECTOR3_DEF(angvel);
+	VECTOR3_CONV(linvel);
+	VECTOR3_CONV(angvel);
 	btVector3* temporalAabbMinTemp = ALIGNED_NEW(btVector3);
 	btVector3* temporalAabbMaxTemp = ALIGNED_NEW(btVector3);
 	_native->calculateTemporalAabb(TRANSFORM_USE(curTrans), VECTOR3_USE(linvel), VECTOR3_USE(angvel),
@@ -403,7 +403,7 @@ Vector3 CollisionShape::LocalScaling::get()
 }
 void CollisionShape::LocalScaling::set(Vector3 scaling)
 {
-	VECTOR3_DEF(scaling);
+	VECTOR3_CONV(scaling);
 	_native->setLocalScaling(VECTOR3_USE(scaling));
 	VECTOR3_DEL(scaling);
 }

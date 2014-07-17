@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="Windows-1252"?>
+﻿<?xml version="1.0" encoding="Windows-1252"?>
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
@@ -2943,11 +2943,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolver.cpp"
+						RelativePath="..\src\MlcpSolver.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolverInterface.cpp"
+						RelativePath="..\src\MlcpSolverInterface.cpp"
 						>
 					</File>
 				</Filter>
@@ -3776,11 +3776,11 @@
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolver.h"
+						RelativePath="..\src\MlcpSolver.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\MLCPSolverInterface.h"
+						RelativePath="..\src\MlcpSolverInterface.h"
 						>
 					</File>
 				</Filter>

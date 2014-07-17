@@ -974,7 +974,7 @@ void Vector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 
 int Vector3Array::IndexOf(Vector3 item)
 {
-	VECTOR3_DEF(item);
+	VECTOR3_CONV(item);
 
 	int i;
 	char* vector = (char*)&Native[0];
