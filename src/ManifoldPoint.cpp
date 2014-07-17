@@ -82,8 +82,8 @@ ManifoldPoint::!ManifoldPoint()
 	if (!_preventDelete)
 	{
 		delete _native;
-		_native = NULL;
 	}
+	_native = NULL;
 }
 
 ManifoldPoint::ManifoldPoint()
@@ -93,9 +93,9 @@ ManifoldPoint::ManifoldPoint()
 
 ManifoldPoint::ManifoldPoint(Vector3 pointA, Vector3 pointB, Vector3 normal, btScalar distance)
 {
-	VECTOR3_DEF(pointA);
-	VECTOR3_DEF(pointB);
-	VECTOR3_DEF(normal);
+	VECTOR3_CONV(pointA);
+	VECTOR3_CONV(pointB);
+	VECTOR3_CONV(normal);
 	_native = new btManifoldPoint(VECTOR3_USE(pointA), VECTOR3_USE(pointB), VECTOR3_USE(normal),
 		distance);
 	VECTOR3_DEL(pointA);

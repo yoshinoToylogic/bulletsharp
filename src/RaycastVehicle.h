@@ -14,10 +14,15 @@ namespace BulletSharp
 	public ref class RaycastVehicle : IActionInterface,  ITrackingDisposable
 	{
 	public:
-		ref class VehicleTuning
+		ref class VehicleTuning : IDisposable
 		{
 		internal:
 			btRaycastVehicle::btVehicleTuning* _native;
+
+		public:
+			!VehicleTuning();
+		protected:
+			~VehicleTuning();
 
 		public:
 			VehicleTuning();
@@ -77,31 +82,30 @@ namespace BulletSharp
 	public:
 		RaycastVehicle(VehicleTuning^ tuning, RigidBody^ chassis, VehicleRaycaster^ raycaster);
 
+		WheelInfo^ AddWheel(Vector3 connectionPointCS0, Vector3 wheelDirectionCS0,
+			Vector3 wheelAxleCS, btScalar suspensionRestLength, btScalar wheelRadius,
+			VehicleTuning^ tuning, bool isFrontWheel);
+		void ApplyEngineForce(btScalar force, int wheel);
 #ifndef DISABLE_DEBUGDRAW
 		virtual void DebugDraw(IDebugDraw^ debugDrawer);
 #endif
-		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
-
-		WheelInfo^ AddWheel(Vector3 connectionPointCS0, Vector3 wheelDirectionCS0, Vector3 wheelAxleCS,
-			btScalar suspensionRestLength, btScalar wheelRadius, VehicleTuning^ tuning,	bool isFrontWheel);
-		void ApplyEngineForce(btScalar force, int wheel);
-		WheelInfo^ GetWheelInfo(int index);
 		btScalar GetSteeringValue(int wheel);
+		WheelInfo^ GetWheelInfo(int index);
 		Matrix GetWheelTransformWS(int wheelIndex);
 		btScalar RayCast(WheelInfo^ wheel);
 		void ResetSuspension();
 		void SetBrake(btScalar brake, int wheelIndex);
 		void SetCoordinateSystem(int rightIndex, int upIndex, int forwardIndex);
 		void SetPitchControl(btScalar pitch);
-		//void SetRaycastWheelInfo(int wheelIndex, bool isInContact, Vector3 hitPoint, Vector3 hitNormal, btScalar depth);
 		void SetSteeringValue(btScalar steering, int wheel);
+		virtual void UpdateAction(CollisionWorld^ collisionWorld, btScalar deltaTimeStep);
 		void UpdateFriction(btScalar timeStep);
 		void UpdateSuspension(btScalar deltaTime);
 		void UpdateVehicle(btScalar step);
 		void UpdateWheelTransform(int wheelIndex, bool interpolatedTransform);
 		void UpdateWheelTransform(int wheelIndex);
-		void UpdateWheelTransformsWS(WheelInfo^ wheelIndex, bool interpolatedTransform);
-		void UpdateWheelTransformsWS(WheelInfo^ wheelIndex);
+		void UpdateWheelTransformsWS(WheelInfo^ wheel, bool interpolatedTransform);
+		void UpdateWheelTransformsWS(WheelInfo^ wheel);
 
 		property Matrix ChassisWorldTransform
 		{

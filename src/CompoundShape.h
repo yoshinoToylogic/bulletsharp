@@ -15,8 +15,6 @@ namespace BulletSharp
 		CompoundShapeChild(btCompoundShapeChild* native);
 
 	public:
-		CompoundShapeChild();
-
 		property btScalar ChildMargin
 		{
 			btScalar get();

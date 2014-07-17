@@ -31,6 +31,11 @@ Convex2DConvex2DAlgorithm::Convex2DConvex2DAlgorithm(PersistentManifold^ mf, Col
 {
 }
 
+void Convex2DConvex2DAlgorithm::SetLowLevelOfDetail(bool useLowLevel)
+{
+	Native->setLowLevelOfDetail(useLowLevel);
+}
+
 PersistentManifold^ Convex2DConvex2DAlgorithm::Manifold::get()
 {
 	return gcnew PersistentManifold((btPersistentManifold*)Native->getManifold());

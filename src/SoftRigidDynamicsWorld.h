@@ -1,6 +1,7 @@
 #pragma once
 
 #include "DiscreteDynamicsWorld.h"
+#include "SoftBodyHelpers.h"
 
 namespace BulletSharp
 {
@@ -27,13 +28,12 @@ namespace BulletSharp
 #ifndef DISABLE_CONSTRAINTS
 				BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
-				CollisionConfiguration^ collisionConfiguration);
-
+				CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver);
 			SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 #ifndef DISABLE_CONSTRAINTS
 				BulletSharp::ConstraintSolver^ constraintSolver,
 #endif
-				CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver);
+				CollisionConfiguration^ collisionConfiguration);
 
 			void AddSoftBody(SoftBody^ body,
 				CollisionFilterGroups collisionFilterGroup,
@@ -42,6 +42,12 @@ namespace BulletSharp
 				CollisionFilterGroups collisionFilterGroup);
 			void AddSoftBody(SoftBody^ body);
 			void RemoveSoftBody(SoftBody^ body);
+
+			property BulletSharp::SoftBody::DrawFlags DrawFlags
+			{
+				BulletSharp::SoftBody::DrawFlags get();
+				void set(BulletSharp::SoftBody::DrawFlags f);
+			}
 
 			property AlignedSoftBodyArray^ SoftBodyArray
 			{

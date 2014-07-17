@@ -119,13 +119,13 @@ namespace BulletSharp
 
 	public:
 		GImpactQuantizedBvh();
-		GImpactQuantizedBvh(PrimitiveManagerBase^ primitive_manager);
+		GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager);
 
-		bool BoxQuery(Aabb^ box, AlignedIntArray^ collided_results);
-		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collided_results);
+		bool BoxQuery(Aabb^ box, AlignedIntArray^ collidedResults);
+		bool BoxQueryTrans(Aabb^ box, Matrix transform, AlignedIntArray^ collidedResults);
 		void BuildSet();
 		static void FindCollision(GImpactQuantizedBvh^ boxset1, Matrix trans1, GImpactQuantizedBvh^ boxset2,
-			Matrix trans2, PairSet^ collision_pairs);
+			Matrix trans2, PairSet^ collisionPairs);
 		//GImpactQuantizedBvhNode^ GetNodePointer(int index);
 		//GImpactQuantizedBvhNode^ GetNodePointer();
 		int GetEscapeNodeIndex(int nodeindex);
@@ -135,7 +135,7 @@ namespace BulletSharp
 		void GetNodeTriangle(int nodeindex, PrimitiveTriangle^ triangle);
 		int GetRightNode(int nodeindex);
 		bool IsLeafNode(int nodeindex);
-		bool RayQuery(Vector3 ray_dir, Vector3 ray_origin, AlignedIntArray^ collided_results);
+		bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray^ collidedResults);
 		void SetNodeBound(int nodeindex, Aabb^ bound);
 		void Update();
 
@@ -162,7 +162,7 @@ namespace BulletSharp
 		property PrimitiveManagerBase^ PrimitiveManager
 		{
 			PrimitiveManagerBase^ get();
-			void set(PrimitiveManagerBase^ primitive_manager);
+			void set(PrimitiveManagerBase^ primitiveManager);
 		}
 	};
 };

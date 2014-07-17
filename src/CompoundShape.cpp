@@ -11,11 +11,6 @@ CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* native)
 	_native = native;
 }
 
-CompoundShapeChild::CompoundShapeChild()
-{
-	_native = new btCompoundShapeChild();
-}
-
 btScalar CompoundShapeChild::ChildMargin::get()
 {
 	return _native->m_childMargin;
@@ -66,7 +61,7 @@ void CompoundShapeChild::Transform::set(Matrix value)
 }
 
 
-#define Native (static_cast<btCompoundShape*>(_native))
+#define Native static_cast<btCompoundShape*>(_native)
 
 CompoundShape::CompoundShape(btCompoundShape* native)
 	: CollisionShape(native)

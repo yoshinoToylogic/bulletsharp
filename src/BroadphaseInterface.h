@@ -10,7 +10,7 @@ namespace BulletSharp
 	ref class OverlappingPairCache;
 	ref class UIntArray;
 
-	public ref class BroadphaseAabbCallback abstract
+	public ref class BroadphaseAabbCallback abstract : IDisposable
 	{
 	internal:
 		btBroadphaseAabbCallback* _native;
@@ -40,7 +40,7 @@ namespace BulletSharp
 	public ref class BroadphaseRayCallback abstract : BroadphaseAabbCallback
 	{
 	internal:
-		BroadphaseRayCallback(BroadphaseRayCallbackWrapper* callback);
+		BroadphaseRayCallback(BroadphaseRayCallbackWrapper* native);
 
 	public:
 		BroadphaseRayCallback();

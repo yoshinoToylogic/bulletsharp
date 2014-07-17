@@ -42,7 +42,13 @@ bool ConvexPenetrationDepthSolver::CalcPenDepth(SimplexSolverInterface^ simplexS
 	btVector3* pbTemp = ALIGNED_NEW(btVector3);
 	bool ret = _native->calcPenDepth(*simplexSolver->_native, (btConvexShape*)convexA->_native,
 		(btConvexShape*)convexB->_native, TRANSFORM_USE(transA), TRANSFORM_USE(transB),
-		*vTemp, *paTemp, *pbTemp, DebugDraw::GetUnmanaged(debugDraw));
+		*vTemp, *paTemp, *pbTemp
+#ifndef DISABLE_DEBUGDRAW
+		, DebugDraw::GetUnmanaged(debugDraw)
+#else
+		, 0
+#endif
+		);
 	TRANSFORM_DEL(transA);
 	TRANSFORM_DEL(transB);
 	Math::BtVector3ToVector3(vTemp, v);

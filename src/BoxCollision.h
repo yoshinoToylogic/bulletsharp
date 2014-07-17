@@ -25,12 +25,12 @@ namespace BulletSharp
 
 		void AppyTransform(Matrix trans);
 		//void AppyTransformTransCache(BT_BOX_BOX_TRANSFORM_CACHE^ trans);
-		//bool CollidePlane(Vector4^ plane);
+		bool CollidePlane(Vector4 plane);
 		bool CollideRay(Vector3 vorigin, Vector3 vdir);
-		//bool CollideTriangleExact(Vector3 p1, Vector3 p2, Vector3 p3, Vector4 triangle_plane);
+		bool CollideTriangleExact(Vector3 p1, Vector3 p2, Vector3 p3, Vector4 trianglePlane);
 		void CopyWithMargin(Aabb^ other, btScalar margin);
 		void FindIntersection(Aabb^ other, Aabb^ intersection);
-		void GetCenterExtend(Vector3 center, Vector3 extend);
+		void GetCenterExtend([Out] Vector3% center, [Out] Vector3% extend);
 		bool HasCollision(Aabb^ other);
 		void IncrementMargin(btScalar margin);
 		void Invalidate();

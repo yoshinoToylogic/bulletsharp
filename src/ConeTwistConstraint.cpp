@@ -18,11 +18,9 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 {
 	TRANSFORM_CONV(rigidBodyAFrame);
 	TRANSFORM_CONV(rigidBodyBFrame);
-
 	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native,
 		*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(rigidBodyAFrame),
 		TRANSFORM_USE(rigidBodyBFrame));
-
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
 }
@@ -59,7 +57,12 @@ void ConeTwistConstraint::EnableMotor(bool b)
 {
 	Native->enableMotor(b);
 }
-/*
+
+void ConeTwistConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
+{
+	Native->getInfo1NonVirtual(info->_native);
+}
+
 void ConeTwistConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix transA,
 	Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 {
@@ -74,7 +77,6 @@ void ConeTwistConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix trans
 	MATRIX3X3_DEL(invInertiaWorldA);
 	MATRIX3X3_DEL(invInertiaWorldB);
 }
-*/
 
 #pragma managed(push, off)
 void ConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* constraint,
@@ -111,33 +113,32 @@ void ConeTwistConstraint::SetFrames(Matrix frameA, Matrix frameB)
 	TRANSFORM_DEL(frameB);
 }
 
+void ConeTwistConstraint::SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
+	btScalar softness, btScalar biasFactor, btScalar relaxationFactor)
+{
+	Native->setLimit(swingSpan1, swingSpan2, twistSpan, softness, biasFactor, relaxationFactor);
+}
+
+void ConeTwistConstraint::SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
+	btScalar softness, btScalar biasFactor)
+{
+	Native->setLimit(swingSpan1, swingSpan2, twistSpan, softness, biasFactor);
+}
+
+void ConeTwistConstraint::SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan,
+	btScalar softness)
+{
+	Native->setLimit(swingSpan1, swingSpan2, twistSpan, softness);
+}
+
+void ConeTwistConstraint::SetLimit(btScalar swingSpan1, btScalar swingSpan2, btScalar twistSpan)
+{
+	Native->setLimit(swingSpan1, swingSpan2, twistSpan);
+}
+
 void ConeTwistConstraint::SetLimit(int limitIndex, btScalar limitValue)
 {
 	Native->setLimit(limitIndex, limitValue);
-}
-
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
-	btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor)
-{
-	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness, _biasFactor,
-		_relaxationFactor);
-}
-
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
-	btScalar _softness, btScalar _biasFactor)
-{
-	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness, _biasFactor);
-}
-
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan,
-	btScalar _softness)
-{
-	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan, _softness);
-}
-
-void ConeTwistConstraint::SetLimit(btScalar _swingSpan1, btScalar _swingSpan2, btScalar _twistSpan)
-{
-	Native->setLimit(_swingSpan1, _swingSpan2, _twistSpan);
 }
 
 void ConeTwistConstraint::SetMaxMotorImpulse(btScalar maxMotorImpulse)

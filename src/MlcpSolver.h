@@ -1,19 +1,20 @@
 #pragma once
 
-#include "MLCPSolverInterface.h"
 #include "SequentialImpulseConstraintSolver.h"
 
 namespace BulletSharp
 {
-	public ref class MLCPSolver : SequentialImpulseConstraintSolver
+	ref class MlcpSolverInterface;
+
+	public ref class MlcpSolver : SequentialImpulseConstraintSolver
 	{
 	internal:
-		MLCPSolver(btMLCPSolver* native);
+		MlcpSolver(btMLCPSolver* native);
 
 	public:
-		MLCPSolver(MLCPSolverInterface^ solver);
+		MlcpSolver(MlcpSolverInterface^ solver);
 
-		void SetMLCPSolver(MLCPSolverInterface^ solver);
+		void SetMLCPSolver(MlcpSolverInterface^ solver);
 
 		property btScalar Cfm
 		{

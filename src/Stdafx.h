@@ -409,16 +409,6 @@ inline GCHandle VoidPtrToGCHandle(void* pointer)
 	managedObj = static_cast<type^>(type::GetManaged(unmanagedPtr)); \
 	return managedObj; }
 
-#define ReturnCachedObjectStatic(type, managedObj, unmanagedPtr) { \
-	if (managedObj == nullptr) \
-	managedObj = gcnew type(unmanagedPtr); \
-	return managedObj; }
-
-#define ReturnCachedObjectStaticParam(type, managedObj, unmanagedPtr, param) { \
-	if (managedObj == nullptr) \
-	managedObj = gcnew type(unmanagedPtr, param); \
-	return managedObj; }
-
 #define GetObjectFromTable(type, unmanagedPtr) ( \
 	(unmanagedPtr == 0) ? \
 	nullptr : \

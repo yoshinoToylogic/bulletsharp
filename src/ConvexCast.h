@@ -22,9 +22,9 @@ namespace BulletSharp
 			CastResult();
 
 #ifndef DISABLE_DEBUGDRAW
-			void DebugDraw (btScalar fraction);
+			void DebugDraw(btScalar fraction);
 #endif
-			void DrawCoordSystem (Matrix trans);
+			void DrawCoordSystem(Matrix trans);
 			void ReportFailure(int errNo, int numIterations);
 
 			property btScalar AllowedPenetration

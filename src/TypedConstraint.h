@@ -340,10 +340,10 @@ namespace BulletSharp
 		AngularLimit();
 
 		void Fit(btScalar% angle);
-		void Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor,
-			btScalar _relaxationFactor);
-		void Set(btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor);
-		void Set(btScalar low, btScalar high, btScalar _softness);
+		void Set(btScalar low, btScalar high, btScalar softness, btScalar biasFactor,
+			btScalar relaxationFactor);
+		void Set(btScalar low, btScalar high, btScalar softness, btScalar biasFactor);
+		void Set(btScalar low, btScalar high, btScalar softness);
 		void Set(btScalar low, btScalar high);
 		void Test(btScalar angle);
 

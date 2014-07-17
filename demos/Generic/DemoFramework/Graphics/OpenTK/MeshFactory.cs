@@ -44,6 +44,7 @@ namespace DemoFramework.OpenTK
 
         public void SetDynamicVertexBuffer<T>(T[] vertices) where T : struct
         {
+            VertexCount = vertices.Length;
             if (VertexBufferID == 0)
             {
                 SetBuffer(vertices, out VertexBufferID, BufferUsageHint.DynamicDraw);
@@ -461,7 +462,7 @@ namespace DemoFramework.OpenTK
 
         public void UpdateSoftBody(SoftBody softBody, ShapeData shapeData)
         {
-            shapeData.VertexCount = softBody.GetVertexNormalData(out shapeData.SoftBodyVertices, out shapeData.SoftBodyNormals);
+            softBody.GetVertexNormalData(out shapeData.SoftBodyVertices, out shapeData.SoftBodyNormals);
             shapeData.SetDynamicVertexBuffer(shapeData.SoftBodyVertices);
 
             if (shapeData.SoftBodyNormals != null)

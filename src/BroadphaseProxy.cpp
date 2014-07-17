@@ -22,8 +22,8 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask,
 	IntPtr multiSapParentProxy)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 
 	_clientObject = userObject;
 
@@ -39,8 +39,8 @@ BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userO
 BroadphaseProxy::BroadphaseProxy(Vector3 aabbMin, Vector3 aabbMax, Object^ userObject,
 	CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 {
-	VECTOR3_DEF(aabbMin);
-	VECTOR3_DEF(aabbMax);
+	VECTOR3_CONV(aabbMin);
+	VECTOR3_CONV(aabbMax);
 
 	_clientObject = userObject;
 

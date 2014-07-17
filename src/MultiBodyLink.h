@@ -4,15 +4,13 @@ namespace BulletSharp
 {
 	ref class MultiBodyLinkCollider;
 
-	public ref class MultibodyLink
+	public ref class MultiBodyLink
 	{
 	internal:
 		btMultibodyLink* _native;
-		MultibodyLink(btMultibodyLink* native);
+		MultiBodyLink(btMultibodyLink* native);
 
 	public:
-		MultibodyLink();
-
 		void UpdateCache();
 
 		property Vector3 AppliedForce
@@ -87,22 +85,22 @@ namespace BulletSharp
 			void set(bool value);
 		}
 
-		property float JointPos
+		property btScalar JointPos
 		{
-			float get();
-			void set(float value);
+			btScalar get();
+			void set(btScalar value);
 		}
 
-		property float JointTorque
+		property btScalar JointTorque
 		{
-			float get();
-			void set(float value);
+			btScalar get();
+			void set(btScalar value);
 		}
 
-		property float Mass
+		property btScalar Mass
 		{
-			float get();
-			void set(float value);
+			btScalar get();
+			void set(btScalar value);
 		}
 
 		property int Parent

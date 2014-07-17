@@ -69,8 +69,8 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 	Vector3 pivotInB)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(pivotInA);
-	VECTOR3_DEF(pivotInB);
+	VECTOR3_CONV(pivotInA);
+	VECTOR3_CONV(pivotInB);
 	UnmanagedPointer = new btPoint2PointConstraint(*(btRigidBody*)rigidBodyA->_native, *(btRigidBody*)rigidBodyB->_native,
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 	VECTOR3_DEL(pivotInA);
@@ -80,27 +80,26 @@ Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 Point2PointConstraint::Point2PointConstraint(RigidBody^ rigidBodyA, Vector3 pivotInA)
 	: TypedConstraint(0)
 {
-	VECTOR3_DEF(pivotInA);
+	VECTOR3_CONV(pivotInA);
 	UnmanagedPointer = new btPoint2PointConstraint(*(btRigidBody*)rigidBodyA->_native, VECTOR3_USE(pivotInA));
 	VECTOR3_DEL(pivotInA);
 }
 
-/*
+
 void Point2PointConstraint::GetInfo1NonVirtual(ConstraintInfo1^ info)
 {
 	Native->getInfo1NonVirtual(info->_native);
 }
 
-void Point2PointConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0_trans,
-	Matrix body1_trans)
+void Point2PointConstraint::GetInfo2NonVirtual(ConstraintInfo2^ info, Matrix body0Trans,
+	Matrix body1Trans)
 {
-	TRANSFORM_CONV(body0_trans);
-	TRANSFORM_CONV(body1_trans);
-	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(body0_trans), TRANSFORM_USE(body1_trans));
-	TRANSFORM_DEL(body0_trans);
-	TRANSFORM_DEL(body1_trans);
+	TRANSFORM_CONV(body0Trans);
+	TRANSFORM_CONV(body1Trans);
+	Native->getInfo2NonVirtual(info->_native, TRANSFORM_USE(body0Trans), TRANSFORM_USE(body1Trans));
+	TRANSFORM_DEL(body0Trans);
+	TRANSFORM_DEL(body1Trans);
 }
-*/
 
 void Point2PointConstraint::UpdateRhs(btScalar timeStep)
 {
@@ -114,7 +113,7 @@ Vector3 Point2PointConstraint::PivotInA::get()
 
 void Point2PointConstraint::PivotInA::set(Vector3 value)
 {
-	VECTOR3_DEF(value);
+	VECTOR3_CONV(value);
 	Native->setPivotA(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }
@@ -126,7 +125,7 @@ Vector3 Point2PointConstraint::PivotInB::get()
 
 void Point2PointConstraint::PivotInB::set(Vector3 value)
 {
-	VECTOR3_DEF(value);
+	VECTOR3_CONV(value);
 	Native->setPivotB(VECTOR3_USE(value));
 	VECTOR3_DEL(value);
 }

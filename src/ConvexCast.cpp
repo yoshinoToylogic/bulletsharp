@@ -12,11 +12,6 @@ ConvexCast::CastResult::CastResult(btConvexCast::CastResult* native)
 	_native = native;
 }
 
-ConvexCast::CastResult::CastResult()
-{
-	_native = new btConvexCast::CastResult();
-}
-
 ConvexCast::CastResult::~CastResult()
 {
 	this->!CastResult();
@@ -28,6 +23,11 @@ ConvexCast::CastResult::!CastResult()
 	_native = NULL;
 }
 
+ConvexCast::CastResult::CastResult()
+{
+	_native = new btConvexCast::CastResult();
+}
+
 #ifndef DISABLE_DEBUGDRAW
 void ConvexCast::CastResult::DebugDraw (btScalar fraction)
 {
@@ -35,11 +35,11 @@ void ConvexCast::CastResult::DebugDraw (btScalar fraction)
 }
 #endif
 
-void ConvexCast::CastResult::DrawCoordSystem (Matrix trans)
+void ConvexCast::CastResult::DrawCoordSystem(Matrix trans)
 {
-	btTransform* transTemp = Math::MatrixToBtTransform(trans);
-	_native->drawCoordSystem(*transTemp);
-	ALIGNED_FREE(transTemp);
+	TRANSFORM_CONV(trans);
+	_native->drawCoordSystem(TRANSFORM_USE(trans));
+	TRANSFORM_DEL(trans);
 }
 
 void ConvexCast::CastResult::ReportFailure(int errNo, int numIterations)

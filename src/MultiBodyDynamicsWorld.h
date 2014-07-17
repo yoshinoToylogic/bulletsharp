@@ -14,6 +14,12 @@ namespace BulletSharp
 	internal:
 		MultiBodyDynamicsWorld(btMultiBodyDynamicsWorld* native);
 
+	private:
+		System::Collections::Generic::List<MultiBody^>^ _bodies;
+#ifndef DISABLE_CONSTRAINTS
+		System::Collections::Generic::List<MultiBodyConstraint^>^ _constraints;
+#endif
+
 	public:
 		MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ pairCache,
 			MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);

@@ -16,6 +16,7 @@ ConvexConcaveCollisionAlgorithm::SwappedCreateFunc::SwappedCreateFunc()
 {
 }
 
+
 #define Native static_cast<btConvexConcaveCollisionAlgorithm*>(_native)
 
 ConvexConcaveCollisionAlgorithm::ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo^ ci,

@@ -961,39 +961,6 @@ namespace BulletSharp
 #endif
 
 	[DebuggerDisplay("Count = {Count}")]
-	[DebuggerTypeProxy(ListDebugView::typeid)]
-	public ref class AlignedTriangleMeshArray : AlignedObjectArray<TriangleMesh^>
-	{
-	internal:
-		AlignedTriangleMeshArray(btAlignedObjectArray<btTriangleMesh*>* triangleMeshArray);
-
-	public:
-		AlignedTriangleMeshArray();
-
-		virtual void Add(TriangleMesh^ triangleMesh) override;
-		virtual void Clear() override;
-		virtual void CopyTo(array<TriangleMesh^>^ array, int arrayIndex) override;
-		virtual void PopBack() override;
-		virtual void Swap(int index0, int index1) override;
-
-		property int Capacity
-		{
-			int get();
-		}
-
-		property int Count
-		{
-			virtual int get() override;
-		}
-
-		property TriangleMesh^ default [int]
-		{
-			virtual TriangleMesh^ get (int index) override;
-			virtual void set(int index, TriangleMesh^ value) override;
-		}
-	};
-
-	[DebuggerDisplay("Count = {Count}")]
 	[DebuggerTypeProxy(Vector3ListDebugView::typeid)]
 	public ref class AlignedVector3Array : AlignedObjectArray<Vector3>
 	{

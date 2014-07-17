@@ -1150,17 +1150,7 @@ BulletSharp::SoftBody::Joint^ AlignedJointArray::default::get(int index)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	btSoftBody::Joint* j = (*Native)[index];
-	switch(j->Type())
-	{
-	case btSoftBody::Joint::eType::Linear:
-		return gcnew LJoint((btSoftBody::LJoint*)j);
-	case btSoftBody::Joint::eType::Angular:
-		return gcnew AJoint((btSoftBody::AJoint*)j);
-	case btSoftBody::Joint::eType::Contact:
-		return gcnew CJoint((btSoftBody::CJoint*)j);
-	};
-	return gcnew Joint(j);
+	return Joint::GetManaged((*Native)[index]);
 }
 
 void AlignedJointArray_SetDefault(btSoftBody::tJointArray* jointArray,
@@ -1313,7 +1303,7 @@ void AlignedIndexedMeshArray::CopyTo(array<IndexedMesh^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew IndexedMesh(&(*Native)[i]);
+		array[arrayIndex+i] = gcnew IndexedMesh(&(*Native)[i], true);
 	}
 }
 
@@ -1344,7 +1334,7 @@ IndexedMesh^ AlignedIndexedMeshArray::default::get(int index)
 	btIndexedMesh* obj = &(*Native)[index];
 	if (obj == nullptr)
 		return nullptr;
-	return gcnew IndexedMesh(obj);
+	return gcnew IndexedMesh(obj, true);
 }
 
 #pragma managed(push, off)
@@ -2346,83 +2336,6 @@ void AlignedTetraArray::default::set(int index, Tetra^ value)
 
 
 #undef Native
-#define Native static_cast<btAlignedObjectArray<btTriangleMesh*>*>(_native)
-
-AlignedTriangleMeshArray::AlignedTriangleMeshArray(btAlignedObjectArray<btTriangleMesh*>* triangleMeshArray)
-: AlignedObjectArray(triangleMeshArray)
-{
-}
-
-AlignedTriangleMeshArray::AlignedTriangleMeshArray()
-: AlignedObjectArray(new btAlignedObjectArray<btTriangleMesh*>, true)
-{
-}
-
-void AlignedTriangleMeshArray::Add(TriangleMesh^ triangleMesh)
-{
-	Native->push_back((btTriangleMesh*)triangleMesh->_native);
-}
-
-void AlignedTriangleMeshArray::Clear()
-{
-	Native->clear();
-}
-
-void AlignedTriangleMeshArray::CopyTo(array<TriangleMesh^>^ array, int arrayIndex)
-{
-	if (array == nullptr)
-		throw gcnew ArgumentNullException("array");
-
-	if (arrayIndex < 0)
-		throw gcnew ArgumentOutOfRangeException("array");
-
-	int size = Native->size();
-	if (arrayIndex + size > array->Length)
-		throw gcnew ArgumentException("Array too small.", "array");
-
-	int i;
-	for (i=0; i<size; i++)
-	{
-		array[arrayIndex+i] = gcnew TriangleMesh((*Native)[i]);
-	}
-}
-
-void AlignedTriangleMeshArray::PopBack()
-{
-	Native->pop_back();
-}
-
-int AlignedTriangleMeshArray::Capacity::get()
-{
-	return Native->capacity();
-}
-
-int AlignedTriangleMeshArray::Count::get()
-{
-	return Native->size();
-}
-
-void AlignedTriangleMeshArray::Swap(int index0, int index1)
-{
-	Native->swap(index0, index1);
-}
-
-TriangleMesh^ AlignedTriangleMeshArray::default::get(int index)
-{
-	if (index < 0 || index >= Native->size())
-		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew TriangleMesh((*Native)[index]);
-}
-
-void AlignedTriangleMeshArray::default::set(int index, TriangleMesh^ value)
-{
-	if (index < 0 || index >= Native->size())
-		throw gcnew ArgumentOutOfRangeException("index");
-	(*Native)[index] = (btTriangleMesh*)GetUnmanagedNullable(value);
-}
-
-
-#undef Native
 #define Native static_cast<btAlignedObjectArray<btVector3>*>(_native)
 
 AlignedVector3Array::AlignedVector3Array(btAlignedObjectArray<btVector3>* vector3Array)
@@ -2437,7 +2350,7 @@ AlignedVector3Array::AlignedVector3Array()
 
 void AlignedVector3Array::Add(Vector3 vector3Value)
 {
-	VECTOR3_DEF(vector3Value);
+	VECTOR3_CONV(vector3Value);
 	Native->push_back(VECTOR3_USE(vector3Value));
 	VECTOR3_DEL(vector3Value);
 }
@@ -2456,7 +2369,7 @@ void AlignedVector3Array::Clear()
 
 bool AlignedVector3Array::Contains(Vector3 vector)
 {
-	VECTOR3_DEF(vector);
+	VECTOR3_CONV(vector);
 	int i = Native->findLinearSearch(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
 	return i != Native->size();
@@ -2483,7 +2396,7 @@ void AlignedVector3Array::CopyTo(array<Vector3>^ array, int arrayIndex)
 
 int AlignedVector3Array::IndexOf(Vector3 vector)
 {
-	VECTOR3_DEF(vector);
+	VECTOR3_CONV(vector);
 	int i = Native->findLinearSearch(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
 	return i != Native->size() ? i : -1;
@@ -2497,7 +2410,7 @@ void AlignedVector3Array::PopBack()
 bool AlignedVector3Array::Remove(Vector3 vector)
 {
 	int sizeBefore = Native->size();
-	VECTOR3_DEF(vector);
+	VECTOR3_CONV(vector);
 	Native->remove(VECTOR3_USE(vector));
 	VECTOR3_DEL(vector);
 	return sizeBefore != Native->size();
@@ -2670,7 +2583,7 @@ void AlignedWheelInfoArray::CopyTo(array<WheelInfo^>^ array, int arrayIndex)
 	int i;
 	for (i=0; i<size; i++)
 	{
-		array[arrayIndex+i] = gcnew WheelInfo(&(*Native)[i]);
+		array[arrayIndex+i] = gcnew WheelInfo(&(*Native)[i], true);
 	}
 }
 
@@ -2698,7 +2611,7 @@ WheelInfo^ AlignedWheelInfoArray::default::get(int index)
 {
 	if (index < 0 || index >= Native->size())
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew WheelInfo(&(*Native)[index]);
+	return gcnew WheelInfo(&(*Native)[index], true);
 }
 
 #pragma managed(push, off)
