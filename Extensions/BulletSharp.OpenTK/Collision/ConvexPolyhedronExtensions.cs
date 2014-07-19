@@ -39,7 +39,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				*(BulletSharp.Math.Vector3*)valuePtr = obj.MC;
+				*(BulletSharp.Math.Vector3*)valuePtr = obj.C;
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				*(BulletSharp.Math.Vector3*)valuePtr = obj.ME;
+				*(BulletSharp.Math.Vector3*)valuePtr = obj.E;
 			}
 		}
 
@@ -112,7 +112,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				obj.MC = *(BulletSharp.Math.Vector3*)valuePtr;
+				obj.C = *(BulletSharp.Math.Vector3*)valuePtr;
 			}
 		}
 
@@ -125,7 +125,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				obj.ME = *(BulletSharp.Math.Vector3*)valuePtr;
+				obj.E = *(BulletSharp.Math.Vector3*)valuePtr;
 			}
 		}
 

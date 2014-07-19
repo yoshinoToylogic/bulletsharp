@@ -19,11 +19,10 @@ namespace BulletSharp
         Cuda = 512	//will be open sourced during Game Developers Conference 2009. Much faster.
     }
 
-	public class ContactSolverInfoData
+	public class ContactSolverInfoData : IDisposable
 	{
 		internal IntPtr _native;
-
-        private bool _preventDelete;
+        private readonly bool _preventDelete;
 
 		internal ContactSolverInfoData(IntPtr native, bool preventDelete)
 		{

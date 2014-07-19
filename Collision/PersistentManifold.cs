@@ -8,10 +8,10 @@ namespace BulletSharp
     public delegate void ContactDestroyedEventHandler(Object userPersistantData);
     public delegate void ContactProcessedEventHandler(ManifoldPoint cp, CollisionObject body0, CollisionObject body1);
 
-	public class PersistentManifold //: TypedObject
+	public class PersistentManifold : IDisposable //: TypedObject
 	{
         internal IntPtr _native;
-        bool _preventDelete;
+        private bool _preventDelete;
 
         static ContactDestroyedEventHandler _contactDestroyed;
         static ContactProcessedEventHandler _contactProcessed;
@@ -191,7 +191,7 @@ namespace BulletSharp
 			set { btPersistentManifold_setContactProcessingThreshold(_native, value); }
 		}
 
-		public int Index1a
+		public int Index1A
 		{
 			get { return btPersistentManifold_getIndex1a(_native); }
 			set { btPersistentManifold_setIndex1a(_native, value); }
@@ -201,6 +201,29 @@ namespace BulletSharp
 		{
 			get { return btPersistentManifold_getNumContacts(_native); }
 			set { btPersistentManifold_setNumContacts(_native, value); }
+		}
+
+        		public void Dispose()
+		{
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+
+		protected virtual void Dispose(bool disposing)
+		{
+			if (_native != IntPtr.Zero)
+			{
+                if (!_preventDelete)
+                {
+                    btPersistentManifold_delete(_native);
+                }
+				_native = IntPtr.Zero;
+			}
+		}
+
+		~PersistentManifold()
+		{
+			Dispose(false);
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -258,9 +281,11 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btPersistentManifold_validContactDistance(IntPtr obj, IntPtr pt);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr getGContactDestroyedCallback();
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr getGContactProcessedCallback();
+        static extern void btPersistentManifold_delete(IntPtr obj);
+        //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        //static extern IntPtr getGContactDestroyedCallback();
+        //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        //static extern IntPtr getGContactProcessedCallback();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void setGContactDestroyedCallback(IntPtr value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

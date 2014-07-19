@@ -70,7 +70,7 @@ namespace BulletSharp
 	public class LocalRayResult
 	{
 		internal IntPtr _native;
-        private bool _preventDelete;
+        private readonly bool _preventDelete;
 
 		internal LocalRayResult(IntPtr native, bool preventDelete)
 		{
@@ -364,7 +364,7 @@ namespace BulletSharp
 	public class LocalConvexResult : IDisposable
 	{
 		internal IntPtr _native;
-        private bool _preventDelete;
+        private readonly bool _preventDelete;
 
         internal LocalConvexResult(IntPtr native, bool preventDelete)
 		{
@@ -524,9 +524,7 @@ namespace BulletSharp
 
 		public bool HasHit
 		{
-            // FIXME: Why does this always return true?
-			//get { return btCollisionWorld_ConvexResultCallback_hasHit(_native); }
-            get { return ClosestHitFraction < 1.0f; }
+			get { return btCollisionWorld_ConvexResultCallback_hasHit(_native); }
 		}
 
 		public void Dispose()
@@ -555,7 +553,8 @@ namespace BulletSharp
 		static extern short btCollisionWorld_ConvexResultCallback_getCollisionFilterGroup(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern short btCollisionWorld_ConvexResultCallback_getCollisionFilterMask(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionWorld_ConvexResultCallback_hasHit(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_ConvexResultCallback_setClosestHitFraction(IntPtr obj, float value);

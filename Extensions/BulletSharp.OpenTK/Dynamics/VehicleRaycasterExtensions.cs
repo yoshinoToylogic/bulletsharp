@@ -66,7 +66,7 @@ namespace BulletSharp
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public static class VehicleRaycasterExtensions
 	{
-		public unsafe static IntPtr CastRay(this VehicleRaycaster obj, ref OpenTK.Vector3 from, ref OpenTK.Vector3 to, VehicleRaycasterResult result)
+		public unsafe static object CastRay(this VehicleRaycaster obj, ref OpenTK.Vector3 from, ref OpenTK.Vector3 to, VehicleRaycasterResult result)
 		{
 			fixed (OpenTK.Vector3* fromPtr = &from)
 			{

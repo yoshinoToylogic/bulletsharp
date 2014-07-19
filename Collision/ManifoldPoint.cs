@@ -110,7 +110,7 @@ namespace BulletSharp
 	public class ManifoldPoint
 	{
 		internal IntPtr _native;
-        bool _preventDelete;
+	    private readonly bool _preventDelete;
 
         static ContactAddedEventHandler _contactAdded;
         static ContactAddedUnmanagedDelegate _contactAddedUnmanaged;
@@ -199,13 +199,13 @@ namespace BulletSharp
 			set { btManifoldPoint_setCombinedRollingFriction(_native, value); }
 		}
 
-		public float ContactCFM1
+		public float ContactCfm1
 		{
 			get { return btManifoldPoint_getContactCFM1(_native); }
 			set { btManifoldPoint_setContactCFM1(_native, value); }
 		}
 
-		public float ContactCFM2
+		public float ContactCfm2
 		{
 			get { return btManifoldPoint_getContactCFM2(_native); }
 			set { btManifoldPoint_setContactCFM2(_native, value); }
@@ -513,8 +513,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_delete(IntPtr obj);
 
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr getGContactAddedCallback();
+        //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        //static extern IntPtr getGContactAddedCallback();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void setGContactAddedCallback(IntPtr value);
 	}

@@ -71,10 +71,10 @@ namespace BulletSharp
 		static extern IntPtr btCollisionAlgorithmConstructionInfo_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionAlgorithmConstructionInfo_new2(IntPtr dispatcher, int temp);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCollisionAlgorithmConstructionInfo_getDispatcher1(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCollisionAlgorithmConstructionInfo_getManifold(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btCollisionAlgorithmConstructionInfo_getDispatcher1(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btCollisionAlgorithmConstructionInfo_getManifold(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionAlgorithmConstructionInfo_setDispatcher1(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -86,19 +86,19 @@ namespace BulletSharp
 	public class CollisionAlgorithm : IDisposable
 	{
 		internal IntPtr _native;
-        bool _preventDelete;
+	    private readonly bool _preventDelete;
 
 		internal CollisionAlgorithm(IntPtr native, bool preventDelete = false)
 		{
 			_native = native;
             _preventDelete = preventDelete;
 		}
-        /*
+
 		public float CalculateTimeOfImpact(CollisionObject body0, CollisionObject body1, DispatcherInfo dispatchInfo, ManifoldResult resultOut)
 		{
 			return btCollisionAlgorithm_calculateTimeOfImpact(_native, body0._native, body1._native, dispatchInfo._native, resultOut._native);
 		}
-        */
+
         public void GetAllContactManifolds(AlignedManifoldArray manifoldArray)
         {
             btCollisionAlgorithm_getAllContactManifolds(_native, manifoldArray._native);

@@ -8,7 +8,7 @@ namespace BulletSharp
 	public class CompoundShapeChild : IDisposable
 	{
 		internal IntPtr _native;
-        bool _preventDelete;
+	    private readonly bool _preventDelete;
 
 		internal CompoundShapeChild(IntPtr native, bool preventDelete = false)
 		{
