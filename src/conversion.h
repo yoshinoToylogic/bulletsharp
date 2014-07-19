@@ -251,39 +251,39 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define VECTOR3_IN(from, to) Vector3TobtVector3(from, to)
 #define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
 #define VECTOR3_USE(vec) TEMP(vec)
-#define VECTOR3_OUT(vec, outvec) btVector3ToVector3(vec, outvec)
-#define VECTOR3_OUT2(vec, outvec) btVector3ToVector3(vec, outvec)
+#define VECTOR3_OUT(from, to) btVector3ToVector3(from, to)
+#define VECTOR3_OUT2(from, to) btVector3ToVector3(from, to)
 #define VECTOR3_DEF_OUT(vec) VECTOR3_OUT(&TEMP(vec), vec)
 #define TRANSFORM_DEF(tr) ATTRIBUTE_ALIGNED16(btTransform) TEMP(tr)
 #define MATRIX3X3_DEF(tr) ATTRIBUTE_ALIGNED16(btMatrix3x3) TEMP(tr)
 #define QUATERNION_DEF(quat) ATTRIBUTE_ALIGNED16(btQuaternion) TEMP(quat)
-#define QUATERNION_IN(inquat, quat) QuaternionTobtQuaternion(inquat, quat)
+#define QUATERNION_IN(from, to) QuaternionTobtQuaternion(from, to)
 #define QUATERNION_CONV(quat) QUATERNION_DEF(quat); QUATERNION_IN(quat, &TEMP(quat))
 #define QUATERNION_USE(quat) TEMP(quat)
-#define QUATERNION_OUT(quat, outquat) btQuaternionToQuaternion(&quat, outquat)
-#define QUATERNION_OUT2(quat, outquat) btQuaternionToQuaternion(quat, outquat)
+#define QUATERNION_OUT(from, to) btQuaternionToQuaternion(&from, to)
+#define QUATERNION_OUT2(from, to) btQuaternionToQuaternion(from, to)
 #else
 #define VECTOR3_DEF(vec)
-#define VECTOR3_IN(invec, vec) *vec = *(btVector3*)invec
+#define VECTOR3_IN(from, to) *to = *(btVector3*)from
 #define VECTOR3_CONV(vec)
 #define VECTOR3_USE(vec) *(btVector3*)vec
-#define VECTOR3_OUT(vec, outvec) *(btVector3*)outvec = *vec
-#define VECTOR3_OUT2(vec, outvec) *(btVector3*)outvec = vec
+#define VECTOR3_OUT(from, to) *(btVector3*)to = *from
+#define VECTOR3_OUT2(from, to) *(btVector3*)to = from
 #define VECTOR3_DEF_OUT(vec)
 #define TRANSFORM_DEF(tr) btTransform TEMP(tr)
 #define MATRIX3X3_DEF(tr) btMatrix3x3 TEMP(tr)
 #define QUATERNION_DEF(quat)
-#define QUATERNION_IN(inquat, quat) *quat = *(btQuaternion*)inquat
+#define QUATERNION_IN(from, to) *to = *(btQuaternion*)from
 #define QUATERNION_CONV(quat)
 #define QUATERNION_USE(quat) *(btQuaternion*)quat
-#define QUATERNION_OUT(quat, outquat) *(btQuaternion*)outquat = quat
-#define QUATERNION_OUT2(quat, outquat) *(btQuaternion*)outquat = quat
+#define QUATERNION_OUT(from, to) *(btQuaternion*)to = from
+#define QUATERNION_OUT2(from, to) *(btQuaternion*)to = from
 #endif
-#define TRANSFORM_IN(intr, tr) MatrixTobtTransform(intr, tr)
+#define TRANSFORM_IN(from, to) MatrixTobtTransform(from, to)
 #define TRANSFORM_CONV(tr) TRANSFORM_DEF(tr); TRANSFORM_IN(tr, &TEMP(tr))
 #define TRANSFORM_USE(tr) TEMP(tr)
-#define TRANSFORM_OUT(tr, outtr) btTransformToMatrix(tr, outtr)
+#define TRANSFORM_OUT(from, to) btTransformToMatrix(from, to)
 #define TRANSFORM_DEF_OUT(tr) TRANSFORM_OUT(&TEMP(tr), tr)
-#define MATRIX3X3_IN(intr, tr) MatrixTobtMatrix3x3(intr, tr)
-#define MATRIX3X3_OUT(tr, outtr) btMatrix3x3ToMatrix(tr, outtr)
+#define MATRIX3X3_IN(from, to) MatrixTobtMatrix3x3(from, to)
+#define MATRIX3X3_OUT(from, to) btMatrix3x3ToMatrix(from, to)
 #define MATRIX3X3_DEF_OUT(tr) MATRIX3X3_OUT(&TEMP(tr), tr)

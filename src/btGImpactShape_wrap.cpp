@@ -213,8 +213,9 @@ void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_indices(btGImpactMeshSha
 
 void btGImpactMeshShapePart_TrimeshPrimitiveManager_get_vertex(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj, unsigned int vertex_index, btScalar* vertex)
 {
-	VECTOR3_CONV(vertex);
+	VECTOR3_DEF(vertex);
 	obj->get_vertex(vertex_index, VECTOR3_USE(vertex));
+	VECTOR3_DEF_OUT(vertex);
 }
 
 int btGImpactMeshShapePart_TrimeshPrimitiveManager_get_vertex_count(btGImpactMeshShapePart_TrimeshPrimitiveManager* obj)
@@ -384,8 +385,9 @@ btGImpactMeshShapePart_TrimeshPrimitiveManager* btGImpactMeshShapePart_getTrimes
 
 void btGImpactMeshShapePart_getVertex(btGImpactMeshShapePart* obj, int vertex_index, btScalar* vertex)
 {
-	VECTOR3_CONV(vertex);
+	VECTOR3_DEF(vertex);
 	obj->getVertex(vertex_index, VECTOR3_USE(vertex));
+	VECTOR3_DEF_OUT(vertex);
 }
 
 int btGImpactMeshShapePart_getVertexCount(btGImpactMeshShapePart* obj)
