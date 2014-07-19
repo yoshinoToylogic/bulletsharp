@@ -19,7 +19,6 @@
 #endif
 
 #ifndef BULLET_COLLISION_COMMON_H
-#define btBoxShape void
 #define btCapsuleShape void
 #define btCapsuleShapeX void
 #define btCapsuleShapeZ void
@@ -27,7 +26,6 @@
 #define btCylinderShape void
 #define btCylinderShapeX void
 #define btCylinderShapeZ void
-#define btStaticPlaneShape void
 #define btConvexHullShape void
 #define btTriangleMesh void
 #define btBvhTriangleMeshShape void
@@ -36,10 +34,8 @@
 #define btTetrahedronShape void
 #define btMultiSphereShape void
 #define btSimpleBroadphase void
-#define btAABB void
 #define btAxisSweep3 void
 #define bt32BitAxisSweep3 void
-#define BT_BOX_BOX_TRANSFORM_CACHE void
 #define btBroadphasePairArray void
 #define btCollisionWorld_AllHitsRayResultCallback void
 #define btCollisionWorld_ClosestConvexResultCallback void
@@ -50,7 +46,6 @@
 #define btCollisionWorld_LocalRayResult void
 #define btCollisionWorld_LocalShapeInfo void
 #define btCollisionWorld_RayResultCallback void
-#define btCompoundShapeChild void
 #define btDbvtBroadphase void
 #define btDefaultMotionState void
 #define btDiscreteCollisionDetectorInterface void
@@ -82,7 +77,6 @@
 #define btAlignedCollisionObjectArray void
 #define btAlignedConstCollisionObjectArray void
 #define btAlignedCollisionShapeArray void
-#define btAlignedIntArray void
 #define btAlignedScalarArray void
 #define btAlignedVector3Array void
 #define btCollisionObjectArray void
@@ -161,6 +155,15 @@
 #define btBoxBoxCollisionAlgorithm_CreateFunc void
 #else
 #define btBoxBoxCollisionAlgorithm_CreateFunc btBoxBoxCollisionAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_BOX_BOX_DETECTOR_H
+#define btBoxBoxDetector void
+#endif
+
+#ifndef BT_BOX_COLLISION_H_INCLUDED
+#define BT_BOX_BOX_TRANSFORM_CACHE void
+#define btAABB void
 #endif
 
 #ifndef BT_BROADPHASE_INTERFACE_H
@@ -247,6 +250,7 @@
 
 #ifndef BT_COMPOUND_SHAPE_H
 #define btCompoundShape void
+#define btCompoundShapeChild void
 #endif
 
 #ifndef BT_CONCAVE_SHAPE_H
@@ -260,6 +264,14 @@
 #define btConeShapeZ void
 #endif
 
+#ifndef BT_CONTACT_CONSTRAINT_H
+#define btContactConstraint void
+#endif
+
+#ifndef BT_CONTINUOUS_COLLISION_CONVEX_CAST_H
+#define btContinuousConvexCollision void
+#endif
+
 #ifndef BT_CONVEX_2D_SHAPE_H
 #define btConvex2dShape void
 #endif
@@ -269,6 +281,13 @@
 #define btConvex2dConvex2dAlgorithm_CreateFunc void
 #else
 #define btConvex2dConvex2dAlgorithm_CreateFunc btConvex2dConvex2dAlgorithm::CreateFunc
+#endif
+
+#ifndef BT_CONVEX_CAST_H
+#define btConvexCast void
+#define btConvexCast_CastResult void
+#else
+#define btConvexCast_CastResult btConvexCast::CastResult
 #endif
 
 #ifndef BT_CONVEX_CONCAVE_COLLISION_ALGORITHM_H
@@ -316,6 +335,10 @@
 #define btConvexTriangleMeshShape void
 #endif
 
+#ifndef BT_DANTZIG_SOLVER_H
+#define btDantzigSolver void
+#endif
+
 #ifndef BT_DEFAULT_COLLISION_CONFIGURATION
 #define btDefaultCollisionConfiguration void
 #define btDefaultCollisionConstructionInfo void
@@ -332,7 +355,24 @@
 
 #ifndef BT_DYNAMIC_BOUNDING_VOLUME_TREE_H
 #define btDbvt void
+#define btDbvtAabbMm void
 #define btDbvtNode void
+#define btDbvtVolume void
+#define btDbvt_IClone void
+#define btDbvt_ICollide void
+#define btDbvt_IWriter void
+#define btDbvt_sStkCLN void
+#define btDbvt_sStkNN void
+#define btDbvt_sStkNP void
+#define btDbvt_sStkNPS void
+#else
+#define btDbvt_IClone btDbvt::IClone
+#define btDbvt_ICollide btDbvt::ICollide
+#define btDbvt_IWriter btDbvt::IWriter
+#define btDbvt_sStkCLN btDbvt::sStkCLN
+#define btDbvt_sStkNN btDbvt::sStkNN
+#define btDbvt_sStkNP btDbvt::sStkNP
+#define btDbvt_sStkNPS btDbvt::sStkNPS
 #endif
 
 #ifndef BT_DYNAMICS_WORLD_H
@@ -368,6 +408,14 @@
 #define btGImpactCollisionAlgorithm_CreateFunc btGImpactCollisionAlgorithm::CreateFunc
 #endif
 
+#ifndef BT_GJK_CONVEX_CAST_H
+#define btGjkConvexCast void
+#endif
+
+#ifndef BT_GJP_EPA_PENETRATION_DEPTH_H
+#define btGjkEpaPenetrationDepthSolver void
+#endif
+
 #ifndef BT_GJK_PAIR_DETECTOR_H
 #define btGjkPairDetector void
 #endif
@@ -397,6 +445,14 @@
 #define btMaterial void
 #endif
 
+#ifndef BT_MLCP_SOLVER_H
+#define btMLCPSolver void
+#endif
+
+#ifndef BT_MLCP_SOLVER_INTERFACE_H
+#define btMLCPSolverInterface void
+#endif
+
 #ifndef BT_MINKOWSKI_SUM_SHAPE_H
 #define btMinkowskiSumShape void
 #endif
@@ -412,6 +468,10 @@
 
 #ifndef BT_OBB_BOX_2D_SHAPE_H
 #define btBox2dShape void
+#endif
+
+#ifndef BT_OBB_BOX_MINKOWSKI_H
+#define btBoxShape void
 #endif
 
 #ifndef BT_OBB_TRIANGLE_MINKOWSKI_H
@@ -609,6 +669,10 @@
 #define btSoftBodyConcaveCollisionAlgorithm_SwappedCreateFunc btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc
 #endif
 
+#ifndef BT_SOFT_BODY_DEFAULT_SOLVER_H
+#define btDefaultSoftBodySolver void
+#endif
+
 #ifndef BT_SOFT_BODY_HELPERS_H
 #define fDrawFlags void
 #endif
@@ -678,6 +742,10 @@
 
 #ifndef BT_SPU_GATHERING_COLLISION__DISPATCHER_H
 #define SpuGatheringCollisionDispatcher void
+#endif
+
+#ifndef BT_STATIC_PLANE_SHAPE_H
+#define btStaticPlaneShape void
 #endif
 
 #ifndef BT_STRIDING_MESHINTERFACE_H
@@ -757,6 +825,24 @@ typedef void* (*Win32lsMemorySetupFunc)();
 
 #ifndef BT_BULLET_XML_WORLD_IMPORTER_H
 #define btBulletXmlWorldImporter void
+#endif
+
+#ifndef GIM_BOX_SET_H_INCLUDED
+#define btBvhTree void
+#define btPairSet void
+#define GIM_BVH_DATA void
+#define GIM_BVH_DATA_ARRAY void
+#define GIM_BVH_TREE_NODE void
+#define GIM_BVH_TREE_NODE_ARRAY void
+#define GIM_PAIR void
+#define btGImpactBvh void
+#endif
+
+#ifndef GIM_QUANTIZED_SET_H_INCLUDED
+#define BT_QUANTIZED_BVH_NODE void
+#define GIM_QUANTIZED_BVH_NODE_ARRAY void
+#define btGImpactQuantizedBvh void
+#define btQuantizedBvhTree void
 #endif
 
 #ifndef GIMPACT_SHAPE_H

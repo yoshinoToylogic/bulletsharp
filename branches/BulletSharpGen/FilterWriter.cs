@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace BulletSharpGen
@@ -260,7 +261,7 @@ namespace BulletSharpGen
             }
             OutputTabs(level + 1);
             WriteLine(">");
-            foreach (string filename in filter.Files)
+            foreach (string filename in filter.Files.OrderBy(f => f))
             {
                 OutputTabs(level + 1);
                 WriteLine("<File");

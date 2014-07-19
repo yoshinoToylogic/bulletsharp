@@ -20,6 +20,13 @@ namespace BulletSharpGen
         public bool IsTypedef { get; set; }
         public TypeRefDefinition TypedefUnderlyingType { get; set; }
 
+        // Pure enum = enum wrapped in a struct
+        public EnumDefinition Enum { get; set; }
+        public bool IsPureEnum
+        {
+            get { return Enum != null && Methods.Count == 0; }
+        }
+
         public string ManagedName { get; set; }
 
         public string FullName

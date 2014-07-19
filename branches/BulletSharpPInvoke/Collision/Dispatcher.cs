@@ -8,7 +8,7 @@ namespace BulletSharp
 	public class DispatcherInfo : IDisposable
 	{
 		internal IntPtr _native;
-        private bool _preventDelete;
+        private readonly bool _preventDelete;
 
 		internal DispatcherInfo(IntPtr native, bool preventDelete)
 		{

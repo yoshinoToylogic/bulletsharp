@@ -5,7 +5,7 @@ namespace BulletSharp
 	[EditorBrowsable(EditorBrowsableState.Never)]
 	public static class CharacterControllerInterfaceExtensions
 	{
-		public unsafe static void SetWalkDirection(this CharacterControllerInterface obj, ref OpenTK.Vector3 walkDirection)
+		public unsafe static void SetWalkDirection(this ICharacterController obj, ref OpenTK.Vector3 walkDirection)
 		{
 			fixed (OpenTK.Vector3* walkDirectionPtr = &walkDirection)
 			{
@@ -13,7 +13,7 @@ namespace BulletSharp
 			}
 		}
 
-		public unsafe static void SetVelocityForTimeInterval(this CharacterControllerInterface obj, ref OpenTK.Vector3 velocity, float timeInterval)
+        public unsafe static void SetVelocityForTimeInterval(this ICharacterController obj, ref OpenTK.Vector3 velocity, float timeInterval)
 		{
 			fixed (OpenTK.Vector3* velocityPtr = &velocity)
 			{
@@ -21,7 +21,7 @@ namespace BulletSharp
 			}
 		}
 
-		public unsafe static void Warp(this CharacterControllerInterface obj, ref OpenTK.Vector3 origin)
+        public unsafe static void Warp(this ICharacterController obj, ref OpenTK.Vector3 origin)
 		{
 			fixed (OpenTK.Vector3* originPtr = &origin)
 			{

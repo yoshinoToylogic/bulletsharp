@@ -4,6 +4,16 @@
 
 using namespace std;
 
+btScalar addSingleResult(btCollisionWorld_LocalConvexResult* rayResult, bool normalInWorldSpace)
+{
+	return 1.0f;
+}
+
+bool needsCollision(btBroadphaseProxy* proxy0)
+{
+	return true;
+}
+
 int main(int argc, char* argv[])
 {
 	btDbvtBroadphase* broadphase = btDbvtBroadphase_new();
@@ -17,6 +27,14 @@ int main(int argc, char* argv[])
 	btRigidBody* body = btRigidBody_new(ci);
 	btDynamicsWorld_addRigidBody(world,body);
 	btDynamicsWorld_removeRigidBody(world,body);
+
+	btCollisionWorld_ConvexResultCallbackWrapper* convexCallback = btCollisionWorld_ConvexResultCallbackWrapper_new(addSingleResult, needsCollision);
+	bool hit = btCollisionWorld_ConvexResultCallback_hasHit(convexCallback);
+	if (hit)
+	{
+		cout << "Boolean marshalling bug" << endl;
+	}
+	btCollisionWorld_ConvexResultCallback_delete(convexCallback);
 
 	btBroadphaseInterface_delete(broadphase);
 	btCollisionConfiguration_delete(collisionConfiguration);

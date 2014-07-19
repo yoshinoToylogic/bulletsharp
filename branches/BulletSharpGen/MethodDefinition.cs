@@ -12,6 +12,11 @@
         public FieldDefinition Field { get; set; } // get/set method target
         public PropertyDefinition Property { get; set; } // property that wraps this get/set method
 
+        public bool IsVoid
+        {
+            get { return ReturnType.IsBasic && ReturnType.Name.Equals("void"); }
+        }
+
         public string ManagedName
         {
             get
@@ -43,7 +48,10 @@
             Parent = parent;
             Parameters = new ParameterDefinition[numArgs];
 
-            parent.Methods.Add(this);
+            if (parent != null)
+            {
+                parent.Methods.Add(this);
+            }
         }
 
         public override bool Equals(object obj)

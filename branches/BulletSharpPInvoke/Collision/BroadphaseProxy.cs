@@ -24,7 +24,7 @@ namespace BulletSharp
         ConvexShape,
         CylinderShape,
         UniformScalingShape,
-        MINKOWSKI_SUM_SHAPE_PROXYTYPE,
+        MinkowskiSumShape,
         MinkowskiDifferenceShape,
         Box2DShape,
         Convex2DShape,
@@ -73,7 +73,7 @@ namespace BulletSharp
 	public class BroadphaseProxy : IDisposable
 	{
 		internal IntPtr _native;
-        bool _preventDelete;
+	    private readonly bool _preventDelete;
 
 		internal BroadphaseProxy(IntPtr native, bool preventDelete = false)
 		{

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace BulletSharpGen
@@ -12,14 +13,24 @@ namespace BulletSharpGen
         {
             // If true, outputs C++/CLI wrapper,
             // if false, outputs C wrapper with C# code.
-            bool cppCliMode = true;
+            bool cppCliMode = false;
 
             //var subset = new AssemblySubset();
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\BasicDemo.exe", "BulletSharp");
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\DemoFramework.dll", "BulletSharp");
 
-            //var reader = new CppReader("D:\\src\\bullet\\src\\");
-            var reader = new CppReader("..\\..\\..\\bullet\\src\\");
+            string sourceFolder = "D:\\src\\bullet\\src\\";
+            //sourceFolder = "..\\..\\..\\bullet\\src\\";
+
+            if (!Directory.Exists(sourceFolder))
+            {
+                Console.WriteLine("Source folder \"" + sourceFolder + "\" not found");
+                Console.Write("Press any key to continue...");
+                Console.ReadKey();
+                return;
+            }
+
+            var reader = new CppReader(sourceFolder);
             var parser = new BulletParser(reader.ClassDefinitions, reader.HeaderDefinitions);
             if (cppCliMode)
             {
@@ -36,10 +47,10 @@ namespace BulletSharpGen
             }
 
 
-            //OutputSolution(TargetVS.VS2008, parser.HeaderDefinitions);
+            OutputSolution(TargetVS.VS2008, parser.HeaderDefinitions);
             OutputSolution(TargetVS.VS2010, parser.HeaderDefinitions);
-            //OutputSolution(TargetVS.VS2012, parser.HeaderDefinitions);
-            //OutputSolution(TargetVS.VS2013, parser.HeaderDefinitions);
+            OutputSolution(TargetVS.VS2012, parser.HeaderDefinitions);
+            OutputSolution(TargetVS.VS2013, parser.HeaderDefinitions);
 
 
             Console.Write("Press any key to continue...");
@@ -82,8 +93,8 @@ namespace BulletSharpGen
                 confs.Add(new ProjectConfiguration("MonoGame", true, "GRAPHICS_MONOGAME", "$(ProgramFiles)\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\;$(ProgramFiles(x86))\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\"));
                 confs.Add(new ProjectConfiguration("MonoGame", false, "GRAPHICS_MONOGAME", "$(ProgramFiles)\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\;$(ProgramFiles(x86))\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\"));
             }
-            confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.0\\Binaries\\OpenTK\\Release"));
+            confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.1\\Binaries\\OpenTK\\Release"));
+            confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.1\\Binaries\\OpenTK\\Release"));
             if (targetVS == TargetVS.VS2008)
             {
                 confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net20Debug"));
@@ -115,7 +126,7 @@ namespace BulletSharpGen
 
             string[] excludedClasses = new string[] { "ActionInterface", "AlignedAllocator", "bChunk", "bCommon",
             "bFile", "Box", "BulletFile", "cl_MiniCL_Defs", "cl_platform", "ContactProcessing", "ConvexHull",
-            "ConvexHullComputer", "DantzigLCP", "DefaultSoftBodySolver", "GenericPoolAllocator",
+            "ConvexHullComputer", "DantzigLCP", "GenericPoolAllocator",
             "gim_array", "gim_bitset", "gim_box_collision", "gim_box_set", "gim_clip_polygon", "gim_contact",
             "gim_geom_types", "gim_hash_table", "gim_memory", "gim_radixsort", "gim_tri_collision", "GjkEpa2",
             "Gpu3DGridBroadphase", "Gpu3DGridBroadphaseSharedTypes", "GpuDefines", "GrahamScan2dConvexHull",
@@ -156,7 +167,7 @@ namespace BulletSharpGen
             headerFilter.AddFile("", rootFolder + "Stdafx");
             headerFilter.AddFile("", rootFolder + "Collections");
             headerFilter.AddFile("", rootFolder + "Enums");
-            headerFilter.AddFile("", rootFolder + "IDisposable");
+            headerFilter.AddFile("", rootFolder + "ITrackingDisposable");
             headerFilter.AddFile("", rootFolder + "Math");
             headerFilter.AddFile("", rootFolder + "ObjectTable");
             headerFilter.AddFile("", rootFolder + "StringConv");
@@ -216,7 +227,7 @@ namespace BulletSharpGen
                 slnWriter.LibraryDirectoriesRelease = slnRelDir + "..\\bullet\\msvc\\" + targetVersionString + "\\lib\\MinSizeRel;$(AMDAPPSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);";
                 slnWriter.LibraryDirectoriesDebug = slnRelDir + "..\\bullet\\msvc\\" + targetVersionString + "\\lib\\Debug;$(AMDAPPSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);";
             }
-            slnWriter.Output(targetVS, confs, "src");
+            slnWriter.Output(targetVS, confs, "sln" + targetVersionString);
         }
     }
 }

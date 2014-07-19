@@ -52,7 +52,7 @@ namespace BulletSharp
 			set { BT_BOX_BOX_TRANSFORM_CACHE_setAR(_native, ref value); }
 		}
 
-        public Matrix R1to0
+        public Matrix R1To0
 		{
             get
             {
@@ -63,7 +63,7 @@ namespace BulletSharp
 			set { BT_BOX_BOX_TRANSFORM_CACHE_setR1to0(_native, ref value); }
 		}
 
-		public Vector3 T1to0
+		public Vector3 T1To0
 		{
             get
             {
@@ -120,13 +120,15 @@ namespace BulletSharp
 		static extern void BT_BOX_BOX_TRANSFORM_CACHE_delete(IntPtr obj);
 	}
 
-	public class Aabb
+	public class Aabb : IDisposable
 	{
 		internal IntPtr _native;
+	    private readonly bool _preventDelete;
 
-		internal Aabb(IntPtr native)
+        internal Aabb(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public Aabb()
@@ -134,14 +136,14 @@ namespace BulletSharp
 			_native = btAABB_new();
 		}
 
-		public Aabb(Vector3 V1, Vector3 V2, Vector3 V3)
+		public Aabb(Vector3 v1, Vector3 v2, Vector3 v3)
 		{
-			_native = btAABB_new2(ref V1, ref V2, ref V3);
+			_native = btAABB_new2(ref v1, ref v2, ref v3);
 		}
 
-		public Aabb(Vector3 V1, Vector3 V2, Vector3 V3, float margin)
+		public Aabb(Vector3 v1, Vector3 v2, Vector3 v3, float margin)
 		{
-			_native = btAABB_new3(ref V1, ref V2, ref V3, margin);
+			_native = btAABB_new3(ref v1, ref v2, ref v3, margin);
 		}
 
 		public Aabb(Aabb other)
@@ -174,9 +176,9 @@ namespace BulletSharp
 			return btAABB_collide_ray(_native, ref vorigin, ref vdir);
 		}
         
-		public bool CollideTriangleExact(ref Vector3 p1, ref Vector3 p2, ref Vector3 p3, ref Vector4 triangle_plane)
+		public bool CollideTriangleExact(ref Vector3 p1, ref Vector3 p2, ref Vector3 p3, ref Vector4 trianglePlane)
 		{
-			return btAABB_collide_triangle_exact(_native, ref p1, ref p2, ref p3, ref triangle_plane);
+			return btAABB_collide_triangle_exact(_native, ref p1, ref p2, ref p3, ref trianglePlane);
 		}
         
 		public void Copy_with_margin(Aabb other, float margin)
@@ -219,14 +221,14 @@ namespace BulletSharp
 			return btAABB_overlapping_trans_cache(_native, box._native, transcache._native, fulltest);
 		}
 
-		public bool OverlappingTransConservative(Aabb box, ref Matrix trans1_to_0)
+		public bool OverlappingTransConservative(Aabb box, ref Matrix trans1To0)
 		{
-			return btAABB_overlapping_trans_conservative(_native, box._native, ref trans1_to_0);
+			return btAABB_overlapping_trans_conservative(_native, box._native, ref trans1To0);
 		}
 
-		public bool OverlappingTransConservative2(Aabb box, BoxBoxTransformCache trans1_to_0)
+		public bool OverlappingTransConservative2(Aabb box, BoxBoxTransformCache trans1To0)
 		{
-			return btAABB_overlapping_trans_conservative2(_native, box._native, trans1_to_0._native);
+			return btAABB_overlapping_trans_conservative2(_native, box._native, trans1To0._native);
 		}
         /*
 		public eBT_PLANE_INTERSECTION_TYPE Plane_classify(Vector4 plane)
@@ -271,7 +273,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btAABB_delete(_native);
+			    if (!_preventDelete)
+			    {
+                    btAABB_delete(_native);
+			    }
 				_native = IntPtr.Zero;
 			}
 		}

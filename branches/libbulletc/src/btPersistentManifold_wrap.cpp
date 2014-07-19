@@ -141,6 +141,12 @@ bool btPersistentManifold_validContactDistance(btPersistentManifold* obj, btMani
 	return obj->validContactDistance(*pt);
 }
 
+void btPersistentManifold_delete(btPersistentManifold* obj)
+{
+	delete obj;
+}
+
+
 ContactDestroyedCallback getGContactDestroyedCallback()
 {
 	return gContactDestroyedCallback;

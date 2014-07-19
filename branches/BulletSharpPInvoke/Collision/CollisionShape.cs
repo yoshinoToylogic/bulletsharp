@@ -7,7 +7,7 @@ namespace BulletSharp
 {
 	public class CollisionShape : IDisposable
 	{
-		internal IntPtr _native;
+		internal readonly IntPtr _native;
 
         private bool _preventDelete;
         private bool _isDisposed;
@@ -155,7 +155,7 @@ namespace BulletSharp
 			get { return btCollisionShape_isConvex(_native); }
 		}
 
-		public bool IsConvex2d
+		public bool IsConvex2D
 		{
 			get { return btCollisionShape_isConvex2d(_native); }
 		}

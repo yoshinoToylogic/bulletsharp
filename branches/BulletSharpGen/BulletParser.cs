@@ -161,6 +161,56 @@ namespace BulletSharpGen
                 }
             }
 
+            // Turn fields into get/set methods
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                foreach (FieldDefinition field in c.Fields)
+                {
+                    ResolveTypeRef(field.Type);
+
+                    string name = field.Name;
+                    if (name.StartsWith("m_"))
+                    {
+                        name = name.Substring(2);
+                    }
+                    name = name.Substring(0, 1).ToUpper() + name.Substring(1); // capitalize
+
+                    // one_two_three -> oneTwoThree
+                    while (name.Contains("_"))
+                    {
+                        int pos = name.IndexOf('_');
+                        name = name.Substring(0, pos) + name.Substring(pos + 1, 1).ToUpper() + name.Substring(pos + 2);
+                    }
+
+                    // Generate getter/setter methods
+                    string getterName, setterName;
+                    if (name.StartsWith("has"))
+                    {
+                        getterName = name;
+                        setterName = "set" + name.Substring(3);
+                    }
+                    else if (name.StartsWith("is"))
+                    {
+                        getterName = name;
+                        setterName = "set" + name.Substring(2);
+                    }
+                    else
+                    {
+                        getterName = "get" + name;
+                        setterName = "set" + name;
+                    }
+
+                    var getter = new MethodDefinition(getterName, c, 0);
+                    getter.ReturnType = field.Type;
+                    getter.Field = field;
+
+                    var setter = new MethodDefinition(setterName, c, 1);
+                    setter.ReturnType = new TypeRefDefinition();
+                    setter.Field = field;
+                    setter.Parameters[0] = new ParameterDefinition("value", field.Type);
+                }
+            }
+
             // Turn getters/setters into properties
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -175,18 +225,17 @@ namespace BulletSharpGen
                     {
                         // function returns the result
                         new PropertyDefinition(method);
-                        c.Methods.Remove(method);
-                        i--;
-                    }
-                    else if (method.Parameters.Length == 1 &&
-                        method.Name.StartsWith("get", StringComparison.InvariantCultureIgnoreCase) &&
-                        method.ReturnType.IsBasic && method.ReturnType.ManagedName.Equals("void"))
+                        //c.Methods.Remove(method);
+                        //i--;
+                    }/*
+                    else if (method.Parameters.Length == 1 && method.IsVoid &&
+                        method.Name.StartsWith("get", StringComparison.InvariantCultureIgnoreCase))
                     {
                         // function writes the result to a given pointer
                         new PropertyDefinition(method);
                         c.Methods.Remove(method);
                         i--;
-                    }
+                    }*/
                 }
                 for (i = 0; i < c.Methods.Count; i++)
                 {
@@ -202,24 +251,12 @@ namespace BulletSharpGen
                             {
                                 prop.Setter = method;
                                 method.Property = prop;
-                                c.Methods.Remove(method);
-                                i--;
+                                //c.Methods.Remove(method);
+                                //i--;
                                 break;
                             }
                         }
                     }
-                }
-            }
-
-            // Turn fields into properties
-            foreach (ClassDefinition c in classDefinitions.Values)
-            {
-                foreach (FieldDefinition field in c.Fields)
-                {
-                    ResolveTypeRef(field.Type);
-                    var prop = new PropertyDefinition(field);
-                    c.Methods.Remove(prop.Getter);
-                    c.Methods.Remove(prop.Setter);
                 }
             }
 
@@ -231,6 +268,8 @@ namespace BulletSharpGen
             HeaderNameMapping.Add("btBox2dShape", "Box2DShape");
             HeaderNameMapping.Add("btConvex2dConvex2dAlgorithm", "Convex2DConvex2DAlgorithm");
             HeaderNameMapping.Add("btConvex2dShape", "Convex2DShape");
+            HeaderNameMapping.Add("btMLCPSolver", "MlcpSolver");
+            HeaderNameMapping.Add("btMLCPSolverInterface", "MlcpSolverInterface");
             HeaderNameMapping.Add("hacdHACD", "Hacd");
 
             foreach (HeaderDefinition header in HeaderDefinitions.Values)
@@ -257,7 +296,11 @@ namespace BulletSharpGen
             ClassNameMapping.Add("btBox2dShape", "Box2DShape");
             ClassNameMapping.Add("btConvex2dConvex2dAlgorithm", "Convex2DConvex2DAlgorithm");
             ClassNameMapping.Add("btConvex2dShape", "Convex2DShape");
+            ClassNameMapping.Add("btMLCPSolver", "MlcpSolver");
+            ClassNameMapping.Add("btMLCPSolverInterface", "MlcpSolverInterface");
+            ClassNameMapping.Add("btMultibodyLink", "MultiBodyLink");
             ClassNameMapping.Add("btNNCGConstraintSolver", "NncgConstraintSolver");
+            ClassNameMapping.Add("HACD", "Hacd");
 
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -280,7 +323,8 @@ namespace BulletSharpGen
             // Sort methods and properties alphabetically
             foreach (ClassDefinition c in classDefinitions.Values)
             {
-                c.Methods.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
+                c.Classes.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
+                c.Methods.Sort((m1, m2) => m1.Name.CompareTo(m2.Name));
                 c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
             }
             /*
@@ -335,9 +379,11 @@ namespace BulletSharpGen
         {
             switch (type.ManagedName)
             {
+                case "Matrix3x3":
                 case "Quaternion":
                 case "Transform":
                 case "Vector3":
+                case "Vector4":
                     return "btScalar";
                 default:
                     return type.FullName;
@@ -374,6 +420,7 @@ namespace BulletSharpGen
                     return "Matrix";
                 case "Quaternion":
                 case "Vector3":
+                case "Vector4":
                     return type.ManagedName;
             }
             
@@ -393,6 +440,7 @@ namespace BulletSharpGen
                 case "Quaternion":
                 case "Transform":
                 case "Vector3":
+                case "Vector4":
                     return true;
                 default:
                     return false;
@@ -411,6 +459,8 @@ namespace BulletSharpGen
                     return "TRANSFORM_CONV(" + parameter.Name + ");";
                 case "Vector3":
                     return "VECTOR3_CONV(" + parameter.Name + ");";
+                case "Vector4":
+                    return "VECTOR4_CONV(" + parameter.Name + ");";
                 default:
                     return null;
             }
@@ -421,13 +471,39 @@ namespace BulletSharpGen
             switch (parameter.Type.ManagedName)
             {
                 case "Matrix3x3":
-                    return "MATRIX3X3_CONV(" + parameter.Name + ");";
+                    return "MATRIX3X3_CONV(" + parameter.ManagedName + ");";
                 case "Quaternion":
-                    return "QUATERNION_CONV(" + parameter.Name + ");";
+                    return "QUATERNION_CONV(" + parameter.ManagedName + ");";
                 case "Transform":
-                    return "TRANSFORM_CONV(" + parameter.Name + ");";
+                    return "TRANSFORM_CONV(" + parameter.ManagedName + ");";
                 case "Vector3":
-                    return "VECTOR3_DEF(" + parameter.Name + ");";
+                    return "VECTOR3_CONV(" + parameter.ManagedName + ");";
+                case "Vector4":
+                    return "VECTOR4_CONV(" + parameter.ManagedName + ");";
+                default:
+                    return null;
+            }
+        }
+
+        public static string GetTypeMarshalEpilogue(ParameterDefinition parameter)
+        {
+            if (parameter.Type.IsConst)
+            {
+                return null;
+            }
+
+            switch (parameter.Type.ManagedName)
+            {
+                case "Quaternion":
+                    return "QUATERNION_DEF_OUT(" + parameter.Name + ");";
+                case "Matrix3x3":
+                    return "MATRIX3X3_DEF_OUT(" + parameter.Name + ");";
+                case "Transform":
+                    return "TRANSFORM_DEF_OUT(" + parameter.Name + ");";
+                case "Vector3":
+                    return "VECTOR3_DEF_OUT(" + parameter.Name + ");";
+                case "Vector4":
+                    return "VECTOR4_DEF_OUT(" + parameter.Name + ");";
                 default:
                     return null;
             }
@@ -438,13 +514,15 @@ namespace BulletSharpGen
             switch (parameter.Type.ManagedName)
             {
                 case "Quaternion":
-                    return "QUATERNION_DEL(" + parameter.Name + ");";
+                    return "QUATERNION_DEL(" + parameter.ManagedName + ");";
                 case "Matrix3x3":
-                    return "MATRIX3X3_DEL(" + parameter.Name + ");";
+                    return "MATRIX3X3_DEL(" + parameter.ManagedName + ");";
                 case "Transform":
-                    return "TRANSFORM_DEL(" + parameter.Name + ");";
+                    return "TRANSFORM_DEL(" + parameter.ManagedName + ");";
                 case "Vector3":
-                    return "VECTOR3_DEL(" + parameter.Name + ");";
+                    return "VECTOR3_DEL(" + parameter.ManagedName + ");";
+                case "Vector4":
+                    return "VECTOR4_DEL(" + parameter.ManagedName + ");";
                 default:
                     return null;
             }
@@ -464,6 +542,29 @@ namespace BulletSharpGen
                     return "MATRIX3X3_USE(" + parameter.Name + ")";
                 case "Vector3":
                     return "VECTOR3_USE(" + parameter.Name + ")";
+                case "Vector4":
+                    return "VECTOR4_USE(" + parameter.Name + ")";
+                default:
+                    return null;
+            }
+        }
+
+        public static string GetTypeMarshalCppCli(ParameterDefinition parameter)
+        {
+            switch (parameter.Type.ManagedName)
+            {
+                case "IDebugDraw":
+                    return "DebugDraw::GetUnmanaged(" + parameter.ManagedName + ")";
+                case "Quaternion":
+                    return "QUATERNION_USE(" + parameter.ManagedName + ")";
+                case "Transform":
+                    return "TRANSFORM_USE(" + parameter.ManagedName + ")";
+                case "Matrix3x3":
+                    return "MATRIX3X3_USE(" + parameter.ManagedName + ")";
+                case "Vector3":
+                    return "VECTOR3_USE(" + parameter.ManagedName + ")";
+                case "Vector4":
+                    return "VECTOR4_USE(" + parameter.ManagedName + ")";
                 default:
                     return null;
             }
@@ -476,7 +577,7 @@ namespace BulletSharpGen
                 case "CollisionShape":
                     return "CollisionShape::GetManaged(";
                 case "IDebugDraw":
-                    return "DebugDraw::GetUnmanaged(";
+                    return "DebugDraw::GetManaged(";
                 case "OverlappingPairCache":
                     return "OverlappingPairCache::GetManaged(";
                 case "Quaternion":
@@ -485,6 +586,8 @@ namespace BulletSharpGen
                     return "Math::BtTransformToMatrix(&";
                 case "Vector3":
                     return "Math::BtVector3ToVector3(&";
+                case "Vector4":
+                    return "Math::BtVector4ToVector4(&";
                 default:
                     return string.Empty;
             }
@@ -499,22 +602,25 @@ namespace BulletSharpGen
                 case "Quaternion":
                 case "Transform":
                 case "Vector3":
+                case "Vector4":
                     return ")";
                 default:
                     return string.Empty;
             }
         }
 
-        public static string GetTypeMarshalFieldSet(FieldDefinition field, ParameterDefinition parameter)
+        public static string GetTypeMarshalFieldSetCppCli(FieldDefinition field, ParameterDefinition parameter, string nativePointer)
         {
             switch (field.Type.ManagedName)
             {
                 case "Quaternion":
-                    return "Math::QuaternionToBtQuat(" + parameter.Name + ", &_native->" + field.Name + ')';
+                    return "Math::QuaternionToBtQuat(" + parameter.ManagedName + ", &" + nativePointer + "->" + field.Name + ')';
                 case "Transform":
-                    return "Math::MatrixToBtTransform(" + parameter.Name + ", &_native->" + field.Name + ')';
+                    return "Math::MatrixToBtTransform(" + parameter.ManagedName + ", &" + nativePointer + "->" + field.Name + ')';
                 case "Vector3":
-                    return "Math::Vector3ToBtVector3(" + parameter.Name + ", &_native->" + field.Name + ')';
+                    return "Math::Vector3ToBtVector3(" + parameter.ManagedName + ", &" + nativePointer + "->" + field.Name + ')';
+                case "Vector4":
+                    return "Math::Vector4ToBtVector4(" + parameter.ManagedName + ", &" + nativePointer + "->" + field.Name + ')';
                 default:
                     return null;
             }
@@ -522,24 +628,25 @@ namespace BulletSharpGen
 
         public static string GetTypeDllImport(TypeRefDefinition type)
         {
+            switch (type.ManagedNameCS)
+            {
+                case "Matrix3x3":
+                case "Quaternion":
+                case "Transform":
+                case "Vector3":
+                case "Vector4":
+                    {
+                        if (type.Referenced != null && !type.IsConst)
+                        {
+                            return "[Out] out " + GetTypeNameCS(type);
+                        }
+                        return "[In] ref " + GetTypeNameCS(type);
+                    }
+            }
+
             if (type.Referenced != null && !type.IsBasic)
             {
-                switch (type.ManagedNameCS)
-                {
-                    case "Matrix3x3":
-                    case "Quaternion":
-                    case "Transform":
-                    case "Vector3":
-                    {
-                        if (type.IsConst)
-                        {
-                            return "[In] ref " + GetTypeNameCS(type);
-                        }
-                        return "[Out] out " + GetTypeNameCS(type);
-                    }
-                    default:
-                        return "IntPtr";
-                }
+                return "IntPtr";
             }
 
             return type.ManagedNameCS;
@@ -557,18 +664,18 @@ namespace BulletSharpGen
                     case "Quaternion":
                     case "Transform":
                     case "Vector3":
-                        return "ref " + parameter.Name;
+                    case "Vector4":
+                        return "ref " + parameter.ManagedName;
                     case "IDebugDraw":
-                        return "DebugDraw.GetUnmanaged(" + parameter.Name + ')';
+                        return "DebugDraw.GetUnmanaged(" + parameter.ManagedName + ')';
                 }
             }
 
-            string output = parameter.Name;
             if (!type.IsBasic)
             {
-                return parameter.Name + "._native";
+                return parameter.ManagedName + "._native";
             }
-            return parameter.Name;
+            return parameter.ManagedName;
         }
 
         public static string GetTypeGetterCSMarshal(PropertyDefinition prop, int level)
@@ -582,6 +689,7 @@ namespace BulletSharpGen
                 {
                     case "Transform":
                     case "Vector3":
+                    case "Vector4":
                         output.AppendLine(GetTabs(level + 2) + "get");
                         output.AppendLine(GetTabs(level + 2) + "{");
                         output.AppendLine(GetTabs(level + 3) + GetTypeNameCS(type) + " value;");
@@ -604,6 +712,7 @@ namespace BulletSharpGen
                 {
                     case "Transform":
                     case "Vector3":
+                    case "Vector4":
                         return "ref value";
                 }
                 if (type.ManagedTypeRefName.Equals("IntPtr"))

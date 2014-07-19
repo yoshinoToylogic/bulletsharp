@@ -7,7 +7,7 @@ namespace BulletSharp
 	public class OverlappingPairCallback : IDisposable
 	{
 		internal IntPtr _native;
-        bool _preventDelete;
+	    private readonly bool _preventDelete;
 
 		internal OverlappingPairCallback(IntPtr native, bool preventDelete = false)
 		{

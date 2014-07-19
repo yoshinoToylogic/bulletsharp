@@ -78,9 +78,9 @@ namespace BulletSharp
 			_native = btUnionFind_new();
 		}
 
-		public void Allocate(int N)
+		public void Allocate(int n)
 		{
-			btUnionFind_allocate(_native, N);
+			btUnionFind_allocate(_native, n);
 		}
 
 		public int Find(int p, int q)
@@ -108,9 +108,9 @@ namespace BulletSharp
 			return btUnionFind_isRoot(_native, x);
 		}
 
-		public void Reset(int N)
+		public void Reset(int n)
 		{
-			btUnionFind_reset(_native, N);
+			btUnionFind_reset(_native, n);
 		}
 
 		public void SortIslands()
