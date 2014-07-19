@@ -78,7 +78,7 @@ namespace BulletSharpGen
         void SourceWrite(char c)
         {
             _sourceWriter.Write(c);
-            _sourceLineLength += 1;
+            _sourceLineLength += c.Equals('\t') ? TabWidth : 1;
         }
 
         void SourceWriteLine(string s = "")
@@ -178,14 +178,14 @@ namespace BulletSharpGen
             for (int i = 0; i < numParameters; i++)
             {
                 var param = method.Parameters[i];
-                string marshal = BulletParser.GetTypeMarshal(param);
+                string marshal = BulletParser.GetTypeMarshalCppCli(param);
                 if (!string.IsNullOrEmpty(marshal))
                 {
                     SourceWrite(marshal);
                 }
                 else if (param.Type.IsBasic)
                 {
-                    SourceWrite(param.Name);
+                    SourceWrite(param.ManagedName);
                 }
                 else
                 {
@@ -206,7 +206,7 @@ namespace BulletSharpGen
                             SourceWrite("*)");
                         }
                     }
-                    SourceWrite(param.Name);
+                    SourceWrite(param.ManagedName);
                     if (param.Type.IsPointer && param.Type.ManagedName.Equals("void"))
                     {
                         SourceWrite(".ToPointer()");
@@ -252,7 +252,7 @@ namespace BulletSharpGen
                 HeaderWrite("static ");
             }
 
-            // Return type
+            // Definition: return type
             if (!method.IsConstructor)
             {
                 var returnType = method.ReturnType;
@@ -260,7 +260,7 @@ namespace BulletSharpGen
                 Write(' ');
             }
 
-            // Name
+            // Definition: name
             SourceWrite(method.Parent.FullNameManaged);
             SourceWrite("::");
             if (method.IsConstructor)
@@ -289,7 +289,7 @@ namespace BulletSharpGen
             }
             Write('(');
 
-            // Parameters
+            // Definition: parameters
             int numParameters = method.Parameters.Length - numOptionalParams;
             bool hasOptionalParam = false;
             for (int i = 0; i < numParameters; i++)
@@ -297,7 +297,7 @@ namespace BulletSharpGen
                 var param = method.Parameters[i];
                 Write(BulletParser.GetTypeRefName(param.Type));
                 Write(' ');
-                Write(param.Name);
+                Write(param.ManagedName);
 
                 if (param.IsOptional)
                 {
@@ -370,6 +370,7 @@ namespace BulletSharpGen
             if (!doConstructorChaining)
             {
                 // Type marshalling prologue
+                bool needTypeMarshalEpilogue = false;
                 if (method.Field == null)
                 {
                     for (int i = 0; i < numParameters; i++)
@@ -381,6 +382,16 @@ namespace BulletSharpGen
                             WriteTabs(1, true);
                             SourceWriteLine(prologue);
                         }
+
+                        // Do we need a type marshalling epilogue?
+                        if (!needTypeMarshalEpilogue)
+                        {
+                            string epilogue = BulletParser.GetTypeMarshalEpilogueCppCli(param);
+                            if (!string.IsNullOrEmpty(epilogue))
+                            {
+                                needTypeMarshalEpilogue = true;
+                            }
+                        }
                     }
                 }
 
@@ -391,10 +402,20 @@ namespace BulletSharpGen
                 }
                 else
                 {
-                    if (!(method.ReturnType.IsBasic && method.ReturnType.Name.Equals("void")))
+                    if (!method.IsVoid)
                     {
                         //if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
-                        SourceWrite("return ");
+                        if (needTypeMarshalEpilogue)
+                        {
+                            // Return after epilogue (cleanup)
+                            SourceWrite(BulletParser.GetTypeRefName(method.ReturnType));
+                            SourceWrite(" ret = ");
+                        }
+                        else
+                        {
+                            // Return immediately
+                            SourceWrite("return ");
+                        }
                         SourceWrite(BulletParser.GetTypeMarshalConstructorStart(method));
                     }
                 }
@@ -415,7 +436,7 @@ namespace BulletSharpGen
                     if (setter != null && method.Equals(setter))
                     {
                         var param = method.Parameters[0];
-                        var fieldSet = BulletParser.GetTypeMarshalFieldSet(method.Field, param);
+                        var fieldSet = BulletParser.GetTypeMarshalFieldSetCppCli(method.Field, param, nativePointer);
                         if (!string.IsNullOrEmpty(fieldSet))
                         {
                             SourceWrite(fieldSet);
@@ -426,7 +447,24 @@ namespace BulletSharpGen
                             SourceWrite("->");
                             SourceWrite(method.Field.Name);
                             SourceWrite(" = ");
-                            SourceWrite(param.Name);
+                            if (param.Type.IsPointer || param.Type.IsReference)
+                            {
+                                if (param.Type.IsReference)
+                                {
+                                    // Dereference
+                                    SourceWrite('*');
+                                }
+
+                                if (param.Type.Referenced.Target != null &&
+                                    param.Type.Referenced.Target.BaseClass != null)
+                                {
+                                    // Cast native pointer from base class
+                                    SourceWrite('(');
+                                    SourceWrite(param.Type.Referenced.FullName);
+                                    SourceWrite("*)");
+                                }
+                            }
+                            SourceWrite(param.ManagedName);
                             if (!param.Type.IsBasic)
                             {
                                 SourceWrite("->_native");
@@ -451,14 +489,14 @@ namespace BulletSharpGen
                     }
                     OutputMethodMarshal(method, numParameters);
                 }
-                if (!method.IsConstructor && !(method.ReturnType.IsBasic && method.ReturnType.Name.Equals("void")))
+                if (!method.IsConstructor && !method.IsVoid)
                 {
                     SourceWrite(BulletParser.GetTypeMarshalConstructorEnd(method));
                 }
                 SourceWriteLine(';');
 
-                // Type marshalling epilogue
-                if (method.Field == null)
+                // Write type marshalling epilogue
+                if (needTypeMarshalEpilogue)
                 {
                     for (int i = 0; i < numParameters; i++)
                     {
@@ -469,6 +507,11 @@ namespace BulletSharpGen
                             WriteTabs(1, true);
                             SourceWriteLine(epilogue);
                         }
+                    }
+                    if (!method.IsVoid)
+                    {
+                        WriteTabs(1, true);
+                        SourceWriteLine("return ret;");
                     }
                 }
             }
@@ -484,7 +527,7 @@ namespace BulletSharpGen
 
         void OutputClass(ClassDefinition c, int level)
         {
-            if (c.IsTypedef)
+            if (c.IsTypedef || c.IsPureEnum)
             {
                 return;
             }
@@ -606,25 +649,27 @@ namespace BulletSharpGen
                 hasHeaderWhiteSpace = false;
 
                 EnsureSourceWhiteSpace();
-                SourceWrite(c.ManagedName);
+                SourceWrite(c.FullNameManaged);
                 SourceWrite("::~");
                 SourceWrite(c.ManagedName);
                 SourceWriteLine("()");
                 SourceWriteLine('{');
-                SourceWrite('\t');
+                WriteTabs(1, true);
                 SourceWrite("this->!");
                 SourceWrite(c.ManagedName);
                 SourceWriteLine("();");
                 SourceWriteLine('}');
                 SourceWriteLine();
-                
-                SourceWrite(c.ManagedName);
+
+                SourceWrite(c.FullNameManaged);
                 SourceWrite("::!");
                 SourceWrite(c.ManagedName);
                 SourceWriteLine("()");
                 SourceWriteLine('{');
-                SourceWriteLine("\tdelete _native;");
-                SourceWriteLine("\t_native = NULL;");
+                WriteTabs(1, true);
+                SourceWriteLine("delete _native;");
+                WriteTabs(1, true);
+                SourceWriteLine("_native = NULL;");
                 SourceWriteLine('}');
                 hasSourceWhiteSpace = false;
             }
@@ -660,7 +705,7 @@ namespace BulletSharpGen
 
                 foreach (MethodDefinition method in c.Methods)
                 {
-                    if (!method.IsConstructor && method.Field == null)
+                    if (!method.IsConstructor && method.Property == null)
                     {
                         OutputMethod(method, level);
                     }
@@ -712,6 +757,113 @@ namespace BulletSharpGen
         {
             string outDirectory = namespaceName + "_cppcli";
 
+            // Conditional compilation (#ifndef DISABLE_FEATURE)
+            var headerConditional = new Dictionary<string, string>
+            {
+                {"ActivatingCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"Box2DBox2DCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"BoxBoxCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"Box2DShape", "DISABLE_UNCOMMON"},
+                {"BoxBoxDetector", "DISABLE_UNCOMMON"},
+                {"BoxCollision", "DISABLE_GIMPACT"},
+                {"BulletWorldImporter", "DISABLE_SERIALIZE"},
+                {"CharacterControllerInterface", "DISABLE_UNCOMMON"},
+                {"CompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"CompoundCompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"CompoundFromGImpact", "DISABLE_GIMPACT"},
+                {"ConeTwistConstraint", "DISABLE_CONSTRAINTS"},
+                {"ContactConstraint", "DISABLE_CONSTRAINTS"},
+                {"ContactSolverInfo", "DISABLE_CONSTRAINTS"},
+                {"ContinuousConvexCollision", "DISABLE_UNCOMMON"},
+                {"Convex2DConvex2DAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"Convex2DShape", "DISABLE_UNCOMMON"},
+                {"ConvexCast", "DISABLE_UNCOMMON"},
+                {"ConvexConcaveCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"ConvexConvexAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"ConvexPlaneCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"ConvexPointCloudShape", "DISABLE_UNCOMMON"},
+                {"ConvexPolyhedron", "DISABLE_UNCOMMON"},
+                {"DantzigSolver", "DISABLE_MLCP"},
+                {"Dbvt", "DISABLE_DBVT"},
+                {"DefaultSoftBodySolver", "DISABLE_SOFTBODY"},
+                {"EmptyCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"FixedConstraint", "DISABLE_CONSTRAINTS"},
+                {"GearConstraint", "DISABLE_CONSTRAINTS"},
+                {"Generic6DofConstraint", "DISABLE_CONSTRAINTS"},
+                {"Generic6DofSpringConstraint", "DISABLE_CONSTRAINTS"},
+                {"GeometryUtil", "DISABLE_GEOMETRY_UTIL"},
+                {"GhostObject", "DISABLE_UNCOMMON"},
+                {"GImpactBvh", "DISABLE_GIMPACT"},
+                {"GImpactCollisionAlgorithm", "DISABLE_GIMPACT"},
+                {"GImpactQuantizedBvh", "DISABLE_GIMPACT"},
+                {"GImpactShape", "DISABLE_GIMPACT"},
+                {"GjkConvexCast", "DISABLE_UNCOMMON"},
+                {"GjkEpaPenetrationDepthSolver", "DISABLE_UNCOMMON"},
+                {"GjkPairDetector", "DISABLE_UNCOMMON"},
+                {"Hacd", "DISABLE_HACD"},
+                {"HeightfieldTerrainShape", "DISABLE_UNCOMMON"},
+                {"Hinge2Constraint", "DISABLE_CONSTRAINTS"},
+                {"HingeConstraint", "DISABLE_CONSTRAINTS"},
+                {"KinematicCharacterController", "DISABLE_UNCOMMON"},
+                {"LemkeSolver", "DISABLE_UNCOMMON"},
+                {"Material", "DISABLE_UNCOMMON"},
+                {"MinkowskiPenetrationDepthSolver", "DISABLE_UNCOMMON"},
+                {"MinkowskiSumShape", "DISABLE_UNCOMMON"},
+                {"MlcpSolver", "DISABLE_MLCP"},
+                {"MlcpSolverInterface", "DISABLE_MLCP"},
+                {"MultiBody", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyConstraint", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyConstraintSolver", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyDynamicsWorld", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyJointLimitConstraint", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyJointMotor", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyLink", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyLinkCollider", "DISABLE_FEATHERSTONE"},
+                {"MultiBodyPoint2Point", "DISABLE_FEATHERSTONE"},
+                {"MultiBodySolverConstraint", "DISABLE_FEATHERSTONE"},
+                {"MultimaterialTriangleMeshShape", "DISABLE_UNCOMMON"},
+                {"NncgConstraintSolver", "DISABLE_CONSTRAINTS"},
+                {"OptimizedBvh", "DISABLE_BVH"},
+                {"ParallelConstraintSolver", "DISABLE_MULTITHREADED"},
+                {"Point2PointConstraint", "DISABLE_CONSTRAINTS"},
+                {"PointCollector", "DISABLE_UNCOMMON"},
+                {"PoolAllocator", "DISABLE_UNCOMMON"},
+                {"QuantizedBvh", "DISABLE_BVH"},
+                {"RaycastVehicle", "DISABLE_VEHICLE"},
+                {"ScaledBvhTriangleMeshShape", "DISABLE_UNCOMMON"},
+                {"Serializer", "DISABLE_SERIALIZE"},
+                {"ShapeHull", "DISABLE_UNCOMMON"},
+                {"SimulationIslandManager", "DISABLE_UNCOMMON"},
+                {"SliderConstraint", "DISABLE_CONSTRAINTS"},
+                {"SoftBody", "DISABLE_SOFTBODY"},
+                {"SoftBodyConcaveCollisionAlgorithm", "DISABLE_SOFTBODY"},
+                {"SoftBodyHelpers", "DISABLE_SOFTBODY"},
+                {"SoftBodyRigidBodyCollisionConfiguration", "DISABLE_SOFTBODY"},
+                {"SoftBodySolver", "DISABLE_SOFTBODY"},
+                {"SoftBodySolverVertexBuffer", "DISABLE_SOFTBODY"},
+                {"SoftRigidDynamicsWorld", "DISABLE_SOFTBODY"},
+                {"Solve2LinearConstraint", "DISABLE_CONSTRAINTS"},
+                {"SparseSdf", "DISABLE_SOFTBODY"},
+                {"SphereBoxCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"SphereSphereCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"SphereTriangleCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+                {"SphereTriangleDetector", "DISABLE_UNCOMMON"},
+                {"SpuGatheringCollisionDispatcher", "DISABLE_MULTITHREADED"},
+                {"ThreadSupportInterface", "DISABLE_MULTITHREADED"},
+                {"TriangleBuffer", "DISABLE_UNCOMMON"},
+                {"TriangleIndexVertexMaterialArray", "DISABLE_UNCOMMON"},
+                {"TriangleShape", "DISABLE_UNCOMMON"},
+                {"TriangleShapeEx", "DISABLE_GIMPACT"},
+                {"TypedConstraint", "DISABLE_CONSTRAINTS"},
+                {"UnionFind", "DISABLE_UNCOMMON"},
+                {"UniversalConstraint", "DISABLE_CONSTRAINTS"},
+                {"VehicleRaycaster", "DISABLE_VEHICLE"},
+                {"VoronoiSimplexSolver", "DISABLE_UNCOMMON"},
+                {"WheelInfo", "DISABLE_VEHICLE"},
+                {"Win32ThreadSupport", "DISABLE_MULTITHREADED"},
+                {"WorldImporter", "DISABLE_SERIALIZE"}
+            };
+
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {
                 if (header.Classes.Count == 0)
@@ -729,6 +881,13 @@ namespace BulletSharpGen
                 _sourceWriter = new StreamWriter(sourceFile);
                 SourceWriteLine("#include \"StdAfx.h\"");
                 SourceWriteLine();
+
+                if (headerConditional.ContainsKey(header.ManagedName))
+                {
+                    SourceWrite("#ifndef ");
+                    SourceWriteLine(headerConditional[header.ManagedName]);
+                    SourceWriteLine();
+                }
 
                 // Write includes
                 if (header.Includes.Count != 0)
@@ -793,6 +952,12 @@ namespace BulletSharpGen
                     OutputClass(c, 1);
                 }
 
+                if (headerConditional.ContainsKey(header.ManagedName))
+                {
+                    SourceWriteLine();
+                    SourceWriteLine("#endif");
+                }
+
                 HeaderWriteLine("};");
                 _headerWriter.Dispose();
                 headerFile.Dispose();
@@ -804,7 +969,7 @@ namespace BulletSharpGen
         }
 
         // These do no need forward references
-        public List<string> PrecompiledHeaderReferences = new List<string>(new[] { "Vector3", "Quaternion", "Transform" });
+        public List<string> PrecompiledHeaderReferences = new List<string>(new[] { "Vector3", "Matrix3x3", "Quaternion", "Transform", "Vector4" });
 
         void AddForwardReference(List<ClassDefinition> forwardRefs, TypeRefDefinition type, HeaderDefinition header)
         {

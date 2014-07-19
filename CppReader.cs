@@ -425,6 +425,11 @@ namespace BulletSharpGen
                 currentEnum = new EnumDefinition(cursor.Spelling);
                 currentHeader.Enums.Add(currentEnum);
                 cursor.VisitChildren(EnumVisitor);
+                if (currentClass != null && currentClass.IsStruct)
+                {
+                    // Enum wrapped in a struct
+                    currentClass.Enum = currentEnum;
+                }
                 currentEnum = null;
             }
             else if (cursor.Kind == CursorKind.UnionDecl)

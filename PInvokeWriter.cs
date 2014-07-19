@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BulletSharpGen
 {
@@ -111,7 +112,8 @@ namespace BulletSharpGen
             // Return type
             if (method.IsConstructor)
             {
-                Write(method.Parent.FullName, WriteTo.Header | WriteTo.Source);
+                Write(method.Parent.FullNameCS, WriteTo.Header);
+                Write(method.Parent.FullName, WriteTo.Source);
                 Write("* ", WriteTo.Header | WriteTo.Source);
                 Write("IntPtr ", WriteTo.Buffer);
             }
@@ -180,7 +182,8 @@ namespace BulletSharpGen
             // The first parameter is the instance pointer (if not constructor or static method)
             if (!method.IsConstructor && !method.IsStatic)
             {
-                Write(method.Parent.FullName, WriteTo.Header | WriteTo.Source);
+                Write(method.Parent.FullNameCS, WriteTo.Header);
+                Write(method.Parent.FullName, WriteTo.Source);
                 Write("* obj", WriteTo.Header | WriteTo.Source);
                 Write("IntPtr obj", WriteTo.Buffer);
 
@@ -197,7 +200,8 @@ namespace BulletSharpGen
                 Write(BulletParser.GetTypeDllImport(param.Type), WriteTo.Buffer);
 
                 Write(' ', propertyTo | WriteTo.Buffer);
-                Write(param.Name, propertyTo | WriteTo.Buffer);
+                Write(param.Name, WriteTo.Header | WriteTo.Source | WriteTo.Buffer);
+                Write(param.ManagedName, WriteTo.CS & propertyTo);
 
                 if (i != numParameters - 1)
                 {
@@ -265,7 +269,7 @@ namespace BulletSharpGen
             }
             else
             {
-                if (!(method.ReturnType.IsBasic && method.ReturnType.Name.Equals("void")))
+                if (!method.IsVoid)
                 {
                     if (method.ReturnType.IsBasic || method.ReturnType.Referenced != null)
                     {
@@ -514,21 +518,9 @@ namespace BulletSharpGen
                 overloadIndex = 0;
             }
 
-            // Combine methods from properties
-            var methods = new List<MethodDefinition>(c.Methods);
-            foreach (PropertyDefinition prop in c.Properties)
-            {
-                methods.Add(prop.Getter);
-                if (prop.Setter != null)
-                {
-                    methods.Add(prop.Setter);
-                }
-            }
-            methods.Sort((a, b) => a.Name.CompareTo(b.Name));
-
             // Write methods
             MethodDefinition previousMethod = null;
-            foreach (MethodDefinition method in methods)
+            foreach (MethodDefinition method in c.Methods.OrderBy(m => m.Name))
             {
                 if (method.IsConstructor)
                 {
@@ -576,17 +568,22 @@ namespace BulletSharpGen
             string outDirectoryPInvoke = NamespaceName + "_pinvoke";
             string outDirectoryC = NamespaceName + "_c";
 
-            foreach (HeaderDefinition header in headerDefinitions.Values)
+            Directory.CreateDirectory(outDirectoryPInvoke);
+            Directory.CreateDirectory(outDirectoryC);
+
+            // C++ header file (includes all other headers)
+            string includeFilename = NamespaceName + ".h";
+            var includeFile = new FileStream(outDirectoryC + "\\" + includeFilename, FileMode.Create, FileAccess.Write);
+            var includeWriter = new StreamWriter(includeFile);
+
+            foreach (var header in headerDefinitions.Values.OrderBy(p => p.Name))
             {
                 if (header.Classes.Count == 0)
                 {
                     continue;
                 }
 
-                Directory.CreateDirectory(outDirectoryPInvoke);
-                Directory.CreateDirectory(outDirectoryC);
-
-                // Header file
+                // C++ header file
                 string headerFilename = header.Name + "_wrap.h";
                 var headerFile = new FileStream(outDirectoryC + "\\" + headerFilename, FileMode.Create, FileAccess.Write);
                 headerWriter = new StreamWriter(headerFile);
@@ -624,6 +621,11 @@ namespace BulletSharpGen
                 headerWriter.WriteLine('}');
                 csWriter.WriteLine('}');
 
+                // Include header
+                includeWriter.Write("#include \"");
+                includeWriter.Write(headerFilename);
+                includeWriter.WriteLine("\"");
+
                 headerWriter.Dispose();
                 headerFile.Dispose();
                 sourceWriter.Dispose();
@@ -631,6 +633,9 @@ namespace BulletSharpGen
                 csWriter.Dispose();
                 csFile.Dispose();
             }
+
+            includeWriter.Dispose();
+            includeFile.Dispose();
 
             Console.WriteLine("Write complete");
         }

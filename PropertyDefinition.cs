@@ -51,58 +51,6 @@ namespace BulletSharpGen
             }
         }
 
-        // Property from field
-        public PropertyDefinition(FieldDefinition field)
-        {
-            Parent = field.Parent;
-            Parent.Properties.Add(this);
-
-            string name = field.Name;
-            if (name.StartsWith("m_"))
-            {
-                name = name.Substring(2);
-            }
-            name = name.Substring(0, 1).ToUpper() + name.Substring(1); // capitalize
-
-            // one_two_three -> oneTwoThree
-            while (name.Contains("_"))
-            {
-                int pos = name.IndexOf('_');
-                name = name.Substring(0, pos) + name.Substring(pos + 1, 1).ToUpper() + name.Substring(pos + 2);
-            }
-
-            Name = name;
-
-            // Generate getter/setter methods
-            string getterName, setterName;
-            if (name.StartsWith("has"))
-            {
-                getterName = name;
-                setterName = "set" + name.Substring(3);
-            }
-            else if (name.StartsWith("is"))
-            {
-                getterName = name;
-                setterName = "set" + name.Substring(2);
-            }
-            else
-            {
-                getterName = "get" + name;
-                setterName = "set" + name;
-            }
-
-            Getter = new MethodDefinition(getterName, Parent, 0);
-            Getter.ReturnType = field.Type;
-            Getter.Field = field;
-            Getter.Property = this;
-
-            Setter = new MethodDefinition(setterName, Parent, 1);
-            Setter.ReturnType = new TypeRefDefinition();
-            Setter.Parameters[0] = new ParameterDefinition("value", field.Type);
-            Setter.Field = field;
-            Setter.Property = this;
-        }
-
         public override string ToString()
         {
             return Name;
