@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -42,14 +42,21 @@ namespace BulletSharp
 			btConeTwistConstraint_enableMotor(_native, b);
 		}
 
+		public void GetInfo1NonVirtual(ConstraintInfo1 info)
+		{
+			btConeTwistConstraint_getInfo1NonVirtual(_native, info._native);
+		}
+
 		public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Matrix invInertiaWorldA, Matrix invInertiaWorldB)
 		{
 			btConeTwistConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref invInertiaWorldA, ref invInertiaWorldB);
 		}
 
-		public void GetPointForAngle(float fAngleInRadians, float fLength)
+		public Vector3 GetPointForAngle(float fAngleInRadians, float fLength)
 		{
-			btConeTwistConstraint_GetPointForAngle(_native, fAngleInRadians, fLength);
+		    Vector3 value;
+			btConeTwistConstraint_GetPointForAngle(_native, fAngleInRadians, fLength, out value);
+		    return value;
 		}
 
 		public void SetAngularOnly(bool angularOnly)
@@ -177,12 +184,7 @@ namespace BulletSharp
 				return value;
 			}
 		}
-        /*
-		public void Info1NonVirtual
-		{
-			get { return btConeTwistConstraint_getInfo1NonVirtual(_native); }
-		}
-        */
+
 		public bool IsPastSwingLimit
 		{
 			get { return btConeTwistConstraint_isPastSwingLimit(_native); }
@@ -248,7 +250,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_getInfo2NonVirtual(IntPtr obj, IntPtr info, [In] ref Matrix transA, [In] ref Matrix transB, [In] ref Matrix invInertiaWorldA, [In] ref Matrix invInertiaWorldB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btConeTwistConstraint_GetPointForAngle(IntPtr obj, float fAngleInRadians, float fLength);
+		static extern void btConeTwistConstraint_GetPointForAngle(IntPtr obj, float fAngleInRadians, float fLength, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btConeTwistConstraint_getSolveSwingLimit(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

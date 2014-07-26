@@ -47,12 +47,12 @@ namespace BulletSharp
 
 		public Vector3 HalfExtentsWithMargin
 		{
-            get
-            {
-                Vector3 extents;
-                btBox2dShape_getHalfExtentsWithMargin(_native, out extents);
-                return extents;
-            }
+			get
+			{
+				Vector3 value;
+				btBox2dShape_getHalfExtentsWithMargin(_native, out value);
+				return value;
+			}
 		}
 
 		public Vector3 HalfExtentsWithoutMargin

@@ -27,7 +27,7 @@ namespace BulletSharp.SoftBody
 		{
             _dispatcher = dispatcher;
             _broadphase = pairCache;
-            _solver = constraintSolver;
+            _constraintSolver = constraintSolver;
 		}
 
 		public void AddSoftBody(SoftBody body, short collisionFilterGroup, short collisionFilterMask)

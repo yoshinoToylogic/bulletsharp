@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -13,12 +13,7 @@ namespace BulletSharp
 		{
 			_native = native;
 		}
-        /*
-		public ConstraintSetting()
-		{
-			_native = btConstraintSetting_new();
-		}
-        */
+
 		public float Damping
 		{
 			get { return btConstraintSetting_getDamping(_native); }
@@ -36,27 +31,7 @@ namespace BulletSharp
 			get { return btConstraintSetting_getTau(_native); }
 			set { btConstraintSetting_setTau(_native, value); }
 		}
-        /*
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
 
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btConstraintSetting_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~ConstraintSetting()
-		{
-			Dispose(false);
-		}
-        */
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btConstraintSetting_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -91,22 +66,22 @@ namespace BulletSharp
 			: base(btPoint2PointConstraint_new2(rbA._native, ref pivotInA))
 		{
 		}
-        /*
-        public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix body0_trans, Matrix body1_trans)
+
+		public void GetInfo1NonVirtual(ConstraintInfo1 info)
 		{
-			btPoint2PointConstraint_getInfo2NonVirtual(_native, info._native, ref body0_trans, ref body1_trans);
+			btPoint2PointConstraint_getInfo1NonVirtual(_native, info._native);
 		}
-        */
+
+		public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix body0Trans, Matrix body1Trans)
+		{
+			btPoint2PointConstraint_getInfo2NonVirtual(_native, info._native, ref body0Trans, ref body1Trans);
+		}
+
 		public void UpdateRhs(float timeStep)
 		{
 			btPoint2PointConstraint_updateRHS(_native, timeStep);
 		}
-        /*
-		public void Info1NonVirtual
-		{
-			get { return btPoint2PointConstraint_getInfo1NonVirtual(_native); }
-		}
-        */
+
 		public Vector3 PivotInA
 		{
 			get
@@ -129,10 +104,9 @@ namespace BulletSharp
             set { btPoint2PointConstraint_setPivotB(_native, ref value); }
 		}
 
-        public ConstraintSetting Setting
+		public ConstraintSetting Setting
 		{
-			get { return new ConstraintSetting(btPoint2PointConstraint_getSetting(_native)); }
-			set { btPoint2PointConstraint_setSetting(_native, value._native); }
+            get { return new ConstraintSetting(btPoint2PointConstraint_getSetting(_native)); }
 		}
 
 		public bool UseSolveConstraintObsolete
@@ -161,8 +135,6 @@ namespace BulletSharp
 		static extern void btPoint2PointConstraint_setPivotA(IntPtr obj, [In] ref Vector3 pivotA);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPoint2PointConstraint_setPivotB(IntPtr obj, [In] ref Vector3 pivotB);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btPoint2PointConstraint_setSetting(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btPoint2PointConstraint_setUseSolveConstraintObsolete(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

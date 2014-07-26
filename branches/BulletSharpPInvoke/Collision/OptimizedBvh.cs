@@ -5,7 +5,6 @@ using BulletSharp.Math;
 
 namespace BulletSharp
 {
-    /*
 	public class OptimizedBvh : QuantizedBvh
 	{
 		internal OptimizedBvh(IntPtr native)
@@ -63,5 +62,4 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOptimizedBvh_updateBvhNodes(IntPtr obj, IntPtr meshInterface, int firstNode, int endNode, int index);
 	}
-    */
 }

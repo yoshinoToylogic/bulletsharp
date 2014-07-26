@@ -16,7 +16,7 @@ extern "C"
 	EXPORT void btPairSet_push_pair_inv(btPairSet* obj, int index1, int index2);
 
 	EXPORT GIM_BVH_DATA* GIM_BVH_DATA_new();
-	EXPORT void GIM_BVH_DATA_getBound(GIM_BVH_DATA* obj);
+	EXPORT btAABB* GIM_BVH_DATA_getBound(GIM_BVH_DATA* obj);
 	EXPORT int GIM_BVH_DATA_getData(GIM_BVH_DATA* obj);
 	EXPORT void GIM_BVH_DATA_setBound(GIM_BVH_DATA* obj, btAABB* value);
 	EXPORT void GIM_BVH_DATA_setData(GIM_BVH_DATA* obj, btAABB* value);

@@ -23,7 +23,7 @@ namespace BulletSharp
         {
             Dispatcher = dispatcher;
             Broadphase = pairCache;
-            _solver = solver;
+            _constraintSolver = solver;
         }
 
 		public void ApplyGravity()

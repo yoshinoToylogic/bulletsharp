@@ -105,13 +105,15 @@ namespace BulletSharp.Math
         /// Initializes a new instance of the <see cref="SlimMath.Quaternion"/> struct.
         /// </summary>
         /// <param name="value">A vector containing the values with which to initialize the X, Y, and Z components.</param>
-        /// <param name="w">Initial value for the W component of the quaternion.</param>
-        public Quaternion(Vector3 value, float w)
+        /// <param name="angle">Initial value for the angle of the quaternion.</param>
+        public Quaternion(Vector3 axis, float angle)
         {
-            X = value.X;
-            Y = value.Y;
-            Z = value.Z;
-            W = w;
+            float angle2 = angle * 0.5f;
+            float s = (float)System.Math.Sin(angle2) / axis.Length;
+            X = axis.X * s;
+            Y = axis.Y * s;
+            Z = axis.Z * s;
+            W = (float)System.Math.Cos(angle2);
         }
 
         /// <summary>
@@ -277,6 +279,14 @@ namespace BulletSharp.Math
             this.Y = -Y;
             this.Z = -Z;
             this.W = -W;
+        }
+
+        /// <summary>
+        /// Return the inverse of this quaternion.
+        /// </summary>
+        public Quaternion Inverse()
+        {
+            return new Quaternion(-X, -Y, -Z, W);
         }
 
         /// <summary>
@@ -761,6 +771,15 @@ namespace BulletSharp.Math
             return value;
         }
 
+        public Vector3 Rotate(Vector3 v)
+        {
+            Quaternion rotation = this;
+            Quaternion q = rotation * v;
+            rotation.Invert();
+            q *= rotation;
+            return new Vector3(q.X, q.Y, q.Z);
+        }
+
         /// <summary>
         /// Creates a quaternion given a rotation and an axis.
         /// </summary>
@@ -1097,6 +1116,21 @@ namespace BulletSharp.Math
             Quaternion result;
             Multiply(ref left, ref right, out result);
             return result;
+        }
+
+        /// <summary>
+        /// Multiplies a quaternion by a vector.
+        /// </summary>
+        /// <param name="left">The quaternion to multiply.</param>
+        /// <param name="right">The vector to multiply.</param>
+        /// <returns>The multiplied quaternion.</returns>
+        public static Quaternion operator *(Quaternion q, Vector3 w)
+        {
+            return new Quaternion(
+                q.W * w.X + q.Y * w.Z - q.Z * w.Y,
+                q.W * w.Y + q.Z * w.X - q.X * w.Z,
+                q.W * w.Z + q.X * w.Y - q.Y * w.X,
+                -q.X * w.X - q.Y * w.Y - q.Z * w.Z);
         }
 
         /// <summary>

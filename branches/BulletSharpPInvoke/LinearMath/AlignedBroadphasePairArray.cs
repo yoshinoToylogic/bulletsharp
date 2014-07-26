@@ -8,7 +8,7 @@ namespace BulletSharp
 {
     public class AlignedBroadphasePairArrayDebugView
     {
-        private AlignedBroadphasePairArray _array;
+        private readonly AlignedBroadphasePairArray _array;
 
         public AlignedBroadphasePairArrayDebugView(AlignedBroadphasePairArray array)
         {
@@ -33,8 +33,8 @@ namespace BulletSharp
     public class AlignedBroadphasePairArrayEnumerator : IEnumerator<BroadphasePair>
     {
         int _i;
-        int _count;
-        AlignedBroadphasePairArray _array;
+        readonly int _count;
+        readonly AlignedBroadphasePairArray _array;
 
         public AlignedBroadphasePairArrayEnumerator(AlignedBroadphasePairArray array)
         {
@@ -72,7 +72,7 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedBroadphasePairArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedBroadphasePairArray : AlignedObjectArray, IList<BroadphasePair>, IDisposable
     {
-        bool _preventDelete;
+        readonly bool _preventDelete;
 
         internal AlignedBroadphasePairArray(IntPtr native, bool preventDelete)
             : base(native)

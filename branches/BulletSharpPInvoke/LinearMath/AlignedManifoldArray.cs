@@ -8,7 +8,7 @@ namespace BulletSharp
 {
     public class AlignedManifoldArrayDebugView
     {
-        private AlignedManifoldArray _array;
+        private readonly AlignedManifoldArray _array;
 
         public AlignedManifoldArrayDebugView(AlignedManifoldArray array)
         {
@@ -33,8 +33,8 @@ namespace BulletSharp
     public class AlignedManifoldArrayEnumerator : IEnumerator<PersistentManifold>
     {
         int _i;
-        int _count;
-        AlignedManifoldArray _array;
+        readonly int _count;
+        readonly AlignedManifoldArray _array;
 
         public AlignedManifoldArrayEnumerator(AlignedManifoldArray array)
         {
@@ -72,7 +72,7 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedManifoldArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedManifoldArray : AlignedObjectArray, IList<PersistentManifold>, IDisposable
     {
-        bool _preventDelete;
+        readonly bool _preventDelete;
 
         internal AlignedManifoldArray(IntPtr native, bool preventDelete)
             : base(native)

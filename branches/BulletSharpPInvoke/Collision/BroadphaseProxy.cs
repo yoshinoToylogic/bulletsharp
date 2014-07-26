@@ -155,25 +155,25 @@ namespace BulletSharp
 			return btBroadphaseProxy_isSoftBody(proxyType);
 		}
 
-        public Vector3 AabbMax
+		public Vector3 AabbMax
 		{
-            get
-            {
-                Vector3 value;
-                btBroadphaseProxy_getAabbMax(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btBroadphaseProxy_getAabbMax(_native, out value);
+				return value;
+			}
 			set { btBroadphaseProxy_setAabbMax(_native, ref value); }
 		}
 
 		public Vector3 AabbMin
 		{
-            get
-            {
-                Vector3 value;
-                btBroadphaseProxy_getAabbMin(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btBroadphaseProxy_getAabbMin(_native, out value);
+				return value;
+			}
 			set { btBroadphaseProxy_setAabbMin(_native, ref value); }
 		}
 
@@ -286,7 +286,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseProxy_setAabbMax(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBroadphaseProxy_setAabbMin(IntPtr obj, [In] ref Vector3 value);
+		static extern void btBroadphaseProxy_setAabbMin(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseProxy_setClientObject(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -57,14 +57,14 @@ namespace BulletSharp
 			btRigidBody_applyDamping(_native, timeStep);
 		}
 
-        public void ApplyForce(ref Vector3 force, ref Vector3 rel_pos)
+        public void ApplyForce(ref Vector3 force, ref Vector3 relPos)
         {
-            btRigidBody_applyForce(_native, ref force, ref rel_pos);
+            btRigidBody_applyForce(_native, ref force, ref relPos);
         }
 
-		public void ApplyForce(Vector3 force, Vector3 rel_pos)
+		public void ApplyForce(Vector3 force, Vector3 relPos)
 		{
-			btRigidBody_applyForce(_native, ref force, ref rel_pos);
+			btRigidBody_applyForce(_native, ref force, ref relPos);
 		}
 
 		public void ApplyGravity()
@@ -72,14 +72,14 @@ namespace BulletSharp
 			btRigidBody_applyGravity(_native);
 		}
 
-        public void ApplyImpulse(ref Vector3 impulse, ref Vector3 rel_pos)
+        public void ApplyImpulse(ref Vector3 impulse, ref Vector3 relPos)
         {
-            btRigidBody_applyImpulse(_native, ref impulse, ref rel_pos);
+            btRigidBody_applyImpulse(_native, ref impulse, ref relPos);
         }
 
-		public void ApplyImpulse(Vector3 impulse, Vector3 rel_pos)
+		public void ApplyImpulse(Vector3 impulse, Vector3 relPos)
 		{
-			btRigidBody_applyImpulse(_native, ref impulse, ref rel_pos);
+			btRigidBody_applyImpulse(_native, ref impulse, ref relPos);
 		}
 
         public void ApplyTorque(ref Vector3 torque)
@@ -122,9 +122,11 @@ namespace BulletSharp
 			return btRigidBody_computeAngularImpulseDenominator(_native, ref axis);
 		}
 
-		public void ComputeGyroscopicForce(float maxGyroscopicForce)
+		public Vector3 ComputeGyroscopicForce(float maxGyroscopicForce)
 		{
-			btRigidBody_computeGyroscopicForce(_native, maxGyroscopicForce);
+		    Vector3 value;
+			btRigidBody_computeGyroscopicForce(_native, maxGyroscopicForce, out value);
+		    return value;
 		}
 
         public float ComputeImpulseDenominator(ref Vector3 pos, ref Vector3 normal)
@@ -147,17 +149,17 @@ namespace BulletSharp
 			return TypedConstraint.GetManaged(btRigidBody_getConstraintRef(_native, index));
 		}
 
-        public Vector3 GetVelocityInLocalPoint(ref Vector3 rel_pos)
+        public Vector3 GetVelocityInLocalPoint(ref Vector3 relPos)
         {
             Vector3 velocity;
-            btRigidBody_getVelocityInLocalPoint(_native, ref rel_pos, out velocity);
+            btRigidBody_getVelocityInLocalPoint(_native, ref relPos, out velocity);
             return velocity;
         }
 
-        public Vector3 GetVelocityInLocalPoint(Vector3 rel_pos)
+        public Vector3 GetVelocityInLocalPoint(Vector3 relPos)
         {
             Vector3 velocity;
-            btRigidBody_getVelocityInLocalPoint(_native, ref rel_pos, out velocity);
+            btRigidBody_getVelocityInLocalPoint(_native, ref relPos, out velocity);
             return velocity;
         }
 
@@ -191,9 +193,9 @@ namespace BulletSharp
 			btRigidBody_saveKinematicState(_native, step);
 		}
 
-		public void SetDamping(float lin_damping, float ang_damping)
+		public void SetDamping(float linDamping, float angDamping)
 		{
-			btRigidBody_setDamping(_native, lin_damping, ang_damping);
+			btRigidBody_setDamping(_native, linDamping, angDamping);
 		}
 
         public void SetMassProps(float mass, ref Vector3 inertia)
@@ -259,7 +261,7 @@ namespace BulletSharp
 				btRigidBody_getAngularFactor(_native, out value);
 				return value;
 			}
-			set { btRigidBody_setAngularFactor(_native, ref value); }
+			set { btRigidBody_setAngularFactor2(_native, ref value); }
 		}
 
 		public float AngularSleepingThreshold
@@ -346,12 +348,12 @@ namespace BulletSharp
 
 		public Matrix InvInertiaTensorWorld
 		{
-            get
-            {
-                Matrix inertiaTensor;
-                btRigidBody_getInvInertiaTensorWorld(_native, out inertiaTensor);
-                return inertiaTensor;
-            }
+			get
+			{
+				Matrix value;
+				btRigidBody_getInvInertiaTensorWorld(_native, out value);
+				return value;
+			}
 		}
 
 		public float InvMass
@@ -413,12 +415,12 @@ namespace BulletSharp
 
 		public Quaternion Orientation
 		{
-            get
-            {
-                Quaternion value;
-                btRigidBody_getOrientation(_native, out value);
-                return value;
-            }
+			get
+			{
+				Quaternion value;
+				btRigidBody_getOrientation(_native, out value);
+				return value;
+			}
 		}
 
 		public Vector3 TotalForce
@@ -468,11 +470,11 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_computeAngularImpulseDenominator(IntPtr obj, [In] ref Vector3 axis);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_computeGyroscopicForce(IntPtr obj, float maxGyroscopicForce);
+		static extern void btRigidBody_computeGyroscopicForce(IntPtr obj, float maxGyroscopicForce, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_computeImpulseDenominator(IntPtr obj, [In] ref Vector3 pos, [In] ref Vector3 normal);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
+		static extern void btRigidBody_getAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_getAngularDamping(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -536,9 +538,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_saveKinematicState(IntPtr obj, float step);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_setAngularFactor(IntPtr obj, [In] ref Vector3 angFac);
+		static extern void btRigidBody_setAngularFactor(IntPtr obj, float angFac);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_setAngularFactor2(IntPtr obj, float angFac);
+		static extern void btRigidBody_setAngularFactor2(IntPtr obj, [In] ref Vector3 angFac);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_setAngularVelocity(IntPtr obj, [In] ref Vector3 ang_vel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

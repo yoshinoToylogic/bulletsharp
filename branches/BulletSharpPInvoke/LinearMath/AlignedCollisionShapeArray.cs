@@ -8,7 +8,7 @@ namespace BulletSharp
 {
     public class AlignedCollisionShapeArrayDebugView
     {
-        private AlignedCollisionShapeArray _array;
+        private readonly AlignedCollisionShapeArray _array;
 
         public AlignedCollisionShapeArrayDebugView(AlignedCollisionShapeArray array)
         {
@@ -33,8 +33,8 @@ namespace BulletSharp
     public class AlignedCollisionShapeArrayEnumerator : IEnumerator<CollisionShape>
     {
         int _i;
-        int _count;
-        AlignedCollisionShapeArray _array;
+        readonly int _count;
+        readonly AlignedCollisionShapeArray _array;
 
         public AlignedCollisionShapeArrayEnumerator(AlignedCollisionShapeArray array)
         {

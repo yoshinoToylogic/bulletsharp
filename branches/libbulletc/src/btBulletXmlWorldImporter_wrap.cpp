@@ -8,7 +8,7 @@ btBulletXmlWorldImporter* btBulletXmlWorldImporter_new(btDynamicsWorld* world)
 	return new btBulletXmlWorldImporter(world);
 }
 
-bool btBulletXmlWorldImporter_loadFile(btBulletXmlWorldImporter* obj, char* fileName)
+bool btBulletXmlWorldImporter_loadFile(btBulletXmlWorldImporter* obj, const char* fileName)
 {
 	return obj->loadFile(fileName);
 }

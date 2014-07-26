@@ -1,11 +1,11 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class ConstraintRow
+	public class ConstraintRow : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -36,13 +36,18 @@ namespace BulletSharp
 			get { return btConstraintRow_getLowerLimit(_native); }
 			set { btConstraintRow_setLowerLimit(_native, value); }
 		}
-        /*
-		public float Normal
+
+		public Vector3 Normal
 		{
-			get { return btConstraintRow_getNormal(_native); }
-			set { btConstraintRow_setNormal(_native, value._native); }
+            get
+			{
+				Vector3 value;
+				btConstraintRow_getNormal(_native, out value);
+				return value;
+			}
+			set { btConstraintRow_setNormal(_native, ref value); }
 		}
-        */
+
 		public float Rhs
 		{
 			get { return btConstraintRow_getRhs(_native); }
@@ -84,7 +89,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btConstraintRow_getLowerLimit(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btConstraintRow_getNormal(IntPtr obj);
+		static extern void btConstraintRow_getNormal(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btConstraintRow_getRhs(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -96,7 +101,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConstraintRow_setLowerLimit(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btConstraintRow_setNormal(IntPtr obj, IntPtr value);
+		static extern void btConstraintRow_setNormal(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConstraintRow_setRhs(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -107,7 +112,7 @@ namespace BulletSharp
 
     public delegate void ContactAddedEventHandler(ManifoldPoint cp, CollisionObjectWrapper colObj0Wrap, int partId0, int index0, CollisionObjectWrapper colObj1Wrap, int partId1, int index1);
 
-	public class ManifoldPoint
+	public class ManifoldPoint : IDisposable
 	{
 		internal IntPtr _native;
 	    private readonly bool _preventDelete;
@@ -247,25 +252,25 @@ namespace BulletSharp
 			set { btManifoldPoint_setIndex1(_native, value); }
 		}
 
-        public Vector3 LateralFrictionDir1
+		public Vector3 LateralFrictionDir1
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getLateralFrictionDir1(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getLateralFrictionDir1(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setLateralFrictionDir1(_native, ref value); }
 		}
 
 		public Vector3 LateralFrictionDir2
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getLateralFrictionDir2(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getLateralFrictionDir2(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setLateralFrictionDir2(_native, ref value); }
 		}
 
@@ -281,36 +286,36 @@ namespace BulletSharp
 			set { btManifoldPoint_setLifeTime(_native, value); }
 		}
 
-        public Vector3 LocalPointA
+		public Vector3 LocalPointA
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getLocalPointA(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getLocalPointA(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setLocalPointA(_native, ref value); }
 		}
 
 		public Vector3 LocalPointB
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getLocalPointB(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getLocalPointB(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setLocalPointB(_native, ref value); }
 		}
 
-        public Vector3 NormalWorldOnB
+		public Vector3 NormalWorldOnB
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getNormalWorldOnB(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getNormalWorldOnB(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setNormalWorldOnB(_native, ref value); }
 		}
 
@@ -328,23 +333,23 @@ namespace BulletSharp
 
 		public Vector3 PositionWorldOnA
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getPositionWorldOnA(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getPositionWorldOnA(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setPositionWorldOnA(_native, ref value); }
 		}
 
-        public Vector3 PositionWorldOnB
+		public Vector3 PositionWorldOnB
 		{
-            get
-            {
-                Vector3 value;
-                btManifoldPoint_getPositionWorldOnB(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btManifoldPoint_getPositionWorldOnB(_native, out value);
+				return value;
+			}
 			set { btManifoldPoint_setPositionWorldOnB(_native, ref value); }
 		}
 
@@ -455,7 +460,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btManifoldPoint_getPositionWorldOnA(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btManifoldPoint_getPositionWorldOnB(IntPtr obj, [Out] out Vector3 value);
+        static extern void btManifoldPoint_getPositionWorldOnB(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btManifoldPoint_getUserPersistentData(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -487,25 +492,25 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_setIndex1(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btManifoldPoint_setLateralFrictionDir1(IntPtr obj, [In] ref Vector3 value);
+		static extern void btManifoldPoint_setLateralFrictionDir1(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btManifoldPoint_setLateralFrictionDir2(IntPtr obj, [In] ref Vector3 value);
+		static extern void btManifoldPoint_setLateralFrictionDir2(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_setLateralFrictionInitialized(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_setLifeTime(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btManifoldPoint_setLocalPointA(IntPtr obj, [In] ref Vector3 value);
+		static extern void btManifoldPoint_setLocalPointA(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btManifoldPoint_setLocalPointB(IntPtr obj, [In] ref Vector3 value);
+		static extern void btManifoldPoint_setLocalPointB(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btManifoldPoint_setNormalWorldOnB(IntPtr obj, [In] ref Vector3 value);
+		static extern void btManifoldPoint_setNormalWorldOnB(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_setPartId0(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_setPartId1(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btManifoldPoint_setPositionWorldOnA(IntPtr obj, [In] ref Vector3 value);
+		static extern void btManifoldPoint_setPositionWorldOnA(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btManifoldPoint_setPositionWorldOnB(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

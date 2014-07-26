@@ -80,12 +80,12 @@ namespace BulletSharp
 
 		public Vector3 RayDirectionInverse
 		{
-            get
-            {
-                Vector3 value;
-                btBroadphaseRayCallback_getRayDirectionInverse(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btBroadphaseRayCallback_getRayDirectionInverse(_native, out value);
+				return value;
+			}
 			set { btBroadphaseRayCallback_setRayDirectionInverse(_native, ref value); }
 		}
 
@@ -268,9 +268,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseInterface_destroyProxy(IntPtr obj, IntPtr proxy, IntPtr dispatcher);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBroadphaseInterface_getAabb(IntPtr obj, IntPtr proxy, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
+		static extern void btBroadphaseInterface_getAabb(IntPtr obj, IntPtr proxy, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBroadphaseInterface_getBroadphaseAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
+		static extern void btBroadphaseInterface_getBroadphaseAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btBroadphaseInterface_getOverlappingPairCache(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

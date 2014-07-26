@@ -32,4 +32,5 @@ void btBoxShape_getPlaneEquation(btBoxShape* obj, btScalar* plane, int i)
 	btVector4* planeTemp = ALIGNED_NEW(btVector4);
 	obj->getPlaneEquation(*planeTemp, i);
 	btVector4ToVector4(planeTemp, plane);
+	ALIGNED_FREE(planeTemp);
 }

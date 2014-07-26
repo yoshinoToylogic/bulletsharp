@@ -37,14 +37,14 @@ namespace BulletSharp
 			btBoxShape_getPlaneEquation(_native, out plane, out i);
 		}
 
-        public Vector3 HalfExtentsWithMargin
+		public Vector3 HalfExtentsWithMargin
 		{
-            get
-            {
-                Vector3 extents;
-                btBoxShape_getHalfExtentsWithMargin(_native, out extents);
-                return extents;
-            }
+			get
+			{
+				Vector3 value;
+				btBoxShape_getHalfExtentsWithMargin(_native, out value);
+				return value;
+			}
 		}
 
 		public Vector3 HalfExtentsWithoutMargin

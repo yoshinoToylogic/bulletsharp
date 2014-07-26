@@ -28,7 +28,7 @@ btDbvtNode* btCompoundShapeChild_getNode(btCompoundShapeChild* obj)
 
 void btCompoundShapeChild_getTransform(btCompoundShapeChild* obj, btScalar* value)
 {
-	btTransformToMatrix(&obj->m_transform, value);
+	TRANSFORM_OUT(&obj->m_transform, value);
 }
 
 void btCompoundShapeChild_setChildMargin(btCompoundShapeChild* obj, btScalar value)
@@ -51,7 +51,7 @@ void btCompoundShapeChild_setNode(btCompoundShapeChild* obj, btDbvtNode* value)
 	obj->m_node = value;
 }
 
-void btCompoundShapeChild_setTransform(btCompoundShapeChild* obj, btScalar* value)
+void btCompoundShapeChild_setTransform(btCompoundShapeChild* obj, const btScalar* value)
 {
 	TRANSFORM_IN(value, &obj->m_transform);
 }
@@ -80,8 +80,10 @@ void btCompoundShape_addChildShape(btCompoundShape* obj, const btScalar* localTr
 void btCompoundShape_calculatePrincipalAxisTransform(btCompoundShape* obj, btScalar* masses, btScalar* principal, btScalar* inertia)
 {
 	TRANSFORM_CONV(principal);
-	VECTOR3_CONV(inertia);
+	VECTOR3_DEF(inertia);
 	obj->calculatePrincipalAxisTransform(masses, TRANSFORM_USE(principal), VECTOR3_USE(inertia));
+	TRANSFORM_DEF_OUT(principal);
+	VECTOR3_DEF_OUT(inertia);
 }
 
 void btCompoundShape_createAabbTreeFromChildren(btCompoundShape* obj)
@@ -94,7 +96,7 @@ btCompoundShapeChild* btCompoundShape_getChildList(btCompoundShape* obj)
 	return obj->getChildList();
 }
 
-btCollisionShape* btCompoundShape_getChildShape(btCompoundShape* obj, int index)
+const btCollisionShape* btCompoundShape_getChildShape(btCompoundShape* obj, int index)
 {
 	return obj->getChildShape(index);
 }

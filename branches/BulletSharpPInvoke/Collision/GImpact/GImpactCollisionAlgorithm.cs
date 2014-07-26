@@ -32,31 +32,31 @@ namespace BulletSharp
 		{
 		}
 
-		public void Gimpact_vs_compoundshape(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, CompoundShape shape1, bool swapped)
+		public void GimpactVsCompoundshape(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, CompoundShape shape1, bool swapped)
 		{
 			btGImpactCollisionAlgorithm_gimpact_vs_compoundshape(_native, body0Wrap._native, body1Wrap._native, shape0._native, shape1._native, swapped);
 		}
 
-		public void Gimpact_vs_concave(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, ConcaveShape shape1, bool swapped)
+		public void GimpactVsConcave(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, ConcaveShape shape1, bool swapped)
 		{
 			btGImpactCollisionAlgorithm_gimpact_vs_concave(_native, body0Wrap._native, body1Wrap._native, shape0._native, shape1._native, swapped);
 		}
 
-		public void Gimpact_vs_gimpact(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, GImpactShapeInterface shape1)
+		public void GimpactVsGimpact(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, GImpactShapeInterface shape1)
 		{
 			btGImpactCollisionAlgorithm_gimpact_vs_gimpact(_native, body0Wrap._native, body1Wrap._native, shape0._native, shape1._native);
 		}
 
-		public void Gimpact_vs_shape(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, CollisionShape shape1, bool swapped)
+		public void GimpactVsShape(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, GImpactShapeInterface shape0, CollisionShape shape1, bool swapped)
 		{
 			btGImpactCollisionAlgorithm_gimpact_vs_shape(_native, body0Wrap._native, body1Wrap._native, shape0._native, shape1._native, swapped);
 		}
-        /*
+
 		public ManifoldResult InternalGetResultOut()
 		{
-			return btGImpactCollisionAlgorithm_internalGetResultOut(_native);
+            return new ManifoldResult(btGImpactCollisionAlgorithm_internalGetResultOut(_native));
 		}
-        */
+
 		public static void RegisterAlgorithm(CollisionDispatcher dispatcher)
 		{
 			btGImpactCollisionAlgorithm_registerAlgorithm(dispatcher._native);

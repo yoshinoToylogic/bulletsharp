@@ -12,12 +12,12 @@ btDbvtNode* btDbvtProxy_getLeaf(btDbvtProxy* obj)
 {
 	return obj->leaf;
 }
-/*
-* btDbvtProxy_getLinks(btDbvtProxy* obj)
+
+btDbvtProxy** btDbvtProxy_getLinks(btDbvtProxy* obj)
 {
 	return obj->links;
 }
-*/
+
 int btDbvtProxy_getStage(btDbvtProxy* obj)
 {
 	return obj->stage;
@@ -27,12 +27,7 @@ void btDbvtProxy_setLeaf(btDbvtProxy* obj, btDbvtNode* value)
 {
 	obj->leaf = value;
 }
-/*
-void btDbvtProxy_setLinks(btDbvtProxy* obj, * value)
-{
-	obj->links = value;
-}
-*/
+
 void btDbvtProxy_setStage(btDbvtProxy* obj, int value)
 {
 	obj->stage = value;
@@ -133,12 +128,12 @@ int btDbvtBroadphase_getStageCurrent(btDbvtBroadphase* obj)
 {
 	return obj->m_stageCurrent;
 }
-/*
-* btDbvtBroadphase_getStageRoots(btDbvtBroadphase* obj)
+
+btDbvtProxy** btDbvtBroadphase_getStageRoots(btDbvtBroadphase* obj)
 {
 	return obj->m_stageRoots;
 }
-*/
+
 unsigned int btDbvtBroadphase_getUpdates_call(btDbvtBroadphase* obj)
 {
 	return obj->m_updates_call;
@@ -240,22 +235,12 @@ void btDbvtBroadphase_setReleasepaircache(btDbvtBroadphase* obj, bool value)
 {
 	obj->m_releasepaircache = value;
 }
-/*
-void btDbvtBroadphase_setSets(btDbvtBroadphase* obj, btDbvt* value)
-{
-	obj->m_sets = value;
-}
-*/
+
 void btDbvtBroadphase_setStageCurrent(btDbvtBroadphase* obj, int value)
 {
 	obj->m_stageCurrent = value;
 }
-/*
-void btDbvtBroadphase_setStageRoots(btDbvtBroadphase* obj, * value)
-{
-	obj->m_stageRoots = value;
-}
-*/
+
 void btDbvtBroadphase_setUpdates_call(btDbvtBroadphase* obj, unsigned int value)
 {
 	obj->m_updates_call = value;

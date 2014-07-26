@@ -146,7 +146,7 @@ btBroadphasePair* btBroadphasePair_new()
 	return new btBroadphasePair();
 }
 
-btBroadphasePair* btBroadphasePair_new2(btBroadphasePair* other)
+btBroadphasePair* btBroadphasePair_new2(const btBroadphasePair* other)
 {
 	return new btBroadphasePair(*other);
 }

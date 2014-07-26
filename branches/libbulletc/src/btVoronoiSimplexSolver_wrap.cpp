@@ -8,42 +8,42 @@ btUsageBitfield* btUsageBitfield_new()
 	return new btUsageBitfield();
 }
 
-unsigned short btUsageBitfield_getUnused1(btUsageBitfield* obj)
+bool btUsageBitfield_getUnused1(btUsageBitfield* obj)
 {
 	return obj->unused1;
 }
 
-unsigned short btUsageBitfield_getUnused2(btUsageBitfield* obj)
+bool btUsageBitfield_getUnused2(btUsageBitfield* obj)
 {
 	return obj->unused2;
 }
 
-unsigned short btUsageBitfield_getUnused3(btUsageBitfield* obj)
+bool btUsageBitfield_getUnused3(btUsageBitfield* obj)
 {
 	return obj->unused3;
 }
 
-unsigned short btUsageBitfield_getUnused4(btUsageBitfield* obj)
+bool btUsageBitfield_getUnused4(btUsageBitfield* obj)
 {
 	return obj->unused4;
 }
 
-unsigned short btUsageBitfield_getUsedVertexA(btUsageBitfield* obj)
+bool btUsageBitfield_getUsedVertexA(btUsageBitfield* obj)
 {
 	return obj->usedVertexA;
 }
 
-unsigned short btUsageBitfield_getUsedVertexB(btUsageBitfield* obj)
+bool btUsageBitfield_getUsedVertexB(btUsageBitfield* obj)
 {
 	return obj->usedVertexB;
 }
 
-unsigned short btUsageBitfield_getUsedVertexC(btUsageBitfield* obj)
+bool btUsageBitfield_getUsedVertexC(btUsageBitfield* obj)
 {
 	return obj->usedVertexC;
 }
 
-unsigned short btUsageBitfield_getUsedVertexD(btUsageBitfield* obj)
+bool btUsageBitfield_getUsedVertexD(btUsageBitfield* obj)
 {
 	return obj->usedVertexD;
 }
@@ -53,42 +53,42 @@ void btUsageBitfield_reset(btUsageBitfield* obj)
 	obj->reset();
 }
 
-void btUsageBitfield_setUnused1(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUnused1(btUsageBitfield* obj, bool value)
 {
 	obj->unused1 = value;
 }
 
-void btUsageBitfield_setUnused2(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUnused2(btUsageBitfield* obj, bool value)
 {
 	obj->unused2 = value;
 }
 
-void btUsageBitfield_setUnused3(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUnused3(btUsageBitfield* obj, bool value)
 {
 	obj->unused3 = value;
 }
 
-void btUsageBitfield_setUnused4(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUnused4(btUsageBitfield* obj, bool value)
 {
 	obj->unused4 = value;
 }
 
-void btUsageBitfield_setUsedVertexA(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUsedVertexA(btUsageBitfield* obj, bool value)
 {
 	obj->usedVertexA = value;
 }
 
-void btUsageBitfield_setUsedVertexB(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUsedVertexB(btUsageBitfield* obj, bool value)
 {
 	obj->usedVertexB = value;
 }
 
-void btUsageBitfield_setUsedVertexC(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUsedVertexC(btUsageBitfield* obj, bool value)
 {
 	obj->usedVertexC = value;
 }
 
-void btUsageBitfield_setUsedVertexD(btUsageBitfield* obj, unsigned short value)
+void btUsageBitfield_setUsedVertexD(btUsageBitfield* obj, bool value)
 {
 	obj->usedVertexD = value;
 }

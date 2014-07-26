@@ -26,6 +26,23 @@ namespace BulletSharp
 			return btShapeHull_buildHull(_native, margin);
 		}
 
+        public IntPtr IndexPointer
+        {
+            get { return btShapeHull_getIndexPointer(_native); }
+        }
+
+        public UIntArray Indices
+        {
+            get
+            {
+                if (_indices == null)
+                {
+                    _indices = new UIntArray(IndexPointer, NumIndices);
+                }
+                return _indices;
+            }
+        }
+
 		public int NumIndices
 		{
             get { return btShapeHull_numIndices(_native); }
@@ -39,23 +56,6 @@ namespace BulletSharp
 		public int NumVertices
 		{
             get { return btShapeHull_numVertices(_native); }
-		}
-
-		public IntPtr IndexPointer
-		{
-			get { return btShapeHull_getIndexPointer(_native); }
-		}
-
-		public UIntArray Indices
-		{
-            get
-            {
-                if (_indices == null)
-                {
-                    _indices = new UIntArray(IndexPointer, NumIndices);
-                }
-                return _indices;
-            }
 		}
 
         public IntPtr VertexPointer

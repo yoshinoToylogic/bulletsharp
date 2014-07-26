@@ -179,9 +179,9 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 	m[9] = t->getRow(2).getY();
 	m[10] = t->getRow(2).getZ();
 #endif
-	//m[12] = 0;
-	//m[13] = 0;
-	//m[14] = 0;
+	m[12] = 0;
+	m[13] = 0;
+	m[14] = 0;
 	m[15] = 1;
 #else
 #ifdef BTTRANSFORM_TRANSPOSE
@@ -205,9 +205,9 @@ inline void btMatrix3x3ToMatrix(const btMatrix3x3* t, btScalar* m)
 	m[7] = t->getRow(2).getY();
 	m[8] = t->getRow(2).getZ();
 #endif
-	//m[9] = 0;
-	//m[10] = 0;
-	//m[11] = 0;
+	m[9] = 0;
+	m[10] = 0;
+	m[11] = 0;
 #endif
 }
 
@@ -260,7 +260,7 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define QUATERNION_IN(from, to) QuaternionTobtQuaternion(from, to)
 #define QUATERNION_CONV(quat) QUATERNION_DEF(quat); QUATERNION_IN(quat, &TEMP(quat))
 #define QUATERNION_USE(quat) TEMP(quat)
-#define QUATERNION_OUT(from, to) btQuaternionToQuaternion(&from, to)
+#define QUATERNION_OUT(from, to) btQuaternionToQuaternion(from, to)
 #define QUATERNION_OUT2(from, to) btQuaternionToQuaternion(from, to)
 #else
 #define VECTOR3_DEF(vec)
@@ -276,7 +276,7 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define QUATERNION_IN(from, to) *to = *(btQuaternion*)from
 #define QUATERNION_CONV(quat)
 #define QUATERNION_USE(quat) *(btQuaternion*)quat
-#define QUATERNION_OUT(from, to) *(btQuaternion*)to = from
+#define QUATERNION_OUT(from, to) *(btQuaternion*)to = *from
 #define QUATERNION_OUT2(from, to) *(btQuaternion*)to = from
 #endif
 #define TRANSFORM_IN(from, to) MatrixTobtTransform(from, to)

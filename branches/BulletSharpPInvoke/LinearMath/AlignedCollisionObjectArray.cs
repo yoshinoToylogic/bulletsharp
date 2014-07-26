@@ -8,7 +8,7 @@ namespace BulletSharp
 {
     public class AlignedCollisionObjectArrayDebugView
     {
-        private AlignedCollisionObjectArray _array;
+        private readonly AlignedCollisionObjectArray _array;
 
         public AlignedCollisionObjectArrayDebugView(AlignedCollisionObjectArray array)
         {
@@ -33,8 +33,8 @@ namespace BulletSharp
     public class AlignedCollisionObjectArrayEnumerator : IEnumerator<CollisionObject>
     {
         int _i;
-        int _count;
-        AlignedCollisionObjectArray _array;
+        readonly int _count;
+        readonly AlignedCollisionObjectArray _array;
 
         public AlignedCollisionObjectArrayEnumerator(AlignedCollisionObjectArray array)
         {
@@ -72,7 +72,7 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedCollisionObjectArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedCollisionObjectArray : AlignedObjectArray, IList<CollisionObject>, IDisposable
     {
-        bool _preventDelete;
+        readonly bool _preventDelete;
 
         internal AlignedCollisionObjectArray(IntPtr native, bool preventDelete = false)
             : base(native)

@@ -3,11 +3,11 @@
 extern "C"
 {
 	EXPORT btDbvtAabbMm* btDbvtAabbMm_new();
-	EXPORT void btDbvtAabbMm_Center(btDbvtAabbMm* obj);
+	EXPORT void btDbvtAabbMm_Center(btDbvtAabbMm* obj, btScalar* value);
 	EXPORT int btDbvtAabbMm_Classify(btDbvtAabbMm* obj, const btScalar* n, btScalar o, int s);
 	EXPORT bool btDbvtAabbMm_Contain(btDbvtAabbMm* obj, const btDbvtAabbMm* a);
 	EXPORT void btDbvtAabbMm_Expand(btDbvtAabbMm* obj, const btScalar* e);
-	EXPORT void btDbvtAabbMm_Extents(btDbvtAabbMm* obj);
+	EXPORT void btDbvtAabbMm_Extents(btDbvtAabbMm* obj, btScalar* value);
 	EXPORT void btDbvtAabbMm_FromCE(const btScalar* c, const btScalar* e);
 	EXPORT void btDbvtAabbMm_FromCR(const btScalar* c, btScalar r);
 	EXPORT void btDbvtAabbMm_FromMM(const btScalar* mi, const btScalar* mx);
