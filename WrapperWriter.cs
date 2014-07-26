@@ -75,7 +75,7 @@ namespace BulletSharpGen
             Write("\r\n", to);
         }
 
-        protected void OutputTabs(int n, WriteTo to = WriteTo.Header)
+        protected void WriteTabs(int n, WriteTo to = WriteTo.Header)
         {
             for (int i = 0; i < n; i++)
             {

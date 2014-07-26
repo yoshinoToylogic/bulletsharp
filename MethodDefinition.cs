@@ -5,7 +5,7 @@
         public string Name { get; private set; }
         public ClassDefinition Parent { get; private set; }
         public TypeRefDefinition ReturnType { get; set; }
-        public ParameterDefinition[] Parameters { get; private set; }
+        public ParameterDefinition[] Parameters { get; set; }
         public bool IsStatic { get; set; }
         public bool IsAbstract { get; set; }
         public bool IsConstructor { get; set; }
@@ -14,14 +14,21 @@
 
         public bool IsVoid
         {
-            get { return ReturnType.IsBasic && ReturnType.Name.Equals("void"); }
+            get { return ReturnType != null && ReturnType.IsBasic && ReturnType.Name.Equals("void"); }
         }
 
         public string ManagedName
         {
             get
             {
-                return Name.Substring(0, 1).ToUpper() + Name.Substring(1);
+                string managedName = Name;
+                while (managedName.Contains("_"))
+                {
+                    int pos = managedName.IndexOf('_');
+                    managedName = managedName.Substring(0, pos) + managedName.Substring(pos + 1, 1).ToUpper() + managedName.Substring(pos + 2);
+                }
+
+                return managedName.Substring(0, 1).ToUpper() + managedName.Substring(1);
             }
         }
 
@@ -52,6 +59,19 @@
             {
                 parent.Methods.Add(this);
             }
+        }
+
+        public MethodDefinition Copy()
+        {
+            var m = new MethodDefinition(Name, Parent, Parameters.Length);
+            Parameters.CopyTo(m.Parameters, 0);
+            m.Field = Field;
+            m.Property = Property;
+            m.IsAbstract = IsAbstract;
+            m.IsConstructor = IsConstructor;
+            m.IsStatic = IsStatic;
+            m.ReturnType = ReturnType;
+            return m;
         }
 
         public override bool Equals(object obj)

@@ -130,13 +130,13 @@ namespace BulletSharpGen
             _extensionMethods.Clear();
 
             EnsureWhiteSpace(WriteTo.CS);
-            OutputTabs(1, WriteTo.CS);
+            WriteTabs(1, WriteTo.CS);
             csWriter.WriteLine("[EditorBrowsable(EditorBrowsableState.Never)]");
-            OutputTabs(1, WriteTo.CS);
+            WriteTabs(1, WriteTo.CS);
             csWriter.Write("public static class ");
             csWriter.Write(c.ManagedName);
             csWriter.WriteLine("Extensions");
-            OutputTabs(1, WriteTo.CS);
+            WriteTabs(1, WriteTo.CS);
             csWriter.WriteLine('{');
 
             foreach (var prop in c.Properties)
@@ -145,7 +145,7 @@ namespace BulletSharpGen
                 {
                     // Getter with out parameter
                     bufferBuilder.Clear();
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     Write("public unsafe static void Get", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     Write("(this ", WriteTo.Buffer);
@@ -153,32 +153,32 @@ namespace BulletSharpGen
                     Write(" obj, out ", WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine(" value)", WriteTo.Buffer);
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('{', WriteTo.Buffer);
 
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     Write("fixed (", WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine("* valuePtr = &value)", WriteTo.Buffer);
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     WriteLine('{', WriteTo.Buffer);
-                    OutputTabs(4, WriteTo.Buffer);
+                    WriteTabs(4, WriteTo.Buffer);
                     Write("*(", WriteTo.Buffer);
                     Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
                     Write("*)valuePtr = obj.", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     WriteLine(';', WriteTo.Buffer);
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     WriteLine('}', WriteTo.Buffer);
 
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('}', WriteTo.Buffer);
 
                     _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
 
                     // Getter with return value
                     bufferBuilder.Clear();
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     Write("public static ", WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     Write(" Get", WriteTo.Buffer);
@@ -186,20 +186,20 @@ namespace BulletSharpGen
                     Write("(this ", WriteTo.Buffer);
                     Write(c.ManagedName, WriteTo.Buffer);
                     WriteLine(" obj)", WriteTo.Buffer);
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('{', WriteTo.Buffer);
 
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine(" value;", WriteTo.Buffer);
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     Write("Get", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     WriteLine("(obj, out value);", WriteTo.Buffer);
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     WriteLine("return value;", WriteTo.Buffer);
 
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('}', WriteTo.Buffer);
 
                     _extensionMethods.Add(new KeyValuePair<string, string>("Get" + prop.Name, bufferBuilder.ToString()));
@@ -211,7 +211,7 @@ namespace BulletSharpGen
 
                     // Setter with ref parameter
                     bufferBuilder.Clear();
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     Write("public unsafe static void Set", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     Write("(this ", WriteTo.Buffer);
@@ -219,32 +219,32 @@ namespace BulletSharpGen
                     Write(" obj, ref ", WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine(" value)", WriteTo.Buffer);
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('{', WriteTo.Buffer);
 
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     Write("fixed (", WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine("* valuePtr = &value)", WriteTo.Buffer);
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     WriteLine('{', WriteTo.Buffer);
-                    OutputTabs(4, WriteTo.Buffer);
+                    WriteTabs(4, WriteTo.Buffer);
                     Write("obj.", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     Write(" = *(", WriteTo.Buffer);
                     Write(_extensionClassesInternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine("*)valuePtr;", WriteTo.Buffer);
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     WriteLine('}', WriteTo.Buffer);
 
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('}', WriteTo.Buffer);
 
                     _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
 
                     // Setter with non-ref parameter
                     bufferBuilder.Clear();
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     Write("public static void Set", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     Write("(this ", WriteTo.Buffer);
@@ -252,15 +252,15 @@ namespace BulletSharpGen
                     Write(" obj, ", WriteTo.Buffer);
                     Write(_extensionClassesExternal[prop.Type.ManagedName], WriteTo.Buffer);
                     WriteLine(" value)", WriteTo.Buffer);
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('{', WriteTo.Buffer);
 
-                    OutputTabs(3, WriteTo.Buffer);
+                    WriteTabs(3, WriteTo.Buffer);
                     Write("Set", WriteTo.Buffer);
                     Write(prop.Name, WriteTo.Buffer);
                     WriteLine("(obj, ref value);", WriteTo.Buffer);
 
-                    OutputTabs(2, WriteTo.Buffer);
+                    WriteTabs(2, WriteTo.Buffer);
                     WriteLine('}', WriteTo.Buffer);
 
                     _extensionMethods.Add(new KeyValuePair<string, string>("Set" + prop.Name, bufferBuilder.ToString()));
@@ -284,7 +284,7 @@ namespace BulletSharpGen
                 hasCSWhiteSpace = false;
             }
 
-            OutputTabs(1, WriteTo.CS);
+            WriteTabs(1, WriteTo.CS);
             csWriter.WriteLine('}');
             hasCSWhiteSpace = false;
         }
@@ -294,7 +294,7 @@ namespace BulletSharpGen
             bool convertReturnType = _extensionClassesInternal.ContainsKey(method.ReturnType.ManagedName);
 
             bufferBuilder.Clear();
-            OutputTabs(2, WriteTo.Buffer);
+            WriteTabs(2, WriteTo.Buffer);
             Write("public unsafe static ", WriteTo.Buffer);
             if (convertReturnType)
             {
@@ -334,14 +334,14 @@ namespace BulletSharpGen
             }
             WriteLine(')', WriteTo.Buffer);
 
-            OutputTabs(2, WriteTo.Buffer);
+            WriteTabs(2, WriteTo.Buffer);
             WriteLine('{', WriteTo.Buffer);
 
             // Fix parameter pointers
             int tabs = 3;
             foreach (var param in extendedParams)
             {
-                OutputTabs(tabs, WriteTo.Buffer);
+                WriteTabs(tabs, WriteTo.Buffer);
                 Write("fixed (", WriteTo.Buffer);
                 Write(_extensionClassesExternal[param.Type.ManagedName], WriteTo.Buffer);
                 Write("* ", WriteTo.Buffer);
@@ -349,12 +349,12 @@ namespace BulletSharpGen
                 Write("Ptr = &", WriteTo.Buffer);
                 Write(param.Name, WriteTo.Buffer);
                 WriteLine(')', WriteTo.Buffer);
-                OutputTabs(tabs, WriteTo.Buffer);
+                WriteTabs(tabs, WriteTo.Buffer);
                 WriteLine('{', WriteTo.Buffer);
                 tabs++;
             }
 
-            OutputTabs(tabs, WriteTo.Buffer);
+            WriteTabs(tabs, WriteTo.Buffer);
             if (method.ReturnType.Name != "void")
             {
                 Write("return ", WriteTo.Buffer);
@@ -400,7 +400,7 @@ namespace BulletSharpGen
             while (tabs != 2)
             {
                 tabs--;
-                OutputTabs(tabs, WriteTo.Buffer);
+                WriteTabs(tabs, WriteTo.Buffer);
                 WriteLine('}', WriteTo.Buffer);
             }
 
