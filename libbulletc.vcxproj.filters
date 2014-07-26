@@ -18,9 +18,6 @@
     <ClInclude Include="src\main.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\btAlignedCollisionObjectArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\btDbvtBroadphase_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -294,12 +291,6 @@
     <ClInclude Include="src\btPersistentManifold_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\btAlignedBroadphasePairArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedManifoldArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\btUniformScalingShape_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -307,9 +298,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btFixedConstraint_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedCollisionShapeArray_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btTransformUtil_wrap.h">
@@ -367,30 +355,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btSparseSdf3_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyClusterArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyFaceArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyMaterialArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyNodeArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyTetraArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedSoftBodyLinkArray_wrap.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\btAlignedIndexedMeshArray_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btManifoldResult_wrap.h">
@@ -489,12 +453,42 @@
     <ClInclude Include="src\btMLCPSolver_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\btAlignedObjectArray_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBody_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyConstraint_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyConstraintSolver_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyDynamicsWorld_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyJointLimitConstraint_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyJointMotor_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyLink_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyLinkCollider_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodyPoint2Point_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btMultiBodySolverConstraint_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedCollisionObjectArray_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btDbvtBroadphase_wrap.cpp">
@@ -764,12 +758,6 @@
     <ClCompile Include="src\btPersistentManifold_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\btAlignedBroadphasePairArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedManifoldArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\btUniformScalingShape_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -780,9 +768,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btFixedConstraint_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedCollisionShapeArray_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btTransformUtil_wrap.cpp">
@@ -842,31 +827,7 @@
     <ClCompile Include="src\btSparseSdf3_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyClusterArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyFaceArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyMaterialArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyNodeArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\btGImpactCollisionAlgorithm_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyTetraArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedSoftBodyLinkArray_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btAlignedIndexedMeshArray_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btUnionFind_wrap.cpp">
@@ -960,6 +921,39 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btMLCPSolverInterface_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btAlignedObjectArray_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyJointLimitConstraint_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyJointMotor_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyLink_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyLinkCollider_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyPoint2Point_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodySolverConstraint_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBody_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyConstraint_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyConstraintSolver_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMultiBodyDynamicsWorld_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

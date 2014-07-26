@@ -12,7 +12,7 @@ extern "C"
 	EXPORT void btCompoundShapeChild_setChildShape(btCompoundShapeChild* obj, btCollisionShape* value);
 	EXPORT void btCompoundShapeChild_setChildShapeType(btCompoundShapeChild* obj, int value);
 	EXPORT void btCompoundShapeChild_setNode(btCompoundShapeChild* obj, btDbvtNode* value);
-	EXPORT void btCompoundShapeChild_setTransform(btCompoundShapeChild* obj, btScalar* value);
+	EXPORT void btCompoundShapeChild_setTransform(btCompoundShapeChild* obj, const btScalar* value);
 	EXPORT void btCompoundShapeChild_delete(btCompoundShapeChild* obj);
 
 	EXPORT btCompoundShape* btCompoundShape_new();
@@ -21,7 +21,7 @@ extern "C"
 	EXPORT void btCompoundShape_calculatePrincipalAxisTransform(btCompoundShape* obj, btScalar* masses, btScalar* principal, btScalar* inertia);
 	EXPORT void btCompoundShape_createAabbTreeFromChildren(btCompoundShape* obj);
 	EXPORT btCompoundShapeChild* btCompoundShape_getChildList(btCompoundShape* obj);
-	EXPORT btCollisionShape* btCompoundShape_getChildShape(btCompoundShape* obj, int index);
+	EXPORT const btCollisionShape* btCompoundShape_getChildShape(btCompoundShape* obj, int index);
 	EXPORT void btCompoundShape_getChildTransform(btCompoundShape* obj, int index, btScalar* value);
 	EXPORT btDbvt* btCompoundShape_getDynamicAabbTree(btCompoundShape* obj);
 	EXPORT int btCompoundShape_getNumChildShapes(btCompoundShape* obj);

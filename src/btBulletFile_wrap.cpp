@@ -7,7 +7,7 @@ bParse_btBulletFile* btBulletFile_new()
 	return new bParse_btBulletFile();
 }
 
-bParse_btBulletFile* btBulletFile_new2(char* fileName)
+bParse_btBulletFile* btBulletFile_new2(const char* fileName)
 {
 	return new bParse_btBulletFile(fileName);
 }
@@ -17,7 +17,7 @@ bParse_btBulletFile* btBulletFile_new3(char* memoryBuffer, int len)
 	return new bParse_btBulletFile(memoryBuffer, len);
 }
 
-void btBulletFile_addStruct(bParse_btBulletFile* obj, char* structType, void* data, int len, void* oldPtr, int code)
+void btBulletFile_addStruct(bParse_btBulletFile* obj, const char* structType, void* data, int len, void* oldPtr, int code)
 {
 	obj->addStruct(structType, data, len, oldPtr, code);
 }

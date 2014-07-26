@@ -6,10 +6,9 @@ extern "C"
 {
 	EXPORT btDbvtProxy* btDbvtProxy_new(const btScalar* aabbMin, const btScalar* aabbMax, void* userPtr, short collisionFilterGroup, short collisionFilterMask);
 	EXPORT btDbvtNode* btDbvtProxy_getLeaf(btDbvtProxy* obj);
-	//EXPORT * btDbvtProxy_getLinks(btDbvtProxy* obj);
+	EXPORT btDbvtProxy** btDbvtProxy_getLinks(btDbvtProxy* obj);
 	EXPORT int btDbvtProxy_getStage(btDbvtProxy* obj);
 	EXPORT void btDbvtProxy_setLeaf(btDbvtProxy* obj, btDbvtNode* value);
-	//EXPORT void btDbvtProxy_setLinks(btDbvtProxy* obj, * value);
 	EXPORT void btDbvtProxy_setStage(btDbvtProxy* obj, int value);
 
 	EXPORT btDbvtBroadphase* btDbvtBroadphase_new();
@@ -31,7 +30,7 @@ extern "C"
 	EXPORT bool btDbvtBroadphase_getReleasepaircache(btDbvtBroadphase* obj);
 	EXPORT btDbvt* btDbvtBroadphase_getSets(btDbvtBroadphase* obj);
 	EXPORT int btDbvtBroadphase_getStageCurrent(btDbvtBroadphase* obj);
-	//EXPORT * btDbvtBroadphase_getStageRoots(btDbvtBroadphase* obj);
+	EXPORT btDbvtProxy** btDbvtBroadphase_getStageRoots(btDbvtBroadphase* obj);
 	EXPORT unsigned int btDbvtBroadphase_getUpdates_call(btDbvtBroadphase* obj);
 	EXPORT unsigned int btDbvtBroadphase_getUpdates_done(btDbvtBroadphase* obj);
 	EXPORT btScalar btDbvtBroadphase_getUpdates_ratio(btDbvtBroadphase* obj);
@@ -54,7 +53,6 @@ extern "C"
 	EXPORT void btDbvtBroadphase_setReleasepaircache(btDbvtBroadphase* obj, bool value);
 	EXPORT void btDbvtBroadphase_setSets(btDbvtBroadphase* obj, btDbvt* value);
 	EXPORT void btDbvtBroadphase_setStageCurrent(btDbvtBroadphase* obj, int value);
-	//EXPORT void btDbvtBroadphase_setStageRoots(btDbvtBroadphase* obj, * value);
 	EXPORT void btDbvtBroadphase_setUpdates_call(btDbvtBroadphase* obj, unsigned int value);
 	EXPORT void btDbvtBroadphase_setUpdates_done(btDbvtBroadphase* obj, unsigned int value);
 	EXPORT void btDbvtBroadphase_setUpdates_ratio(btDbvtBroadphase* obj, btScalar value);

@@ -2,8 +2,9 @@
 
 extern "C"
 {
-	EXPORT void btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj, btScalar* value);
-	EXPORT void btConvexInternalShape_getLocalScalingNV(btConvexInternalShape* obj, btScalar* value);
+	EXPORT btConvexInternalShape* btConvexInternalShape_new();
+	EXPORT const btScalar* btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj);
+	EXPORT const btScalar* btConvexInternalShape_getLocalScalingNV(btConvexInternalShape* obj);
 	EXPORT btScalar btConvexInternalShape_getMarginNV(btConvexInternalShape* obj);
 	EXPORT void btConvexInternalShape_setImplicitShapeDimensions(btConvexInternalShape* obj, const btScalar* dimensions);
 	EXPORT void btConvexInternalShape_setSafeMargin(btConvexInternalShape* obj, btScalar minDimension);
@@ -11,5 +12,6 @@ extern "C"
 	EXPORT void btConvexInternalShape_setSafeMargin3(btConvexInternalShape* obj, const btScalar* halfExtents);
 	EXPORT void btConvexInternalShape_setSafeMargin4(btConvexInternalShape* obj, const btScalar* halfExtents, btScalar defaultMarginMultiplier);
 
+	EXPORT btConvexInternalAabbCachingShape* btConvexInternalAabbCachingShape_new();
 	EXPORT void btConvexInternalAabbCachingShape_recalcLocalAabb(btConvexInternalAabbCachingShape* obj);
 }

@@ -3,23 +3,23 @@
 extern "C"
 {
 	EXPORT btUsageBitfield* btUsageBitfield_new();
-	EXPORT unsigned short btUsageBitfield_getUnused1(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUnused2(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUnused3(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUnused4(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUsedVertexA(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUsedVertexB(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUsedVertexC(btUsageBitfield* obj);
-	EXPORT unsigned short btUsageBitfield_getUsedVertexD(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUnused1(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUnused2(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUnused3(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUnused4(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUsedVertexA(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUsedVertexB(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUsedVertexC(btUsageBitfield* obj);
+	EXPORT bool btUsageBitfield_getUsedVertexD(btUsageBitfield* obj);
 	EXPORT void btUsageBitfield_reset(btUsageBitfield* obj);
-	EXPORT void btUsageBitfield_setUnused1(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUnused2(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUnused3(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUnused4(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUsedVertexA(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUsedVertexB(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUsedVertexC(btUsageBitfield* obj, unsigned short value);
-	EXPORT void btUsageBitfield_setUsedVertexD(btUsageBitfield* obj, unsigned short value);
+	EXPORT void btUsageBitfield_setUnused1(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUnused2(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUnused3(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUnused4(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUsedVertexA(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUsedVertexB(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUsedVertexC(btUsageBitfield* obj, bool value);
+	EXPORT void btUsageBitfield_setUsedVertexD(btUsageBitfield* obj, bool value);
 	EXPORT void btUsageBitfield_delete(btUsageBitfield* obj);
 
 	EXPORT btSubSimplexClosestResult* btSubSimplexClosestResult_new();

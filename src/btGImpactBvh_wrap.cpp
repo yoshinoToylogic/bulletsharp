@@ -63,9 +63,9 @@ GIM_BVH_DATA* GIM_BVH_DATA_new()
 	return new GIM_BVH_DATA();
 }
 
-void GIM_BVH_DATA_getBound(GIM_BVH_DATA* obj)
+btAABB* GIM_BVH_DATA_getBound(GIM_BVH_DATA* obj)
 {
-	obj->m_bound;
+	return &obj->m_bound;
 }
 
 int GIM_BVH_DATA_getData(GIM_BVH_DATA* obj)

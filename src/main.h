@@ -62,8 +62,6 @@
 #define btPolyhedralConvexAabbCachingShape void
 #define btPolyhedralConvexShape void
 #define btPositionAndRadius void
-#define btRigidBody void
-#define btRigidBody_btRigidBodyConstructionInfo void
 #define btRotationalLimitMotor void
 #define btSortedOverlappingPairCache void
 #define btStorageResult void
@@ -72,12 +70,11 @@
 #define btQuaternion void
 #define btTransform void
 #define btVector4 void
-#define btAlignedBoolArray void
 #define btAlignedBroadphasePairArray void
 #define btAlignedCollisionObjectArray void
 #define btAlignedConstCollisionObjectArray void
 #define btAlignedCollisionShapeArray void
-#define btAlignedScalarArray void
+#define btAlignedMatrix3x3Array void
 #define btAlignedVector3Array void
 #define btCollisionObjectArray void
 #define eBT_PLANE_INTERSECTION_TYPE int
@@ -87,9 +84,7 @@
 #define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
 #define btAlignedCollisionShapeArray btAlignedObjectArray<btCollisionShape*>
 #define btAlignedConstCollisionObjectArray btAlignedObjectArray<const btCollisionObject*>
-#define btAlignedIntArray btAlignedObjectArray<int>
-#define btAlignedBoolArray btAlignedObjectArray<bool>
-#define btAlignedScalarArray btAlignedObjectArray<btScalar>
+#define btAlignedMatrix3x3Array btAlignedObjectArray<btMatrix3x3>
 #define btAlignedVector3Array btAlignedObjectArray<btVector3>
 #define btCollisionWorld_AllHitsRayResultCallback btCollisionWorld::AllHitsRayResultCallback
 #define btCollisionWorld_ClosestConvexResultCallback btCollisionWorld::ClosestConvexResultCallback
@@ -124,19 +119,11 @@
 #define btConstraintRow void
 #define btConstraintSetting void
 #define btConstraintSolver void
-#define btContactSolverInfo void
-#define btContactSolverInfoData void
 #define btSimulationIslandManager void
 #define btSimulationIslandManager_IslandCallback void
 #define btSolverBody void
-#define btTypedConstraint void
-#define btTypedConstraint_btConstraintInfo1 void
-#define btTypedConstraint_btConstraintInfo2 void
-#define btTypedConstraintType int
 #else
 #define btSimulationIslandManager_IslandCallback btSimulationIslandManager::IslandCallback
-#define btTypedConstraint_btConstraintInfo1 btTypedConstraint::btConstraintInfo1
-#define btTypedConstraint_btConstraintInfo2 btTypedConstraint::btConstraintInfo2
 #endif
 
 #ifndef _BT_ACTION_INTERFACE_H
@@ -264,8 +251,18 @@
 #define btConeShapeZ void
 #endif
 
+#ifndef BT_CONSTRAINT_SOLVER_H
+#define btConstraintSolver void
+#define btConstraintSolverType int
+#endif
+
 #ifndef BT_CONTACT_CONSTRAINT_H
 #define btContactConstraint void
+#endif
+
+#ifndef BT_CONTACT_SOLVER_INFO
+#define btContactSolverInfo void
+#define btContactSolverInfoData void
 #endif
 
 #ifndef BT_CONTINUOUS_COLLISION_CONVEX_CAST_H
@@ -391,6 +388,10 @@
 #define btEmptyShape void
 #endif
 
+#ifndef BT_FEATHERSTONE_LINK_COLLIDER_H
+#define btMultiBodyLinkCollider void
+#endif
+
 #ifndef BT_FIXED_CONSTRAINT_H
 #define btFixedConstraint void
 #endif
@@ -457,6 +458,44 @@
 #define btMinkowskiSumShape void
 #endif
 
+#ifndef BT_MULTIBODY_H
+#define btMultiBody void
+#endif
+
+#ifndef BT_MULTIBODY_CONSTRAINT_H
+#define btMultiBodyConstraint void
+#define btMultiBodyJacobianData void
+#endif
+
+#ifndef BT_MULTIBODY_CONSTRAINT_SOLVER_H
+#define btMultiBodyConstraintSolver void
+#endif
+
+#ifndef BT_MULTIBODY_DYNAMICS_WORLD_H
+#define btMultiBodyDynamicsWorld void
+#endif
+
+#ifndef BT_MULTIBODY_JOINT_LIMIT_CONSTRAINT_H
+#define btMultiBodyJointLimitConstraint void
+#endif
+
+#ifndef BT_MULTIBODY_JOINT_MOTOR_H
+#define btMultiBodyJointMotor void
+#endif
+
+#ifndef BT_MULTIBODY_LINK_H
+#define btMultibodyLink void
+#endif
+
+#ifndef BT_MULTIBODY_POINT2POINT_H
+#define btMultiBodyPoint2Point void
+#endif
+
+#ifndef BT_MULTIBODY_SOLVER_CONSTRAINT_H
+#define btMultiBodyConstraintArray void
+#define btMultiBodySolverConstraint void
+#endif
+
 #ifndef BT_MULTIMATERIAL_TRIANGLE_INDEX_VERTEX_ARRAY_H
 #define btMaterialProperties void
 #define btTriangleIndexVertexMaterialArray void
@@ -476,6 +515,16 @@
 
 #ifndef BT_OBB_TRIANGLE_MINKOWSKI_H
 #define btTriangleShape void
+#endif
+
+#ifndef BT_OBJECT_ARRAY__
+#define btAlignedBoolArray void
+#define btAlignedIntArray void
+#define btAlignedScalarArray void
+#else
+#define btAlignedBoolArray btAlignedObjectArray<bool>
+#define btAlignedIntArray btAlignedObjectArray<int>
+#define btAlignedScalarArray btAlignedObjectArray<btScalar>
 #endif
 
 #ifndef BT_OPTIMIZED_BVH_H
@@ -526,6 +575,11 @@
 #define btRaycastVehicle_btVehicleTuning btRaycastVehicle::btVehicleTuning
 #define btVehicleRaycaster_btVehicleRaycasterResult btVehicleRaycaster::btVehicleRaycasterResult
 #define btWheelInfo_RaycastInfo btWheelInfo::RaycastInfo
+#endif
+
+#ifndef BT_RIGIDBODY_H
+#define btRigidBody void
+#define btRigidBody_btRigidBodyConstructionInfo void
 #endif
 
 #ifndef BT_SERIALIZER_H
@@ -704,6 +758,10 @@
 #define btSoftBodyRigidBodyCollisionConfiguration void
 #endif
 
+#ifndef BT_SOFT_BODY_SOLVER_VERTEX_BUFFER_H
+#define btVertexBufferDescriptor void
+#endif
+
 #ifndef BT_SPARSE_SDF_H
 #define btSparseSdf3 void
 #else
@@ -785,6 +843,16 @@
 #ifndef _BT_TRIANGLE_INFO_MAP_H
 #define btTriangleInfo void
 #define btTriangleInfoMap void
+#endif
+
+#ifndef BT_TYPED_CONSTRAINT_H
+#define btTypedConstraint void
+#define btTypedConstraint_btConstraintInfo1 void
+#define btTypedConstraint_btConstraintInfo2 void
+#define btTypedConstraintType int
+#else
+#define btTypedConstraint_btConstraintInfo1 btTypedConstraint::btConstraintInfo1
+#define btTypedConstraint_btConstraintInfo2 btTypedConstraint::btConstraintInfo2
 #endif
 
 #ifndef BT_UNIFORM_SCALING_SHAPE_H

@@ -40,19 +40,19 @@ void btCharacterControllerInterface_setUpInterpolate(btCharacterControllerInterf
 	obj->setUpInterpolate(value);
 }
 
-void btCharacterControllerInterface_setWalkDirection(btCharacterControllerInterface* obj, btScalar* walkDirection)
+void btCharacterControllerInterface_setWalkDirection(btCharacterControllerInterface* obj, const btScalar* walkDirection)
 {
 	VECTOR3_CONV(walkDirection);
 	obj->setWalkDirection(VECTOR3_USE(walkDirection));
 }
 
-void btCharacterControllerInterface_setVelocityForTimeInterval(btCharacterControllerInterface* obj, btScalar* velocity, btScalar timeInterval)
+void btCharacterControllerInterface_setVelocityForTimeInterval(btCharacterControllerInterface* obj, const btScalar* velocity, btScalar timeInterval)
 {
 	VECTOR3_CONV(velocity);
 	obj->setVelocityForTimeInterval(VECTOR3_USE(velocity), timeInterval);
 }
 
-void btCharacterControllerInterface_warp(btCharacterControllerInterface* obj, btScalar* origin)
+void btCharacterControllerInterface_warp(btCharacterControllerInterface* obj, const btScalar* origin)
 {
 	VECTOR3_CONV(origin);
 	obj->warp(VECTOR3_USE(origin));

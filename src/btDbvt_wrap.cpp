@@ -8,9 +8,11 @@ btDbvtAabbMm* btDbvtAabbMm_new()
 	return new btDbvtAabbMm();
 }
 
-void btDbvtAabbMm_Center(btDbvtAabbMm* obj)
+void btDbvtAabbMm_Center(btDbvtAabbMm* obj, btScalar* value)
 {
-	obj->Center();
+	VECTOR3_DEF(value);
+	VECTOR3_USE(value) = obj->Center();
+	VECTOR3_DEF_OUT(value);
 }
 
 int btDbvtAabbMm_Classify(btDbvtAabbMm* obj, const btScalar* n, btScalar o, int s)
@@ -30,9 +32,11 @@ void btDbvtAabbMm_Expand(btDbvtAabbMm* obj, const btScalar* e)
 	obj->Expand(VECTOR3_USE(e));
 }
 
-void btDbvtAabbMm_Extents(btDbvtAabbMm* obj)
+void btDbvtAabbMm_Extents(btDbvtAabbMm* obj, btScalar* value)
 {
-	obj->Extents();
+	VECTOR3_DEF(value);
+	VECTOR3_USE(value) = obj->Extents();
+	VECTOR3_DEF_OUT(value);
 }
 
 void btDbvtAabbMm_FromCE(const btScalar* c, const btScalar* e)

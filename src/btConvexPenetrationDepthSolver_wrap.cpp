@@ -3,7 +3,7 @@
 #include "conversion.h"
 #include "btConvexPenetrationDepthSolver_wrap.h"
 
-bool btConvexPenetrationDepthSolver_calcPenDepth(btConvexPenetrationDepthSolver* obj, btVoronoiSimplexSolver* simplexSolver, btConvexShape* convexA, btConvexShape* convexB, btScalar* transA, btScalar* transB, btScalar* v, btScalar* pa, btScalar* pb, btIDebugDraw* debugDraw)
+bool btConvexPenetrationDepthSolver_calcPenDepth(btConvexPenetrationDepthSolver* obj, btVoronoiSimplexSolver* simplexSolver, const btConvexShape* convexA, const btConvexShape* convexB, const btScalar* transA, const btScalar* transB, btScalar* v, btScalar* pa, btScalar* pb, btIDebugDraw* debugDraw)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);

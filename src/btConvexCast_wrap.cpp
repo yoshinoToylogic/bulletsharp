@@ -41,17 +41,17 @@ void btConvexCast_CastResult_getHitPoint(btConvexCast::CastResult* obj, btScalar
 
 void btConvexCast_CastResult_getHitTransformA(btConvexCast::CastResult* obj, btScalar* value)
 {
-	obj->m_hitTransformA;
+	TRANSFORM_OUT(&obj->m_hitTransformA, value);
 }
 
 void btConvexCast_CastResult_getHitTransformB(btConvexCast::CastResult* obj, btScalar* value)
 {
-	obj->m_hitTransformB;
+	TRANSFORM_OUT(&obj->m_hitTransformB, value);
 }
 
 void btConvexCast_CastResult_getNormal(btConvexCast::CastResult* obj, btScalar* value)
 {
-	obj->m_normal;
+	VECTOR3_OUT(&obj->m_normal, value);
 }
 
 void btConvexCast_CastResult_reportFailure(btConvexCast::CastResult* obj, int errNo, int numIterations)

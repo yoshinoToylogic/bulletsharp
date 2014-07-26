@@ -31,7 +31,7 @@ extern "C"
 	EXPORT void btBroadphaseProxy_delete(btBroadphaseProxy* obj);
 
 	EXPORT btBroadphasePair* btBroadphasePair_new();
-	EXPORT btBroadphasePair* btBroadphasePair_new2(btBroadphasePair* other);
+	EXPORT btBroadphasePair* btBroadphasePair_new2(const btBroadphasePair* other);
 	EXPORT btBroadphasePair* btBroadphasePair_new3(btBroadphaseProxy* proxy0, btBroadphaseProxy* proxy1);
 	EXPORT btCollisionAlgorithm* btBroadphasePair_getAlgorithm(btBroadphasePair* obj);
 	EXPORT btBroadphaseProxy* btBroadphasePair_getPProxy0(btBroadphasePair* obj);
