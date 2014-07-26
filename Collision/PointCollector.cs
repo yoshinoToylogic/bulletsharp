@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -29,25 +29,25 @@ namespace BulletSharp
 			set { btPointCollector_setHasResult(_native, value); }
 		}
 
-        public Vector3 NormalOnBInWorld
+		public Vector3 NormalOnBInWorld
 		{
-            get
-            {
-                Vector3 value;
-                btPointCollector_getNormalOnBInWorld(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btPointCollector_getNormalOnBInWorld(_native, out value);
+				return value;
+			}
 			set { btPointCollector_setNormalOnBInWorld(_native, ref value); }
 		}
 
 		public Vector3 PointInWorld
 		{
-            get
-            {
-                Vector3 value;
-                btPointCollector_getPointInWorld(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btPointCollector_getPointInWorld(_native, out value);
+				return value;
+			}
 			set { btPointCollector_setPointInWorld(_native, ref value); }
 		}
 

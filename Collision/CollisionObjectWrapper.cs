@@ -46,12 +46,12 @@ namespace BulletSharp
 
 		public Matrix WorldTransform
 		{
-            get
-            {
-                Matrix value;
-                btCollisionObjectWrapper_getWorldTransform(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				btCollisionObjectWrapper_getWorldTransform(_native, out value);
+				return value;
+			}
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

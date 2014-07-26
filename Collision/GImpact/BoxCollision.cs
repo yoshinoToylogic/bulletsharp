@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -43,34 +43,34 @@ namespace BulletSharp
 
 		public Matrix AR
 		{
-            get
-            {
-                Matrix value;
-                BT_BOX_BOX_TRANSFORM_CACHE_getAR(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				BT_BOX_BOX_TRANSFORM_CACHE_getAR(_native, out value);
+				return value;
+			}
 			set { BT_BOX_BOX_TRANSFORM_CACHE_setAR(_native, ref value); }
 		}
 
         public Matrix R1To0
 		{
-            get
-            {
-                Matrix value;
-                BT_BOX_BOX_TRANSFORM_CACHE_getR1to0(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				BT_BOX_BOX_TRANSFORM_CACHE_getR1to0(_native, out value);
+				return value;
+			}
 			set { BT_BOX_BOX_TRANSFORM_CACHE_setR1to0(_native, ref value); }
 		}
 
 		public Vector3 T1To0
 		{
-            get
-            {
-                Vector3 value;
-                BT_BOX_BOX_TRANSFORM_CACHE_getT1to0(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				BT_BOX_BOX_TRANSFORM_CACHE_getT1to0(_native, out value);
+				return value;
+			}
 			set { BT_BOX_BOX_TRANSFORM_CACHE_setT1to0(_native, ref value); }
 		}
 
@@ -175,12 +175,12 @@ namespace BulletSharp
 		{
 			return btAABB_collide_ray(_native, ref vorigin, ref vdir);
 		}
-        
+
 		public bool CollideTriangleExact(ref Vector3 p1, ref Vector3 p2, ref Vector3 p3, ref Vector4 trianglePlane)
 		{
 			return btAABB_collide_triangle_exact(_native, ref p1, ref p2, ref p3, ref trianglePlane);
 		}
-        
+
 		public void Copy_with_margin(Aabb other, float margin)
 		{
 			btAABB_copy_with_margin(_native, other._native, margin);
@@ -191,9 +191,9 @@ namespace BulletSharp
 			btAABB_find_intersection(_native, other._native, intersection._native);
 		}
 
-		public void GetCenterExtend(ref Vector3 center, ref Vector3 extend)
+        public void GetCenterExtend(out Vector3 center, out Vector3 extend)
 		{
-			btAABB_get_center_extend(_native, ref center, ref extend);
+            btAABB_get_center_extend(_native, out center, out extend);
 		}
 
 		public bool HasCollision(Aabb other)
@@ -231,35 +231,35 @@ namespace BulletSharp
 			return btAABB_overlapping_trans_conservative2(_native, box._native, trans1To0._native);
 		}
         /*
-		public eBT_PLANE_INTERSECTION_TYPE Plane_classify(Vector4 plane)
+		public eBT_PLANE_INTERSECTION_TYPE PlaneClassify(Vector4 plane)
 		{
-			return btAABB_plane_classify(_native, plane._native);
+			return btAABB_plane_classify(_native, ref plane);
 		}
         */
         public void ProjectionInterval(ref Vector3 direction, out float vmin, out float vmax)
 		{
             btAABB_projection_interval(_native, ref direction, out vmin, out vmax);
 		}
-        
-        public Vector3 Max
+
+		public Vector3 Max
 		{
-            get
-            {
-                Vector3 value;
-                btAABB_getMax(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btAABB_getMax(_native, out value);
+				return value;
+			}
 			set { btAABB_setMax(_native, ref value); }
 		}
 
 		public Vector3 Min
 		{
-            get
-            {
-                Vector3 value;
-                btAABB_getMin(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btAABB_getMin(_native, out value);
+				return value;
+			}
 			set { btAABB_setMin(_native, ref value); }
 		}
 
@@ -305,13 +305,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btAABB_collide_ray(IntPtr obj, [In] ref Vector3 vorigin, [In] ref Vector3 vdir);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btAABB_collide_triangle_exact(IntPtr obj, [In] ref Vector3 p1, [In] ref Vector3 p2, [In] ref Vector3 p3, [In] ref Vector4 triangle_plane);
+		static extern bool btAABB_collide_triangle_exact(IntPtr obj, [In] ref Vector3 p1, [In] ref Vector3 p2, [In] ref Vector3 p3, [In] ref Vector4 triangle_plane);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAABB_copy_with_margin(IntPtr obj, IntPtr other, float margin);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAABB_find_intersection(IntPtr obj, IntPtr other, IntPtr intersection);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btAABB_get_center_extend(IntPtr obj, [In] ref Vector3 center, [In] ref Vector3 extend);
+		static extern void btAABB_get_center_extend(IntPtr obj, [Out] out Vector3 center, [Out] out Vector3 extend);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAABB_getMax(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -337,7 +337,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAABB_setMax(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btAABB_setMin(IntPtr obj, [In] ref Vector3 value);
+		static extern void btAABB_setMin(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAABB_delete(IntPtr obj);
 	}

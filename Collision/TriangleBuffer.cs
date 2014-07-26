@@ -35,35 +35,35 @@ namespace BulletSharp
 
 		public Vector3 Vertex0
 		{
-		    get
-		    {
-		        Vector3 value;
-		        btTriangle_getVertex0(_native, out value);
-		        return value;
-		    }
-		    set { btTriangle_setVertex0(_native, ref value); }
+			get
+			{
+				Vector3 value;
+				btTriangle_getVertex0(_native, out value);
+				return value;
+			}
+			set { btTriangle_setVertex0(_native, ref value); }
 		}
 
-        public Vector3 Vertex1
+		public Vector3 Vertex1
 		{
-            get
-            {
-                Vector3 value;
-                btTriangle_getVertex1(_native, out value);
-                return value;
-            }
-            set { btTriangle_setVertex1(_native, ref value); }
+			get
+			{
+				Vector3 value;
+				btTriangle_getVertex1(_native, out value);
+				return value;
+			}
+			set { btTriangle_setVertex1(_native, ref value); }
 		}
 
-        public Vector3 Vertex2
+		public Vector3 Vertex2
 		{
-            get
-            {
-                Vector3 value;
-                btTriangle_getVertex2(_native, out value);
-                return value;
-            }
-            set { btTriangle_setVertex2(_native, ref value); }
+			get
+			{
+				Vector3 value;
+				btTriangle_getVertex2(_native, out value);
+				return value;
+			}
+			set { btTriangle_setVertex2(_native, ref value); }
 		}
 
 		public void Dispose()
@@ -108,9 +108,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTriangle_setVertex0(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btTriangle_setVertex1(IntPtr obj, [In] ref Vector3 value);
+		static extern void btTriangle_setVertex1(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btTriangle_setVertex2(IntPtr obj, [In] ref Vector3 value);
+		static extern void btTriangle_setVertex2(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTriangle_delete(IntPtr obj);
 	}

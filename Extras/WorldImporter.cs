@@ -337,12 +337,12 @@ namespace BulletSharp
             _allocatedCollisionShapes.Add(shape);
             return shape;
 		}
-        /*
+        
 		public OptimizedBvh CreateOptimizedBvh()
 		{
 			return new OptimizedBvh(_native);
 		}
-        */
+        
 		public CollisionShape CreatePlaneShape(Vector3 planeNormal, float planeConstant)
 		{
             StaticPlaneShape shape = new StaticPlaneShape(planeNormal, planeConstant);
@@ -430,12 +430,12 @@ namespace BulletSharp
 		{
 			btWorldImporter_deleteAllData(_native);
 		}
-        /*
+        
 		public OptimizedBvh GetBvhByIndex(int index)
 		{
-			return btWorldImporter_getBvhByIndex(_native, index);
+            return new OptimizedBvh(btWorldImporter_getBvhByIndex(_native, index));
 		}
-        */
+        
 		public CollisionShape GetCollisionShapeByIndex(int index)
 		{
             return CollisionShape.GetManaged(btWorldImporter_getCollisionShapeByIndex(_native, index));

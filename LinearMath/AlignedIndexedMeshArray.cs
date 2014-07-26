@@ -8,7 +8,7 @@ namespace BulletSharp
 {
     public class AlignedIndexedMeshArrayDebugView
     {
-        private AlignedIndexedMeshArray _array;
+        private readonly AlignedIndexedMeshArray _array;
 
         public AlignedIndexedMeshArrayDebugView(AlignedIndexedMeshArray array)
         {
@@ -33,8 +33,8 @@ namespace BulletSharp
     public class AlignedIndexedMeshArrayEnumerator : IEnumerator<IndexedMesh>
     {
         int _i;
-        int _count;
-        AlignedIndexedMeshArray _array;
+        readonly int _count;
+        readonly AlignedIndexedMeshArray _array;
 
         public AlignedIndexedMeshArrayEnumerator(AlignedIndexedMeshArray array)
         {
@@ -72,7 +72,7 @@ namespace BulletSharp
     [Serializable, DebuggerTypeProxy(typeof(AlignedIndexedMeshArrayDebugView)), DebuggerDisplay("Count = {Count}")]
     public class AlignedIndexedMeshArray : AlignedObjectArray, IList<IndexedMesh>, IDisposable
     {
-        bool _preventDelete;
+        readonly bool _preventDelete;
 
         internal AlignedIndexedMeshArray(IntPtr native, bool preventDelete)
             : base(native)

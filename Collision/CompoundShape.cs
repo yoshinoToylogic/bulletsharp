@@ -38,21 +38,25 @@ namespace BulletSharp
 			get { return btCompoundShapeChild_getChildShapeType(_native); }
 			set { btCompoundShapeChild_setChildShapeType(_native, value); }
 		}
-        /*
-		public DbvtNode Node
+
+	    public DbvtNode Node
+	    {
+	        get
+	        {
+	            IntPtr ptr = btCompoundShapeChild_getNode(_native);
+	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
+	        }
+	        set { btCompoundShapeChild_setNode(_native, (value != null) ? value._native : IntPtr.Zero); }
+	    }
+
+	    public Matrix Transform
 		{
-			get { return btCompoundShapeChild_getNode(_native); }
-			set { btCompoundShapeChild_setNode(_native, value._native); }
-		}
-        */
-		public Matrix Transform
-		{
-            get
-            {
-                Matrix value;
-                btCompoundShapeChild_getTransform(_native, out value);
-                return value;
-            }
+			get
+			{
+				Matrix value;
+				btCompoundShapeChild_getTransform(_native, out value);
+				return value;
+			}
 			set { btCompoundShapeChild_setTransform(_native, ref value); }
 		}
 
@@ -202,12 +206,12 @@ namespace BulletSharp
                 return _childList;
             }
 		}
-        /*
+
 		public Dbvt DynamicAabbTree
 		{
-			get { return btCompoundShape_getDynamicAabbTree(_native); }
+			get { return new Dbvt(btCompoundShape_getDynamicAabbTree(_native), true); }
 		}
-        */
+
 		public int NumChildShapes
 		{
 			get { return btCompoundShape_getNumChildShapes(_native); }

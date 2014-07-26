@@ -108,7 +108,7 @@ namespace BulletSharp
 		{
 			btCollisionAlgorithm_processCollision(_native, body0Wrap._native, body1Wrap._native, dispatchInfo._native, resultOut._native);
 		}
-        
+
 		public void Dispose()
 		{
 			Dispose(true);

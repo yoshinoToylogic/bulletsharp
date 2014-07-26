@@ -101,14 +101,14 @@ namespace BulletSharp
 			return btConvexPolyhedron_testContainment(_native);
 		}
 
-        public Vector3 Extents
+		public Vector3 Extents
 		{
-            get
-            {
-                Vector3 value;
-                btConvexPolyhedron_getExtents(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btConvexPolyhedron_getExtents(_native, out value);
+				return value;
+			}
 			set { btConvexPolyhedron_setExtents(_native, ref value); }
 		}
         /*
@@ -117,36 +117,36 @@ namespace BulletSharp
 			get { return btConvexPolyhedron_getFaces(_native); }
 		}
         */
-        public Vector3 LocalCenter
+		public Vector3 LocalCenter
 		{
-            get
-            {
-                Vector3 value;
-                btConvexPolyhedron_getLocalCenter(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btConvexPolyhedron_getLocalCenter(_native, out value);
+				return value;
+			}
 			set { btConvexPolyhedron_setLocalCenter(_native, ref value); }
 		}
 
         public Vector3 C
 		{
-            get
-            {
-                Vector3 value;
-                btConvexPolyhedron_getMC(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btConvexPolyhedron_getMC(_native, out value);
+				return value;
+			}
 			set { btConvexPolyhedron_setMC(_native, ref value); }
 		}
 
 		public Vector3 E
 		{
-            get
-            {
-                Vector3 value;
-                btConvexPolyhedron_getME(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btConvexPolyhedron_getME(_native, out value);
+				return value;
+			}
 			set { btConvexPolyhedron_setME(_native, ref value); }
 		}
 

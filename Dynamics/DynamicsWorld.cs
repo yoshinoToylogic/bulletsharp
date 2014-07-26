@@ -24,7 +24,7 @@ namespace BulletSharp
 
         internal InternalTickCallback _callback;
         internal InternalTickCallbackUnmanaged _callbackUnmanaged;
-        protected ConstraintSolver _solver;
+        protected ConstraintSolver _constraintSolver;
         private ContactSolverInfo _solverInfo;
 
         private Dictionary<IAction, ActionInterfaceWrapper> _actions;
@@ -74,7 +74,7 @@ namespace BulletSharp
 			btDynamicsWorld_addRigidBody(_native, body._native);
 		}
 
-		public void AddRigidBody(RigidBody body, short group, short mask)
+        public void AddRigidBody(RigidBody body, CollisionFilterGroups group, CollisionFilterGroups mask)
 		{
 			btDynamicsWorld_addRigidBody2(_native, body._native, group, mask);
 		}
@@ -193,15 +193,15 @@ namespace BulletSharp
 		{
             get
             {
-                if (_solver == null)
+                if (_constraintSolver == null)
                 {
-                    _solver = new ConstraintSolver(btDynamicsWorld_getConstraintSolver(_native), true);
+                    _constraintSolver = new ConstraintSolver(btDynamicsWorld_getConstraintSolver(_native), true);
                 }
-                return _solver;
+                return _constraintSolver;
             }
             set
             {
-                _solver = value;
+                _constraintSolver = value;
                 btDynamicsWorld_setConstraintSolver(_native, value._native);
             }
 		}
@@ -250,7 +250,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, short group, short mask);
+        static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, CollisionFilterGroups group, CollisionFilterGroups mask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_clearForces(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

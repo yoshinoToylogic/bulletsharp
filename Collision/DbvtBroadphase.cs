@@ -21,17 +21,20 @@ namespace BulletSharp
 			: this(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask)
 		{
 		}
-        /*
-		public DbvtNode Leaf
-		{
-			get { return btDbvtProxy_getLeaf(_native); }
-			set { btDbvtProxy_setLeaf(_native, value._native); }
-		}
 
-		public DbvtProxy Links
+	    public DbvtNode Leaf
+	    {
+	        get
+	        {
+	            IntPtr ptr = btDbvtProxy_getLeaf(_native);
+	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
+	        }
+	        set { btDbvtProxy_setLeaf(_native, (value != null) ? value._native : IntPtr.Zero); }
+	    }
+        /*
+	    public DbvtProxyArray Links
 		{
 			get { return btDbvtProxy_getLinks(_native); }
-			set { btDbvtProxy_setLinks(_native, value._native); }
 		}
         */
 		public int Stage
@@ -50,8 +53,6 @@ namespace BulletSharp
 		static extern int btDbvtProxy_getStage(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtProxy_setLeaf(IntPtr obj, IntPtr value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDbvtProxy_setLinks(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtProxy_setStage(IntPtr obj, int value);
 	}
@@ -182,10 +183,9 @@ namespace BulletSharp
 			set { btDbvtBroadphase_setReleasepaircache(_native, value); }
 		}
         /*
-		public Dbvt Sets
+		public DbvtArray Sets
 		{
 			get { return btDbvtBroadphase_getSets(_native); }
-			set { btDbvtBroadphase_setSets(_native, value._native); }
 		}
         */
 		public int StageCurrent
@@ -194,10 +194,9 @@ namespace BulletSharp
 			set { btDbvtBroadphase_setStageCurrent(_native, value); }
 		}
         /*
-		public DbvtProxy StageRoots
+        public DbvtProxyPtrArray StageRoots
 		{
 			get { return btDbvtBroadphase_getStageRoots(_native); }
-			set { btDbvtBroadphase_setStageRoots(_native, value._native); }
 		}
         */
 		public uint UpdatesCall
@@ -305,11 +304,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtBroadphase_setReleasepaircache(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDbvtBroadphase_setSets(IntPtr obj, IntPtr value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtBroadphase_setStageCurrent(IntPtr obj, int value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDbvtBroadphase_setStageRoots(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtBroadphase_setUpdates_call(IntPtr obj, uint value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

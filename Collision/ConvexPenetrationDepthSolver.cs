@@ -1,11 +1,11 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class ConvexPenetrationDepthSolver
+	public class ConvexPenetrationDepthSolver : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -18,7 +18,7 @@ namespace BulletSharp
 		{
             return btConvexPenetrationDepthSolver_calcPenDepth(_native, simplexSolver._native, convexA._native, convexB._native, ref transA, ref transB, out v, out pa, out pb, DebugDraw.GetUnmanaged(debugDraw));
 		}
-        
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -40,7 +40,7 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btConvexPenetrationDepthSolver_calcPenDepth(IntPtr obj, IntPtr simplexSolver, IntPtr convexA, IntPtr convexB, [In] ref Matrix transA, [In] ref Matrix transB, [Out] out Vector3 v, [Out] out Vector3 pa, [Out] out Vector3 pb, IntPtr debugDraw);
+		static extern bool btConvexPenetrationDepthSolver_calcPenDepth(IntPtr obj, IntPtr simplexSolver, IntPtr convexA, IntPtr convexB, [In] ref Matrix transA, [In] ref Matrix transB, [Out] out Vector3 v, [Out] out Vector3 pa, [Out] out Vector3 pb, IntPtr debugDraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConvexPenetrationDepthSolver_delete(IntPtr obj);
 	}

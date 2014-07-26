@@ -80,28 +80,23 @@ namespace BulletSharp
 		{
 			btBvhTriangleMeshShape_serializeSingleTriangleInfoMap(_native, serializer._native);
 		}
-        /*
-		public void SetOptimizedBvh(OptimizedBvh bvh)
-		{
-			btBvhTriangleMeshShape_setOptimizedBvh(_native, bvh._native);
-		}
-
+        
 		public void SetOptimizedBvh(OptimizedBvh bvh, Vector3 localScaling)
 		{
 			btBvhTriangleMeshShape_setOptimizedBvh2(_native, bvh._native, ref localScaling);
 		}
-        */
+        
 		public bool UsesQuantizedAabbCompression()
 		{
 			return btBvhTriangleMeshShape_usesQuantizedAabbCompression(_native);
 		}
-        /*
+        
 		public OptimizedBvh OptimizedBvh
 		{
-			get { return btBvhTriangleMeshShape_getOptimizedBvh(_native); }
-		    set { SetOptimizedBvh(value); }
+			get { return new OptimizedBvh(btBvhTriangleMeshShape_getOptimizedBvh(_native)); }
+		    set { btBvhTriangleMeshShape_setOptimizedBvh(_native, value._native); }
 		}
-        */
+        
 		public bool OwnsBvh
 		{
 			get { return btBvhTriangleMeshShape_getOwnsBvh(_native); }

@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -12,8 +12,8 @@ namespace BulletSharp
 		{
 		}
 
-		public DefaultMotionState(Matrix startTrans, Matrix centerOfMassOffset)
-			: base(btDefaultMotionState_new(ref startTrans, ref centerOfMassOffset))
+		public DefaultMotionState()
+			: base(btDefaultMotionState_new())
 		{
 		}
 
@@ -22,41 +22,41 @@ namespace BulletSharp
 		{
 		}
 
-		public DefaultMotionState()
-			: base(btDefaultMotionState_new3())
+		public DefaultMotionState(Matrix startTrans, Matrix centerOfMassOffset)
+			: base(btDefaultMotionState_new3(ref startTrans, ref centerOfMassOffset))
 		{
 		}
 
-        public Matrix CenterOfMassOffset
+		public Matrix CenterOfMassOffset
 		{
-            get
-            {
-                Matrix transform;
-                btDefaultMotionState_getCenterOfMassOffset(_native, out transform);
-                return transform;
-            }
+			get
+			{
+				Matrix value;
+				btDefaultMotionState_getCenterOfMassOffset(_native, out value);
+				return value;
+			}
 			set { btDefaultMotionState_setCenterOfMassOffset(_native, ref value); }
 		}
 
-        public Matrix GraphicsWorldTrans
+		public Matrix GraphicsWorldTrans
 		{
-            get
-            {
-                Matrix transform;
-                btDefaultMotionState_getGraphicsWorldTrans(_native, out transform);
-                return transform;
-            }
+			get
+			{
+				Matrix value;
+				btDefaultMotionState_getGraphicsWorldTrans(_native, out value);
+				return value;
+			}
 			set { btDefaultMotionState_setGraphicsWorldTrans(_native, ref value); }
 		}
 
 		public Matrix StartWorldTrans
 		{
-            get
-            {
-                Matrix transform;
-                btDefaultMotionState_getStartWorldTrans(_native, out transform);
-                return transform;
-            }
+			get
+			{
+				Matrix value;
+				btDefaultMotionState_getStartWorldTrans(_native, out value);
+				return value;
+			}
 			set { btDefaultMotionState_setStartWorldTrans(_native, ref value); }
 		}
 
@@ -67,11 +67,11 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDefaultMotionState_new([In] ref Matrix startTrans, [In] ref Matrix centerOfMassOffset);
+		static extern IntPtr btDefaultMotionState_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDefaultMotionState_new2([In] ref Matrix startTrans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDefaultMotionState_new3();
+		static extern IntPtr btDefaultMotionState_new3([In] ref Matrix startTrans, [In] ref Matrix centerOfMassOffset);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultMotionState_getCenterOfMassOffset(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -83,9 +83,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultMotionState_setCenterOfMassOffset(IntPtr obj, [In] ref Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDefaultMotionState_setGraphicsWorldTrans(IntPtr obj, [In] ref Matrix value);
+		static extern void btDefaultMotionState_setGraphicsWorldTrans(IntPtr obj, [In] ref Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDefaultMotionState_setStartWorldTrans(IntPtr obj, [In] ref Matrix value);
+		static extern void btDefaultMotionState_setStartWorldTrans(IntPtr obj, [In] ref Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultMotionState_setUserPointer(IntPtr obj, IntPtr value);
 	}

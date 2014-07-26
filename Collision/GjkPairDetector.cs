@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -49,12 +49,12 @@ namespace BulletSharp
 
 		public Vector3 CachedSeparatingAxis
 		{
-            get
-            {
-                Vector3 value;
-                btGjkPairDetector_getCachedSeparatingAxis(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btGjkPairDetector_getCachedSeparatingAxis(_native, out value);
+				return value;
+			}
             set { btGjkPairDetector_setCachedSeparatingAxis(_native, ref value); }
 		}
 

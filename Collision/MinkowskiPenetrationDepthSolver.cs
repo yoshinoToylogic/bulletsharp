@@ -6,11 +6,6 @@ namespace BulletSharp
 {
 	public class MinkowskiPenetrationDepthSolver : ConvexPenetrationDepthSolver
 	{
-		internal MinkowskiPenetrationDepthSolver(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public MinkowskiPenetrationDepthSolver()
 			: base(btMinkowskiPenetrationDepthSolver_new())
 		{

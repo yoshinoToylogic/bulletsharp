@@ -1,16 +1,19 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
 	public class RotationalLimitMotor : IDisposable
 	{
 		internal IntPtr _native;
+        private readonly bool _preventDelete;
 
-		internal RotationalLimitMotor(IntPtr native)
+        internal RotationalLimitMotor(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public RotationalLimitMotor()
@@ -27,6 +30,11 @@ namespace BulletSharp
 		{
 			return btRotationalLimitMotor_needApplyTorques(_native);
 		}
+
+        public float SolveAngularLimits(float timeStep, ref Vector3 axis, float jacDiagABInv, RigidBody body0, RigidBody body1)
+        {
+            return btRotationalLimitMotor_solveAngularLimits(_native, timeStep, ref axis, jacDiagABInv, body0._native, body1._native);
+        }
 
 		public float SolveAngularLimits(float timeStep, Vector3 axis, float jacDiagABInv, RigidBody body0, RigidBody body1)
 		{
@@ -115,19 +123,19 @@ namespace BulletSharp
 			set { btRotationalLimitMotor_setMaxMotorForce(_native, value); }
 		}
 
-		public float NormalCFM
+		public float NormalCfm
 		{
 			get { return btRotationalLimitMotor_getNormalCFM(_native); }
 			set { btRotationalLimitMotor_setNormalCFM(_native, value); }
 		}
 
-		public float StopCFM
+		public float StopCfm
 		{
 			get { return btRotationalLimitMotor_getStopCFM(_native); }
 			set { btRotationalLimitMotor_setStopCFM(_native, value); }
 		}
 
-		public float StopERP
+		public float StopErp
 		{
 			get { return btRotationalLimitMotor_getStopERP(_native); }
 			set { btRotationalLimitMotor_setStopERP(_native, value); }
@@ -149,7 +157,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btRotationalLimitMotor_delete(_native);
+                if (!_preventDelete)
+                {
+                    btRotationalLimitMotor_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -232,7 +243,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRotationalLimitMotor_setTargetVelocity(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btRotationalLimitMotor_solveAngularLimits(IntPtr obj, float timeStep, [Out] out Vector3 axis, float jacDiagABInv, IntPtr body0, IntPtr body1);
+		static extern float btRotationalLimitMotor_solveAngularLimits(IntPtr obj, float timeStep, [In] ref Vector3 axis, float jacDiagABInv, IntPtr body0, IntPtr body1);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btRotationalLimitMotor_testLimitValue(IntPtr obj, float test_value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -242,10 +253,12 @@ namespace BulletSharp
 	public class TranslationalLimitMotor : IDisposable
 	{
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal TranslationalLimitMotor(IntPtr native)
+        internal TranslationalLimitMotor(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public TranslationalLimitMotor()
@@ -268,6 +281,11 @@ namespace BulletSharp
 			return btTranslationalLimitMotor_needApplyForce(_native, limitIndex);
 		}
 
+        public float SolveLinearAxis(float timeStep, float jacDiagABInv, RigidBody body1, ref Vector3 pointInA, RigidBody body2, ref Vector3 pointInB, int limitIndex, ref Vector3 axisNormalOnA, ref Vector3 anchorPos)
+        {
+            return btTranslationalLimitMotor_solveLinearAxis(_native, timeStep, jacDiagABInv, body1._native, ref pointInA, body2._native, ref pointInB, limitIndex, ref axisNormalOnA, ref anchorPos);
+        }
+
 		public float SolveLinearAxis(float timeStep, float jacDiagABInv, RigidBody body1, Vector3 pointInA, RigidBody body2, Vector3 pointInB, int limitIndex, Vector3 axisNormalOnA, Vector3 anchorPos)
 		{
 			return btTranslationalLimitMotor_solveLinearAxis(_native, timeStep, jacDiagABInv, body1._native, ref pointInA, body2._native, ref pointInB, limitIndex, ref axisNormalOnA, ref anchorPos);
@@ -278,7 +296,7 @@ namespace BulletSharp
 			return btTranslationalLimitMotor_testLimitValue(_native, limitIndex, testValue);
 		}
 
-		public void AccumulatedImpulse
+        public Vector3 AccumulatedImpulse
 		{
 			get
 			{
@@ -288,14 +306,14 @@ namespace BulletSharp
 			}
 			set { btTranslationalLimitMotor_setAccumulatedImpulse(_native, ref value); }
 		}
-
+        /*
 		public int CurrentLimit
 		{
 			get { return btTranslationalLimitMotor_getCurrentLimit(_native); }
 			set { btTranslationalLimitMotor_setCurrentLimit(_native, value._native); }
 		}
-
-		public void CurrentLimitError
+        */
+        public Vector3 CurrentLimitError
 		{
 			get
 			{
@@ -306,7 +324,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setCurrentLimitError(_native, ref value); }
 		}
 
-		public void CurrentLinearDiff
+        public Vector3 CurrentLinearDiff
 		{
 			get
 			{
@@ -322,20 +340,20 @@ namespace BulletSharp
 			get { return btTranslationalLimitMotor_getDamping(_native); }
 			set { btTranslationalLimitMotor_setDamping(_native, value); }
 		}
-
+        /*
 		public bool EnableMotor
 		{
 			get { return btTranslationalLimitMotor_getEnableMotor(_native); }
 			set { btTranslationalLimitMotor_setEnableMotor(_native, value._native); }
 		}
-
+        */
 		public float LimitSoftness
 		{
 			get { return btTranslationalLimitMotor_getLimitSoftness(_native); }
 			set { btTranslationalLimitMotor_setLimitSoftness(_native, value); }
 		}
 
-		public void LowerLimit
+        public Vector3 LowerLimit
 		{
 			get
 			{
@@ -346,7 +364,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setLowerLimit(_native, ref value); }
 		}
 
-		public void MaxMotorForce
+        public Vector3 MaxMotorForce
 		{
 			get
 			{
@@ -357,7 +375,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setMaxMotorForce(_native, ref value); }
 		}
 
-		public void NormalCFM
+        public Vector3 NormalCfm
 		{
 			get
 			{
@@ -374,7 +392,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setRestitution(_native, value); }
 		}
 
-		public void StopCFM
+        public Vector3 StopCfm
 		{
 			get
 			{
@@ -385,7 +403,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setStopCFM(_native, ref value); }
 		}
 
-		public void StopERP
+        public Vector3 StopErp
 		{
 			get
 			{
@@ -396,7 +414,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setStopERP(_native, ref value); }
 		}
 
-		public void TargetVelocity
+        public Vector3 TargetVelocity
 		{
 			get
 			{
@@ -407,7 +425,7 @@ namespace BulletSharp
 			set { btTranslationalLimitMotor_setTargetVelocity(_native, ref value); }
 		}
 
-		public void UpperLimit
+        public Vector3 UpperLimit
 		{
 			get
 			{
@@ -428,7 +446,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btTranslationalLimitMotor_delete(_native);
+                if (!_preventDelete)
+                {
+                    btTranslationalLimitMotor_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -438,58 +459,58 @@ namespace BulletSharp
 			Dispose(false);
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTranslationalLimitMotor_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTranslationalLimitMotor_new2(IntPtr other);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getAccumulatedImpulse(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTranslationalLimitMotor_getCurrentLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getCurrentLimitError(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getCurrentLinearDiff(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btTranslationalLimitMotor_getDamping(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTranslationalLimitMotor_getEnableMotor(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btTranslationalLimitMotor_getLimitSoftness(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getLowerLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getMaxMotorForce(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getNormalCFM(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btTranslationalLimitMotor_getRestitution(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getStopCFM(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getStopERP(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getTargetVelocity(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_getUpperLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btTranslationalLimitMotor_isLimited(IntPtr obj, int limitIndex);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btTranslationalLimitMotor_needApplyForce(IntPtr obj, int limitIndex);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setAccumulatedImpulse(IntPtr obj, [In] ref Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setCurrentLimit(IntPtr obj, IntPtr value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setCurrentLimitError(IntPtr obj, [In] ref Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setCurrentLinearDiff(IntPtr obj, [In] ref Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setDamping(IntPtr obj, float value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setEnableMotor(IntPtr obj, IntPtr value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btTranslationalLimitMotor_setLimitSoftness(IntPtr obj, float value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btTranslationalLimitMotor_new();
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btTranslationalLimitMotor_new2(IntPtr other);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getAccumulatedImpulse(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btTranslationalLimitMotor_getCurrentLimit(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getCurrentLimitError(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getCurrentLinearDiff(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern float btTranslationalLimitMotor_getDamping(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btTranslationalLimitMotor_getEnableMotor(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern float btTranslationalLimitMotor_getLimitSoftness(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getLowerLimit(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getMaxMotorForce(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getNormalCFM(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern float btTranslationalLimitMotor_getRestitution(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getStopCFM(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getStopERP(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getTargetVelocity(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_getUpperLimit(IntPtr obj, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern bool btTranslationalLimitMotor_isLimited(IntPtr obj, int limitIndex);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern bool btTranslationalLimitMotor_needApplyForce(IntPtr obj, int limitIndex);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setAccumulatedImpulse(IntPtr obj, [In] ref Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setCurrentLimit(IntPtr obj, IntPtr value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setCurrentLimitError(IntPtr obj, [In] ref Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setCurrentLinearDiff(IntPtr obj, [In] ref Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setDamping(IntPtr obj, float value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setEnableMotor(IntPtr obj, IntPtr value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btTranslationalLimitMotor_setLimitSoftness(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTranslationalLimitMotor_setLowerLimit(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -516,6 +537,9 @@ namespace BulletSharp
 
 	public class Generic6DofConstraint : TypedConstraint
 	{
+        private RotationalLimitMotor[] _angularLimits = new RotationalLimitMotor[3];
+        private TranslationalLimitMotor _linearLimits;
+
 		internal Generic6DofConstraint(IntPtr native)
 			: base(native)
 		{
@@ -536,6 +560,11 @@ namespace BulletSharp
 			btGeneric6DofConstraint_calcAnchorPos(_native);
 		}
 
+        public void CalculateTransforms(ref Matrix transA, ref Matrix transB)
+        {
+            btGeneric6DofConstraint_calculateTransforms(_native, ref transA, ref transB);
+        }
+
 		public void CalculateTransforms(Matrix transA, Matrix transB)
 		{
 			btGeneric6DofConstraint_calculateTransforms(_native, ref transA, ref transB);
@@ -546,14 +575,14 @@ namespace BulletSharp
 			btGeneric6DofConstraint_calculateTransforms2(_native);
 		}
 
-		public int Get_limit_motor_info2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational)
+		public int GetLimitMotorInfo2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational)
 		{
-			return btGeneric6DofConstraint_get_limit_motor_info2(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, ref ax1, rotational);
+			return btGeneric6DofConstraint_get_limit_motor_info2(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, out ax1, rotational);
 		}
 
-		public int Get_limit_motor_info2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational, int rotAllowed)
+        public int GetLimitMotorInfo2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, Vector3 ax1, int rotational, int rotAllowed)
 		{
-			return btGeneric6DofConstraint_get_limit_motor_info22(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, ref ax1, rotational, rotAllowed);
+            return btGeneric6DofConstraint_get_limit_motor_info22(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, out ax1, rotational, rotAllowed);
 		}
 
 		public float GetAngle(int axisIndex)
@@ -578,7 +607,11 @@ namespace BulletSharp
 
 		public RotationalLimitMotor GetRotationalLimitMotor(int index)
 		{
-			return btGeneric6DofConstraint_getRotationalLimitMotor(_native, index);
+            if (_angularLimits[index] == null)
+            {
+                _angularLimits[index] = new RotationalLimitMotor(btGeneric6DofConstraint_getRotationalLimitMotor(_native, index), true);
+            }
+            return _angularLimits[index];
 		}
 
 		public bool IsLimited(int limitIndex)
@@ -586,10 +619,20 @@ namespace BulletSharp
 			return btGeneric6DofConstraint_isLimited(_native, limitIndex);
 		}
 
+        public void SetAxis(ref Vector3 axis1, ref Vector3 axis2)
+        {
+            btGeneric6DofConstraint_setAxis(_native, ref axis1, ref axis2);
+        }
+
 		public void SetAxis(Vector3 axis1, Vector3 axis2)
 		{
 			btGeneric6DofConstraint_setAxis(_native, ref axis1, ref axis2);
 		}
+
+        public void SetFrames(ref Matrix frameA, ref Matrix frameB)
+        {
+            btGeneric6DofConstraint_setFrames(_native, ref frameA, ref frameB);
+        }
 
 		public void SetFrames(Matrix frameA, Matrix frameB)
 		{
@@ -606,22 +649,32 @@ namespace BulletSharp
 			return btGeneric6DofConstraint_testAngularLimitMotor(_native, axisIndex);
 		}
 
-		public void UpdateRHS(float timeStep)
+		public void UpdateRhs(float timeStep)
 		{
 			btGeneric6DofConstraint_updateRHS(_native, timeStep);
 		}
 
-		public void AngularLowerLimit
-		{
-			get { return btGeneric6DofConstraint_getAngularLowerLimit(_native); }
-			set { btGeneric6DofConstraint_setAngularLowerLimit(_native, value); }
-		}
+        public Vector3 AngularLowerLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getAngularLowerLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setAngularLowerLimit(_native, ref value); }
+        }
 
-		public void AngularUpperLimit
-		{
-			get { return btGeneric6DofConstraint_getAngularUpperLimit(_native); }
-			set { btGeneric6DofConstraint_setAngularUpperLimit(_native, value); }
-		}
+        public Vector3 AngularUpperLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getAngularUpperLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setAngularUpperLimit(_native, ref value); }
+        }
 
 		public Matrix CalculatedTransformA
 		{
@@ -663,26 +716,38 @@ namespace BulletSharp
 			}
 		}
 
-		public void Info1NonVirtual
-		{
-			get { return btGeneric6DofConstraint_getInfo1NonVirtual(_native); }
-		}
+        public Vector3 LinearLowerLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getLinearLowerLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setLinearLowerLimit(_native, ref value); }
+        }
 
-		public void LinearLowerLimit
-		{
-			get { return btGeneric6DofConstraint_getLinearLowerLimit(_native); }
-			set { btGeneric6DofConstraint_setLinearLowerLimit(_native, value); }
-		}
-
-		public void LinearUpperLimit
-		{
-			get { return btGeneric6DofConstraint_getLinearUpperLimit(_native); }
-			set { btGeneric6DofConstraint_setLinearUpperLimit(_native, value); }
-		}
+        public Vector3 LinearUpperLimit
+        {
+            get
+            {
+                Vector3 value;
+                btGeneric6DofConstraint_getLinearUpperLimit(_native, out value);
+                return value;
+            }
+            set { btGeneric6DofConstraint_setLinearUpperLimit(_native, ref value); }
+        }
 
 		public TranslationalLimitMotor TranslationalLimitMotor
 		{
-			get { return btGeneric6DofConstraint_getTranslationalLimitMotor(_native); }
+            get
+            {
+                if (_linearLimits == null)
+                {
+                    _linearLimits = new TranslationalLimitMotor(btGeneric6DofConstraint_getTranslationalLimitMotor(_native), true);
+                }
+                return _linearLimits;
+            }
 		}
 
 		public bool UseFrameOffset
@@ -719,14 +784,14 @@ namespace BulletSharp
 		static extern void btGeneric6DofConstraint_getAngularUpperLimit(IntPtr obj, [Out] out Vector3 angularUpper);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_getAxis(IntPtr obj, int axis_index);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btGeneric6DofConstraint_getCalculatedTransformA(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btGeneric6DofConstraint_getCalculatedTransformB(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btGeneric6DofConstraint_getFrameOffsetA(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btGeneric6DofConstraint_getFrameOffsetB(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btGeneric6DofConstraint_getCalculatedTransformA(IntPtr obj, [Out] out Matrix value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btGeneric6DofConstraint_getCalculatedTransformB(IntPtr obj, [Out] out Matrix value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btGeneric6DofConstraint_getFrameOffsetA(IntPtr obj, [Out] out Matrix value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btGeneric6DofConstraint_getFrameOffsetB(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_getInfo1NonVirtual(IntPtr obj, IntPtr info);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -769,135 +834,5 @@ namespace BulletSharp
 		static extern bool btGeneric6DofConstraint_testAngularLimitMotor(IntPtr obj, int axis_index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_updateRHS(IntPtr obj, float timeStep);
-	}
-
-	public class Generic6DofConstraintDoubleData2 : IDisposable
-	{
-		internal IntPtr _native;
-
-		internal Generic6DofConstraintDoubleData2(IntPtr native)
-		{
-			_native = native;
-		}
-
-		public Generic6DofConstraintDoubleData2()
-		{
-			_native = btGeneric6DofConstraintDoubleData2_new();
-		}
-
-		public void AngularLowerLimit
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getAngularLowerLimit(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setAngularLowerLimit(_native, value._native); }
-		}
-
-		public void AngularUpperLimit
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getAngularUpperLimit(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setAngularUpperLimit(_native, value._native); }
-		}
-
-		public void LinearLowerLimit
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getLinearLowerLimit(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setLinearLowerLimit(_native, value._native); }
-		}
-
-		public void LinearUpperLimit
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getLinearUpperLimit(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setLinearUpperLimit(_native, value._native); }
-		}
-
-		public void RbAFrame
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getRbAFrame(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setRbAFrame(_native, value._native); }
-		}
-
-		public void RbBFrame
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getRbBFrame(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setRbBFrame(_native, value._native); }
-		}
-
-		public void TypeConstraintData
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getTypeConstraintData(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setTypeConstraintData(_native, value._native); }
-		}
-
-		public int UseLinearReferenceFrameA
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getUseLinearReferenceFrameA(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setUseLinearReferenceFrameA(_native, value); }
-		}
-
-		public int UseOffsetForConstraintFrame
-		{
-			get { return btGeneric6DofConstraintDoubleData2_getUseOffsetForConstraintFrame(_native); }
-			set { btGeneric6DofConstraintDoubleData2_setUseOffsetForConstraintFrame(_native, value); }
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btGeneric6DofConstraintDoubleData2_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~Generic6DofConstraintDoubleData2()
-		{
-			Dispose(false);
-		}
-
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btGeneric6DofConstraintDoubleData2_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getAngularLowerLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getAngularUpperLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getLinearLowerLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getLinearUpperLimit(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getRbAFrame(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getRbBFrame(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_getTypeConstraintData(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btGeneric6DofConstraintDoubleData2_getUseLinearReferenceFrameA(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btGeneric6DofConstraintDoubleData2_getUseOffsetForConstraintFrame(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setAngularLowerLimit(IntPtr obj, Vector3DoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setAngularUpperLimit(IntPtr obj, Vector3DoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setLinearLowerLimit(IntPtr obj, Vector3DoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setLinearUpperLimit(IntPtr obj, Vector3DoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setRbAFrame(IntPtr obj, TransformDoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setRbBFrame(IntPtr obj, TransformDoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setTypeConstraintData(IntPtr obj, TypedConstraintDoubleData value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setUseLinearReferenceFrameA(IntPtr obj, int value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_setUseOffsetForConstraintFrame(IntPtr obj, int value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btGeneric6DofConstraintDoubleData2_delete(IntPtr obj);
 	}
 }

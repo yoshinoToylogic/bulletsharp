@@ -1,7 +1,8 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -24,115 +25,93 @@ namespace BulletSharp
 			btUsageBitfield_reset(_native);
 		}
 
-		public ushort Unused1
+		public bool Unused1
 		{
 			get { return btUsageBitfield_getUnused1(_native); }
 			set { btUsageBitfield_setUnused1(_native, value); }
 		}
 
-		public ushort Unused2
+        public bool Unused2
 		{
 			get { return btUsageBitfield_getUnused2(_native); }
 			set { btUsageBitfield_setUnused2(_native, value); }
 		}
 
-		public ushort Unused3
+        public bool Unused3
 		{
 			get { return btUsageBitfield_getUnused3(_native); }
 			set { btUsageBitfield_setUnused3(_native, value); }
 		}
 
-		public ushort Unused4
+        public bool Unused4
 		{
 			get { return btUsageBitfield_getUnused4(_native); }
 			set { btUsageBitfield_setUnused4(_native, value); }
 		}
 
-		public ushort UsedVertexA
+        public bool UsedVertexA
 		{
 			get { return btUsageBitfield_getUsedVertexA(_native); }
 			set { btUsageBitfield_setUsedVertexA(_native, value); }
 		}
 
-		public ushort UsedVertexB
+        public bool UsedVertexB
 		{
 			get { return btUsageBitfield_getUsedVertexB(_native); }
 			set { btUsageBitfield_setUsedVertexB(_native, value); }
 		}
 
-		public ushort UsedVertexC
+        public bool UsedVertexC
 		{
 			get { return btUsageBitfield_getUsedVertexC(_native); }
 			set { btUsageBitfield_setUsedVertexC(_native, value); }
 		}
 
-		public ushort UsedVertexD
+        public bool UsedVertexD
 		{
 			get { return btUsageBitfield_getUsedVertexD(_native); }
 			set { btUsageBitfield_setUsedVertexD(_native, value); }
 		}
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btUsageBitfield_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~UsageBitfield()
-		{
-			Dispose(false);
-		}
-
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btUsageBitfield_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUnused1(IntPtr obj);
+        static extern bool btUsageBitfield_getUnused1(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUnused2(IntPtr obj);
+        static extern bool btUsageBitfield_getUnused2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUnused3(IntPtr obj);
+        static extern bool btUsageBitfield_getUnused3(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUnused4(IntPtr obj);
+        static extern bool btUsageBitfield_getUnused4(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUsedVertexA(IntPtr obj);
+        static extern bool btUsageBitfield_getUsedVertexA(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUsedVertexB(IntPtr obj);
+        static extern bool btUsageBitfield_getUsedVertexB(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUsedVertexC(IntPtr obj);
+        static extern bool btUsageBitfield_getUsedVertexC(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern ushort btUsageBitfield_getUsedVertexD(IntPtr obj);
+        static extern bool btUsageBitfield_getUsedVertexD(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btUsageBitfield_reset(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUnused1(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUnused1(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUnused2(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUnused2(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUnused3(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUnused3(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUnused4(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUnused4(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUsedVertexA(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUsedVertexA(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUsedVertexB(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUsedVertexB(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUsedVertexC(IntPtr obj, ushort value);
+        static extern void btUsageBitfield_setUsedVertexC(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_setUsedVertexD(IntPtr obj, ushort value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btUsageBitfield_delete(IntPtr obj);
+        static extern void btUsageBitfield_setUsedVertexD(IntPtr obj, bool value);
 	}
 
-	public class SubSimplexClosestResult
+	public class SubSimplexClosestResult : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -151,14 +130,14 @@ namespace BulletSharp
 			btSubSimplexClosestResult_reset(_native);
 		}
 
-		public void SetBarycentricCoordinates(float a, float b, float c, float d)
+		public void SetBarycentricCoordinates()
 		{
-			btSubSimplexClosestResult_setBarycentricCoordinates(_native, a, b, c, d);
+			btSubSimplexClosestResult_setBarycentricCoordinates(_native);
 		}
 
-		public void SetBarycentricCoordinates(float a, float b, float c)
+		public void SetBarycentricCoordinates(float a)
 		{
-			btSubSimplexClosestResult_setBarycentricCoordinates2(_native, a, b, c);
+			btSubSimplexClosestResult_setBarycentricCoordinates2(_native, a);
 		}
 
 		public void SetBarycentricCoordinates(float a, float b)
@@ -166,17 +145,17 @@ namespace BulletSharp
 			btSubSimplexClosestResult_setBarycentricCoordinates3(_native, a, b);
 		}
 
-		public void SetBarycentricCoordinates(float a)
+		public void SetBarycentricCoordinates(float a, float b, float c)
 		{
-			btSubSimplexClosestResult_setBarycentricCoordinates4(_native, a);
+			btSubSimplexClosestResult_setBarycentricCoordinates4(_native, a, b, c);
 		}
 
-		public void SetBarycentricCoordinates()
+		public void SetBarycentricCoordinates(float a, float b, float c, float d)
 		{
-			btSubSimplexClosestResult_setBarycentricCoordinates5(_native);
+			btSubSimplexClosestResult_setBarycentricCoordinates5(_native, a, b, c, d);
 		}
         /*
-		public float BarycentricCoords
+		public ScalarArray BarycentricCoords
 		{
 			get { return btSubSimplexClosestResult_getBarycentricCoords(_native); }
 			set { btSubSimplexClosestResult_setBarycentricCoords(_native, value._native); }
@@ -184,13 +163,12 @@ namespace BulletSharp
         */
 		public Vector3 ClosestPointOnSimplex
 		{
-            get
-            {
-                Vector3 value;
-                btSubSimplexClosestResult_getClosestPointOnSimplex(_native, out value);
-                return value;
-
-            }
+			get
+			{
+				Vector3 value;
+				btSubSimplexClosestResult_getClosestPointOnSimplex(_native, out value);
+				return value;
+			}
 			set { btSubSimplexClosestResult_setClosestPointOnSimplex(_native, ref value); }
 		}
 
@@ -204,13 +182,13 @@ namespace BulletSharp
 		{
 			get { return btSubSimplexClosestResult_isValid(_native); }
 		}
-        /*
-		public void UsedVertices
+
+		public UsageBitfield UsedVertices
 		{
-			get { return btSubSimplexClosestResult_getUsedVertices(_native); }
+            get { return new UsageBitfield(btSubSimplexClosestResult_getUsedVertices(_native)); }
 			set { btSubSimplexClosestResult_setUsedVertices(_native, value._native); }
 		}
-        */
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -240,21 +218,21 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btSubSimplexClosestResult_getDegenerate(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSubSimplexClosestResult_getUsedVertices(IntPtr obj);
+		static extern IntPtr btSubSimplexClosestResult_getUsedVertices(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btSubSimplexClosestResult_isValid(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSubSimplexClosestResult_reset(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSubSimplexClosestResult_setBarycentricCoordinates(IntPtr obj, float a, float b, float c, float d);
+		static extern void btSubSimplexClosestResult_setBarycentricCoordinates(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSubSimplexClosestResult_setBarycentricCoordinates2(IntPtr obj, float a, float b, float c);
+		static extern void btSubSimplexClosestResult_setBarycentricCoordinates2(IntPtr obj, float a);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSubSimplexClosestResult_setBarycentricCoordinates3(IntPtr obj, float a, float b);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSubSimplexClosestResult_setBarycentricCoordinates4(IntPtr obj, float a);
+		static extern void btSubSimplexClosestResult_setBarycentricCoordinates4(IntPtr obj, float a, float b, float c);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSubSimplexClosestResult_setBarycentricCoordinates5(IntPtr obj);
+		static extern void btSubSimplexClosestResult_setBarycentricCoordinates5(IntPtr obj, float a, float b, float c, float d);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSubSimplexClosestResult_setBarycentricCoords(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -262,12 +240,12 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSubSimplexClosestResult_setDegenerate(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSubSimplexClosestResult_setUsedVertices(IntPtr obj, UsageBitfield value);
+		static extern void btSubSimplexClosestResult_setUsedVertices(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSubSimplexClosestResult_delete(IntPtr obj);
 	}
 
-	public class VoronoiSimplexSolver
+	public class VoronoiSimplexSolver : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -335,12 +313,11 @@ namespace BulletSharp
 		{
 			return btVoronoiSimplexSolver_fullSimplex(_native);
 		}
-        /*
-		public int GetSimplex(Vector3 pBuf, Vector3 qBuf, Vector3 yBuf)
+
+        public int GetSimplex(out Vector3 pBuf, out Vector3 qBuf, out Vector3 yBuf)
 		{
-			return btVoronoiSimplexSolver_getSimplex(_native, ref pBuf, ref qBuf, ref yBuf);
+            return btVoronoiSimplexSolver_getSimplex(_native, out pBuf, out qBuf, out yBuf);
 		}
-        */
         public bool InSimplex(ref Vector3 w)
         {
             return btVoronoiSimplexSolver_inSimplex(_native, ref w);
@@ -355,11 +332,6 @@ namespace BulletSharp
 		{
 			return btVoronoiSimplexSolver_maxVertex(_native);
 		}
-
-        public int PointOutsideOfPlane(ref Vector3 p, ref Vector3 a, ref Vector3 b, ref Vector3 c, ref Vector3 d)
-        {
-            return btVoronoiSimplexSolver_pointOutsideOfPlane(_native, ref p, ref a, ref b, ref c, ref d);
-        }
 
 		public int PointOutsideOfPlane(Vector3 p, Vector3 a, Vector3 b, Vector3 c, Vector3 d)
 		{
@@ -386,42 +358,42 @@ namespace BulletSharp
 			return btVoronoiSimplexSolver_updateClosestVectorAndPoints(_native);
 		}
 
-        public SubSimplexClosestResult CachedBC
+		public SubSimplexClosestResult CachedBC
 		{
             get { return new SubSimplexClosestResult(btVoronoiSimplexSolver_getCachedBC(_native)); }
 			set { btVoronoiSimplexSolver_setCachedBC(_native, value._native); }
 		}
 
-        public Vector3 CachedP1
+		public Vector3 CachedP1
 		{
-            get
-            {
-                Vector3 value;
-                btVoronoiSimplexSolver_getCachedP1(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btVoronoiSimplexSolver_getCachedP1(_native, out value);
+				return value;
+			}
 			set { btVoronoiSimplexSolver_setCachedP1(_native, ref value); }
 		}
 
-        public Vector3 CachedP2
+		public Vector3 CachedP2
 		{
-            get
-            {
-                Vector3 value;
-                btVoronoiSimplexSolver_getCachedP2(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btVoronoiSimplexSolver_getCachedP2(_native, out value);
+				return value;
+			}
 			set { btVoronoiSimplexSolver_setCachedP2(_native, ref value); }
 		}
 
-        public Vector3 CachedV
+		public Vector3 CachedV
 		{
-            get
-            {
-                Vector3 value;
-                btVoronoiSimplexSolver_getCachedV(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btVoronoiSimplexSolver_getCachedV(_native, out value);
+				return value;
+			}
 			set { btVoronoiSimplexSolver_setCachedV(_native, ref value); }
 		}
 
@@ -439,12 +411,12 @@ namespace BulletSharp
 
 		public Vector3 LastW
 		{
-            get
-            {
-                Vector3 value;
-                btVoronoiSimplexSolver_getLastW(_native, out value);
-                return value;
-            }
+			get
+			{
+				Vector3 value;
+				btVoronoiSimplexSolver_getLastW(_native, out value);
+				return value;
+			}
 			set { btVoronoiSimplexSolver_setLastW(_native, ref value); }
 		}
 
@@ -503,15 +475,15 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btVoronoiSimplexSolver_addVertex(IntPtr obj, [In] ref Vector3 w, [In] ref Vector3 p, [In] ref Vector3 q);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btVoronoiSimplexSolver_backup_closest(IntPtr obj, [Out] out Vector3 v);
+		static extern void btVoronoiSimplexSolver_backup_closest(IntPtr obj, [Out] out Vector3 v);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btVoronoiSimplexSolver_closest(IntPtr obj, [Out] out Vector3 v);
+		static extern bool btVoronoiSimplexSolver_closest(IntPtr obj, [Out] out Vector3 v);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btVoronoiSimplexSolver_closestPtPointTetrahedron(IntPtr obj, [In] ref Vector3 p, [In] ref Vector3 a, [In] ref Vector3 b, [In] ref Vector3 c, [In] ref Vector3 d, IntPtr finalResult);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btVoronoiSimplexSolver_closestPtPointTriangle(IntPtr obj, [In] ref Vector3 p, [In] ref Vector3 a, [In] ref Vector3 b, [In] ref Vector3 c, IntPtr result);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btVoronoiSimplexSolver_compute_points(IntPtr obj, [Out] out Vector3 p1, [Out] out Vector3 p2);
+		static extern void btVoronoiSimplexSolver_compute_points(IntPtr obj, [Out] out Vector3 p1, [Out] out Vector3 p2);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btVoronoiSimplexSolver_emptySimplex(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -529,15 +501,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btVoronoiSimplexSolver_getEqualVertexThreshold(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btVoronoiSimplexSolver_getEqualVertexThreshold2(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btVoronoiSimplexSolver_getLastW(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btVoronoiSimplexSolver_getNeedsUpdate(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btVoronoiSimplexSolver_getNumVertices(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btVoronoiSimplexSolver_getSimplex(IntPtr obj, IntPtr pBuf, IntPtr qBuf, IntPtr yBuf);
+		static extern int btVoronoiSimplexSolver_getSimplex(IntPtr obj, [Out] out Vector3 pBuf, [Out] out Vector3 qBuf, [Out] out Vector3 yBuf);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btVoronoiSimplexSolver_getSimplexPointsP(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -561,19 +531,17 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btVoronoiSimplexSolver_setCachedBC(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btVoronoiSimplexSolver_setCachedP1(IntPtr obj, [In] ref Vector3 value);
+		static extern void btVoronoiSimplexSolver_setCachedP1(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btVoronoiSimplexSolver_setCachedP2(IntPtr obj, [In] ref Vector3 value);
+		static extern void btVoronoiSimplexSolver_setCachedP2(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btVoronoiSimplexSolver_setCachedV(IntPtr obj, [In] ref Vector3 value);
+		static extern void btVoronoiSimplexSolver_setCachedV(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btVoronoiSimplexSolver_setCachedValidClosest(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btVoronoiSimplexSolver_setEqualVertexThreshold(IntPtr obj, float threshold);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btVoronoiSimplexSolver_setEqualVertexThreshold2(IntPtr obj, float value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btVoronoiSimplexSolver_setLastW(IntPtr obj, [In] ref Vector3 value);
+		static extern void btVoronoiSimplexSolver_setLastW(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btVoronoiSimplexSolver_setNeedsUpdate(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
