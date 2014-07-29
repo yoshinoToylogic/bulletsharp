@@ -115,6 +115,8 @@ namespace BulletSharpGen
 
         public TypeRefDefinition(ClangSharp.Type type)
         {
+            IsConst = type.IsConstQualifiedType;
+
             switch (type.TypeKind)
             {
                 case ClangSharp.Type.Kind.Void:
@@ -187,6 +189,22 @@ namespace BulletSharpGen
         {
             Name = "void";
             IsBasic = true;
+        }
+
+        public TypeRefDefinition Copy()
+        {
+            var t = new TypeRefDefinition();
+            t.HasTemplateTypeParameter = HasTemplateTypeParameter;
+            t.IsBasic = IsBasic;
+            t.IsConst = IsConst;
+            t.IsConstantArray = IsConstantArray;
+            t.IsPointer = IsPointer;
+            t.IsReference = IsReference;
+            t.Name = Name;
+            t.Referenced = Referenced;
+            t.SpecializedTemplateType = SpecializedTemplateType;
+            t.Target = Target;
+            return t;
         }
 
         public static string GetFullyQualifiedName(ClangSharp.Type type)
