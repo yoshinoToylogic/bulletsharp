@@ -36,6 +36,7 @@ namespace BasicDemo
             Dispatcher = new CollisionDispatcher(CollisionConf);
 
             Broadphase = new DbvtBroadphase();
+            Broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
@@ -56,9 +57,12 @@ namespace BasicDemo
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            const float start_x = StartPosX - ArraySizeX / 2;
-            const float start_y = StartPosY;
-            const float start_z = StartPosZ - ArraySizeZ / 2;
+            const float startX = StartPosX - ArraySizeX / 2;
+            const float startY = StartPosY;
+            const float startZ = StartPosZ - ArraySizeZ / 2;
+
+            RigidBodyConstructionInfo rbInfo =
+                new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
 
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
@@ -68,18 +72,15 @@ namespace BasicDemo
                     for (j = 0; j < ArraySizeZ; j++)
                     {
                         Matrix startTransform = Matrix.Translation(
-                            2 * i + start_x,
-                            2 * k + start_y,
-                            2 * j + start_z
+                            2 * i + startX,
+                            2 * k + startY,
+                            2 * j + startZ
                         );
 
                         // using motionstate is recommended, it provides interpolation capabilities
                         // and only synchronizes 'active' objects
-                        DefaultMotionState myMotionState = new DefaultMotionState(startTransform);
-                        RigidBodyConstructionInfo rbInfo =
-                            new RigidBodyConstructionInfo(mass, myMotionState, colShape, localInertia);
+                        rbInfo.MotionState = new DefaultMotionState(startTransform);
                         RigidBody body = new RigidBody(rbInfo);
-                        rbInfo.Dispose();
 
                         // make it drop from a height
                         body.Translate(new Vector3(0, 20, 0));
@@ -88,6 +89,31 @@ namespace BasicDemo
                     }
                 }
             }
+            rbInfo.Dispose();
+        }
+
+        public override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            using (CollisionAlgorithmConstructionInfo ci = new CollisionAlgorithmConstructionInfo(null, 0))
+            {
+                ci.ToString();
+            }
+
+            var rc = new RayCallback();
+            //Broadphase.RayTest(new Vector3(100, 100, 100), new Vector3(110, 110, 110), rc);
+            //Broadphase.RayTest(new Vector3(0, 0, 0), new Vector3(1, 1, 1), rc);
+            Broadphase.AabbTest(new Vector3(0, 0, 0), new Vector3(1, 1, 1), rc);
+        }
+    }
+
+    public class RayCallback : BroadphaseAabbCallback
+    {
+        public override bool Process(BroadphaseProxy proxy)
+        {
+            return true;
+            //throw new NotImplementedException();
         }
     }
 

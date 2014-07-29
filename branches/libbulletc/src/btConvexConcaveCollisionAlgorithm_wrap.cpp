@@ -22,12 +22,12 @@ void btConvexTriangleCallback_clearWrapperData(btConvexTriangleCallback* obj)
 
 void btConvexTriangleCallback_getAabbMax(btConvexTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAabbMax(), value);
+	VECTOR3_OUT(obj->getAabbMax(), value);
 }
 
 void btConvexTriangleCallback_getAabbMin(btConvexTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAabbMin(), value);
+	VECTOR3_OUT(obj->getAabbMin(), value);
 }
 
 btPersistentManifold* btConvexTriangleCallback_getManifoldPtr(btConvexTriangleCallback* obj)
@@ -55,15 +55,18 @@ void btConvexTriangleCallback_setTriangleCount(btConvexTriangleCallback* obj, in
 	obj->m_triangleCount = value;
 }
 
+
 btConvexConcaveCollisionAlgorithm::CreateFunc* btConvexConcaveCollisionAlgorithm_CreateFunc_new()
 {
 	return new btConvexConcaveCollisionAlgorithm::CreateFunc();
 }
 
+
 btConvexConcaveCollisionAlgorithm::SwappedCreateFunc* btConvexConcaveCollisionAlgorithm_SwappedCreateFunc_new()
 {
 	return new btConvexConcaveCollisionAlgorithm::SwappedCreateFunc();
 }
+
 
 btConvexConcaveCollisionAlgorithm* btConvexConcaveCollisionAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped)
 {

@@ -11,12 +11,12 @@ btHinge2Constraint* btHinge2Constraint_new(btRigidBody* rbA, btRigidBody* rbB, b
 
 void btHinge2Constraint_getAnchor(btHinge2Constraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAnchor(), value);
+	VECTOR3_OUT(obj->getAnchor(), value);
 }
 
 void btHinge2Constraint_getAnchor2(btHinge2Constraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAnchor2(), value);
+	VECTOR3_OUT(obj->getAnchor2(), value);
 }
 
 btScalar btHinge2Constraint_getAngle1(btHinge2Constraint* obj)
@@ -31,12 +31,12 @@ btScalar btHinge2Constraint_getAngle2(btHinge2Constraint* obj)
 
 void btHinge2Constraint_getAxis1(btHinge2Constraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAxis1(), value);
+	VECTOR3_OUT(obj->getAxis1(), value);
 }
 
 void btHinge2Constraint_getAxis2(btHinge2Constraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAxis2(), value);
+	VECTOR3_OUT(obj->getAxis2(), value);
 }
 
 void btHinge2Constraint_setLowerLimit(btHinge2Constraint* obj, btScalar ang1min)

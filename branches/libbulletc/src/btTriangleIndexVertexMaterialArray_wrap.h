@@ -11,12 +11,12 @@ extern "C"
 	EXPORT const unsigned char* btMaterialProperties_getTriangleMaterialsBase(btMaterialProperties* obj);
 	EXPORT int btMaterialProperties_getTriangleMaterialStride(btMaterialProperties* obj);
 	EXPORT PHY_ScalarType btMaterialProperties_getTriangleType(btMaterialProperties* obj);
-	EXPORT void btMaterialProperties_setMaterialBase(btMaterialProperties* obj, unsigned char* value);
+	EXPORT void btMaterialProperties_setMaterialBase(btMaterialProperties* obj, const unsigned char* value);
 	EXPORT void btMaterialProperties_setMaterialStride(btMaterialProperties* obj, int value);
 	EXPORT void btMaterialProperties_setMaterialType(btMaterialProperties* obj, PHY_ScalarType value);
 	EXPORT void btMaterialProperties_setNumMaterials(btMaterialProperties* obj, int value);
 	EXPORT void btMaterialProperties_setNumTriangles(btMaterialProperties* obj, int value);
-	EXPORT void btMaterialProperties_setTriangleMaterialsBase(btMaterialProperties* obj, unsigned char* value);
+	EXPORT void btMaterialProperties_setTriangleMaterialsBase(btMaterialProperties* obj, const unsigned char* value);
 	EXPORT void btMaterialProperties_setTriangleMaterialStride(btMaterialProperties* obj, int value);
 	EXPORT void btMaterialProperties_setTriangleType(btMaterialProperties* obj, PHY_ScalarType value);
 	EXPORT void btMaterialProperties_delete(btMaterialProperties* obj);

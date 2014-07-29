@@ -25,9 +25,9 @@ namespace BulletSharp
 
 		public Vector3 GetSpherePosition(int index)
 		{
-            Vector3 value;
+			Vector3 value;
 			btMultiSphereShape_getSpherePosition(_native, index, out value);
-            return value;
+			return value;
 		}
 
 		public float GetSphereRadius(int index)

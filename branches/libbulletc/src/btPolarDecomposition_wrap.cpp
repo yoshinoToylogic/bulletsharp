@@ -3,9 +3,9 @@
 #include "conversion.h"
 #include "btPolarDecomposition_wrap.h"
 
-btPolarDecomposition* btPolarDecomposition_new(btScalar tolerance, unsigned int maxIterations)
+btPolarDecomposition* btPolarDecomposition_new()
 {
-	return new btPolarDecomposition(tolerance, maxIterations);
+	return new btPolarDecomposition();
 }
 
 btPolarDecomposition* btPolarDecomposition_new2(btScalar tolerance)
@@ -13,14 +13,20 @@ btPolarDecomposition* btPolarDecomposition_new2(btScalar tolerance)
 	return new btPolarDecomposition(tolerance);
 }
 
-btPolarDecomposition* btPolarDecomposition_new3()
+btPolarDecomposition* btPolarDecomposition_new3(btScalar tolerance, unsigned int maxIterations)
 {
-	return new btPolarDecomposition();
+	return new btPolarDecomposition(tolerance, maxIterations);
 }
 
-unsigned int btPolarDecomposition_decompose(btPolarDecomposition* obj, btMatrix3x3* a, btMatrix3x3* u, btMatrix3x3* h)
+unsigned int btPolarDecomposition_decompose(btPolarDecomposition* obj, const btScalar* a, btScalar* u, btScalar* h)
 {
-	return obj->decompose(*a, *u, *h);
+	MATRIX3X3_CONV(a);
+	MATRIX3X3_DEF(u);
+	MATRIX3X3_DEF(h);
+	unsigned int ret = obj->decompose(MATRIX3X3_USE(a), MATRIX3X3_USE(u), MATRIX3X3_USE(h));
+	MATRIX3X3_DEF_OUT(u);
+	MATRIX3X3_DEF_OUT(h);
+	return ret;
 }
 
 unsigned int btPolarDecomposition_maxIterations(btPolarDecomposition* obj)

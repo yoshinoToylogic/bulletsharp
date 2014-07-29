@@ -16,14 +16,14 @@ extern "C"
 	EXPORT btScalar btWheelInfoConstructionInfo_getWheelsDampingCompression(btWheelInfoConstructionInfo* obj);
 	EXPORT btScalar btWheelInfoConstructionInfo_getWheelsDampingRelaxation(btWheelInfoConstructionInfo* obj);
 	EXPORT void btWheelInfoConstructionInfo_setBIsFrontWheel(btWheelInfoConstructionInfo* obj, bool value);
-	EXPORT void btWheelInfoConstructionInfo_setChassisConnectionCS(btWheelInfoConstructionInfo* obj, btScalar* value);
+	EXPORT void btWheelInfoConstructionInfo_setChassisConnectionCS(btWheelInfoConstructionInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfoConstructionInfo_setFrictionSlip(btWheelInfoConstructionInfo* obj, btScalar value);
 	EXPORT void btWheelInfoConstructionInfo_setMaxSuspensionForce(btWheelInfoConstructionInfo* obj, btScalar value);
 	EXPORT void btWheelInfoConstructionInfo_setMaxSuspensionTravelCm(btWheelInfoConstructionInfo* obj, btScalar value);
 	EXPORT void btWheelInfoConstructionInfo_setSuspensionRestLength(btWheelInfoConstructionInfo* obj, btScalar value);
 	EXPORT void btWheelInfoConstructionInfo_setSuspensionStiffness(btWheelInfoConstructionInfo* obj, btScalar value);
-	EXPORT void btWheelInfoConstructionInfo_setWheelAxleCS(btWheelInfoConstructionInfo* obj, btScalar* value);
-	EXPORT void btWheelInfoConstructionInfo_setWheelDirectionCS(btWheelInfoConstructionInfo* obj, btScalar* value);
+	EXPORT void btWheelInfoConstructionInfo_setWheelAxleCS(btWheelInfoConstructionInfo* obj, const btScalar* value);
+	EXPORT void btWheelInfoConstructionInfo_setWheelDirectionCS(btWheelInfoConstructionInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfoConstructionInfo_setWheelRadius(btWheelInfoConstructionInfo* obj, btScalar value);
 	EXPORT void btWheelInfoConstructionInfo_setWheelsDampingCompression(btWheelInfoConstructionInfo* obj, btScalar value);
 	EXPORT void btWheelInfoConstructionInfo_setWheelsDampingRelaxation(btWheelInfoConstructionInfo* obj, btScalar value);
@@ -38,15 +38,16 @@ extern "C"
 	EXPORT btScalar btWheelInfo_RaycastInfo_getSuspensionLength(btWheelInfo_RaycastInfo* obj);
 	EXPORT void btWheelInfo_RaycastInfo_getWheelAxleWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_getWheelDirectionWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
-	EXPORT void btWheelInfo_RaycastInfo_setContactNormalWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
-	EXPORT void btWheelInfo_RaycastInfo_setContactPointWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_setContactNormalWS(btWheelInfo_RaycastInfo* obj, const btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_setContactPointWS(btWheelInfo_RaycastInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_setGroundObject(btWheelInfo_RaycastInfo* obj, void* value);
-	EXPORT void btWheelInfo_RaycastInfo_setHardPointWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_setHardPointWS(btWheelInfo_RaycastInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_setIsInContact(btWheelInfo_RaycastInfo* obj, bool value);
 	EXPORT void btWheelInfo_RaycastInfo_setSuspensionLength(btWheelInfo_RaycastInfo* obj, btScalar value);
-	EXPORT void btWheelInfo_RaycastInfo_setWheelAxleWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
-	EXPORT void btWheelInfo_RaycastInfo_setWheelDirectionWS(btWheelInfo_RaycastInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_setWheelAxleWS(btWheelInfo_RaycastInfo* obj, const btScalar* value);
+	EXPORT void btWheelInfo_RaycastInfo_setWheelDirectionWS(btWheelInfo_RaycastInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfo_RaycastInfo_delete(btWheelInfo_RaycastInfo* obj);
+
 	EXPORT btWheelInfo* btWheelInfo_new(btWheelInfoConstructionInfo* ci);
 	EXPORT bool btWheelInfo_getBIsFrontWheel(btWheelInfo* obj);
 	EXPORT btScalar btWheelInfo_getBrake(btWheelInfo* obj);
@@ -76,7 +77,7 @@ extern "C"
 	EXPORT void btWheelInfo_getWorldTransform(btWheelInfo* obj, btScalar* value);
 	EXPORT void btWheelInfo_setBIsFrontWheel(btWheelInfo* obj, bool value);
 	EXPORT void btWheelInfo_setBrake(btWheelInfo* obj, btScalar value);
-	EXPORT void btWheelInfo_setChassisConnectionPointCS(btWheelInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_setChassisConnectionPointCS(btWheelInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfo_setClientInfo(btWheelInfo* obj, void* value);
 	EXPORT void btWheelInfo_setClippedInvContactDotSuspension(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setDeltaRotation(btWheelInfo* obj, btScalar value);
@@ -84,7 +85,6 @@ extern "C"
 	EXPORT void btWheelInfo_setFrictionSlip(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setMaxSuspensionForce(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setMaxSuspensionTravelCm(btWheelInfo* obj, btScalar value);
-	EXPORT void btWheelInfo_setRaycastInfo(btWheelInfo* obj, btWheelInfo_RaycastInfo* value);
 	EXPORT void btWheelInfo_setRollInfluence(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setRotation(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setSkidInfo(btWheelInfo* obj, btScalar value);
@@ -92,13 +92,13 @@ extern "C"
 	EXPORT void btWheelInfo_setSuspensionRelativeVelocity(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setSuspensionRestLength1(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setSuspensionStiffness(btWheelInfo* obj, btScalar value);
-	EXPORT void btWheelInfo_setWheelAxleCS(btWheelInfo* obj, btScalar* value);
-	EXPORT void btWheelInfo_setWheelDirectionCS(btWheelInfo* obj, btScalar* value);
+	EXPORT void btWheelInfo_setWheelAxleCS(btWheelInfo* obj, const btScalar* value);
+	EXPORT void btWheelInfo_setWheelDirectionCS(btWheelInfo* obj, const btScalar* value);
 	EXPORT void btWheelInfo_setWheelsDampingCompression(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setWheelsDampingRelaxation(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setWheelsRadius(btWheelInfo* obj, btScalar value);
 	EXPORT void btWheelInfo_setWheelsSuspensionForce(btWheelInfo* obj, btScalar value);
-	EXPORT void btWheelInfo_setWorldTransform(btWheelInfo* obj, btScalar* value);
-	EXPORT void btWheelInfo_updateWheel(btWheelInfo* obj, btRigidBody* chassis, btWheelInfo_RaycastInfo* raycastInfo);
+	EXPORT void btWheelInfo_setWorldTransform(btWheelInfo* obj, const btScalar* value);
+	EXPORT void btWheelInfo_updateWheel(btWheelInfo* obj, const btRigidBody* chassis, btWheelInfo_RaycastInfo* raycastInfo);
 	EXPORT void btWheelInfo_delete(btWheelInfo* obj);
 }

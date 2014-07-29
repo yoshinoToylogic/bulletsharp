@@ -47,7 +47,7 @@ PHY_ScalarType btMaterialProperties_getTriangleType(btMaterialProperties* obj)
 	return obj->m_triangleType;
 }
 
-void btMaterialProperties_setMaterialBase(btMaterialProperties* obj, unsigned char* value)
+void btMaterialProperties_setMaterialBase(btMaterialProperties* obj, const unsigned char* value)
 {
 	obj->m_materialBase = value;
 }
@@ -72,7 +72,7 @@ void btMaterialProperties_setNumTriangles(btMaterialProperties* obj, int value)
 	obj->m_numTriangles = value;
 }
 
-void btMaterialProperties_setTriangleMaterialsBase(btMaterialProperties* obj, unsigned char* value)
+void btMaterialProperties_setTriangleMaterialsBase(btMaterialProperties* obj, const unsigned char* value)
 {
 	obj->m_triangleMaterialsBase = value;
 }

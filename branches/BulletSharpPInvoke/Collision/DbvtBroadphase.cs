@@ -22,15 +22,15 @@ namespace BulletSharp
 		{
 		}
 
-	    public DbvtNode Leaf
-	    {
+		public DbvtNode Leaf
+		{
 	        get
 	        {
 	            IntPtr ptr = btDbvtProxy_getLeaf(_native);
 	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 	        }
 	        set { btDbvtProxy_setLeaf(_native, (value != null) ? value._native : IntPtr.Zero); }
-	    }
+		}
         /*
 	    public DbvtProxyArray Links
 		{

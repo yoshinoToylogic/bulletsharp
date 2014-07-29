@@ -39,17 +39,17 @@ namespace BulletSharp
 			set { btCompoundShapeChild_setChildShapeType(_native, value); }
 		}
 
-	    public DbvtNode Node
-	    {
+		public DbvtNode Node
+		{
 	        get
 	        {
 	            IntPtr ptr = btCompoundShapeChild_getNode(_native);
 	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 	        }
 	        set { btCompoundShapeChild_setNode(_native, (value != null) ? value._native : IntPtr.Zero); }
-	    }
+		}
 
-	    public Matrix Transform
+		public Matrix Transform
 		{
 			get
 			{

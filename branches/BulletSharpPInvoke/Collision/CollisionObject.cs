@@ -169,9 +169,9 @@ namespace BulletSharp
         }
 
         public void SetAnisotropicFriction(Vector3 anisotropicFriction, AnisotropicFrictionFlags frictionMode)
-        {
-            btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction, frictionMode);
-        }
+		{
+			btCollisionObject_setAnisotropicFriction2(_native, ref anisotropicFriction, frictionMode);
+		}
 
         public ActivationState ActivationState
 		{
@@ -391,7 +391,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern ActivationState btCollisionObject_getActivationState(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_getAnisotropicFriction(IntPtr obj, [Out] out Vector3 friction);
+		static extern void btCollisionObject_getAnisotropicFriction(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionObject_getBroadphaseHandle(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -417,11 +417,11 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern CollisionObjectTypes btCollisionObject_getInternalType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_getInterpolationAngularVelocity(IntPtr obj, [Out] out Vector3 velocity);
+		static extern void btCollisionObject_getInterpolationAngularVelocity(IntPtr obj, [Out] out Vector3 angvel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_getInterpolationLinearVelocity(IntPtr obj, [Out] out Vector3 velocity);
+		static extern void btCollisionObject_getInterpolationLinearVelocity(IntPtr obj, [Out] out Vector3 linvel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_getInterpolationWorldTransform(IntPtr obj, [Out] out Matrix transform);
+		static extern void btCollisionObject_getInterpolationWorldTransform(IntPtr obj, [Out] out Matrix trans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCollisionObject_getIslandTag(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -431,7 +431,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionObject_getUserPointer(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionObject_getWorldTransform(IntPtr obj, [Out] out Matrix transform);
+		static extern void btCollisionObject_getWorldTransform(IntPtr obj, [Out] out Matrix worldTrans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btCollisionObject_hasAnisotropicFriction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

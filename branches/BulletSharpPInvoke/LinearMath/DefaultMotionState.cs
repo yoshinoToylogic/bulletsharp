@@ -75,9 +75,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultMotionState_getCenterOfMassOffset(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDefaultMotionState_getGraphicsWorldTrans(IntPtr obj, [Out] out Matrix value);
+		static extern void btDefaultMotionState_getGraphicsWorldTrans(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDefaultMotionState_getStartWorldTrans(IntPtr obj, [Out] out Matrix value);
+		static extern void btDefaultMotionState_getStartWorldTrans(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDefaultMotionState_getUserPointer(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

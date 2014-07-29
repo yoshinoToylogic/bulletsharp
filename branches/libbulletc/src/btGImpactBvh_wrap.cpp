@@ -43,6 +43,7 @@ void GIM_PAIR_delete(GIM_PAIR* obj)
 	delete obj;
 }
 
+
 btPairSet* btPairSet_new()
 {
 	return new btPairSet();
@@ -57,6 +58,7 @@ void btPairSet_push_pair_inv(btPairSet* obj, int index1, int index2)
 {
 	obj->push_pair_inv(index1, index2);
 }
+
 
 GIM_BVH_DATA* GIM_BVH_DATA_new()
 {
@@ -88,14 +90,15 @@ void GIM_BVH_DATA_delete(GIM_BVH_DATA* obj)
 	delete obj;
 }
 
+
 GIM_BVH_TREE_NODE* GIM_BVH_TREE_NODE_new()
 {
 	return new GIM_BVH_TREE_NODE();
 }
 
-void GIM_BVH_TREE_NODE_getBound(GIM_BVH_TREE_NODE* obj)
+btAABB* GIM_BVH_TREE_NODE_getBound(GIM_BVH_TREE_NODE* obj)
 {
-	obj->m_bound;
+	return &obj->m_bound;
 }
 
 int GIM_BVH_TREE_NODE_getDataIndex(GIM_BVH_TREE_NODE* obj)
@@ -133,15 +136,18 @@ void GIM_BVH_TREE_NODE_delete(GIM_BVH_TREE_NODE* obj)
 	delete obj;
 }
 
+
 GIM_BVH_DATA_ARRAY* GIM_BVH_DATA_ARRAY_new()
 {
 	return new GIM_BVH_DATA_ARRAY();
 }
 
+
 GIM_BVH_TREE_NODE_ARRAY* GIM_BVH_TREE_NODE_ARRAY_new()
 {
 	return new GIM_BVH_TREE_NODE_ARRAY();
 }
+
 
 btBvhTree* btBvhTree_new()
 {
@@ -213,6 +219,7 @@ void btBvhTree_delete(btBvhTree* obj)
 	delete obj;
 }
 
+
 void btPrimitiveManagerBase_get_primitive_box(btPrimitiveManagerBase* obj, int prim_index, btAABB* primbox)
 {
 	obj->get_primitive_box(prim_index, *primbox);
@@ -237,6 +244,7 @@ void btPrimitiveManagerBase_delete(btPrimitiveManagerBase* obj)
 {
 	delete obj;
 }
+
 
 btGImpactBvh* btGImpactBvh_new()
 {

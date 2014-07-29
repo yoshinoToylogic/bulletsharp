@@ -11,7 +11,6 @@ extern "C"
 	EXPORT btCollisionWorld* btDiscreteDynamicsWorld_getCollisionWorld(btDiscreteDynamicsWorld* obj);
 	EXPORT bool btDiscreteDynamicsWorld_getLatencyMotionStateInterpolation(btDiscreteDynamicsWorld* obj);
 	EXPORT btSimulationIslandManager* btDiscreteDynamicsWorld_getSimulationIslandManager(btDiscreteDynamicsWorld* obj);
-	EXPORT btSimulationIslandManager* btDiscreteDynamicsWorld_getSimulationIslandManager2(btDiscreteDynamicsWorld* obj);
 	EXPORT bool btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(btDiscreteDynamicsWorld* obj);
 	EXPORT void btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution(btDiscreteDynamicsWorld* obj, bool enable);
 	EXPORT void btDiscreteDynamicsWorld_setLatencyMotionStateInterpolation(btDiscreteDynamicsWorld* obj, bool latencyInterpolation);

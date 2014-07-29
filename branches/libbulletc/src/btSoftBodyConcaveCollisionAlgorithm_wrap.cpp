@@ -50,7 +50,8 @@ void btTriIndex_delete(btTriIndex* obj)
 	delete obj;
 }
 
-btSoftBodyTriangleCallback* btSoftBodyTriangleCallback_new(btDispatcher* dispatcher, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, bool isSwapped)
+
+btSoftBodyTriangleCallback* btSoftBodyTriangleCallback_new(btDispatcher* dispatcher, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped)
 {
 	return new btSoftBodyTriangleCallback(dispatcher, body0Wrap, body1Wrap, isSwapped);
 }
@@ -62,12 +63,12 @@ void btSoftBodyTriangleCallback_clearCache(btSoftBodyTriangleCallback* obj)
 
 void btSoftBodyTriangleCallback_getAabbMax(btSoftBodyTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAabbMax(), value);
+	VECTOR3_OUT(obj->getAabbMax(), value);
 }
 
 void btSoftBodyTriangleCallback_getAabbMin(btSoftBodyTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getAabbMin(), value);
+	VECTOR3_OUT(obj->getAabbMin(), value);
 }
 
 int btSoftBodyTriangleCallback_getTriangleCount(btSoftBodyTriangleCallback* obj)
@@ -75,7 +76,7 @@ int btSoftBodyTriangleCallback_getTriangleCount(btSoftBodyTriangleCallback* obj)
 	return obj->m_triangleCount;
 }
 
-void btSoftBodyTriangleCallback_setTimeStepAndCounters(btSoftBodyTriangleCallback* obj, btScalar collisionMarginTriangle, btCollisionObjectWrapper* triObjWrap, btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
+void btSoftBodyTriangleCallback_setTimeStepAndCounters(btSoftBodyTriangleCallback* obj, btScalar collisionMarginTriangle, const btCollisionObjectWrapper* triObjWrap, const btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
 {
 	obj->setTimeStepAndCounters(collisionMarginTriangle, triObjWrap, *dispatchInfo, resultOut);
 }
@@ -85,17 +86,20 @@ void btSoftBodyTriangleCallback_setTriangleCount(btSoftBodyTriangleCallback* obj
 	obj->m_triangleCount = value;
 }
 
+
 btSoftBodyConcaveCollisionAlgorithm::CreateFunc* btSoftBodyConcaveCollisionAlgorithm_CreateFunc_new()
 {
 	return new btSoftBodyConcaveCollisionAlgorithm::CreateFunc();
 }
+
 
 btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc* btSoftBodyConcaveCollisionAlgorithm_SwappedCreateFunc_new()
 {
 	return new btSoftBodyConcaveCollisionAlgorithm::SwappedCreateFunc();
 }
 
-btSoftBodyConcaveCollisionAlgorithm* btSoftBodyConcaveCollisionAlgorithm_new(btCollisionAlgorithmConstructionInfo* ci, btCollisionObjectWrapper* body0Wrap, btCollisionObjectWrapper* body1Wrap, bool isSwapped)
+
+btSoftBodyConcaveCollisionAlgorithm* btSoftBodyConcaveCollisionAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped)
 {
 	return new btSoftBodyConcaveCollisionAlgorithm(*ci, body0Wrap, body1Wrap, isSwapped);
 }

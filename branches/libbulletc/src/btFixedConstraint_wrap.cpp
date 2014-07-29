@@ -1,7 +1,7 @@
 #include "conversion.h"
 #include "btFixedConstraint_wrap.h"
 
-btFixedConstraint* btFixedConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* frameInA, btScalar* frameInB)
+btFixedConstraint* btFixedConstraint_new(btRigidBody* rbA, btRigidBody* rbB, const btScalar* frameInA, const btScalar* frameInB)
 {
 	TRANSFORM_CONV(frameInA);
 	TRANSFORM_CONV(frameInB);

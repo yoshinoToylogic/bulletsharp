@@ -2,7 +2,7 @@
 
 extern "C"
 {
-	EXPORT btUniversalConstraint* btUniversalConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* anchor, btScalar* axis1, btScalar* axis2);
+	EXPORT btUniversalConstraint* btUniversalConstraint_new(btRigidBody* rbA, btRigidBody* rbB, const btScalar* anchor, const btScalar* axis1, const btScalar* axis2);
 	EXPORT void btUniversalConstraint_getAnchor(btUniversalConstraint* obj, btScalar* value);
 	EXPORT void btUniversalConstraint_getAnchor2(btUniversalConstraint* obj, btScalar* value);
 	EXPORT btScalar btUniversalConstraint_getAngle1(btUniversalConstraint* obj);

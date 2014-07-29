@@ -10,7 +10,6 @@ extern "C"
 	EXPORT unsigned int* btCriticalSection_getMCommonBuff(btCriticalSection* obj);
 	EXPORT unsigned int btCriticalSection_getSharedParam(btCriticalSection* obj, int i);
 	EXPORT void btCriticalSection_lock(btCriticalSection* obj);
-	//EXPORT void btCriticalSection_setMCommonBuff(btCriticalSection* obj, unsigned int* value);
 	EXPORT void btCriticalSection_setSharedParam(btCriticalSection* obj, int i, unsigned int p);
 	EXPORT void btCriticalSection_unlock(btCriticalSection* obj);
 	EXPORT void btCriticalSection_delete(btCriticalSection* obj);

@@ -37,7 +37,7 @@ int btGhostObject_getNumOverlappingObjects(btGhostObject* obj)
 	return obj->getNumOverlappingObjects();
 }
 
-const btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, int index)
+btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, int index)
 {
 	return obj->getOverlappingObject(index);
 }
@@ -45,11 +45,6 @@ const btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, 
 btAlignedCollisionObjectArray* btGhostObject_getOverlappingPairs(btGhostObject* obj)
 {
 	return &obj->getOverlappingPairs();
-}
-
-void btGhostObject_getOverlappingPairs2(btGhostObject* obj)
-{
-	obj->getOverlappingPairs();
 }
 
 void btGhostObject_rayTest(btGhostObject* obj, const btScalar* rayFromWorld, const btScalar* rayToWorld, btCollisionWorld::RayResultCallback* resultCallback)
@@ -74,6 +69,7 @@ btGhostObject* btGhostObject_upcast(btCollisionObject* colObj)
 	return btGhostObject::upcast(colObj);
 }
 
+
 btPairCachingGhostObject* btPairCachingGhostObject_new()
 {
 	return new btPairCachingGhostObject();
@@ -83,6 +79,7 @@ btHashedOverlappingPairCache* btPairCachingGhostObject_getOverlappingPairCache(b
 {
 	return obj->getOverlappingPairCache();
 }
+
 
 btGhostPairCallback* btGhostPairCallback_new()
 {

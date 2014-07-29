@@ -351,34 +351,20 @@ namespace BulletSharpGen
                 {
                     return Cursor.ChildVisitResult.Continue;
                 }
-                
+
                 currentMethod = new MethodDefinition(methodName, currentClass, cursor.NumArguments);
                 currentMethod.ReturnType = new TypeRefDefinition(cursor.ResultType);
                 currentMethod.IsStatic = cursor.IsStaticCxxMethod;
                 currentMethod.IsConstructor = cursor.Kind == CursorKind.Constructor;
 
+                if (cursor.IsPureVirtualCxxMethod)
+                {
+                    currentMethod.IsAbstract = true;
+                    currentClass.IsAbstract = true;
+                }
+
                 // Check if the return type is a template
                 cursor.VisitChildren(MethodTemplateTypeVisitor);
-
-                IList<Token> tokens = currentTU.Tokenize(cursor.Extent).ToList();
-
-                // Check if the return type is const (no clang_isConst available, so look at tokens)
-                if (tokens.Count > 0 && tokens[0].Spelling.Equals("const"))
-                {
-                    currentMethod.ReturnType.IsConst = true;
-                }
-
-                // Check if the method is abstract (no clang_isAbstract available, so look at tokens)
-                if (tokens.Count > 3)
-                {
-                    if (tokens[tokens.Count - 3].Spelling.Equals("=") &&
-                        tokens[tokens.Count - 2].Spelling.Equals("0") &&
-                        tokens[tokens.Count - 1].Spelling.Equals(";"))
-                    {
-                        currentMethod.IsAbstract = true;
-                        currentClass.IsAbstract = true;
-                    }
-                }
 
                 // Parse arguments
                 for (uint i = 0; i < cursor.NumArguments; i++)
@@ -399,11 +385,7 @@ namespace BulletSharpGen
                     IEnumerable<Token> argTokens = currentTU.Tokenize(arg.Extent);
                     foreach (Token token in argTokens)
                     {
-                        if (token.Spelling.Equals("const"))
-                        {
-                            currentMethod.Parameters[i].Type.IsConst = true;
-                        }
-                        else if (token.Spelling.Equals("="))
+                        if (token.Spelling.Equals("="))
                         {
                             currentMethod.Parameters[i].IsOptional = true;
                         }

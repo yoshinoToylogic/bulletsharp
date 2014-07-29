@@ -36,11 +36,9 @@ int btCollisionObject_getActivationState(btCollisionObject* obj)
 	return obj->getActivationState();
 }
 
-void btCollisionObject_getAnisotropicFriction(btCollisionObject* obj, btScalar* friction)
+void btCollisionObject_getAnisotropicFriction(btCollisionObject* obj, btScalar* value)
 {
-	VECTOR3_DEF(friction);
-	VECTOR3_USE(friction) = obj->getAnisotropicFriction();
-	VECTOR3_DEF_OUT(friction);
+	VECTOR3_OUT(obj->getAnisotropicFriction(), value);
 }
 
 btBroadphaseProxy* btCollisionObject_getBroadphaseHandle(btCollisionObject* obj)
@@ -103,23 +101,19 @@ int btCollisionObject_getInternalType(btCollisionObject* obj)
 	return obj->getInternalType();
 }
 
-void btCollisionObject_getInterpolationAngularVelocity(btCollisionObject* obj, btScalar* velocity)
+void btCollisionObject_getInterpolationAngularVelocity(btCollisionObject* obj, btScalar* angvel)
 {
-	VECTOR3_DEF(velocity);
-	VECTOR3_USE(velocity) = obj->getInterpolationAngularVelocity();
-	VECTOR3_DEF_OUT(velocity);
+	VECTOR3_OUT(obj->getInterpolationAngularVelocity(), angvel);
 }
 
-void btCollisionObject_getInterpolationLinearVelocity(btCollisionObject* obj, btScalar* velocity)
+void btCollisionObject_getInterpolationLinearVelocity(btCollisionObject* obj, btScalar* linvel)
 {
-	VECTOR3_DEF(velocity);
-	VECTOR3_USE(velocity) = obj->getInterpolationLinearVelocity();
-	VECTOR3_DEF_OUT(velocity);
+	VECTOR3_OUT(obj->getInterpolationLinearVelocity(), linvel);
 }
 
-void btCollisionObject_getInterpolationWorldTransform(btCollisionObject* obj, btScalar* transform)
+void btCollisionObject_getInterpolationWorldTransform(btCollisionObject* obj, btScalar* trans)
 {
-	btTransformToMatrix(&obj->getInterpolationWorldTransform(), transform);
+	TRANSFORM_OUT(obj->getInterpolationWorldTransform(), trans);
 }
 
 int btCollisionObject_getIslandTag(btCollisionObject* obj)
@@ -142,9 +136,9 @@ void* btCollisionObject_getUserPointer(btCollisionObject* obj)
 	return obj->getUserPointer();
 }
 
-void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* transform)
+void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* worldTrans)
 {
-	btTransformToMatrix(&obj->getWorldTransform(), transform);
+	TRANSFORM_OUT(obj->getWorldTransform(), worldTrans);
 }
 
 bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj)

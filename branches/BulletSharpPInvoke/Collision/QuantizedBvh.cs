@@ -386,7 +386,7 @@ namespace BulletSharp
 
 		public static QuantizedBvh DeSerializeInPlace(IntPtr iAlignedDataBuffer, uint iDataBufferSize, bool iSwapEndian)
 		{
-			return btQuantizedBvh_deSerializeInPlace(iAlignedDataBuffer._native, iDataBufferSize, iSwapEndian);
+			return btQuantizedBvh_deSerializeInPlace(iAlignedDataBuffer, iDataBufferSize, iSwapEndian);
 		}
 
         static public void Quantize(unsigned short out, Vector3 point, int isMax)
@@ -534,7 +534,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btQuantizedBvh_setTraversalMode(IntPtr obj, TraversalMode traversalMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btQuantizedBvh_unQuantize(IntPtr obj, IntPtr vecIn);
+		static extern void btQuantizedBvh_unQuantize(IntPtr obj, IntPtr vecIn, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btQuantizedBvh_delete(IntPtr obj);
 	}

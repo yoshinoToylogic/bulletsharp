@@ -27,7 +27,7 @@ int btConvexPointCloudShape_getNumPoints(btConvexPointCloudShape* obj)
 
 void btConvexPointCloudShape_getScaledPoint(btConvexPointCloudShape* obj, int index, btScalar* value)
 {
-	VECTOR3_OUT2(obj->getScaledPoint(index), value);
+	VECTOR3_OUT(obj->getScaledPoint(index), value);
 }
 
 btVector3* btConvexPointCloudShape_getUnscaledPoints(btConvexPointCloudShape* obj)

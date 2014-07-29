@@ -272,9 +272,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btMultiBodySolverConstraint_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodySolverConstraint_getAngularComponentA(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBodySolverConstraint_getAngularComponentA(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodySolverConstraint_getAngularComponentB(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBodySolverConstraint_getAngularComponentB(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultiBodySolverConstraint_getAppliedImpulse(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -282,9 +282,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultiBodySolverConstraint_getCfm(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodySolverConstraint_getContactNormal1(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBodySolverConstraint_getContactNormal1(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodySolverConstraint_getContactNormal2(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBodySolverConstraint_getContactNormal2(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btMultiBodySolverConstraint_getDeltaVelAindex(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -314,7 +314,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btMultiBodySolverConstraint_getOverrideNumSolverIterations(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodySolverConstraint_getRelpos1CrossNormal(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBodySolverConstraint_getRelpos1CrossNormal(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodySolverConstraint_getRelpos2CrossNormal(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

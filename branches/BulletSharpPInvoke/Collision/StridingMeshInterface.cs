@@ -41,7 +41,7 @@ namespace BulletSharp
 
         public void CalculateAabbBruteForce(out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-            btStridingMeshInterface_calculateAabbBruteForce(_native, out aabbMin, out aabbMax);
+			btStridingMeshInterface_calculateAabbBruteForce(_native, out aabbMin, out aabbMax);
 		}
 
 		public int CalculateSerializeBufferSize()
@@ -167,7 +167,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btStridingMeshInterface_getPremadeAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btStridingMeshInterface_getScaling(IntPtr obj, [Out] out Vector3 value);
+		static extern void btStridingMeshInterface_getScaling(IntPtr obj, [Out] out Vector3 scaling);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btStridingMeshInterface_hasPremadeAabb(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

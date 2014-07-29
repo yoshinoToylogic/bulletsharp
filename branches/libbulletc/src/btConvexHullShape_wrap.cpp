@@ -45,8 +45,7 @@ const btVector3* btConvexHullShape_getPoints(btConvexHullShape* obj)
 
 void btConvexHullShape_getScaledPoint(btConvexHullShape* obj, int i, btScalar* value)
 {
-	VECTOR3_DEF(value);
-	VECTOR3_USE(value) = obj->getScaledPoint(i);
+	VECTOR3_OUT(obj->getScaledPoint(i), value);
 }
 
 const btVector3* btConvexHullShape_getUnscaledPoints(btConvexHullShape* obj)

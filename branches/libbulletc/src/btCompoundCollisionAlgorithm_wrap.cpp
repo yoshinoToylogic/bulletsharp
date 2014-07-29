@@ -9,10 +9,12 @@ btCompoundCollisionAlgorithm::CreateFunc* btCompoundCollisionAlgorithm_CreateFun
 	return new btCompoundCollisionAlgorithm::CreateFunc();
 }
 
+
 btCompoundCollisionAlgorithm::SwappedCreateFunc* btCompoundCollisionAlgorithm_SwappedCreateFunc_new()
 {
 	return new btCompoundCollisionAlgorithm::SwappedCreateFunc();
 }
+
 
 btCompoundCollisionAlgorithm* btCompoundCollisionAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped)
 {

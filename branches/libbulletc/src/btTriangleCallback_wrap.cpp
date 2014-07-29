@@ -12,6 +12,7 @@ void btTriangleCallback_delete(btTriangleCallback* obj)
 	delete obj;
 }
 
+
 void btInternalTriangleIndexCallback_internalProcessTriangleIndex(btInternalTriangleIndexCallback* obj, btScalar* triangle, int partId, int triangleIndex)
 {
 	VECTOR3_CONV(triangle);

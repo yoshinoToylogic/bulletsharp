@@ -7,9 +7,9 @@ extern "C"
 	EXPORT Win32lsMemorySetupFunc Win32lsMemorySetupFunc_getCreateCollisionLocalStoreMemory();
 	EXPORT Win32lsMemorySetupFunc Win32lsMemorySetupFunc_getSolverlsMemoryFunc();
 
-	EXPORT Win32ThreadSupport_Win32ThreadConstructionInfo* Win32ThreadSupport_Win32ThreadConstructionInfo_new(char* uniqueName, Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc, int numThreads, int threadStackSize);
-	EXPORT Win32ThreadSupport_Win32ThreadConstructionInfo* Win32ThreadSupport_Win32ThreadConstructionInfo_new2(char* uniqueName, Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc, int numThreads);
-	EXPORT Win32ThreadSupport_Win32ThreadConstructionInfo* Win32ThreadSupport_Win32ThreadConstructionInfo_new3(char* uniqueName, Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc);
+	EXPORT Win32ThreadSupport_Win32ThreadConstructionInfo* Win32ThreadSupport_Win32ThreadConstructionInfo_new(const char* uniqueName, Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc);
+	EXPORT Win32ThreadSupport_Win32ThreadConstructionInfo* Win32ThreadSupport_Win32ThreadConstructionInfo_new2(const char* uniqueName, Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc, int numThreads);
+	EXPORT Win32ThreadSupport_Win32ThreadConstructionInfo* Win32ThreadSupport_Win32ThreadConstructionInfo_new3(const char* uniqueName, Win32ThreadFunc userThreadFunc, Win32lsMemorySetupFunc lsMemoryFunc, int numThreads, int threadStackSize);
 	EXPORT Win32lsMemorySetupFunc Win32ThreadSupport_Win32ThreadConstructionInfo_getLsMemoryFunc(Win32ThreadSupport_Win32ThreadConstructionInfo* obj);
 	EXPORT int Win32ThreadSupport_Win32ThreadConstructionInfo_getNumThreads(Win32ThreadSupport_Win32ThreadConstructionInfo* obj);
 	EXPORT int Win32ThreadSupport_Win32ThreadConstructionInfo_getThreadStackSize(Win32ThreadSupport_Win32ThreadConstructionInfo* obj);
@@ -18,10 +18,11 @@ extern "C"
 	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_setLsMemoryFunc(Win32ThreadSupport_Win32ThreadConstructionInfo* obj, Win32lsMemorySetupFunc value);
 	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_setNumThreads(Win32ThreadSupport_Win32ThreadConstructionInfo* obj, int value);
 	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_setThreadStackSize(Win32ThreadSupport_Win32ThreadConstructionInfo* obj, int value);
-	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_setUniqueName(Win32ThreadSupport_Win32ThreadConstructionInfo* obj, char* value);
+	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_setUniqueName(Win32ThreadSupport_Win32ThreadConstructionInfo* obj, const char* value);
 	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_setUserThreadFunc(Win32ThreadSupport_Win32ThreadConstructionInfo* obj, Win32ThreadFunc value);
 	EXPORT void Win32ThreadSupport_Win32ThreadConstructionInfo_delete(Win32ThreadSupport_Win32ThreadConstructionInfo* obj);
-	EXPORT Win32ThreadSupport* Win32ThreadSupport_new(Win32ThreadSupport_Win32ThreadConstructionInfo* threadConstructionInfo);
+
+	EXPORT Win32ThreadSupport* Win32ThreadSupport_new(const Win32ThreadSupport_Win32ThreadConstructionInfo* threadConstructionInfo);
 	EXPORT bool Win32ThreadSupport_isTaskCompleted(Win32ThreadSupport* obj, unsigned int* puiArgument0, unsigned int* puiArgument1, int timeOutInMilliseconds);
-	EXPORT void Win32ThreadSupport_startThreads(Win32ThreadSupport* obj, Win32ThreadSupport_Win32ThreadConstructionInfo* threadInfo);
+	EXPORT void Win32ThreadSupport_startThreads(Win32ThreadSupport* obj, const Win32ThreadSupport_Win32ThreadConstructionInfo* threadInfo);
 }

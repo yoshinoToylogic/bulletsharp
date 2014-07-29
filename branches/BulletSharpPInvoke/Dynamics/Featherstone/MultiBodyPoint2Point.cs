@@ -41,7 +41,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btMultiBodyPoint2Point_new2(IntPtr bodyA, int linkA, IntPtr bodyB, int linkB, [In] ref Vector3 pivotInA, [In] ref Vector3 pivotInB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btMultiBodyPoint2Point_getPivotInB(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBodyPoint2Point_getPivotInB(IntPtr obj, [Out] out Vector3 pivotInB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyPoint2Point_setPivotInB(IntPtr obj, [In] ref Vector3 pivotInB);
 	}

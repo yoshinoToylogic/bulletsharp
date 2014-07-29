@@ -14,16 +14,16 @@ namespace BulletSharp
 		{
 		}
 
-        public DiscreteDynamicsWorld(Dispatcher dispatcher, BroadphaseInterface pairCache, ConstraintSolver solver, CollisionConfiguration collisionConfiguration)
+		public DiscreteDynamicsWorld(Dispatcher dispatcher, BroadphaseInterface pairCache, ConstraintSolver constraintSolver, CollisionConfiguration collisionConfiguration)
             : base(btDiscreteDynamicsWorld_new(
             dispatcher != null ? dispatcher._native : IntPtr.Zero,
             pairCache != null ? pairCache._native : IntPtr.Zero,
-            solver != null ? solver._native : IntPtr.Zero,
+            constraintSolver != null ? constraintSolver._native : IntPtr.Zero,
             collisionConfiguration != null ? collisionConfiguration._native : IntPtr.Zero))
         {
             Dispatcher = dispatcher;
             Broadphase = pairCache;
-            _constraintSolver = solver;
+            _constraintSolver = constraintSolver;
         }
 
 		public void ApplyGravity()
@@ -171,16 +171,16 @@ namespace BulletSharp
 		static extern bool btDiscreteDynamicsWorld_getApplySpeculativeContactRestitution(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDiscreteDynamicsWorld_getCollisionWorld(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern bool btDiscreteDynamicsWorld_getLatencyMotionStateInterpolation(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern bool btDiscreteDynamicsWorld_getLatencyMotionStateInterpolation(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDiscreteDynamicsWorld_getSimulationIslandManager(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDiscreteDynamicsWorld_setApplySpeculativeContactRestitution(IntPtr obj, bool enable);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDiscreteDynamicsWorld_setLatencyMotionStateInterpolation(IntPtr obj, bool latencyInterpolation);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btDiscreteDynamicsWorld_setLatencyMotionStateInterpolation(IntPtr obj, bool latencyInterpolation);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDiscreteDynamicsWorld_setNumTasks(IntPtr obj, int numTasks);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

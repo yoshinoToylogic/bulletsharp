@@ -2,8 +2,8 @@
 
 extern "C"
 {
-	EXPORT btGearConstraint* btGearConstraint_new(btRigidBody* rbA, btRigidBody* rbB, btScalar* axisInA, btScalar* axisInB, btScalar ratio);
-	EXPORT btGearConstraint* btGearConstraint_new2(btRigidBody* rbA, btRigidBody* rbB, btScalar* axisInA, btScalar* axisInB);
+	EXPORT btGearConstraint* btGearConstraint_new(btRigidBody* rbA, btRigidBody* rbB, const btScalar* axisInA, const btScalar* axisInB);
+	EXPORT btGearConstraint* btGearConstraint_new2(btRigidBody* rbA, btRigidBody* rbB, const btScalar* axisInA, const btScalar* axisInB, btScalar ratio);
 	EXPORT void btGearConstraint_getAxisA(btGearConstraint* obj, btScalar* axisA);
 	EXPORT void btGearConstraint_getAxisB(btGearConstraint* obj, btScalar* axisB);
 	EXPORT btScalar btGearConstraint_getRatio(btGearConstraint* obj);

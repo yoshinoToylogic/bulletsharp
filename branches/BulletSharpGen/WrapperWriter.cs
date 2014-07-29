@@ -23,7 +23,6 @@ namespace BulletSharpGen
 
         protected StreamWriter headerWriter, sourceWriter, csWriter;
         protected StringBuilder bufferBuilder = new StringBuilder();
-        protected bool hasHeaderWhiteSpace;
         protected bool hasSourceWhiteSpace;
         protected bool hasCSWhiteSpace;
 
@@ -83,16 +82,8 @@ namespace BulletSharpGen
             }
         }
 
-        protected void EnsureWhiteSpace(WriteTo to = WriteTo.Header)
+        protected void EnsureWhiteSpace(WriteTo to)
         {
-            if ((to & WriteTo.Header) != 0)
-            {
-                if (!hasHeaderWhiteSpace)
-                {
-                    headerWriter.WriteLine();
-                    hasHeaderWhiteSpace = true;
-                }
-            }
             if ((to & WriteTo.Source) != 0)
             {
                 if (!hasSourceWhiteSpace)

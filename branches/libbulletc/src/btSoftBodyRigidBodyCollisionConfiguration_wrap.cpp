@@ -2,12 +2,12 @@
 
 #include "btSoftBodyRigidBodyCollisionConfiguration_wrap.h"
 
-btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new(btDefaultCollisionConstructionInfo* constructionInfo)
-{
-	return new btSoftBodyRigidBodyCollisionConfiguration(*constructionInfo);
-}
-
-btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new2()
+btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new()
 {
 	return new btSoftBodyRigidBodyCollisionConfiguration();
+}
+
+btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new2(const btDefaultCollisionConstructionInfo* constructionInfo)
+{
+	return new btSoftBodyRigidBodyCollisionConfiguration(*constructionInfo);
 }

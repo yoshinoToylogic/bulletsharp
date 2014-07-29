@@ -18,14 +18,14 @@ const btConvexShape* btMinkowskiSumShape_getShapeB(btMinkowskiSumShape* obj)
 	return obj->getShapeB();
 }
 
-void btMinkowskiSumShape_getTransformA(btMinkowskiSumShape* obj, btScalar* value)
+void btMinkowskiSumShape_getTransformA(btMinkowskiSumShape* obj, btScalar* transA)
 {
-	TRANSFORM_OUT(&obj->getTransformA(), value);
+	TRANSFORM_OUT(obj->getTransformA(), transA);
 }
 
-void btMinkowskiSumShape_GetTransformB(btMinkowskiSumShape* obj, btScalar* value)
+void btMinkowskiSumShape_GetTransformB(btMinkowskiSumShape* obj, btScalar* transB)
 {
-	TRANSFORM_OUT(&obj->GetTransformB(), value);
+	TRANSFORM_OUT(obj->GetTransformB(), transB);
 }
 
 void btMinkowskiSumShape_setTransformA(btMinkowskiSumShape* obj, const btScalar* transA)

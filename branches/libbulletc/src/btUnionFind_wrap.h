@@ -14,7 +14,7 @@ extern "C"
 	EXPORT int btUnionFind_find(btUnionFind* obj, int p, int q);
 	EXPORT int btUnionFind_find2(btUnionFind* obj, int x);
 	EXPORT void btUnionFind_Free(btUnionFind* obj);
-	EXPORT const btElement* btUnionFind_getElement(btUnionFind* obj, int index);
+	EXPORT btElement* btUnionFind_getElement(btUnionFind* obj, int index);
 	EXPORT int btUnionFind_getNumElements(btUnionFind* obj);
 	EXPORT bool btUnionFind_isRoot(btUnionFind* obj, int x);
 	EXPORT void btUnionFind_reset(btUnionFind* obj, int N);

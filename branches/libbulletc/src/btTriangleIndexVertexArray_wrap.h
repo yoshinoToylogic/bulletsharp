@@ -14,16 +14,16 @@ extern "C"
 	EXPORT void btIndexedMesh_setIndexType(btIndexedMesh* obj, PHY_ScalarType value);
 	EXPORT void btIndexedMesh_setNumTriangles(btIndexedMesh* obj, int value);
 	EXPORT void btIndexedMesh_setNumVertices(btIndexedMesh* obj, int value);
-	EXPORT void btIndexedMesh_setTriangleIndexBase(btIndexedMesh* obj, unsigned char* value);
+	EXPORT void btIndexedMesh_setTriangleIndexBase(btIndexedMesh* obj, const unsigned char* value);
 	EXPORT void btIndexedMesh_setTriangleIndexStride(btIndexedMesh* obj, int value);
-	EXPORT void btIndexedMesh_setVertexBase(btIndexedMesh* obj, unsigned char* value);
+	EXPORT void btIndexedMesh_setVertexBase(btIndexedMesh* obj, const unsigned char* value);
 	EXPORT void btIndexedMesh_setVertexStride(btIndexedMesh* obj, int value);
 	EXPORT void btIndexedMesh_setVertexType(btIndexedMesh* obj, PHY_ScalarType value);
 	EXPORT void btIndexedMesh_delete(btIndexedMesh* obj);
 
-	EXPORT btTriangleIndexVertexArray* btTriangleIndexVertexArray_new(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride);
-	EXPORT btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2();
+	EXPORT btTriangleIndexVertexArray* btTriangleIndexVertexArray_new();
+	EXPORT btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride);
 	EXPORT void btTriangleIndexVertexArray_addIndexedMesh(btTriangleIndexVertexArray* obj, const btIndexedMesh* mesh);
 	EXPORT void btTriangleIndexVertexArray_addIndexedMesh2(btTriangleIndexVertexArray* obj, const btIndexedMesh* mesh, PHY_ScalarType indexType);
-	EXPORT const IndexedMeshArray* btTriangleIndexVertexArray_getIndexedMeshArray(btTriangleIndexVertexArray* obj);
+	EXPORT IndexedMeshArray* btTriangleIndexVertexArray_getIndexedMeshArray(btTriangleIndexVertexArray* obj);
 }

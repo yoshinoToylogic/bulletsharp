@@ -30,7 +30,7 @@ namespace BulletSharp
 			set { btChunk_setChunkCode(_native, value); }
 		}
 
-		public int Dna_nr
+		public int DnaNr
 		{
 			get { return btChunk_getDna_nr(_native); }
 			set { btChunk_setDna_nr(_native, value); }

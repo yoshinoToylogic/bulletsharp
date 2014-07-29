@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class TriIndex
+	public class TriIndex : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -138,9 +138,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyTriangleCallback_clearCache(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSoftBodyTriangleCallback_getAabbMax(IntPtr obj, [Out] out Vector3 value);
+		static extern void btSoftBodyTriangleCallback_getAabbMax(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSoftBodyTriangleCallback_getAabbMin(IntPtr obj, [Out] out Vector3 value);
+		static extern void btSoftBodyTriangleCallback_getAabbMin(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btSoftBodyTriangleCallback_getTriangleCount(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

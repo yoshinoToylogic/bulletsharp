@@ -8,9 +8,8 @@ extern "C"
 	EXPORT void btGhostObject_convexSweepTest(btGhostObject* obj, const btConvexShape* castShape, const btScalar* convexFromWorld, const btScalar* convexToWorld, btCollisionWorld_ConvexResultCallback* resultCallback);
 	EXPORT void btGhostObject_convexSweepTest2(btGhostObject* obj, const btConvexShape* castShape, const btScalar* convexFromWorld, const btScalar* convexToWorld, btCollisionWorld_ConvexResultCallback* resultCallback, btScalar allowedCcdPenetration);
 	EXPORT int btGhostObject_getNumOverlappingObjects(btGhostObject* obj);
-	EXPORT const btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, int index);
+	EXPORT btCollisionObject* btGhostObject_getOverlappingObject(btGhostObject* obj, int index);
 	EXPORT btAlignedCollisionObjectArray* btGhostObject_getOverlappingPairs(btGhostObject* obj);
-	EXPORT void btGhostObject_getOverlappingPairs2(btGhostObject* obj);
 	EXPORT void btGhostObject_rayTest(btGhostObject* obj, const btScalar* rayFromWorld, const btScalar* rayToWorld, btCollisionWorld_RayResultCallback* resultCallback);
 	EXPORT void btGhostObject_removeOverlappingObjectInternal(btGhostObject* obj, btBroadphaseProxy* otherProxy, btDispatcher* dispatcher);
 	EXPORT void btGhostObject_removeOverlappingObjectInternal2(btGhostObject* obj, btBroadphaseProxy* otherProxy, btDispatcher* dispatcher, btBroadphaseProxy* thisProxy);

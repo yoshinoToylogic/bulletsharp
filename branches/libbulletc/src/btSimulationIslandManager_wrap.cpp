@@ -3,7 +3,7 @@
 #include "conversion.h"
 #include "btSimulationIslandManager_wrap.h"
 /*
-void btSimulationIslandManager_IslandCallback_processIsland(btSimulationIslandManager_IslandCallback* obj, * bodies, int numBodies, * manifolds, int numManifolds, int islandId)
+void btSimulationIslandManager_IslandCallback_processIsland(btSimulationIslandManager::IslandCallback* obj, * bodies, int numBodies, * manifolds, int numManifolds, int islandId)
 {
 	obj->processIsland(bodies, numBodies, manifolds, numManifolds, islandId);
 }
@@ -12,6 +12,7 @@ void btSimulationIslandManager_IslandCallback_delete(btSimulationIslandManager::
 {
 	delete obj;
 }
+
 
 btSimulationIslandManager* btSimulationIslandManager_new()
 {

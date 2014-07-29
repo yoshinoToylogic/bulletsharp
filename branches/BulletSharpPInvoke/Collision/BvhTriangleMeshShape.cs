@@ -80,23 +80,18 @@ namespace BulletSharp
 		{
 			btBvhTriangleMeshShape_serializeSingleTriangleInfoMap(_native, serializer._native);
 		}
-        
+
 		public void SetOptimizedBvh(OptimizedBvh bvh, Vector3 localScaling)
 		{
 			btBvhTriangleMeshShape_setOptimizedBvh2(_native, bvh._native, ref localScaling);
 		}
-        
-		public bool UsesQuantizedAabbCompression()
-		{
-			return btBvhTriangleMeshShape_usesQuantizedAabbCompression(_native);
-		}
-        
+
 		public OptimizedBvh OptimizedBvh
 		{
 			get { return new OptimizedBvh(btBvhTriangleMeshShape_getOptimizedBvh(_native)); }
 		    set { btBvhTriangleMeshShape_setOptimizedBvh(_native, value._native); }
 		}
-        
+
 		public bool OwnsBvh
 		{
 			get { return btBvhTriangleMeshShape_getOwnsBvh(_native); }
@@ -107,6 +102,11 @@ namespace BulletSharp
             get { return new TriangleInfoMap(btBvhTriangleMeshShape_getTriangleInfoMap(_native)); }
 			set { btBvhTriangleMeshShape_setTriangleInfoMap(_native, value._native); }
 		}
+
+        public bool UsesQuantizedAabbCompression
+        {
+            get { return btBvhTriangleMeshShape_usesQuantizedAabbCompression(_native); }
+        }
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btBvhTriangleMeshShape_new(IntPtr meshInterface, bool useQuantizedAabbCompression);

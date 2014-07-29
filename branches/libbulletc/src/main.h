@@ -362,6 +362,9 @@
 #define btDbvt_sStkNN void
 #define btDbvt_sStkNP void
 #define btDbvt_sStkNPS void
+#define btAlignedDbvtNodeArray void
+#define btAlignedStkNNArray void
+#define btAlignedStkNpsArray void
 #else
 #define btDbvt_IClone btDbvt::IClone
 #define btDbvt_ICollide btDbvt::ICollide
@@ -370,6 +373,9 @@
 #define btDbvt_sStkNN btDbvt::sStkNN
 #define btDbvt_sStkNP btDbvt::sStkNP
 #define btDbvt_sStkNPS btDbvt::sStkNPS
+#define btAlignedDbvtNodeArray btAlignedObjectArray<const btDbvtNode*>
+#define btAlignedStkNNArray btAlignedObjectArray<btDbvt_sStkNN>
+#define btAlignedStkNpsArray btAlignedObjectArray<btDbvt_sStkNPS>
 #endif
 
 #ifndef BT_DYNAMICS_WORLD_H
@@ -693,7 +699,7 @@
 #define btSoftBody_ImplicitFn btSoftBody::ImplicitFn
 #define btSoftBody_Impulse btSoftBody::Impulse
 #define btSoftBody_Joint btSoftBody::Joint
-#define btSoftBody_Joint_eType btSoftBody::Joint::eType
+#define btSoftBody_Joint_eType btSoftBody::Joint::eType::_
 #define btSoftBody_Joint_Specs btSoftBody::Joint::Specs
 #define btSoftBody_Link btSoftBody::Link
 #define btSoftBody_LJoint btSoftBody::LJoint

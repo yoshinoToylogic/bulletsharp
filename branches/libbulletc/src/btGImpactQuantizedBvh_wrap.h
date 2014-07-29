@@ -43,7 +43,7 @@ extern "C"
 	EXPORT const BT_QUANTIZED_BVH_NODE* btGImpactQuantizedBvh_get_node_pointer(btGImpactQuantizedBvh* obj);
 	EXPORT const BT_QUANTIZED_BVH_NODE* btGImpactQuantizedBvh_get_node_pointer2(btGImpactQuantizedBvh* obj, int index);
 	EXPORT int btGImpactQuantizedBvh_getEscapeNodeIndex(btGImpactQuantizedBvh* obj, int nodeindex);
-	EXPORT void btGImpactQuantizedBvh_getGlobalBox(btGImpactQuantizedBvh* obj);
+	EXPORT btAABB* btGImpactQuantizedBvh_getGlobalBox(btGImpactQuantizedBvh* obj);
 	EXPORT int btGImpactQuantizedBvh_getLeftNode(btGImpactQuantizedBvh* obj, int nodeindex);
 	EXPORT void btGImpactQuantizedBvh_getNodeBound(btGImpactQuantizedBvh* obj, int nodeindex, btAABB* bound);
 	EXPORT int btGImpactQuantizedBvh_getNodeCount(btGImpactQuantizedBvh* obj);

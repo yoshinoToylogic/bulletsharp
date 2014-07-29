@@ -42,13 +42,13 @@ namespace BulletSharp
 				set { btConvexCast_CastResult_setAllowedPenetration(_native, value); }
 			}
 
-		    public IDebugDraw DebugDrawer
-		    {
+			public IDebugDraw DebugDrawer
+			{
 		        get { return BulletSharp.DebugDraw.GetManaged(btConvexCast_CastResult_getDebugDrawer(_native)); }
                 set { btConvexCast_CastResult_setDebugDrawer(_native, BulletSharp.DebugDraw.GetUnmanaged(value)); }
-		    }
+			}
 
-		    public float Fraction
+			public float Fraction
 			{
 				get { return btConvexCast_CastResult_getFraction(_native); }
 				set { btConvexCast_CastResult_setFraction(_native, value); }
@@ -131,11 +131,11 @@ namespace BulletSharp
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern float btConvexCast_CastResult_getFraction(IntPtr obj);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btConvexCast_CastResult_getHitPoint(IntPtr obj, [Out] out Vector3 value);
+			static extern void btConvexCast_CastResult_getHitPoint(IntPtr obj, [Out] out Vector3 value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btConvexCast_CastResult_getHitTransformA(IntPtr obj, [Out] out Matrix value);
+			static extern void btConvexCast_CastResult_getHitTransformA(IntPtr obj, [Out] out Matrix value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-            static extern void btConvexCast_CastResult_getHitTransformB(IntPtr obj, [Out] out Matrix value);
+			static extern void btConvexCast_CastResult_getHitTransformB(IntPtr obj, [Out] out Matrix value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern void btConvexCast_CastResult_getNormal(IntPtr obj, [Out] out Vector3 value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

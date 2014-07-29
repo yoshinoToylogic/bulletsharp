@@ -9,17 +9,17 @@ btPersistentManifold* btPersistentManifold_new()
 	return new btPersistentManifold();
 }
 
-btPersistentManifold* btPersistentManifold_new2(btCollisionObject* body0, btCollisionObject* body1, int __unnamed, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
+btPersistentManifold* btPersistentManifold_new2(const btCollisionObject* body0, const btCollisionObject* body1, int __unnamed, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
 {
 	return new btPersistentManifold(body0, body1, __unnamed, contactBreakingThreshold, contactProcessingThreshold);
 }
 
-int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, btManifoldPoint* newPoint)
+int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, const btManifoldPoint* newPoint)
 {
 	return obj->addManifoldPoint(*newPoint);
 }
 
-int btPersistentManifold_addManifoldPoint2(btPersistentManifold* obj, btManifoldPoint* newPoint, bool isPredictive)
+int btPersistentManifold_addManifoldPoint2(btPersistentManifold* obj, const btManifoldPoint* newPoint, bool isPredictive)
 {
 	return obj->addManifoldPoint(*newPoint, isPredictive);
 }
@@ -44,7 +44,7 @@ const btCollisionObject* btPersistentManifold_getBody1(btPersistentManifold* obj
 	return obj->getBody1();
 }
 
-int btPersistentManifold_getCacheEntry(btPersistentManifold* obj, btManifoldPoint* newPoint)
+int btPersistentManifold_getCacheEntry(btPersistentManifold* obj, const btManifoldPoint* newPoint)
 {
 	return obj->getCacheEntry(*newPoint);
 }
@@ -84,7 +84,7 @@ int btPersistentManifold_getNumContacts(btPersistentManifold* obj)
 	return obj->getNumContacts();
 }
 
-void btPersistentManifold_refreshContactPoints(btPersistentManifold* obj, btScalar* trA, btScalar* trB)
+void btPersistentManifold_refreshContactPoints(btPersistentManifold* obj, const btScalar* trA, const btScalar* trB)
 {
 	TRANSFORM_CONV(trA);
 	TRANSFORM_CONV(trB);
@@ -96,12 +96,12 @@ void btPersistentManifold_removeContactPoint(btPersistentManifold* obj, int inde
 	obj->removeContactPoint(index);
 }
 
-void btPersistentManifold_replaceContactPoint(btPersistentManifold* obj, btManifoldPoint* newPoint, int insertIndex)
+void btPersistentManifold_replaceContactPoint(btPersistentManifold* obj, const btManifoldPoint* newPoint, int insertIndex)
 {
 	obj->replaceContactPoint(*newPoint, insertIndex);
 }
 
-void btPersistentManifold_setBodies(btPersistentManifold* obj, btCollisionObject* body0, btCollisionObject* body1)
+void btPersistentManifold_setBodies(btPersistentManifold* obj, const btCollisionObject* body0, const btCollisionObject* body1)
 {
 	obj->setBodies(body0, body1);
 }
@@ -136,7 +136,7 @@ void btPersistentManifold_setNumContacts(btPersistentManifold* obj, int cachedPo
 	obj->setNumContacts(cachedPoints);
 }
 
-bool btPersistentManifold_validContactDistance(btPersistentManifold* obj, btManifoldPoint* pt)
+bool btPersistentManifold_validContactDistance(btPersistentManifold* obj, const btManifoldPoint* pt)
 {
 	return obj->validContactDistance(*pt);
 }

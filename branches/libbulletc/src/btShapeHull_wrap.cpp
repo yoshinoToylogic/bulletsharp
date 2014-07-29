@@ -5,7 +5,7 @@
 
 btShapeHull* btShapeHull_new(const btConvexShape* shape)
 {
-	return ALIGNED_NEW(btShapeHull) (shape);
+	return ALIGNED_NEW(btShapeHull)(shape);
 }
 
 bool btShapeHull_buildHull(btShapeHull* obj, btScalar margin)

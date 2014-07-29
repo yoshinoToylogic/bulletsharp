@@ -3,8 +3,8 @@
 extern "C"
 {
 	EXPORT btConvexInternalShape* btConvexInternalShape_new();
-	EXPORT const btScalar* btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj);
-	EXPORT const btScalar* btConvexInternalShape_getLocalScalingNV(btConvexInternalShape* obj);
+	EXPORT void btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj, btScalar* dimensions);
+	EXPORT void btConvexInternalShape_getLocalScalingNV(btConvexInternalShape* obj, btScalar* value);
 	EXPORT btScalar btConvexInternalShape_getMarginNV(btConvexInternalShape* obj);
 	EXPORT void btConvexInternalShape_setImplicitShapeDimensions(btConvexInternalShape* obj, const btScalar* dimensions);
 	EXPORT void btConvexInternalShape_setSafeMargin(btConvexInternalShape* obj, btScalar minDimension);

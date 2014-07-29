@@ -86,9 +86,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btTriangleMesh_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleMesh_new2(bool use32BitIndices);
+		static extern IntPtr btTriangleMesh_new2(bool use32bitIndices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btTriangleMesh_new3(bool use32BitIndices, bool use4ComponentVertices);
+		static extern IntPtr btTriangleMesh_new3(bool use32bitIndices, bool use4componentVertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTriangleMesh_addIndex(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -5,7 +5,7 @@ extern "C"
 	EXPORT btConeTwistConstraint* btConeTwistConstraint_new(btRigidBody* rbA, btRigidBody* rbB, const btScalar* rbAFrame, const btScalar* rbBFrame);
 	EXPORT btConeTwistConstraint* btConeTwistConstraint_new2(btRigidBody* rbA, const btScalar* rbAFrame);
 	EXPORT void btConeTwistConstraint_calcAngleInfo(btConeTwistConstraint* obj);
-	EXPORT void btConeTwistConstraint_calcAngleInfo2(btConeTwistConstraint* obj, const btScalar* transA, const btScalar* transB, const btMatrix3x3* invInertiaWorldA, const btMatrix3x3* invInertiaWorldB);
+	EXPORT void btConeTwistConstraint_calcAngleInfo2(btConeTwistConstraint* obj, const btScalar* transA, const btScalar* transB, const btScalar* invInertiaWorldA, const btScalar* invInertiaWorldB);
 	EXPORT void btConeTwistConstraint_enableMotor(btConeTwistConstraint* obj, bool b);
 	EXPORT void btConeTwistConstraint_getAFrame(btConeTwistConstraint* obj, btScalar* value);
 	EXPORT void btConeTwistConstraint_getBFrame(btConeTwistConstraint* obj, btScalar* value);
@@ -13,7 +13,7 @@ extern "C"
 	EXPORT void btConeTwistConstraint_getFrameOffsetA(btConeTwistConstraint* obj, btScalar* value);
 	EXPORT void btConeTwistConstraint_getFrameOffsetB(btConeTwistConstraint* obj, btScalar* value);
 	EXPORT void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo1* info);
-	EXPORT void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btMatrix3x3* invInertiaWorldA, const btMatrix3x3* invInertiaWorldB);
+	EXPORT void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* invInertiaWorldA, const btScalar* invInertiaWorldB);
 	EXPORT void btConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* obj, btScalar fAngleInRadians, btScalar fLength, btScalar* value);
 	EXPORT int btConeTwistConstraint_getSolveSwingLimit(btConeTwistConstraint* obj);
 	EXPORT int btConeTwistConstraint_getSolveTwistLimit(btConeTwistConstraint* obj);
@@ -34,7 +34,7 @@ extern "C"
 	EXPORT void btConeTwistConstraint_setLimit5(btConeTwistConstraint* obj, int limitIndex, btScalar limitValue);
 	EXPORT void btConeTwistConstraint_setMaxMotorImpulse(btConeTwistConstraint* obj, btScalar maxMotorImpulse);
 	EXPORT void btConeTwistConstraint_setMaxMotorImpulseNormalized(btConeTwistConstraint* obj, btScalar maxMotorImpulse);
-	EXPORT void btConeTwistConstraint_setMotorTarget(btConeTwistConstraint* obj, btQuaternion* q);
-	EXPORT void btConeTwistConstraint_setMotorTargetInConstraintSpace(btConeTwistConstraint* obj, btQuaternion* q);
+	EXPORT void btConeTwistConstraint_setMotorTarget(btConeTwistConstraint* obj, const btScalar* q);
+	EXPORT void btConeTwistConstraint_setMotorTargetInConstraintSpace(btConeTwistConstraint* obj, const btScalar* q);
 	EXPORT void btConeTwistConstraint_updateRHS(btConeTwistConstraint* obj, btScalar timeStep);
 }

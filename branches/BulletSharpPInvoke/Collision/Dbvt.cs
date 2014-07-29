@@ -13,12 +13,7 @@ namespace BulletSharp
 		{
 			_native = native;
 		}
-        /*
-		public DbvtAabbMm()
-		{
-			_native = btDbvtAabbMm_new();
-		}
-        */
+
 		public int Classify(Vector3 n, float o, int s)
 		{
 			return btDbvtAabbMm_Classify(_native, ref n, o, s);
@@ -36,27 +31,27 @@ namespace BulletSharp
         /*
 		public static DbvtAabbMm FromCE(Vector3 c, Vector3 e)
 		{
-			btDbvtAabbMm_FromCE(ref c, ref e);
+			return btDbvtAabbMm_FromCE(ref c, ref e);
 		}
 
 		public static DbvtAabbMm FromCR(Vector3 c, float r)
 		{
-			btDbvtAabbMm_FromCR(ref c, r);
+			return btDbvtAabbMm_FromCR(ref c, r);
 		}
 
 		public static DbvtAabbMm FromMM(Vector3 mi, Vector3 mx)
 		{
-			btDbvtAabbMm_FromMM(ref mi, ref mx);
+			return btDbvtAabbMm_FromMM(ref mi, ref mx);
 		}
 
 		public static DbvtAabbMm FromPoints(Vector3 ppts, int n)
 		{
-			btDbvtAabbMm_FromPoints(ref ppts, n);
+			return btDbvtAabbMm_FromPoints(ref ppts, n);
 		}
 
 		public static DbvtAabbMm FromPoints(Vector3 pts, int n)
 		{
-			btDbvtAabbMm_FromPoints2(ref pts, n);
+			return btDbvtAabbMm_FromPoints2(ref pts, n);
 		}
         */
 		public float ProjectMinimum(Vector3 v, uint signs)
@@ -69,7 +64,7 @@ namespace BulletSharp
 			btDbvtAabbMm_SignedExpand(_native, ref e);
 		}
 
-        public Vector3 Center
+		public Vector3 Center
 		{
             get
             {
@@ -81,7 +76,7 @@ namespace BulletSharp
 
 		public Vector3 Extents
 		{
-			get
+            get
             {
                 Vector3 value;
                 btDbvtAabbMm_Extents(_native, out value);
@@ -90,8 +85,8 @@ namespace BulletSharp
 		}
 
 		public Vector3 Lengths
-		{
-			get
+        {
+            get
             {
                 Vector3 value;
                 btDbvtAabbMm_Lengths(_native, out value);
@@ -101,7 +96,7 @@ namespace BulletSharp
 
 		public Vector3 Maxs
 		{
-			get
+            get
             {
                 Vector3 value;
                 btDbvtAabbMm_Maxs(_native, out value);
@@ -111,7 +106,7 @@ namespace BulletSharp
 
 		public Vector3 Mins
 		{
-			get
+            get
             {
                 Vector3 value;
                 btDbvtAabbMm_Mins(_native, out value);
@@ -121,7 +116,7 @@ namespace BulletSharp
 
 		public Vector3 TMaxs
 		{
-			get
+            get
             {
                 Vector3 value;
                 btDbvtAabbMm_tMaxs(_native, out value);
@@ -131,7 +126,7 @@ namespace BulletSharp
 
 		public Vector3 TMins
 		{
-			get
+            get
             {
                 Vector3 value;
                 btDbvtAabbMm_tMins(_native, out value);
@@ -186,15 +181,10 @@ namespace BulletSharp
 			_native = native;
 		}
         /*
-		public DbvtNode()
-		{
-			_native = btDbvtNode_new();
-		}
 
 		public DbvtNodePtrArray Childs
 		{
 			get { return btDbvtNode_getChilds(_native); }
-			set { btDbvtNode_setChilds(_native, value._native); }
 		}
         */
 		public IntPtr Data
@@ -253,8 +243,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btDbvtNode_isleaf(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDbvtNode_setChilds(IntPtr obj, IntPtr value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtNode_setData(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDbvtNode_setDataAsInt(IntPtr obj, int value);
@@ -282,12 +270,12 @@ namespace BulletSharp
 			{
 				_native = native;
 			}
-            /*
+
 			public IClone()
 			{
 				_native = btDbvt_IClone_new();
 			}
-            */
+
 			public void CloneLeaf(DbvtNode __unnamed0)
 			{
 				btDbvt_IClone_CloneLeaf(_native, __unnamed0._native);
@@ -329,12 +317,12 @@ namespace BulletSharp
 			{
 				_native = native;
 			}
-            /*
+
 			public ICollide()
 			{
 				_native = btDbvt_ICollide_new();
 			}
-            */
+
 			public bool AllLeaves(DbvtNode __unnamed0)
 			{
 				return btDbvt_ICollide_AllLeaves(_native, __unnamed0._native);
@@ -464,17 +452,17 @@ namespace BulletSharp
 				_native = btDbvt_sStkCLN_new(n._native, p._native);
 			}
 
-		    public DbvtNode Node
-		    {
+			public DbvtNode Node
+			{
 		        get
 		        {
 		            IntPtr ptr = btDbvt_sStkCLN_getNode(_native);
 		            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 		        }
 		        set { btDbvt_sStkCLN_setNode(_native, (value != null) ? value._native : IntPtr.Zero); }
-		    }
+			}
 
-		    public DbvtNode Parent
+			public DbvtNode Parent
 			{
 				get
 		        {
@@ -537,17 +525,17 @@ namespace BulletSharp
 				_native = btDbvt_sStkNN_new2(na._native, nb._native);
 			}
 
-		    public DbvtNode A
-		    {
+			public DbvtNode A
+			{
 		        get
 		        {
 		            IntPtr ptr = btDbvt_sStkNN_getA(_native);
 		            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 		        }
 		        set { btDbvt_sStkNN_setA(_native, (value != null) ? value._native : IntPtr.Zero); }
-		    }
+			}
 
-		    public DbvtNode B
+			public DbvtNode B
 			{
 				get
 		        {
@@ -682,17 +670,17 @@ namespace BulletSharp
 				set { btDbvt_sStkNPS_setMask(_native, value); }
 			}
 
-		    public DbvtNode Node
-		    {
+			public DbvtNode Node
+			{
 		        get
 		        {
 		            IntPtr ptr = btDbvt_sStkNPS_getNode(_native);
 		            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 		        }
 		        set { btDbvt_sStkNPS_setNode(_native, (value != null) ? value._native : IntPtr.Zero); }
-		    }
+			}
 
-		    public float Value
+			public float Value
 			{
 				get { return btDbvt_sStkNPS_getValue(_native); }
 				set { btDbvt_sStkNPS_setValue(_native, value); }
@@ -922,17 +910,17 @@ namespace BulletSharp
 			btDbvt_write(_native, iwriter._native);
 		}
 
-	    public DbvtNode Free
-	    {
+		public DbvtNode Free
+		{
 	        get
 	        {
 	            IntPtr ptr = btDbvt_getFree(_native);
 	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 	        }
 	        set { btDbvt_setFree(_native, (value != null) ? value._native : IntPtr.Zero); }
-	    }
+		}
 
-	    public int Leaves
+		public int Leaves
 		{
 			get { return btDbvt_getLeaves(_native); }
 			set { btDbvt_setLeaves(_native, value); }
@@ -955,15 +943,15 @@ namespace BulletSharp
 			get { return btDbvt_getRayTestStack(_native); }
 		}
         */
-	    public DbvtNode Root
-	    {
+		public DbvtNode Root
+		{
 	        get
 	        {
 	            IntPtr ptr = btDbvt_getRoot(_native);
 	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
 	        }
 	        set { btDbvt_setRoot(_native, (value != null) ? value._native : IntPtr.Zero); }
-	    }
+		}
 	    /*
         public AlignedStkNNArray StkStack
 		{
