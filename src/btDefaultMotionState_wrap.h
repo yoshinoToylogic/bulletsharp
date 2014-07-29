@@ -15,6 +15,7 @@ extern "C"
 	EXPORT void btDefaultMotionState_setGraphicsWorldTrans(btDefaultMotionState* obj, const btScalar* value);
 	EXPORT void btDefaultMotionState_setStartWorldTrans(btDefaultMotionState* obj, const btScalar* value);
 	EXPORT void btDefaultMotionState_setUserPointer(btDefaultMotionState* obj, void* value);
+
 	EXPORT void btMotionState_getWorldTransform(btMotionState* obj, btScalar* outTransform);
 	EXPORT void btMotionState_setWorldTransform(btMotionState* obj, btScalar* transform);
 	EXPORT void btMotionState_delete(btMotionState* obj);

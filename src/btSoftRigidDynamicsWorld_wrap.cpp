@@ -4,19 +4,19 @@
 #include "conversion.h"
 #include "btSoftRigidDynamicsWorld_wrap.h"
 
-btSoftRigidDynamicsWorld* btSoftRigidDynamicsWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration, btSoftBodySolver* softBodySolver)
-{
-	return new btSoftRigidDynamicsWorld(dispatcher, pairCache, constraintSolver, collisionConfiguration, softBodySolver);
-}
-
-btSoftRigidDynamicsWorld* btSoftRigidDynamicsWorld_new2(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration)
+btSoftRigidDynamicsWorld* btSoftRigidDynamicsWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration)
 {
 	return new btSoftRigidDynamicsWorld(dispatcher, pairCache, constraintSolver, collisionConfiguration);
 }
 
-void btSoftRigidDynamicsWorld_addSoftBody(btSoftRigidDynamicsWorld* obj, btSoftBody* body, short collisionFilterGroup, short collisionFilterMask)
+btSoftRigidDynamicsWorld* btSoftRigidDynamicsWorld_new2(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration, btSoftBodySolver* softBodySolver)
 {
-	obj->addSoftBody(body, collisionFilterGroup, collisionFilterMask);
+	return new btSoftRigidDynamicsWorld(dispatcher, pairCache, constraintSolver, collisionConfiguration, softBodySolver);
+}
+
+void btSoftRigidDynamicsWorld_addSoftBody(btSoftRigidDynamicsWorld* obj, btSoftBody* body)
+{
+	obj->addSoftBody(body);
 }
 
 void btSoftRigidDynamicsWorld_addSoftBody2(btSoftRigidDynamicsWorld* obj, btSoftBody* body, short collisionFilterGroup)
@@ -24,9 +24,9 @@ void btSoftRigidDynamicsWorld_addSoftBody2(btSoftRigidDynamicsWorld* obj, btSoft
 	obj->addSoftBody(body, collisionFilterGroup);
 }
 
-void btSoftRigidDynamicsWorld_addSoftBody3(btSoftRigidDynamicsWorld* obj, btSoftBody* body)
+void btSoftRigidDynamicsWorld_addSoftBody3(btSoftRigidDynamicsWorld* obj, btSoftBody* body, short collisionFilterGroup, short collisionFilterMask)
 {
-	obj->addSoftBody(body);
+	obj->addSoftBody(body, collisionFilterGroup, collisionFilterMask);
 }
 
 int btSoftRigidDynamicsWorld_getDrawFlags(btSoftRigidDynamicsWorld* obj)

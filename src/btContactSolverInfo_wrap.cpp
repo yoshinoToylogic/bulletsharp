@@ -221,6 +221,7 @@ void btContactSolverInfoData_delete(btContactSolverInfoData* obj)
 	delete obj;
 }
 
+
 btContactSolverInfo* btContactSolverInfo_new()
 {
 	return new btContactSolverInfo();

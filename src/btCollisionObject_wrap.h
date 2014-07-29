@@ -9,7 +9,7 @@ extern "C"
 	EXPORT bool btCollisionObject_checkCollideWith(btCollisionObject* obj, const btCollisionObject* co);
 	EXPORT void btCollisionObject_forceActivationState(btCollisionObject* obj, int newState);
 	EXPORT int btCollisionObject_getActivationState(btCollisionObject* obj);
-	EXPORT void btCollisionObject_getAnisotropicFriction(btCollisionObject* obj, btScalar* friction);
+	EXPORT void btCollisionObject_getAnisotropicFriction(btCollisionObject* obj, btScalar* value);
 	EXPORT btBroadphaseProxy* btCollisionObject_getBroadphaseHandle(btCollisionObject* obj);
 	EXPORT btScalar btCollisionObject_getCcdMotionThreshold(btCollisionObject* obj);
 	EXPORT btScalar btCollisionObject_getCcdSquareMotionThreshold(btCollisionObject* obj);
@@ -22,14 +22,14 @@ extern "C"
 	EXPORT btScalar btCollisionObject_getFriction(btCollisionObject* obj);
 	EXPORT btScalar btCollisionObject_getHitFraction(btCollisionObject* obj);
 	EXPORT int btCollisionObject_getInternalType(btCollisionObject* obj);
-	EXPORT void btCollisionObject_getInterpolationAngularVelocity(btCollisionObject* obj, btScalar* velocity);
-	EXPORT void btCollisionObject_getInterpolationLinearVelocity(btCollisionObject* obj, btScalar* velocity);
-	EXPORT void btCollisionObject_getInterpolationWorldTransform(btCollisionObject* obj, btScalar* transform);
+	EXPORT void btCollisionObject_getInterpolationAngularVelocity(btCollisionObject* obj, btScalar* angvel);
+	EXPORT void btCollisionObject_getInterpolationLinearVelocity(btCollisionObject* obj, btScalar* linvel);
+	EXPORT void btCollisionObject_getInterpolationWorldTransform(btCollisionObject* obj, btScalar* trans);
 	EXPORT int btCollisionObject_getIslandTag(btCollisionObject* obj);
 	EXPORT btScalar btCollisionObject_getRestitution(btCollisionObject* obj);
 	EXPORT btScalar btCollisionObject_getRollingFriction(btCollisionObject* obj);
 	EXPORT void* btCollisionObject_getUserPointer(btCollisionObject* obj);
-	EXPORT void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* transform);
+	EXPORT void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* worldTrans);
 	EXPORT bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj);
 	EXPORT bool btCollisionObject_hasAnisotropicFriction2(btCollisionObject* obj, int frictionMode);
 	EXPORT bool btCollisionObject_hasContactResponse(btCollisionObject* obj);

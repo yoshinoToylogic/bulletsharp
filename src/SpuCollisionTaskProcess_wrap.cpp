@@ -13,7 +13,7 @@ int SpuGatherAndProcessWorkUnitInput_getEndIndex(SpuGatherAndProcessWorkUnitInpu
 	return obj->m_endIndex;
 }
 /*
-uint64_t SpuGatherAndProcessWorkUnitInput_getPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj)
+unsigned long int SpuGatherAndProcessWorkUnitInput_getPairArrayPtr(SpuGatherAndProcessWorkUnitInput* obj)
 {
 	return obj->m_pairArrayPtr;
 }
@@ -43,6 +43,7 @@ void SpuGatherAndProcessWorkUnitInput_delete(SpuGatherAndProcessWorkUnitInput* o
 	delete obj;
 }
 
+
 SpuCollisionTaskProcess* SpuCollisionTaskProcess_new(btThreadSupportInterface* threadInterface, unsigned int maxNumOutstandingTasks)
 {
 	return new SpuCollisionTaskProcess(threadInterface, maxNumOutstandingTasks);
@@ -63,14 +64,14 @@ int SpuCollisionTaskProcess_getNumTasks(SpuCollisionTaskProcess* obj)
 	return obj->getNumTasks();
 }
 
-void SpuCollisionTaskProcess_initialize2(SpuCollisionTaskProcess* obj, bool useEpa)
-{
-	obj->initialize2(useEpa);
-}
-
-void SpuCollisionTaskProcess_initialize22(SpuCollisionTaskProcess* obj)
+void SpuCollisionTaskProcess_initialize2(SpuCollisionTaskProcess* obj)
 {
 	obj->initialize2();
+}
+
+void SpuCollisionTaskProcess_initialize22(SpuCollisionTaskProcess* obj, bool useEpa)
+{
+	obj->initialize2(useEpa);
 }
 
 void SpuCollisionTaskProcess_setNumTasks(SpuCollisionTaskProcess* obj, int maxNumTasks)

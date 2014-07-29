@@ -101,8 +101,8 @@ extern "C"
 	EXPORT btPointerUid* btPointerUid_new();
 	EXPORT void btPointerUid_delete(btPointerUid* obj);
 	*/
-	EXPORT btDefaultSerializer* btDefaultSerializer_new(int totalSize);
-	EXPORT btDefaultSerializer* btDefaultSerializer_new2();
+	EXPORT btDefaultSerializer* btDefaultSerializer_new();
+	EXPORT btDefaultSerializer* btDefaultSerializer_new2(int totalSize);
 	EXPORT unsigned char* btDefaultSerializer_internalAlloc(btDefaultSerializer* obj, size_t size);
 	EXPORT void btDefaultSerializer_writeHeader(btDefaultSerializer* obj, unsigned char* buffer);
 }

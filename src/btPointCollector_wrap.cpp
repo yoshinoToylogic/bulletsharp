@@ -38,12 +38,12 @@ void btPointCollector_setHasResult(btPointCollector* obj, bool value)
 	obj->m_hasResult = value;
 }
 
-void btPointCollector_setNormalOnBInWorld(btPointCollector* obj, btScalar* value)
+void btPointCollector_setNormalOnBInWorld(btPointCollector* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_normalOnBInWorld);
 }
 
-void btPointCollector_setPointInWorld(btPointCollector* obj, btScalar* value)
+void btPointCollector_setPointInWorld(btPointCollector* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_pointInWorld);
 }

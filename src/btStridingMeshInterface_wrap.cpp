@@ -3,9 +3,11 @@
 
 void btStridingMeshInterface_calculateAabbBruteForce(btStridingMeshInterface* obj, btScalar* aabbMin, btScalar* aabbMax)
 {
-	VECTOR3_CONV(aabbMin);
-	VECTOR3_CONV(aabbMax);
+	VECTOR3_DEF(aabbMin);
+	VECTOR3_DEF(aabbMax);
 	obj->calculateAabbBruteForce(VECTOR3_USE(aabbMin), VECTOR3_USE(aabbMax));
+	VECTOR3_DEF_OUT(aabbMin);
+	VECTOR3_DEF_OUT(aabbMax);
 }
 
 int btStridingMeshInterface_calculateSerializeBufferSize(btStridingMeshInterface* obj)
@@ -47,9 +49,9 @@ void btStridingMeshInterface_getPremadeAabb(btStridingMeshInterface* obj, btScal
 	VECTOR3_DEF_OUT(aabbMax);
 }
 
-void btStridingMeshInterface_getScaling(btStridingMeshInterface* obj, btScalar* value)
+void btStridingMeshInterface_getScaling(btStridingMeshInterface* obj, btScalar* scaling)
 {
-	VECTOR3_OUT(&obj->getScaling(), value);
+	VECTOR3_OUT(obj->getScaling(), scaling);
 }
 
 bool btStridingMeshInterface_hasPremadeAabb(btStridingMeshInterface* obj)

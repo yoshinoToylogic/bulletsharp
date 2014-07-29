@@ -12,8 +12,3 @@ bool btBulletXmlWorldImporter_loadFile(btBulletXmlWorldImporter* obj, const char
 {
 	return obj->loadFile(fileName);
 }
-
-void btBulletXmlWorldImporter_delete(btBulletXmlWorldImporter* obj)
-{
-	delete obj;
-}

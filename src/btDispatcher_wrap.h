@@ -35,7 +35,7 @@ extern "C"
 	EXPORT btCollisionAlgorithm* btDispatcher_findAlgorithm(btDispatcher* obj, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap);
 	EXPORT btCollisionAlgorithm* btDispatcher_findAlgorithm2(btDispatcher* obj, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, btPersistentManifold* sharedManifold);
 	EXPORT void btDispatcher_freeCollisionAlgorithm(btDispatcher* obj, void* ptr);
-	//EXPORT * btDispatcher_getInternalManifoldPointer(btDispatcher* obj);
+	EXPORT btPersistentManifold** btDispatcher_getInternalManifoldPointer(btDispatcher* obj);
 	EXPORT btPoolAllocator* btDispatcher_getInternalManifoldPool(btDispatcher* obj);
 	EXPORT btPersistentManifold* btDispatcher_getManifoldByIndexInternal(btDispatcher* obj, int index);
 	EXPORT btPersistentManifold* btDispatcher_getNewManifold(btDispatcher* obj, const btCollisionObject* b0, const btCollisionObject* b1);

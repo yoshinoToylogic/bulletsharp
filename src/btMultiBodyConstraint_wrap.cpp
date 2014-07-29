@@ -47,12 +47,12 @@ bool btMultiBodyConstraint_isUnilateral(btMultiBodyConstraint* obj)
 	return obj->isUnilateral();
 }
 
-const btScalar* btMultiBodyConstraint_jacobianA(btMultiBodyConstraint* obj, int row)
+btScalar* btMultiBodyConstraint_jacobianA(btMultiBodyConstraint* obj, int row)
 {
 	return obj->jacobianA(row);
 }
 
-const btScalar* btMultiBodyConstraint_jacobianB(btMultiBodyConstraint* obj, int row)
+btScalar* btMultiBodyConstraint_jacobianB(btMultiBodyConstraint* obj, int row)
 {
 	return obj->jacobianB(row);
 }

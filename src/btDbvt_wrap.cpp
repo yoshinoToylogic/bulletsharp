@@ -10,9 +10,7 @@ btDbvtAabbMm* btDbvtAabbMm_new()
 
 void btDbvtAabbMm_Center(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_DEF(value);
-	VECTOR3_USE(value) = obj->Center();
-	VECTOR3_DEF_OUT(value);
+	VECTOR3_OUT(obj->Center(), value);
 }
 
 int btDbvtAabbMm_Classify(btDbvtAabbMm* obj, const btScalar* n, btScalar o, int s)
@@ -34,56 +32,62 @@ void btDbvtAabbMm_Expand(btDbvtAabbMm* obj, const btScalar* e)
 
 void btDbvtAabbMm_Extents(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_DEF(value);
-	VECTOR3_USE(value) = obj->Extents();
-	VECTOR3_DEF_OUT(value);
+	VECTOR3_OUT(obj->Extents(), value);
 }
 
-void btDbvtAabbMm_FromCE(const btScalar* c, const btScalar* e)
+btDbvtAabbMm* btDbvtAabbMm_FromCE(const btScalar* c, const btScalar* e)
 {
+	btDbvtAabbMm* ret = new btDbvtAabbMm;
 	VECTOR3_CONV(c);
 	VECTOR3_CONV(e);
-	btDbvtAabbMm::FromCE(VECTOR3_USE(c), VECTOR3_USE(e));
+	*ret = btDbvtAabbMm::FromCE(VECTOR3_USE(c), VECTOR3_USE(e));
+	return ret;
 }
 
-void btDbvtAabbMm_FromCR(const btScalar* c, btScalar r)
+btDbvtAabbMm* btDbvtAabbMm_FromCR(const btScalar* c, btScalar r)
 {
+	btDbvtAabbMm* ret = new btDbvtAabbMm;
 	VECTOR3_CONV(c);
-	btDbvtAabbMm::FromCR(VECTOR3_USE(c), r);
+	*ret = btDbvtAabbMm::FromCR(VECTOR3_USE(c), r);
+	return ret;
 }
 
-void btDbvtAabbMm_FromMM(const btScalar* mi, const btScalar* mx)
+btDbvtAabbMm* btDbvtAabbMm_FromMM(const btScalar* mi, const btScalar* mx)
 {
+	btDbvtAabbMm* ret = new btDbvtAabbMm;
 	VECTOR3_CONV(mi);
 	VECTOR3_CONV(mx);
-	btDbvtAabbMm::FromMM(VECTOR3_USE(mi), VECTOR3_USE(mx));
-}
-/*
-void btDbvtAabbMm_FromPoints(const btScalar* ppts, int n)
-{
-	VECTOR3_CONV(ppts);
-	btDbvtAabbMm::FromPoints(VECTOR3_USE(ppts), n);
+	*ret = btDbvtAabbMm::FromMM(VECTOR3_USE(mi), VECTOR3_USE(mx));
+	return ret;
 }
 
-void btDbvtAabbMm_FromPoints2(const btScalar* pts, int n)
+btDbvtAabbMm* btDbvtAabbMm_FromPoints(const btVector3** ppts, int n)
 {
-	VECTOR3_CONV(pts);
-	btDbvtAabbMm::FromPoints(VECTOR3_USE(pts), n);
+	btDbvtAabbMm* ret = new btDbvtAabbMm;
+	*ret = btDbvtAabbMm::FromPoints(ppts, n);
+	return ret;
 }
-*/
+
+btDbvtAabbMm* btDbvtAabbMm_FromPoints2(const btVector3* pts, int n)
+{
+	btDbvtAabbMm* ret = new btDbvtAabbMm;
+	*ret = btDbvtAabbMm::FromPoints(pts, n);
+	return ret;
+}
+
 void btDbvtAabbMm_Lengths(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT2(&obj->Lengths(), value);
+	VECTOR3_OUT(obj->Lengths(), value);
 }
 
 void btDbvtAabbMm_Maxs(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT2(&obj->Maxs(), value);
+	VECTOR3_OUT(obj->Maxs(), value);
 }
 
 void btDbvtAabbMm_Mins(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT2(&obj->Mins(), value);
+	VECTOR3_OUT(obj->Mins(), value);
 }
 
 btScalar btDbvtAabbMm_ProjectMinimum(btDbvtAabbMm* obj, const btScalar* v, unsigned int signs)
@@ -100,12 +104,12 @@ void btDbvtAabbMm_SignedExpand(btDbvtAabbMm* obj, const btScalar* e)
 
 void btDbvtAabbMm_tMaxs(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT2(&obj->tMaxs(), value);
+	VECTOR3_OUT(obj->tMaxs(), value);
 }
 
 void btDbvtAabbMm_tMins(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT2(&obj->tMins(), value);
+	VECTOR3_OUT(obj->tMins(), value);
 }
 
 void btDbvtAabbMm_delete(btDbvtAabbMm* obj)
@@ -263,7 +267,7 @@ btDbvtNode* btDbvt_sStkCLN_getParent(btDbvt::sStkCLN* obj)
 	return obj->parent;
 }
 
-void btDbvt_sStkCLN_setNode(btDbvt::sStkCLN* obj, btDbvtNode* value)
+void btDbvt_sStkCLN_setNode(btDbvt::sStkCLN* obj, const btDbvtNode* value)
 {
 	obj->node = value;
 }
@@ -299,12 +303,12 @@ const btDbvtNode* btDbvt_sStkNN_getB(btDbvt::sStkNN* obj)
 	return obj->b;
 }
 
-void btDbvt_sStkNN_setA(btDbvt::sStkNN* obj, btDbvtNode* value)
+void btDbvt_sStkNN_setA(btDbvt::sStkNN* obj, const btDbvtNode* value)
 {
 	obj->a = value;
 }
 
-void btDbvt_sStkNN_setB(btDbvt::sStkNN* obj, btDbvtNode* value)
+void btDbvt_sStkNN_setB(btDbvt::sStkNN* obj, const btDbvtNode* value)
 {
 	obj->b = value;
 }
@@ -335,7 +339,7 @@ void btDbvt_sStkNP_setMask(btDbvt::sStkNP* obj, int value)
 	obj->mask = value;
 }
 
-void btDbvt_sStkNP_setNode(btDbvt::sStkNP* obj, btDbvtNode* value)
+void btDbvt_sStkNP_setNode(btDbvt::sStkNP* obj, const btDbvtNode* value)
 {
 	obj->node = value;
 }
@@ -376,7 +380,7 @@ void btDbvt_sStkNPS_setMask(btDbvt::sStkNPS* obj, int value)
 	obj->mask = value;
 }
 
-void btDbvt_sStkNPS_setNode(btDbvt::sStkNPS* obj, btDbvtNode* value)
+void btDbvt_sStkNPS_setNode(btDbvt::sStkNPS* obj, const btDbvtNode* value)
 {
 	obj->node = value;
 }
@@ -396,12 +400,12 @@ btDbvt* btDbvt_new()
 {
 	return new btDbvt();
 }
-/*
+
 int btDbvt_allocate(btAlignedIntArray* ifree, btAlignedStkNpsArray* stock, const btDbvt::sStkNPS* value)
 {
 	return btDbvt::allocate(*ifree, *stock, *value);
 }
-*/
+
 void btDbvt_benchmark()
 {
 	btDbvt::benchmark();
@@ -422,24 +426,21 @@ void btDbvt_clone2(btDbvt* obj, btDbvt* dest, btDbvt::IClone* iclone)
 	obj->clone(*dest, iclone);
 }
 /*
-void btDbvt_collideKDOP(const btDbvtNode* root, const btScalar* normals, const btScalar* offsets, int count, const btDbvt::ICollide* policy)
+void btDbvt_collideKDOP(const btDbvtNode* root, const btVector3* normals, const btScalar* offsets, int count, const btDbvt::ICollide* policy)
 {
-	VECTOR3_CONV(normals);
-	btDbvt::collideKDOP(root, VECTOR3_USE(normals), offsets, count, *policy);
+	btDbvt::collideKDOP(root, normals, offsets, count, *policy);
 }
 
-void btDbvt_collideOCL(const btDbvtNode* root, const btScalar* normals, const btScalar* offsets, const btScalar* sortaxis, int count, const btDbvt::ICollide* policy)
+void btDbvt_collideOCL(const btDbvtNode* root, const btVector3* normals, const btScalar* offsets, const btScalar* sortaxis, int count, const btDbvt::ICollide* policy)
 {
-	VECTOR3_CONV(normals);
 	VECTOR3_CONV(sortaxis);
-	btDbvt::collideOCL(root, VECTOR3_USE(normals), offsets, VECTOR3_USE(sortaxis), count, *policy);
+	btDbvt::collideOCL(root, normals, offsets, VECTOR3_USE(sortaxis), count, *policy);
 }
 
-void btDbvt_collideOCL2(const btDbvtNode* root, const btScalar* normals, const btScalar* offsets, const btScalar* sortaxis, int count, const btDbvt::ICollide* policy, bool fullsort)
+void btDbvt_collideOCL2(const btDbvtNode* root, const btVector3* normals, const btScalar* offsets, const btScalar* sortaxis, int count, const btDbvt::ICollide* policy, bool fullsort)
 {
-	VECTOR3_CONV(normals);
 	VECTOR3_CONV(sortaxis);
-	btDbvt::collideOCL(root, VECTOR3_USE(normals), offsets, VECTOR3_USE(sortaxis), count, *policy, fullsort);
+	btDbvt::collideOCL(root, normals, offsets, VECTOR3_USE(sortaxis), count, *policy, fullsort);
 }
 
 void btDbvt_collideTT(btDbvt* obj, const btDbvtNode* root0, const btDbvtNode* root1, const btDbvt::ICollide* policy)
@@ -481,12 +482,12 @@ void btDbvt_enumNodes(const btDbvtNode* root, const btDbvt::ICollide* policy)
 {
 	btDbvt::enumNodes(root, *policy);
 }
-
-void btDbvt_extractLeaves(const btDbvtNode* node, const btAlignedDbvtNodeArray* leaves)
+*/
+void btDbvt_extractLeaves(const btDbvtNode* node, btAlignedDbvtNodeArray* leaves)
 {
 	btDbvt::extractLeaves(node, *leaves);
 }
-*/
+
 btDbvtNode* btDbvt_getFree(btDbvt* obj)
 {
 	return obj->m_free;
@@ -507,9 +508,9 @@ unsigned int btDbvt_getOpath(btDbvt* obj)
 	return obj->m_opath;
 }
 
-void btDbvt_getRayTestStack(btDbvt* obj)
+btAlignedDbvtNodeArray* btDbvt_getRayTestStack(btDbvt* obj)
 {
-	obj->m_rayTestStack;
+	return &obj->m_rayTestStack;
 }
 
 btDbvtNode* btDbvt_getRoot(btDbvt* obj)
@@ -517,9 +518,9 @@ btDbvtNode* btDbvt_getRoot(btDbvt* obj)
 	return obj->m_root;
 }
 
-void btDbvt_getStkStack(btDbvt* obj)
+btAlignedStkNNArray* btDbvt_getStkStack(btDbvt* obj)
 {
-	obj->m_stkStack;
+	return &obj->m_stkStack;
 }
 
 btDbvtNode* btDbvt_insert(btDbvt* obj, const btDbvtVolume* box, void* data)

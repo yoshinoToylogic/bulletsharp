@@ -7,10 +7,10 @@ extern "C"
 	EXPORT void btJointFeedback_getAppliedForceBodyB(btJointFeedback* obj, btScalar* value);
 	EXPORT void btJointFeedback_getAppliedTorqueBodyA(btJointFeedback* obj, btScalar* value);
 	EXPORT void btJointFeedback_getAppliedTorqueBodyB(btJointFeedback* obj, btScalar* value);
-	EXPORT void btJointFeedback_setAppliedForceBodyA(btJointFeedback* obj, btScalar* value);
-	EXPORT void btJointFeedback_setAppliedForceBodyB(btJointFeedback* obj, btScalar* value);
-	EXPORT void btJointFeedback_setAppliedTorqueBodyA(btJointFeedback* obj, btScalar* value);
-	EXPORT void btJointFeedback_setAppliedTorqueBodyB(btJointFeedback* obj, btScalar* value);
+	EXPORT void btJointFeedback_setAppliedForceBodyA(btJointFeedback* obj, const btScalar* value);
+	EXPORT void btJointFeedback_setAppliedForceBodyB(btJointFeedback* obj, const btScalar* value);
+	EXPORT void btJointFeedback_setAppliedTorqueBodyA(btJointFeedback* obj, const btScalar* value);
+	EXPORT void btJointFeedback_setAppliedTorqueBodyB(btJointFeedback* obj, const btScalar* value);
 	EXPORT void btJointFeedback_delete(btJointFeedback* obj);
 
 	EXPORT btTypedConstraint_btConstraintInfo1* btTypedConstraint_btConstraintInfo1_new();
@@ -50,6 +50,7 @@ extern "C"
 	EXPORT void btTypedConstraint_btConstraintInfo2_setRowskip(btTypedConstraint_btConstraintInfo2* obj, int value);
 	EXPORT void btTypedConstraint_btConstraintInfo2_setUpperLimit(btTypedConstraint_btConstraintInfo2* obj, btScalar* value);
 	EXPORT void btTypedConstraint_btConstraintInfo2_delete(btTypedConstraint_btConstraintInfo2* obj);
+
 	EXPORT void btTypedConstraint_buildJacobian(btTypedConstraint* obj);
 	EXPORT int btTypedConstraint_calculateSerializeBufferSize(btTypedConstraint* obj);
 	EXPORT void btTypedConstraint_enableFeedback(btTypedConstraint* obj, bool needsFeedback);
@@ -62,8 +63,8 @@ extern "C"
 	EXPORT void btTypedConstraint_getInfo2(btTypedConstraint* obj, btTypedConstraint_btConstraintInfo2* info);
 	EXPORT btJointFeedback* btTypedConstraint_getJointFeedback(btTypedConstraint* obj);
 	EXPORT int btTypedConstraint_getOverrideNumSolverIterations(btTypedConstraint* obj);
-	EXPORT btScalar btTypedConstraint_getParam(btTypedConstraint* obj, int num, int axis);
-	EXPORT btScalar btTypedConstraint_getParam2(btTypedConstraint* obj, int num);
+	EXPORT btScalar btTypedConstraint_getParam(btTypedConstraint* obj, int num);
+	EXPORT btScalar btTypedConstraint_getParam2(btTypedConstraint* obj, int num, int axis);
 	EXPORT btRigidBody* btTypedConstraint_getRigidBodyA(btTypedConstraint* obj);
 	EXPORT btRigidBody* btTypedConstraint_getRigidBodyB(btTypedConstraint* obj);
 	EXPORT int btTypedConstraint_getUid(btTypedConstraint* obj);
@@ -80,8 +81,8 @@ extern "C"
 	EXPORT void btTypedConstraint_setEnabled(btTypedConstraint* obj, bool enabled);
 	EXPORT void btTypedConstraint_setJointFeedback(btTypedConstraint* obj, btJointFeedback* jointFeedback);
 	EXPORT void btTypedConstraint_setOverrideNumSolverIterations(btTypedConstraint* obj, int overideNumIterations);
-	EXPORT void btTypedConstraint_setParam(btTypedConstraint* obj, int num, btScalar value, int axis);
-	EXPORT void btTypedConstraint_setParam2(btTypedConstraint* obj, int num, btScalar value);
+	EXPORT void btTypedConstraint_setParam(btTypedConstraint* obj, int num, btScalar value);
+	EXPORT void btTypedConstraint_setParam2(btTypedConstraint* obj, int num, btScalar value, int axis);
 	EXPORT void btTypedConstraint_setupSolverConstraint(btTypedConstraint* obj, btConstraintArray* ca, int solverBodyA, int solverBodyB, btScalar timeStep);
 	EXPORT void btTypedConstraint_setUserConstraintId(btTypedConstraint* obj, int uid);
 	EXPORT void btTypedConstraint_setUserConstraintPtr(btTypedConstraint* obj, void* ptr);
@@ -101,10 +102,10 @@ extern "C"
 	EXPORT btScalar btAngularLimit_getSign(btAngularLimit* obj);
 	EXPORT btScalar btAngularLimit_getSoftness(btAngularLimit* obj);
 	EXPORT bool btAngularLimit_isLimit(btAngularLimit* obj);
-	EXPORT void btAngularLimit_set(btAngularLimit* obj, btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor);
-	EXPORT void btAngularLimit_set2(btAngularLimit* obj, btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor);
-	EXPORT void btAngularLimit_set3(btAngularLimit* obj, btScalar low, btScalar high, btScalar _softness);
-	EXPORT void btAngularLimit_set4(btAngularLimit* obj, btScalar low, btScalar high);
+	EXPORT void btAngularLimit_set(btAngularLimit* obj, btScalar low, btScalar high);
+	EXPORT void btAngularLimit_set2(btAngularLimit* obj, btScalar low, btScalar high, btScalar _softness);
+	EXPORT void btAngularLimit_set3(btAngularLimit* obj, btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor);
+	EXPORT void btAngularLimit_set4(btAngularLimit* obj, btScalar low, btScalar high, btScalar _softness, btScalar _biasFactor, btScalar _relaxationFactor);
 	EXPORT void btAngularLimit_test(btAngularLimit* obj, btScalar angle);
 	EXPORT void btAngularLimit_delete(btAngularLimit* obj);
 }

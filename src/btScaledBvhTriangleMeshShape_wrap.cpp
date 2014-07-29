@@ -7,7 +7,7 @@ btScaledBvhTriangleMeshShape* btScaledBvhTriangleMeshShape_new(btBvhTriangleMesh
 	return new btScaledBvhTriangleMeshShape(childShape, VECTOR3_USE(localScaling));
 }
 
-const btBvhTriangleMeshShape* btScaledBvhTriangleMeshShape_getChildShape(btScaledBvhTriangleMeshShape* obj)
+btBvhTriangleMeshShape* btScaledBvhTriangleMeshShape_getChildShape(btScaledBvhTriangleMeshShape* obj)
 {
 	return obj->getChildShape();
 }

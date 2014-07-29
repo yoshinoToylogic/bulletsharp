@@ -41,8 +41,9 @@ void btPolyhedralConvexShape_getPlane(btPolyhedralConvexShape* obj, btScalar* pl
 
 void btPolyhedralConvexShape_getVertex(btPolyhedralConvexShape* obj, int i, btScalar* vtx)
 {
-	VECTOR3_CONV(vtx);
+	VECTOR3_DEF(vtx);
 	obj->getVertex(i, VECTOR3_USE(vtx));
+	VECTOR3_DEF_OUT(vtx);
 }
 
 bool btPolyhedralConvexShape_initializePolyhedralFeatures(btPolyhedralConvexShape* obj)

@@ -69,6 +69,7 @@ GIM_QUANTIZED_BVH_NODE_ARRAY* GIM_QUANTIZED_BVH_NODE_ARRAY_new()
 	return new GIM_QUANTIZED_BVH_NODE_ARRAY();
 }
 
+
 btQuantizedBvhTree* btQuantizedBvhTree_new()
 {
 	return new btQuantizedBvhTree();
@@ -199,9 +200,9 @@ int btGImpactQuantizedBvh_getEscapeNodeIndex(btGImpactQuantizedBvh* obj, int nod
 	return obj->getEscapeNodeIndex(nodeindex);
 }
 
-void btGImpactQuantizedBvh_getGlobalBox(btGImpactQuantizedBvh* obj)
+btAABB* btGImpactQuantizedBvh_getGlobalBox(btGImpactQuantizedBvh* obj)
 {
-	obj->getGlobalBox();
+	return &obj->getGlobalBox();
 }
 
 int btGImpactQuantizedBvh_getLeftNode(btGImpactQuantizedBvh* obj, int nodeindex)

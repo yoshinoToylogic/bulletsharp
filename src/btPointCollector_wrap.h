@@ -9,6 +9,6 @@ extern "C"
 	EXPORT void btPointCollector_getPointInWorld(btPointCollector* obj, btScalar* value);
 	EXPORT void btPointCollector_setDistance(btPointCollector* obj, btScalar value);
 	EXPORT void btPointCollector_setHasResult(btPointCollector* obj, bool value);
-	EXPORT void btPointCollector_setNormalOnBInWorld(btPointCollector* obj, btScalar* value);
-	EXPORT void btPointCollector_setPointInWorld(btPointCollector* obj, btScalar* value);
+	EXPORT void btPointCollector_setNormalOnBInWorld(btPointCollector* obj, const btScalar* value);
+	EXPORT void btPointCollector_setPointInWorld(btPointCollector* obj, const btScalar* value);
 }

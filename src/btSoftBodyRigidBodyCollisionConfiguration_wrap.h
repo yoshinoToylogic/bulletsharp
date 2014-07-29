@@ -2,6 +2,6 @@
 
 extern "C"
 {
-	EXPORT btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new(btDefaultCollisionConstructionInfo* constructionInfo);
-	EXPORT btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new2();
+	EXPORT btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new();
+	EXPORT btSoftBodyRigidBodyCollisionConfiguration* btSoftBodyRigidBodyCollisionConfiguration_new2(const btDefaultCollisionConstructionInfo* constructionInfo);
 }

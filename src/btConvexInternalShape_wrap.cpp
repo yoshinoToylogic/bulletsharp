@@ -1,14 +1,14 @@
 #include "conversion.h"
 #include "btConvexInternalShape_wrap.h"
 
-void btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj, btScalar* value)
+void btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj, btScalar* dimensions)
 {
-	VECTOR3_OUT(&obj->getImplicitShapeDimensions(), value);
+	VECTOR3_OUT(obj->getImplicitShapeDimensions(), dimensions);
 }
 
 void btConvexInternalShape_getLocalScalingNV(btConvexInternalShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getLocalScalingNV(), value);
+	VECTOR3_OUT(obj->getLocalScalingNV(), value);
 }
 
 btScalar btConvexInternalShape_getMarginNV(btConvexInternalShape* obj)

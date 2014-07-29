@@ -6,14 +6,14 @@
 
 #ifndef DISABLE_CHARACTER_CONTROLLER
 
-btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight, int upAxis)
-{
-	return new btKinematicCharacterController(ghostObject, convexShape, stepHeight, upAxis);
-}
-
-btKinematicCharacterController* btKinematicCharacterController_new2(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight)
+btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight)
 {
 	return new btKinematicCharacterController(ghostObject, convexShape, stepHeight);
+}
+
+btKinematicCharacterController* btKinematicCharacterController_new2(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight, int upAxis)
+{
+	return new btKinematicCharacterController(ghostObject, convexShape, stepHeight, upAxis);
 }
 
 btPairCachingGhostObject* btKinematicCharacterController_getGhostObject(btKinematicCharacterController* obj)

@@ -19,11 +19,13 @@ void btConeTwistConstraint_calcAngleInfo(btConeTwistConstraint* obj)
 	obj->calcAngleInfo();
 }
 
-void btConeTwistConstraint_calcAngleInfo2(btConeTwistConstraint* obj, const btScalar* transA, const btScalar* transB, const btMatrix3x3* invInertiaWorldA, const btMatrix3x3* invInertiaWorldB)
+void btConeTwistConstraint_calcAngleInfo2(btConeTwistConstraint* obj, const btScalar* transA, const btScalar* transB, const btScalar* invInertiaWorldA, const btScalar* invInertiaWorldB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	obj->calcAngleInfo2(TRANSFORM_USE(transA), TRANSFORM_USE(transB), *invInertiaWorldA, *invInertiaWorldB);
+	MATRIX3X3_CONV(invInertiaWorldA);
+	MATRIX3X3_CONV(invInertiaWorldB);
+	obj->calcAngleInfo2(TRANSFORM_USE(transA), TRANSFORM_USE(transB), MATRIX3X3_USE(invInertiaWorldA), MATRIX3X3_USE(invInertiaWorldB));
 }
 
 void btConeTwistConstraint_enableMotor(btConeTwistConstraint* obj, bool b)
@@ -33,12 +35,12 @@ void btConeTwistConstraint_enableMotor(btConeTwistConstraint* obj, bool b)
 
 void btConeTwistConstraint_getAFrame(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getAFrame(), value);
+	TRANSFORM_OUT(obj->getAFrame(), value);
 }
 
 void btConeTwistConstraint_getBFrame(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getBFrame(), value);
+	TRANSFORM_OUT(obj->getBFrame(), value);
 }
 
 btScalar btConeTwistConstraint_getFixThresh(btConeTwistConstraint* obj)
@@ -48,29 +50,31 @@ btScalar btConeTwistConstraint_getFixThresh(btConeTwistConstraint* obj)
 
 void btConeTwistConstraint_getFrameOffsetA(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getFrameOffsetA(), value);
+	TRANSFORM_OUT(obj->getFrameOffsetA(), value);
 }
 
 void btConeTwistConstraint_getFrameOffsetB(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getFrameOffsetB(), value);
+	TRANSFORM_OUT(obj->getFrameOffsetB(), value);
 }
 
-void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo1* info)
+void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
 {
 	obj->getInfo1NonVirtual(info);
 }
 
-void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint_btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btMatrix3x3* invInertiaWorldA, const btMatrix3x3* invInertiaWorldB)
+void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* invInertiaWorldA, const btScalar* invInertiaWorldB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
-	obj->getInfo2NonVirtual(info, TRANSFORM_USE(transA), TRANSFORM_USE(transB), *invInertiaWorldA, *invInertiaWorldB);
+	MATRIX3X3_CONV(invInertiaWorldA);
+	MATRIX3X3_CONV(invInertiaWorldB);
+	obj->getInfo2NonVirtual(info, TRANSFORM_USE(transA), TRANSFORM_USE(transB), MATRIX3X3_USE(invInertiaWorldA), MATRIX3X3_USE(invInertiaWorldB));
 }
 
 void btConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* obj, btScalar fAngleInRadians, btScalar fLength, btScalar* value)
 {
-	VECTOR3_OUT2(obj->GetPointForAngle(fAngleInRadians, fLength), value);
+	VECTOR3_OUT(obj->GetPointForAngle(fAngleInRadians, fLength), value);
 }
 
 int btConeTwistConstraint_getSolveSwingLimit(btConeTwistConstraint* obj)
@@ -170,14 +174,16 @@ void btConeTwistConstraint_setMaxMotorImpulseNormalized(btConeTwistConstraint* o
 	obj->setMaxMotorImpulseNormalized(maxMotorImpulse);
 }
 
-void btConeTwistConstraint_setMotorTarget(btConeTwistConstraint* obj, btQuaternion* q)
+void btConeTwistConstraint_setMotorTarget(btConeTwistConstraint* obj, const btScalar* q)
 {
-	obj->setMotorTarget(*q);
+	QUATERNION_CONV(q);
+	obj->setMotorTarget(QUATERNION_USE(q));
 }
 
-void btConeTwistConstraint_setMotorTargetInConstraintSpace(btConeTwistConstraint* obj, btQuaternion* q)
+void btConeTwistConstraint_setMotorTargetInConstraintSpace(btConeTwistConstraint* obj, const btScalar* q)
 {
-	obj->setMotorTargetInConstraintSpace(*q);
+	QUATERNION_CONV(q);
+	obj->setMotorTargetInConstraintSpace(QUATERNION_USE(q));
 }
 
 void btConeTwistConstraint_updateRHS(btConeTwistConstraint* obj, btScalar timeStep)

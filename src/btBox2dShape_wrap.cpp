@@ -21,17 +21,17 @@ btBox2dShape* btBox2dShape_new3(btScalar boxHalfExtentX, btScalar boxHalfExtentY
 
 void btBox2dShape_getCentroid(btBox2dShape* obj, btScalar* value)
 {
-	VECTOR3_OUT2(obj->getCentroid(), value);
+	VECTOR3_OUT(obj->getCentroid(), value);
 }
 
-void btBox2dShape_getHalfExtentsWithMargin(btBox2dShape* obj, btScalar* extents)
+void btBox2dShape_getHalfExtentsWithMargin(btBox2dShape* obj, btScalar* value)
 {
-	VECTOR3_OUT2(obj->getHalfExtentsWithMargin(), extents);
+	VECTOR3_OUT(obj->getHalfExtentsWithMargin(), value);
 }
 
-void btBox2dShape_getHalfExtentsWithoutMargin(btBox2dShape* obj, btScalar* extents)
+void btBox2dShape_getHalfExtentsWithoutMargin(btBox2dShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getHalfExtentsWithoutMargin(), extents);
+	VECTOR3_OUT(obj->getHalfExtentsWithoutMargin(), value);
 }
 
 const btVector3* btBox2dShape_getNormals(btBox2dShape* obj)
@@ -39,9 +39,11 @@ const btVector3* btBox2dShape_getNormals(btBox2dShape* obj)
 	return obj->getNormals();
 }
 
-void btBox2dShape_getPlaneEquation(btBox2dShape* obj, btVector4* plane, int i)
+void btBox2dShape_getPlaneEquation(btBox2dShape* obj, btScalar* plane, int i)
 {
-	obj->getPlaneEquation(*plane, i);
+	VECTOR4_DEF(plane);
+	obj->getPlaneEquation(VECTOR4_USE(plane), i);
+	VECTOR4_DEF_OUT(plane);
 }
 
 int btBox2dShape_getVertexCount(btBox2dShape* obj)

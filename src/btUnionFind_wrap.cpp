@@ -58,7 +58,7 @@ void btUnionFind_Free(btUnionFind* obj)
 	obj->Free();
 }
 
-const btElement* btUnionFind_getElement(btUnionFind* obj, int index)
+btElement* btUnionFind_getElement(btUnionFind* obj, int index)
 {
 	return &obj->getElement(index);
 }

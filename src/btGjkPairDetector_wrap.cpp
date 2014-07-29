@@ -4,19 +4,19 @@
 #include "conversion.h"
 #include "btGjkPairDetector_wrap.h"
 
-btGjkPairDetector* btGjkPairDetector_new(btConvexShape* objectA, btConvexShape* objectB, btVoronoiSimplexSolver* simplexSolver, btConvexPenetrationDepthSolver* penetrationDepthSolver)
+btGjkPairDetector* btGjkPairDetector_new(const btConvexShape* objectA, const btConvexShape* objectB, btVoronoiSimplexSolver* simplexSolver, btConvexPenetrationDepthSolver* penetrationDepthSolver)
 {
 	return new btGjkPairDetector(objectA, objectB, simplexSolver, penetrationDepthSolver);
 }
 
-btGjkPairDetector* btGjkPairDetector_new2(btConvexShape* objectA, btConvexShape* objectB, int shapeTypeA, int shapeTypeB, btScalar marginA, btScalar marginB, btVoronoiSimplexSolver* simplexSolver, btConvexPenetrationDepthSolver* penetrationDepthSolver)
+btGjkPairDetector* btGjkPairDetector_new2(const btConvexShape* objectA, const btConvexShape* objectB, int shapeTypeA, int shapeTypeB, btScalar marginA, btScalar marginB, btVoronoiSimplexSolver* simplexSolver, btConvexPenetrationDepthSolver* penetrationDepthSolver)
 {
 	return new btGjkPairDetector(objectA, objectB, shapeTypeA, shapeTypeB, marginA, marginB, simplexSolver, penetrationDepthSolver);
 }
 
 void btGjkPairDetector_getCachedSeparatingAxis(btGjkPairDetector* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getCachedSeparatingAxis(), value);
+	VECTOR3_OUT(obj->getCachedSeparatingAxis(), value);
 }
 
 btScalar btGjkPairDetector_getCachedSeparatingDistance(btGjkPairDetector* obj)
@@ -29,7 +29,7 @@ int btGjkPairDetector_getCatchDegeneracies(btGjkPairDetector* obj)
 	return obj->m_catchDegeneracies;
 }
 
-void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, btDiscreteCollisionDetectorInterface_ClosestPointInput* input, btDiscreteCollisionDetectorInterface_Result* output, btIDebugDraw* debugDraw)
+void btGjkPairDetector_getClosestPointsNonVirtual(btGjkPairDetector* obj, const btDiscreteCollisionDetectorInterface::ClosestPointInput* input, btDiscreteCollisionDetectorInterface::Result* output, btIDebugDraw* debugDraw)
 {
 	obj->getClosestPointsNonVirtual(*input, *output, debugDraw);
 }
@@ -54,7 +54,7 @@ int btGjkPairDetector_getLastUsedMethod(btGjkPairDetector* obj)
 	return obj->m_lastUsedMethod;
 }
 
-void btGjkPairDetector_setCachedSeparatingAxis(btGjkPairDetector* obj, btScalar* seperatingAxis)
+void btGjkPairDetector_setCachedSeparatingAxis(btGjkPairDetector* obj, const btScalar* seperatingAxis)
 {
 	VECTOR3_CONV(seperatingAxis);
 	obj->setCachedSeperatingAxis(VECTOR3_USE(seperatingAxis));
@@ -90,12 +90,12 @@ void btGjkPairDetector_setLastUsedMethod(btGjkPairDetector* obj, int value)
 	obj->m_lastUsedMethod = value;
 }
 
-void btGjkPairDetector_setMinkowskiA(btGjkPairDetector* obj, btConvexShape* minkA)
+void btGjkPairDetector_setMinkowskiA(btGjkPairDetector* obj, const btConvexShape* minkA)
 {
 	obj->setMinkowskiA(minkA);
 }
 
-void btGjkPairDetector_setMinkowskiB(btGjkPairDetector* obj, btConvexShape* minkB)
+void btGjkPairDetector_setMinkowskiB(btGjkPairDetector* obj, const btConvexShape* minkB)
 {
 	obj->setMinkowskiB(minkB);
 }

@@ -3,7 +3,7 @@
 #include "conversion.h"
 #include "btGeometryUtil_wrap.h"
 
-bool btGeometryUtil_areVerticesBehindPlane(btScalar* planeNormal, btAlignedVector3Array* vertices, btScalar margin)
+bool btGeometryUtil_areVerticesBehindPlane(const btScalar* planeNormal, const btAlignedVector3Array* vertices, btScalar margin)
 {
 	VECTOR3_CONV(planeNormal);
 	return btGeometryUtil::areVerticesBehindPlane(VECTOR3_USE(planeNormal), *vertices, margin);
@@ -14,18 +14,18 @@ void btGeometryUtil_getPlaneEquationsFromVertices(btAlignedVector3Array* vertice
 	btGeometryUtil::getPlaneEquationsFromVertices(*vertices, *planeEquationsOut);
 }
 
-void btGeometryUtil_getVerticesFromPlaneEquations(btAlignedVector3Array* planeEquations, btAlignedVector3Array* verticesOut)
+void btGeometryUtil_getVerticesFromPlaneEquations(const btAlignedVector3Array* planeEquations, btAlignedVector3Array* verticesOut)
 {
 	btGeometryUtil::getVerticesFromPlaneEquations(*planeEquations, *verticesOut);
 }
 /*
-bool btGeometryUtil_isInside(btAlignedVector3Array* vertices, btVector3* planeNormal, btScalar margin)
+bool btGeometryUtil_isInside(const btAlignedVector3Array* vertices, const btScalar* planeNormal, btScalar margin)
 {
 	VECTOR3_CONV(planeNormal);
 	return btGeometryUtil::isInside(*vertices, VECTOR3_USE(planeNormal), margin);
 }
 */
-bool btGeometryUtil_isPointInsidePlanes(btAlignedVector3Array* planeEquations, btScalar* point, btScalar margin)
+bool btGeometryUtil_isPointInsidePlanes(const btAlignedVector3Array* planeEquations, const btScalar* point, btScalar margin)
 {
 	VECTOR3_CONV(point);
 	return btGeometryUtil::isPointInsidePlanes(*planeEquations, VECTOR3_USE(point), margin);

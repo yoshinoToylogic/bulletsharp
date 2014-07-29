@@ -99,6 +99,7 @@ void btConvexCast_CastResult_delete(btConvexCast::CastResult* obj)
 	delete obj;
 }
 
+
 bool btConvexCast_calcTimeOfImpact(btConvexCast* obj, const btScalar* fromA, const btScalar* toA, const btScalar* fromB, const btScalar* toB, btConvexCast::CastResult* result)
 {
 	TRANSFORM_CONV(fromA);

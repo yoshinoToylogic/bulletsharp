@@ -17,9 +17,9 @@ btMultiBodyPoint2Point* btMultiBodyPoint2Point_new2(btMultiBody* bodyA, int link
 	return new btMultiBodyPoint2Point(bodyA, linkA, bodyB, linkB, VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 }
 
-const btVector3* btMultiBodyPoint2Point_getPivotInB(btMultiBodyPoint2Point* obj)
+void btMultiBodyPoint2Point_getPivotInB(btMultiBodyPoint2Point* obj, btScalar* pivotInB)
 {
-	return &obj->getPivotInB();
+	VECTOR3_OUT(obj->getPivotInB(), pivotInB);
 }
 
 void btMultiBodyPoint2Point_setPivotInB(btMultiBodyPoint2Point* obj, const btScalar* pivotInB)

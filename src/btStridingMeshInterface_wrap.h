@@ -10,7 +10,7 @@ extern "C"
 	EXPORT void btStridingMeshInterface_getLockedVertexIndexBase2(btStridingMeshInterface* obj, unsigned char** vertexbase, int* numverts, PHY_ScalarType* type, int* stride, unsigned char** indexbase, int* indexstride, int* numfaces, PHY_ScalarType* indicestype, int subpart);
 	EXPORT int btStridingMeshInterface_getNumSubParts(btStridingMeshInterface* obj);
 	EXPORT void btStridingMeshInterface_getPremadeAabb(btStridingMeshInterface* obj, btScalar* aabbMin, btScalar* aabbMax);
-	EXPORT void btStridingMeshInterface_getScaling(btStridingMeshInterface* obj, btScalar* value);
+	EXPORT void btStridingMeshInterface_getScaling(btStridingMeshInterface* obj, btScalar* scaling);
 	EXPORT bool btStridingMeshInterface_hasPremadeAabb(btStridingMeshInterface* obj);
 	EXPORT void btStridingMeshInterface_InternalProcessAllTriangles(btStridingMeshInterface* obj, btInternalTriangleIndexCallback* callback, const btScalar* aabbMin, const btScalar* aabbMax);
 	EXPORT void btStridingMeshInterface_preallocateIndices(btStridingMeshInterface* obj, int numindices);

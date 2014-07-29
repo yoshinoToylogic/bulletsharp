@@ -161,12 +161,12 @@ void btDispatcher_freeCollisionAlgorithm(btDispatcher* obj, void* ptr)
 {
 	obj->freeCollisionAlgorithm(ptr);
 }
-/*
-* btDispatcher_getInternalManifoldPointer(btDispatcher* obj)
+
+btPersistentManifold** btDispatcher_getInternalManifoldPointer(btDispatcher* obj)
 {
 	return obj->getInternalManifoldPointer();
 }
-*/
+
 btPoolAllocator* btDispatcher_getInternalManifoldPool(btDispatcher* obj)
 {
 	return obj->getInternalManifoldPool();

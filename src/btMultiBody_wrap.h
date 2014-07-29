@@ -19,12 +19,12 @@ extern "C"
 	EXPORT void btMultiBody_getAngularMomentum(btMultiBody* obj, btScalar* value);
 	EXPORT btMultiBodyLinkCollider* btMultiBody_getBaseCollider(btMultiBody* obj);
 	EXPORT void btMultiBody_getBaseForce(btMultiBody* obj, btScalar* value);
-	EXPORT void btMultiBody_getBaseInertia(btMultiBody* obj, btScalar* value);
+	EXPORT void btMultiBody_getBaseInertia(btMultiBody* obj, btScalar* inertia);
 	EXPORT btScalar btMultiBody_getBaseMass(btMultiBody* obj);
-	EXPORT void btMultiBody_getBaseOmega(btMultiBody* obj, btScalar* value);
-	EXPORT void btMultiBody_getBasePos(btMultiBody* obj, btScalar* value);
+	EXPORT void btMultiBody_getBaseOmega(btMultiBody* obj, btScalar* omega);
+	EXPORT void btMultiBody_getBasePos(btMultiBody* obj, btScalar* pos);
 	EXPORT void btMultiBody_getBaseTorque(btMultiBody* obj, btScalar* value);
-	EXPORT void btMultiBody_getBaseVel(btMultiBody* obj, btScalar* value);
+	EXPORT void btMultiBody_getBaseVel(btMultiBody* obj, btScalar* vel);
 	EXPORT int btMultiBody_getCompanionId(btMultiBody* obj);
 	EXPORT btScalar btMultiBody_getJointPos(btMultiBody* obj, int i);
 	EXPORT btScalar btMultiBody_getJointTorque(btMultiBody* obj, int i);
@@ -35,7 +35,7 @@ extern "C"
 	EXPORT void btMultiBody_getLinkForce(btMultiBody* obj, int i, btScalar* value);
 	EXPORT void btMultiBody_getLinkInertia(btMultiBody* obj, int i, btScalar* value);
 	EXPORT btScalar btMultiBody_getLinkMass(btMultiBody* obj, int i);
-	EXPORT const btScalar* btMultiBody_getLinkTorque(btMultiBody* obj, int i);
+	EXPORT void btMultiBody_getLinkTorque(btMultiBody* obj, int i, btScalar* value);
 	EXPORT btScalar btMultiBody_getMaxAppliedImpulse(btMultiBody* obj);
 	EXPORT int btMultiBody_getNumLinks(btMultiBody* obj);
 	EXPORT int btMultiBody_getParent(btMultiBody* obj, int link_num);
@@ -43,7 +43,7 @@ extern "C"
 	EXPORT void btMultiBody_getRVector(btMultiBody* obj, int i, btScalar* value);
 	EXPORT bool btMultiBody_getUseGyroTerm(btMultiBody* obj);
 	EXPORT const btScalar* btMultiBody_getVelocityVector(btMultiBody* obj);
-	EXPORT void btMultiBody_getWorldToBaseRot(btMultiBody* obj, btScalar* value);
+	EXPORT void btMultiBody_getWorldToBaseRot(btMultiBody* obj, btScalar* rot);
 	EXPORT void btMultiBody_goToSleep(btMultiBody* obj);
 	EXPORT bool btMultiBody_hasFixedBase(btMultiBody* obj);
 	EXPORT bool btMultiBody_hasSelfCollision(btMultiBody* obj);

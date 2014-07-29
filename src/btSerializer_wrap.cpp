@@ -186,14 +186,15 @@ void btPointerUid_delete(btPointerUid* obj)
 }
 */
 
-btDefaultSerializer* btDefaultSerializer_new(int totalSize)
-{
-	return new btDefaultSerializer(totalSize);
-}
 
-btDefaultSerializer* btDefaultSerializer_new2()
+btDefaultSerializer* btDefaultSerializer_new()
 {
 	return new btDefaultSerializer();
+}
+
+btDefaultSerializer* btDefaultSerializer_new2(int totalSize)
+{
+	return new btDefaultSerializer(totalSize);
 }
 
 unsigned char* btDefaultSerializer_internalAlloc(btDefaultSerializer* obj, size_t size)

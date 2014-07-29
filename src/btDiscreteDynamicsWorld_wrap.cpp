@@ -36,11 +36,6 @@ btSimulationIslandManager* btDiscreteDynamicsWorld_getSimulationIslandManager(bt
 	return obj->getSimulationIslandManager();
 }
 
-btSimulationIslandManager* btDiscreteDynamicsWorld_getSimulationIslandManager2(btDiscreteDynamicsWorld* obj)
-{
-	return obj->getSimulationIslandManager();
-}
-
 bool btDiscreteDynamicsWorld_getSynchronizeAllMotionStates(btDiscreteDynamicsWorld* obj)
 {
 	return obj->getSynchronizeAllMotionStates();

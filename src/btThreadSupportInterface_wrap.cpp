@@ -23,6 +23,7 @@ void btBarrier_delete(btBarrier* obj)
 	delete obj;
 }
 
+
 unsigned int* btCriticalSection_getMCommonBuff(btCriticalSection* obj)
 {
 	return obj->mCommonBuff;
@@ -37,12 +38,7 @@ void btCriticalSection_lock(btCriticalSection* obj)
 {
 	obj->lock();
 }
-/*
-void btCriticalSection_setMCommonBuff(btCriticalSection* obj, unsigned int* value)
-{
-	obj->mCommonBuff = value;
-}
-*/
+
 void btCriticalSection_setSharedParam(btCriticalSection* obj, int i, unsigned int p)
 {
 	obj->setSharedParam(i, p);
@@ -57,6 +53,7 @@ void btCriticalSection_delete(btCriticalSection* obj)
 {
 	delete obj;
 }
+
 
 btBarrier* btThreadSupportInterface_createBarrier(btThreadSupportInterface* obj)
 {

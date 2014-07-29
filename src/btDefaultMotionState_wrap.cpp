@@ -9,7 +9,7 @@ btDefaultMotionState* btDefaultMotionState_new()
 btDefaultMotionState* btDefaultMotionState_new2(const btScalar* startTrans)
 {
 	TRANSFORM_CONV(startTrans);
-	return ALIGNED_NEW(btDefaultMotionState) (TRANSFORM_USE(startTrans));
+	return ALIGNED_NEW(btDefaultMotionState)(TRANSFORM_USE(startTrans));
 }
 
 btDefaultMotionState* btDefaultMotionState_new3(const btScalar* startTrans, const btScalar* centerOfMassOffset)

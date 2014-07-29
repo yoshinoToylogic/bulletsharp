@@ -71,7 +71,7 @@ void btHingeConstraint_enableMotor(btHingeConstraint* obj, bool enableMotor)
 
 void btHingeConstraint_getAFrame(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getAFrame(), value);
+	TRANSFORM_OUT(obj->getAFrame(), value);
 }
 
 bool btHingeConstraint_getAngularOnly(btHingeConstraint* obj)
@@ -81,7 +81,7 @@ bool btHingeConstraint_getAngularOnly(btHingeConstraint* obj)
 
 void btHingeConstraint_getBFrame(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getBFrame(), value);
+	TRANSFORM_OUT(obj->getBFrame(), value);
 }
 
 bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj)
@@ -91,12 +91,12 @@ bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj)
 
 void btHingeConstraint_getFrameOffsetA(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getFrameOffsetA(), value);
+	TRANSFORM_OUT(obj->getFrameOffsetA(), value);
 }
 
 void btHingeConstraint_getFrameOffsetB(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(&obj->getFrameOffsetB(), value);
+	TRANSFORM_OUT(obj->getFrameOffsetB(), value);
 }
 
 btScalar btHingeConstraint_getHingeAngle(btHingeConstraint* obj, const btScalar* transA, const btScalar* transB)
@@ -111,12 +111,12 @@ btScalar btHingeConstraint_getHingeAngle2(btHingeConstraint* obj)
 	return obj->getHingeAngle();
 }
 
-void btHingeConstraint_getInfo1NonVirtual(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo1* info)
+void btHingeConstraint_getInfo1NonVirtual(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
 {
 	obj->getInfo1NonVirtual(info);
 }
 
-void btHingeConstraint_getInfo2Internal(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* angVelA, const btScalar* angVelB)
+void btHingeConstraint_getInfo2Internal(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* angVelA, const btScalar* angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -125,7 +125,7 @@ void btHingeConstraint_getInfo2Internal(btHingeConstraint* obj, btTypedConstrain
 	obj->getInfo2Internal(info, TRANSFORM_USE(transA), TRANSFORM_USE(transB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
 }
 
-void btHingeConstraint_getInfo2InternalUsingFrameOffset(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* angVelA, const btScalar* angVelB)
+void btHingeConstraint_getInfo2InternalUsingFrameOffset(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* angVelA, const btScalar* angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -134,7 +134,7 @@ void btHingeConstraint_getInfo2InternalUsingFrameOffset(btHingeConstraint* obj, 
 	obj->getInfo2InternalUsingFrameOffset(info, TRANSFORM_USE(transA), TRANSFORM_USE(transB), VECTOR3_USE(angVelA), VECTOR3_USE(angVelB));
 }
 
-void btHingeConstraint_getInfo2NonVirtual(btHingeConstraint* obj, btTypedConstraint_btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* angVelA, const btScalar* angVelB)
+void btHingeConstraint_getInfo2NonVirtual(btHingeConstraint* obj, btTypedConstraint::btConstraintInfo2* info, const btScalar* transA, const btScalar* transB, const btScalar* angVelA, const btScalar* angVelB)
 {
 	TRANSFORM_CONV(transA);
 	TRANSFORM_CONV(transB);
@@ -226,9 +226,10 @@ void btHingeConstraint_setMotorTarget(btHingeConstraint* obj, btScalar targetAng
 	obj->setMotorTarget(targetAngle, dt);
 }
 
-void btHingeConstraint_setMotorTarget2(btHingeConstraint* obj, btQuaternion* qAinB, btScalar dt)
+void btHingeConstraint_setMotorTarget2(btHingeConstraint* obj, const btScalar* qAinB, btScalar dt)
 {
-	obj->setMotorTarget(*qAinB, dt);
+	QUATERNION_CONV(qAinB);
+	obj->setMotorTarget(QUATERNION_USE(qAinB), dt);
 }
 
 void btHingeConstraint_setUseFrameOffset(btHingeConstraint* obj, bool frameOffsetOnOff)

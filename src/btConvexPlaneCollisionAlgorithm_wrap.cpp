@@ -29,6 +29,7 @@ void btConvexPlaneCollisionAlgorithm_CreateFunc_setNumPerturbationIterations(btC
 	obj->m_numPerturbationIterations = value;
 }
 
+
 btConvexPlaneCollisionAlgorithm* btConvexPlaneCollisionAlgorithm_new(btPersistentManifold* mf, const btCollisionAlgorithmConstructionInfo* ci, const btCollisionObjectWrapper* body0Wrap, const btCollisionObjectWrapper* body1Wrap, bool isSwapped, int numPerturbationIterations, int minimumPointsPerturbationThreshold)
 {
 	return new btConvexPlaneCollisionAlgorithm(mf, *ci, body0Wrap, body1Wrap, isSwapped, numPerturbationIterations, minimumPointsPerturbationThreshold);

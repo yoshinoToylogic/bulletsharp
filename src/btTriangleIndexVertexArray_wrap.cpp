@@ -62,7 +62,7 @@ void btIndexedMesh_setNumVertices(btIndexedMesh* obj, int value)
 	obj->m_numVertices = value;
 }
 
-void btIndexedMesh_setTriangleIndexBase(btIndexedMesh* obj, unsigned char* value)
+void btIndexedMesh_setTriangleIndexBase(btIndexedMesh* obj, const unsigned char* value)
 {
 	obj->m_triangleIndexBase = value;
 }
@@ -72,7 +72,7 @@ void btIndexedMesh_setTriangleIndexStride(btIndexedMesh* obj, int value)
 	obj->m_triangleIndexStride = value;
 }
 
-void btIndexedMesh_setVertexBase(btIndexedMesh* obj, unsigned char* value)
+void btIndexedMesh_setVertexBase(btIndexedMesh* obj, const unsigned char* value)
 {
 	obj->m_vertexBase = value;
 }
@@ -93,14 +93,14 @@ void btIndexedMesh_delete(btIndexedMesh* obj)
 }
 
 
-btTriangleIndexVertexArray* btTriangleIndexVertexArray_new(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride)
-{
-	return new btTriangleIndexVertexArray(numTriangles, triangleIndexBase, triangleIndexStride, numVertices, vertexBase, vertexStride);
-}
-
-btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2()
+btTriangleIndexVertexArray* btTriangleIndexVertexArray_new()
 {
 	return new btTriangleIndexVertexArray();
+}
+
+btTriangleIndexVertexArray* btTriangleIndexVertexArray_new2(int numTriangles, int* triangleIndexBase, int triangleIndexStride, int numVertices, btScalar* vertexBase, int vertexStride)
+{
+	return new btTriangleIndexVertexArray(numTriangles, triangleIndexBase, triangleIndexStride, numVertices, vertexBase, vertexStride);
 }
 
 void btTriangleIndexVertexArray_addIndexedMesh(btTriangleIndexVertexArray* obj, const btIndexedMesh* mesh)
@@ -113,7 +113,7 @@ void btTriangleIndexVertexArray_addIndexedMesh2(btTriangleIndexVertexArray* obj,
 	obj->addIndexedMesh(*mesh, indexType);
 }
 
-const IndexedMeshArray* btTriangleIndexVertexArray_getIndexedMeshArray(btTriangleIndexVertexArray* obj)
+IndexedMeshArray* btTriangleIndexVertexArray_getIndexedMeshArray(btTriangleIndexVertexArray* obj)
 {
 	return &obj->getIndexedMeshArray();
 }

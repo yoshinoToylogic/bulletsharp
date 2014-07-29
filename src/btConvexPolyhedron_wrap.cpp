@@ -23,6 +23,7 @@ void btFace_delete(btFace* obj)
 	delete obj;
 }
 
+
 btConvexPolyhedron* btConvexPolyhedron_new()
 {
 	return new btConvexPolyhedron();

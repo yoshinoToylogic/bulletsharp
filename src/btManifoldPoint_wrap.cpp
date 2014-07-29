@@ -75,12 +75,13 @@ void btConstraintRow_delete(btConstraintRow* obj)
 	delete obj;
 }
 
+
 btManifoldPoint* btManifoldPoint_new()
 {
 	return new btManifoldPoint();
 }
 
-btManifoldPoint* btManifoldPoint_new2(btScalar* pointA, btScalar* pointB, btScalar* normal, btScalar distance)
+btManifoldPoint* btManifoldPoint_new2(const btScalar* pointA, const btScalar* pointB, const btScalar* normal, btScalar distance)
 {
 	VECTOR3_CONV(pointA);
 	VECTOR3_CONV(pointB);
@@ -89,11 +90,6 @@ btManifoldPoint* btManifoldPoint_new2(btScalar* pointA, btScalar* pointB, btScal
 }
 
 btScalar btManifoldPoint_getAppliedImpulse(btManifoldPoint* obj)
-{
-	return obj->m_appliedImpulse;
-}
-
-btScalar btManifoldPoint_getAppliedImpulse2(btManifoldPoint* obj)
 {
 	return obj->getAppliedImpulse();
 }
@@ -180,11 +176,6 @@ bool btManifoldPoint_getLateralFrictionInitialized(btManifoldPoint* obj)
 
 int btManifoldPoint_getLifeTime(btManifoldPoint* obj)
 {
-	return obj->m_lifeTime;
-}
-
-int btManifoldPoint_getLifeTime2(btManifoldPoint* obj)
-{
 	return obj->getLifeTime();
 }
 
@@ -215,12 +206,12 @@ int btManifoldPoint_getPartId1(btManifoldPoint* obj)
 
 void btManifoldPoint_getPositionWorldOnA(btManifoldPoint* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getPositionWorldOnA(), value);
+	VECTOR3_OUT(obj->getPositionWorldOnA(), value);
 }
 
 void btManifoldPoint_getPositionWorldOnB(btManifoldPoint* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getPositionWorldOnB(), value);
+	VECTOR3_OUT(obj->getPositionWorldOnB(), value);
 }
 
 void* btManifoldPoint_getUserPersistentData(btManifoldPoint* obj)
@@ -298,12 +289,12 @@ void btManifoldPoint_setIndex1(btManifoldPoint* obj, int value)
 	obj->m_index1 = value;
 }
 
-void btManifoldPoint_setLateralFrictionDir1(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setLateralFrictionDir1(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_lateralFrictionDir1);
 }
 
-void btManifoldPoint_setLateralFrictionDir2(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setLateralFrictionDir2(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_lateralFrictionDir2);
 }
@@ -318,17 +309,17 @@ void btManifoldPoint_setLifeTime(btManifoldPoint* obj, int value)
 	obj->m_lifeTime = value;
 }
 
-void btManifoldPoint_setLocalPointA(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setLocalPointA(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_localPointA);
 }
 
-void btManifoldPoint_setLocalPointB(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setLocalPointB(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_localPointB);
 }
 
-void btManifoldPoint_setNormalWorldOnB(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setNormalWorldOnB(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_normalWorldOnB);
 }
@@ -343,12 +334,12 @@ void btManifoldPoint_setPartId1(btManifoldPoint* obj, int value)
 	obj->m_partId1 = value;
 }
 
-void btManifoldPoint_setPositionWorldOnA(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setPositionWorldOnA(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_positionWorldOnA);
 }
 
-void btManifoldPoint_setPositionWorldOnB(btManifoldPoint* obj, btScalar* value)
+void btManifoldPoint_setPositionWorldOnB(btManifoldPoint* obj, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->m_positionWorldOnB);
 }

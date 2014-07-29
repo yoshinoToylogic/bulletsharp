@@ -2,8 +2,8 @@
 
 extern "C"
 {
-	EXPORT btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight, int upAxis);
-	EXPORT btKinematicCharacterController* btKinematicCharacterController_new2(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight);
+	EXPORT btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight);
+	EXPORT btKinematicCharacterController* btKinematicCharacterController_new2(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight, int upAxis);
 	EXPORT btPairCachingGhostObject* btKinematicCharacterController_getGhostObject(btKinematicCharacterController* obj);
 	EXPORT btScalar btKinematicCharacterController_getGravity(btKinematicCharacterController* obj);
 	EXPORT btScalar btKinematicCharacterController_getMaxSlope(btKinematicCharacterController* obj);

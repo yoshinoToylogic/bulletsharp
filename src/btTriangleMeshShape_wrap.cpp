@@ -3,15 +3,15 @@
 
 void btTriangleMeshShape_getLocalAabbMax(btTriangleMeshShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getLocalAabbMax(), value);
+	VECTOR3_OUT(obj->getLocalAabbMax(), value);
 }
 
 void btTriangleMeshShape_getLocalAabbMin(btTriangleMeshShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getLocalAabbMin(), value);
+	VECTOR3_OUT(obj->getLocalAabbMin(), value);
 }
 
-const btStridingMeshInterface* btTriangleMeshShape_getMeshInterface(btTriangleMeshShape* obj)
+btStridingMeshInterface* btTriangleMeshShape_getMeshInterface(btTriangleMeshShape* obj)
 {
 	return obj->getMeshInterface();
 }

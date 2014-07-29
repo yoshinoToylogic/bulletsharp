@@ -17,20 +17,19 @@ btBoxShape* btBoxShape_new3(btScalar boxHalfExtentX, btScalar boxHalfExtentY, bt
 	return new btBoxShape(btVector3(boxHalfExtentX, boxHalfExtentY, boxHalfExtentZ));
 }
 
-void btBoxShape_getHalfExtentsWithMargin(btBoxShape* obj, btScalar* extents)
+void btBoxShape_getHalfExtentsWithMargin(btBoxShape* obj, btScalar* value)
 {
-	VECTOR3_OUT2(obj->getHalfExtentsWithMargin(), extents);
+	VECTOR3_OUT2(obj->getHalfExtentsWithMargin(), value);
 }
 
-void btBoxShape_getHalfExtentsWithoutMargin(btBoxShape* obj, btScalar* extents)
+void btBoxShape_getHalfExtentsWithoutMargin(btBoxShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->getHalfExtentsWithoutMargin(), extents);
+	VECTOR3_OUT(&obj->getHalfExtentsWithoutMargin(), value);
 }
 
 void btBoxShape_getPlaneEquation(btBoxShape* obj, btScalar* plane, int i)
 {
-	btVector4* planeTemp = ALIGNED_NEW(btVector4);
-	obj->getPlaneEquation(*planeTemp, i);
-	btVector4ToVector4(planeTemp, plane);
-	ALIGNED_FREE(planeTemp);
+	VECTOR4_DEF(plane);
+	obj->getPlaneEquation(VECTOR4_USE(plane), i);
+	VECTOR4_DEF_OUT(plane);
 }
