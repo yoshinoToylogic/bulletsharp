@@ -188,10 +188,10 @@ namespace BulletSharp
             btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native);
         }
 
-        public void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback rayCallback)
-        {
-            btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native);
-        }
+		public void RayTest(Vector3 rayFrom, Vector3 rayTo, BroadphaseRayCallback rayCallback)
+		{
+			btBroadphaseInterface_rayTest(_native, ref rayFrom, ref rayTo, rayCallback._native);
+		}
 
         public void RayTest(ref Vector3 rayFrom, ref Vector3 rayTo, BroadphaseRayCallback rayCallback, ref Vector3 aabbMin, ref Vector3 aabbMax)
         {

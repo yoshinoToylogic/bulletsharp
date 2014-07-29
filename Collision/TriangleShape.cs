@@ -29,9 +29,9 @@ namespace BulletSharp
 			btTriangleShape_calcNormal(_native, out normal);
 		}
 
-        public void GetPlaneEquation(int i, out Vector3 planeNormal, out Vector3 planeSupport)
+		public void GetPlaneEquation(int i, out Vector3 planeNormal, out Vector3 planeSupport)
 		{
-            btTriangleShape_getPlaneEquation(_native, i, out planeNormal, out planeSupport);
+			btTriangleShape_getPlaneEquation(_native, i, out planeNormal, out planeSupport);
 		}
 
 		public IntPtr GetVertexPtr(int index)

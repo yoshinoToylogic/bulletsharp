@@ -261,7 +261,7 @@ namespace BulletSharp
 				btRigidBody_getAngularFactor(_native, out value);
 				return value;
 			}
-			set { btRigidBody_setAngularFactor2(_native, ref value); }
+			set { btRigidBody_setAngularFactor(_native, ref value); }
 		}
 
 		public float AngularSleepingThreshold
@@ -398,15 +398,15 @@ namespace BulletSharp
 			set { btRigidBody_setLinearVelocity(_native, ref value); }
 		}
 
-        public MotionState MotionState
-        {
+		public MotionState MotionState
+		{
             get { return _motionState; }
             set
             {
                 btRigidBody_setMotionState(_native, value._native);
                 _motionState = value;
             }
-        }
+		}
 
 		public int NumConstraintRefs
 		{
@@ -478,17 +478,17 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_getAngularDamping(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getAngularFactor(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getAngularFactor(IntPtr obj, [Out] out Vector3 angFac);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_getAngularSleepingThreshold(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getAngularVelocity(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getAngularVelocity(IntPtr obj, [Out] out Vector3 ang_vel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btRigidBody_getBroadphaseProxy(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getCenterOfMassPosition(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getCenterOfMassPosition(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getCenterOfMassTransform(IntPtr obj, [Out] out Matrix value);
+		static extern void btRigidBody_getCenterOfMassTransform(IntPtr obj, [Out] out Matrix xform);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btRigidBody_getConstraintRef(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -498,31 +498,31 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btRigidBody_getFrictionSolverType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getGravity(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getGravity(IntPtr obj, [Out] out Vector3 acceleration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getInvInertiaDiagLocal(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getInvInertiaDiagLocal(IntPtr obj, [Out] out Vector3 diagInvInertia);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getInvInertiaTensorWorld(IntPtr obj, [Out] out Matrix value);
+		static extern void btRigidBody_getInvInertiaTensorWorld(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_getInvMass(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_getLinearDamping(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getLinearFactor(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getLinearFactor(IntPtr obj, [Out] out Vector3 linearFactor);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRigidBody_getLinearSleepingThreshold(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getLinearVelocity(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getLinearVelocity(IntPtr obj, [Out] out Vector3 lin_vel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btRigidBody_getMotionState(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btRigidBody_getNumConstraintRefs(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getOrientation(IntPtr obj, [Out] out Quaternion value);
+		static extern void btRigidBody_getOrientation(IntPtr obj, [Out] out Quaternion value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getTotalForce(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getTotalForce(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btRigidBody_getTotalTorque(IntPtr obj, [Out] out Vector3 value);
+		static extern void btRigidBody_getTotalTorque(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_getVelocityInLocalPoint(IntPtr obj, [In] ref Vector3 rel_pos, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -538,9 +538,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_saveKinematicState(IntPtr obj, float step);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_setAngularFactor(IntPtr obj, float angFac);
+		static extern void btRigidBody_setAngularFactor(IntPtr obj, [In] ref Vector3 angFac);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btRigidBody_setAngularFactor2(IntPtr obj, [In] ref Vector3 angFac);
+		static extern void btRigidBody_setAngularFactor2(IntPtr obj, float angFac);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_setAngularVelocity(IntPtr obj, [In] ref Vector3 ang_vel);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

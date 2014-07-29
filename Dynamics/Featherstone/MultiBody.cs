@@ -108,16 +108,16 @@ namespace BulletSharp
 
 		public Vector3 GetLinkForce(int i)
 		{
-            Vector3 value;
-            btMultiBody_getLinkForce(_native, i, out value);
-            return value;
+			Vector3 value;
+			btMultiBody_getLinkForce(_native, i, out value);
+			return value;
 		}
 
 		public Vector3 GetLinkInertia(int i)
 		{
-            Vector3 value;
-            btMultiBody_getLinkInertia(_native, i, out value);
-            return value;
+			Vector3 value;
+			btMultiBody_getLinkInertia(_native, i, out value);
+			return value;
 		}
 
 		public float GetLinkMass(int i)
@@ -127,9 +127,9 @@ namespace BulletSharp
 
 		public Vector3 GetLinkTorque(int i)
 		{
-            Vector3 value;
+			Vector3 value;
 			btMultiBody_getLinkTorque(_native, i, out value);
-            return value;
+			return value;
 		}
 
 		public int GetParent(int linkNum)
@@ -139,16 +139,16 @@ namespace BulletSharp
 
 		public Quaternion GetParentToLocalRot(int i)
 		{
-            Quaternion value;
+			Quaternion value;
 			btMultiBody_getParentToLocalRot(_native, i, out value);
-            return value;
+			return value;
 		}
 
 		public Vector3 GetRVector(int i)
 		{
-            Vector3 value;
-            btMultiBody_getRVector(_native, i, out value);
-            return value;
+			Vector3 value;
+			btMultiBody_getRVector(_native, i, out value);
+			return value;
 		}
 
 		public void GoToSleep()
@@ -158,16 +158,16 @@ namespace BulletSharp
 
 		public Vector3 LocalDirToWorld(int i, Vector3 vec)
 		{
-            Vector3 value;
+			Vector3 value;
 			btMultiBody_localDirToWorld(_native, i, ref vec, out value);
-            return value;
+			return value;
 		}
 
 		public Vector3 LocalPosToWorld(int i, Vector3 vec)
 		{
-            Vector3 value;
-            btMultiBody_localPosToWorld(_native, i, ref vec, out value);
-            return value;
+			Vector3 value;
+			btMultiBody_localPosToWorld(_native, i, ref vec, out value);
+			return value;
 		}
 
 		public void SetCanSleep(bool canSleep)
@@ -222,16 +222,16 @@ namespace BulletSharp
 
 		public Vector3 WorldDirToLocal(int i, Vector3 vec)
 		{
-            Vector3 value;
+			Vector3 value;
 			btMultiBody_worldDirToLocal(_native, i, ref vec, out value);
-            return value;
+			return value;
 		}
 
 		public Vector3 WorldPosToLocal(int i, Vector3 vec)
 		{
-            Vector3 value;
-            btMultiBody_worldPosToLocal(_native, i, ref vec, out value);
-            return value;
+			Vector3 value;
+			btMultiBody_worldPosToLocal(_native, i, ref vec, out value);
+			return value;
 		}
 
 		public float AngularDamping
@@ -448,21 +448,21 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultiBody_getAngularDamping(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getAngularMomentum(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBody_getAngularMomentum(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btMultiBody_getBaseCollider(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getBaseForce(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBody_getBaseForce(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getBaseInertia(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBody_getBaseInertia(IntPtr obj, [Out] out Vector3 inertia);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultiBody_getBaseMass(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getBaseOmega(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBody_getBaseOmega(IntPtr obj, [Out] out Vector3 omega);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getBasePos(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBody_getBasePos(IntPtr obj, [Out] out Vector3 pos);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getBaseTorque(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultiBody_getBaseTorque(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btMultiBody_getBaseVel(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -480,9 +480,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btMultiBody_getLink(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getLinkForce(IntPtr obj, int i, [Out] out Vector3 value);
+		static extern void btMultiBody_getLinkForce(IntPtr obj, int i, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getLinkInertia(IntPtr obj, int i, [Out] out Vector3 value);
+		static extern void btMultiBody_getLinkInertia(IntPtr obj, int i, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultiBody_getLinkMass(IntPtr obj, int i);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -494,15 +494,15 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btMultiBody_getParent(IntPtr obj, int link_num);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getParentToLocalRot(IntPtr obj, int i, [Out] out Quaternion value);
+		static extern void btMultiBody_getParentToLocalRot(IntPtr obj, int i, [Out] out Quaternion value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_getRVector(IntPtr obj, int i, [Out] out Vector3 value);
+		static extern void btMultiBody_getRVector(IntPtr obj, int i, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btMultiBody_getUseGyroTerm(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btMultiBody_getVelocityVector(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btMultiBody_getWorldToBaseRot(IntPtr obj, [Out] out Quaternion value);
+		static extern void btMultiBody_getWorldToBaseRot(IntPtr obj, [Out] out Quaternion rot);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBody_goToSleep(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -512,9 +512,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btMultiBody_isAwake(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_localDirToWorld(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
+		static extern void btMultiBody_localDirToWorld(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_localPosToWorld(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
+		static extern void btMultiBody_localPosToWorld(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBody_setBaseCollider(IntPtr obj, IntPtr collider);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -564,7 +564,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBody_worldDirToLocal(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBody_worldPosToLocal(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
+		static extern void btMultiBody_worldPosToLocal(IntPtr obj, int i, [In] ref Vector3 vec, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBody_delete(IntPtr obj);
 	}

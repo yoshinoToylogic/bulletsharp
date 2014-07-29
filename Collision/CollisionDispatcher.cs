@@ -16,9 +16,9 @@ namespace BulletSharp
 
 	public class CollisionDispatcher : Dispatcher
 	{
+        internal NearCallback _nearCallback;
         protected CollisionConfiguration _collisionConfiguration;
-
-        List<CollisionAlgorithmCreateFunc> _collisionCreateFuncs;
+        private List<CollisionAlgorithmCreateFunc> _collisionCreateFuncs;
 
 		internal CollisionDispatcher(IntPtr native)
 			: base(native)
@@ -31,7 +31,7 @@ namespace BulletSharp
             _collisionConfiguration = collisionConfiguration;
 		}
 
-		public void DefaultNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo)
+		public static void DefaultNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher, DispatcherInfo dispatchInfo)
 		{
 			btCollisionDispatcher_defaultNearCallback(collisionPair._native, dispatcher._native, dispatchInfo._native);
 		}
@@ -62,13 +62,18 @@ namespace BulletSharp
 			get { return btCollisionDispatcher_getDispatcherFlags(_native); }
 			set { btCollisionDispatcher_setDispatcherFlags(_native, value); }
 		}
-        /*
-		public  NearCallback
+
+		public NearCallback NearCallback
 		{
-			get { return btCollisionDispatcher_getNearCallback(_native); }
-			set { btCollisionDispatcher_setNearCallback(_native, value); }
+            get { return _nearCallback; }
+            set
+            {
+                _nearCallback = value;
+                throw new NotImplementedException();
+                //btCollisionDispatcher_setNearCallback(_native, value._native);
+            }
 		}
-        */
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionDispatcher_new(IntPtr collisionConfiguration);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

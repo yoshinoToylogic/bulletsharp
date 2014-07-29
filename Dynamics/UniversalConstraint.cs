@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -80,17 +80,17 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btUniversalConstraint_new(IntPtr rbA, IntPtr rbB, [In] ref Vector3 anchor, [In] ref Vector3 axis1, [In] ref Vector3 axis2);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btUniversalConstraint_getAnchor(IntPtr obj, [Out] out Vector3 value);
+		static extern void btUniversalConstraint_getAnchor(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btUniversalConstraint_getAnchor2(IntPtr obj, [Out] out Vector3 value);
+		static extern void btUniversalConstraint_getAnchor2(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btUniversalConstraint_getAngle1(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btUniversalConstraint_getAngle2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btUniversalConstraint_getAxis1(IntPtr obj, [Out] out Vector3 value);
+		static extern void btUniversalConstraint_getAxis1(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btUniversalConstraint_getAxis2(IntPtr obj, [Out] out Vector3 value);
+		static extern void btUniversalConstraint_getAxis2(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btUniversalConstraint_setLowerLimit(IntPtr obj, float ang1min, float ang2min);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

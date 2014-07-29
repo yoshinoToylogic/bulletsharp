@@ -101,11 +101,11 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btBox2dShape_new3(float boxHalfExtentX, float boxHalfExtentY, float boxHalfExtentZ);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBox2dShape_getCentroid(IntPtr obj, [Out] out Vector3 value);
+		static extern void btBox2dShape_getCentroid(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBox2dShape_getHalfExtentsWithMargin(IntPtr obj, [Out] out Vector3 extents);
+		static extern void btBox2dShape_getHalfExtentsWithMargin(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBox2dShape_getHalfExtentsWithoutMargin(IntPtr obj, [Out] out Vector3 extents);
+		static extern void btBox2dShape_getHalfExtentsWithoutMargin(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btBox2dShape_getNormals(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

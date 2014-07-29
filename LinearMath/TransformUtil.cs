@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -24,7 +24,7 @@ namespace BulletSharp
 
         public static void CalculateVelocityQuaternion(ref Vector3 pos0, ref Vector3 pos1, ref Quaternion orn0, ref Quaternion orn1, float timeStep, out Vector3 linVel, out Vector3 angVel)
 		{
-            btTransformUtil_calculateVelocityQuaternion(ref pos0, ref pos1, ref orn0, ref orn1, timeStep, out linVel, out angVel);
+			btTransformUtil_calculateVelocityQuaternion(ref pos0, ref pos1, ref orn0, ref orn1, timeStep, out linVel, out angVel);
 		}
 
         public static void IntegrateTransform(ref Matrix curTrans, ref Vector3 linvel, ref Vector3 angvel, float timeStep, out Matrix predictedTransform)
@@ -48,7 +48,7 @@ namespace BulletSharp
 		static extern void btTransformUtil_delete(IntPtr obj);
 	}
 
-	public class ConvexSeparatingDistanceUtil
+	public class ConvexSeparatingDistanceUtil : IDisposable
 	{
 		internal IntPtr _native;
 

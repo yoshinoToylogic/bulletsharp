@@ -328,7 +328,7 @@ namespace ConvexDecompositionDemo
                 const bool addFacesPoints = false;
 
                 myHACD.NClusters = nClusters;                     // minimum number of clusters
-                myHACD.VerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
+                myHACD.NumVerticesPerConvexHull = 100;               // max of 100 vertices per convex-hull
                 myHACD.Concavity = concavity;                     // maximum concavity
                 myHACD.AddExtraDistPoints = addExtraDistPoints;
                 myHACD.AddNeighboursDistPoints = addNeighboursDistPoints;

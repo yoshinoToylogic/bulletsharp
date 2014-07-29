@@ -1,7 +1,7 @@
-using BulletSharp.Math;
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -32,6 +32,11 @@ namespace BulletSharp
 			btSliderConstraint_calculateTransforms(_native, ref transA, ref transB);
 		}
 
+		public void GetInfo1NonVirtual(ConstraintInfo1 info)
+		{
+			btSliderConstraint_getInfo1NonVirtual(_native, info._native);
+		}
+
 		public void GetInfo2NonVirtual(ConstraintInfo2 info, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, float rbAinvMass, float rbBinvMass)
 		{
 			btSliderConstraint_getInfo2NonVirtual(_native, info._native, ref transA, ref transB, ref linVelA, ref linVelB, rbAinvMass, rbBinvMass);
@@ -56,17 +61,27 @@ namespace BulletSharp
 		{
 			btSliderConstraint_testLinLimits(_native);
 		}
-        /*
-		public void AncorInA
+
+		public Vector3 AncorInA
 		{
-			get { return btSliderConstraint_getAncorInA(_native); }
+			get
+			{
+				Vector3 value;
+				btSliderConstraint_getAncorInA(_native, out value);
+				return value;
+			}
 		}
 
-		public void AncorInB
+		public Vector3 AncorInB
 		{
-			get { return btSliderConstraint_getAncorInB(_native); }
+			get
+			{
+				Vector3 value;
+				btSliderConstraint_getAncorInB(_native, out value);
+				return value;
+			}
 		}
-        */
+
 		public float AngularDepth
 		{
 			get { return btSliderConstraint_getAngDepth(_native); }
@@ -152,12 +167,7 @@ namespace BulletSharp
 				return value;
 			}
 		}
-        /*
-		public void Info1NonVirtual
-		{
-			get { return btSliderConstraint_getInfo1NonVirtual(_native); }
-		}
-        */
+
 		public float LinearDepth
 		{
 			get { return btSliderConstraint_getLinDepth(_native); }
@@ -328,17 +338,17 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSliderConstraint_calculateTransforms(IntPtr obj, [In] ref Matrix transA, [In] ref Matrix transB);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSliderConstraint_getAncorInA(IntPtr obj);
+		static extern void btSliderConstraint_getAncorInA(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSliderConstraint_getAncorInB(IntPtr obj);
+		static extern void btSliderConstraint_getAncorInB(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btSliderConstraint_getAngDepth(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btSliderConstraint_getAngularPos(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSliderConstraint_getCalculatedTransformA(IntPtr obj, [Out] out Matrix value);
+		static extern void btSliderConstraint_getCalculatedTransformA(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSliderConstraint_getCalculatedTransformB(IntPtr obj, [Out] out Matrix value);
+		static extern void btSliderConstraint_getCalculatedTransformB(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btSliderConstraint_getDampingDirAng(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -352,9 +362,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btSliderConstraint_getDampingOrthoLin(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSliderConstraint_getFrameOffsetA(IntPtr obj, [Out] out Matrix value);
+		static extern void btSliderConstraint_getFrameOffsetA(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSliderConstraint_getFrameOffsetB(IntPtr obj, [Out] out Matrix value);
+		static extern void btSliderConstraint_getFrameOffsetB(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSliderConstraint_getInfo1NonVirtual(IntPtr obj, IntPtr info);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

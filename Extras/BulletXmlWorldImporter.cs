@@ -33,7 +33,7 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btBulletXmlWorldImporter_delete(_native);
+                btWorldImporter_delete(_native);
 				_native = IntPtr.Zero;
 			}
 		}
@@ -48,6 +48,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern bool btBulletXmlWorldImporter_loadFile(IntPtr obj, string fileName);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btBulletXmlWorldImporter_delete(IntPtr obj);
+        static extern void btWorldImporter_delete(IntPtr obj);
 	}
 }

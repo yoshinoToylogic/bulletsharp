@@ -139,7 +139,7 @@ namespace BulletSharp
 		{
 			get { return btOverlappingPairCache_getNumOverlappingPairs(_native); }
 		}
-        
+
 		public AlignedBroadphasePairArray OverlappingPairArray
 		{
             get

@@ -59,14 +59,14 @@ namespace BulletSharp
             btDynamicsWorld_addAction(_native, wrapper._native);
 		}
 
-		public void AddConstraint(TypedConstraint constraint, bool disableCollisionsBetweenLinkedBodies)
-		{
-			btDynamicsWorld_addConstraint(_native, constraint._native, disableCollisionsBetweenLinkedBodies);
-		}
-
 		public void AddConstraint(TypedConstraint constraint)
 		{
-			btDynamicsWorld_addConstraint2(_native, constraint._native);
+			btDynamicsWorld_addConstraint(_native, constraint._native);
+		}
+
+		public void AddConstraint(TypedConstraint constraint, bool disableCollisionsBetweenLinkedBodies)
+		{
+			btDynamicsWorld_addConstraint2(_native, constraint._native, disableCollisionsBetweenLinkedBodies);
 		}
 
 		public void AddRigidBody(RigidBody body)
@@ -135,8 +135,18 @@ namespace BulletSharp
             worldManaged._callback(worldManaged, timeStep);
         }
 
-		public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo, bool isPreTick)
+		public void SetInternalTickCallback(InternalTickCallback cb)
 		{
+            SetInternalTickCallback(cb, WorldUserInfo, false);
+		}
+
+		public void SetInternalTickCallback(InternalTickCallback cb, IntPtr worldUserInfo)
+		{
+            SetInternalTickCallback(cb, worldUserInfo, false);
+		}
+
+        public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo, bool isPreTick)
+        {
             if (_callback != cb)
             {
                 IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
@@ -144,7 +154,7 @@ namespace BulletSharp
                 {
                     _callback = cb;
                     _callbackUnmanaged = new InternalTickCallbackUnmanaged(InternalTickCallbackNative);
-                    btDynamicsWorld_setInternalTickCallback(_native,
+                    btDynamicsWorld_setInternalTickCallback3(_native,
                         Marshal.GetFunctionPointerForDelegate(_callbackUnmanaged),
                         nativeUserInfo, isPreTick);
                 }
@@ -152,26 +162,16 @@ namespace BulletSharp
                 {
                     _callback = null;
                     _callbackUnmanaged = null;
-                    btDynamicsWorld_setInternalTickCallback(_native, IntPtr.Zero, nativeUserInfo, isPreTick);
+                    btDynamicsWorld_setInternalTickCallback3(_native, IntPtr.Zero, nativeUserInfo, isPreTick);
                 }
             }
 
-	        WorldUserInfo = worldUserInfo;
-		}
+            WorldUserInfo = worldUserInfo;
+        }
 
-		public void SetInternalTickCallback(InternalTickCallback cb, Object worldUserInfo)
+		public int StepSimulation(float timeStep)
 		{
-            SetInternalTickCallback(cb, worldUserInfo, false);
-		}
-
-		public void SetInternalTickCallback(InternalTickCallback cb)
-		{
-            SetInternalTickCallback(cb, WorldUserInfo, false);
-		}
-
-		public int StepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep)
-		{
-			return btDynamicsWorld_stepSimulation(_native, timeStep, maxSubSteps, fixedTimeStep);
+			return btDynamicsWorld_stepSimulation(_native, timeStep);
 		}
 
 		public int StepSimulation(float timeStep, int maxSubSteps)
@@ -179,9 +179,9 @@ namespace BulletSharp
 			return btDynamicsWorld_stepSimulation2(_native, timeStep, maxSubSteps);
 		}
 
-		public int StepSimulation(float timeStep)
+		public int StepSimulation(float timeStep, int maxSubSteps, float fixedTimeStep)
 		{
-			return btDynamicsWorld_stepSimulation3(_native, timeStep);
+			return btDynamicsWorld_stepSimulation3(_native, timeStep, maxSubSteps, fixedTimeStep);
 		}
 
 		public void SynchronizeMotionStates()
@@ -206,16 +206,16 @@ namespace BulletSharp
             }
 		}
 
-        public Vector3 Gravity
-        {
-            get
-            {
-                Vector3 gravity;
-                btDynamicsWorld_getGravity(_native, out gravity);
-                return gravity;
-            }
-            set { btDynamicsWorld_setGravity(_native, ref value); }
-        }
+		public Vector3 Gravity
+		{
+			get
+			{
+				Vector3 value;
+				btDynamicsWorld_getGravity(_native, out value);
+				return value;
+			}
+			set { btDynamicsWorld_setGravity(_native, ref value); }
+		}
 
 		public int NumConstraints
 		{
@@ -244,9 +244,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addAction(IntPtr obj, IntPtr action);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addConstraint(IntPtr obj, IntPtr constraint, bool disableCollisionsBetweenLinkedBodies);
+		static extern void btDynamicsWorld_addConstraint(IntPtr obj, IntPtr constraint);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint);
+		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint, bool disableCollisionsBetweenLinkedBodies);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -278,19 +278,19 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_setGravity(IntPtr obj, [In] ref Vector3 gravity);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_setInternalTickCallback(IntPtr obj, IntPtr cb, IntPtr worldUserInfo, bool isPreTick);
+		static extern void btDynamicsWorld_setInternalTickCallback(IntPtr obj, IntPtr cb);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_setInternalTickCallback2(IntPtr obj, IntPtr cb, IntPtr worldUserInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_setInternalTickCallback3(IntPtr obj, IntPtr cb);
+		static extern void btDynamicsWorld_setInternalTickCallback3(IntPtr obj, IntPtr cb, IntPtr worldUserInfo, bool isPreTick);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_setWorldUserInfo(IntPtr obj, IntPtr worldUserInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btDynamicsWorld_stepSimulation(IntPtr obj, float timeStep, int maxSubSteps, float fixedTimeStep);
+		static extern int btDynamicsWorld_stepSimulation(IntPtr obj, float timeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDynamicsWorld_stepSimulation2(IntPtr obj, float timeStep, int maxSubSteps);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btDynamicsWorld_stepSimulation3(IntPtr obj, float timeStep);
+		static extern int btDynamicsWorld_stepSimulation3(IntPtr obj, float timeStep, int maxSubSteps, float fixedTimeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_synchronizeMotionStates(IntPtr obj);
 

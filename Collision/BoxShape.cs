@@ -64,9 +64,9 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btBoxShape_new3(float boxHalfExtentX, float boxHalfExtentY, float boxHalfExtentZ);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBoxShape_getHalfExtentsWithMargin(IntPtr obj, [Out] out Vector3 extents);
+		static extern void btBoxShape_getHalfExtentsWithMargin(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btBoxShape_getHalfExtentsWithoutMargin(IntPtr obj, [Out] out Vector3 extents);
+		static extern void btBoxShape_getHalfExtentsWithoutMargin(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBoxShape_getPlaneEquation(IntPtr obj, [Out] out Vector4 plane, [Out] out int i);
 	}
