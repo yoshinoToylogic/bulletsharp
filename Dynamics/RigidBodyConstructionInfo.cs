@@ -9,6 +9,7 @@ namespace BulletSharp
     {
         internal IntPtr _native;
 
+        private CollisionShape _collisionShape;
         internal MotionState _motionState;
 
         internal RigidBodyConstructionInfo(IntPtr native)
@@ -20,6 +21,7 @@ namespace BulletSharp
         {
             _native = btRigidBody_btRigidBodyConstructionInfo_new(mass, (motionState != null) ? motionState._native : IntPtr.Zero,
                 (collisionShape != null) ? collisionShape._native : IntPtr.Zero);
+            _collisionShape = collisionShape;
             _motionState = motionState;
         }
 
@@ -27,6 +29,7 @@ namespace BulletSharp
         {
             _native = btRigidBody_btRigidBodyConstructionInfo_new2(mass, (motionState != null) ? motionState._native : IntPtr.Zero,
                 (collisionShape != null) ? collisionShape._native : IntPtr.Zero, ref localInertia);
+            _collisionShape = collisionShape;
             _motionState = motionState;
         }
 
@@ -74,8 +77,12 @@ namespace BulletSharp
 
         public CollisionShape CollisionShape
         {
-            get { return CollisionShape.GetManaged(btRigidBody_btRigidBodyConstructionInfo_getCollisionShape(_native)); }
-            set { btRigidBody_btRigidBodyConstructionInfo_setCollisionShape(_native, value._native); }
+            get { return _collisionShape; }
+            set
+            {
+                _collisionShape = value;
+                btRigidBody_btRigidBodyConstructionInfo_setCollisionShape(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
         }
 
         public float Friction

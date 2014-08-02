@@ -11,11 +11,6 @@ namespace BulletSharp
         UIntArray _indices;
         Vector3Array _vertices;
 
-		internal ShapeHull(IntPtr native)
-		{
-			_native = native;
-		}
-
 		public ShapeHull(ConvexShape shape)
 		{
 			_native = btShapeHull_new(shape._native);

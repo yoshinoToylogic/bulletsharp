@@ -34,6 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collision\ActivatingCollisionAlgorithm.cs" />
@@ -69,6 +70,7 @@
     <Compile Include="Collision\MultimaterialTriangleMeshShape.cs" />
     <Compile Include="Collision\OptimizedBvh.cs" />
     <Compile Include="Collision\QuantizedBvh.cs" />
+    <Compile Include="Collision\RaycastCallback.cs" />
     <Compile Include="Collision\SimpleBroadphase.cs" />
     <Compile Include="Collision\SoftBodyConcaveCollisionAlgorithm.cs" />
     <Compile Include="Collision\SoftRigidCollisionAlgorithm.cs" />
@@ -189,7 +191,6 @@
     <Compile Include="LinearMath\AlignedObjectArray.cs" />
     <Compile Include="LinearMath\AlignedVector3Array.cs" />
     <Compile Include="LinearMath\Collections.cs" />
-    <Compile Include="LinearMath\AlignedCollisionShapeArray.cs" />
     <Compile Include="LinearMath\AlignedIndexedMeshArray.cs" />
     <Compile Include="LinearMath\DebugDraw.cs" />
     <Compile Include="LinearMath\DefaultMotionState.cs" />

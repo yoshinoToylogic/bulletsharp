@@ -12,43 +12,83 @@ namespace BulletSharp
 		{
 		}
 
+        public HingeConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 pivotInA, ref Vector3 pivotInB, ref Vector3 axisInA, ref Vector3 axisInB)
+            : base(btHingeConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB))
+        {
+        }
+
 		public HingeConstraint(RigidBody rbA, RigidBody rbB, Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB)
-			: base(btHingeConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB))
+			: this(rbA, rbB, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB)
 		{
 		}
+
+        public HingeConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 pivotInA, ref Vector3 pivotInB, ref Vector3 axisInA, ref Vector3 axisInB, bool useReferenceFrameA)
+            : base(btHingeConstraint_new2(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB, useReferenceFrameA))
+        {
+        }
 
 		public HingeConstraint(RigidBody rbA, RigidBody rbB, Vector3 pivotInA, Vector3 pivotInB, Vector3 axisInA, Vector3 axisInB, bool useReferenceFrameA)
-			: base(btHingeConstraint_new2(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB, useReferenceFrameA))
+			: this(rbA, rbB, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB, useReferenceFrameA)
 		{
 		}
+
+        public HingeConstraint(RigidBody rbA, ref Vector3 pivotInA, ref Vector3 axisInA)
+            : base(btHingeConstraint_new3(rbA._native, ref pivotInA, ref axisInA))
+        {
+        }
 
 		public HingeConstraint(RigidBody rbA, Vector3 pivotInA, Vector3 axisInA)
-			: base(btHingeConstraint_new3(rbA._native, ref pivotInA, ref axisInA))
+			: this(rbA, ref pivotInA, ref axisInA)
 		{
 		}
+
+        public HingeConstraint(RigidBody rbA, ref Vector3 pivotInA, ref Vector3 axisInA, bool useReferenceFrameA)
+            : base(btHingeConstraint_new4(rbA._native, ref pivotInA, ref axisInA, useReferenceFrameA))
+        {
+        }
 
 		public HingeConstraint(RigidBody rbA, Vector3 pivotInA, Vector3 axisInA, bool useReferenceFrameA)
-			: base(btHingeConstraint_new4(rbA._native, ref pivotInA, ref axisInA, useReferenceFrameA))
+			: this(rbA, ref pivotInA, ref axisInA, useReferenceFrameA)
 		{
 		}
+
+        public HingeConstraint(RigidBody rbA, RigidBody rbB, ref Matrix rbAFrame, ref Matrix rbBFrame)
+            : base(btHingeConstraint_new5(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
+        {
+        }
 
 		public HingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
-			: base(btHingeConstraint_new5(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
+			: this(rbA, rbB, ref rbAFrame, ref rbBFrame)
 		{
 		}
+
+        public HingeConstraint(RigidBody rbA, RigidBody rbB, ref Matrix rbAFrame, ref Matrix rbBFrame, bool useReferenceFrameA)
+            : base(btHingeConstraint_new6(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame, useReferenceFrameA))
+        {
+        }
 
 		public HingeConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame, bool useReferenceFrameA)
-			: base(btHingeConstraint_new6(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame, useReferenceFrameA))
+			: this(rbA, rbB, ref rbAFrame, ref rbBFrame, useReferenceFrameA)
 		{
 		}
+
+        public HingeConstraint(RigidBody rbA, ref Matrix rbAFrame)
+            : base(btHingeConstraint_new7(rbA._native, ref rbAFrame))
+        {
+        }
 
 		public HingeConstraint(RigidBody rbA, Matrix rbAFrame)
-			: base(btHingeConstraint_new7(rbA._native, ref rbAFrame))
+			: this(rbA, ref rbAFrame)
 		{
 		}
 
+        public HingeConstraint(RigidBody rbA, ref Matrix rbAFrame, bool useReferenceFrameA)
+            : base(btHingeConstraint_new8(rbA._native, ref rbAFrame, useReferenceFrameA))
+        {
+        }
+
 		public HingeConstraint(RigidBody rbA, Matrix rbAFrame, bool useReferenceFrameA)
-			: base(btHingeConstraint_new8(rbA._native, ref rbAFrame, useReferenceFrameA))
+			: this(rbA, ref rbAFrame, useReferenceFrameA)
 		{
 		}
 

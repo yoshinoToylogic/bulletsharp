@@ -9,11 +9,6 @@ namespace BulletSharp
 	{
         BvhTriangleMeshShape _childShape;
 
-		internal ScaledBvhTriangleMeshShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public ScaledBvhTriangleMeshShape(BvhTriangleMeshShape childShape, Vector3 localScaling)
 			: base(btScaledBvhTriangleMeshShape_new(childShape._native, ref localScaling))
 		{

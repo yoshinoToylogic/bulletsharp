@@ -68,11 +68,6 @@ namespace BulletSharp
 
 	public class CylinderShapeX : CylinderShape
 	{
-		internal CylinderShapeX(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public CylinderShapeX(Vector3 halfExtents)
 			: base(btCylinderShapeX_new(ref halfExtents))
 		{
@@ -91,11 +86,6 @@ namespace BulletSharp
 
 	public class CylinderShapeZ : CylinderShape
 	{
-		internal CylinderShapeZ(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public CylinderShapeZ(Vector3 halfExtents)
 			: base(btCylinderShapeZ_new(ref halfExtents))
 		{

@@ -14,9 +14,9 @@ namespace SerializeDemo
         {
         }
 
-        public override RigidBody CreateRigidBody(bool isDynamic, float mass, Matrix startTransform, CollisionShape shape, string bodyName)
+        public override RigidBody CreateRigidBody(bool isDynamic, float mass, ref Matrix startTransform, CollisionShape shape, string bodyName)
         {
-            RigidBody body = base.CreateRigidBody(isDynamic, mass, startTransform, shape, bodyName);
+            RigidBody body = base.CreateRigidBody(isDynamic, mass, ref startTransform, shape, bodyName);
 
             if (bodyName != null && bodyName.Equals("GroundName"))
                 body.UserObject = "Ground";

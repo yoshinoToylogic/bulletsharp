@@ -117,15 +117,15 @@ namespace BulletSharp
 
 	public class TriangleBuffer : TriangleCallback
 	{
-		internal TriangleBuffer(IntPtr native)
-			: base(native)
-		{
-		}
-
+        /*
 		public TriangleBuffer()
 			: base(btTriangleBuffer_new())
 		{
 		}
+        */
+        public TriangleBuffer()
+        {
+        }
 
 		public void ClearBuffer()
 		{
@@ -136,6 +136,11 @@ namespace BulletSharp
 		{
             return new Triangle(btTriangleBuffer_getTriangle(_native, index), true);
 		}
+
+        public override void ProcessTriangle(ref Vector3 vector0, ref Vector3 vector1, ref Vector3 vector2, int partId, int triangleIndex)
+        {
+            throw new NotImplementedException();
+        }
 
 		public int NumTriangles
 		{

@@ -6,11 +6,6 @@ namespace BulletSharp
 {
 	public class HeightfieldTerrainShape : ConcaveShape
 	{
-		internal HeightfieldTerrainShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public HeightfieldTerrainShape(int heightStickWidth, int heightStickLength, IntPtr heightfieldData, float heightScale, float minHeight, float maxHeight, int upAxis, PhyScalarType heightDataType, bool flipQuadEdges)
 			: base(btHeightfieldTerrainShape_new(heightStickWidth, heightStickLength, heightfieldData, heightScale, minHeight, maxHeight, upAxis, heightDataType, flipQuadEdges))
 		{

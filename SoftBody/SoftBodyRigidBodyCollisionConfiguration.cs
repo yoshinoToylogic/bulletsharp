@@ -11,19 +11,19 @@ namespace BulletSharp
 		{
 		}
 
-		public SoftBodyRigidBodyCollisionConfiguration(DefaultCollisionConstructionInfo constructionInfo)
-			: base(btSoftBodyRigidBodyCollisionConfiguration_new(constructionInfo._native))
-		{
-		}
-
 		public SoftBodyRigidBodyCollisionConfiguration()
-			: base(btSoftBodyRigidBodyCollisionConfiguration_new2())
+			: base(btSoftBodyRigidBodyCollisionConfiguration_new())
+		{
+		}
+
+		public SoftBodyRigidBodyCollisionConfiguration(DefaultCollisionConstructionInfo constructionInfo)
+			: base(btSoftBodyRigidBodyCollisionConfiguration_new2(constructionInfo._native))
 		{
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyRigidBodyCollisionConfiguration_new(IntPtr constructionInfo);
+		static extern IntPtr btSoftBodyRigidBodyCollisionConfiguration_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyRigidBodyCollisionConfiguration_new2();
+		static extern IntPtr btSoftBodyRigidBodyCollisionConfiguration_new2(IntPtr constructionInfo);
 	}
 }

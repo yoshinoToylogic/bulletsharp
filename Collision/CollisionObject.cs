@@ -49,6 +49,7 @@ namespace BulletSharp
 	public class CollisionObject : IDisposable
 	{
 		internal IntPtr _native;
+        protected CollisionShape _collisionShape;
 
         internal static CollisionObject GetManaged(IntPtr obj)
         {
@@ -221,8 +222,12 @@ namespace BulletSharp
 
 		public CollisionShape CollisionShape
 		{
-            get { return CollisionShape.GetManaged(btCollisionObject_getCollisionShape(_native)); }
-			set { btCollisionObject_setCollisionShape(_native, value._native); }
+            get { return _collisionShape; }
+            set
+            {
+                btCollisionObject_setCollisionShape(_native, value._native);
+                _collisionShape = value;
+            }
 		}
 
 		public int CompanionId
@@ -402,8 +407,8 @@ namespace BulletSharp
 		static extern float btCollisionObject_getCcdSweptSphereRadius(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern CollisionFlags btCollisionObject_getCollisionFlags(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCollisionObject_getCollisionShape(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btCollisionObject_getCollisionShape(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCollisionObject_getCompanionId(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -128,6 +128,7 @@ namespace BulletSharp
 
             if (swap)
             {
+                throw new NotImplementedException();
                 //swapLen(dataPtr);
             }
 
@@ -182,6 +183,7 @@ namespace BulletSharp
                 seek = GetNextBlock(out dataChunk, reader, _flags);
                 if (swap)
                 {
+                    throw new NotImplementedException();
                     //swapLen(dataPtr);
                 }
 

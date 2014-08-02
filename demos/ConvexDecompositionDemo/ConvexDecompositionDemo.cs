@@ -4,8 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using BulletSharp;
-using DemoFramework;
 using BulletSharp.Math;
+using DemoFramework;
 
 namespace ConvexDecompositionDemo
 {
@@ -15,7 +15,7 @@ namespace ConvexDecompositionDemo
         ConvexDecompositionDemo demo;
         CultureInfo floatFormat = new CultureInfo("en-US");
 
-        public AlignedCollisionShapeArray convexShapes = new AlignedCollisionShapeArray();
+        public List<CollisionShape> convexShapes = new List<CollisionShape>();
         public AlignedVector3Array convexCentroids = new AlignedVector3Array();
 
         int mHullCount = 0;

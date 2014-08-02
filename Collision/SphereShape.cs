@@ -6,11 +6,6 @@ namespace BulletSharp
 {
 	public class SphereShape : ConvexInternalShape
 	{
-		internal SphereShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public SphereShape(float radius)
 			: base(btSphereShape_new(radius))
 		{

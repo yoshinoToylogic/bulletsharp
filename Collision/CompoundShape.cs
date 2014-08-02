@@ -5,20 +5,16 @@ using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class CompoundShapeChild : IDisposable
+	public class CompoundShapeChild
 	{
 		internal IntPtr _native;
-	    private readonly bool _preventDelete;
 
-		internal CompoundShapeChild(IntPtr native, bool preventDelete = false)
+        private CollisionShape _childShape;
+
+        internal CompoundShapeChild(IntPtr native, CollisionShape childShape)
 		{
 			_native = native;
-            _preventDelete = preventDelete;
-		}
-
-		public CompoundShapeChild()
-		{
-			_native = btCompoundShapeChild_new();
+            _childShape = childShape;
 		}
 
 		public float ChildMargin
@@ -29,11 +25,15 @@ namespace BulletSharp
 
 		public CollisionShape ChildShape
 		{
-            get { return CollisionShape.GetManaged(btCompoundShapeChild_getChildShape(_native)); }
-			set { btCompoundShapeChild_setChildShape(_native, value._native); }
+            get { return _childShape; }
+            set
+            {
+                _childShape = value;
+                btCompoundShapeChild_setChildShape(_native, value._native);
+            }
 		}
 
-		public int ChildShapeType
+        public BroadphaseNativeType ChildShapeType
 		{
 			get { return btCompoundShapeChild_getChildShapeType(_native); }
 			set { btCompoundShapeChild_setChildShapeType(_native, value); }
@@ -60,37 +60,14 @@ namespace BulletSharp
 			set { btCompoundShapeChild_setTransform(_native, ref value); }
 		}
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-                if (!_preventDelete)
-                {
-                    btCompoundShapeChild_delete(_native);
-                }
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~CompoundShapeChild()
-		{
-			Dispose(false);
-		}
-
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCompoundShapeChild_new();
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btCompoundShapeChild_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCompoundShapeChild_getChildMargin(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btCompoundShapeChild_getChildShape(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCompoundShapeChild_getChildShape(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btCompoundShapeChild_getChildShapeType(IntPtr obj);
+        static extern BroadphaseNativeType btCompoundShapeChild_getChildShapeType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCompoundShapeChild_getNode(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -100,42 +77,37 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShapeChild_setChildShape(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShapeChild_setChildShapeType(IntPtr obj, int value);
+        static extern void btCompoundShapeChild_setChildShapeType(IntPtr obj, BroadphaseNativeType value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShapeChild_setNode(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShapeChild_setTransform(IntPtr obj, [In] ref Matrix value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShapeChild_delete(IntPtr obj);
 	}
 
 	public class CompoundShape : CollisionShape
 	{
-        CompoundShapeChildArray _childList;
-
-		internal CompoundShape(IntPtr native)
-			: base(native)
-		{
-		}
+        private CompoundShapeChildArray _childList;
 
 		public CompoundShape()
 			: base(btCompoundShape_new())
 		{
+            _childList = new CompoundShapeChildArray(_native);
 		}
 
 		public CompoundShape(bool enableDynamicAabbTree)
 			: base(btCompoundShape_new2(enableDynamicAabbTree))
 		{
+            _childList = new CompoundShapeChildArray(_native);
 		}
 
         public void AddChildShape(ref Matrix localTransform, CollisionShape shape)
         {
-            btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
+            _childList.AddChildShape(ref localTransform, shape);
         }
 
 		public void AddChildShape(Matrix localTransform, CollisionShape shape)
 		{
-			btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
+            _childList.AddChildShape(ref localTransform, shape);
 		}
 
         public void CalculatePrincipalAxisTransform(float[] masses, ref Matrix principal, ref Vector3 inertia)
@@ -155,7 +127,7 @@ namespace BulletSharp
 
 		public CollisionShape GetChildShape(int index)
 		{
-            return CollisionShape.GetManaged(btCompoundShape_getChildShape(_native, index));
+            return _childList[index].ChildShape;
 		}
 
         public void GetChildTransform(int index, out Matrix value)
@@ -177,12 +149,12 @@ namespace BulletSharp
 
 		public void RemoveChildShape(CollisionShape shape)
 		{
-			btCompoundShape_removeChildShape(_native, shape._native);
+            _childList.RemoveChildShape(shape);
 		}
 
-		public void RemoveChildShapeByIndex(int childShapeindex)
+		public void RemoveChildShapeByIndex(int childShapeIndex)
 		{
-			btCompoundShape_removeChildShapeByIndex(_native, childShapeindex);
+            _childList.RemoveChildShapeByIndex(childShapeIndex);
 		}
 
 		public void UpdateChildTransform(int childIndex, Matrix newChildTransform)
@@ -197,14 +169,7 @@ namespace BulletSharp
 
 		public CompoundShapeChildArray ChildList
 		{
-            get
-            {
-                if (_childList == null)
-                {
-                    _childList = new CompoundShapeChildArray(btCompoundShape_getChildList(_native), NumChildShapes);
-                }
-                return _childList;
-            }
+            get { return _childList; }
 		}
 
 		public Dbvt DynamicAabbTree
@@ -214,7 +179,7 @@ namespace BulletSharp
 
 		public int NumChildShapes
 		{
-			get { return btCompoundShape_getNumChildShapes(_native); }
+            get { return _childList.Count; }
 		}
 
 		public int UpdateRevision
@@ -227,13 +192,11 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCompoundShape_new2(bool enableDynamicAabbTree);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShape_addChildShape(IntPtr obj, [In] ref Matrix localTransform, IntPtr shape);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_calculatePrincipalAxisTransform(IntPtr obj, float[] masses, [In] ref Matrix principal, [In] ref Vector3 inertia);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_createAabbTreeFromChildren(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCompoundShape_getChildList(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCompoundShape_getChildList(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCompoundShape_getChildShape(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -241,15 +204,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCompoundShape_getDynamicAabbTree(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btCompoundShape_getNumChildShapes(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCompoundShape_getUpdateRevision(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_recalculateLocalAabb(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShape_removeChildShape(IntPtr obj, IntPtr shape);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCompoundShape_removeChildShapeByIndex(IntPtr obj, int childShapeindex);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_updateChildTransform(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

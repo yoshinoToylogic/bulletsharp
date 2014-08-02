@@ -32,28 +32,23 @@ namespace BulletSharp
         public Matrix ReadMatrix()
         {
             float[] m = new float[16];
-            for (int i = 0; i < 16; i++)
-            {
-                m[i] = ReadSingle();
-            }
-            /* Transpose
-            m[0] = reader.ReadSingle();
-            m[4] = reader.ReadSingle();
-            m[8] = reader.ReadSingle();
-            m[12] = reader.ReadSingle();
-            m[1] = reader.ReadSingle();
-            m[5] = reader.ReadSingle();
-            m[9] = reader.ReadSingle();
-            m[13] = reader.ReadSingle();
-            m[2] = reader.ReadSingle();
-            m[6] = reader.ReadSingle();
-            m[10] = reader.ReadSingle();
-            m[14] = reader.ReadSingle();
-            m[3] = reader.ReadSingle();
-            m[7] = reader.ReadSingle();
-            m[11] = reader.ReadSingle();
-            m[15] = reader.ReadSingle();
-            */
+            m[0] = ReadSingle();
+            m[4] = ReadSingle();
+            m[8] = ReadSingle();
+            ReadSingle();
+            m[1] = ReadSingle();
+            m[5] = ReadSingle();
+            m[9] = ReadSingle();
+            ReadSingle();
+            m[2] = ReadSingle();
+            m[6] = ReadSingle();
+            m[10] = ReadSingle();
+            ReadSingle();
+            m[12] = ReadSingle();
+            m[13] = ReadSingle();
+            m[14] = ReadSingle();
+            ReadSingle();
+            m[15] = 1;
             return new Matrix(m);
         }
 
