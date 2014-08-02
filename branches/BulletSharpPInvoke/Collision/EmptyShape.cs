@@ -6,11 +6,6 @@ namespace BulletSharp
 {
 	public class EmptyShape : ConcaveShape
 	{
-		internal EmptyShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public EmptyShape()
 			: base(btEmptyShape_new())
 		{

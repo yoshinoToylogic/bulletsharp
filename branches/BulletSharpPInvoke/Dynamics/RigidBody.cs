@@ -14,7 +14,7 @@ namespace BulletSharp
 
 	public class RigidBody : CollisionObject
 	{
-        MotionState _motionState;
+        private MotionState _motionState;
 
 		internal RigidBody(IntPtr native)
 			: base(native)
@@ -24,6 +24,7 @@ namespace BulletSharp
 		public RigidBody(RigidBodyConstructionInfo constructionInfo)
 			: base(btRigidBody_new(constructionInfo._native))
 		{
+            _collisionShape = constructionInfo.CollisionShape;
             _motionState = constructionInfo._motionState;
 		}
 

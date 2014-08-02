@@ -11,11 +11,6 @@ namespace BulletSharp
         private Vector3Array _points;
         private Vector3Array _unscaledPoints;
 
-		internal ConvexHullShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public ConvexHullShape()
 			: base(btConvexHullShape_new())
 		{

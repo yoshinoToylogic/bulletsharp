@@ -326,7 +326,7 @@ namespace BulletSharpGen
             if (returnParamMethod != null)
             {
                 // Temporary variable
-                Write(returnParamMethod.ReturnType.ManagedName, cs);
+                Write(BulletParser.GetTypeNameCS(returnParamMethod.ReturnType), cs);
                 Write(' ', cs);
                 Write(method.Parameters[numParameters - 1].ManagedName, cs);
                 WriteLine(';', cs);

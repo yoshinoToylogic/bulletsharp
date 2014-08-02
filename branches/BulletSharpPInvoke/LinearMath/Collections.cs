@@ -34,11 +34,11 @@ namespace BulletSharp
 
     public class CompoundShapeChildArrayEnumerator : ArrayEnumerator, IEnumerator<CompoundShapeChild>
     {
-        IList<CompoundShapeChild> _array;
+        CompoundShapeChild[] _array;
 
-        public CompoundShapeChildArrayEnumerator(IList<CompoundShapeChild> array)
+        public CompoundShapeChildArrayEnumerator(CompoundShapeChildArray array)
         {
-            _array = array;
+            _array = array._backingArray;
             _count = array.Count;
         }
 
@@ -130,14 +130,39 @@ namespace BulletSharp
 
     public class CompoundShapeChildArray : FixedSizeArray, IList<CompoundShapeChild>
     {
-        internal CompoundShapeChildArray(IntPtr native, int count)
-            : base(native, count)
-        {
-        }
+        internal CompoundShapeChild[] _backingArray;
 
+        internal CompoundShapeChildArray(IntPtr compoundShape)
+            : base(compoundShape, 0)
+        {
+            _backingArray = new CompoundShapeChild[_count];
+        }
+        
         public void Add(CompoundShapeChild item)
         {
             throw new NotSupportedException();
+        }
+
+        public void AddChildShape(ref Matrix localTransform, CollisionShape shape)
+        {
+            IntPtr childListOld = btCompoundShape_getChildList(_native);
+            btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
+            IntPtr childList = btCompoundShape_getChildList(_native);
+
+            // Adjust the native pointer of existing children if the array was reallocated.
+            if (childListOld != childList)
+            {
+                for (int i = 0; i < _count; i++)
+                {
+                    _backingArray[i]._native = btCompoundShapeChild_array_at(childList, i);
+                }
+            }
+
+            // Add the child to the backing store.
+            int childIndex = _count;
+            _count++;
+            Array.Resize<CompoundShapeChild>(ref _backingArray, _count);
+            _backingArray[childIndex] = new CompoundShapeChild(btCompoundShapeChild_array_at(childList, childIndex), shape);
         }
 
         public int IndexOf(CompoundShapeChild item)
@@ -147,14 +172,7 @@ namespace BulletSharp
 
         public CompoundShapeChild this[int index]
         {
-            get
-            {
-                if (index < 0 || index >= Count)
-                {
-                    throw new ArgumentOutOfRangeException("index");
-                }
-                return new CompoundShapeChild(btCompoundShapeChild_array_at(_native, index), true);
-            }
+            get { return _backingArray[index]; }
             set
             {
                 throw new NotImplementedException();
@@ -191,6 +209,42 @@ namespace BulletSharp
             throw new NotSupportedException();
         }
 
+        public void RemoveChildShape(CollisionShape shape)
+        {
+            for (int i = 0; i < _count; i++)
+            {
+                if (_backingArray[i].ChildShape._native == shape._native)
+                {
+                    RemoveChildShapeByIndex(i);
+                }
+            }
+        }
+
+        internal void RemoveChildShapeByIndex(int childShapeIndex)
+        {
+            btCompoundShape_removeChildShapeByIndex(_native, childShapeIndex);
+            _count--;
+
+            // Swap the last item with the item to be removed like Bullet does.
+            if (childShapeIndex != _count)
+            {
+                CompoundShapeChild lastItem = _backingArray[_count];
+                lastItem._native = _backingArray[childShapeIndex]._native;
+                _backingArray[childShapeIndex] = lastItem;
+            }
+            _backingArray[_count] = null;
+        }
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btCompoundShape_addChildShape(IntPtr obj, [In] ref Matrix localTransform, IntPtr shape);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCompoundShape_getChildList(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btCompoundShape_getNumChildShapes(IntPtr obj);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btCompoundShape_removeChildShape(IntPtr obj, IntPtr shape);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btCompoundShape_removeChildShapeByIndex(IntPtr obj, int childShapeindex);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btCompoundShapeChild_array_at(IntPtr obj, int n);
     }

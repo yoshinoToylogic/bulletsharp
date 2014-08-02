@@ -8,8 +8,6 @@ namespace BulletSharp
 	public class CollisionShape : IDisposable
 	{
 		internal readonly IntPtr _native;
-
-        private bool _preventDelete;
         private bool _isDisposed;
 
         internal static CollisionShape GetManaged(IntPtr obj)
@@ -25,21 +23,6 @@ namespace BulletSharp
                 return GCHandle.FromIntPtr(userPtr).Target as CollisionShape;
             }
 
-            switch (btCollisionShape_getShapeType(obj))
-            {
-                case BroadphaseNativeType.BoxShape:
-                    return new BoxShape(obj);
-                case BroadphaseNativeType.CompoundShape:
-                    return new CompoundShape(obj);
-                case BroadphaseNativeType.ConvexHullShape:
-                    return new ConvexHullShape(obj);
-                case BroadphaseNativeType.StaticPlane:
-                    return new StaticPlaneShape(obj);
-                case BroadphaseNativeType.SoftBodyShape:
-                    CollisionShape shape = new CollisionShape(obj);
-                    shape._preventDelete = true;
-                    return shape;
-            }
             throw new NotImplementedException();
         }
 
@@ -48,7 +31,7 @@ namespace BulletSharp
             _native = obj;
             if (btCollisionShape_getUserPointer(_native) == IntPtr.Zero)
             {
-                GCHandle handle = GCHandle.Alloc(this);
+                GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
                 btCollisionShape_setUserPointer(_native, GCHandle.ToIntPtr(handle));
             }
         }
@@ -237,13 +220,14 @@ namespace BulletSharp
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (_native != IntPtr.Zero)
+            if (!_isDisposed)
 			{
-                if (!_preventDelete)
-                {
-                    btCollisionShape_delete(_native);
-                }
                 _isDisposed = true;
+
+                IntPtr userPtr = btCollisionShape_getUserPointer(_native);
+                GCHandle.FromIntPtr(userPtr).Free();
+
+                btCollisionShape_delete(_native);
 			}
 		}
 

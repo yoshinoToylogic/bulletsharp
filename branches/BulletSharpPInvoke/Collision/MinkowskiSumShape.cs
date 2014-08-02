@@ -7,24 +7,24 @@ namespace BulletSharp
 {
 	public class MinkowskiSumShape : ConvexInternalShape
 	{
-		internal MinkowskiSumShape(IntPtr native)
-			: base(native)
-		{
-		}
+        private ConvexShape _shapeA;
+        private ConvexShape _shapeB;
 
 		public MinkowskiSumShape(ConvexShape shapeA, ConvexShape shapeB)
 			: base(btMinkowskiSumShape_new(shapeA._native, shapeB._native))
 		{
+            _shapeA = shapeA;
+            _shapeB = shapeB;
 		}
 
 		public ConvexShape ShapeA
 		{
-			get { return CollisionShape.GetManaged(btMinkowskiSumShape_getShapeA(_native)) as ConvexShape; }
+            get { return _shapeA; }
 		}
 
 		public ConvexShape ShapeB
 		{
-            get { return CollisionShape.GetManaged(btMinkowskiSumShape_getShapeB(_native)) as ConvexShape; }
+            get { return _shapeB; }
 		}
 
 		public Matrix TransformA

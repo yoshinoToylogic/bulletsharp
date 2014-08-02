@@ -40,30 +40,30 @@ namespace BulletSharp.SoftBody
             return body;
 		}
 
-		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int numVertices, bool randomizeConstraints)
+		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nVertices)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, numVertices, randomizeConstraints));
-            body.WorldInfo = worldInfo;
-            return body;
-		}
-
-        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, bool randomizeConstraints)
-        {
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, vertices.Length, randomizeConstraints));
-            body.WorldInfo = worldInfo;
-            return body;
-        }
-
-		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int numVertices)
-		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, numVertices));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, nVertices));
             body.WorldInfo = worldInfo;
             return body;
 		}
 
         public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices)
         {
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, vertices.Length));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, vertices.Length));
+            body.WorldInfo = worldInfo;
+            return body;
+        }
+
+        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nVertices, bool randomizeConstraints)
+		{
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, nVertices, randomizeConstraints));
+            body.WorldInfo = worldInfo;
+            return body;
+        }
+
+        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, bool randomizeConstraints)
+        {
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, vertices.Length, randomizeConstraints));
             body.WorldInfo = worldInfo;
             return body;
         }
@@ -83,62 +83,62 @@ namespace BulletSharp.SoftBody
 
             return CreateFromTetGenData(worldInfo, ele, face, node, faceLinks, tetraLinks, facesFromTetras);
         }
-    
-		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles, bool randomizeConstraints)
-		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices, triangles, triangles.Length / 3, randomizeConstraints));
-            body.WorldInfo = worldInfo;
-            return body;
-		}
 
 		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices, triangles, triangles.Length / 3));
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices, triangles, triangles.Length / 3));
+            body.WorldInfo = worldInfo;
+            return body;
+        }
+
+		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles, bool randomizeConstraints)
+		{
+            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices, triangles, triangles.Length / 3, randomizeConstraints));
             body.WorldInfo = worldInfo;
             return body;
 		}
 
 		public static SoftBody CreatePatch(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatch(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
+			SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatch(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
             body.WorldInfo = worldInfo;
             return body;
 		}
-        
-		public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags, float[] texCoords)
+
+		public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
 		{
-			SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatchUV(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags, texCoords));
+			SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatchUV(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
             body.WorldInfo = worldInfo;
             return body;
 		}
-        
-        public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
+
+        public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags, float[] texCoords)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatchUV2(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
+			SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatchUV2(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags, texCoords));
             body.WorldInfo = worldInfo;
             return body;
 		}
 
 		public static SoftBody CreateRope(SoftBodyWorldInfo worldInfo, Vector3 from, Vector3 to, int res, int fixeds)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateRope(worldInfo._native, ref from, ref to, res, fixeds));
+			SoftBody body = new SoftBody(btSoftBodyHelpers_CreateRope(worldInfo._native, ref from, ref to, res, fixeds));
             body.WorldInfo = worldInfo;
             return body;
 		}
 
-		public static void Draw(SoftBody psb, IDebugDraw iDraw, int drawFlags)
-		{
-			btSoftBodyHelpers_Draw(psb._native, DebugDraw.GetUnmanaged(iDraw), drawFlags);
-		}
-
 		public static void Draw(SoftBody psb, IDebugDraw iDraw)
 		{
-			btSoftBodyHelpers_Draw2(psb._native, DebugDraw.GetUnmanaged(iDraw));
+			btSoftBodyHelpers_Draw(psb._native, DebugDraw.GetUnmanaged(iDraw));
 		}
 
-		public static void DrawClusterTree(SoftBody psb, IDebugDraw iDraw, int minDepth, int maxDepth)
+		public static void Draw(SoftBody psb, IDebugDraw iDraw, int drawFlags)
 		{
-			btSoftBodyHelpers_DrawClusterTree(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
+			btSoftBodyHelpers_Draw2(psb._native, DebugDraw.GetUnmanaged(iDraw), drawFlags);
+		}
+
+		public static void DrawClusterTree(SoftBody psb, IDebugDraw iDraw)
+		{
+			btSoftBodyHelpers_DrawClusterTree(psb._native, DebugDraw.GetUnmanaged(iDraw));
 		}
 
 		public static void DrawClusterTree(SoftBody psb, IDebugDraw iDraw, int minDepth)
@@ -146,14 +146,14 @@ namespace BulletSharp.SoftBody
 			btSoftBodyHelpers_DrawClusterTree2(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth);
 		}
 
-		public static void DrawClusterTree(SoftBody psb, IDebugDraw iDraw)
+		public static void DrawClusterTree(SoftBody psb, IDebugDraw iDraw, int minDepth, int maxDepth)
 		{
-			btSoftBodyHelpers_DrawClusterTree3(psb._native, DebugDraw.GetUnmanaged(iDraw));
+			btSoftBodyHelpers_DrawClusterTree3(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
 		}
 
-		public static void DrawFaceTree(SoftBody psb, IDebugDraw iDraw, int minDepth, int maxDepth)
+		public static void DrawFaceTree(SoftBody psb, IDebugDraw iDraw)
 		{
-			btSoftBodyHelpers_DrawFaceTree(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
+			btSoftBodyHelpers_DrawFaceTree(psb._native, DebugDraw.GetUnmanaged(iDraw));
 		}
 
 		public static void DrawFaceTree(SoftBody psb, IDebugDraw iDraw, int minDepth)
@@ -161,9 +161,9 @@ namespace BulletSharp.SoftBody
 			btSoftBodyHelpers_DrawFaceTree2(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth);
 		}
 
-		public static void DrawFaceTree(SoftBody psb, IDebugDraw iDraw)
+		public static void DrawFaceTree(SoftBody psb, IDebugDraw iDraw, int minDepth, int maxDepth)
 		{
-			btSoftBodyHelpers_DrawFaceTree3(psb._native, DebugDraw.GetUnmanaged(iDraw));
+			btSoftBodyHelpers_DrawFaceTree3(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
 		}
 
 		public static void DrawFrame(SoftBody psb, IDebugDraw iDraw)
@@ -176,9 +176,9 @@ namespace BulletSharp.SoftBody
 			btSoftBodyHelpers_DrawInfos(psb._native, DebugDraw.GetUnmanaged(iDraw), masses, areas, stress);
 		}
 
-		public static void DrawNodeTree(SoftBody psb, IDebugDraw iDraw, int minDepth, int maxDepth)
+		public static void DrawNodeTree(SoftBody psb, IDebugDraw iDraw)
 		{
-			btSoftBodyHelpers_DrawNodeTree(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
+			btSoftBodyHelpers_DrawNodeTree(psb._native, DebugDraw.GetUnmanaged(iDraw));
 		}
 
 		public static void DrawNodeTree(SoftBody psb, IDebugDraw iDraw, int minDepth)
@@ -186,9 +186,9 @@ namespace BulletSharp.SoftBody
 			btSoftBodyHelpers_DrawNodeTree2(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth);
 		}
 
-		public static void DrawNodeTree(SoftBody psb, IDebugDraw iDraw)
+		public static void DrawNodeTree(SoftBody psb, IDebugDraw iDraw, int minDepth, int maxDepth)
 		{
-			btSoftBodyHelpers_DrawNodeTree3(psb._native, DebugDraw.GetUnmanaged(iDraw));
+			btSoftBodyHelpers_DrawNodeTree3(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -196,48 +196,48 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBodyHelpers_CreateEllipsoid(IntPtr worldInfo, [In] ref Vector3 center, [In] ref Vector3 radius, int res);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices, bool randomizeConstraints);
+        static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull2(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices);
+        static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull2(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices, bool randomizeConstraints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreateFromTetGenData(IntPtr worldInfo, string ele, string face, string node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles, bool randomizeConstraints);
+        static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh2(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles);
+        static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh2(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles, bool randomizeConstraints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBodyHelpers_CreatePatch(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreatePatchUV(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags, float[] tex_coords);
+		static extern IntPtr btSoftBodyHelpers_CreatePatchUV(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreatePatchUV2(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags);
+        static extern IntPtr btSoftBodyHelpers_CreatePatchUV2(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags, float[] tex_coords);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBodyHelpers_CreateRope(IntPtr worldInfo, [In] ref Vector3 from, [In] ref Vector3 to, int res, int fixeds);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_Draw(IntPtr psb, IntPtr idraw, int drawflags);
+		static extern void btSoftBodyHelpers_Draw(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_Draw2(IntPtr psb, IntPtr idraw);
+		static extern void btSoftBodyHelpers_Draw2(IntPtr psb, IntPtr idraw, int drawflags);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawClusterTree(IntPtr psb, IntPtr idraw, int mindepth, int maxdepth);
+		static extern void btSoftBodyHelpers_DrawClusterTree(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawClusterTree2(IntPtr psb, IntPtr idraw, int mindepth);
+		static extern void btSoftBodyHelpers_DrawClusterTree2(IntPtr psb, IntPtr idraw, int minDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawClusterTree3(IntPtr psb, IntPtr idraw);
+		static extern void btSoftBodyHelpers_DrawClusterTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxdepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawFaceTree(IntPtr psb, IntPtr idraw, int mindepth, int maxdepth);
+		static extern void btSoftBodyHelpers_DrawFaceTree(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawFaceTree2(IntPtr psb, IntPtr idraw, int mindepth);
+		static extern void btSoftBodyHelpers_DrawFaceTree2(IntPtr psb, IntPtr idraw, int minDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawFaceTree3(IntPtr psb, IntPtr idraw);
+		static extern void btSoftBodyHelpers_DrawFaceTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxdepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawFrame(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawInfos(IntPtr psb, IntPtr idraw, bool masses, bool areas, bool stress);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawNodeTree(IntPtr psb, IntPtr idraw, int mindepth, int maxdepth);
+		static extern void btSoftBodyHelpers_DrawNodeTree(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawNodeTree2(IntPtr psb, IntPtr idraw, int mindepth);
+		static extern void btSoftBodyHelpers_DrawNodeTree2(IntPtr psb, IntPtr idraw, int minDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawNodeTree3(IntPtr psb, IntPtr idraw);
+		static extern void btSoftBodyHelpers_DrawNodeTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxdepth);
 	}
 }

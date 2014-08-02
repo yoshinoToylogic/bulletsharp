@@ -234,11 +234,6 @@ namespace BulletSharp
 
 	public class TriangleShapeEx : TriangleShape
 	{
-		internal TriangleShapeEx(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public TriangleShapeEx()
 			: base(btTriangleShapeEx_new())
 		{

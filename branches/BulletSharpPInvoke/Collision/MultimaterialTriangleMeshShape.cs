@@ -7,11 +7,6 @@ namespace BulletSharp
 {
 	public class MultimaterialTriangleMeshShape : BvhTriangleMeshShape
 	{
-		internal MultimaterialTriangleMeshShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public MultimaterialTriangleMeshShape(StridingMeshInterface meshInterface, bool useQuantizedAabbCompression)
 			: base(btMultimaterialTriangleMeshShape_new(meshInterface._native, useQuantizedAabbCompression))
 		{

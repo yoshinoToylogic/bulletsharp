@@ -8,11 +8,6 @@ namespace BulletSharp
 {
 	public class MultiSphereShape : ConvexInternalAabbCachingShape
 	{
-		internal MultiSphereShape(IntPtr native)
-			: base(native)
-		{
-		}
-
         public MultiSphereShape(Vector3[] positions, float[] radi)
             : base(btMultiSphereShape_new(positions, radi, (radi.Length < positions.Length) ? radi.Length : positions.Length))
         {

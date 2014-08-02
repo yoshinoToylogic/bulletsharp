@@ -46,11 +46,6 @@ namespace BulletSharp
 
 	public class ConeShapeX : ConeShape
 	{
-		internal ConeShapeX(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public ConeShapeX(float radius, float height)
 			: base(btConeShapeX_new(radius, height))
 		{
@@ -62,11 +57,6 @@ namespace BulletSharp
 
 	public class ConeShapeZ : ConeShape
 	{
-		internal ConeShapeZ(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public ConeShapeZ(float radius, float height)
 			: base(btConeShapeZ_new(radius, height))
 		{

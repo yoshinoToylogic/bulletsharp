@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
+using System.Globalization;
 
 namespace BulletSharp
 {
@@ -31,9 +32,23 @@ namespace BulletSharp
         DumpFileInfo = 0x8
     }
 
+    class PointerFixup
+    {
+        public byte[] StructAlloc { get; set; }
+        public long[] Offsets { get; set; }
+
+        public PointerFixup(byte[] structAlloc, long[] offsets)
+        {
+            StructAlloc = structAlloc;
+            Offsets = offsets;
+        }
+    }
+
 	public abstract class bFile
 	{
         const int SizeOfBlenderHeader = 12;
+        const int MaxArrayLength = 512;
+        const int MaxStringLength = 1024;
 
         protected List<ChunkInd> _chunks = new List<ChunkInd>();
         protected long _dataStart;
@@ -84,6 +99,24 @@ namespace BulletSharp
             }
             return null;
 		}
+
+        private void GetElement(BinaryReader reader, int ArrayLen, Dna.TypeDecl type, double[] data)
+        {
+            if (type.Name.Equals("float"))
+            {
+                for (int i = 0; i < ArrayLen; i++)
+                {
+                    data[i] = reader.ReadSingle();
+                }
+            }
+            else
+            {
+                for (int i = 0; i < ArrayLen; i++)
+                {
+                    data[i] = reader.ReadDouble();
+                }
+            }
+        }
 
         protected long GetFileElement(Dna.StructDecl firstStruct, Dna.ElementDecl lookupElement, long data, out Dna.ElementDecl found)
         {
@@ -149,8 +182,7 @@ namespace BulletSharp
                                 }
                                 else
                                 {
-                                    //_pointerFixupArray.push_back(strcData);
-                                    //throw new NotImplementedException();
+                                    //_chunkPointerFixupArray.Add(strcData.BaseStream.Position);
                                 }
                             }
                         }
@@ -504,8 +536,6 @@ namespace BulletSharp
                         return structAlloc;
                     }
                 }
-
-                //throw new NotImplementedException();
             }
             else
             {
@@ -524,26 +554,24 @@ namespace BulletSharp
 
             if (true) // && ((_flags & FileFlags.BitsVaries | FileFlags.VersionVaries) != 0))
             {
-                ResolvePointersMismatch();
+                //ResolvePointersMismatch();
             }
 
             if ((verboseMode & FileVerboseMode.ExportXml) != 0)
             {
                 Console.WriteLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
-                //Console.WriteLine("<bullet_physics version={0} itemcount = {1}>", b3GetVersion(), _chunks.Count);
-                throw new NotImplementedException();
+                Console.WriteLine("<bullet_physics version=\"{0}\" itemcount=\"{1}\">", Version, _chunks.Count);
             }
 
             foreach (ChunkInd dataChunk in _chunks)
             {
                 if (_fileDna == null || fileDna.FlagEqual(dataChunk.DnaNR))
                 {
-
                     Dna.StructDecl oldStruct = fileDna.GetStruct(dataChunk.DnaNR);
 
                     if ((verboseMode & FileVerboseMode.ExportXml) != 0)
                     {
-                        Console.WriteLine(" <{0} pointer={1}>", oldStruct.Type.Name, dataChunk.OldPtr);
+                        Console.WriteLine(" <{0} pointer=\"{1}\">", oldStruct.Type.Name, dataChunk.OldPtr);
                     }
 
                     ResolvePointersChunk(dataChunk, verboseMode);
@@ -579,16 +607,12 @@ namespace BulletSharp
                 {
                     for (int block = 0; block < dataChunk.NR; block++)
                     {
+                        long streamPosition = stream.Position;
                         ResolvePointersStructRecursive(reader, dataChunk.DnaNR, verboseMode, 1);
-                        reader.BaseStream.Position += oldLen;
+                        stream.Position = streamPosition + oldLen;
                     }
                 }
             }
-        }
-
-        protected void ResolvePointersMismatch()
-        {
-            //throw new NotImplementedException();
         }
 
         protected int ResolvePointersStructRecursive(BinaryReader reader, int dnaNr, FileVerboseMode verboseMode, int recursion)
@@ -605,11 +629,11 @@ namespace BulletSharp
                 {
                     if (arrayLen > 1)
                     {
-                        //throw new NotImplementedException();
+                        throw new NotImplementedException();
                     }
                     else
                     {
-                        //throw new NotImplementedException();
+                        throw new NotImplementedException();
                         if ((verboseMode & FileVerboseMode.ExportXml) != 0)
                         {
                             throw new NotImplementedException();
@@ -622,7 +646,7 @@ namespace BulletSharp
                     {
                         for (int i = 0; i < arrayLen; i++)
                         {
-                            //throw new NotImplementedException();
+                            throw new NotImplementedException();
                             //byteOffset += ResolvePointersStructRecursive(elemPtr + byteOffset, revType, verboseMode, recursion + 1);
                         }
                     }
@@ -631,7 +655,75 @@ namespace BulletSharp
                         // export a simple type
                         if ((verboseMode & FileVerboseMode.ExportXml) != 0)
                         {
-                            throw new NotImplementedException();
+                            if (arrayLen > MaxArrayLength)
+                            {
+                                Console.WriteLine("too long");
+                            }
+                            else
+                            {
+                                bool isIntegerType;
+                                switch (element.Type.Name)
+                                {
+                                    case "char":
+                                    case "short":
+                                    case "int":
+                                        isIntegerType = true;
+                                        break;
+                                    default:
+                                        isIntegerType = false;
+                                        break;
+                                }
+
+                                if (isIntegerType)
+                                {
+                                    throw new NotImplementedException();
+                                    /*
+                                    const char* newtype="int";
+							        int dbarray[MAX_ARRAY_LENGTH];
+							        int* dbPtr = 0;
+							        char* tmp = elemPtr;
+							        dbPtr = &dbarray[0];
+							        if (dbPtr)
+							        {
+								        char cleanName[MAX_STRLEN];
+								        getCleanName(memName,cleanName);
+
+								        int i;
+								        getElement(arrayLen, newtype,memType, tmp, (char*)dbPtr);
+								        for (i=0;i<recursion;i++)
+									        printf("  ");
+								        if (arrayLen==1)
+									        printf("<%s type=\"%s\">",cleanName,memType);
+								        else
+									        printf("<%s type=\"%s\" count=%d>",cleanName,memType,arrayLen);
+								        for (i=0;i<arrayLen;i++)
+									        printf(" %d ",dbPtr[i]);
+								        printf("</%s>\n",cleanName);
+							        }*/
+                                }
+                                else
+                                {
+							        double[] dbArray = new double[arrayLen];
+                                    GetElement(reader, arrayLen, element.Type, dbArray);
+                                    for (int i = 0; i < recursion; i++)
+                                    {
+                                        Console.Write("  ");
+                                    }
+                                    if (arrayLen == 1)
+                                    {
+                                        Console.Write("<{0} type=\"{1}\">", element.Name.Name, element.Type.Name);
+                                    }
+                                    else
+                                    {
+                                        Console.Write("<{0} type=\"{1}\" count=\"{2}\">", element.Name.CleanName, element.Type.Name, arrayLen);
+                                    }
+                                    for (int i = 0; i < arrayLen; i++)
+                                    {
+                                        Console.Write(" {0} ", dbArray[i].ToString(CultureInfo.InvariantCulture));
+                                    }
+                                    Console.WriteLine("</{0}>", element.Name.CleanName);
+                                }
+                            }
                         }
                     }
                 }

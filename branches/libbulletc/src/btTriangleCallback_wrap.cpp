@@ -1,10 +1,31 @@
 #include "conversion.h"
 #include "btTriangleCallback_wrap.h"
 
-void btTriangleCallback_processTriangle(btTriangleCallback* obj, btScalar* triangle, int partId, int triangleIndex)
+btTriangleCallbackWrapper::btTriangleCallbackWrapper(pProcessTriangle processTriangleCallback)
 {
-	VECTOR3_CONV(triangle);
-	obj->processTriangle(&VECTOR3_USE(triangle), partId, triangleIndex);
+	_processTriangleCallback = processTriangleCallback;
+}
+
+void btTriangleCallbackWrapper::processTriangle(btVector3* triangle, int partId, int triangleIndex)
+{
+	_processTriangleCallback(triangle, partId, triangleIndex);
+}
+
+
+btInternalTriangleIndexCallbackWrapper::btInternalTriangleIndexCallbackWrapper(pInternalProcessTriangleIndex internalProcessTriangleIndexCallback)
+{
+	_internalProcessTriangleIndexCallback = internalProcessTriangleIndexCallback;
+}
+
+void btInternalTriangleIndexCallbackWrapper::internalProcessTriangleIndex(btVector3* triangle, int partId, int triangleIndex)
+{
+	_internalProcessTriangleIndexCallback(triangle, partId, triangleIndex);
+}
+
+
+btTriangleCallbackWrapper* btTriangleCallbackWrapper_new(pProcessTriangle processTriangleCallback)
+{
+	return new btTriangleCallbackWrapper(processTriangleCallback);
 }
 
 void btTriangleCallback_delete(btTriangleCallback* obj)
@@ -13,10 +34,9 @@ void btTriangleCallback_delete(btTriangleCallback* obj)
 }
 
 
-void btInternalTriangleIndexCallback_internalProcessTriangleIndex(btInternalTriangleIndexCallback* obj, btScalar* triangle, int partId, int triangleIndex)
+btInternalTriangleIndexCallbackWrapper* btInternalTriangleIndexCallbackWrapper_new(pInternalProcessTriangleIndex internalProcessTriangleIndexCallback)
 {
-	VECTOR3_CONV(triangle);
-	obj->internalProcessTriangleIndex(&VECTOR3_USE(triangle), partId, triangleIndex);
+	return new btInternalTriangleIndexCallbackWrapper(internalProcessTriangleIndexCallback);
 }
 
 void btInternalTriangleIndexCallback_delete(btInternalTriangleIndexCallback* obj)

@@ -34,13 +34,13 @@ namespace BulletSharp
 
         public void AddMultiBody(MultiBody body, CollisionFilterGroups group)
 		{
-			btMultiBodyDynamicsWorld_addMultiBody2(_native, body._native, group);
+            btMultiBodyDynamicsWorld_addMultiBody2(_native, body._native, (short)group);
             _bodies.Add(body);
 		}
 
         public void AddMultiBody(MultiBody body, CollisionFilterGroups group, CollisionFilterGroups mask)
 		{
-			btMultiBodyDynamicsWorld_addMultiBody3(_native, body._native, group, mask);
+            btMultiBodyDynamicsWorld_addMultiBody3(_native, body._native, (short)group, (short)mask);
             _bodies.Add(body);
 		}
 
@@ -67,9 +67,9 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyDynamicsWorld_addMultiBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodyDynamicsWorld_addMultiBody2(IntPtr obj, IntPtr body, CollisionFilterGroups group);
+        static extern void btMultiBodyDynamicsWorld_addMultiBody2(IntPtr obj, IntPtr body, short group);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btMultiBodyDynamicsWorld_addMultiBody3(IntPtr obj, IntPtr body, CollisionFilterGroups group, CollisionFilterGroups mask);
+        static extern void btMultiBodyDynamicsWorld_addMultiBody3(IntPtr obj, IntPtr body, short group, short mask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyDynamicsWorld_addMultiBodyConstraint(IntPtr obj, IntPtr constraint);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

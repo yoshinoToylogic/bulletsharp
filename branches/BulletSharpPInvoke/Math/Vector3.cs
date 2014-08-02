@@ -666,6 +666,18 @@ namespace BulletSharp.Math
         }
 
         /// <summary>
+        /// Calculates the cross product of two vectors.
+        /// </summary>
+        /// <param name="v">Second source vector.</param>
+        /// <returns>The cross product of the two vectors.</returns>
+        public Vector3 Cross(Vector3 v)
+        {
+            Vector3 result;
+            Cross(ref this, ref v, out result);
+            return result;
+        }
+
+        /// <summary>
         /// Calculates the tripple cross product of three vectors.
         /// </summary>
         /// <param name="value1">First source vector.</param>
@@ -793,6 +805,26 @@ namespace BulletSharp.Math
         public static float Dot(Vector3 left, Vector3 right)
         {
             return (left.X * right.X) + (left.Y * right.Y) + (left.Z * right.Z);
+        }
+
+        /// <summary>
+        /// Calculates the dot product of two vectors.
+        /// </summary>
+        /// <param name="v">Second source vector.</param>
+        /// <returns>The dot product of the two vectors.</returns>
+        public float Dot(ref Vector3 v)
+        {
+            return (X * v.X) + (Y * v.Y) + (Z * v.Z);
+        }
+
+        /// <summary>
+        /// Calculates the dot product of two vectors.
+        /// </summary>
+        /// <param name="v">Second source vector.</param>
+        /// <returns>The dot product of the two vectors.</returns>
+        public float Dot(Vector3 v)
+        {
+            return (X * v.X) + (Y * v.Y) + (Z * v.Z);
         }
 
         /// <summary>

@@ -7,11 +7,6 @@ namespace BulletSharp
 {
 	public class StaticPlaneShape : ConcaveShape
 	{
-		internal StaticPlaneShape(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public StaticPlaneShape(Vector3 planeNormal, float planeConstant)
 			: base(btStaticPlaneShape_new(ref planeNormal, planeConstant))
 		{

@@ -1,53 +1,21 @@
 using System;
-using System.Runtime.InteropServices;
-using System.Security;
+using System.Xml;
 
 namespace BulletSharp
 {
-	public class BulletXmlWorldImporter
+	public class BulletXmlWorldImporter : WorldImporter
 	{
-		internal IntPtr _native;
-
-		internal BulletXmlWorldImporter(IntPtr native)
-		{
-			_native = native;
-		}
-
 		public BulletXmlWorldImporter(DynamicsWorld world)
+            : base(world)
 		{
-			_native = btBulletXmlWorldImporter_new(world._native);
 		}
 
 		public bool LoadFile(string fileName)
 		{
-			return btBulletXmlWorldImporter_loadFile(_native, fileName);
+            XmlDocument doc = new XmlDocument();
+            doc.Load(fileName);
+            throw new NotImplementedException();
+            return false;
 		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-                btWorldImporter_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~BulletXmlWorldImporter()
-		{
-			Dispose(false);
-		}
-
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBulletXmlWorldImporter_new(IntPtr world);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBulletXmlWorldImporter_loadFile(IntPtr obj, string fileName);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btWorldImporter_delete(IntPtr obj);
 	}
 }

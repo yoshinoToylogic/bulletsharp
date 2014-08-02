@@ -36,7 +36,6 @@ namespace BasicDemo
             Dispatcher = new CollisionDispatcher(CollisionConf);
 
             Broadphase = new DbvtBroadphase();
-            Broadphase = new AxisSweep3(new Vector3(-1000, -1000, -1000), new Vector3(1000, 1000, 1000));
 
             World = new DiscreteDynamicsWorld(Dispatcher, Broadphase, null, CollisionConf);
             World.Gravity = new Vector3(0, -10, 0);
@@ -90,30 +89,6 @@ namespace BasicDemo
                 }
             }
             rbInfo.Dispose();
-        }
-
-        public override void OnUpdate()
-        {
-            base.OnUpdate();
-
-            using (CollisionAlgorithmConstructionInfo ci = new CollisionAlgorithmConstructionInfo(null, 0))
-            {
-                ci.ToString();
-            }
-
-            var rc = new RayCallback();
-            //Broadphase.RayTest(new Vector3(100, 100, 100), new Vector3(110, 110, 110), rc);
-            //Broadphase.RayTest(new Vector3(0, 0, 0), new Vector3(1, 1, 1), rc);
-            Broadphase.AabbTest(new Vector3(0, 0, 0), new Vector3(1, 1, 1), rc);
-        }
-    }
-
-    public class RayCallback : BroadphaseAabbCallback
-    {
-        public override bool Process(BroadphaseProxy proxy)
-        {
-            return true;
-            //throw new NotImplementedException();
         }
     }
 

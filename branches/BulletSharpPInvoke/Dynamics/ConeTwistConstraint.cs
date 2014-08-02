@@ -12,13 +12,23 @@ namespace BulletSharp
 		{
 		}
 
+        public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, ref Matrix rbAFrame, ref Matrix rbBFrame)
+            : base(btConeTwistConstraint_new(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
+        {
+        }
+
 		public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
-			: base(btConeTwistConstraint_new(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
+			: this(rbA, rbB, ref rbAFrame, ref rbBFrame)
 		{
 		}
 
+        public ConeTwistConstraint(RigidBody rbA, ref Matrix rbAFrame)
+            : base(btConeTwistConstraint_new2(rbA._native, ref rbAFrame))
+        {
+        }
+
 		public ConeTwistConstraint(RigidBody rbA, Matrix rbAFrame)
-			: base(btConeTwistConstraint_new2(rbA._native, ref rbAFrame))
+			: this(rbA, ref rbAFrame)
 		{
 		}
 
