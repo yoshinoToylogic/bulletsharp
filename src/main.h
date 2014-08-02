@@ -73,7 +73,6 @@
 #define btAlignedBroadphasePairArray void
 #define btAlignedCollisionObjectArray void
 #define btAlignedConstCollisionObjectArray void
-#define btAlignedCollisionShapeArray void
 #define btAlignedMatrix3x3Array void
 #define btAlignedVector3Array void
 #define btCollisionObjectArray void
@@ -82,7 +81,6 @@
 #else
 #define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair>
 #define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
-#define btAlignedCollisionShapeArray btAlignedObjectArray<btCollisionShape*>
 #define btAlignedConstCollisionObjectArray btAlignedObjectArray<const btCollisionObject*>
 #define btAlignedMatrix3x3Array btAlignedObjectArray<btMatrix3x3>
 #define btAlignedVector3Array btAlignedObjectArray<btVector3>

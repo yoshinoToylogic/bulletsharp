@@ -963,6 +963,27 @@ void btSoftBody_Config_delete(btSoftBody::Config* obj)
 }
 
 
+btSoftBody::Element* btSoftBody_Element_new()
+{
+	return new btSoftBody::Element();
+}
+
+void* btSoftBody_Element_getTag(btSoftBody::Element* obj)
+{
+	return obj->m_tag;
+}
+
+void btSoftBody_Element_setTag(btSoftBody::Element* obj, void* value)
+{
+	obj->m_tag = value;
+}
+
+void btSoftBody_Element_delete(btSoftBody::Element* obj)
+{
+	delete obj;
+}
+
+
 btSoftBody::Face* btSoftBody_Face_new()
 {
 	return new btSoftBody::Face();
@@ -2828,11 +2849,11 @@ void btSoftBody_randomizeConstraints(btSoftBody* obj)
 	obj->randomizeConstraints();
 }
 
-int btSoftBody_rayTest(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btScalar* mint, btSoftBody::eFeature::_* feature, int* index, bool bcountonly)
+int btSoftBody_rayTest(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btScalar* mint, btSoftBody::eFeature::_ feature, int* index, bool bcountonly)
 {
 	VECTOR3_CONV(rayFrom);
 	VECTOR3_CONV(rayTo);
-	return obj->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *mint, *feature, *index, bcountonly);
+	return obj->rayTest(VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo), *mint, feature, *index, bcountonly);
 }
 
 bool btSoftBody_rayTest2(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btSoftBody::sRayCast* results)
