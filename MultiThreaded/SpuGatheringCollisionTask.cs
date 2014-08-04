@@ -103,6 +103,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern ushort SpuGatherAndProcessPairsTaskDesc_getTaskId(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool SpuGatherAndProcessPairsTaskDesc_getUseEpa(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void SpuGatherAndProcessPairsTaskDesc_setDispatcher(IntPtr obj, uint value);

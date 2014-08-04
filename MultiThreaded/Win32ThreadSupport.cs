@@ -183,6 +183,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr Win32ThreadSupport_new(IntPtr threadConstructionInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool Win32ThreadSupport_isTaskCompleted(IntPtr obj, IntPtr puiArgument0, IntPtr puiArgument1, int timeOutInMilliseconds);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void Win32ThreadSupport_startThreads(IntPtr obj, IntPtr threadInfo);

@@ -1902,10 +1902,11 @@ namespace BulletSharp.Math
             return new Vector3(value.X, value.Y, value.Z);
         }
 #endif
+    }
 
-        internal static Vector3 FromIntPtr(IntPtr intPtr)
-        {
-            throw new NotImplementedException();
-        }
+    [StructLayout(LayoutKind.Sequential)]
+    internal unsafe struct Vector3FloatData
+    {
+        public fixed float floats[4];
     }
 }

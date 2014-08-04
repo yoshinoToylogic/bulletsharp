@@ -34,4 +34,16 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btStaticPlaneShape_getPlaneNormal(IntPtr obj, [Out] out Vector3 value);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct StaticPlaneShapeFloatData
+    {
+        public CollisionShapeFloatData CollisionShapeData;
+        public Vector3FloatData LocalScaling;
+        public Vector3FloatData PlaneNormal;
+        public float PlaneConstant;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(StaticPlaneShapeFloatData), fieldName).ToInt32(); }
+    }
 }

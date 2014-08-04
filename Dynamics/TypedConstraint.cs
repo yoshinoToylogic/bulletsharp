@@ -627,8 +627,10 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTypedConstraint_internalSetAppliedImpulse(IntPtr obj, float appliedImpulse);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btTypedConstraint_isEnabled(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btTypedConstraint_needsFeedback(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btTypedConstraint_serialize(IntPtr obj, IntPtr dataBuffer, IntPtr serializer);
@@ -797,6 +799,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btAngularLimit_getSoftness(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btAngularLimit_isLimit(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAngularLimit_set(IntPtr obj, float low, float high);
@@ -811,4 +814,24 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btAngularLimit_delete(IntPtr obj);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct TypedConstraintFloatData
+    {
+        public IntPtr RigidBodyA;
+        public IntPtr RigidBodyB;
+        public IntPtr Name;
+        public int ObjectType;
+        public int UserConstraintType;
+        public int UserConstraintId;
+        public int NeedsFeedback;
+        public float AppliedImpulse;
+        public float DebugDrawSize;
+        public int DisableCollisionsBetweenLinkedBodies;
+        public int OverrideNumSolverIterations;
+        public float BreakingImpulseThreshold;
+        public int IsEnabled;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(TypedConstraintFloatData), fieldName).ToInt32(); }
+    }
 }

@@ -155,4 +155,16 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btConvexHullShape_project(IntPtr obj, [In] ref Matrix trans, [In] ref Vector3 dir, [Out] out float minProj, [Out] out float maxProj, [Out] out Vector3 witnesPtMin, [Out] out Vector3 witnesPtMax);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct ConvexHullShapeFloatData
+    {
+        public ConvexInternalShapeFloatData ConvexInternalShapeData;
+        public IntPtr UnscaledPointsFloatPtr;
+        public IntPtr UnscaledPointsDoublePtr;
+        public int NumUnscaledPoints;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(ConvexHullShapeFloatData), fieldName).ToInt32(); }
+    }
 }

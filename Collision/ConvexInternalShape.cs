@@ -101,4 +101,16 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConvexInternalAabbCachingShape_recalcLocalAabb(IntPtr obj);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct ConvexInternalShapeFloatData
+    {
+        public CollisionShapeFloatData CollisionShapeData;
+        public Vector3FloatData LocalScaling;
+        public Vector3FloatData ImplicitShapeDimensions;
+        public float CollisionMargin;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(ConvexInternalShapeFloatData), fieldName).ToInt32(); }
+    }
 }

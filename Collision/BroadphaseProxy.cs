@@ -115,42 +115,42 @@ namespace BulletSharp
         {
         }
 
-		public static bool IsCompound(int proxyType)
+        public static bool IsCompound(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isCompound(proxyType);
 		}
 
-		public static bool IsConcave(int proxyType)
+        public static bool IsConcave(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isConcave(proxyType);
 		}
 
-		public static bool IsConvex(int proxyType)
+        public static bool IsConvex(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isConvex(proxyType);
 		}
 
-		public static bool IsConvex2D(int proxyType)
+        public static bool IsConvex2D(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isConvex2d(proxyType);
 		}
 
-		public static bool IsInfinite(int proxyType)
+        public static bool IsInfinite(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isInfinite(proxyType);
 		}
 
-		public static bool IsNonMoving(int proxyType)
+        public static bool IsNonMoving(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isNonMoving(proxyType);
 		}
 
-		public static bool IsPolyhedral(int proxyType)
+        public static bool IsPolyhedral(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isPolyhedral(proxyType);
 		}
 
-		public static bool IsSoftBody(int proxyType)
+        public static bool IsSoftBody(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isSoftBody(proxyType);
 		}
@@ -268,21 +268,29 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btBroadphaseProxy_getUniqueId(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isCompound(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isCompound(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isConcave(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isConcave(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isConvex(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isConvex(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isConvex2d(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isConvex2d(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isInfinite(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isInfinite(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isNonMoving(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isNonMoving(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isPolyhedral(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isPolyhedral(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btBroadphaseProxy_isSoftBody(int proxyType);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btBroadphaseProxy_isSoftBody(BroadphaseNativeType proxyType);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseProxy_setAabbMax(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

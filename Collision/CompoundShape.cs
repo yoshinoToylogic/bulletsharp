@@ -212,4 +212,26 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCompoundShape_updateChildTransform2(IntPtr obj, int childIndex, [In] ref Matrix newChildTransform, bool shouldRecalculateLocalAabb);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct CompoundShapeFloatData
+    {
+        public CollisionShapeFloatData CollisionShapeData;
+        public IntPtr ChildShapePtr;
+        public int NumChildShapes;
+        public float CollisionMargin;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(CompoundShapeFloatData), fieldName).ToInt32(); }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct CompoundShapeChildFloatData
+    {
+        public TransformFloatData Transform;
+        public IntPtr ChildShape;
+        public int ChildShapeType;
+        public float ChildMargin;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(CompoundShapeChildFloatData), fieldName).ToInt32(); }
+    }
 }

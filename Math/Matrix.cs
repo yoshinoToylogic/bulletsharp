@@ -3009,4 +3009,21 @@ namespace BulletSharp.Math
         }
 #endif
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct Matrix3x3FloatData
+    {
+        public Vector3FloatData Element0;
+        public Vector3FloatData Element1;
+        public Vector3FloatData Element2;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct TransformFloatData
+    {
+        public Matrix3x3FloatData Basis;
+        public Vector3FloatData Origin;
+
+        public const int OriginOffset = 48;
+    }
 }
