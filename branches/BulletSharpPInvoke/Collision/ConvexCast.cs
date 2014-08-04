@@ -191,6 +191,7 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btConvexCast_calcTimeOfImpact(IntPtr obj, [In] ref Matrix fromA, [In] ref Matrix toA, [In] ref Matrix fromB, [In] ref Matrix toB, IntPtr result);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConvexCast_delete(IntPtr obj);

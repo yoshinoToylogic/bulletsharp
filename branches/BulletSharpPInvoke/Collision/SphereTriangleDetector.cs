@@ -26,6 +26,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr SphereTriangleDetector_new(IntPtr sphere, IntPtr triangle, float contactBreakingThreshold);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool SphereTriangleDetector_collide(IntPtr obj, [In] ref Vector3 sphereCenter, [Out] out Vector3 point, [Out] out Vector3 resultNormal, IntPtr depth, IntPtr timeOfImpact, float contactBreakingThreshold);
 	}
     */

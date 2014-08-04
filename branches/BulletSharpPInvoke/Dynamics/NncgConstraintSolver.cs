@@ -25,6 +25,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btNNCGConstraintSolver_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btNNCGConstraintSolver_getOnlyForNoneContact(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btNNCGConstraintSolver_setOnlyForNoneContact(IntPtr obj, bool value);

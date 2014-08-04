@@ -189,22 +189,29 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr HACD_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_Compute(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_Compute2(IntPtr obj, bool fullCH);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_Compute3(IntPtr obj, bool fullCH, bool exportDistPoints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void HACD_DenormalizeData(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_GetAddExtraDistPoints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_GetAddFacesPoints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_GetAddNeighboursDistPoints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr HACD_GetCallBack(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_GetCH(IntPtr obj, int numCH, IntPtr points, IntPtr triangles);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern double HACD_GetCompacityWeight(IntPtr obj);
@@ -237,8 +244,10 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void HACD_NormalizeData(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_Save(IntPtr obj, IntPtr fileName, bool uniColor);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool HACD_Save2(IntPtr obj, IntPtr fileName, bool uniColor, long numCluster);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void HACD_SetAddExtraDistPoints(IntPtr obj, bool addExtraDistPoints);

@@ -43,6 +43,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr SpuGatheringCollisionDispatcher_getSpuCollisionTaskProcess(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool SpuGatheringCollisionDispatcher_supportsDispatchPairOnSpu(IntPtr obj, int proxyType0, int proxyType1);
 	}
 }

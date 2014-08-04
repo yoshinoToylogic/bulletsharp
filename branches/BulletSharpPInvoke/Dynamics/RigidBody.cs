@@ -465,6 +465,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_applyTorqueImpulse(IntPtr obj, [In] ref Vector3 torque);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btRigidBody_checkCollideWithOverride(IntPtr obj, IntPtr co);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_clearForces(IntPtr obj);
@@ -529,6 +530,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_integrateVelocities(IntPtr obj, float step);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btRigidBody_isInWorld(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_predictIntegratedTransform(IntPtr obj, float step, [Out] out Matrix predictedTransform);
@@ -579,6 +581,36 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_updateInertiaTensor(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btRigidBody_wantsSleeping(IntPtr obj);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct RigidBodyFloatData
+    {
+        public CollisionObjectFloatData CollisionObjectData;
+        public Matrix3x3FloatData InvInertiaTensorWorld;
+        public Vector3FloatData LinearVelocity;
+        public Vector3FloatData AngularVelocity;
+        public Vector3FloatData AngularFactor;
+        public Vector3FloatData LinearFactor;
+        public Vector3FloatData Gravity;
+        public Vector3FloatData GravityAcceleration;
+        public Vector3FloatData InvInertiaLocal;
+        public Vector3FloatData TotalForce;
+        public Vector3FloatData TotalTorque;
+        public float InverseMass;
+        public float LinearDamping;
+        public float AngularDamping;
+        public float AdditionalDampingFactor;
+        public float AdditionalLinearDampingThresholdSqr;
+        public float AdditionalAngularDampingThresholdSqr;
+        public float AdditionalAngularDampingFactor;
+        public float LinearSleepingThreshold;
+        public float AngularSleepingThreshold;
+        public int AdditionalDamping;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(RigidBodyFloatData), fieldName).ToInt32(); }
+    }
 }

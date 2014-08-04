@@ -77,8 +77,10 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSimpleBroadphase_new3(int maxProxies, IntPtr overlappingPairCache);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btSimpleBroadphase_aabbOverlap(IntPtr proxy0, IntPtr proxy1);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btSimpleBroadphase_testAabbOverlap(IntPtr obj, IntPtr proxy0, IntPtr proxy1);
 	}
 }

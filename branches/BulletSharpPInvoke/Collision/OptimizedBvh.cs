@@ -58,6 +58,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOptimizedBvh_refitPartial(IntPtr obj, IntPtr triangles, [In] ref Vector3 aabbMin, [In] ref Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btOptimizedBvh_serializeInPlace(IntPtr obj, IntPtr alignedDataBuffer, uint dataBufferSize, bool swapEndian);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOptimizedBvh_updateBvhNodes(IntPtr obj, IntPtr meshInterface, int firstNode, int endNode, int index);

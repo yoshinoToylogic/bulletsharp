@@ -390,6 +390,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCollisionObject_calculateSerializeBufferSize(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_checkCollideWith(IntPtr obj, IntPtr co);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionObject_forceActivationState(IntPtr obj, ActivationState newState);
@@ -438,24 +439,32 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_getWorldTransform(IntPtr obj, [Out] out Matrix worldTrans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_hasAnisotropicFriction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
         static extern bool btCollisionObject_hasAnisotropicFriction2(IntPtr obj, AnisotropicFrictionFlags frictionMode);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_hasContactResponse(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionObject_internalGetExtensionPointer(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_internalSetExtensionPointer(IntPtr obj, IntPtr pointer);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_isActive(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_isKinematicObject(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_isStaticObject(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_isStaticOrKinematicObject(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionObject_mergesSimulationIslands(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionObject_serialize(IntPtr obj, IntPtr dataBuffer, IntPtr serializer);
@@ -506,4 +515,36 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_delete(IntPtr obj);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct CollisionObjectFloatData
+    {
+        public IntPtr BroadphaseHandle;
+        public IntPtr CollisionShape;
+        public IntPtr RootCollisionShape;
+        public IntPtr Name;
+        public TransformFloatData WorldTransform;
+        public TransformFloatData InterpolationWorldTransform;
+        public Vector3FloatData InterpolationLinearVelocity;
+        public Vector3FloatData InterpolationAngularVelocity;
+        public Vector3FloatData AnisotropicFriction;
+        public float ContactProcessingThreshold;	
+        public float DeactivationTime;
+        public float Friction;
+        public float RollingFriction;
+        public float Restitution;
+        public float HitFraction; 
+        public float CcdSweptSphereRadius;
+        public float CcdMotionThreshold;
+        public int HasAnisotropicFriction;
+        public int CollisionFlags;
+        public int IslandTag1;
+        public int CompanionId;
+        public int ActivationState1;
+        public int InternalType;
+        public int CheckCollideWith;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(CollisionObjectFloatData), fieldName).ToInt32(); }
+    }
 }

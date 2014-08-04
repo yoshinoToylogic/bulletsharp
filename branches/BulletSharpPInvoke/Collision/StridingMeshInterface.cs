@@ -169,7 +169,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btStridingMeshInterface_getScaling(IntPtr obj, [Out] out Vector3 scaling);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern bool btStridingMeshInterface_hasPremadeAabb(IntPtr obj);
+        [return: MarshalAs(UnmanagedType.I1)]
+        static extern bool btStridingMeshInterface_hasPremadeAabb(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btStridingMeshInterface_InternalProcessAllTriangles(IntPtr obj, IntPtr callback, [In] ref Vector3 aabbMin, [In] ref Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

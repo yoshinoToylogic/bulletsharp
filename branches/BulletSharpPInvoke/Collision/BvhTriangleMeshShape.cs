@@ -121,6 +121,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btBvhTriangleMeshShape_getOptimizedBvh(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btBvhTriangleMeshShape_getOwnsBvh(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btBvhTriangleMeshShape_getTriangleInfoMap(IntPtr obj);
@@ -143,6 +144,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBvhTriangleMeshShape_setTriangleInfoMap(IntPtr obj, IntPtr triangleInfoMap);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btBvhTriangleMeshShape_usesQuantizedAabbCompression(IntPtr obj);
 	}
 }

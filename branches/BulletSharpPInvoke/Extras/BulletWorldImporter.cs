@@ -1,7 +1,6 @@
 using System;
-using System.Runtime.InteropServices;
-using System.Security;
 using System.Collections.Generic;
+using System.IO;
 
 namespace BulletSharp
 {
@@ -58,8 +57,66 @@ namespace BulletSharp
                 }
             }
 
+            foreach (byte[] constraintData in file._constraints)
+            {
+                MemoryStream stream = new MemoryStream(constraintData, false);
+                using (BulletReader reader = new BulletReader(stream))
+                {
+                    long collisionObjectAPtr = reader.ReadPtr(TypedConstraintFloatData.Offset("RigidBodyA"));
+                    long collisionObjectBPtr = reader.ReadPtr(TypedConstraintFloatData.Offset("RigidBodyB"));
+
+                    RigidBody a = null, b = null;
+
+                    if (collisionObjectAPtr != 0)
+                    {
+                        byte[] coData = file.LibPointers[collisionObjectAPtr];
+                        a = RigidBody.Upcast(_bodyMap[coData]);
+                        if (a == null)
+                        {
+                            a = GetFixedBody();
+                        }
+                    }
+
+                    if (collisionObjectBPtr != 0)
+                    {
+                        byte[] coData = file.LibPointers[collisionObjectBPtr];
+                        b = RigidBody.Upcast(_bodyMap[coData]);
+                        if (b == null)
+                        {
+                            b = GetFixedBody();
+                        }
+                    }
+
+                    if (a == null && b == null)
+                    {
+                        stream.Dispose();
+                        continue;
+                    }
+
+                    if ((file.Flags & FileFlags.DoublePrecision) != 0)
+                    {
+                        throw new NotImplementedException();
+                    }
+                    else
+                    {
+                        ConvertConstraintFloat(a, b, constraintData, file.Version);
+                    }
+                }
+                stream.Dispose();
+            }
+
             return true;
 		}
+
+        private static RigidBody _fixedBody;
+        private RigidBody GetFixedBody()
+        {
+            if (_fixedBody == null)
+            {
+                _fixedBody = new RigidBody(new RigidBodyConstructionInfo(0.0f, null, null));
+            }
+            return _fixedBody;
+        }
 
         public bool LoadFile(string fileName, string preSwapFilenameOut)
 		{

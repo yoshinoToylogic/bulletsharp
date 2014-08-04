@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Security;
-using System.Text;
 using System.Globalization;
+using System.IO;
+using System.Text;
 
 namespace BulletSharp
 {
@@ -389,6 +387,8 @@ namespace BulletSharp
             {
                 //Console.WriteLine("Failed to find DNA1+SDNA pair");
                 _flags &= ~FileFlags.OK;
+                reader.Dispose();
+                memory.Dispose();
                 return;
             }
 
@@ -417,11 +417,13 @@ namespace BulletSharp
             //    _fileDna.DumpTypeDefinitions();
 
             _memoryDna = new Dna();
-            MemoryStream memory2 = new MemoryStream(memDna, false);
-            BinaryReader reader2 = new BinaryReader(memory2);
-            _memoryDna.Init(reader2, !BitConverter.IsLittleEndian);
-            reader2.Dispose();
-            memory2.Dispose();
+            using (MemoryStream memory2 = new MemoryStream(memDna, false))
+            {
+                using (BinaryReader reader2 = new BinaryReader(memory2))
+                {
+                    _memoryDna.Init(reader2, !BitConverter.IsLittleEndian);
+                }
+            }
 
             if (_memoryDna.NumNames != _fileDna.NumNames)
             {
@@ -583,7 +585,7 @@ namespace BulletSharp
                 }
                 else
                 {
-                    Console.WriteLine("skipping struct");
+                    //Console.WriteLine("skipping struct");
                 }
             }
 
@@ -601,7 +603,7 @@ namespace BulletSharp
             int oldLen = oldStruct.Type.Length;
 
             byte[] cur = FindLibPointer(dataChunk.OldPtr);
-            using (MemoryStream stream = new MemoryStream(cur))
+            using (MemoryStream stream = new MemoryStream(cur, false))
             {
                 using (BinaryReader reader = new BinaryReader(stream))
                 {
