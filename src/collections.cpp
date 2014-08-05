@@ -18,6 +18,11 @@ void btVector3_array_at(const btVector3* a, int n, btScalar* value)
 	VECTOR3_OUT(&a[n], value);
 }
 
+void btVector3_array_set(btVector3* obj, int n, const btScalar* value)
+{
+	VECTOR3_IN(value, &obj[n]);
+}
+
 btAlignedVector3Array* btAlignedVector3Array_new()
 {
 	return new btAlignedVector3Array();
@@ -28,13 +33,13 @@ void btAlignedVector3Array_at(btAlignedVector3Array* obj, int n, btScalar* value
 	VECTOR3_OUT(&obj->at(n), value);
 }
 
-void btAlignedVector3Array_push_back(btAlignedVector3Array* obj, btScalar* value)
+void btAlignedVector3Array_push_back(btAlignedVector3Array* obj, const btScalar* value)
 {
 	VECTOR3_DEF(value);
 	obj->push_back(VECTOR3_USE(value));
 }
 
-void btAlignedVector3Array_push_back2(btAlignedVector3Array* obj, btScalar* value) // btVector4
+void btAlignedVector3Array_push_back2(btAlignedVector3Array* obj, const btScalar* value) // btVector4
 {
 	//VECTOR4_DEF(value);
 	//obj->push_back(VECTOR4_USE(value));
@@ -42,7 +47,7 @@ void btAlignedVector3Array_push_back2(btAlignedVector3Array* obj, btScalar* valu
 	obj->push_back(valueTemp);
 }
 
-void btAlignedVector3Array_set(btAlignedVector3Array* obj, int n, btScalar* value)
+void btAlignedVector3Array_set(btAlignedVector3Array* obj, int n, const btScalar* value)
 {
 	VECTOR3_IN(value, &obj->at(n));
 }
