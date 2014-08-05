@@ -209,12 +209,12 @@ namespace BulletSharp
 		{
 			btMultiBody_stepPositions(_native, dt);
 		}
-
-		public void StepVelocities(float dt, AlignedObjectArray scratchR, AlignedObjectArray scratchV, AlignedObjectArray scratchM)
+        /*
+		public void StepVelocities(float dt, AlignedScalarArray scratchR, AlignedVector3Array scratchV, AlignedMatrix3x3Array scratchM)
 		{
 			btMultiBody_stepVelocities(_native, dt, scratchR._native, scratchV._native, scratchM._native);
 		}
-
+        */
 		public void WakeUp()
 		{
 			btMultiBody_wakeUp(_native);

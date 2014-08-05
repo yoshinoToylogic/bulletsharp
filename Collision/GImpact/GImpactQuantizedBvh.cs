@@ -105,16 +105,18 @@ namespace BulletSharp
 		static extern void BT_QUANTIZED_BVH_NODE_delete(IntPtr obj);
 	}
 
-	public class GimGImpactQuantizedBvhNodeArray : AlignedObjectArray
+	public class GimGImpactQuantizedBvhNodeArray
 	{
+        private IntPtr _native;
+
 		internal GimGImpactQuantizedBvhNodeArray(IntPtr native)
-			: base(native)
 		{
+            _native = native;
 		}
 
 		public GimGImpactQuantizedBvhNodeArray()
-			: base(GIM_QUANTIZED_BVH_NODE_ARRAY_new())
 		{
+            _native = GIM_QUANTIZED_BVH_NODE_ARRAY_new();
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -282,17 +284,17 @@ namespace BulletSharp
 		    _primitiveManager = primitiveManager;
 			_native = btGImpactQuantizedBvh_new2(primitiveManager._native);
 		}
-
-		public bool BoxQuery(Aabb box, AlignedObjectArray collidedResults)
+        /*
+		public bool BoxQuery(Aabb box, AlignedIntArray collidedResults)
 		{
 			return btGImpactQuantizedBvh_boxQuery(_native, box._native, collidedResults._native);
 		}
 
-		public bool BoxQueryTrans(Aabb box, Matrix transform, AlignedObjectArray collidedResults)
+        public bool BoxQueryTrans(Aabb box, Matrix transform, AlignedIntArray collidedResults)
 		{
 			return btGImpactQuantizedBvh_boxQueryTrans(_native, box._native, ref transform, collidedResults._native);
 		}
-
+        */
 		public void BuildSet()
 		{
 			btGImpactQuantizedBvh_buildSet(_native);
@@ -347,12 +349,12 @@ namespace BulletSharp
 		{
 			return btGImpactQuantizedBvh_isLeafNode(_native, nodeindex);
 		}
-
-		public bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedObjectArray collidedResults)
+        /*
+        public bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray collidedResults)
 		{
 			return btGImpactQuantizedBvh_rayQuery(_native, ref rayDir, ref rayOrigin, collidedResults._native);
 		}
-
+        */
 		public void SetNodeBound(int nodeindex, Aabb bound)
 		{
 			btGImpactQuantizedBvh_setNodeBound(_native, nodeindex, bound._native);

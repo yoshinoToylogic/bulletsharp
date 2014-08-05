@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
 using BulletSharp.Math;
@@ -258,12 +259,12 @@ namespace BulletSharp.SoftBody
 
             private void PrepareUnmanaged(IntPtr aJoint)
             {
-                Prepare(new AJoint(aJoint, true));
+                Prepare(new AJoint(aJoint));
             }
 
             public float SpeedUnmanaged(IntPtr aJoint, float current)
             {
-                return Speed(new AJoint(aJoint, true), current);
+                return Speed(new AJoint(aJoint), current);
             }
 
             public virtual void Prepare(AJoint aJoint)
@@ -285,7 +286,10 @@ namespace BulletSharp.SoftBody
 			{
 				if (_native != IntPtr.Zero)
 				{
-					btSoftBody_AJoint_IControl_delete(_native);
+				    if (!_preventDelete)
+				    {
+                        btSoftBody_AJoint_IControl_delete(_native);
+				    }
 					_native = IntPtr.Zero;
 				}
 			}
@@ -332,7 +336,7 @@ namespace BulletSharp.SoftBody
 				set { btSoftBody_AJoint_Specs_setAxis(_native, ref value); }
 			}
 
-			public IControl Icontrol
+			public IControl IControl
 			{
                 get
                 {
@@ -363,13 +367,8 @@ namespace BulletSharp.SoftBody
 
         private IControl _iControl;
 
-        internal AJoint(IntPtr native, bool preventDelete)
-            : base(native, preventDelete)
-		{
-		}
-
-		public AJoint()
-			: base(btSoftBody_AJoint_new(), false)
+        internal AJoint(IntPtr native)
+            : base(native)
 		{
 		}
 
@@ -400,8 +399,6 @@ namespace BulletSharp.SoftBody
             }
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBody_AJoint_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_AJoint_getAxis(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -538,11 +535,6 @@ namespace BulletSharp.SoftBody
 	public class Body : IDisposable
 	{
 		internal IntPtr _native;
-
-		internal Body(IntPtr native)
-		{
-			_native = native;
-		}
 
 		public Body()
 		{
@@ -742,13 +734,10 @@ namespace BulletSharp.SoftBody
 
 	public class CJoint : Joint
 	{
-        internal CJoint(IntPtr native, bool preventDelete)
-            : base(native, preventDelete)
-		{
-		}
+        private Vector3Array _rPos;
 
-		public CJoint()
-			: base(btSoftBody_CJoint_new(), false)
+        internal CJoint(IntPtr native)
+            : base(native)
 		{
 		}
 
@@ -781,18 +770,18 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_CJoint_setNormal(_native, ref value); }
 		}
 
-		public Vector3 Rpos
+		public Vector3Array Rpos
 		{
 			get
 			{
-				Vector3 value;
-				btSoftBody_CJoint_getRpos(_native, out value);
-				return value;
+                if (_rPos == null)
+                {
+                    _rPos = new Vector3Array(btSoftBody_CJoint_getRpos(_native), 2);
+                }
+                return _rPos;
 			}
 		}
 
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBody_CJoint_new();
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btSoftBody_CJoint_getFriction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -802,7 +791,7 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_CJoint_getNormal(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_CJoint_getRpos(IntPtr obj, [Out] out Vector3 value);
+		static extern IntPtr btSoftBody_CJoint_getRpos(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_CJoint_setFriction(IntPtr obj, float value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -1729,7 +1718,7 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_Impulse_delete(IntPtr obj);
 	}
 
-	public class Joint : IDisposable
+	public class Joint
 	{
         public enum JointType
         {
@@ -1809,12 +1798,12 @@ namespace BulletSharp.SoftBody
 		}
 
 		internal IntPtr _native;
-        private bool _preventDelete;
 
-		internal Joint(IntPtr native, bool preventDelete)
+	    private Vector3Array _refs;
+
+		internal Joint(IntPtr native)
 		{
 			_native = native;
-            _preventDelete = preventDelete;
 		}
 
 		public void Prepare(float dt, int iterations)
@@ -1882,13 +1871,15 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_Joint_setMassmatrix(_native, ref value); }
 		}
 
-		public Vector3 Refs
+		public Vector3Array Refs
 		{
 			get
 			{
-				Vector3 value;
-				btSoftBody_Joint_getRefs(_native, out value);
-				return value;
+			    if (_refs == null)
+			    {
+                    _refs = new Vector3Array(btSoftBody_Joint_getRefs(_native), 2);
+			    }
+                return _refs;
 			}
 		}
 
@@ -1909,26 +1900,6 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_Joint_setSplit(_native, value); }
 		}
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-				btSoftBody_Joint_delete(_native);
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~Joint()
-		{
-			Dispose(false);
-		}
-
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBody_Joint_getBodies(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -1943,7 +1914,7 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_Joint_getMassmatrix(IntPtr obj, [Out] out Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_Joint_getRefs(IntPtr obj, [Out] out Vector3 value);
+		static extern IntPtr btSoftBody_Joint_getRefs(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_Joint_getSdrift(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -1970,8 +1941,6 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_Joint_Terminate(IntPtr obj, float dt);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern JointType btSoftBody_Joint_Type(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_Joint_delete(IntPtr obj);
 	}
 
 	public class Link : Feature
@@ -2104,30 +2073,27 @@ namespace BulletSharp.SoftBody
 			static extern void btSoftBody_LJoint_Specs_setPosition(IntPtr obj, [In] ref Vector3 value);
 		}
 
-        internal LJoint(IntPtr native, bool preventDelete)
-            : base(native, preventDelete)
+	    private Vector3Array _rPos;
+
+        internal LJoint(IntPtr native)
+            : base(native)
 		{
 		}
 
-		public LJoint()
-			: base(btSoftBody_LJoint_new(), false)
-		{
-		}
-
-		public Vector3 RPos
+		public Vector3Array RPos
 		{
 			get
 			{
-				Vector3 value;
-				btSoftBody_LJoint_getRpos(_native, out value);
-				return value;
+                if (_rPos == null)
+                {
+                    _rPos = new Vector3Array(btSoftBody_LJoint_getRpos(_native), 2);
+                }
+                return _rPos;
 			}
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBody_LJoint_new();
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_LJoint_getRpos(IntPtr obj, [Out] out Vector3 value);
+		static extern IntPtr btSoftBody_LJoint_getRpos(IntPtr obj);
 	}
 
 	public class Material : Element
@@ -2446,7 +2412,6 @@ namespace BulletSharp.SoftBody
                 }
                 return _pos;
             }
-			set { btSoftBody_Pose_setPos(_native, value._native); }
 		}
 
 		public Matrix Rotation
@@ -2511,8 +2476,6 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_Pose_setBvolume(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_Pose_setCom(IntPtr obj, [In] ref Vector3 value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_Pose_setPos(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_Pose_setRot(IntPtr obj, [In] ref Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -3077,11 +3040,6 @@ namespace BulletSharp.SoftBody
 	{
 		internal IntPtr _native;
 
-		internal SRayCast(IntPtr native)
-		{
-			_native = native;
-		}
-
 		public SRayCast()
 		{
 			_native = btSoftBody_sRayCast_new();
@@ -3244,6 +3202,7 @@ namespace BulletSharp.SoftBody
         private AlignedClusterArray _clusters;
         private AlignedFaceArray _faces;
         //private AlignedJointArray _joints;
+	    private List<Joint> _joints = new List<Joint>();
         private AlignedLinkArray _links;
         private AlignedMaterialArray _materials;
         private AlignedNodeArray _nodes;
@@ -3254,7 +3213,7 @@ namespace BulletSharp.SoftBody
 			: base(native)
 		{
             //_collisionShape = new SoftBodyCollisionShape(CollisionShape);
-            _collisionShape = new CollisionShape(btCollisionObject_getCollisionShape(native));
+            _collisionShape = new CollisionShape(btCollisionObject_getCollisionShape(native), true);
 		}
 
 		public SoftBody(SoftBodyWorldInfo worldInfo, int nodeCount, Vector3[] x, float[] m)
@@ -3747,9 +3706,14 @@ namespace BulletSharp.SoftBody
 			btSoftBody_randomizeConstraints(_native);
 		}
 
+        public bool RayTest(ref Vector3 rayFrom, ref Vector3 rayTo, SRayCast results)
+        {
+            return btSoftBody_rayTest(_native, rayFrom, rayTo, results._native);
+        }
+
 		public bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast results)
 		{
-			return btSoftBody_rayTest(_native, ref rayFrom, ref rayTo, results._native);
+			return btSoftBody_rayTest(_native, rayFrom, rayTo, results._native);
 		}
         /*
 		public int RayTest(Vector3 rayFrom, Vector3 rayTo, float mint, EFeature feature, int index, bool bcountonly)
@@ -3827,7 +3791,7 @@ namespace BulletSharp.SoftBody
 			btSoftBody_setVolumeMass(_native, mass);
 		}
 
-		public static void SolveClusters(AlignedObjectArray bodies)
+		public static void SolveClusters(AlignedSoftBodyArray bodies)
 		{
 			btSoftBody_solveClusters(bodies._native);
 		}
@@ -4113,7 +4077,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_clusters == null)
                 {
-                    _clusters = new AlignedClusterArray(btSoftBody_getClusters(_native), true);
+                    _clusters = new AlignedClusterArray(btSoftBody_getClusters(_native));
                 }
                 return _clusters;
             }
@@ -4131,7 +4095,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_faces == null)
                 {
-                    _faces = new AlignedFaceArray(btSoftBody_getFaces(_native), true);
+                    _faces = new AlignedFaceArray(btSoftBody_getFaces(_native));
                 }
                 return _faces;
             }
@@ -4165,7 +4129,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_links == null)
                 {
-                    _links = new AlignedLinkArray(btSoftBody_getLinks(_native), true);
+                    _links = new AlignedLinkArray(btSoftBody_getLinks(_native));
                 }
                 return _links;
             }
@@ -4194,7 +4158,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_nodes == null)
                 {
-                    _nodes = new AlignedNodeArray(btSoftBody_getNodes(_native), true);
+                    _nodes = new AlignedNodeArray(btSoftBody_getNodes(_native));
                 }
                 return _nodes;
             }
@@ -4252,7 +4216,7 @@ namespace BulletSharp.SoftBody
             {
                 if (_tetras == null)
                 {
-                    _tetras = new AlignedTetraArray(btSoftBody_getTetras(_native), true);
+                    _tetras = new AlignedTetraArray(btSoftBody_getTetras(_native));
                 }
                 return _tetras;
             }
@@ -4574,7 +4538,7 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_randomizeConstraints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.I1)]
-		static extern bool btSoftBody_rayTest(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr results);
+		static extern bool btSoftBody_rayTest(IntPtr obj, [In] Vector3 rayFrom, [In] Vector3 rayTo, IntPtr results);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btSoftBody_rayTest2(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr mint, IntPtr feature, IntPtr index, bool bcountonly);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -4595,8 +4559,6 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_setBounds(IntPtr obj, [In] ref Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_setBUpdateRtCst(IntPtr obj, bool value);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_setClusterConnectivity(IntPtr obj, AlignedObjectArray value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_setInitialWorldTransform(IntPtr obj, [In] ref Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -4619,8 +4581,6 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_setTotalMass(IntPtr obj, float mass);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_setTotalMass2(IntPtr obj, float mass, bool fromfaces);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBody_setUserIndexMapping(IntPtr obj, AlignedObjectArray value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBody_setVelocity(IntPtr obj, [In] ref Vector3 velocity);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

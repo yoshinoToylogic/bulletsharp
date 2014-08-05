@@ -188,7 +188,6 @@
     <Compile Include="Extras\WorldImporter.cs" />
     <Compile Include="LinearMath\AlignedBroadphasePairArray.cs" />
     <Compile Include="LinearMath\AlignedCollisionObjectArray.cs" />
-    <Compile Include="LinearMath\AlignedObjectArray.cs" />
     <Compile Include="LinearMath\AlignedVector3Array.cs" />
     <Compile Include="LinearMath\Collections.cs" />
     <Compile Include="LinearMath\AlignedIndexedMeshArray.cs" />

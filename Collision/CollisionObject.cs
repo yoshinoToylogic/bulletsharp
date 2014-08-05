@@ -48,7 +48,8 @@ namespace BulletSharp
 
 	public class CollisionObject : IDisposable
 	{
-		internal IntPtr _native;
+		internal readonly IntPtr _native;
+        private bool _isDisposed;
         protected CollisionShape _collisionShape;
 
         internal static CollisionObject GetManaged(IntPtr obj)
@@ -64,24 +65,14 @@ namespace BulletSharp
                 return GCHandle.FromIntPtr(userPtr).Target as CollisionObject;
             }
 
-            CollisionObjectTypes types = btCollisionObject_getInternalType(obj);
-            if ((types & CollisionObjectTypes.RigidBody) == CollisionObjectTypes.RigidBody)
-            {
-                return new RigidBody(obj);
-            }
-
             throw new NotImplementedException();
-            //return new CollisionObject(obj);
         }
 
         internal CollisionObject(IntPtr obj)
         {
             _native = obj;
-            if (btCollisionObject_getUserPointer(_native) == IntPtr.Zero)
-            {
-                GCHandle handle = GCHandle.Alloc(this);
-                btCollisionObject_setUserPointer(_native, GCHandle.ToIntPtr(handle));
-            }
+            GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
+            btCollisionObject_setUserPointer(_native, GCHandle.ToIntPtr(handle));
         }
 
 		public CollisionObject()
@@ -354,6 +345,21 @@ namespace BulletSharp
 			set { btCollisionObject_setWorldTransform(_native, ref value); }
 		}
 
+        public override bool Equals(object obj)
+        {
+            CollisionObject colObj = obj as CollisionObject;
+            if (colObj == null)
+            {
+                return false;
+            }
+            return _native == colObj._native;
+        }
+
+        public override int GetHashCode()
+        {
+            return _native.ToInt32();
+        }
+
 		public void Dispose()
 		{
 			Dispose(true);
@@ -362,7 +368,7 @@ namespace BulletSharp
 
 		protected virtual void Dispose(bool disposing)
 		{
-			if (_native != IntPtr.Zero)
+            if (!_isDisposed)
 			{
                 // Is the object added to a world?
                 if (btCollisionObject_getBroadphaseHandle(_native) != IntPtr.Zero)
@@ -371,8 +377,12 @@ namespace BulletSharp
                     //System.Diagnostics.Debugger.Break();
                     return;
                 }
+
+                _isDisposed = true;
+
+                IntPtr userPtr = btCollisionObject_getUserPointer(_native);
+                GCHandle.FromIntPtr(userPtr).Free();
                 btCollisionObject_delete(_native);
-                _native = IntPtr.Zero;
 			}
 		}
 

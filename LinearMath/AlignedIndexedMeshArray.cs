@@ -70,37 +70,13 @@ namespace BulletSharp
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedIndexedMeshArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedIndexedMeshArray : AlignedObjectArray, IList<IndexedMesh>, IDisposable
+    public class AlignedIndexedMeshArray : IList<IndexedMesh>
     {
-        readonly bool _preventDelete;
+        private IntPtr _native;
 
-        internal AlignedIndexedMeshArray(IntPtr native, bool preventDelete)
-            : base(native)
+        internal AlignedIndexedMeshArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedIndexedMeshArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedIndexedMeshArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(IndexedMesh item)

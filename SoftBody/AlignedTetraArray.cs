@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedTetraArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedTetraArray : AlignedObjectArray, IList<Tetra>, IDisposable
+    public class AlignedTetraArray : IList<Tetra>
     {
-        bool _preventDelete;
+        private IntPtr _native;
 
-        internal AlignedTetraArray(IntPtr native, bool preventDelete = false)
-            : base(native)
+        internal AlignedTetraArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyTetraArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedTetraArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(Tetra item)

@@ -147,9 +147,9 @@ namespace BulletSharp
             get
             {
                 IntPtr pairArrayPtr = btOverlappingPairCache_getOverlappingPairArray(_native);
-                if (_overlappingPairArray == null || !_overlappingPairArray._native.Equals(pairArrayPtr))
+                if (_overlappingPairArray == null || _overlappingPairArray._native != pairArrayPtr)
                 {
-                    _overlappingPairArray = new AlignedBroadphasePairArray(pairArrayPtr, true);
+                    _overlappingPairArray = new AlignedBroadphasePairArray(pairArrayPtr);
                 }
                 return _overlappingPairArray;
             }

@@ -16,11 +16,6 @@ namespace BulletSharp
 	{
         private MotionState _motionState;
 
-		internal RigidBody(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public RigidBody(RigidBodyConstructionInfo constructionInfo)
 			: base(btRigidBody_new(constructionInfo._native))
 		{

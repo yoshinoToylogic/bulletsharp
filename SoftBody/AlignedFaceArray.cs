@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedFaceArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedFaceArray : AlignedObjectArray, IList<Face>, IDisposable
+    public class AlignedFaceArray : IList<Face>
     {
-        bool _preventDelete;
+        private IntPtr _native;
 
-        internal AlignedFaceArray(IntPtr native, bool preventDelete = false)
-            : base(native)
+        internal AlignedFaceArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyFaceArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedFaceArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(Face item)

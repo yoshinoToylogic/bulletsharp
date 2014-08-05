@@ -70,37 +70,13 @@ namespace BulletSharp
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedBroadphasePairArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedBroadphasePairArray : AlignedObjectArray, IList<BroadphasePair>, IDisposable
+    public class AlignedBroadphasePairArray : IList<BroadphasePair>
     {
-        readonly bool _preventDelete;
+        internal IntPtr _native;
 
-        internal AlignedBroadphasePairArray(IntPtr native, bool preventDelete)
-            : base(native)
+        internal AlignedBroadphasePairArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedBroadphasePairArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedBroadphasePairArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(BroadphasePair item)

@@ -1,10 +1,10 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Drawing;
+using System.Windows.Forms;
+using BulletSharp;
 using BulletSharp.Math;
 using BulletSharp.SoftBody;
 using DemoFramework;
-using System;
-using System.Drawing;
-using System.Windows.Forms;
 using Face = BulletSharp.SoftBody.Face;
 
 namespace SoftDemo
@@ -34,9 +34,9 @@ namespace SoftDemo
         public bool cutting;
         const int maxProxies = 32766;
 
-        //static MotorControl motorControl = new MotorControl();
-        //static SteerControl steerControlF = new SteerControl(1);
-        //static SteerControl steerControlR = new SteerControl(-1);
+        static MotorControl motorControl = new MotorControl();
+        static SteerControl steerControlF = new SteerControl(1);
+        static SteerControl steerControlR = new SteerControl(-1);
 
         SoftRigidDynamicsWorld SoftWorld
         {
@@ -91,8 +91,8 @@ namespace SoftDemo
 
         void InitializeDemo()
         {
-            //motorControl.Goal = 0;
-            //motorControl.MaxTorque = 0;
+            motorControl.Goal = 0;
+            motorControl.MaxTorque = 0;
 
             CollisionShape groundShape = new BoxShape(50, 50, 50);
             CollisionShapes.Add(groundShape);
@@ -517,7 +517,7 @@ namespace SoftDemo
         }
 
         void Init_TetraCube()
-        {/*
+        {
             String path = System.IO.Path.GetDirectoryName(Application.ExecutablePath);
             SoftBody psb = SoftBodyHelpers.CreateFromTetGenFile(softBodyWorldInfo,
                 path + "\\data\\cube.ele", null, path + "\\data\\cube.node", false, true, true);
@@ -536,10 +536,10 @@ namespace SoftDemo
             //psb.CollisionShape.Margin = 0.5f;
 
             psb.CollisionShape.Margin = 0.01f;
-            psb.Cfg.Collisions = Collision.CLSS | Collision.CLRS;
+            psb.Cfg.Collisions = Collisions.CLSS | Collisions.CLRS;
             // | Collision.CLSelf;
             psb.Materials[0].Lst = 0.8f;
-            cutting = false;*/
+            cutting = false;
         }
 
         void Init_Volume()
@@ -850,27 +850,27 @@ namespace SoftDemo
             aj.Axis = new Vector3(0, 0, 1);
             psb.AppendAngularJoint(aj, new Body(prb));
         }
-        /*
+
         class MotorControl : AJoint.IControl
         {
-            float goal = 0;
-            float maxTorque = 0;
+            private float _goal = 0;
+            private float _maxTorque = 0;
 
             public float Goal
             {
-                get { return goal; }
-                set { goal = value; }
+                get { return _goal; }
+                set { _goal = value; }
             }
 
             public float MaxTorque
             {
-                get { return maxTorque; }
-                set { maxTorque = value; }
+                get { return _maxTorque; }
+                set { _maxTorque = value; }
             }
 
             public override float Speed(AJoint joint, float current)
             {
-                return current + Math.Min(maxTorque, Math.Max(-maxTorque, goal - current));
+                return current + Math.Min(_maxTorque, Math.Max(-_maxTorque, _goal - current));
             }
         }
 
@@ -900,7 +900,7 @@ namespace SoftDemo
                 return motorControl.Speed(joint, current);
             }
         }
-        */
+
         void Init_ClusterCombine()
         {
             Vector3 sz = new Vector3(2, 4, 2);
@@ -917,7 +917,7 @@ namespace SoftDemo
             }
             AJoint.Specs aj = new AJoint.Specs();
             aj.Axis = new Vector3(0, 0, 1);
-            //aj.IControl = motorControl;
+            aj.IControl = motorControl;
             psb0.AppendAngularJoint(aj, psb1);
 
             LJoint.Specs lj = new LJoint.Specs();
@@ -965,7 +965,7 @@ namespace SoftDemo
             aspecs.Cfm = 1;
             aspecs.Erp = 1;
             aspecs.Axis = new Vector3(1, 0, 0);
-            /*
+
             aspecs.IControl = steerControlF;
             pa.AppendAngularJoint(aspecs, pfl);
             pa.AppendAngularJoint(aspecs, pfr);
@@ -973,7 +973,7 @@ namespace SoftDemo
             aspecs.IControl = motorControl;
             pa.AppendAngularJoint(aspecs, prl);
             pa.AppendAngularJoint(aspecs, prr);
-            */
+
             pa.Rotate(orientation);
             pfl.Rotate(orientation);
             pfr.Rotate(orientation);
@@ -1162,7 +1162,7 @@ namespace SoftDemo
             if (Input.KeysDown.Count != 0)
             {
                 if (demos[demo] == Init_ClusterCombine || demos[demo] == Init_ClusterCar)
-                {/*
+                {
                     if (Input.KeysDown.Contains(Keys.Up))
                     {
                         motorControl.MaxTorque = 1;
@@ -1182,7 +1182,7 @@ namespace SoftDemo
                     {
                         steerControlF.Angle -= FrameDelta;
                         steerControlR.Angle -= FrameDelta;
-                    }*/
+                    }
                 }
             }
 
@@ -1200,13 +1200,13 @@ namespace SoftDemo
                     {
                         SoftBody psb = sbs[ib];
                         SRayCast res = new SRayCast();
-                        if (psb.RayTest(rayFrom, rayTo, res))
+                        if (psb.RayTest(ref rayFrom, ref rayTo, res))
                         {
                             results = res;
                         }
                         else
                         {
-                            //res.Dispose();
+                            res.Dispose();
                         }
                     }
                     if (results.Fraction < 1)

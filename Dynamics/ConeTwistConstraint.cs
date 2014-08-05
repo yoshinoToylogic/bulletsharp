@@ -7,6 +7,9 @@ namespace BulletSharp
 {
 	public class ConeTwistConstraint : TypedConstraint
 	{
+        private RigidBody _rigidBodyA;
+        private RigidBody _rigidBodyB;
+
 		internal ConeTwistConstraint(IntPtr native)
 			: base(native)
 		{
@@ -15,6 +18,8 @@ namespace BulletSharp
         public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, ref Matrix rbAFrame, ref Matrix rbBFrame)
             : base(btConeTwistConstraint_new(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
         {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
         }
 
 		public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
@@ -25,6 +30,7 @@ namespace BulletSharp
         public ConeTwistConstraint(RigidBody rbA, ref Matrix rbAFrame)
             : base(btConeTwistConstraint_new2(rbA._native, ref rbAFrame))
         {
+            _rigidBodyA = rbA;
         }
 
 		public ConeTwistConstraint(RigidBody rbA, Matrix rbAFrame)

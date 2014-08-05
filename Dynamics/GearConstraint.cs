@@ -7,6 +7,9 @@ namespace BulletSharp
 {
 	public class GearConstraint : TypedConstraint
 	{
+        private RigidBody _rigidBodyA;
+        private RigidBody _rigidBodyB;
+
 		internal GearConstraint(IntPtr native)
 			: base(native)
 		{
@@ -15,20 +18,24 @@ namespace BulletSharp
         public GearConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 axisInA, ref Vector3 axisInB)
             : base(btGearConstraint_new(rbA._native, rbB._native, ref axisInA, ref axisInB))
         {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
         }
 
 		public GearConstraint(RigidBody rbA, RigidBody rbB, Vector3 axisInA, Vector3 axisInB)
-			: base(btGearConstraint_new(rbA._native, rbB._native, ref axisInA, ref axisInB))
+			: this(rbA, rbB, ref axisInA, ref axisInB)
 		{
 		}
 
         public GearConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 axisInA, ref Vector3 axisInB, float ratio)
             : base(btGearConstraint_new2(rbA._native, rbB._native, ref axisInA, ref axisInB, ratio))
         {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
         }
 
 		public GearConstraint(RigidBody rbA, RigidBody rbB, Vector3 axisInA, Vector3 axisInB, float ratio)
-			: base(btGearConstraint_new2(rbA._native, rbB._native, ref axisInA, ref axisInB, ratio))
+			: this(rbA, rbB, ref axisInA, ref axisInB, ratio)
 		{
 		}
 

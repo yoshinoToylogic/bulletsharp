@@ -8,11 +8,6 @@ namespace BulletSharp
 	{
         private MultiBody _multiBody;
 
-		internal MultiBodyLinkCollider(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public MultiBodyLinkCollider(MultiBody multiBody, int link)
 			: base(btMultiBodyLinkCollider_new(multiBody._native, link))
 		{

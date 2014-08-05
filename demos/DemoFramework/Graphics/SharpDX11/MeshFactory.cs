@@ -54,7 +54,7 @@ namespace DemoFramework.SharpDX11
         {
             BufferDescription vertexBufferDesc = new BufferDescription()
             {
-                SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.VertexBuffer
             };
@@ -74,12 +74,9 @@ namespace DemoFramework.SharpDX11
         {
             if (VertexBuffer != null && VertexCount * 2 == vectors.Length)
             {
-                // Update existing buffer
-                DataStream data;
-                device.ImmediateContext.MapSubresource(VertexBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out data);
-                data.WriteRange(vectors, 0, vectors.Length);
+                DataBox db = device.ImmediateContext.MapSubresource(VertexBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
+                SharpDX.Utilities.Write(db.DataPointer, vectors, 0, vectors.Length);
                 device.ImmediateContext.UnmapSubresource(VertexBuffer, 0);
-                data.Dispose();
             }
             else
             {
@@ -89,7 +86,7 @@ namespace DemoFramework.SharpDX11
 
                 BufferDescription vertexBufferDesc = new BufferDescription()
                 {
-                    SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                    SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                     Usage = ResourceUsage.Dynamic,
                     BindFlags = BindFlags.VertexBuffer,
                     CpuAccessFlags = CpuAccessFlags.Write
@@ -387,11 +384,9 @@ namespace DemoFramework.SharpDX11
                 }
                 s.InstanceDataList.CopyTo(instanceArray);
 
-                DataStream data;
-                device.ImmediateContext.MapSubresource(s.InstanceDataBuffer, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None, out data);
-                data.WriteRange(instanceArray);
+                DataBox db = device.ImmediateContext.MapSubresource(s.InstanceDataBuffer, 0, MapMode.WriteDiscard, SharpDX.Direct3D11.MapFlags.None);
+                SharpDX.Utilities.Write(db.DataPointer, instanceArray, 0, instanceArray.Length);
                 device.ImmediateContext.UnmapSubresource(s.InstanceDataBuffer, 0);
-                data.Dispose();
             }
 
             if (removeList.Count != 0)

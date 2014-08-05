@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedNodeArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedNodeArray : AlignedObjectArray, IList<Node>, IDisposable
+    public class AlignedNodeArray : IList<Node>
     {
-        bool _preventDelete;
+        private IntPtr _native;
 
-        internal AlignedNodeArray(IntPtr native, bool preventDelete = false)
-            : base(native)
+        internal AlignedNodeArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyNodeArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedNodeArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(Node item)

@@ -35,12 +35,12 @@ namespace BulletSharp
 		{
 			btConstraintSolver_reset(_native);
 		}
-
+        /*
 		public float SolveGroup(CollisionObject bodies, int numBodies, PersistentManifold manifold, int numManifolds, TypedConstraint constraints, int numConstraints, ContactSolverInfo info, IDebugDraw debugDrawer, Dispatcher dispatcher)
 		{
 			return btConstraintSolver_solveGroup(_native, bodies._native, numBodies, manifold._native, numManifolds, constraints._native, numConstraints, info._native, DebugDraw.GetUnmanaged(debugDrawer), dispatcher._native);
 		}
-
+        */
 		public ConstraintSolverType SolverType
 		{
 			get { return btConstraintSolver_getSolverType(_native); }

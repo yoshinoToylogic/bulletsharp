@@ -7,18 +7,34 @@ namespace BulletSharp
 {
 	public class Generic6DofSpringConstraint : Generic6DofConstraint
 	{
+        private RigidBody _rigidBodyA;
+        private RigidBody _rigidBodyB;
+
 		internal Generic6DofSpringConstraint(IntPtr native)
 			: base(native)
 		{
 		}
 
+        public Generic6DofSpringConstraint(RigidBody rbA, RigidBody rbB, ref Matrix frameInA, ref Matrix frameInB, bool useLinearReferenceFrameA)
+            : base(btGeneric6DofSpringConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+        {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
+        }
+
 		public Generic6DofSpringConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
-			: base(btGeneric6DofSpringConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+			: this(rbA, rbB, ref frameInA, ref frameInB, useLinearReferenceFrameA)
 		{
 		}
 
+        public Generic6DofSpringConstraint(RigidBody rbB, ref Matrix frameInB, bool useLinearReferenceFrameB)
+            : base(btGeneric6DofSpringConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameB))
+        {
+            _rigidBodyB = rbB;
+        }
+
 		public Generic6DofSpringConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameB)
-			: base(btGeneric6DofSpringConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameB))
+			: this(rbB, ref frameInB, useLinearReferenceFrameB)
 		{
 		}
 

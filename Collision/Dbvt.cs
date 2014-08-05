@@ -744,12 +744,12 @@ namespace BulletSharp
 		{
 			_native = btDbvt_new();
 		}
-
-		public static int Allocate(AlignedObjectArray ifree, AlignedObjectArray stock, StkNps value)
+        /*
+        public static int Allocate(AlignedIntArray ifree, AlignedStkNpsArray stock, StkNps value)
 		{
 			return btDbvt_allocate(ifree._native, stock._native, value._native);
 		}
-
+        */
 		public static void Benchmark()
 		{
 			btDbvt_benchmark();
@@ -824,12 +824,12 @@ namespace BulletSharp
 		{
 			btDbvt_enumNodes(root._native, policy._native);
 		}
-
-		public static void ExtractLeaves(DbvtNode node, AlignedObjectArray leaves)
+        /*
+		public static void ExtractLeaves(DbvtNode node, AlignedDbvtNodeArray leaves)
 		{
 			btDbvt_extractLeaves(node._native, leaves._native);
 		}
-
+        */
 		public DbvtNode Insert(DbvtVolume box, IntPtr data)
 		{
             return new DbvtNode(btDbvt_insert(_native, box._native, data));
