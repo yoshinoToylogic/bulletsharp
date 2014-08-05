@@ -14,7 +14,7 @@ namespace BulletSharpGen
         {
         }
 
-        void WriteType(TypeRefDefinition type, bool writeToCs)
+        void WriteType(TypeRefDefinition type)
         {
             if (type.IsBasic)
             {
@@ -40,11 +40,6 @@ namespace BulletSharpGen
                 string typeName = BulletParser.GetTypeName(type);
                 Write(typeName + '*', WriteTo.Source);
                 Write(typeName.Replace("::", "_") + '*', WriteTo.Header);
-            }
-
-            if (writeToCs)
-            {
-                WriteTypeCS(type);
             }
         }
 
@@ -149,13 +144,15 @@ namespace BulletSharpGen
             }
             else
             {
-                var returnType = (returnParamMethod != null) ? returnParamMethod.ReturnType : method.ReturnType;
-
                 if (method.IsStatic)
                 {
                     Write("static ", cs);
                 }
-                WriteType(returnType, cs != 0);
+                WriteType(method.ReturnType);
+                if (cs != 0)
+                {
+                    WriteTypeCS((returnParamMethod != null) ? returnParamMethod.ReturnType : method.ReturnType);
+                }
                 Write(' ', WriteTo.Header | WriteTo.Source | cs);
                 if (method.ReturnType.IsBasic)
                 {
@@ -246,7 +243,11 @@ namespace BulletSharpGen
                         Write("out ", cs);
                     }
                 }
-                WriteType(param.Type, cs != 0 && !isCsFinalParameter);
+                WriteType(param.Type);
+                if (cs != 0 && !isCsFinalParameter)
+                {
+                    WriteTypeCS(param.Type);
+                }
                 Write(BulletParser.GetTypeDllImport(param.Type), WriteTo.Buffer);
 
                 // Parameter name
@@ -295,11 +296,17 @@ namespace BulletSharpGen
                 return;
             }
 
+            int numParametersOriginal = numParameters;
+            if (returnParamMethod != null)
+            {
+                numParametersOriginal--;
+            }
+
             bool needTypeMarshalEpilogue = false;
             if (!(method.Property != null && BulletParser.MarshalStructByValue(method.Property.Type) && method.Property.Getter.Name == method.Name))
             {
                 // Type marshalling prologue
-                for (int i = 0; i < numParameters; i++)
+                for (int i = 0; i < numParametersOriginal; i++)
                 {
                     var param = method.Parameters[i];
                     string prologue = BulletParser.GetTypeMarshalPrologue(param, method);
@@ -328,7 +335,7 @@ namespace BulletSharpGen
                 // Temporary variable
                 Write(BulletParser.GetTypeNameCS(returnParamMethod.ReturnType), cs);
                 Write(' ', cs);
-                Write(method.Parameters[numParameters - 1].ManagedName, cs);
+                Write(method.Parameters[numParametersOriginal].ManagedName, cs);
                 WriteLine(';', cs);
                 WriteTabs(level + 2, cs);
 
@@ -394,34 +401,29 @@ namespace BulletSharpGen
             }
 
             // Call parameters
-            Write('(', cs);
-            if (!method.IsConstructor && !method.IsStatic)
-            {
-                Write("_native", cs);
-                if (numParameters != 0)
-                {
-                    Write(", ", cs);
-                }
-            }
             if (method.Field != null)
             {
                 Write(method.Field.Name, WriteTo.Source);
+                if (method.Property.Setter != null && method.Name.Equals(method.Property.Setter.Name))
+                {
+                    Write(" = value", WriteTo.Source);
+                }
+                WriteLine(';', WriteTo.Source);
             }
             else
             {
                 Write('(', WriteTo.Source);
-            }
-            for (int i = 0; i < numParameters; i++)
-            {
-                var param = method.Parameters[i];
-                bool isFinalParameter = (i == numParameters - 1);
-                
-                Write(BulletParser.GetTypeCSMarshal(param), cs);
 
-                if (method.Field == null)
+                for (int i = 0; i < numParametersOriginal; i++)
                 {
+                    var param = method.Parameters[i];
+
                     string marshal = BulletParser.GetTypeMarshal(param);
-                    if (string.IsNullOrEmpty(marshal))
+                    if (!string.IsNullOrEmpty(marshal))
+                    {
+                        Write(marshal, WriteTo.Source);
+                    }
+                    else
                     {
                         if (!param.Type.IsBasic && !param.Type.IsPointer && !param.Type.IsConstantArray)
                         {
@@ -429,61 +431,71 @@ namespace BulletSharpGen
                         }
                         Write(param.Name, WriteTo.Source);
                     }
-                    else
+
+                    if (i != numParametersOriginal - 1)
                     {
-                        Write(marshal, WriteTo.Source);
+                        Write(", ", WriteTo.Source);
                     }
                 }
 
-                if (!isFinalParameter)
-                {
-                    Write(", ", WriteTo.Source | cs);
-                }
-            }
-
-            if (method.IsConstructor && method.Parent.BaseClass != null)
-            {
-                WriteLine("))", cs);
-                WriteTabs(level + 1, cs);
-                WriteLine('{', cs);
-            }
-            else
-            {
-                WriteLine(");", cs);
-            }
-
-            if (method.Field != null)
-            {
-                if (method.Property.Setter != null && method.Name.Equals(method.Property.Setter.Name))
-                {
-                    Write(" = value", WriteTo.Source);
-                }
-            }
-            else
-            {
                 if (returnParamMethod != null)
                 {
-                    Write(BulletParser.GetReturnValueMarshalEnd(method.Parameters[numParameters - 1]), WriteTo.Source);
+                    WriteLine(BulletParser.GetReturnValueMarshalEnd(method.Parameters[numParametersOriginal]), WriteTo.Source);
                 }
                 else
                 {
-                    Write(")", WriteTo.Source);
+                    WriteLine(");", WriteTo.Source);
                 }
             }
-            WriteLine(';', WriteTo.Source);
 
+            if (cs != 0)
+            {
+                Write('(', WriteTo.CS);
+                if (!method.IsConstructor && !method.IsStatic)
+                {
+                    Write("_native", WriteTo.CS);
+                    if (numParametersOriginal != 0)
+                    {
+                        Write(", ", WriteTo.CS);
+                    }
+                }
+
+                for (int i = 0; i < numParameters; i++)
+                {
+                    var param = method.Parameters[i];
+                    Write(BulletParser.GetTypeCSMarshal(param), WriteTo.CS);
+
+                    if (i != numParameters - 1)
+                    {
+                        Write(", ", WriteTo.CS);
+                    }
+                }
+
+                if (method.IsConstructor && method.Parent.BaseClass != null)
+                {
+                    WriteLine("))", WriteTo.CS);
+                    WriteTabs(level + 1, WriteTo.CS);
+                    WriteLine('{', WriteTo.CS);
+                }
+                else
+                {
+                    WriteLine(");", WriteTo.CS);
+                }
+            }
+
+            // Return temporary variable
             if (returnParamMethod != null)
             {
                 WriteTabs(level + 2, cs);
                 Write("return ", cs);
-                Write(method.Parameters[numParameters - 1].ManagedName, cs);
+                Write(method.Parameters[numParametersOriginal].ManagedName, cs);
                 WriteLine(';', cs);
             }
 
             // Write type marshalling epilogue
             if (needTypeMarshalEpilogue)
             {
-                for (int i = 0; i < numParameters; i++)
+                for (int i = 0; i < numParametersOriginal; i++)
                 {
                     var param = method.Parameters[i];
                     string epilogue = BulletParser.GetTypeMarshalEpilogue(param);
