@@ -1,11 +1,11 @@
-﻿using BulletSharp;
+﻿using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using BulletSharp;
 using BulletSharp.SoftBody;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D10;
 using SharpDX.DXGI;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Buffer = SharpDX.Direct3D10.Buffer;
 using Color = System.Drawing.Color;
 using DataStream = SharpDX.DataStream;
@@ -54,7 +54,7 @@ namespace DemoFramework.SharpDX
         {
             BufferDescription vertexBufferDesc = new BufferDescription()
             {
-                SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                 Usage = ResourceUsage.Default,
                 BindFlags = BindFlags.VertexBuffer
             };
@@ -89,7 +89,7 @@ namespace DemoFramework.SharpDX
 
                 BufferDescription vertexBufferDesc = new BufferDescription()
                 {
-                    SizeInBytes = Marshal.SizeOf(typeof(Vector3)) * vectors.Length,
+                    SizeInBytes = Vector3.SizeInBytes * vectors.Length,
                     Usage = ResourceUsage.Dynamic,
                     BindFlags = BindFlags.VertexBuffer,
                     CpuAccessFlags = CpuAccessFlags.Write

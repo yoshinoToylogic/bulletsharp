@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedClusterArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedClusterArray : AlignedObjectArray, IList<Cluster>, IDisposable
+    public class AlignedClusterArray : IList<Cluster>
     {
-        bool _preventDelete;
+        private IntPtr _native;
 
-        internal AlignedClusterArray(IntPtr native, bool preventDelete = false)
-            : base(native)
+        internal AlignedClusterArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyClusterArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedClusterArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(Cluster item)

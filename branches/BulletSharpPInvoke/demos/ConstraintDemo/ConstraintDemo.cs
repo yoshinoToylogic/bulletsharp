@@ -154,15 +154,15 @@ namespace ConstraintDemo
 
             if (P2P)
             {
-                TypedConstraint p2p = new Point2PointConstraint(body0, pivotInA);
-                //TypedConstraint p2p = new Point2PointConstraint(body0,body1,pivotInA,pivotInB);
-                //TypedConstraint hinge = new HingeConstraint(body0,body1,pivotInA,pivotInB,axisInA,axisInB);
+                TypedConstraint p2p = new Point2PointConstraint(body0, ref pivotInA);
+                //TypedConstraint p2p = new Point2PointConstraint(body0, body1, ref pivotInA, ref pivotInB);
+                //TypedConstraint hinge = new HingeConstraint(body0, body1, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB);
                 World.AddConstraint(p2p);
                 p2p.DebugDrawSize = 5;
             }
             else
             {
-                hinge = new HingeConstraint(body0, pivotInA, axisInA);
+                hinge = new HingeConstraint(body0, ref pivotInA, ref axisInA);
 
                 //use zero targetVelocity and a small maxMotorImpulse to simulate joint friction
                 //float	targetVelocity = 0.f;
@@ -217,7 +217,7 @@ namespace ConstraintDemo
 
             //bool useLinearReferenceFrameA = false;//use fixed frame B for linear llimits
             const bool useLinearReferenceFrameA = true; //use fixed frame A for linear llimits
-            spSlider6Dof = new Generic6DofConstraint(fixedBody1, d6body0, frameInA, frameInB, useLinearReferenceFrameA)
+            spSlider6Dof = new Generic6DofConstraint(fixedBody1, d6body0, ref frameInA, ref frameInB, useLinearReferenceFrameA)
             {
                 LinearLowerLimit = lowerSliderLimit,
                 LinearUpperLimit = hiSliderLimit,
@@ -249,7 +249,7 @@ namespace ConstraintDemo
             Vector3 btPivotA = new Vector3(10.0f + 2.1f, -2.0f, 0.0f); // right next to the door slightly outside
             Vector3 btAxisA = Vector3.UnitY; // pointing upwards, aka Y-axis
 
-            spDoorHinge = new HingeConstraint(pDoorBody, btPivotA, btAxisA);
+            spDoorHinge = new HingeConstraint(pDoorBody, ref btPivotA, ref btAxisA);
 
             //spDoorHinge.SetLimit(0.0f, (float)Math.PI / 2);
             // test problem values
@@ -282,8 +282,8 @@ namespace ConstraintDemo
             frameInA = Matrix.Translation(-5, 0, 0);
             frameInB = Matrix.Translation(5, 0, 0);
 
-            Generic6DofConstraint pGen6DOF = new Generic6DofConstraint(pBodyA, pBodyB, frameInA, frameInB, true);
-            //Generic6DofConstraint pGen6DOF = new Generic6DofConstraint(pBodyA, pBodyB, frameInA, frameInB, false);
+            Generic6DofConstraint pGen6DOF = new Generic6DofConstraint(pBodyA, pBodyB, ref frameInA, ref frameInB, true);
+            //Generic6DofConstraint pGen6DOF = new Generic6DofConstraint(pBodyA, pBodyB, ref frameInA, ref frameInB, false);
             pGen6DOF.LinearLowerLimit = new Vector3(-10, -2, -1);
             pGen6DOF.LinearUpperLimit = new Vector3(10, 2, 1);
             //pGen6DOF.LinearLowerLimit = new Vector3(-10, 0, 0);
@@ -332,7 +332,7 @@ namespace ConstraintDemo
             frameInB = Matrix.RotationYawPitchRoll(0, 0, (float)Math.PI / 2);
             frameInB *= Matrix.Translation(0, 5, 0);
 
-            coneTwist = new ConeTwistConstraint(pBodyA, pBodyB, frameInA, frameInB);
+            coneTwist = new ConeTwistConstraint(pBodyA, pBodyB, ref frameInA, ref frameInB);
             //coneTwist.SetLimit((float)Math.PI / 4, (float)Math.PI / 4, (float)Math.PI * 0.8f);
             //coneTwist.SetLimit((((float)Math.PI / 4) * 0.6f), (float)Math.PI / 4, (float)Math.PI * 0.8f, 1.0f); // soft limit == hard limit
             coneTwist.SetLimit((((float)Math.PI / 4) * 0.6f), (float)Math.PI / 4, (float)Math.PI * 0.8f, 0.5f);
@@ -345,10 +345,10 @@ namespace ConstraintDemo
 
             RigidBody pBody = LocalCreateRigidBody(1.0f, Matrix.Identity, shape);
             pBody.ActivationState = ActivationState.DisableDeactivation;
-            Vector3 PivotA = new Vector3(10.0f, 0.0f, 0.0f);
+            Vector3 pivotA = new Vector3(10.0f, 0.0f, 0.0f);
             btAxisA = new Vector3(0.0f, 0.0f, 1.0f);
 
-            HingeConstraint pHinge = new HingeConstraint(pBody, PivotA, btAxisA);
+            HingeConstraint pHinge = new HingeConstraint(pBody, ref pivotA, ref btAxisA);
             //pHinge.EnableAngularMotor(true, -1.0f, 0.165f); // use for the old solver
             pHinge.EnableAngularMotor(true, -1.0f, 1.65f); // use for the new SIMD solver
             World.AddConstraint(pHinge);
@@ -369,7 +369,7 @@ namespace ConstraintDemo
             Vector3 childAxis = new Vector3(0, 0, 1);
             Vector3 anchor = new Vector3(20, 2, 0);
 
-            UniversalConstraint pUniv = new UniversalConstraint(pBodyA, pBodyB, anchor, parentAxis, childAxis);
+            UniversalConstraint pUniv = new UniversalConstraint(pBodyA, pBodyB, ref anchor, ref parentAxis, ref childAxis);
             pUniv.SetLowerLimit(-(float)Math.PI / 4, -(float)Math.PI / 4);
             pUniv.SetUpperLimit((float)Math.PI / 4, (float)Math.PI / 4);
             // add constraint to world
@@ -393,7 +393,7 @@ namespace ConstraintDemo
             frameInA = Matrix.Translation(10, 0, 0);
             frameInB = Matrix.Identity;
 
-            Generic6DofSpringConstraint pGen6DOFSpring = new Generic6DofSpringConstraint(pBodyA, pBodyB, frameInA, frameInB, true)
+            Generic6DofSpringConstraint pGen6DOFSpring = new Generic6DofSpringConstraint(pBodyA, pBodyB, ref frameInA, ref frameInB, true)
             {
                 LinearUpperLimit = new Vector3(5, 0, 0),
                 LinearLowerLimit = new Vector3(-5, 0, 0),
@@ -425,7 +425,7 @@ namespace ConstraintDemo
             parentAxis = new Vector3(0, 1, 0);
             childAxis = new Vector3(1, 0, 0);
             anchor = new Vector3(-20, 0, 0);
-            Hinge2Constraint pHinge2 = new Hinge2Constraint(pBodyA, pBodyB, anchor, parentAxis, childAxis);
+            Hinge2Constraint pHinge2 = new Hinge2Constraint(pBodyA, pBodyB, ref anchor, ref parentAxis, ref childAxis);
             pHinge2.SetLowerLimit(-(float)Math.PI / 4);
             pHinge2.SetUpperLimit((float)Math.PI / 4);
             // add constraint to world
@@ -446,9 +446,9 @@ namespace ConstraintDemo
             // add some data to build constraint frames
             axisA = new Vector3(0, 1, 0);
             axisB = new Vector3(0, 1, 0);
-            Vector3 pivotA = new Vector3(-5, 0, 0);
+            Vector3 pivotA2 = new Vector3(-5, 0, 0);
             Vector3 pivotB = new Vector3(5, 0, 0);
-            spHingeDynAB = new HingeConstraint(pBodyA, pBodyB, pivotA, pivotB, axisA, axisB);
+            spHingeDynAB = new HingeConstraint(pBodyA, pBodyB, ref pivotA2, ref pivotB, ref axisA, ref axisB);
             spHingeDynAB.SetLimit(-(float)Math.PI / 4, (float)Math.PI / 4);
             // add constraint to world
             World.AddConstraint(spHingeDynAB, true);

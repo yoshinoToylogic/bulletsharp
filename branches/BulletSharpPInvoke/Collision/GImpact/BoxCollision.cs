@@ -166,7 +166,7 @@ namespace BulletSharp
 			btAABB_appy_transform_trans_cache(_native, trans._native);
 		}
 
-		public bool Collide_plane(ref Vector4 plane)
+		public bool CollidePlane(ref Vector4 plane)
 		{
 			return btAABB_collide_plane(_native, ref plane);
 		}
@@ -181,7 +181,7 @@ namespace BulletSharp
 			return btAABB_collide_triangle_exact(_native, ref p1, ref p2, ref p3, ref trianglePlane);
 		}
 
-		public void Copy_with_margin(Aabb other, float margin)
+		public void CopyWithMargin(Aabb other, float margin)
 		{
 			btAABB_copy_with_margin(_native, other._native, margin);
 		}

@@ -1,8 +1,8 @@
-using BulletSharp.Math;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security;
+using BulletSharp.Math;
 
 namespace BulletSharp
 {
@@ -34,7 +34,7 @@ namespace BulletSharp
 
     public class CompoundShapeChildArrayEnumerator : ArrayEnumerator, IEnumerator<CompoundShapeChild>
     {
-        CompoundShapeChild[] _array;
+        private CompoundShapeChild[] _array;
 
         public CompoundShapeChildArrayEnumerator(CompoundShapeChildArray array)
         {
@@ -130,12 +130,11 @@ namespace BulletSharp
 
     public class CompoundShapeChildArray : FixedSizeArray, IList<CompoundShapeChild>
     {
-        internal CompoundShapeChild[] _backingArray;
+        internal CompoundShapeChild[] _backingArray = new CompoundShapeChild[0];
 
         internal CompoundShapeChildArray(IntPtr compoundShape)
             : base(compoundShape, 0)
         {
-            _backingArray = new CompoundShapeChild[_count];
         }
         
         public void Add(CompoundShapeChild item)
@@ -211,9 +210,10 @@ namespace BulletSharp
 
         public void RemoveChildShape(CollisionShape shape)
         {
+            IntPtr shapePtr = shape._native;
             for (int i = 0; i < _count; i++)
             {
-                if (_backingArray[i].ChildShape._native == shape._native)
+                if (_backingArray[i].ChildShape._native == shapePtr)
                 {
                     RemoveChildShapeByIndex(i);
                 }
@@ -342,10 +342,7 @@ namespace BulletSharp
                 btVector3_array_at(_native, index, out value);
                 return value;
             }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            set { btVector3_array_set(_native, index, ref value); }
         }
 
         public void Add(Vector3 item)
@@ -380,5 +377,7 @@ namespace BulletSharp
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         protected static extern IntPtr btVector3_array_at(IntPtr obj, int n, [Out] out Vector3 value);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        protected static extern IntPtr btVector3_array_set(IntPtr obj, int n, [In] ref Vector3 value);
     }
 }

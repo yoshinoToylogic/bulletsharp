@@ -52,6 +52,8 @@ extern "C"
 	EXPORT void btSoftBodyWorldInfo_setWater_offset(btSoftBodyWorldInfo* obj, btScalar value);
 	EXPORT void btSoftBodyWorldInfo_delete(btSoftBodyWorldInfo* obj);
 
+	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pPrepare prepareCallback, pSpeed speedCallback);
+
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_new();
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_Default();
 	EXPORT void btSoftBody_AJoint_IControl_Prepare(btSoftBody_AJoint_IControl* obj, btSoftBody_AJoint* __unnamed0);
@@ -244,15 +246,9 @@ extern "C"
 	EXPORT void btSoftBody_Face_setNormal(btSoftBody_Face* obj, const btScalar* value);
 	EXPORT void btSoftBody_Face_setRa(btSoftBody_Face* obj, btScalar value);
 
-	EXPORT btSoftBody_fCollision* btSoftBody_fCollision_new();
-	EXPORT void btSoftBody_fCollision_delete(btSoftBody_fCollision* obj);
-
 	EXPORT btSoftBody_Feature* btSoftBody_Feature_new();
 	EXPORT btSoftBody_Material* btSoftBody_Feature_getMaterial(btSoftBody_Feature* obj);
 	EXPORT void btSoftBody_Feature_setMaterial(btSoftBody_Feature* obj, btSoftBody_Material* value);
-
-	EXPORT btSoftBody_fMaterial* btSoftBody_fMaterial_new();
-	EXPORT void btSoftBody_fMaterial_delete(btSoftBody_fMaterial* obj);
 
 	EXPORT btSoftBody_ImplicitFn* btSoftBody_ImplicitFnWrapper_new(pEval evalCallback);
 
@@ -271,9 +267,6 @@ extern "C"
 	EXPORT void btSoftBody_Impulse_setDrift(btSoftBody_Impulse* obj, const btScalar* value);
 	EXPORT void btSoftBody_Impulse_setVelocity(btSoftBody_Impulse* obj, const btScalar* value);
 	EXPORT void btSoftBody_Impulse_delete(btSoftBody_Impulse* obj);
-
-	EXPORT btSoftBody_Joint_eType* btSoftBody_Joint_eType_new();
-	EXPORT void btSoftBody_Joint_eType_delete(btSoftBody_Joint_eType* obj);
 
 	EXPORT btSoftBody_Joint_Specs* btSoftBody_Joint_Specs_new();
 	EXPORT btScalar btSoftBody_Joint_Specs_getCfm(btSoftBody_Joint_Specs* obj);
@@ -326,7 +319,7 @@ extern "C"
 	EXPORT void btSoftBody_LJoint_Specs_setPosition(btSoftBody_LJoint_Specs* obj, const btScalar* value);
 
 	EXPORT btSoftBody_LJoint* btSoftBody_LJoint_new();
-	EXPORT void btSoftBody_LJoint_getRpos(btSoftBody_LJoint* obj, btScalar* value);
+	EXPORT btVector3* btSoftBody_LJoint_getRpos(btSoftBody_LJoint* obj);
 
 	EXPORT btSoftBody_Material* btSoftBody_Material_new();
 	EXPORT int btSoftBody_Material_getFlags(btSoftBody_Material* obj);
@@ -616,8 +609,8 @@ extern "C"
 	EXPORT void btSoftBody_PSolve_RContacts(btSoftBody* psb, btScalar kst, btScalar ti);
 	EXPORT void btSoftBody_PSolve_SContacts(btSoftBody* psb, btScalar __unnamed1, btScalar ti);
 	EXPORT void btSoftBody_randomizeConstraints(btSoftBody* obj);
-	EXPORT int btSoftBody_rayTest(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btScalar* mint, btSoftBody_eFeature feature, int* index, bool bcountonly);
-	EXPORT bool btSoftBody_rayTest2(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btSoftBody_sRayCast* results);
+	EXPORT bool btSoftBody_rayTest(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btSoftBody_sRayCast* results);
+	EXPORT int btSoftBody_rayTest2(btSoftBody* obj, const btScalar* rayFrom, const btScalar* rayTo, btScalar* mint, btSoftBody_eFeature feature, int* index, bool bcountonly);
 	EXPORT void btSoftBody_refine(btSoftBody* obj, btSoftBody_ImplicitFn* ifn, btScalar accurary, bool cut);
 	EXPORT void btSoftBody_releaseCluster(btSoftBody* obj, int index);
 	EXPORT void btSoftBody_releaseClusters(btSoftBody* obj);
@@ -642,8 +635,8 @@ extern "C"
 	EXPORT void btSoftBody_setVolumeDensity(btSoftBody* obj, btScalar density);
 	EXPORT void btSoftBody_setVolumeMass(btSoftBody* obj, btScalar mass);
 	EXPORT void btSoftBody_setWorldInfo(btSoftBody* obj, btSoftBodyWorldInfo* value);
-	EXPORT void btSoftBody_solveClusters(btSoftBody* obj, btScalar sor);
-	EXPORT void btSoftBody_solveClusters2(const btAlignedSoftBodyArray* bodies);
+	EXPORT void btSoftBody_solveClusters(const btAlignedSoftBodyArray* bodies);
+	EXPORT void btSoftBody_solveClusters2(btSoftBody* obj, btScalar sor);
 	EXPORT void btSoftBody_solveCommonConstraints(btSoftBody** bodies, int count, int iterations);
 	EXPORT void btSoftBody_solveConstraints(btSoftBody* obj);
 	EXPORT void btSoftBody_staticSolve(btSoftBody* obj, int iterations);

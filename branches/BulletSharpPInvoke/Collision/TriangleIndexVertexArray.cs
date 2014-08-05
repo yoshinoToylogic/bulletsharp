@@ -250,7 +250,7 @@ namespace BulletSharp
                 // TODO: link _indexedMeshArray to _meshes
                 if (_indexedMeshArray == null)
                 {
-                    _indexedMeshArray = new AlignedIndexedMeshArray(btTriangleIndexVertexArray_getIndexedMeshArray(_native), true);
+                    _indexedMeshArray = new AlignedIndexedMeshArray(btTriangleIndexVertexArray_getIndexedMeshArray(_native));
                 }
                 return _indexedMeshArray;
             }

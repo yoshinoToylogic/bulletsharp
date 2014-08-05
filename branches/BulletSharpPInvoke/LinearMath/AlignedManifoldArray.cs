@@ -70,42 +70,18 @@ namespace BulletSharp
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedManifoldArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedManifoldArray : AlignedObjectArray, IList<PersistentManifold>, IDisposable
+    public class AlignedManifoldArray : IList<PersistentManifold>
     {
-        readonly bool _preventDelete;
+        internal IntPtr _native;
 
-        internal AlignedManifoldArray(IntPtr native, bool preventDelete)
-            : base(native)
+        internal AlignedManifoldArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
+            _native = native;
         }
 
         public AlignedManifoldArray()
-            : base(btManifoldArray_new())
         {
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btManifoldArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedManifoldArray()
-        {
-            Dispose(false);
+            _native = btManifoldArray_new();
         }
 
         public int IndexOf(PersistentManifold item)

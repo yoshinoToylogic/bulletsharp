@@ -79,24 +79,26 @@ namespace BulletSharp
 		static extern void GIM_PAIR_delete(IntPtr obj);
 	}
 
-	public class PairSet : AlignedObjectArray
+	public class PairSet
 	{
+        internal IntPtr _native;
+
 		internal PairSet(IntPtr native)
-			: base(native)
 		{
+            _native = native;
 		}
-
+        /*
 		public PairSet()
-			: base(btPairSet_new())
 		{
+            _native = btPairSet_new();
 		}
-
-		public void Push_pair(int index1, int index2)
+        */
+		public void PushPair(int index1, int index2)
 		{
 			btPairSet_push_pair(_native, index1, index2);
 		}
 
-		public void Push_pair_inv(int index1, int index2)
+		public void PushPairInv(int index1, int index2)
 		{
 			btPairSet_push_pair_inv(_native, index1, index2);
 		}
@@ -241,32 +243,36 @@ namespace BulletSharp
 		static extern void GIM_BVH_TREE_NODE_delete(IntPtr obj);
 	}
 
-	public class GimBvhDataArray : AlignedObjectArray
+	public class GimBvhDataArray
 	{
+        internal IntPtr _native;
+
 		internal GimBvhDataArray(IntPtr native)
-			: base(native)
 		{
+            _native = native;
 		}
-
+        /*
 		public GimBvhDataArray()
-			: base(GIM_BVH_DATA_ARRAY_new())
 		{
+            _native = GIM_BVH_DATA_ARRAY_new();
 		}
-
+        */
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr GIM_BVH_DATA_ARRAY_new();
 	}
 
-	public class GimBvhTreeNodeArray : AlignedObjectArray
+	public class GimBvhTreeNodeArray
 	{
+        private IntPtr _native;
+
 		internal GimBvhTreeNodeArray(IntPtr native)
-			: base(native)
 		{
+            _native = native;
 		}
 
 		public GimBvhTreeNodeArray()
-			: base(GIM_BVH_TREE_NODE_ARRAY_new())
 		{
+            _native = GIM_BVH_TREE_NODE_ARRAY_new();
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -478,17 +484,17 @@ namespace BulletSharp
 		{
 			_native = btGImpactBvh_new2(primitiveManager._native);
 		}
-
-		public bool BoxQuery(Aabb box, AlignedObjectArray collidedResults)
+        /*
+        public bool BoxQuery(Aabb box, AlignedIntArray collidedResults)
 		{
 			return btGImpactBvh_boxQuery(_native, box._native, collidedResults._native);
 		}
 
-		public bool BoxQueryTrans(Aabb box, Matrix transform, AlignedObjectArray collidedResults)
+        public bool BoxQueryTrans(Aabb box, Matrix transform, AlignedIntArray collidedResults)
 		{
 			return btGImpactBvh_boxQueryTrans(_native, box._native, ref transform, collidedResults._native);
 		}
-
+        */
 		public void BuildSet()
 		{
 			btGImpactBvh_buildSet(_native);
@@ -543,12 +549,12 @@ namespace BulletSharp
 		{
 			return btGImpactBvh_isLeafNode(_native, nodeindex);
 		}
-
-		public bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedObjectArray collidedResults)
+        /*
+        public bool RayQuery(Vector3 rayDir, Vector3 rayOrigin, AlignedIntArray collidedResults)
 		{
 			return btGImpactBvh_rayQuery(_native, ref rayDir, ref rayOrigin, collidedResults._native);
 		}
-
+        */
 		public void SetNodeBound(int nodeindex, Aabb bound)
 		{
 			btGImpactBvh_setNodeBound(_native, nodeindex, bound._native);

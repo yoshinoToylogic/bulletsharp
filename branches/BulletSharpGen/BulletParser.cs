@@ -227,13 +227,13 @@ namespace BulletSharpGen
                     MethodDefinition getter = null, setter = null;
                     foreach (var m in c.Methods)
                     {
-                        if (m.ManagedName.Equals(managedGetterName))
+                        if (m.ManagedName.Equals(managedGetterName) && m.Parameters.Length == 0)
                         {
                             getter = m;
                             continue;
                         }
 
-                        if (m.ManagedName.Equals(managedSetterName))
+                        if (m.ManagedName.Equals(managedSetterName) && m.Parameters.Length == 1)
                         {
                             setter = m;
                         }
@@ -543,7 +543,7 @@ namespace BulletSharpGen
                 case "Transform":
                 case "Vector3":
                 case "Vector4":
-                    return "), " + param.Name + ')';
+                    return "), " + param.Name + ");";
                 default:
                     return null;
             }

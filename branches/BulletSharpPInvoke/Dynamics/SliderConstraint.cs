@@ -7,18 +7,34 @@ namespace BulletSharp
 {
 	public class SliderConstraint : TypedConstraint
 	{
+        private RigidBody _rigidBodyA;
+        private RigidBody _rigidBodyB;
+
 		internal SliderConstraint(IntPtr native)
 			: base(native)
 		{
 		}
 
+        public SliderConstraint(RigidBody rbA, RigidBody rbB, ref Matrix frameInA, ref Matrix frameInB, bool useLinearReferenceFrameA)
+            : base(btSliderConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+        {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
+        }
+
 		public SliderConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
-			: base(btSliderConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+			: this(rbA, rbB, ref frameInA, ref frameInB, useLinearReferenceFrameA)
 		{
 		}
 
+        public SliderConstraint(RigidBody rbB, ref Matrix frameInB, bool useLinearReferenceFrameA)
+            : base(btSliderConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameA))
+        {
+            _rigidBodyB = rbB;
+        }
+
 		public SliderConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameA)
-			: base(btSliderConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameA))
+			: this(rbB, ref frameInB, useLinearReferenceFrameA)
 		{
 		}
 

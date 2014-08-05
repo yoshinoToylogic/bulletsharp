@@ -7,13 +7,23 @@ namespace BulletSharp
 {
 	public class UniversalConstraint : Generic6DofConstraint
 	{
+        private RigidBody _rigidBodyA;
+        private RigidBody _rigidBodyB;
+
 		internal UniversalConstraint(IntPtr native)
 			: base(native)
 		{
 		}
 
+        public UniversalConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 anchor, ref Vector3 axis1, ref Vector3 axis2)
+            : base(btUniversalConstraint_new(rbA._native, rbB._native, ref anchor, ref axis1, ref axis2))
+        {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
+        }
+
 		public UniversalConstraint(RigidBody rbA, RigidBody rbB, Vector3 anchor, Vector3 axis1, Vector3 axis2)
-			: base(btUniversalConstraint_new(rbA._native, rbB._native, ref anchor, ref axis1, ref axis2))
+			: this(rbA, rbB, ref anchor, ref axis1, ref axis2)
 		{
 		}
 

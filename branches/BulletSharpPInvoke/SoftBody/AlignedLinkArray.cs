@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedLinkArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedLinkArray : AlignedObjectArray, IList<Link>, IDisposable
+    public class AlignedLinkArray : IList<Link>
     {
-        bool _preventDelete;
+        private IntPtr _native;
 
-        internal AlignedLinkArray(IntPtr native, bool preventDelete = false)
-            : base(native)
+        internal AlignedLinkArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyLinkArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedLinkArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(Link item)

@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedMaterialArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedMaterialArray : AlignedObjectArray, IList<Material>, IDisposable
+    public class AlignedMaterialArray : IList<Material>
     {
-        bool _preventDelete;
+        private IntPtr _native;
 
         internal AlignedMaterialArray(IntPtr native, bool preventDelete = false)
-            : base(native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyMaterialArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedMaterialArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(Material item)

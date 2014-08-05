@@ -7,13 +7,23 @@ namespace BulletSharp
 {
 	public class FixedConstraint : TypedConstraint
 	{
+        private RigidBody _rigidBodyA;
+        private RigidBody _rigidBodyB;
+
 		internal FixedConstraint(IntPtr native)
 			: base(native)
 		{
 		}
 
+        public FixedConstraint(RigidBody rbA, RigidBody rbB, ref Matrix frameInA, ref Matrix frameInB)
+            : base(btFixedConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB))
+        {
+            _rigidBodyA = rbA;
+            _rigidBodyB = rbB;
+        }
+
 		public FixedConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB)
-			: base(btFixedConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB))
+			: this(rbA, rbB, ref frameInA, ref frameInB)
 		{
 		}
 

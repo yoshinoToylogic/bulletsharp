@@ -70,37 +70,13 @@ namespace BulletSharp.SoftBody
     }
 
     [Serializable, DebuggerTypeProxy(typeof(AlignedSoftBodyArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedSoftBodyArray : AlignedObjectArray, IList<SoftBody>, IDisposable
+    public class AlignedSoftBodyArray : IList<SoftBody>
     {
-        bool _preventDelete;
+        internal IntPtr _native;
 
-        internal AlignedSoftBodyArray(IntPtr native, bool preventDelete = false)
-            : base(native)
+        internal AlignedSoftBodyArray(IntPtr native)
         {
-            _preventDelete = preventDelete;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (_native != IntPtr.Zero)
-            {
-                if (!_preventDelete)
-                {
-                    btAlignedSoftBodyArray_delete(_native);
-                }
-                _native = IntPtr.Zero;
-            }
-        }
-
-        ~AlignedSoftBodyArray()
-        {
-            Dispose(false);
+            _native = native;
         }
 
         public int IndexOf(SoftBody item)

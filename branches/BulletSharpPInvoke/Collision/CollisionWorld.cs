@@ -709,7 +709,7 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		AlignedCollisionObjectArray _collisionObjectArray;
+		protected AlignedCollisionObjectArray _collisionObjectArray;
 		protected Dispatcher _dispatcher;
 		protected BroadphaseInterface _broadphase;
         private DispatcherInfo _dispatchInfo;
@@ -717,28 +717,24 @@ namespace BulletSharp
 		internal CollisionWorld(IntPtr native)
 		{
 			_native = native;
+            _collisionObjectArray = new AlignedCollisionObjectArray(btCollisionWorld_getCollisionObjectArray(native), native);
 		}
 
 		public CollisionWorld(Dispatcher dispatcher, BroadphaseInterface broadphasePairCache, CollisionConfiguration collisionConfiguration)
+            : this(btCollisionWorld_new(dispatcher._native, broadphasePairCache._native, collisionConfiguration._native))
 		{
-			_native = btCollisionWorld_new(dispatcher._native, broadphasePairCache._native, collisionConfiguration._native);
 			_dispatcher = dispatcher;
 			Broadphase = broadphasePairCache;
 		}
 
 		public void AddCollisionObject(CollisionObject collisionObject)
 		{
-			btCollisionWorld_addCollisionObject(_native, collisionObject._native);
-		}
-
-        public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup)
-		{
-            btCollisionWorld_addCollisionObject2(_native, collisionObject._native, (short)collisionFilterGroup);
+            _collisionObjectArray.Add(collisionObject);
 		}
 
         public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 		{
-            btCollisionWorld_addCollisionObject3(_native, collisionObject._native, (short)collisionFilterGroup, (short)collisionFilterMask);
+            _collisionObjectArray.Add(collisionObject, collisionFilterGroup, collisionFilterMask);
 		}
 
 		public void ComputeOverlappingPairs()
@@ -848,7 +844,7 @@ namespace BulletSharp
 
 		public void RemoveCollisionObject(CollisionObject collisionObject)
 		{
-			btCollisionWorld_removeCollisionObject(_native, collisionObject._native);
+            _collisionObjectArray.Remove(collisionObject);
 		}
 
         protected void SerializeCollisionObjects(Serializer serializer)
@@ -911,10 +907,6 @@ namespace BulletSharp
 		{
 			get
 			{
-				if (_collisionObjectArray == null)
-				{
-					_collisionObjectArray = new AlignedCollisionObjectArray(btCollisionWorld_getCollisionObjectArray(_native), true);
-				}
 				return _collisionObjectArray;
 			}
 		}
@@ -997,12 +989,6 @@ namespace BulletSharp
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionWorld_new(IntPtr dispatcher, IntPtr broadphasePairCache, IntPtr collisionConfiguration);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_addCollisionObject(IntPtr obj, IntPtr collisionObject);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_addCollisionObject2(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup, short collisionFilterMask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_computeOverlappingPairs(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

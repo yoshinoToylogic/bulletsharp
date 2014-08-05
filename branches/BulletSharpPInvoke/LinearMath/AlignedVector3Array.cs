@@ -6,16 +6,18 @@ using System.Security;
 
 namespace BulletSharp
 {
-    public class AlignedVector3Array : AlignedObjectArray, IList<Vector3>, IDisposable
+    public class AlignedVector3Array : IList<Vector3>, IDisposable
     {
+        internal IntPtr _native;
+
         internal AlignedVector3Array(IntPtr native)
-            : base(native)
         {
+            _native = native;
         }
 
         public AlignedVector3Array()
-            : base(btAlignedVector3Array_new())
         {
+            _native = btAlignedVector3Array_new();
         }
 
         public void Dispose()

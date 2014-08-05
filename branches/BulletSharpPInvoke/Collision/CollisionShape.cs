@@ -8,6 +8,7 @@ namespace BulletSharp
 	public class CollisionShape : IDisposable
 	{
 		internal readonly IntPtr _native;
+        private bool _preventDelete;
         private bool _isDisposed;
 
         internal static CollisionShape GetManaged(IntPtr obj)
@@ -18,21 +19,20 @@ namespace BulletSharp
             }
 
             IntPtr userPtr = btCollisionShape_getUserPointer(obj);
-            if (userPtr != IntPtr.Zero)
-            {
-                return GCHandle.FromIntPtr(userPtr).Target as CollisionShape;
-            }
-
-            throw new NotImplementedException();
+            return GCHandle.FromIntPtr(userPtr).Target as CollisionShape;
         }
 
-        internal CollisionShape(IntPtr obj)
+        internal CollisionShape(IntPtr native, bool preventDelete = false)
         {
-            _native = obj;
-            if (btCollisionShape_getUserPointer(_native) == IntPtr.Zero)
+            _native = native;
+            if (preventDelete)
+            {
+                _preventDelete = true;
+            }
+            else
             {
                 GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
-                btCollisionShape_setUserPointer(_native, GCHandle.ToIntPtr(handle));
+                btCollisionShape_setUserPointer(native, GCHandle.ToIntPtr(handle));
             }
         }
 
@@ -204,7 +204,7 @@ namespace BulletSharp
             {
                 return false;
             }
-            return _native.Equals(shape._native);
+            return _native == shape._native;
         }
 
         public override int GetHashCode()
@@ -224,10 +224,13 @@ namespace BulletSharp
 			{
                 _isDisposed = true;
 
-                IntPtr userPtr = btCollisionShape_getUserPointer(_native);
-                GCHandle.FromIntPtr(userPtr).Free();
+                if (!_preventDelete)
+                {
+                    IntPtr userPtr = btCollisionShape_getUserPointer(_native);
+                    GCHandle.FromIntPtr(userPtr).Free();
 
-                btCollisionShape_delete(_native);
+                    btCollisionShape_delete(_native);
+                }
 			}
 		}
 

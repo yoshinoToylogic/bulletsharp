@@ -15,7 +15,7 @@ namespace BulletSharp
         Gpu = 5
     }
 
-	public class DynamicsWorld : CollisionWorld
+	public abstract class DynamicsWorld : CollisionWorld
 	{
         public delegate void InternalTickCallback(DynamicsWorld world, float timeStep);
         
@@ -40,7 +40,7 @@ namespace BulletSharp
 		{
             // Store GC handle in user info (not available for btCollisionWorld)
             GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
-            btDynamicsWorld_setWorldUserInfo(_native, GCHandle.ToIntPtr(handle));
+            btDynamicsWorld_setWorldUserInfo(native, GCHandle.ToIntPtr(handle));
 		}
 
 		public void AddAction(IAction action)
@@ -71,12 +71,12 @@ namespace BulletSharp
 
 		public void AddRigidBody(RigidBody body)
 		{
-			btDynamicsWorld_addRigidBody(_native, body._native);
+            _collisionObjectArray.Add(body);
 		}
 
         public void AddRigidBody(RigidBody body, CollisionFilterGroups group, CollisionFilterGroups mask)
 		{
-			btDynamicsWorld_addRigidBody2(_native, body._native, group, mask);
+            _collisionObjectArray.Add(body, group, mask);
 		}
 
 		public void ClearForces()
@@ -120,7 +120,7 @@ namespace BulletSharp
 
 		public void RemoveRigidBody(RigidBody body)
 		{
-			btDynamicsWorld_removeRigidBody(_native, body._native);
+            _collisionObjectArray.Remove(body);
 		}
 
         public void SetGravity(ref Vector3 gravity)
@@ -248,10 +248,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint, bool disableCollisionsBetweenLinkedBodies);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, CollisionFilterGroups group, CollisionFilterGroups mask);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_clearForces(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDynamicsWorld_getConstraint(IntPtr obj, int index);
@@ -271,8 +267,6 @@ namespace BulletSharp
 		static extern void btDynamicsWorld_removeAction(IntPtr obj, IntPtr action);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_removeConstraint(IntPtr obj, IntPtr constraint);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_removeRigidBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_setConstraintSolver(IntPtr obj, IntPtr solver);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -1,10 +1,10 @@
-﻿using BulletSharp;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using BulletSharp;
 using BulletSharp.SoftBody;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
 //using Vector3 = OpenTK.Vector3;
 using Vector3 = BulletSharp.Math.Vector3;
 
