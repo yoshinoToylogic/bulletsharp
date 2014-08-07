@@ -116,10 +116,30 @@ btScalar btSoftBody_AJoint_IControlWrapper::Speed(btSoftBody::AJoint* aJoint, bt
 	return _speedCallback(aJoint, current);
 }
 
+void* btSoftBody_AJoint_IControlWrapper::getWrapperData()
+{
+	return _wrapperData;
+}
+
+void btSoftBody_AJoint_IControlWrapper::setWrapperData(void* data)
+{
+	_wrapperData = data;
+}
+
 
 btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pPrepare prepareCallback, pSpeed speedCallback)
 {
 	return ALIGNED_NEW(btSoftBody_AJoint_IControlWrapper)(prepareCallback, speedCallback);
+}
+
+void* btSoftBody_AJoint_IControlWrapper_getWrapperData(btSoftBody_AJoint_IControlWrapper* obj)
+{
+	return obj->getWrapperData();
+}
+
+void btSoftBody_AJoint_IControlWrapper_setWrapperData(btSoftBody_AJoint_IControlWrapper* obj, void* data)
+{
+	obj->setWrapperData(data);
 }
 
 
@@ -1061,6 +1081,23 @@ btSoftBody::Material* btSoftBody_Feature_getMaterial(btSoftBody::Feature* obj)
 void btSoftBody_Feature_setMaterial(btSoftBody::Feature* obj, btSoftBody::Material* value)
 {
 	obj->m_material = value;
+}
+
+
+btSoftBody_ImplicitFnWrapper::btSoftBody_ImplicitFnWrapper(pEval evalCallback)
+{
+	_evalCallback = evalCallback;
+}
+
+btScalar btSoftBody_ImplicitFnWrapper::Eval(const btVector3& x)
+{
+	return _evalCallback(x);
+}
+
+
+btSoftBody_ImplicitFn* btSoftBody_ImplicitFnWrapper_new(pEval evalCallback)
+{
+	return new btSoftBody_ImplicitFnWrapper(evalCallback);
 }
 
 

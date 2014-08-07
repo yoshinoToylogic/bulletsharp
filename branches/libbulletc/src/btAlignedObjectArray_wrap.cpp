@@ -190,6 +190,32 @@ void btAlignedSoftBodyFaceArray_delete(btSoftBody::tFaceArray* obj)
 }
 
 
+btSoftBody::Joint* btAlignedSoftBodyJointArray_at(btSoftBody::tJointArray* obj, int n)
+{
+	return obj->at(n);
+}
+
+void btAlignedSoftBodyJointArray_push_back(btSoftBody::tJointArray* obj, btSoftBody::Joint* val)
+{
+	obj->push_back(val);
+}
+
+void btAlignedSoftBodyJointArray_resizeNoInitialize(btSoftBody::tJointArray* obj, int newSize)
+{
+	return obj->resizeNoInitialize(newSize);
+}
+
+int btAlignedSoftBodyJointArray_size(btSoftBody::tJointArray* obj)
+{
+	return obj->size();
+}
+
+void btAlignedSoftBodyJointArray_delete(btSoftBody::tJointArray* obj)
+{
+	delete obj;
+}
+
+
 btSoftBody::Link* btAlignedSoftBodyLinkArray_at(btSoftBody::tLinkArray* obj, int n)
 {
 	return &obj->at(n);

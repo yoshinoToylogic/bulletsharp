@@ -20,8 +20,9 @@ namespace BulletSharp.SoftBody
         {
             get
             {
-                Tetra[] array = new Tetra[_array.Count];
-                for (int i = 0; i < _array.Count; i++)
+                int count = _array.Count;
+                Tetra[] array = new Tetra[count];
+                for (int i = 0; i < count; i++)
                 {
                     array[i] = _array[i];
                 }
@@ -98,10 +99,10 @@ namespace BulletSharp.SoftBody
         {
             get
             {
-                if (index < 0 || index >= Count)
-
+                if ((uint)index >= (uint)Count)
+                {
                     throw new ArgumentOutOfRangeException("index");
-
+                }
                 return new Tetra(btAlignedSoftBodyTetraArray_at(_native, index), true);
             }
             set

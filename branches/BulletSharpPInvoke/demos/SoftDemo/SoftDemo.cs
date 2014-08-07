@@ -917,7 +917,7 @@ namespace SoftDemo
             }
             AJoint.Specs aj = new AJoint.Specs();
             aj.Axis = new Vector3(0, 0, 1);
-            aj.IControl = motorControl;
+            aj.Control = motorControl;
             psb0.AppendAngularJoint(aj, psb1);
 
             LJoint.Specs lj = new LJoint.Specs();
@@ -966,11 +966,11 @@ namespace SoftDemo
             aspecs.Erp = 1;
             aspecs.Axis = new Vector3(1, 0, 0);
 
-            aspecs.IControl = steerControlF;
+            aspecs.Control = steerControlF;
             pa.AppendAngularJoint(aspecs, pfl);
             pa.AppendAngularJoint(aspecs, pfr);
 
-            aspecs.IControl = motorControl;
+            aspecs.Control = motorControl;
             pa.AppendAngularJoint(aspecs, prl);
             pa.AppendAngularJoint(aspecs, prr);
 
@@ -1098,24 +1098,24 @@ namespace SoftDemo
             softBodyWorldInfo.SparseSdf.GarbageCollect();
             base.OnUpdate();
         }
-        /*
+
         class ImplicitSphere : ImplicitFn
         {
             Vector3 center;
             float sqradius;
 
-            public ImplicitSphere(Vector3 c, float r)
+            public ImplicitSphere(ref Vector3 c, float r)
             {
                 center = c;
                 sqradius = r * r;
             }
 
-            public override float Eval(Vector3 x)
+            public override float Eval(ref Vector3 x)
             {
-                return ((x - center).LengthSquared() - sqradius);
+                return ((x - center).LengthSquared - sqradius);
             }
         };
-        */
+
         void PickingPreTickCallback(DynamicsWorld world, float timeStep)
         {
             if (drag)
@@ -1256,8 +1256,10 @@ namespace SoftDemo
             {
                 if ((!drag) && cutting && (results.Fraction < 1))
                 {
-                    //ImplicitSphere isphere = new ImplicitSphere(impact, 1);
-                    //results.Body.Refine(isphere, 0.0001f, true);
+                    using (ImplicitSphere isphere = new ImplicitSphere(ref impact, 1))
+                    {
+                        results.Body.Refine(isphere, 0.0001f, true);
+                    }
                 }
                 results.Fraction = 1;
                 drag = false;

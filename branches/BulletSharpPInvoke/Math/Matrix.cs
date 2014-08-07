@@ -213,11 +213,26 @@ namespace BulletSharp.Math
         /// </summary>
         public Matrix Basis
         {
-            get { return new Matrix(
-                M11, M12, M13, 0,
-                M21, M22, M23, 0,
-                M31, M32, M33, 0,
-                0, 0, 0, 1); }
+            get
+            {
+                return new Matrix(
+                    M11, M12, M13, 0,
+                    M21, M22, M23, 0,
+                    M31, M32, M33, 0,
+                    0, 0, 0, 1);
+            }
+            set
+            {
+                M11 = value.M11;
+                M12 = value.M12;
+                M13 = value.M13;
+                M21 = value.M21;
+                M22 = value.M22;
+                M23 = value.M23;
+                M31 = value.M31;
+                M32 = value.M32;
+                M33 = value.M33;
+            }
         }
 
         /// <summary>

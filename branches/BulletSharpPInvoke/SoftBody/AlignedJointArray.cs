@@ -4,24 +4,25 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Diagnostics;
 
-namespace BulletSharp
+namespace BulletSharp.SoftBody
 {
-    public class AlignedBroadphasePairArrayDebugView
+    public class AlignedJointArrayDebugView
     {
-        private readonly AlignedBroadphasePairArray _array;
+        private AlignedJointArray _array;
 
-        public AlignedBroadphasePairArrayDebugView(AlignedBroadphasePairArray array)
+        public AlignedJointArrayDebugView(AlignedJointArray array)
         {
             _array = array;
         }
 
         [DebuggerBrowsable(DebuggerBrowsableState.RootHidden)]
-        public BroadphasePair[] Items
+        public Joint[] Items
         {
             get
             {
-                BroadphasePair[] array = new BroadphasePair[_array.Count];
-                for (int i = 0; i < _array.Count; i++)
+                int count = _array.Count;
+                Joint[] array = new Joint[count];
+                for (int i = 0; i < count; i++)
                 {
                     array[i] = _array[i];
                 }
@@ -30,20 +31,20 @@ namespace BulletSharp
         }
     }
 
-    public class AlignedBroadphasePairArrayEnumerator : IEnumerator<BroadphasePair>
+    public class AlignedJointArrayEnumerator : IEnumerator<Joint>
     {
         int _i;
-        readonly int _count;
-        readonly AlignedBroadphasePairArray _array;
+        int _count;
+        AlignedJointArray _array;
 
-        public AlignedBroadphasePairArrayEnumerator(AlignedBroadphasePairArray array)
+        public AlignedJointArrayEnumerator(AlignedJointArray array)
         {
             _array = array;
             _count = array.Count;
             _i = -1;
         }
 
-        public BroadphasePair Current
+        public Joint Current
         {
             get { return _array[_i]; }
         }
@@ -69,22 +70,22 @@ namespace BulletSharp
         }
     }
 
-    [Serializable, DebuggerTypeProxy(typeof(AlignedBroadphasePairArrayDebugView)), DebuggerDisplay("Count = {Count}")]
-    public class AlignedBroadphasePairArray : IList<BroadphasePair>
+    [Serializable, DebuggerTypeProxy(typeof(AlignedJointArrayDebugView)), DebuggerDisplay("Count = {Count}")]
+    public class AlignedJointArray : IList<Joint>
     {
-        internal IntPtr _native;
+        private IntPtr _native;
 
-        internal AlignedBroadphasePairArray(IntPtr native)
+        internal AlignedJointArray(IntPtr native)
         {
             _native = native;
         }
 
-        public int IndexOf(BroadphasePair item)
+        public int IndexOf(Joint item)
         {
             throw new NotImplementedException();
         }
 
-        public void Insert(int index, BroadphasePair item)
+        public void Insert(int index, Joint item)
         {
             throw new NotImplementedException();
         }
@@ -94,15 +95,15 @@ namespace BulletSharp
             throw new NotImplementedException();
         }
 
-        public BroadphasePair this[int index]
+        public Joint this[int index]
         {
             get
             {
                 if ((uint)index >= (uint)Count)
-
+                {
                     throw new ArgumentOutOfRangeException("index");
-
-                return new BroadphasePair(btAlignedBroadphasePairArray_at(_native, index), true);
+                }
+                return Joint.GetManaged(btAlignedSoftBodyJointArray_at(_native, index));
             }
             set
             {
@@ -110,29 +111,29 @@ namespace BulletSharp
             }
         }
 
-        public void Add(BroadphasePair item)
+        public void Add(Joint item)
         {
-            btAlignedBroadphasePairArray_push_back(_native, item._native);
+            btAlignedSoftBodyJointArray_push_back(_native, item._native);
         }
 
         public void Clear()
         {
-            btAlignedBroadphasePairArray_resizeNoInitialize(_native, 0);
+            btAlignedSoftBodyJointArray_resizeNoInitialize(_native, 0);
         }
 
-        public bool Contains(BroadphasePair item)
+        public bool Contains(Joint item)
         {
             throw new NotImplementedException();
         }
 
-        public void CopyTo(BroadphasePair[] array, int arrayIndex)
+        public void CopyTo(Joint[] array, int arrayIndex)
         {
             throw new NotImplementedException();
         }
 
         public int Count
         {
-            get { return btAlignedBroadphasePairArray_size(_native); }
+            get { return btAlignedSoftBodyJointArray_size(_native); }
         }
 
         public bool IsReadOnly
@@ -140,30 +141,30 @@ namespace BulletSharp
             get { return false; }
         }
 
-        public bool Remove(BroadphasePair item)
+        public bool Remove(Joint item)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerator<BroadphasePair> GetEnumerator()
+        public IEnumerator<Joint> GetEnumerator()
         {
-            return new AlignedBroadphasePairArrayEnumerator(this);
+            return new AlignedJointArrayEnumerator(this);
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new AlignedBroadphasePairArrayEnumerator(this);
+            return new AlignedJointArrayEnumerator(this);
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedBroadphasePairArray_at(IntPtr obj, int n);
+        protected static extern IntPtr btAlignedSoftBodyJointArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedBroadphasePairArray_push_back(IntPtr obj, IntPtr val);
+        protected static extern void btAlignedSoftBodyJointArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedBroadphasePairArray_resizeNoInitialize(IntPtr obj, int newSize);
+        protected static extern void btAlignedSoftBodyJointArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedBroadphasePairArray_size(IntPtr obj);
+        protected static extern int btAlignedSoftBodyJointArray_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedBroadphasePairArray_delete(IntPtr obj);
+        protected static extern void btAlignedSoftBodyJointArray_delete(IntPtr obj);
     }
 }

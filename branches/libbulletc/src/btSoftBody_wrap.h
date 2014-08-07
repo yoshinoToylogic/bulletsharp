@@ -14,10 +14,13 @@ class btSoftBody_AJoint_IControlWrapper : public btSoftBody::AJoint::IControl
 private:
 	pPrepare _prepareCallback;
 	pSpeed _speedCallback;
+	void* _wrapperData;
 public:
 	btSoftBody_AJoint_IControlWrapper(pPrepare prepareCallback, pSpeed speedCallback);
 	virtual void Prepare(btSoftBody::AJoint* aJoint);
 	virtual btScalar Speed(btSoftBody::AJoint* aJoint, btScalar current);
+	void* getWrapperData();
+	void setWrapperData(void* data);
 };
 
 class btSoftBody_ImplicitFnWrapper : public btSoftBody::ImplicitFn
@@ -53,6 +56,8 @@ extern "C"
 	EXPORT void btSoftBodyWorldInfo_delete(btSoftBodyWorldInfo* obj);
 
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pPrepare prepareCallback, pSpeed speedCallback);
+	EXPORT void* btSoftBody_AJoint_IControlWrapper_getWrapperData(btSoftBody_AJoint_IControlWrapper* obj);
+	EXPORT void btSoftBody_AJoint_IControlWrapper_setWrapperData(btSoftBody_AJoint_IControlWrapper* obj, void* data);
 
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_new();
 	EXPORT btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControl_Default();
