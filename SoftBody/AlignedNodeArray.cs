@@ -20,8 +20,9 @@ namespace BulletSharp.SoftBody
         {
             get
             {
-                Node[] array = new Node[_array.Count];
-                for (int i = 0; i < _array.Count; i++)
+                int count = _array.Count;
+                Node[] array = new Node[count];
+                for (int i = 0; i < count; i++)
                 {
                     array[i] = _array[i];
                 }
@@ -98,10 +99,10 @@ namespace BulletSharp.SoftBody
         {
             get
             {
-                if (index < 0 || index >= Count)
-
+                if ((uint)index >= (uint)Count)
+                {
                     throw new ArgumentOutOfRangeException("index");
-
+                }
                 return new Node(btAlignedSoftBodyNodeArray_at(_native, index), true);
             }
             set

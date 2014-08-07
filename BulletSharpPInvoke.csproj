@@ -216,6 +216,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SoftBody\AlignedJointArray.cs" />
     <Compile Include="SoftBody\AlignedMaterialArray.cs" />
     <Compile Include="SoftBody\AlignedNodeArray.cs" />
     <Compile Include="SoftBody\AlignedClusterArray.cs" />

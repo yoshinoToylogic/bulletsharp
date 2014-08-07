@@ -59,16 +59,20 @@ namespace BulletSharp
         {
             get
             {
-                if (index < 0 || index >= Count)
-
+                if ((uint)index >= (uint)Count)
+                {
                     throw new ArgumentOutOfRangeException("index");
-
+                }
                 Vector3 value;
                 btAlignedVector3Array_at(_native, index, out value);
                 return value;
             }
             set
             {
+                if ((uint)index >= (uint)Count)
+                {
+                    throw new ArgumentOutOfRangeException("index");
+                }
                 btAlignedVector3Array_set(_native, index, ref value);
             }
         }

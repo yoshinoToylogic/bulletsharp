@@ -103,10 +103,10 @@ namespace BulletSharp
         {
             get
             {
-                if (index < 0 || index >= Count)
-
+                if ((uint)index >= (uint)Count)
+                {
                     throw new ArgumentOutOfRangeException("index");
-
+                }
                 return new PersistentManifold(btManifoldArray_at(_native, index), true);
             }
             set

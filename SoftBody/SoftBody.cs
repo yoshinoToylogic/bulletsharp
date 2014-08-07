@@ -236,6 +236,22 @@ namespace BulletSharp.SoftBody
             PrepareUnmanagedDelegate _prepare;
             SpeedUnmanagedDelegate _speed;
 
+            internal static IControl GetManaged(IntPtr native)
+            {
+                if (native == IntPtr.Zero)
+                {
+                    return null;
+                }
+
+                if (native == Default._native)
+                {
+                    return Default;
+                }
+
+                IntPtr handle = btSoftBody_AJoint_IControlWrapper_getWrapperData(native);
+                return GCHandle.FromIntPtr(handle).Target as IControl;
+            }
+
             internal IControl(IntPtr native, bool preventDelete)
 			{
 				_native = native;
@@ -250,11 +266,21 @@ namespace BulletSharp.SoftBody
                 _native = btSoftBody_AJoint_IControlWrapper_new(
                     Marshal.GetFunctionPointerForDelegate(_prepare),
                     Marshal.GetFunctionPointerForDelegate(_speed));
+                GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
+                btSoftBody_AJoint_IControlWrapper_setWrapperData(_native, GCHandle.ToIntPtr(handle));
 			}
 
-			public static IControl Default()
+            public static IControl _default;
+			public static IControl Default
 			{
-                return new IControl(btSoftBody_AJoint_IControl_Default(), true);
+                get
+                {
+                    if (_default == null)
+                    {
+                        _default = new IControl(btSoftBody_AJoint_IControl_Default(), true);
+                    }
+                    return _default;
+                }
 			}
 
             private void PrepareUnmanaged(IntPtr aJoint)
@@ -288,6 +314,8 @@ namespace BulletSharp.SoftBody
 				{
 				    if (!_preventDelete)
 				    {
+                        IntPtr handle = btSoftBody_AJoint_IControlWrapper_getWrapperData(_native);
+                        GCHandle.FromIntPtr(handle).Free();
                         btSoftBody_AJoint_IControl_delete(_native);
 				    }
 					_native = IntPtr.Zero;
@@ -301,6 +329,10 @@ namespace BulletSharp.SoftBody
 
             [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
             static extern IntPtr btSoftBody_AJoint_IControlWrapper_new(IntPtr prepareCallback, IntPtr speedCallback);
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern IntPtr btSoftBody_AJoint_IControlWrapper_getWrapperData(IntPtr obj);
+            [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+            static extern void btSoftBody_AJoint_IControlWrapper_setWrapperData(IntPtr obj, IntPtr data);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern IntPtr btSoftBody_AJoint_IControl_Default();
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -314,11 +346,6 @@ namespace BulletSharp.SoftBody
 		public new class Specs : Joint.Specs
 		{
             private IControl _iControl;
-
-			internal Specs(IntPtr native)
-				: base(native)
-			{
-			}
 
 			public Specs()
 				: base(btSoftBody_AJoint_Specs_new())
@@ -336,13 +363,13 @@ namespace BulletSharp.SoftBody
 				set { btSoftBody_AJoint_Specs_setAxis(_native, ref value); }
 			}
 
-			public IControl IControl
+			public IControl Control
 			{
                 get
                 {
                     if (_iControl == null)
                     {
-                        _iControl = new IControl(btSoftBody_AJoint_Specs_getIcontrol(_native), false);
+                        _iControl = IControl.GetManaged(btSoftBody_AJoint_Specs_getIcontrol(_native));
                     }
                     return _iControl;
                 }
@@ -382,13 +409,13 @@ namespace BulletSharp.SoftBody
 			}
 		}
 
-		public IControl Icontrol
+		public IControl Control
 		{
             get
             {
                 if (_iControl == null)
                 {
-                    _iControl = new IControl(btSoftBody_AJoint_getIcontrol(_native), false);
+                    _iControl = IControl.GetManaged(btSoftBody_AJoint_getIcontrol(_native));
                 }
                 return _iControl;
             }
@@ -1574,19 +1601,28 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_Feature_setMaterial(IntPtr obj, IntPtr value);
 	}
 
-	public class ImplicitFn : IDisposable
+	public abstract class ImplicitFn : IDisposable
 	{
 		internal IntPtr _native;
 
-		internal ImplicitFn(IntPtr native)
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate float EvalUnmanagedDelegate([In] ref Vector3 x);
+
+        EvalUnmanagedDelegate _eval;
+
+		protected ImplicitFn()
 		{
-			_native = native;
+            _eval = new EvalUnmanagedDelegate(Eval);
+
+            _native = btSoftBody_ImplicitFnWrapper_new(Marshal.GetFunctionPointerForDelegate(_eval));
 		}
 
-		public float Eval(Vector3 x)
-		{
-			return btSoftBody_ImplicitFn_Eval(_native, ref x);
-		}
+        private float EvalUnmanaged(ref Vector3 x)
+        {
+            return Eval(ref x);
+        }
+
+        public abstract float Eval(ref Vector3 x);
 
 		public void Dispose()
 		{
@@ -1608,6 +1644,8 @@ namespace BulletSharp.SoftBody
 			Dispose(false);
 		}
 
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btSoftBody_ImplicitFnWrapper_new(IntPtr evalCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btSoftBody_ImplicitFn_Eval(IntPtr obj, [In] ref Vector3 x);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -1801,6 +1839,26 @@ namespace BulletSharp.SoftBody
 
 	    private Vector3Array _refs;
 
+        internal static Joint GetManaged(IntPtr native)
+        {
+            if (native == IntPtr.Zero)
+            {
+                return null;
+            }
+
+            switch (btSoftBody_Joint_Type(native))
+            {
+                case JointType.Angular:
+                    return new AJoint(native);
+                case JointType.Contact:
+                    return new CJoint(native);
+                case JointType.Linear:
+                    return new LJoint(native);
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
 		internal Joint(IntPtr native)
 		{
 			_native = native;
@@ -1819,11 +1877,6 @@ namespace BulletSharp.SoftBody
 		public void Terminate(float dt)
 		{
 			btSoftBody_Joint_Terminate(_native, dt);
-		}
-
-		public JointType Type()
-		{
-			return btSoftBody_Joint_Type(_native);
 		}
         /*
 		public Body Bodies
@@ -1860,7 +1913,7 @@ namespace BulletSharp.SoftBody
 			set { btSoftBody_Joint_setErp(_native, value); }
 		}
 
-		public Matrix Massmatrix
+		public Matrix MassMatrix
 		{
 			get
 			{
@@ -1899,6 +1952,11 @@ namespace BulletSharp.SoftBody
 			get { return btSoftBody_Joint_getSplit(_native); }
 			set { btSoftBody_Joint_setSplit(_native, value); }
 		}
+
+        public JointType Type
+        {
+            get { return btSoftBody_Joint_Type(_native); }
+        }
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBody_Joint_getBodies(IntPtr obj);
@@ -2044,11 +2102,6 @@ namespace BulletSharp.SoftBody
 	{
 		public new class Specs : Joint.Specs
 		{
-			internal Specs(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public Specs()
 				: base(btSoftBody_LJoint_Specs_new())
 			{
@@ -3201,8 +3254,8 @@ namespace BulletSharp.SoftBody
         private SoftBodyWorldInfo _worldInfo;
         private AlignedClusterArray _clusters;
         private AlignedFaceArray _faces;
-        //private AlignedJointArray _joints;
-	    private List<Joint> _joints = new List<Joint>();
+        private AlignedJointArray _joints;
+        private List<AJoint.IControl> _aJointControls = new List<AJoint.IControl>();
         private AlignedLinkArray _links;
         private AlignedMaterialArray _materials;
         private AlignedNodeArray _nodes;
@@ -3288,23 +3341,35 @@ namespace BulletSharp.SoftBody
 			btSoftBody_appendAnchor6(_native, node, body._native, disableCollisionBetweenLinkedBodies, influence);
 		}
 
+        private void StoreAngularJointControlRef(AJoint.Specs specs)
+        {
+            if (specs.Control != null && specs.Control != AJoint.IControl.Default)
+            {
+                _aJointControls.Add(specs.Control);
+            }
+        }
+
         public void AppendAngularJoint(AJoint.Specs specs)
 		{
+            StoreAngularJointControlRef(specs);
 			btSoftBody_appendAngularJoint(_native, specs._native);
 		}
 
         public void AppendAngularJoint(AJoint.Specs specs, Body body)
 		{
+            StoreAngularJointControlRef(specs);
 			btSoftBody_appendAngularJoint2(_native, specs._native, body._native);
 		}
 
         public void AppendAngularJoint(AJoint.Specs specs, SoftBody body)
 		{
+            StoreAngularJointControlRef(specs);
 			btSoftBody_appendAngularJoint3(_native, specs._native, body._native);
 		}
 
         public void AppendAngularJoint(AJoint.Specs specs, Cluster body0, Body body1)
 		{
+            StoreAngularJointControlRef(specs);
 			btSoftBody_appendAngularJoint4(_native, specs._native, body0._native, body1._native);
 		}
 
@@ -3500,6 +3565,7 @@ namespace BulletSharp.SoftBody
 
 		public void CleanupClusters()
 		{
+            _aJointControls.Clear();
 			btSoftBody_cleanupClusters(_native);
 		}
 
@@ -4116,13 +4182,19 @@ namespace BulletSharp.SoftBody
 			}
 			set { btSoftBody_setInitialWorldTransform(_native, ref value); }
 		}
-        /*
-		public tJointArray Joints
+
+		public AlignedJointArray Joints
 		{
-			get { return btSoftBody_getJoints(_native); }
-			set { btSoftBody_setJoints(_native, value._native); }
+            get
+            {
+                if (_joints == null)
+                {
+                    _joints = new AlignedJointArray(btSoftBody_getJoints(_native));
+                }
+                return _joints;
+            }
 		}
-        */
+
 		public AlignedLinkArray Links
 		{
             get

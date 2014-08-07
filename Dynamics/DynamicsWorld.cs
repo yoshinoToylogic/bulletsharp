@@ -28,6 +28,7 @@ namespace BulletSharp
         private ContactSolverInfo _solverInfo;
 
         private Dictionary<IAction, ActionInterfaceWrapper> _actions;
+        private List<TypedConstraint> _constraints = new List<TypedConstraint>();
 
         internal static DynamicsWorld GetManagedDynamicsWorld(IntPtr collisionWorld)
         {
@@ -61,11 +62,13 @@ namespace BulletSharp
 
 		public void AddConstraint(TypedConstraint constraint)
 		{
+            _constraints.Add(constraint);
 			btDynamicsWorld_addConstraint(_native, constraint._native);
 		}
 
 		public void AddConstraint(TypedConstraint constraint, bool disableCollisionsBetweenLinkedBodies)
 		{
+            _constraints.Add(constraint);
 			btDynamicsWorld_addConstraint2(_native, constraint._native, disableCollisionsBetweenLinkedBodies);
 		}
 
@@ -86,7 +89,7 @@ namespace BulletSharp
 
 		public TypedConstraint GetConstraint(int index)
 		{
-            return TypedConstraint.GetManaged(btDynamicsWorld_getConstraint(_native, index));
+            return _constraints[index];
 		}
 
         public void GetGravity(out Vector3 gravity)
@@ -115,6 +118,10 @@ namespace BulletSharp
 
 		public void RemoveConstraint(TypedConstraint constraint)
 		{
+            int itemIndex = _constraints.IndexOf(constraint);
+            int lastIndex = _constraints.Count - 1;
+            _constraints[itemIndex] = _constraints[lastIndex];
+            _constraints.RemoveAt(lastIndex);
 			btDynamicsWorld_removeConstraint(_native, constraint._native);
 		}
 
@@ -241,6 +248,22 @@ namespace BulletSharp
 
         public Object WorldUserInfo { get; set; }
 
+        protected override void Dispose(bool disposing)
+        {
+            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
+            GCHandle.FromIntPtr(nativeUserInfo).Free();
+
+            if (_actions != null)
+            {
+                foreach (ActionInterfaceWrapper wrapper in _actions.Values)
+                {
+                    wrapper.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
+        }
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_addAction(IntPtr obj, IntPtr action);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -249,8 +272,8 @@ namespace BulletSharp
 		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint, bool disableCollisionsBetweenLinkedBodies);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_clearForces(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDynamicsWorld_getConstraint(IntPtr obj, int index);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btDynamicsWorld_getConstraint(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDynamicsWorld_getConstraintSolver(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -287,21 +310,5 @@ namespace BulletSharp
 		static extern int btDynamicsWorld_stepSimulation3(IntPtr obj, float timeStep, int maxSubSteps, float fixedTimeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_synchronizeMotionStates(IntPtr obj);
-
-        protected override void Dispose(bool disposing)
-        {
-            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
-            GCHandle.FromIntPtr(nativeUserInfo).Free();
-
-            if (_actions != null)
-            {
-                foreach (ActionInterfaceWrapper wrapper in _actions.Values)
-                {
-                    wrapper.Dispose();
-                }
-            }
-
-            base.Dispose(disposing);
-        }
 	}
 }

@@ -74,7 +74,7 @@ namespace BulletSharp
     {
         private IntPtr _native;
         private IntPtr _collisionWorld;
-        private CollisionObject[] _backingArray;
+        private List<CollisionObject> _backingArray;
 
         internal AlignedCollisionObjectArray(IntPtr native)
         {
@@ -87,7 +87,7 @@ namespace BulletSharp
             if (collisionWorld != null)
             {
                 _collisionWorld = collisionWorld;
-                _backingArray = new CollisionObject[0];
+                _backingArray = new List<CollisionObject>();
             }
         }
 
@@ -114,7 +114,7 @@ namespace BulletSharp
                 {
                     return _backingArray[index];
                 }
-                if (index < 0 || index >= Count)
+                if ((uint)index >= (uint)Count)
                 {
                     throw new ArgumentOutOfRangeException("index");
                 }
@@ -130,10 +130,12 @@ namespace BulletSharp
         {
             if (_collisionWorld != null)
             {
-                int childIndex = Count;
-
                 if (item is RigidBody)
                 {
+                    if (item.CollisionShape == null)
+                    {
+                        return;
+                    }
                     btDynamicsWorld_addRigidBody(_collisionWorld, item._native);
                 }
                 else if (item is BulletSharp.SoftBody.SoftBody)
@@ -145,9 +147,7 @@ namespace BulletSharp
                     btCollisionWorld_addCollisionObject(_collisionWorld, item._native);
                 }
 
-                // Add the item to the backing store.
-                Array.Resize<CollisionObject>(ref _backingArray, childIndex + 1);
-                _backingArray[childIndex] = item;
+                _backingArray.Add(item);
             }
             else
             {
@@ -157,10 +157,12 @@ namespace BulletSharp
 
         internal void Add(CollisionObject item, CollisionFilterGroups group, CollisionFilterGroups mask)
         {
-            int childIndex = Count;
-
             if (item is RigidBody)
             {
+                if (item.CollisionShape == null)
+                {
+                    return;
+                }
                 btDynamicsWorld_addRigidBody2(_collisionWorld, item._native, group, mask);
             }
             else if (item is BulletSharp.SoftBody.SoftBody)
@@ -172,13 +174,15 @@ namespace BulletSharp
                 btCollisionWorld_addCollisionObject3(_collisionWorld, item._native, group, mask);
             }
 
-            // Add the item to the backing store.
-            Array.Resize<CollisionObject>(ref _backingArray, childIndex + 1);
-            _backingArray[childIndex] = item;
+            _backingArray.Add(item);
         }
 
         public void Clear()
         {
+            if (_backingArray != null)
+            {
+                _backingArray.Clear();
+            }
             btAlignedCollisionObjectArray_resizeNoInitialize(_native, 0);
         }
 
@@ -212,7 +216,7 @@ namespace BulletSharp
                 //btAlignedCollisionObjectArray_remove(itemPtr);
             }
 
-            int count = Count;
+            int count = _backingArray.Count;
             for (int i = 0; i < count; i++)
             {
                 if (_backingArray[i]._native == itemPtr)
@@ -221,9 +225,13 @@ namespace BulletSharp
                     {
                         btSoftRigidDynamicsWorld_removeSoftBody(_collisionWorld, itemPtr);
                     }
-                    else
+                    else if (item is RigidBody)
                     {
                         btDynamicsWorld_removeRigidBody(_collisionWorld, item._native);
+                    }
+                    else
+                    {
+                        btCollisionWorld_removeCollisionObject(_collisionWorld, item._native);
                     }
                     count--;
 
@@ -232,7 +240,7 @@ namespace BulletSharp
                     {
                         _backingArray[i] = _backingArray[count];
                     }
-                    _backingArray[count] = null;
+                    _backingArray.RemoveAt(count);
                     return true;
                 }
             }
@@ -266,6 +274,8 @@ namespace BulletSharp
         //static extern void btCollisionWorld_addCollisionObject2(IntPtr obj, IntPtr collisionObject, CollisionFilterGroups collisionFilterGroup);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btCollisionWorld_removeCollisionObject(IntPtr obj, IntPtr collisionObject);
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);

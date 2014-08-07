@@ -372,22 +372,13 @@ namespace BulletSharp
 
         internal static TypedConstraint GetManaged(IntPtr native)
         {
-            if (btTypedConstraint_getUserConstraintId(native) != -1)
+            if (native == IntPtr.Zero)
             {
-                IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(native);
-                GCHandle handle = GCHandle.FromIntPtr(handlePtr);
-                return handle.Target as TypedConstraint;
+                return null;
             }
 
-            TypedConstraintType type = btTypedConstraint_getConstraintType(native);
-            switch (type)
-            {
-                case TypedConstraintType.D6:
-                    return new Generic6DofConstraint(native);
-                default:
-                    throw new NotImplementedException();
-            }
-            throw new NotImplementedException();
+            IntPtr handlePtr = btTypedConstraint_getUserConstraintPtr(native);
+            return GCHandle.FromIntPtr(handlePtr).Target as TypedConstraint;
         }
 
         internal TypedConstraint(IntPtr native)
@@ -399,7 +390,7 @@ namespace BulletSharp
                 throw new InvalidOperationException();
             }
 
-            GCHandle handle = GCHandle.Alloc(this);
+            GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
             btTypedConstraint_setUserConstraintPtr(_native, GCHandle.ToIntPtr(handle));
         }
 

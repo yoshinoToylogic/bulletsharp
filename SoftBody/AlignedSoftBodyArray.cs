@@ -20,8 +20,9 @@ namespace BulletSharp.SoftBody
         {
             get
             {
-                SoftBody[] array = new SoftBody[_array.Count];
-                for (int i = 0; i < _array.Count; i++)
+                int count = _array.Count;
+                SoftBody[] array = new SoftBody[count];
+                for (int i = 0; i < count; i++)
                 {
                     array[i] = _array[i];
                 }
@@ -98,10 +99,10 @@ namespace BulletSharp.SoftBody
         {
             get
             {
-                if (index < 0 || index >= Count)
-
+                if ((uint)index >= (uint)Count)
+                {
                     throw new ArgumentOutOfRangeException("index");
-
+                }
                 return CollisionObject.GetManaged(btAlignedSoftBodyArray_at(_native, index)) as SoftBody;
             }
             set
