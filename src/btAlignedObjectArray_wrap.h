@@ -45,6 +45,12 @@ extern "C"
 	EXPORT int btAlignedSoftBodyFaceArray_size(btAlignedSoftBodyFaceArray* obj);
 	EXPORT void btAlignedSoftBodyFaceArray_delete(btAlignedSoftBodyFaceArray* obj);
 
+	EXPORT btSoftBody_Joint* btAlignedSoftBodyJointArray_at(btAlignedSoftBodyJointArray* obj, int n);
+	EXPORT void btAlignedSoftBodyJointArray_push_back(btAlignedSoftBodyJointArray* obj, btSoftBody_Joint* val);
+	EXPORT void btAlignedSoftBodyJointArray_resizeNoInitialize(btAlignedSoftBodyJointArray* obj, int newSize);
+	EXPORT int btAlignedSoftBodyJointArray_size(btAlignedSoftBodyJointArray* obj);
+	EXPORT void btAlignedSoftBodyJointArray_delete(btAlignedSoftBodyJointArray* obj);
+
 	EXPORT btSoftBody_Link* btAlignedSoftBodyLinkArray_at(btAlignedSoftBodyLinkArray* obj, int n);
 	EXPORT void btAlignedSoftBodyLinkArray_push_back(btAlignedSoftBodyLinkArray* obj, btSoftBody_Link* val);
 	EXPORT void btAlignedSoftBodyLinkArray_resizeNoInitialize(btAlignedSoftBodyLinkArray* obj, int newSize);
