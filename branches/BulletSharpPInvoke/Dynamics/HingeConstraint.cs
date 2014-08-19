@@ -10,11 +10,6 @@ namespace BulletSharp
         private RigidBody _rigidBodyA;
         private RigidBody _rigidBodyB;
 
-		internal HingeConstraint(IntPtr native)
-			: base(native)
-		{
-		}
-
         public HingeConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 pivotInA, ref Vector3 pivotInB, ref Vector3 axisInA, ref Vector3 axisInB)
             : base(btHingeConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB, ref axisInA, ref axisInB))
         {
