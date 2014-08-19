@@ -55,11 +55,6 @@ namespace BulletSharp
         private RigidBody _rigidBodyA;
         private RigidBody _rigidBodyB;
 
-		internal Point2PointConstraint(IntPtr native)
-			: base(native)
-		{
-		}
-
         public Point2PointConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 pivotInA, ref Vector3 pivotInB)
             : base(btPoint2PointConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB))
         {

@@ -89,6 +89,7 @@ namespace BulletSharp
 
 		public TypedConstraint GetConstraint(int index)
 		{
+            System.Diagnostics.Debug.Assert(btDynamicsWorld_getConstraint(_native, index) == _constraints[index]._native);
             return _constraints[index];
 		}
 
@@ -272,8 +273,8 @@ namespace BulletSharp
 		static extern void btDynamicsWorld_addConstraint2(IntPtr obj, IntPtr constraint, bool disableCollisionsBetweenLinkedBodies);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_clearForces(IntPtr obj);
-		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		//static extern IntPtr btDynamicsWorld_getConstraint(IntPtr obj, int index);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern IntPtr btDynamicsWorld_getConstraint(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDynamicsWorld_getConstraintSolver(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

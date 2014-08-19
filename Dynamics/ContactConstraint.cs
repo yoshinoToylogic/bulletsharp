@@ -7,11 +7,6 @@ namespace BulletSharp
 {
 	public abstract class ContactConstraint : TypedConstraint
 	{
-		internal ContactConstraint(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public PersistentManifold ContactManifold
 		{
             get { return new PersistentManifold(btContactConstraint_getContactManifold(_native), true); }

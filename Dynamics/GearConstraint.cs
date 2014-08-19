@@ -10,11 +10,6 @@ namespace BulletSharp
         private RigidBody _rigidBodyA;
         private RigidBody _rigidBodyB;
 
-		internal GearConstraint(IntPtr native)
-			: base(native)
-		{
-		}
-
         public GearConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 axisInA, ref Vector3 axisInB)
             : base(btGearConstraint_new(rbA._native, rbB._native, ref axisInA, ref axisInB))
         {

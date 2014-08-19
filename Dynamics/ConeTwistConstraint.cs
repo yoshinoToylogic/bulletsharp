@@ -10,11 +10,6 @@ namespace BulletSharp
         private RigidBody _rigidBodyA;
         private RigidBody _rigidBodyB;
 
-		internal ConeTwistConstraint(IntPtr native)
-			: base(native)
-		{
-		}
-
         public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, ref Matrix rbAFrame, ref Matrix rbBFrame)
             : base(btConeTwistConstraint_new(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
         {

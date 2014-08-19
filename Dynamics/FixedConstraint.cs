@@ -10,11 +10,6 @@ namespace BulletSharp
         private RigidBody _rigidBodyA;
         private RigidBody _rigidBodyB;
 
-		internal FixedConstraint(IntPtr native)
-			: base(native)
-		{
-		}
-
         public FixedConstraint(RigidBody rbA, RigidBody rbB, ref Matrix frameInA, ref Matrix frameInB)
             : base(btFixedConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB))
         {
