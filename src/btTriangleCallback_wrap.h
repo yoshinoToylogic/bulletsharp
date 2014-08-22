@@ -3,6 +3,9 @@
 #ifndef BT_TRIANGLE_CALLBACK_H
 #define pInternalProcessTriangleIndex void*
 #define pProcessTriangle void*
+
+#define btTriangleCallbackWrapper void
+#define btInternalTriangleIndexCallbackWrapper void
 #else
 typedef void (*pInternalProcessTriangleIndex)(btVector3* triangle, int partId, int triangleIndex);
 typedef void (*pProcessTriangle)(btVector3* triangle, int partId, int triangleIndex);

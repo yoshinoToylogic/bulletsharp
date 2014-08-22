@@ -104,7 +104,7 @@ const btCollisionShape* btCompoundShape_getChildShape(btCompoundShape* obj, int 
 
 void btCompoundShape_getChildTransform(btCompoundShape* obj, int index, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getChildTransform(index), value);
+	TRANSFORM_OUT(&obj->getChildTransform(index), value);
 }
 
 btDbvt* btCompoundShape_getDynamicAabbTree(btCompoundShape* obj)

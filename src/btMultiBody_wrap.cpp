@@ -83,7 +83,7 @@ btScalar btMultiBody_getAngularDamping(btMultiBody* obj)
 
 void btMultiBody_getAngularMomentum(btMultiBody* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAngularMomentum(), value);
+	VECTOR3_OUT_VAL(obj->getAngularMomentum(), value);
 }
 
 btMultiBodyLinkCollider* btMultiBody_getBaseCollider(btMultiBody* obj)
@@ -93,12 +93,12 @@ btMultiBodyLinkCollider* btMultiBody_getBaseCollider(btMultiBody* obj)
 
 void btMultiBody_getBaseForce(btMultiBody* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getBaseForce(), value);
+	VECTOR3_OUT(&obj->getBaseForce(), value);
 }
 
 void btMultiBody_getBaseInertia(btMultiBody* obj, btScalar* inertia)
 {
-	VECTOR3_OUT(obj->getBaseInertia(), inertia);
+	VECTOR3_OUT(&obj->getBaseInertia(), inertia);
 }
 
 btScalar btMultiBody_getBaseMass(btMultiBody* obj)
@@ -108,22 +108,22 @@ btScalar btMultiBody_getBaseMass(btMultiBody* obj)
 
 void btMultiBody_getBaseOmega(btMultiBody* obj, btScalar* omega)
 {
-	VECTOR3_OUT(obj->getBaseOmega(), omega);
+	VECTOR3_OUT_VAL(obj->getBaseOmega(), omega);
 }
 
 void btMultiBody_getBasePos(btMultiBody* obj, btScalar* pos)
 {
-	VECTOR3_OUT(obj->getBasePos(), pos);
+	VECTOR3_OUT(&obj->getBasePos(), pos);
 }
 
 void btMultiBody_getBaseTorque(btMultiBody* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getBaseTorque(), value);
+	VECTOR3_OUT(&obj->getBaseTorque(), value);
 }
 
 void btMultiBody_getBaseVel(btMultiBody* obj, btScalar* vel)
 {
-	VECTOR3_OUT(obj->getBaseVel(), vel);
+	VECTOR3_OUT_VAL(obj->getBaseVel(), vel);
 }
 
 int btMultiBody_getCompanionId(btMultiBody* obj)
@@ -163,12 +163,12 @@ btMultibodyLink* btMultiBody_getLink(btMultiBody* obj, int index)
 
 void btMultiBody_getLinkForce(btMultiBody* obj, int i, btScalar* value)
 {
-	VECTOR3_OUT(obj->getLinkForce(i), value);
+	VECTOR3_OUT(&obj->getLinkForce(i), value);
 }
 
 void btMultiBody_getLinkInertia(btMultiBody* obj, int i, btScalar* value)
 {
-	VECTOR3_OUT(obj->getLinkInertia(i), value);
+	VECTOR3_OUT(&obj->getLinkInertia(i), value);
 }
 
 btScalar btMultiBody_getLinkMass(btMultiBody* obj, int i)
@@ -178,7 +178,7 @@ btScalar btMultiBody_getLinkMass(btMultiBody* obj, int i)
 
 void btMultiBody_getLinkTorque(btMultiBody* obj, int i, btScalar* value)
 {
-	VECTOR3_OUT(obj->getLinkTorque(i), value);
+	VECTOR3_OUT(&obj->getLinkTorque(i), value);
 }
 
 btScalar btMultiBody_getMaxAppliedImpulse(btMultiBody* obj)
@@ -198,12 +198,12 @@ int btMultiBody_getParent(btMultiBody* obj, int link_num)
 
 void btMultiBody_getParentToLocalRot(btMultiBody* obj, int i, btScalar* value)
 {
-	QUATERNION_OUT(obj->getParentToLocalRot(i), value);
+	QUATERNION_OUT(&obj->getParentToLocalRot(i), value);
 }
 
 void btMultiBody_getRVector(btMultiBody* obj, int i, btScalar* value)
 {
-	VECTOR3_OUT(obj->getRVector(i), value);
+	VECTOR3_OUT(&obj->getRVector(i), value);
 }
 
 bool btMultiBody_getUseGyroTerm(btMultiBody* obj)
@@ -218,7 +218,7 @@ const btScalar* btMultiBody_getVelocityVector(btMultiBody* obj)
 
 void btMultiBody_getWorldToBaseRot(btMultiBody* obj, btScalar* rot)
 {
-	QUATERNION_OUT(obj->getWorldToBaseRot(), rot);
+	QUATERNION_OUT(&obj->getWorldToBaseRot(), rot);
 }
 
 void btMultiBody_goToSleep(btMultiBody* obj)
@@ -244,13 +244,13 @@ bool btMultiBody_isAwake(btMultiBody* obj)
 void btMultiBody_localDirToWorld(btMultiBody* obj, int i, const btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	VECTOR3_OUT(obj->localDirToWorld(i, VECTOR3_USE(vec)), value);
+	VECTOR3_OUT_VAL(obj->localDirToWorld(i, VECTOR3_USE(vec)), value);
 }
 
 void btMultiBody_localPosToWorld(btMultiBody* obj, int i, const btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	VECTOR3_OUT(obj->localPosToWorld(i, VECTOR3_USE(vec)), value);
+	VECTOR3_OUT_VAL(obj->localPosToWorld(i, VECTOR3_USE(vec)), value);
 }
 
 void btMultiBody_setBaseCollider(btMultiBody* obj, btMultiBodyLinkCollider* collider)
@@ -394,13 +394,13 @@ void btMultiBody_wakeUp(btMultiBody* obj)
 void btMultiBody_worldDirToLocal(btMultiBody* obj, int i, const btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	VECTOR3_OUT(obj->worldDirToLocal(i, VECTOR3_USE(vec)), value);
+	VECTOR3_OUT_VAL(obj->worldDirToLocal(i, VECTOR3_USE(vec)), value);
 }
 
 void btMultiBody_worldPosToLocal(btMultiBody* obj, int i, const btScalar* vec, btScalar* value)
 {
 	VECTOR3_CONV(vec);
-	VECTOR3_OUT(obj->worldPosToLocal(i, VECTOR3_USE(vec)), value);
+	VECTOR3_OUT_VAL(obj->worldPosToLocal(i, VECTOR3_USE(vec)), value);
 }
 
 void btMultiBody_delete(btMultiBody* obj)

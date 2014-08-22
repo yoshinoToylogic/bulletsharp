@@ -24,6 +24,7 @@ void PfxParallelBatch_delete(PfxParallelBatch* obj)
 	delete obj;
 }
 
+
 PfxParallelGroup* PfxParallelGroup_new()
 {
 	return new PfxParallelGroup();
@@ -64,6 +65,7 @@ void PfxParallelGroup_delete(PfxParallelGroup* obj)
 	delete obj;
 }
 
+
 PfxSortData16* PfxSortData16_new()
 {
 	return new PfxSortData16();
@@ -103,6 +105,7 @@ void PfxSortData16_delete(PfxSortData16* obj)
 {
 	delete obj;
 }
+
 
 PfxSolverBody* PfxSolverBody_new()
 {
@@ -234,6 +237,7 @@ void PfxSolverBody_delete(PfxSolverBody* obj)
 	delete obj;
 }
 
+
 PfxSetupContactConstraintsIO* PfxSetupContactConstraintsIO_new()
 {
 	return new PfxSetupContactConstraintsIO();
@@ -343,6 +347,7 @@ void PfxSetupContactConstraintsIO_delete(PfxSetupContactConstraintsIO* obj)
 {
 	delete obj;
 }
+
 
 PfxSolveConstraintsIO* PfxSolveConstraintsIO_new()
 {
@@ -524,6 +529,7 @@ void PfxSolveConstraintsIO_delete(PfxSolveConstraintsIO* obj)
 	delete obj;
 }
 
+
 PfxPostSolverIO* PfxPostSolverIO_new()
 {
 	return new PfxPostSolverIO();
@@ -563,6 +569,7 @@ void PfxPostSolverIO_delete(PfxPostSolverIO* obj)
 {
 	delete obj;
 }
+
 
 btConstraintSolverIO* btConstraintSolverIO_new()
 {

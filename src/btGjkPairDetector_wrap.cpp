@@ -16,7 +16,7 @@ btGjkPairDetector* btGjkPairDetector_new2(const btConvexShape* objectA, const bt
 
 void btGjkPairDetector_getCachedSeparatingAxis(btGjkPairDetector* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getCachedSeparatingAxis(), value);
+	VECTOR3_OUT(&obj->getCachedSeparatingAxis(), value);
 }
 
 btScalar btGjkPairDetector_getCachedSeparatingDistance(btGjkPairDetector* obj)

@@ -320,12 +320,12 @@ void btSoftBody_Body_activate(btSoftBody::Body* obj)
 void btSoftBody_Body_angularVelocity(btSoftBody::Body* obj, const btScalar* rpos, btScalar* value)
 {
 	VECTOR3_CONV(rpos);
-	VECTOR3_OUT(obj->angularVelocity(VECTOR3_USE(rpos)), value);
+	VECTOR3_OUT_VAL(obj->angularVelocity(VECTOR3_USE(rpos)), value);
 }
 
 void btSoftBody_Body_angularVelocity2(btSoftBody::Body* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->angularVelocity(), value);
+	VECTOR3_OUT_VAL(obj->angularVelocity(), value);
 }
 
 void btSoftBody_Body_applyAImpulse(btSoftBody::Body* obj, const btSoftBody::Impulse* impulse)
@@ -393,12 +393,12 @@ btScalar btSoftBody_Body_invMass(btSoftBody::Body* obj)
 
 void btSoftBody_Body_invWorldInertia(btSoftBody::Body* obj, btScalar* value)
 {
-	MATRIX3X3_OUT(obj->invWorldInertia(), value);
+	MATRIX3X3_OUT(&obj->invWorldInertia(), value);
 }
 
 void btSoftBody_Body_linearVelocity(btSoftBody::Body* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->linearVelocity(), value);
+	VECTOR3_OUT_VAL(obj->linearVelocity(), value);
 }
 
 void btSoftBody_Body_setCollisionObject(btSoftBody::Body* obj, const btCollisionObject* value)
@@ -419,12 +419,12 @@ void btSoftBody_Body_setSoft(btSoftBody::Body* obj, btSoftBody::Cluster* value)
 void btSoftBody_Body_velocity(btSoftBody::Body* obj, const btScalar* rpos, btScalar* value)
 {
 	VECTOR3_CONV(rpos);
-	VECTOR3_OUT(obj->velocity(VECTOR3_USE(rpos)), value);
+	VECTOR3_OUT_VAL(obj->velocity(VECTOR3_USE(rpos)), value);
 }
 
 void btSoftBody_Body_xform(btSoftBody::Body* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->xform(), value);
+	TRANSFORM_OUT(&obj->xform(), value);
 }
 
 void btSoftBody_Body_delete(btSoftBody::Body* obj)
@@ -2514,12 +2514,12 @@ void btSoftBody_clusterAImpulse(btSoftBody::Cluster* cluster, const btSoftBody::
 
 void btSoftBody_clusterCom(btSoftBody* obj, int cluster, btScalar* value)
 {
-	VECTOR3_OUT(obj->clusterCom(cluster), value);
+	VECTOR3_OUT_VAL(obj->clusterCom(cluster), value);
 }
 
 void btSoftBody_clusterCom2(const btSoftBody::Cluster* cluster, btScalar* value)
 {
-	VECTOR3_OUT(btSoftBody::clusterCom(cluster), value);
+	VECTOR3_OUT_VAL(btSoftBody::clusterCom(cluster), value);
 }
 
 int btSoftBody_clusterCount(btSoftBody* obj)
@@ -2561,7 +2561,7 @@ void btSoftBody_clusterVAImpulse(btSoftBody::Cluster* cluster, const btScalar* i
 void btSoftBody_clusterVelocity(const btSoftBody::Cluster* cluster, const btScalar* rpos, btScalar* value)
 {
 	VECTOR3_CONV(rpos);
-	VECTOR3_OUT(btSoftBody::clusterVelocity(cluster, VECTOR3_USE(rpos)), value);
+	VECTOR3_OUT_VAL(btSoftBody::clusterVelocity(cluster, VECTOR3_USE(rpos)), value);
 }
 
 void btSoftBody_clusterVImpulse(btSoftBody::Cluster* cluster, const btScalar* rpos, const btScalar* impulse)
@@ -2598,7 +2598,7 @@ void btSoftBody_defaultCollisionHandler2(btSoftBody* obj, btSoftBody* psb)
 
 void btSoftBody_evaluateCom(btSoftBody* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->evaluateCom(), value);
+	VECTOR3_OUT_VAL(obj->evaluateCom(), value);
 }
 
 int btSoftBody_generateBendingConstraints(btSoftBody* obj, int distance)
@@ -2787,7 +2787,7 @@ btAlignedIntArray* btSoftBody_getUserIndexMapping(btSoftBody* obj)
 
 void btSoftBody_getWindVelocity(btSoftBody* obj, btScalar* velocity)
 {
-	VECTOR3_OUT(obj->getWindVelocity(), velocity);
+	VECTOR3_OUT(&obj->getWindVelocity(), velocity);
 }
 
 btScalar btSoftBody_getVolume(btSoftBody* obj)

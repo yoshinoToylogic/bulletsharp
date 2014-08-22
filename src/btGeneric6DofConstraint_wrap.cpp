@@ -457,27 +457,27 @@ void btGeneric6DofConstraint_getAngularUpperLimit(btGeneric6DofConstraint* obj, 
 
 void btGeneric6DofConstraint_getAxis(btGeneric6DofConstraint* obj, int axis_index, btScalar* value)
 {
-	VECTOR3_OUT2(obj->getAxis(axis_index), value);
+	VECTOR3_OUT_VAL(obj->getAxis(axis_index), value);
 }
 
 void btGeneric6DofConstraint_getCalculatedTransformA(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getCalculatedTransformA(), value);
+	TRANSFORM_OUT(&obj->getCalculatedTransformA(), value);
 }
 
 void btGeneric6DofConstraint_getCalculatedTransformB(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getCalculatedTransformB(), value);
+	TRANSFORM_OUT(&obj->getCalculatedTransformB(), value);
 }
 
 void btGeneric6DofConstraint_getFrameOffsetA(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetA(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetA(), value);
 }
 
 void btGeneric6DofConstraint_getFrameOffsetB(btGeneric6DofConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetB(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetB(), value);
 }
 
 void btGeneric6DofConstraint_getInfo1NonVirtual(btGeneric6DofConstraint* obj, btTypedConstraint::btConstraintInfo1* info)

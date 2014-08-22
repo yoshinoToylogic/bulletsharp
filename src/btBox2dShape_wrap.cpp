@@ -21,17 +21,17 @@ btBox2dShape* btBox2dShape_new3(btScalar boxHalfExtentX, btScalar boxHalfExtentY
 
 void btBox2dShape_getCentroid(btBox2dShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getCentroid(), value);
+	VECTOR3_OUT(&obj->getCentroid(), value);
 }
 
 void btBox2dShape_getHalfExtentsWithMargin(btBox2dShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getHalfExtentsWithMargin(), value);
+	VECTOR3_OUT_VAL(obj->getHalfExtentsWithMargin(), value);
 }
 
 void btBox2dShape_getHalfExtentsWithoutMargin(btBox2dShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getHalfExtentsWithoutMargin(), value);
+	VECTOR3_OUT(&obj->getHalfExtentsWithoutMargin(), value);
 }
 
 const btVector3* btBox2dShape_getNormals(btBox2dShape* obj)

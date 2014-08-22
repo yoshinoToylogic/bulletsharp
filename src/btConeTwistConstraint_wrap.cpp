@@ -35,12 +35,12 @@ void btConeTwistConstraint_enableMotor(btConeTwistConstraint* obj, bool b)
 
 void btConeTwistConstraint_getAFrame(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getAFrame(), value);
+	TRANSFORM_OUT(&obj->getAFrame(), value);
 }
 
 void btConeTwistConstraint_getBFrame(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getBFrame(), value);
+	TRANSFORM_OUT(&obj->getBFrame(), value);
 }
 
 btScalar btConeTwistConstraint_getFixThresh(btConeTwistConstraint* obj)
@@ -50,12 +50,12 @@ btScalar btConeTwistConstraint_getFixThresh(btConeTwistConstraint* obj)
 
 void btConeTwistConstraint_getFrameOffsetA(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetA(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetA(), value);
 }
 
 void btConeTwistConstraint_getFrameOffsetB(btConeTwistConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetB(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetB(), value);
 }
 
 void btConeTwistConstraint_getInfo1NonVirtual(btConeTwistConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
@@ -74,7 +74,7 @@ void btConeTwistConstraint_getInfo2NonVirtual(btConeTwistConstraint* obj, btType
 
 void btConeTwistConstraint_GetPointForAngle(btConeTwistConstraint* obj, btScalar fAngleInRadians, btScalar fLength, btScalar* value)
 {
-	VECTOR3_OUT(obj->GetPointForAngle(fAngleInRadians, fLength), value);
+	VECTOR3_OUT_VAL(obj->GetPointForAngle(fAngleInRadians, fLength), value);
 }
 
 int btConeTwistConstraint_getSolveSwingLimit(btConeTwistConstraint* obj)

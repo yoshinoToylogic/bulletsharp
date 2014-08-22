@@ -10,7 +10,7 @@ btDbvtAabbMm* btDbvtAabbMm_new()
 
 void btDbvtAabbMm_Center(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->Center(), value);
+	VECTOR3_OUT_VAL(obj->Center(), value);
 }
 
 int btDbvtAabbMm_Classify(btDbvtAabbMm* obj, const btScalar* n, btScalar o, int s)
@@ -32,7 +32,7 @@ void btDbvtAabbMm_Expand(btDbvtAabbMm* obj, const btScalar* e)
 
 void btDbvtAabbMm_Extents(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->Extents(), value);
+	VECTOR3_OUT_VAL(obj->Extents(), value);
 }
 
 btDbvtAabbMm* btDbvtAabbMm_FromCE(const btScalar* c, const btScalar* e)
@@ -77,17 +77,17 @@ btDbvtAabbMm* btDbvtAabbMm_FromPoints2(const btVector3* pts, int n)
 
 void btDbvtAabbMm_Lengths(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->Lengths(), value);
+	VECTOR3_OUT_VAL(obj->Lengths(), value);
 }
 
 void btDbvtAabbMm_Maxs(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->Maxs(), value);
+	VECTOR3_OUT(&obj->Maxs(), value);
 }
 
 void btDbvtAabbMm_Mins(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->Mins(), value);
+	VECTOR3_OUT(&obj->Mins(), value);
 }
 
 btScalar btDbvtAabbMm_ProjectMinimum(btDbvtAabbMm* obj, const btScalar* v, unsigned int signs)
@@ -104,12 +104,12 @@ void btDbvtAabbMm_SignedExpand(btDbvtAabbMm* obj, const btScalar* e)
 
 void btDbvtAabbMm_tMaxs(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->tMaxs(), value);
+	VECTOR3_OUT(&obj->tMaxs(), value);
 }
 
 void btDbvtAabbMm_tMins(btDbvtAabbMm* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->tMins(), value);
+	VECTOR3_OUT(&obj->tMins(), value);
 }
 
 void btDbvtAabbMm_delete(btDbvtAabbMm* obj)

@@ -96,7 +96,7 @@ void btRaycastVehicle_applyEngineForce(btRaycastVehicle* obj, btScalar force, in
 
 void btRaycastVehicle_getChassisWorldTransform(btRaycastVehicle* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getChassisWorldTransform(), value);
+	TRANSFORM_OUT(&obj->getChassisWorldTransform(), value);
 }
 
 btScalar btRaycastVehicle_getCurrentSpeedKmHour(btRaycastVehicle* obj)
@@ -111,7 +111,7 @@ int btRaycastVehicle_getForwardAxis(btRaycastVehicle* obj)
 
 void btRaycastVehicle_getForwardVector(btRaycastVehicle* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getForwardVector(), value);
+	VECTOR3_OUT_VAL(obj->getForwardVector(), value);
 }
 
 int btRaycastVehicle_getNumWheels(btRaycastVehicle* obj)
@@ -161,7 +161,7 @@ btAlignedWheelInfoArray* btRaycastVehicle_getWheelInfo2(btRaycastVehicle* obj)
 
 void btRaycastVehicle_getWheelTransformWS(btRaycastVehicle* obj, int wheelIndex, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getWheelTransformWS(wheelIndex), value);
+	TRANSFORM_OUT(&obj->getWheelTransformWS(wheelIndex), value);
 }
 
 btScalar btRaycastVehicle_rayCast(btRaycastVehicle* obj, btWheelInfo* wheel)

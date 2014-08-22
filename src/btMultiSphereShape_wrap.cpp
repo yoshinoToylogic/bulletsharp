@@ -25,7 +25,7 @@ int btMultiSphereShape_getSphereCount(btMultiSphereShape* obj)
 
 void btMultiSphereShape_getSpherePosition(btMultiSphereShape* obj, int index, btScalar* value)
 {
-	VECTOR3_OUT(obj->getSpherePosition(index), value);
+	VECTOR3_OUT(&obj->getSpherePosition(index), value);
 }
 
 btScalar btMultiSphereShape_getSphereRadius(btMultiSphereShape* obj, int index)

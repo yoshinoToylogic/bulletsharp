@@ -9,6 +9,7 @@ btBoxBoxCollisionAlgorithm::CreateFunc* btBoxBoxCollisionAlgorithm_CreateFunc_ne
 	return new btBoxBoxCollisionAlgorithm::CreateFunc();
 }
 
+
 btBoxBoxCollisionAlgorithm* btBoxBoxCollisionAlgorithm_new(const btCollisionAlgorithmConstructionInfo* ci)
 {
 	return new btBoxBoxCollisionAlgorithm(*ci);

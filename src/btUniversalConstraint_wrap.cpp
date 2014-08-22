@@ -11,12 +11,12 @@ btUniversalConstraint* btUniversalConstraint_new(btRigidBody* rbA, btRigidBody* 
 
 void btUniversalConstraint_getAnchor(btUniversalConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAnchor(), value);
+	VECTOR3_OUT(&obj->getAnchor(), value);
 }
 
 void btUniversalConstraint_getAnchor2(btUniversalConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAnchor2(), value);
+	VECTOR3_OUT(&obj->getAnchor2(), value);
 }
 
 btScalar btUniversalConstraint_getAngle1(btUniversalConstraint* obj)
@@ -31,12 +31,12 @@ btScalar btUniversalConstraint_getAngle2(btUniversalConstraint* obj)
 
 void btUniversalConstraint_getAxis1(btUniversalConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAxis1(), value);
+	VECTOR3_OUT(&obj->getAxis1(), value);
 }
 
 void btUniversalConstraint_getAxis2(btUniversalConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAxis2(), value);
+	VECTOR3_OUT(&obj->getAxis2(), value);
 }
 
 void btUniversalConstraint_setLowerLimit(btUniversalConstraint* obj, btScalar ang1min, btScalar ang2min)

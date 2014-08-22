@@ -19,7 +19,7 @@ btMultiBodyPoint2Point* btMultiBodyPoint2Point_new2(btMultiBody* bodyA, int link
 
 void btMultiBodyPoint2Point_getPivotInB(btMultiBodyPoint2Point* obj, btScalar* pivotInB)
 {
-	VECTOR3_OUT(obj->getPivotInB(), pivotInB);
+	VECTOR3_OUT(&obj->getPivotInB(), pivotInB);
 }
 
 void btMultiBodyPoint2Point_setPivotInB(btMultiBodyPoint2Point* obj, const btScalar* pivotInB)

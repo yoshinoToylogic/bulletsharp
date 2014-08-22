@@ -36,6 +36,7 @@ void btCollisionAlgorithmConstructionInfo_delete(btCollisionAlgorithmConstructio
 	delete obj;
 }
 
+
 btScalar btCollisionAlgorithm_calculateTimeOfImpact(btCollisionAlgorithm* obj, btCollisionObject* body0, btCollisionObject* body1, const btDispatcherInfo* dispatchInfo, btManifoldResult* resultOut)
 {
 	return obj->calculateTimeOfImpact(body0, body1, *dispatchInfo, resultOut);
