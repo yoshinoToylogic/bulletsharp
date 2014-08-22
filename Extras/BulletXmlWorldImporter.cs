@@ -44,6 +44,9 @@ namespace BulletSharp
                     case "btConvexHullShapeData":
                         DeSerializeConvexHullShapeData(element);
                         continue;
+                    case "btConvexInternalShapeData":
+                        DeSerializeConvexInternalShapeData(element);
+                        continue;
                     case "btDynamicsWorldFloatData":
                         DeSerializeDynamicsWorldData(element);
                         continue;
@@ -188,6 +191,23 @@ namespace BulletSharp
 
             _collisionShapeData.Add(convexHullData);
             _pointerLookup.Add(ptr, convexHullData);
+        }
+
+        private void DeSerializeConvexInternalShapeData(XmlElement element)
+        {
+            int ptr = int.Parse(element.GetAttribute("pointer"));
+            byte[] convexShapeData = new byte[Marshal.SizeOf(typeof(ConvexInternalShapeFloatData))];
+
+            using (MemoryStream stream = new MemoryStream(convexShapeData))
+            {
+                using (BulletWriter writer = new BulletWriter(stream))
+                {
+                    DeSerializeConvexInternalShapeData(element, writer);
+                }
+            }
+
+            _collisionShapeData.Add(convexShapeData);
+            _pointerLookup.Add(ptr, convexShapeData);
         }
 
         private void DeSerializeConvexInternalShapeData(XmlElement element, BulletWriter writer)

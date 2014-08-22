@@ -27,6 +27,16 @@ namespace BulletSharp
 		{
 		}
 
+        public override void GetWorldTransform(out Matrix worldTrans)
+        {
+            btMotionState_getWorldTransform(_native, out worldTrans);
+        }
+
+        public override void SetWorldTransform(ref Matrix worldTrans)
+        {
+            btMotionState_setWorldTransform(_native, ref worldTrans);
+        }
+
 		public Matrix CenterOfMassOffset
 		{
 			get
@@ -88,5 +98,10 @@ namespace BulletSharp
 		static extern void btDefaultMotionState_setStartWorldTrans(IntPtr obj, [In] ref Matrix value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDefaultMotionState_setUserPointer(IntPtr obj, IntPtr value);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btMotionState_getWorldTransform(IntPtr obj, [Out] out Matrix worldTrans);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btMotionState_setWorldTransform(IntPtr obj, [In] ref Matrix worldTrans);
 	}
 }

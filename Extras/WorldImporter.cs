@@ -510,7 +510,7 @@ namespace BulletSharp
             return body;
 		}
 
-		public ScaledBvhTriangleMeshShape CreateScaledTrangleMeshShape(BvhTriangleMeshShape meshShape, ref Vector3 localScalingbtBvhTriangleMeshShape)
+		public ScaledBvhTriangleMeshShape CreateScaledTriangleMeshShape(BvhTriangleMeshShape meshShape, ref Vector3 localScalingbtBvhTriangleMeshShape)
 		{
             ScaledBvhTriangleMeshShape shape = new ScaledBvhTriangleMeshShape(meshShape, localScalingbtBvhTriangleMeshShape);
             _allocatedCollisionShapes.Add(shape);

@@ -155,7 +155,7 @@ namespace BulletSharp
             }
         }
 
-        internal void Add(CollisionObject item, CollisionFilterGroups group, CollisionFilterGroups mask)
+        internal void Add(CollisionObject item, short group, short mask)
         {
             if (item is RigidBody)
             {
@@ -271,25 +271,25 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_addCollisionObject(IntPtr obj, IntPtr collisionObject);
         //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        //static extern void btCollisionWorld_addCollisionObject2(IntPtr obj, IntPtr collisionObject, CollisionFilterGroups collisionFilterGroup);
+        //static extern void btCollisionWorld_addCollisionObject2(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
+        static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup, short collisionFilterMask);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_removeCollisionObject(IntPtr obj, IntPtr collisionObject);
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btDynamicsWorld_addRigidBody(IntPtr obj, IntPtr body);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, CollisionFilterGroups group, CollisionFilterGroups mask);
+        static extern void btDynamicsWorld_addRigidBody2(IntPtr obj, IntPtr body, short group, short mask);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btDynamicsWorld_removeRigidBody(IntPtr obj, IntPtr body);
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btSoftRigidDynamicsWorld_addSoftBody(IntPtr obj, IntPtr body);
         //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        //static extern void btSoftRigidDynamicsWorld_addSoftBody2(IntPtr obj, IntPtr body, CollisionFilterGroups collisionFilterGroup);
+        //static extern void btSoftRigidDynamicsWorld_addSoftBody2(IntPtr obj, IntPtr body, short collisionFilterGroup);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern void btSoftRigidDynamicsWorld_addSoftBody3(IntPtr obj, IntPtr body, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask);
+        static extern void btSoftRigidDynamicsWorld_addSoftBody3(IntPtr obj, IntPtr body, short collisionFilterGroup, short collisionFilterMask);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btSoftRigidDynamicsWorld_removeSoftBody(IntPtr obj, IntPtr body);
     }
