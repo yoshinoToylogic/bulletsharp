@@ -79,8 +79,13 @@ namespace BulletSharp
 
         public void AddRigidBody(RigidBody body, CollisionFilterGroups group, CollisionFilterGroups mask)
 		{
-            _collisionObjectArray.Add(body, group, mask);
+            _collisionObjectArray.Add(body, (short)group, (short)mask);
 		}
+
+        public void AddRigidBody(RigidBody body, short group, short mask)
+        {
+            _collisionObjectArray.Add(body, group, mask);
+        }
 
 		public void ClearForces()
 		{

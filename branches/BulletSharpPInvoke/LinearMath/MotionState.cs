@@ -5,34 +5,55 @@ using BulletSharp.Math;
 
 namespace BulletSharp
 {
-	public class MotionState : IDisposable
+	public abstract class MotionState : IDisposable
 	{
 		internal IntPtr _native;
+
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void GetWorldTransformUnmanagedDelegate(out Matrix worldTrans);
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate void SetWorldTransformUnmanagedDelegate(ref Matrix worldTrans);
+
+        GetWorldTransformUnmanagedDelegate _getWorldTransform;
+        SetWorldTransformUnmanagedDelegate _setWorldTransform;
 
 		internal MotionState(IntPtr native)
 		{
 			_native = native;
 		}
 
-		public void GetWorldTransform(out Matrix worldTrans)
-		{
-			btMotionState_getWorldTransform(_native, out worldTrans);
-		}
+        protected MotionState()
+        {
+            _getWorldTransform = new GetWorldTransformUnmanagedDelegate(GetWorldTransformUnmanaged);
+            _setWorldTransform = new SetWorldTransformUnmanagedDelegate(SetWorldTransformUnmanaged);
 
-		public void SetWorldTransform(ref Matrix worldTrans)
-		{
-			btMotionState_setWorldTransform(_native, ref worldTrans);
-		}
+            _native = btMotionStateWrapper_new(
+                Marshal.GetFunctionPointerForDelegate(_getWorldTransform),
+                Marshal.GetFunctionPointerForDelegate(_setWorldTransform));
+        }
+
+        void GetWorldTransformUnmanaged(out Matrix worldTrans)
+        {
+            GetWorldTransform(out worldTrans);
+        }
+
+        void SetWorldTransformUnmanaged(ref Matrix worldTrans)
+        {
+            SetWorldTransform(ref worldTrans);
+        }
+
+        public abstract void GetWorldTransform(out Matrix worldTrans);
+        public abstract void SetWorldTransform(ref Matrix worldTrans);
 
         public Matrix WorldTransform
         {
             get
             {
                 Matrix transform;
-                btMotionState_getWorldTransform(_native, out transform);
+                GetWorldTransform(out transform);
                 return transform;
             }
-            set { btMotionState_setWorldTransform(_native, ref value); }
+            set { SetWorldTransform(ref value); }
         }
 
 		public void Dispose()
@@ -61,5 +82,8 @@ namespace BulletSharp
 		static extern void btMotionState_setWorldTransform(IntPtr obj, [In] ref Matrix worldTrans);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMotionState_delete(IntPtr obj);
-	}
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btMotionStateWrapper_new(IntPtr getWorldTransformCallback, IntPtr setWorldTransformCallback);
+    }
 }

@@ -206,12 +206,12 @@ int btManifoldPoint_getPartId1(btManifoldPoint* obj)
 
 void btManifoldPoint_getPositionWorldOnA(btManifoldPoint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getPositionWorldOnA(), value);
+	VECTOR3_OUT(&obj->getPositionWorldOnA(), value);
 }
 
 void btManifoldPoint_getPositionWorldOnB(btManifoldPoint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getPositionWorldOnB(), value);
+	VECTOR3_OUT(&obj->getPositionWorldOnB(), value);
 }
 
 void* btManifoldPoint_getUserPersistentData(btManifoldPoint* obj)

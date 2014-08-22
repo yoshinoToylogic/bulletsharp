@@ -278,14 +278,14 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
 #define VECTOR3_USE(vec) TEMP(vec)
 #define VECTOR3_OUT(from, to) btVector3ToVector3(from, to)
-#define VECTOR3_OUT2(from, to) btVector3ToVector3(from, to)
+#define VECTOR3_OUT_VAL(from, to) btVector3ToVector3(from, to)
 #define VECTOR3_DEF_OUT(vec) VECTOR3_OUT(&TEMP(vec), vec)
 #define VECTOR4_DEF(vec) ATTRIBUTE_ALIGNED16(btVector4) TEMP(vec)
 #define VECTOR4_IN(from, to) Vector4TobtVector4(from, to)
 #define VECTOR4_CONV(vec) VECTOR4_DEF(vec); VECTOR4_IN(vec, &TEMP(vec))
 #define VECTOR4_USE(vec) TEMP(vec)
 #define VECTOR4_OUT(from, to) btVector4ToVector4(from, to)
-#define VECTOR4_OUT2(from, to) btVector4ToVector4(from, to)
+#define VECTOR4_OUT_VAL(from, to) btVector4ToVector4(from, to)
 #define VECTOR4_DEF_OUT(vec) VECTOR4_OUT(&TEMP(vec), vec)
 #define TRANSFORM_DEF(tr) ATTRIBUTE_ALIGNED16(btTransform) TEMP(tr)
 #define MATRIX3X3_DEF(tr) ATTRIBUTE_ALIGNED16(btMatrix3x3) TEMP(tr)
@@ -294,21 +294,21 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define QUATERNION_CONV(quat) QUATERNION_DEF(quat); QUATERNION_IN(quat, &TEMP(quat))
 #define QUATERNION_USE(quat) TEMP(quat)
 #define QUATERNION_OUT(from, to) btQuaternionToQuaternion(from, to)
-#define QUATERNION_OUT2(from, to) btQuaternionToQuaternion(from, to)
+#define QUATERNION_OUT_VAL(from, to) btQuaternionToQuaternion(from, to)
 #else
 #define VECTOR3_DEF(vec)
 #define VECTOR3_IN(from, to) *to = *(btVector3*)from
 #define VECTOR3_CONV(vec)
 #define VECTOR3_USE(vec) *(btVector3*)vec
 #define VECTOR3_OUT(from, to) *(btVector3*)to = *from
-#define VECTOR3_OUT2(from, to) *(btVector3*)to = from
+#define VECTOR3_OUT_VAL(from, to) *(btVector3*)to = from
 #define VECTOR3_DEF_OUT(vec)
 #define VECTOR4_DEF(vec)
 #define VECTOR4_IN(from, to) *to = *(btVector4*)from
 #define VECTOR4_CONV(vec)
 #define VECTOR4_USE(vec) *(btVector4*)vec
 #define VECTOR4_OUT(from, to) *(btVector4*)to = *from
-#define VECTOR4_OUT2(from, to) *(btVector4*)to = from
+#define VECTOR4_OUT_VAL(from, to) *(btVector4*)to = from
 #define VECTOR4_DEF_OUT(vec)
 #define TRANSFORM_DEF(tr) btTransform TEMP(tr)
 #define MATRIX3X3_DEF(tr) btMatrix3x3 TEMP(tr)
@@ -317,12 +317,13 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define QUATERNION_CONV(quat)
 #define QUATERNION_USE(quat) *(btQuaternion*)quat
 #define QUATERNION_OUT(from, to) *(btQuaternion*)to = *from
-#define QUATERNION_OUT2(from, to) *(btQuaternion*)to = from
+#define QUATERNION_OUT_VAL(from, to) *(btQuaternion*)to = from
 #endif
 #define TRANSFORM_IN(from, to) MatrixTobtTransform(from, to)
 #define TRANSFORM_CONV(tr) TRANSFORM_DEF(tr); TRANSFORM_IN(tr, &TEMP(tr))
 #define TRANSFORM_USE(tr) TEMP(tr)
 #define TRANSFORM_OUT(from, to) btTransformToMatrix(from, to)
+#define TRANSFORM_OUT_VAL(from, to) btTransformToMatrix(from, to)
 #define TRANSFORM_DEF_OUT(tr) TRANSFORM_OUT(&TEMP(tr), tr)
 #define MATRIX3X3_IN(from, to) MatrixTobtMatrix3x3(from, to)
 #define MATRIX3X3_CONV(tr) MATRIX3X3_DEF(tr); MATRIX3X3_IN(tr, &TEMP(tr))

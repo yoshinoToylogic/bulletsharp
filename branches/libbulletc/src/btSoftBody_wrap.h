@@ -4,6 +4,8 @@
 #define pEval void*
 #define pPrepare void*
 #define pSpeed void*
+
+#define btSoftBody_AJoint_IControlWrapper void
 #else
 typedef btScalar (*pEval)(const btScalar* x);
 typedef void (*pPrepare)(btSoftBody::AJoint* aJoint);

@@ -69,12 +69,12 @@ void btPoint2PointConstraint_getInfo2NonVirtual(btPoint2PointConstraint* obj, bt
 
 void btPoint2PointConstraint_getPivotInA(btPoint2PointConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getPivotInA(), value);
+	VECTOR3_OUT(&obj->getPivotInA(), value);
 }
 
 void btPoint2PointConstraint_getPivotInB(btPoint2PointConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getPivotInB(), value);
+	VECTOR3_OUT(&obj->getPivotInB(), value);
 }
 
 btConstraintSetting* btPoint2PointConstraint_getSetting(btPoint2PointConstraint* obj)

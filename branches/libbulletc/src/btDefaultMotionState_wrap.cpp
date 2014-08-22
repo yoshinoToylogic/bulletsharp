@@ -58,21 +58,3 @@ void btDefaultMotionState_setUserPointer(btDefaultMotionState* obj, void* value)
 {
 	obj->m_userPointer = value;
 }
-
-void btMotionState_getWorldTransform(btMotionState* obj, btScalar* outTransform)
-{
-	TRANSFORM_DEF(outTransform);
-	obj->getWorldTransform(TRANSFORM_USE(outTransform));
-	TRANSFORM_DEF_OUT(outTransform);
-}
-
-void btMotionState_setWorldTransform(btMotionState* obj, btScalar* transform)
-{
-	TRANSFORM_CONV(transform);
-	obj->setWorldTransform(TRANSFORM_USE(transform));
-}
-
-void btMotionState_delete(btMotionState* obj)
-{
-	ALIGNED_FREE(obj);
-}

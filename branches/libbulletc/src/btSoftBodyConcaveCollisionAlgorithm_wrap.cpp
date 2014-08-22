@@ -63,12 +63,12 @@ void btSoftBodyTriangleCallback_clearCache(btSoftBodyTriangleCallback* obj)
 
 void btSoftBodyTriangleCallback_getAabbMax(btSoftBodyTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAabbMax(), value);
+	VECTOR3_OUT(&obj->getAabbMax(), value);
 }
 
 void btSoftBodyTriangleCallback_getAabbMin(btSoftBodyTriangleCallback* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAabbMin(), value);
+	VECTOR3_OUT(&obj->getAabbMin(), value);
 }
 
 int btSoftBodyTriangleCallback_getTriangleCount(btSoftBodyTriangleCallback* obj)

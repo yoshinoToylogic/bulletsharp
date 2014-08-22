@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace BulletSharpGen
@@ -398,7 +399,20 @@ namespace BulletSharpGen
                 }
                 else if (!classDefinitions.ContainsKey(typeRef.Name))
                 {
-                    Console.WriteLine("Class " + typeRef.Name + " not found!");
+                    // Search for unscoped enums
+                    bool resolvedEnum = false;
+                    foreach (var c in classDefinitions.Values.Where(c => c.Enum != null))
+                    {
+                        if (typeRef.Name.Equals(c.FullName + "::" + c.Enum.Name))
+                        {
+                            typeRef.Target = c;
+                            resolvedEnum = true;
+                        }
+                    }
+                    if (!resolvedEnum)
+                    {
+                        Console.WriteLine("Class " + typeRef.Name + " not found!");
+                    }
                 }
                 else
                 {
@@ -520,15 +534,19 @@ namespace BulletSharpGen
             switch (type.ManagedName)
             {
                 case "Quaternion":
-                    return "QUATERNION_OUT(";
                 case "Matrix3x3":
-                    return "MATRIX3X3_OUT(";
                 case "Transform":
-                    return "TRANSFORM_OUT(";
                 case "Vector3":
-                    return "VECTOR3_OUT(";
                 case "Vector4":
-                    return "VECTOR4_OUT(";
+                    if (type.IsPointer)
+                    {
+                        return type.ManagedName.ToUpper() + "_OUT(";
+                    }
+                    if (type.IsReference)
+                    {
+                        return type.ManagedName.ToUpper() + "_OUT(&";
+                    }
+                    return type.ManagedName.ToUpper() + "_OUT_VAL(";
                 default:
                     return null;
             }

@@ -55,7 +55,7 @@ btCollisionShape* btGImpactShapeInterface_getChildShape(btGImpactShapeInterface*
 
 void btGImpactShapeInterface_getChildTransform(btGImpactShapeInterface* obj, int index, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getChildTransform(index), value);
+	TRANSFORM_OUT_VAL(obj->getChildTransform(index), value);
 }
 
 eGIMPACT_SHAPE_TYPE btGImpactShapeInterface_getGImpactShapeType(btGImpactShapeInterface* obj)

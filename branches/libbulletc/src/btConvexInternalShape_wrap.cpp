@@ -3,12 +3,12 @@
 
 void btConvexInternalShape_getImplicitShapeDimensions(btConvexInternalShape* obj, btScalar* dimensions)
 {
-	VECTOR3_OUT(obj->getImplicitShapeDimensions(), dimensions);
+	VECTOR3_OUT(&obj->getImplicitShapeDimensions(), dimensions);
 }
 
 void btConvexInternalShape_getLocalScalingNV(btConvexInternalShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getLocalScalingNV(), value);
+	VECTOR3_OUT(&obj->getLocalScalingNV(), value);
 }
 
 btScalar btConvexInternalShape_getMarginNV(btConvexInternalShape* obj)

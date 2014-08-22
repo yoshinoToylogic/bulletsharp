@@ -28,7 +28,7 @@ int btCollisionObjectWrapper_getPartId(btCollisionObjectWrapper* obj)
 
 void btCollisionObjectWrapper_getWorldTransform(btCollisionObjectWrapper* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getWorldTransform(), value);
+	TRANSFORM_OUT(&obj->getWorldTransform(), value);
 }
 
 void btCollisionObjectWrapper_setCollisionObject(btCollisionObjectWrapper* obj, const btCollisionObject* value)

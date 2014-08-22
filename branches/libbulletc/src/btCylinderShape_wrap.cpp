@@ -14,12 +14,12 @@ btCylinderShape* btCylinderShape_new2(btScalar halfExtentX, btScalar halfExtentY
 
 void btCylinderShape_getHalfExtentsWithMargin(btCylinderShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getHalfExtentsWithMargin(), value);
+	VECTOR3_OUT_VAL(obj->getHalfExtentsWithMargin(), value);
 }
 
 void btCylinderShape_getHalfExtentsWithoutMargin(btCylinderShape* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getHalfExtentsWithoutMargin(), value);
+	VECTOR3_OUT(&obj->getHalfExtentsWithoutMargin(), value);
 }
 
 btScalar btCylinderShape_getRadius(btCylinderShape* obj)

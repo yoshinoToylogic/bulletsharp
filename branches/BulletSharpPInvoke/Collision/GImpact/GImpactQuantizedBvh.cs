@@ -197,7 +197,7 @@ namespace BulletSharp
 			btQuantizedBvhTree_setNodeBound(_native, nodeindex, bound._native);
 		}
 
-        public bool TestQuantizedBoxOverlapp(int nodeIndex, ushort[] quantizedMin, ushort[] quantizedMax)
+        public bool TestQuantizedBoxOverlap(int nodeIndex, ushort[] quantizedMin, ushort[] quantizedMax)
 		{
 			return btQuantizedBvhTree_testQuantizedBoxOverlapp(_native, nodeIndex, quantizedMin, quantizedMax);
 		}

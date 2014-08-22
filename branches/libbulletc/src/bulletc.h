@@ -86,6 +86,7 @@
 #include "btMinkowskiSumShape_wrap.h"
 #include "btMLCPSolver_wrap.h"
 #include "btMLCPSolverInterface_wrap.h"
+#include "btMotionState_wrap.h"
 #include "btMultiBody_wrap.h"
 #include "btMultiBodyConstraint_wrap.h"
 #include "btMultiBodyConstraintSolver_wrap.h"

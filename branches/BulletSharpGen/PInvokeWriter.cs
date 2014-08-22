@@ -25,21 +25,37 @@ namespace BulletSharpGen
             {
                 
             }
-            else if (type.Referenced != null)
-            {
-                if (type.IsConst || type.Referenced.IsConst)
-                {
-                    Write("const ", WriteTo.Header | WriteTo.Source);
-                }
-                string typeName = BulletParser.GetTypeName(type.Referenced) ?? string.Empty;
-                Write(typeName + '*', WriteTo.Source);
-                Write(typeName.Replace("::", "_") + '*', WriteTo.Header);
-            }
             else
             {
-                string typeName = BulletParser.GetTypeName(type);
-                Write(typeName + '*', WriteTo.Source);
-                Write(typeName.Replace("::", "_") + '*', WriteTo.Header);
+                string typeName;
+                if (type.Referenced != null)
+                {
+                    if (type.Referenced.IsConst) // || type.IsConst
+                    {
+                        Write("const ", WriteTo.Header | WriteTo.Source);
+                    }
+
+                    typeName = BulletParser.GetTypeName(type.Referenced) ?? string.Empty;
+                }
+                else
+                {
+                    if (type.IsConst)
+                    {
+                        Write("const ", WriteTo.Header | WriteTo.Source);
+                    }
+
+                    typeName = BulletParser.GetTypeName(type);
+                }
+                if (type.Target != null && type.Target.IsPureEnum)
+                {
+                    Write(typeName + "::" + type.Target.Enum.Name, WriteTo.Source);
+                    Write(typeName.Replace("::", "_"), WriteTo.Header);
+                }
+                else
+                {
+                    Write(typeName + '*', WriteTo.Source);
+                    Write(typeName.Replace("::", "_") + '*', WriteTo.Header);
+                }
             }
         }
 
@@ -70,7 +86,7 @@ namespace BulletSharpGen
             }
         }
 
-        void OutputDeleteMethod(MethodDefinition method, int level)
+        void WriteDeleteMethod(MethodDefinition method, int level)
         {
             // public void Dispose()
             WriteLine("Dispose()", WriteTo.CS);
@@ -117,7 +133,7 @@ namespace BulletSharpGen
             WriteLine('}', WriteTo.CS);
         }
 
-        void OutputMethodDeclaration(MethodDefinition method, int numParameters, int level, int overloadIndex, MethodDefinition returnParamMethod = null)
+        void WriteMethodDeclaration(MethodDefinition method, int numParameters, int level, int overloadIndex, MethodDefinition returnParamMethod = null)
         {
             // Skip methods wrapped by C# properties
             WriteTo cs = (method.Property == null) ? WriteTo.CS : WriteTo.None;
@@ -187,7 +203,7 @@ namespace BulletSharpGen
                 Write(method.Name, WriteTo.Header | WriteTo.Source | WriteTo.Buffer);
                 if (method.Name.Equals("delete"))
                 {
-                    OutputDeleteMethod(method, level);
+                    WriteDeleteMethod(method, level);
                 }
                 else
                 {
@@ -230,11 +246,6 @@ namespace BulletSharpGen
                 var param = method.Parameters[i];
 
                 // Parameter type
-                if (method.Field != null && method.Field.Type.Referenced == null &&
-                    BulletParser.MarshalStructByValue(method.Field.Type) && method.Property.Setter.Name == method.Name)
-                {
-                    Write("const ", WriteTo.Header | WriteTo.Source);
-                }
                 if (!isCsFinalParameter)
                 {
                     if (param.Type.Referenced != null && !(param.Type.IsConst || param.Type.Referenced.IsConst) &&
@@ -276,7 +287,7 @@ namespace BulletSharpGen
             WriteLine(')', WriteTo.Source);
         }
 
-        void OutputMethodDefinition(MethodDefinition method, int numParameters, int overloadIndex, int level, MethodDefinition returnParamMethod)
+        void WriteMethodDefinition(MethodDefinition method, int numParameters, int overloadIndex, int level, MethodDefinition returnParamMethod)
         {
             // Skip methods wrapped by C# properties
             WriteTo cs = (method.Property == null) ? WriteTo.CS : WriteTo.None;
@@ -357,10 +368,11 @@ namespace BulletSharpGen
             {
                 if (!method.IsVoid)
                 {
+                    var returnType = method.ReturnType;
                     if (needTypeMarshalEpilogue)
                     {
                         // Store return value in a temporary variable
-                        Write(BulletParser.GetTypeRefName(method.ReturnType), WriteTo.Source);
+                        Write(BulletParser.GetTypeRefName(returnType), WriteTo.Source);
                         Write(" ret = ", WriteTo.Source);
                     }
                     else
@@ -371,9 +383,13 @@ namespace BulletSharpGen
 
                     Write("return ", cs);
 
-                    if (!method.ReturnType.IsBasic && !method.ReturnType.IsPointer && !method.ReturnType.IsConstantArray)
+                    if (!returnType.IsBasic && !returnType.IsPointer && !returnType.IsConstantArray)
                     {
-                        Write('&', WriteTo.Source);
+                        if (!(returnType.Target != null && returnType.Target.IsPureEnum))
+                        {
+                            Write('&', WriteTo.Source);
+                        }
+                        
                     }
                 }
 
@@ -514,7 +530,7 @@ namespace BulletSharpGen
             }
         }
 
-        void OutputMethod(MethodDefinition method, int level, ref int overloadIndex, int numOptionalParams = 0, MethodDefinition returnParamMethod = null)
+        void WriteMethod(MethodDefinition method, int level, ref int overloadIndex, int numOptionalParams = 0, MethodDefinition returnParamMethod = null)
         {
             // Can't return whole structures, so append an output parameter
             // referencing the struct that will hold the return value.
@@ -544,7 +560,7 @@ namespace BulletSharpGen
                 paras[paras.Length - 1] = new ParameterDefinition(paramName, valueType);
                 method2.Parameters = paras;
                 method2.ReturnType = new TypeRefDefinition();
-                OutputMethod(method2, level, ref overloadIndex, numOptionalParams, method);
+                WriteMethod(method2, level, ref overloadIndex, numOptionalParams, method);
                 return;
             }
             
@@ -556,7 +572,7 @@ namespace BulletSharpGen
             int numOptionalParamsTotal = method.NumOptionalParameters;
             int numParameters = method.Parameters.Length - numOptionalParamsTotal + numOptionalParams;
 
-            OutputMethodDeclaration(method, numParameters, level, overloadIndex, returnParamMethod);
+            WriteMethodDeclaration(method, numParameters, level, overloadIndex, returnParamMethod);
 
             if (method.Name.Equals("delete"))
             {
@@ -585,7 +601,7 @@ namespace BulletSharpGen
             // Method body
             WriteLine('{', WriteTo.Source);
 
-            OutputMethodDefinition(method, numParameters, overloadIndex, level, returnParamMethod);
+            WriteMethodDefinition(method, numParameters, overloadIndex, level, returnParamMethod);
 
             WriteTabs(level + 1, WriteTo.CS & propertyTo);
             WriteLine('}', WriteTo.Source | WriteTo.CS & propertyTo);
@@ -599,11 +615,11 @@ namespace BulletSharpGen
             overloadIndex++;
             if (numOptionalParams < numOptionalParamsTotal)
             {
-                OutputMethod(method, level, ref overloadIndex, numOptionalParams + 1, returnParamMethod);
+                WriteMethod(method, level, ref overloadIndex, numOptionalParams + 1, returnParamMethod);
             }
         }
 
-        void OutputProperty(PropertyDefinition prop, int level)
+        void WriteProperty(PropertyDefinition prop, int level)
         {
             EnsureWhiteSpace(WriteTo.CS);
 
@@ -635,7 +651,7 @@ namespace BulletSharpGen
             hasCSWhiteSpace = false;
         }
 
-        void OutputClass(ClassDefinition c, int level)
+        void WriteClass(ClassDefinition c, int level)
         {
             if (BulletParser.IsExcludedClass(c) || c.IsTypedef || c.IsPureEnum)
             {
@@ -666,7 +682,7 @@ namespace BulletSharpGen
             {
                 foreach (ClassDefinition cl in c.Classes)
                 {
-                    OutputClass(cl, level + 1);
+                    WriteClass(cl, level + 1);
                 }
             }
 
@@ -720,7 +736,7 @@ namespace BulletSharpGen
                 {
                     if (method.IsConstructor)
                     {
-                        OutputMethod(method, level, ref overloadIndex);
+                        WriteMethod(method, level, ref overloadIndex);
                         hasConstructors = true;
                     }
                 }
@@ -730,7 +746,7 @@ namespace BulletSharpGen
                 {
                     var constructor = new MethodDefinition(c.Name, c, 0);
                     constructor.IsConstructor = true;
-                    OutputMethod(constructor, level, ref overloadIndex);
+                    WriteMethod(constructor, level, ref overloadIndex);
                 }
                 overloadIndex = 0;
             }
@@ -749,7 +765,7 @@ namespace BulletSharpGen
                     overloadIndex = 0;
                 }
 
-                OutputMethod(method, level, ref overloadIndex);
+                WriteMethod(method, level, ref overloadIndex);
                 previousMethod = method;
             }
             overloadIndex = 0;
@@ -757,7 +773,7 @@ namespace BulletSharpGen
             // Write properties
             foreach (PropertyDefinition prop in c.Properties)
             {
-                OutputProperty(prop, level);
+                WriteProperty(prop, level);
             }
 
             // Write delete method
@@ -765,7 +781,7 @@ namespace BulletSharpGen
             {
                 var del = new MethodDefinition("delete", c, 0);
                 del.ReturnType = new TypeRefDefinition();
-                OutputMethod(del, level, ref overloadIndex);
+                WriteMethod(del, level, ref overloadIndex);
                 c.Methods.Remove(del);
                 overloadIndex = 0;
             }
@@ -833,7 +849,7 @@ namespace BulletSharpGen
                 hasClassSeparatingWhitespace = true;
                 foreach (ClassDefinition c in header.Classes)
                 {
-                    OutputClass(c, 1);
+                    WriteClass(c, 1);
                 }
                 headerWriter.WriteLine('}');
                 csWriter.WriteLine('}');

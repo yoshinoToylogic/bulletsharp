@@ -486,6 +486,9 @@
     <ClInclude Include="src\btMultiBodySolverConstraint_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\btMotionState_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -954,6 +957,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\btMultiBodyDynamicsWorld_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\btMotionState_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

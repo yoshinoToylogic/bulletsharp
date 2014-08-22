@@ -489,33 +489,5 @@ namespace DemoFramework.SharpDX
             }
         }
          * */
-
-        public static Buffer CreateScreenQuad(Device device)
-        {
-            Buffer vertexBuffer;
-
-            BufferDescription vertexBufferDesc = new BufferDescription()
-            {
-                SizeInBytes = sizeof(float) * 5 * 4,
-                Usage = ResourceUsage.Default,
-                BindFlags = BindFlags.VertexBuffer,
-            };
-
-            using (var data = new DataStream(vertexBufferDesc.SizeInBytes, false, true))
-            {
-                data.Write(new Vector3(0.5f, 0.5f, 0));
-                data.Write(new Vector2(1, 0));
-                data.Write(new Vector3(0.5f, -0.5f, 0));
-                data.Write(new Vector2(1, 1));
-                data.Write(new Vector3(-0.5f, 0.5f, 0));
-                data.Write(new Vector2(0, 0));
-                data.Write(new Vector3(-0.5f, -0.5f, 0));
-                data.Write(new Vector2(0, 1));
-                data.Position = 0;
-                vertexBuffer = new Buffer(device, data, vertexBufferDesc);
-            }
-
-            return vertexBuffer;
-        }
     }
 }

@@ -53,7 +53,6 @@
 #define btDiscreteCollisionDetectorInterface_Result void
 #define btHashedOverlappingPairCache void
 #define btMinkowskiPenetrationDepthSolver void
-#define btMotionState void
 #define btMultiSapBroadphase void
 #define btNullPairCache void
 #define btOverlapCallback void
@@ -460,6 +459,10 @@
 
 #ifndef BT_MINKOWSKI_SUM_SHAPE_H
 #define btMinkowskiSumShape void
+#endif
+
+#ifndef BT_MOTIONSTATE_H
+#define btMotionState void
 #endif
 
 #ifndef BT_MULTIBODY_H

@@ -280,7 +280,7 @@ namespace BulletSharp
 			set { btHingeConstraint_setMaxMotorImpulse(_native, value); }
 		}
 
-		public float MotorTargetVelosity
+		public float MotorTargetVelocity
 		{
 			get { return btHingeConstraint_getMotorTargetVelosity(_native); }
 		}

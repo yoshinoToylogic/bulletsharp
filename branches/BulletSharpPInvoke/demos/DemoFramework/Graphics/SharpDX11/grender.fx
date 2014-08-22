@@ -13,7 +13,6 @@ Texture2D depthMap;
 Texture2D lightDepthMap;
 
 matrix OverlayViewProjection;
-matrix ViewProjection;
 matrix InverseProjection;
 matrix InverseView;
 matrix LightInverseViewProjection;
@@ -25,24 +24,19 @@ float TanHalfFOVY;
 float ProjectionA;
 float ProjectionB;
 
-struct VS_IN
-{
-	float3 Pos : POSITION;
-	float2 texCoord : TEXCOORD;
-};
-
 struct VS_OUT
 {
     float4 Pos : SV_POSITION;
 	float2 texCoord : TEXCOORD;
 };
 
-VS_OUT VS(VS_IN input)
+VS_OUT VS(uint id : SV_VertexID)
 {
     VS_OUT output = (VS_OUT)0;
 
-	output.Pos = mul(ViewProjection, float4(input.Pos,1));
-	output.texCoord = input.texCoord;
+	// Construct full-screen triangle
+	output.texCoord = float2((id << 1) & 2, id & 2);
+	output.Pos = float4(output.texCoord * float2(2.0f, -2.0f) + float2(-1.0f, 1.0f), 0.0f, 1.0f);
 
 	return output;
 }
@@ -88,12 +82,14 @@ float4 PS( VS_OUT input ) : SV_Target
 	return float4(diffuse * diffuseSample + specular * specularMaterial, 1);
 }
 
-VS_OUT Overlay_VS(VS_IN input)
+VS_OUT Overlay_VS(uint id : SV_VertexID)
 {
     VS_OUT output = (VS_OUT)0;
 
-	output.Pos = mul(float4(input.Pos,1), OverlayViewProjection);
-	output.texCoord = input.texCoord;
+	// Construct overlay quad
+	output.texCoord = float2((id << 1) & 2, id & 2);
+	output.Pos = float4(output.texCoord * float2(2.0f, -2.0f) + float2(-1.0f, 1.0f), 0.0f, 1.0f);
+	output.Pos = mul(output.Pos, OverlayViewProjection);
 
 	return output;
 }

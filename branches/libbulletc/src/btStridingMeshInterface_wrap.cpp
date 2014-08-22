@@ -51,7 +51,7 @@ void btStridingMeshInterface_getPremadeAabb(btStridingMeshInterface* obj, btScal
 
 void btStridingMeshInterface_getScaling(btStridingMeshInterface* obj, btScalar* scaling)
 {
-	VECTOR3_OUT(obj->getScaling(), scaling);
+	VECTOR3_OUT(&obj->getScaling(), scaling);
 }
 
 bool btStridingMeshInterface_hasPremadeAabb(btStridingMeshInterface* obj)

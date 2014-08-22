@@ -60,7 +60,7 @@ void BT_BOX_BOX_TRANSFORM_CACHE_setT1to0(BT_BOX_BOX_TRANSFORM_CACHE* obj, const 
 void BT_BOX_BOX_TRANSFORM_CACHE_transform(BT_BOX_BOX_TRANSFORM_CACHE* obj, const btScalar* point, btScalar* value)
 {
 	VECTOR3_CONV(point);
-	VECTOR3_OUT(obj->transform(VECTOR3_USE(point)), value);
+	VECTOR3_OUT_VAL(obj->transform(VECTOR3_USE(point)), value);
 }
 
 void BT_BOX_BOX_TRANSFORM_CACHE_delete(BT_BOX_BOX_TRANSFORM_CACHE* obj)

@@ -734,8 +734,13 @@ namespace BulletSharp
 
         public void AddCollisionObject(CollisionObject collisionObject, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 		{
-            _collisionObjectArray.Add(collisionObject, collisionFilterGroup, collisionFilterMask);
+            _collisionObjectArray.Add(collisionObject, (short)collisionFilterGroup, (short)collisionFilterMask);
 		}
+
+        public void AddCollisionObject(CollisionObject collisionObject, short collisionFilterGroup, short collisionFilterMask)
+        {
+            _collisionObjectArray.Add(collisionObject, collisionFilterGroup, collisionFilterMask);
+        }
 
 		public void ComputeOverlappingPairs()
 		{

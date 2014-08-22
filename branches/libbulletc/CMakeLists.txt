@@ -226,8 +226,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btGjkEpaPenetrationDepthSolver_wrap.h
     src/btGjkPairDetector_wrap.cpp
     src/btGjkPairDetector_wrap.h
-    src/btHeightFieldTerrainShape_wrap.cpp
-    src/btHeightFieldTerrainShape_wrap.h
+    src/btHeightfieldTerrainShape_wrap.cpp
+    src/btHeightfieldTerrainShape_wrap.h
     src/btHinge2Constraint_wrap.cpp
     src/btHinge2Constraint_wrap.h
     src/btHingeConstraint_wrap.cpp
@@ -250,28 +250,30 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btMLCPSolver_wrap.h
     src/btMLCPSolverInterface_wrap.cpp
     src/btMLCPSolverInterface_wrap.h
-	src/btMultiBody_wrap.cpp
-	src/btMultiBody_wrap.h
-	src/btMultiBodyConstraint_wrap.cpp
-	src/btMultiBodyConstraint_wrap.h
-	src/btMultiBodyConstraintSolver_wrap.cpp
-	src/btMultiBodyConstraintSolver_wrap.h
-	src/btMultiBodyDynamicsWorld_wrap.cpp
-	src/btMultiBodyDynamicsWorld_wrap.h
-	src/btMultiBodyJointLimitConstraint_wrap.cpp
-	src/btMultiBodyJointLimitConstraint_wrap.h
-	src/btMultiBodyJointMotor_wrap.cpp
-	src/btMultiBodyJointMotor_wrap.h"
-	src/btMultiBodyLink_wrap.cpp
-	src/btMultiBodyLink_wrap.h
-	src/btMultiBodyLinkCollider_wrap.cpp
-	src/btMultiBodyLinkCollider_wrap.h
-	src/btMultiBodyPoint2Point_wrap.cpp
-	src/btMultiBodyPoint2Point_wrap.h
-	src/btMultiBodySolverConstraint_wrap.cpp
-	src/btMultiBodySolverConstraint_wrap.h
-    src/btMultiMaterialTriangleMeshShape_wrap.cpp
-    src/btMultiMaterialTriangleMeshShape_wrap.h
+    src/btMotionState_wrap.cpp
+    src/btMotionState_wrap.h
+    src/btMultiBody_wrap.cpp
+    src/btMultiBody_wrap.h
+    src/btMultiBodyConstraint_wrap.cpp
+    src/btMultiBodyConstraint_wrap.h
+    src/btMultiBodyConstraintSolver_wrap.cpp
+    src/btMultiBodyConstraintSolver_wrap.h
+    src/btMultiBodyDynamicsWorld_wrap.cpp
+    src/btMultiBodyDynamicsWorld_wrap.h
+    src/btMultiBodyJointLimitConstraint_wrap.cpp
+    src/btMultiBodyJointLimitConstraint_wrap.h
+    src/btMultiBodyJointMotor_wrap.cpp
+    src/btMultiBodyJointMotor_wrap.h
+    src/btMultiBodyLink_wrap.cpp
+    src/btMultiBodyLink_wrap.h
+    src/btMultiBodyLinkCollider_wrap.cpp
+    src/btMultiBodyLinkCollider_wrap.h
+    src/btMultiBodyPoint2Point_wrap.cpp
+    src/btMultiBodyPoint2Point_wrap.h
+    src/btMultiBodySolverConstraint_wrap.cpp
+    src/btMultiBodySolverConstraint_wrap.h
+    src/btMultimaterialTriangleMeshShape_wrap.cpp
+    src/btMultimaterialTriangleMeshShape_wrap.h
     src/btMultiSphereShape_wrap.cpp
     src/btMultiSphereShape_wrap.h
     src/btNNCGConstraintSolver_wrap.cpp

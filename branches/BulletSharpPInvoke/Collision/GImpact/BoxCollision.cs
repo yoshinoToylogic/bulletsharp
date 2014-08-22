@@ -156,12 +156,12 @@ namespace BulletSharp
 			_native = btAABB_new5(other._native, margin);
 		}
 
-		public void AppyTransform(ref Matrix trans)
+		public void ApplyTransform(ref Matrix trans)
 		{
 			btAABB_appy_transform(_native, ref trans);
 		}
 
-		public void AppyTransformTransCache(BoxBoxTransformCache trans)
+		public void ApplyTransformTransCache(BoxBoxTransformCache trans)
 		{
 			btAABB_appy_transform_trans_cache(_native, trans._native);
 		}

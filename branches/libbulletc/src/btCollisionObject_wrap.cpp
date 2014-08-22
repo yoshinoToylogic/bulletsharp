@@ -38,7 +38,7 @@ int btCollisionObject_getActivationState(btCollisionObject* obj)
 
 void btCollisionObject_getAnisotropicFriction(btCollisionObject* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAnisotropicFriction(), value);
+	VECTOR3_OUT(&obj->getAnisotropicFriction(), value);
 }
 
 btBroadphaseProxy* btCollisionObject_getBroadphaseHandle(btCollisionObject* obj)
@@ -103,17 +103,17 @@ int btCollisionObject_getInternalType(btCollisionObject* obj)
 
 void btCollisionObject_getInterpolationAngularVelocity(btCollisionObject* obj, btScalar* angvel)
 {
-	VECTOR3_OUT(obj->getInterpolationAngularVelocity(), angvel);
+	VECTOR3_OUT(&obj->getInterpolationAngularVelocity(), angvel);
 }
 
 void btCollisionObject_getInterpolationLinearVelocity(btCollisionObject* obj, btScalar* linvel)
 {
-	VECTOR3_OUT(obj->getInterpolationLinearVelocity(), linvel);
+	VECTOR3_OUT(&obj->getInterpolationLinearVelocity(), linvel);
 }
 
 void btCollisionObject_getInterpolationWorldTransform(btCollisionObject* obj, btScalar* trans)
 {
-	TRANSFORM_OUT(obj->getInterpolationWorldTransform(), trans);
+	TRANSFORM_OUT(&obj->getInterpolationWorldTransform(), trans);
 }
 
 int btCollisionObject_getIslandTag(btCollisionObject* obj)
@@ -138,7 +138,7 @@ void* btCollisionObject_getUserPointer(btCollisionObject* obj)
 
 void btCollisionObject_getWorldTransform(btCollisionObject* obj, btScalar* worldTrans)
 {
-	TRANSFORM_OUT(obj->getWorldTransform(), worldTrans);
+	TRANSFORM_OUT(&obj->getWorldTransform(), worldTrans);
 }
 
 bool btCollisionObject_hasAnisotropicFriction(btCollisionObject* obj)

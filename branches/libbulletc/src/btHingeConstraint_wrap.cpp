@@ -71,7 +71,7 @@ void btHingeConstraint_enableMotor(btHingeConstraint* obj, bool enableMotor)
 
 void btHingeConstraint_getAFrame(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getAFrame(), value);
+	TRANSFORM_OUT(&obj->getAFrame(), value);
 }
 
 bool btHingeConstraint_getAngularOnly(btHingeConstraint* obj)
@@ -81,7 +81,7 @@ bool btHingeConstraint_getAngularOnly(btHingeConstraint* obj)
 
 void btHingeConstraint_getBFrame(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getBFrame(), value);
+	TRANSFORM_OUT(&obj->getBFrame(), value);
 }
 
 bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj)
@@ -91,12 +91,12 @@ bool btHingeConstraint_getEnableAngularMotor(btHingeConstraint* obj)
 
 void btHingeConstraint_getFrameOffsetA(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetA(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetA(), value);
 }
 
 void btHingeConstraint_getFrameOffsetB(btHingeConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetB(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetB(), value);
 }
 
 btScalar btHingeConstraint_getHingeAngle(btHingeConstraint* obj, const btScalar* transA, const btScalar* transB)

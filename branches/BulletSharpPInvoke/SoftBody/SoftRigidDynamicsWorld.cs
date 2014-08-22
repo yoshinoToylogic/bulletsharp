@@ -32,8 +32,13 @@ namespace BulletSharp.SoftBody
 
         public void AddSoftBody(SoftBody body, CollisionFilterGroups collisionFilterGroup, CollisionFilterGroups collisionFilterMask)
 		{
-            _collisionObjectArray.Add(body, collisionFilterGroup, collisionFilterMask);
+            _collisionObjectArray.Add(body, (short)collisionFilterGroup, (short)collisionFilterMask);
 		}
+
+        public void AddSoftBody(SoftBody body, short collisionFilterGroup, short collisionFilterMask)
+        {
+            _collisionObjectArray.Add(body, collisionFilterGroup, collisionFilterMask);
+        }
 
 		public void RemoveSoftBody(SoftBody body)
 		{

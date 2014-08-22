@@ -23,12 +23,12 @@ void btSliderConstraint_calculateTransforms(btSliderConstraint* obj, const btSca
 
 void btSliderConstraint_getAncorInA(btSliderConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAncorInA(), value);
+	VECTOR3_OUT_VAL(obj->getAncorInA(), value);
 }
 
 void btSliderConstraint_getAncorInB(btSliderConstraint* obj, btScalar* value)
 {
-	VECTOR3_OUT(obj->getAncorInB(), value);
+	VECTOR3_OUT_VAL(obj->getAncorInB(), value);
 }
 
 btScalar btSliderConstraint_getAngDepth(btSliderConstraint* obj)
@@ -43,12 +43,12 @@ btScalar btSliderConstraint_getAngularPos(btSliderConstraint* obj)
 
 void btSliderConstraint_getCalculatedTransformA(btSliderConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getCalculatedTransformA(), value);
+	TRANSFORM_OUT(&obj->getCalculatedTransformA(), value);
 }
 
 void btSliderConstraint_getCalculatedTransformB(btSliderConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getCalculatedTransformB(), value);
+	TRANSFORM_OUT(&obj->getCalculatedTransformB(), value);
 }
 
 btScalar btSliderConstraint_getDampingDirAng(btSliderConstraint* obj)
@@ -83,12 +83,12 @@ btScalar btSliderConstraint_getDampingOrthoLin(btSliderConstraint* obj)
 
 void btSliderConstraint_getFrameOffsetA(btSliderConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetA(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetA(), value);
 }
 
 void btSliderConstraint_getFrameOffsetB(btSliderConstraint* obj, btScalar* value)
 {
-	TRANSFORM_OUT(obj->getFrameOffsetB(), value);
+	TRANSFORM_OUT(&obj->getFrameOffsetB(), value);
 }
 
 void btSliderConstraint_getInfo1NonVirtual(btSliderConstraint* obj, btTypedConstraint::btConstraintInfo1* info)
