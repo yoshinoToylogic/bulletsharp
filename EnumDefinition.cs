@@ -5,7 +5,6 @@ namespace BulletSharpGen
     class EnumDefinition
     {
         public string Name { get; private set; }
-        public string ManagedName { get; private set; }
         public List<string> EnumConstants { get; private set; }
         public List<string> EnumConstantValues { get; private set; }
 
@@ -14,6 +13,11 @@ namespace BulletSharpGen
             Name = name;
             EnumConstants = new List<string>();
             EnumConstantValues = new List<string>();
+        }
+
+        public override string ToString()
+        {
+            return Name;
         }
     }
 }
