@@ -1,6 +1,5 @@
 #include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
 #include <BulletCollision/CollisionDispatch/btCompoundCollisionAlgorithm.h>
-#include <BulletCollision/NarrowPhaseCollision/btPersistentManifold.h>
 
 #include "btCompoundCollisionAlgorithm_wrap.h"
 

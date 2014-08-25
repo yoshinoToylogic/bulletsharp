@@ -1,5 +1,8 @@
 #pragma once
 
+// Omits classes inheriting from btActionInterface
+#define BULLETC_DISABLE_IACTION_CLASSES
+
 #ifdef _MSC_VER
 #define EXPORT __declspec(dllexport)
 #else
@@ -18,113 +21,25 @@
 #endif
 #endif
 
-#ifndef BULLET_COLLISION_COMMON_H
-#define btCapsuleShape void
-#define btCapsuleShapeX void
-#define btCapsuleShapeZ void
-#define btCapsuleShapeData void
-#define btCylinderShape void
-#define btCylinderShapeX void
-#define btCylinderShapeZ void
-#define btConvexHullShape void
-#define btTriangleMesh void
-#define btBvhTriangleMeshShape void
-#define btScaledBvhTriangleMeshShape void
-#define btTriangleMeshShape void
-#define btTetrahedronShape void
-#define btMultiSphereShape void
-#define btSimpleBroadphase void
-#define btAxisSweep3 void
-#define bt32BitAxisSweep3 void
-#define btBroadphasePairArray void
-#define btCollisionWorld_AllHitsRayResultCallback void
-#define btCollisionWorld_ClosestConvexResultCallback void
-#define btCollisionWorld_ClosestRayResultCallback void
-#define btCollisionWorld_ContactResultCallback void
-#define btCollisionWorld_ConvexResultCallback void
-#define btCollisionWorld_LocalConvexResult void
-#define btCollisionWorld_LocalRayResult void
-#define btCollisionWorld_LocalShapeInfo void
-#define btCollisionWorld_RayResultCallback void
-#define btDbvtBroadphase void
-#define btDefaultMotionState void
-#define btDiscreteCollisionDetectorInterface void
-#define btDiscreteCollisionDetectorInterface_ClosestPointInput void
-#define btDiscreteCollisionDetectorInterface_Result void
-#define btHashedOverlappingPairCache void
-#define btMinkowskiPenetrationDepthSolver void
-#define btMultiSapBroadphase void
-#define btNullPairCache void
-#define btOverlapCallback void
-#define btOverlapFilterCallback void
-#define btOverlappingPairCache void
-#define btPolyhedralConvexAabbCachingShape void
-#define btPolyhedralConvexShape void
-#define btPositionAndRadius void
-#define btRotationalLimitMotor void
-#define btSortedOverlappingPairCache void
-#define btStorageResult void
-#define btTranslationalLimitMotor void
-#define btMatrix3x3 void
-#define btQuaternion void
-#define btTransform void
-#define btVector4 void
-#define btAlignedBroadphasePairArray void
-#define btAlignedCollisionObjectArray void
-#define btAlignedConstCollisionObjectArray void
-#define btAlignedMatrix3x3Array void
-#define btAlignedVector3Array void
-#define btCollisionObjectArray void
-#define eBT_PLANE_INTERSECTION_TYPE int
-#define btDynamicsWorldType int
-#else
-#define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair>
-#define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
-#define btAlignedConstCollisionObjectArray btAlignedObjectArray<const btCollisionObject*>
-#define btAlignedMatrix3x3Array btAlignedObjectArray<btMatrix3x3>
-#define btAlignedVector3Array btAlignedObjectArray<btVector3>
-#define btCollisionWorld_AllHitsRayResultCallback btCollisionWorld::AllHitsRayResultCallback
-#define btCollisionWorld_ClosestConvexResultCallback btCollisionWorld::ClosestConvexResultCallback
-#define btCollisionWorld_ClosestRayResultCallback btCollisionWorld::ClosestRayResultCallback
-#define btCollisionWorld_ContactResultCallback btCollisionWorld::ContactResultCallback
-#define btCollisionWorld_ConvexResultCallback btCollisionWorld::ConvexResultCallback
-#define btCollisionWorld_LocalConvexResult btCollisionWorld::LocalConvexResult
-#define btCollisionWorld_LocalRayResult btCollisionWorld::LocalRayResult
-#define btCollisionWorld_LocalShapeInfo btCollisionWorld::LocalShapeInfo
-#define btCollisionWorld_RayResultCallback btCollisionWorld::RayResultCallback
-#define btDiscreteCollisionDetectorInterface_ClosestPointInput btDiscreteCollisionDetectorInterface::ClosestPointInput
-#define btDiscreteCollisionDetectorInterface_Result btDiscreteCollisionDetectorInterface::Result
-#define btRigidBody_btRigidBodyConstructionInfo btRigidBody::btRigidBodyConstructionInfo
-#endif
+#define ALIGNED_NEW_FORCE(targetClass) new (btAlignedAlloc(sizeof(targetClass), 16)) targetClass
+#define ALIGNED_FREE_FORCE(target) btAlignedFree(target)
 
-#ifndef BULLET_DYNAMICS_COMMON_H
-#define btAngularLimit void
-#define btDiscreteDynamicsWorld void
-#define btPoint2PointConstraint void
-#define btHingeConstraint void
-#define btConeTwistConstraint void
-#define btGeneric6DofConstraint void
-#define btSliderConstraint void
-#define btGeneric6DofSpringConstraint void
-#define btUniversalConstraint void
-#define btHinge2Constraint void
-#define btGearConstraint void
-#define btSequentialImpulseConstraintSolver void
-#define btRaycastVehicle void
-#define btJointFeedback void
-#define btConstraintArray void
-#define btConstraintRow void
-#define btConstraintSetting void
-#define btConstraintSolver void
-#define btSimulationIslandManager void
-#define btSimulationIslandManager_IslandCallback void
-#define btSolverBody void
+//#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE_IN_API) && defined(BT_USE_SSE)
+#if defined(BT_USE_SIMD_VECTOR3) && defined(BT_USE_SSE)
+#define ALIGNED_NEW(targetClass) ALIGNED_NEW_FORCE(targetClass)
+#define ALIGNED_FREE(target) ALIGNED_FREE_FORCE(target)
 #else
-#define btSimulationIslandManager_IslandCallback btSimulationIslandManager::IslandCallback
+#define ALIGNED_NEW(targetClass) new targetClass
+#define ALIGNED_FREE(target) delete target
 #endif
 
 #ifndef _BT_ACTION_INTERFACE_H
 #define btActionInterface void
+#endif
+
+#ifndef BT_AXIS_SWEEP_3_H
+#define bt32BitAxisSweep3 void
+#define btAxisSweep3 void
 #endif
 
 #ifndef BT_BOX_2D_BOX_2D__COLLISION_ALGORITHM_H
@@ -148,6 +63,7 @@
 #ifndef BT_BOX_COLLISION_H_INCLUDED
 #define BT_BOX_BOX_TRANSFORM_CACHE void
 #define btAABB void
+#define eBT_PLANE_INTERSECTION_TYPE int
 #endif
 
 #ifndef BT_BROADPHASE_INTERFACE_H
@@ -157,9 +73,12 @@
 #endif
 
 #ifndef BT_BROADPHASE_PROXY_H
+#define btAlignedBroadphasePairArray void
 #define btBroadphasePair void
 #define btBroadphasePairSortPredicate void
 #define btBroadphaseProxy void
+#else
+#define btAlignedBroadphasePairArray btAlignedObjectArray<btBroadphasePair>
 #endif
 
 #ifndef BT_BULLET_FILE_H
@@ -176,6 +95,16 @@
 #define btMultimaterialTriangleMeshShape void
 #endif
 
+#ifndef BT_BVH_TRIANGLE_MESH_SHAPE_H
+#define btBvhTriangleMeshShape void
+#endif
+
+#ifndef BT_CAPSULE_SHAPE_H
+#define btCapsuleShape void
+#define btCapsuleShapeX void
+#define btCapsuleShapeZ void
+#endif
+
 #ifndef BT_CHARACTER_CONTROLLER_INTERFACE_H
 #define btCharacterControllerInterface void
 #endif
@@ -183,11 +112,12 @@
 #ifndef BT_COLLISION_ALGORITHM_H
 #define btCollisionAlgorithm void
 #define btCollisionAlgorithmConstructionInfo void
-#define btManifoldArray void
 #endif
 
 #ifndef BT_COLLISION_CONFIGURATION
+#ifndef btCollisionConfiguration
 #define btCollisionConfiguration void
+#endif
 #endif
 
 #ifndef BT_COLLISION_CREATE_FUNC
@@ -199,7 +129,13 @@
 #endif
 
 #ifndef BT_COLLISION_OBJECT_H
+#define btAlignedCollisionObjectArray void
+#define btAlignedConstCollisionObjectArray void
 #define btCollisionObject void
+#define btCollisionObjectArray void
+#else
+#define btAlignedCollisionObjectArray btAlignedObjectArray<btCollisionObject*>
+#define btAlignedConstCollisionObjectArray btAlignedObjectArray<const btCollisionObject*>
 #endif
 
 #ifndef BT_COLLISION_OBJECT_WRAPPER_H
@@ -212,6 +148,25 @@
 
 #ifndef BT_COLLISION_WORLD_H
 #define btCollisionWorld void
+#define btCollisionWorld_AllHitsRayResultCallback void
+#define btCollisionWorld_ClosestConvexResultCallback void
+#define btCollisionWorld_ClosestRayResultCallback void
+#define btCollisionWorld_ContactResultCallback void
+#define btCollisionWorld_ConvexResultCallback void
+#define btCollisionWorld_LocalConvexResult void
+#define btCollisionWorld_LocalRayResult void
+#define btCollisionWorld_LocalShapeInfo void
+#define btCollisionWorld_RayResultCallback void
+#else
+#define btCollisionWorld_AllHitsRayResultCallback btCollisionWorld::AllHitsRayResultCallback
+#define btCollisionWorld_ClosestConvexResultCallback btCollisionWorld::ClosestConvexResultCallback
+#define btCollisionWorld_ClosestRayResultCallback btCollisionWorld::ClosestRayResultCallback
+#define btCollisionWorld_ContactResultCallback btCollisionWorld::ContactResultCallback
+#define btCollisionWorld_ConvexResultCallback btCollisionWorld::ConvexResultCallback
+#define btCollisionWorld_LocalConvexResult btCollisionWorld::LocalConvexResult
+#define btCollisionWorld_LocalRayResult btCollisionWorld::LocalRayResult
+#define btCollisionWorld_LocalShapeInfo btCollisionWorld::LocalShapeInfo
+#define btCollisionWorld_RayResultCallback btCollisionWorld::RayResultCallback
 #endif
 
 #ifndef BT_COMPOUND_COLLISION_ALGORITHM_H
@@ -246,6 +201,10 @@
 #define btConeShape void
 #define btConeShapeX void
 #define btConeShapeZ void
+#endif
+
+#ifndef BT_CONETWISTCONSTRAINT_H
+#define btConeTwistConstraint void
 #endif
 
 #ifndef BT_CONSTRAINT_SOLVER_H
@@ -301,6 +260,10 @@
 #define btConvexConvexAlgorithm_CreateFunc btConvexConvexAlgorithm::CreateFunc
 #endif
 
+#ifndef BT_CONVEX_HULL_SHAPE_H
+#define btConvexHullShape void
+#endif
+
 #ifndef BT_CONVEX_INTERNAL_SHAPE_H
 #define btConvexInternalShape void
 #define btConvexInternalAabbCachingShape void
@@ -329,6 +292,12 @@
 #define btConvexTriangleMeshShape void
 #endif
 
+#ifndef BT_CYLINDER_MINKOWSKI_H
+#define btCylinderShape void
+#define btCylinderShapeX void
+#define btCylinderShapeZ void
+#endif
+
 #ifndef BT_DANTZIG_SOLVER_H
 #define btDantzigSolver void
 #endif
@@ -339,7 +308,26 @@
 #endif
 
 #ifndef BT_DBVT_BROADPHASE_H
+#define btDbvtBroadphase void
 #define btDbvtProxy void
+#endif
+
+#ifndef BT_DEFAULT_MOTION_STATE_H
+#define btDefaultMotionState void
+#endif
+
+#ifndef BT_DISCRETE_COLLISION_DETECTOR1_INTERFACE_H
+#define btDiscreteCollisionDetectorInterface void
+#define btDiscreteCollisionDetectorInterface_ClosestPointInput void
+#define btDiscreteCollisionDetectorInterface_Result void
+#define btStorageResult void
+#else
+#define btDiscreteCollisionDetectorInterface_ClosestPointInput btDiscreteCollisionDetectorInterface::ClosestPointInput
+#define btDiscreteCollisionDetectorInterface_Result btDiscreteCollisionDetectorInterface::Result
+#endif
+
+#ifndef BT_DISCRETE_DYNAMICS_WORLD_H
+#define btDiscreteDynamicsWorld void
 #endif
 
 #ifndef BT_DISPATCHER_H
@@ -377,6 +365,7 @@
 
 #ifndef BT_DYNAMICS_WORLD_H
 #define btDynamicsWorld void
+#define btDynamicsWorldType int
 #define btInternalTickCallback void*
 #endif
 
@@ -397,6 +386,20 @@
 
 #ifndef BT_FIXED_CONSTRAINT_H
 #define btFixedConstraint void
+#endif
+
+#ifndef BT_GEAR_CONSTRAINT_H
+#define btGearConstraint void
+#endif
+
+#ifndef BT_GENERIC_6DOF_CONSTRAINT_H
+#define btGeneric6DofConstraint void
+#define btRotationalLimitMotor void
+#define btTranslationalLimitMotor void
+#endif
+
+#ifndef BT_GENERIC_6DOF_SPRING_CONSTRAINT_H
+#define btGeneric6DofSpringConstraint void
 #endif
 
 #ifndef BT_GHOST_OBJECT_H
@@ -428,6 +431,14 @@
 #define btHeightfieldTerrainShape void
 #endif
 
+#ifndef BT_HINGE2_CONSTRAINT_H
+#define btHinge2Constraint void
+#endif
+
+#ifndef BT_HINGECONSTRAINT_H
+#define btHingeConstraint void
+#endif
+
 #ifndef BT_IDEBUG_DRAW__H
 #define btIDebugDraw void
 #endif
@@ -437,16 +448,28 @@
 #endif
 
 #ifndef BT_MANIFOLD_CONTACT_POINT_H
+#define btConstraintRow void
 #define btManifoldPoint void
-#define ContactAddedCallback void*
 #endif
 
 #ifndef BT_MANIFOLD_RESULT_H
 #define btManifoldResult void
+#define ContactAddedCallback void*
 #endif
 
 #ifndef BT_MATERIAL_H
 #define btMaterial void
+#endif
+
+#ifndef	BT_MATRIX3x3_H
+#define btMatrix3x3 void
+#define btAlignedMatrix3x3Array void
+#else
+#define btAlignedMatrix3x3Array btAlignedObjectArray<btMatrix3x3>
+#endif
+
+#ifndef BT_MINKOWSKI_PENETRATION_DEPTH_SOLVER_H
+#define btMinkowskiPenetrationDepthSolver void
 #endif
 
 #ifndef BT_MLCP_SOLVER_H
@@ -463,6 +486,10 @@
 
 #ifndef BT_MOTIONSTATE_H
 #define btMotionState void
+#endif
+
+#ifndef BT_MULTI_SPHERE_MINKOWSKI_H
+#define btMultiSphereShape void
 #endif
 
 #ifndef BT_MULTIBODY_H
@@ -538,6 +565,15 @@
 #define btOptimizedBvh void
 #endif
 
+#ifndef BT_OVERLAPPING_PAIR_CACHE_H
+#define btHashedOverlappingPairCache void
+#define btNullPairCache void
+#define btOverlapCallback void
+#define btOverlapFilterCallback void
+#define btOverlappingPairCache void
+#define btSortedOverlappingPairCache void
+#endif
+
 #ifndef OVERLAPPING_PAIR_CALLBACK_H
 #define btOverlappingPairCallback void
 #endif
@@ -547,17 +583,30 @@
 #endif
 
 #ifndef BT_PERSISTENT_MANIFOLD_H
+#define btAlignedManifoldArray void
 #define btPersistentManifold void
 #define ContactDestroyedCallback void*
 #define ContactProcessedCallback void*
+#else
+#define btAlignedManifoldArray btAlignedObjectArray<btPersistentManifold*>
 #endif
 
 #ifndef BT_POINT_COLLECTOR_H
 #define btPointCollector void
 #endif
 
+#ifndef BT_POINT2POINTCONSTRAINT_H
+#define btConstraintSetting void
+#define btPoint2PointConstraint void
+#endif
+
 #ifndef _BT_POOL_ALLOCATOR_H
 #define btPoolAllocator void
+#endif
+
+#ifndef BT_POLYHEDRAL_CONVEX_SHAPE_H
+#define btPolyhedralConvexAabbCachingShape void
+#define btPolyhedralConvexShape void
 #endif
 
 #ifndef _BT_POLYHEDRAL_FEATURES_H
@@ -568,25 +617,31 @@
 #define btAlignedFaceArray btAlignedObjectArray<btFace>
 #endif
 
+#ifndef BT_SIMD__QUATERNION_H_
+#define btQuaternion void
+#endif
+
 #ifndef BT_RAYCASTVEHICLE_H
-#define btAlignedWheelInfoArray void
 #define btDefaultVehicleRaycaster void
+#define btRaycastVehicle void
 #define btRaycastVehicle_btVehicleTuning void
-#define btVehicleRaycaster void
-#define btVehicleRaycaster_btVehicleRaycasterResult void
-#define btWheelInfo void
-#define btWheelInfo_RaycastInfo void
-#define btWheelInfoConstructionInfo void
 #else
-#define btAlignedWheelInfoArray btAlignedObjectArray<btWheelInfo>
 #define btRaycastVehicle_btVehicleTuning btRaycastVehicle::btVehicleTuning
-#define btVehicleRaycaster_btVehicleRaycasterResult btVehicleRaycaster::btVehicleRaycasterResult
-#define btWheelInfo_RaycastInfo btWheelInfo::RaycastInfo
 #endif
 
 #ifndef BT_RIGIDBODY_H
 #define btRigidBody void
 #define btRigidBody_btRigidBodyConstructionInfo void
+#else
+#define btRigidBody_btRigidBodyConstructionInfo btRigidBody::btRigidBodyConstructionInfo
+#endif
+
+#ifndef BT_SCALED_BVH_TRIANGLE_MESH_SHAPE_H
+#define btScaledBvhTriangleMeshShape void
+#endif
+
+#ifndef BT_SEQUENTIAL_IMPULSE_CONSTRAINT_SOLVER_H
+#define btSequentialImpulseConstraintSolver void
 #endif
 
 #ifndef BT_SERIALIZER_H
@@ -602,6 +657,17 @@
 
 #ifndef BT_SIMPLEX_1TO4_SHAPE
 #define btBU_Simplex1to4 void
+#endif
+
+#ifndef BT_SLIDER_CONSTRAINT_H
+#define btSliderConstraint void
+#endif
+
+#ifndef BT_SIMULATION_ISLAND_MANAGER_H
+#define btSimulationIslandManager void
+#define btSimulationIslandManager_IslandCallback void
+#else
+#define btSimulationIslandManager_IslandCallback btSimulationIslandManager::IslandCallback
 #endif
 
 #ifndef _BT_SOFT_BODY_H
@@ -769,6 +835,14 @@
 #define btVertexBufferDescriptor void
 #endif
 
+#ifndef BT_SOLVER_BODY_H
+#define btSolverBody void
+#endif
+
+#ifndef BT_SOLVER_CONSTRAINT_H
+#define btConstraintArray void
+#endif
+
 #ifndef BT_SPARSE_SDF_H
 #define btSparseSdf3 void
 #else
@@ -824,6 +898,10 @@
 #define btThreadSupportInterface void
 #endif
 
+#ifndef BT_TRANSFORM_H
+#define btTransform void
+#endif
+
 #ifndef BT_TRANSFORM_UTIL_H
 #define btConvexSeparatingDistanceUtil void
 #endif
@@ -852,7 +930,17 @@
 #define btTriangleInfoMap void
 #endif
 
+#ifndef BT_TRIANGLE_MESH_H
+#define btTriangleMesh void
+#endif
+
+#ifndef BT_TRIANGLE_MESH_SHAPE_H
+#define btTriangleMeshShape void
+#endif
+
 #ifndef BT_TYPED_CONSTRAINT_H
+#define btAngularLimit void
+#define btJointFeedback void
 #define btTypedConstraint void
 #define btTypedConstraint_btConstraintInfo1 void
 #define btTypedConstraint_btConstraintInfo2 void
@@ -871,14 +959,39 @@
 #define btUnionFind void
 #endif
 
+#ifndef BT_UNIVERSAL_CONSTRAINT_H
+#define btUniversalConstraint void
+#endif
+
 #ifndef BT_VECTOR3_H
+#define btAlignedVector3Array void
 #define btVector3 void
+#define btVector4 void
+#else
+#define btAlignedVector3Array btAlignedObjectArray<btVector3>
+#endif
+
+#ifndef BT_VEHICLE_RAYCASTER_H
+#define btVehicleRaycaster void
+#define btVehicleRaycaster_btVehicleRaycasterResult void
+#else
+#define btVehicleRaycaster_btVehicleRaycasterResult btVehicleRaycaster::btVehicleRaycasterResult
 #endif
 
 #ifndef BT_VORONOI_SIMPLEX_SOLVER_H
 #define btSubSimplexClosestResult void
 #define btUsageBitfield void
 #define btVoronoiSimplexSolver void
+#endif
+
+#ifndef BT_WHEEL_INFO_H
+#define btAlignedWheelInfoArray void
+#define btWheelInfo void
+#define btWheelInfo_RaycastInfo void
+#define btWheelInfoConstructionInfo void
+#else
+#define btAlignedWheelInfoArray btAlignedObjectArray<btWheelInfo>
+#define btWheelInfo_RaycastInfo btWheelInfo::RaycastInfo
 #endif
 
 #ifndef BT_WIN32_THREAD_SUPPORT_H

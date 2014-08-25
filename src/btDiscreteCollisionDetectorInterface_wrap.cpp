@@ -1,3 +1,6 @@
+#include <BulletCollision/NarrowPhaseCollision/btDiscreteCollisionDetectorInterface.h>
+#include <LinearMath/btIDebugDraw.h>
+
 #include "conversion.h"
 #include "btDiscreteCollisionDetectorInterface_wrap.h"
 

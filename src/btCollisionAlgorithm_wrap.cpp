@@ -1,4 +1,9 @@
-#include "conversion.h"
+#include <BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h>
+#include <BulletCollision/BroadphaseCollision/btDispatcher.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
+#include <BulletCollision/CollisionDispatch/btManifoldResult.h>
+#include <BulletCollision/NarrowPhaseCollision/btPersistentManifold.h>
+
 #include "btCollisionAlgorithm_wrap.h"
 
 btCollisionAlgorithmConstructionInfo* btCollisionAlgorithmConstructionInfo_new()

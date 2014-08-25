@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btHinge2Constraint.h>
+
 #include "conversion.h"
 #include "btHinge2Constraint_wrap.h"
 

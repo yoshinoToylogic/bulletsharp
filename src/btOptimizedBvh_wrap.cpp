@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionShapes/btOptimizedBvh.h>
+#include <BulletCollision/CollisionShapes/btStridingMeshInterface.h>
+
 #include "conversion.h"
 #include "btOptimizedBvh_wrap.h"
 

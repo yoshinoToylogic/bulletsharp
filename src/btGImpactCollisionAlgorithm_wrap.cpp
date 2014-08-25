@@ -1,4 +1,3 @@
-#include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
 #include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 
 #include "btGImpactCollisionAlgorithm_wrap.h"

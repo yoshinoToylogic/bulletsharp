@@ -1,3 +1,7 @@
+#include <BulletCollision/CollisionShapes/btCollisionShape.h>
+#include <BulletDynamics/ConstraintSolver/btTypedConstraint.h>
+#include <BulletDynamics/Dynamics/btRigidBody.h>
+
 #include "conversion.h"
 #include "btRigidBody_wrap.h"
 

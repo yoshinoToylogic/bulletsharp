@@ -1,10 +1,10 @@
-#include <BulletDynamics/Character/btKinematicCharacterController.h>
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include <BulletCollision/CollisionShapes/btConvexShape.h>
+#include <BulletDynamics/Character/btKinematicCharacterController.h>
 
-#include "conversion.h"
 #include "btKinematicCharacterController_wrap.h"
 
-#ifndef DISABLE_CHARACTER_CONTROLLER
+#ifndef BULLETC_DISABLE_IACTION_CLASSES
 
 btKinematicCharacterController* btKinematicCharacterController_new(btPairCachingGhostObject* ghostObject, btConvexShape* convexShape, btScalar stepHeight)
 {

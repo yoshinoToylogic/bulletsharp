@@ -1,3 +1,6 @@
+#include <BulletCollision/BroadphaseCollision/btDbvt.h>
+#include <BulletCollision/CollisionShapes/btCompoundShape.h>
+
 #include "conversion.h"
 #include "btCompoundShape_wrap.h"
 

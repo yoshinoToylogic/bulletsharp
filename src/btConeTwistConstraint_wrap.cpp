@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btConeTwistConstraint.h>
+
 #include "conversion.h"
 #include "btConeTwistConstraint_wrap.h"
 

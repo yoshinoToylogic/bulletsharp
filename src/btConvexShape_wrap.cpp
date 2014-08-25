@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btConvexShape.h>
+
 #include "conversion.h"
 #include "btConvexShape_wrap.h"
 

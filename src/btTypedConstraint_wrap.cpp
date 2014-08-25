@@ -1,3 +1,7 @@
+#include <BulletDynamics/ConstraintSolver/btSolverConstraint.h>
+#include <BulletDynamics/ConstraintSolver/btTypedConstraint.h>
+#include <LinearMath/btSerializer.h>
+
 #include "conversion.h"
 #include "btTypedConstraint_wrap.h"
 

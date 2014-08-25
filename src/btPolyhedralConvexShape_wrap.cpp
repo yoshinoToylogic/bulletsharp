@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btPolyhedralConvexShape.h>
+
 #include "conversion.h"
 #include "btPolyhedralConvexShape_wrap.h"
 

@@ -1,3 +1,7 @@
+#include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
+#include <BulletCollision/CollisionShapes/btCollisionShape.h>
+
 #include "conversion.h"
 #include "btCollisionObjectWrapper_wrap.h"
 

@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionDispatch/btManifoldResult.h>
+#include <BulletCollision/NarrowPhaseCollision/btManifoldPoint.h>
+
 #include "conversion.h"
 #include "btManifoldPoint_wrap.h"
 

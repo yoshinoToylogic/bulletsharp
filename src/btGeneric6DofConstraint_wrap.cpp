@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btGeneric6DofConstraint.h>
+
 #include "conversion.h"
 #include "btGeneric6DofConstraint_wrap.h"
 

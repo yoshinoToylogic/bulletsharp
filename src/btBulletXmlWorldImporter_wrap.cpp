@@ -1,6 +1,6 @@
 #include <../Extras/Serialize/BulletXmlWorldImporter/btBulletXmlWorldImporter.h>
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 
-#include "conversion.h"
 #include "btBulletXmlWorldImporter_wrap.h"
 
 btBulletXmlWorldImporter* btBulletXmlWorldImporter_new(btDynamicsWorld* world)

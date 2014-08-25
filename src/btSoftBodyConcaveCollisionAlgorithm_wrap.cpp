@@ -1,4 +1,5 @@
 #include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
+#include <BulletCollision/CollisionDispatch/btManifoldResult.h>
 #include <BulletCollision/CollisionShapes/btCollisionShape.h>
 #include <BulletSoftBody/btSoftBodyConcaveCollisionAlgorithm.h>
 

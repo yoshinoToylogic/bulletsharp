@@ -1,3 +1,7 @@
+#include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
+#include <BulletDynamics/Dynamics/btActionInterface.h>
+#include <LinearMath/btIDebugDraw.h>
+
 #include "conversion.h"
 #include "btActionInterface_wrap.h"
 

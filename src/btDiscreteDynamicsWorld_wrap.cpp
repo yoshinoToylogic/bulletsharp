@@ -1,4 +1,8 @@
-#include "conversion.h"
+#include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
+#include <BulletDynamics/ConstraintSolver/btConstraintSolver.h>
+#include <BulletDynamics/ConstraintSolver/btTypedConstraint.h>
+#include <BulletDynamics/Dynamics/btDiscreteDynamicsWorld.h>
+
 #include "btDiscreteDynamicsWorld_wrap.h"
 
 btDiscreteDynamicsWorld* btDiscreteDynamicsWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration)

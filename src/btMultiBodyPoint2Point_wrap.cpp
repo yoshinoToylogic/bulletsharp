@@ -1,3 +1,4 @@
+#include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <BulletDynamics/Featherstone/btMultiBodyPoint2Point.h>
 
 #include "conversion.h"

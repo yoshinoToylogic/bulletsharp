@@ -202,7 +202,9 @@ int btGImpactQuantizedBvh_getEscapeNodeIndex(btGImpactQuantizedBvh* obj, int nod
 
 btAABB* btGImpactQuantizedBvh_getGlobalBox(btGImpactQuantizedBvh* obj)
 {
-	return &obj->getGlobalBox();
+	btAABB* box = new btAABB;
+	*box = obj->getGlobalBox();
+	return box;
 }
 
 int btGImpactQuantizedBvh_getLeftNode(btGImpactQuantizedBvh* obj, int nodeindex)

@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionShapes/btStridingMeshInterface.h>
+#include <LinearMath/btSerializer.h>
+
 #include "conversion.h"
 #include "btStridingMeshInterface_wrap.h"
 

@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btMultiSphereShape.h>
+
 #include "conversion.h"
 #include "btMultiSphereShape_wrap.h"
 

@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btGearConstraint.h>
+
 #include "conversion.h"
 #include "btGearConstraint_wrap.h"
 

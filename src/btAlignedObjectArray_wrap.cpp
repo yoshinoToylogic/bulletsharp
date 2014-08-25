@@ -1,4 +1,8 @@
+#include <BulletCollision/BroadphaseCollision/btBroadphaseProxy.h>
+#include <BulletCollision/CollisionShapes/btTriangleIndexVertexArray.h>
+#include <BulletCollision/NarrowPhaseCollision/btPersistentManifold.h>
 #include <BulletSoftBody/btSoftBody.h>
+#include <LinearMath/btAlignedObjectArray.h>
 
 #include "conversion.h"
 #include "btAlignedObjectArray_wrap.h"
@@ -107,32 +111,32 @@ void btAlignedIndexedMeshArray_delete(btAlignedIndexedMeshArray* obj)
 }
 
 
-EXPORT btManifoldArray* btManifoldArray_new()
+EXPORT btAlignedManifoldArray* btManifoldArray_new()
 {
-	return new btManifoldArray();
+	return new btAlignedManifoldArray();
 }
 
-btPersistentManifold* btManifoldArray_at(btManifoldArray* obj, int n)
+btPersistentManifold* btManifoldArray_at(btAlignedManifoldArray* obj, int n)
 {
 	return obj->at(n);
 }
 
-void btManifoldArray_push_back(btManifoldArray* obj, btPersistentManifold* val)
+void btManifoldArray_push_back(btAlignedManifoldArray* obj, btPersistentManifold* val)
 {
 	obj->push_back(val);
 }
 
-void btManifoldArray_resizeNoInitialize(btManifoldArray* obj, int newSize)
+void btManifoldArray_resizeNoInitialize(btAlignedManifoldArray* obj, int newSize)
 {
 	return obj->resizeNoInitialize(newSize);
 }
 
-int btManifoldArray_size(btManifoldArray* obj)
+int btManifoldArray_size(btAlignedManifoldArray* obj)
 {
 	return obj->size();
 }
 
-void btManifoldArray_delete(btManifoldArray* obj)
+void btManifoldArray_delete(btAlignedManifoldArray* obj)
 {
 	delete obj;
 }

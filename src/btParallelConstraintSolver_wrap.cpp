@@ -1,7 +1,6 @@
 #include <BulletMultiThreaded/btParallelConstraintSolver.h>
 #include <BulletMultiThreaded/btThreadSupportInterface.h>
 
-#include "conversion.h"
 #include "btParallelConstraintSolver_wrap.h"
 /*
 PfxParallelBatch* PfxParallelBatch_new()

@@ -9,9 +9,9 @@ btPersistentManifold* btPersistentManifold_new()
 	return new btPersistentManifold();
 }
 
-btPersistentManifold* btPersistentManifold_new2(const btCollisionObject* body0, const btCollisionObject* body1, int __unnamed, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
+btPersistentManifold* btPersistentManifold_new2(const btCollisionObject* body0, const btCollisionObject* body1, int __unnamed2, btScalar contactBreakingThreshold, btScalar contactProcessingThreshold)
 {
-	return new btPersistentManifold(body0, body1, __unnamed, contactBreakingThreshold, contactProcessingThreshold);
+	return new btPersistentManifold(body0, body1, __unnamed2, contactBreakingThreshold, contactProcessingThreshold);
 }
 
 int btPersistentManifold_addManifoldPoint(btPersistentManifold* obj, const btManifoldPoint* newPoint)
@@ -139,30 +139,4 @@ void btPersistentManifold_setNumContacts(btPersistentManifold* obj, int cachedPo
 bool btPersistentManifold_validContactDistance(btPersistentManifold* obj, const btManifoldPoint* pt)
 {
 	return obj->validContactDistance(*pt);
-}
-
-void btPersistentManifold_delete(btPersistentManifold* obj)
-{
-	delete obj;
-}
-
-
-ContactDestroyedCallback getGContactDestroyedCallback()
-{
-	return gContactDestroyedCallback;
-}
-
-void setGContactDestroyedCallback(ContactDestroyedCallback value)
-{
-	gContactDestroyedCallback = value;
-}
-
-ContactProcessedCallback getGContactProcessedCallback()
-{
-	return gContactProcessedCallback;
-}
-
-void setGContactProcessedCallback(ContactProcessedCallback value)
-{
-	gContactProcessedCallback = value;
 }

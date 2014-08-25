@@ -1,3 +1,5 @@
+#include <BulletCollision/BroadphaseCollision/btAxisSweep3.h>
+
 #include "conversion.h"
 #include "btAxisSweep3_wrap.h"
 

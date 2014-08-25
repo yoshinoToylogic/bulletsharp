@@ -22,12 +22,12 @@ int btCollisionDispatcher_getDispatcherFlags(btCollisionDispatcher* obj)
 {
 	return obj->getDispatcherFlags();
 }
-/*
-* btCollisionDispatcher_getNearCallback(btCollisionDispatcher* obj)
+
+btNearCallback btCollisionDispatcher_getNearCallback(btCollisionDispatcher* obj)
 {
 	return obj->getNearCallback();
 }
-*/
+
 void btCollisionDispatcher_registerCollisionCreateFunc(btCollisionDispatcher* obj, int proxyType0, int proxyType1, btCollisionAlgorithmCreateFunc* createFunc)
 {
 	obj->registerCollisionCreateFunc(proxyType0, proxyType1, createFunc);
@@ -42,9 +42,13 @@ void btCollisionDispatcher_setDispatcherFlags(btCollisionDispatcher* obj, int fl
 {
 	obj->setDispatcherFlags(flags);
 }
-/*
-void btCollisionDispatcher_setNearCallback(btCollisionDispatcher* obj, * nearCallback)
+
+void btCollisionDispatcher_setNearCallback(btCollisionDispatcher* obj, btNearCallback nearCallback)
 {
+	if (nearCallback == 0)
+	{
+		obj->setNearCallback(btCollisionDispatcher::defaultNearCallback);
+		return;
+	}
 	obj->setNearCallback(nearCallback);
 }
-*/
