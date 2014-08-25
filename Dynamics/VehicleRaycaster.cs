@@ -12,8 +12,8 @@ namespace BulletSharp
         public Vector3 HitPointInWorld { get; set; }
     }
     
-    public abstract class VehicleRaycaster
+    public interface IVehicleRaycaster
 	{
-        public abstract Object CastRay(ref Vector3 from, ref Vector3 to, VehicleRaycasterResult result);
+        Object CastRay(ref Vector3 from, ref Vector3 to, VehicleRaycasterResult result);
 	}
 }

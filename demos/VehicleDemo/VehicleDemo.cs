@@ -1,8 +1,10 @@
-﻿using BulletSharp;
+﻿using System;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using BulletSharp;
 using BulletSharp.Math;
 using DemoFramework;
-using System;
-using System.Windows.Forms;
 
 namespace VehicleDemo
 {
@@ -85,51 +87,59 @@ namespace VehicleDemo
             Matrix tr;
             Matrix vehicleTr;
             //if (UseTrimeshGround)
-            //{
+            {
                 const float scale = 20.0f;
 
                 //create a triangle-mesh ground
-                int vertStride = Vector3.SizeInBytes;
-                int indexStride = 3 * sizeof(int);
+                const int NumVertsX = 20;
+                const int NumVertsY = 20;
+                const int totalVerts = NumVertsX * NumVertsY;
 
-                const int NUM_VERTS_X = 20;
-                const int NUM_VERTS_Y = 20;
-                const int totalVerts = NUM_VERTS_X * NUM_VERTS_Y;
-
-                const int totalTriangles = 2 * (NUM_VERTS_X - 1) * (NUM_VERTS_Y - 1);
+                const int totalTriangles = 2 * (NumVertsX - 1) * (NumVertsY - 1);
 
                 TriangleIndexVertexArray vertexArray = new TriangleIndexVertexArray();
                 IndexedMesh mesh = new IndexedMesh();
-                mesh.Allocate(totalVerts, vertStride, totalTriangles, indexStride);
-
-                BulletSharp.DataStream data = mesh.LockVerts();
-                for (i = 0; i < NUM_VERTS_X; i++)
+                mesh.NumTriangles = totalTriangles;
+                mesh.NumVertices = totalVerts;
+                mesh.TriangleIndexStride = 3 * sizeof(int);
+                mesh.VertexStride = Vector3.SizeInBytes;
+                mesh.TriangleIndexBase = Marshal.AllocHGlobal(mesh.TriangleIndexStride * totalTriangles);
+                mesh.VertexBase = Marshal.AllocHGlobal(mesh.VertexStride * totalVerts);
+                using (var indicesStream = mesh.GetTriangleStream())
                 {
-                    for (int j = 0; j < NUM_VERTS_Y; j++)
+                    var indices = new BinaryWriter(indicesStream);
+                    for (i = 0; i < NumVertsX - 1; i++)
                     {
-                        float wl = .2f;
-                        float height = 20.0f * (float)(Math.Sin(i * wl) * Math.Cos(j * wl));
+                        for (int j = 0; j < NumVertsY - 1; j++)
+                        {
+                            indices.Write(j * NumVertsX + i);
+                            indices.Write(j * NumVertsX + i + 1);
+                            indices.Write((j + 1) * NumVertsX + i + 1);
 
-                        data.Write((i - NUM_VERTS_X * 0.5f) * scale);
-                        data.Write(height);
-                        data.Write((j - NUM_VERTS_Y * 0.5f) * scale);
+                            indices.Write(j * NumVertsX + i);
+                            indices.Write((j + 1) * NumVertsX + i + 1);
+                            indices.Write((j + 1) * NumVertsX + i);
+                        }
                     }
+                    indices.Dispose();
                 }
 
-                int index = 0;
-                IntArray idata = mesh.TriangleIndices;
-                for (i = 0; i < NUM_VERTS_X - 1; i++)
+                using (var vertexStream = mesh.GetVertexStream())
                 {
-                    for (int j = 0; j < NUM_VERTS_Y - 1; j++)
+                    var vertices = new BinaryWriter(vertexStream);
+                    for (i = 0; i < NumVertsX; i++)
                     {
-                        idata[index++] = j * NUM_VERTS_X + i;
-                        idata[index++] = j * NUM_VERTS_X + i + 1;
-                        idata[index++] = (j + 1) * NUM_VERTS_X + i + 1;
+                        for (int j = 0; j < NumVertsY; j++)
+                        {
+                            float wl = .2f;
+                            float height = 20.0f * (float)(Math.Sin(i * wl) * Math.Cos(j * wl));
 
-                        idata[index++] = j * NUM_VERTS_X + i;
-                        idata[index++] = (j + 1) * NUM_VERTS_X + i + 1;
-                        idata[index++] = (j + 1) * NUM_VERTS_X + i;
+                            vertices.Write((i - NumVertsX * 0.5f) * scale);
+                            vertices.Write(height);
+                            vertices.Write((j - NumVertsY * 0.5f) * scale);
+                        }
                     }
+                    vertices.Dispose();
                 }
 
                 vertexArray.AddIndexedMesh(mesh);
@@ -137,7 +147,7 @@ namespace VehicleDemo
 
                 tr = Matrix.Identity;
                 vehicleTr = Matrix.Translation(0, -2, 0);
-            /*}
+            }/*
             else
             {
                 // Use HeightfieldTerrainShape
@@ -286,7 +296,7 @@ namespace VehicleDemo
 
             // create vehicle
             VehicleTuning tuning = new VehicleTuning();
-            VehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
+            IVehicleRaycaster vehicleRayCaster = new DefaultVehicleRaycaster(World);
             //vehicle = new RaycastVehicle(tuning, carChassis, vehicleRayCaster);
             vehicle = new CustomVehicle(tuning, carChassis, vehicleRayCaster);
 

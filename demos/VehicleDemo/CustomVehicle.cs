@@ -9,8 +9,8 @@ using BulletSharp.Math;
 
 namespace VehicleDemo
 {
-    // This class is equivalent to btRaycastVehicle, but is used to test the IAction interface
-    class CustomVehicle : IAction
+    // This class is equivalent to RaycastVehicle, but is used to test the IAction interface
+    public class CustomVehicle : IAction
     {
         List<WheelInfo> wheelInfo = new List<WheelInfo>();
 
@@ -19,7 +19,7 @@ namespace VehicleDemo
         float[] forwardImpulse = new float[0];
         float[] sideImpulse = new float[0];
 
-        Matrix ChassisWorldTransform
+        public Matrix ChassisWorldTransform
         {
             get
             {
@@ -39,7 +39,7 @@ namespace VehicleDemo
         }
 
         int indexRightAxis = 0;
-        int RightAxis
+        public int RightAxis
         {
             get { return indexRightAxis; }
         }
@@ -53,7 +53,7 @@ namespace VehicleDemo
             get { return chassisBody; }
         }
 
-        VehicleRaycaster vehicleRaycaster;
+        IVehicleRaycaster vehicleRaycaster;
 
         static RigidBody fixedBody;
 
@@ -86,8 +86,7 @@ namespace VehicleDemo
         public Matrix GetWheelTransformWS(int wheelIndex)
         {
             Debug.Assert(wheelIndex < NumWheels);
-            WheelInfo wheel = wheelInfo[wheelIndex];
-            return wheel.WorldTransform;
+            return wheelInfo[wheelIndex].WorldTransform;
         }
 
         static CustomVehicle()
@@ -98,7 +97,7 @@ namespace VehicleDemo
             ci.Dispose();
         }
 
-        public CustomVehicle(VehicleTuning tuning, RigidBody chassis, VehicleRaycaster raycaster)
+        public CustomVehicle(VehicleTuning tuning, RigidBody chassis, IVehicleRaycaster raycaster)
         {
             chassisBody = chassis;
             vehicleRaycaster = raycaster;
@@ -121,9 +120,8 @@ namespace VehicleDemo
             ci.MaxSuspensionTravelCm = tuning.MaxSuspensionTravelCm;
             ci.MaxSuspensionForce = tuning.MaxSuspensionForce;
 
-            wheelInfo.Add(new WheelInfo(ci));
-
-            WheelInfo wheel = wheelInfo[NumWheels - 1];
+            WheelInfo wheel = new WheelInfo(ci);
+            wheelInfo.Add(wheel);
 
             UpdateWheelTransformsWS(wheel, false);
             UpdateWheelTransform(NumWheels - 1, false);
@@ -153,30 +151,32 @@ namespace VehicleDemo
             Vector3 vel2 = body1.GetVelocityInLocalPoint(rel_pos2);
             Vector3 vel = vel1 - vel2;
 
-            float vrel = Vector3.Dot(frictionDirectionWorld, vel);
+            float vrel = Vector3.Dot(ref frictionDirectionWorld, ref vel);
 
             // calculate j that moves us to zero relative velocity
             j1 = -vrel * jacDiagABInv;
-            j1 = Math.Min(j1, maxImpulse);
-            j1 = Math.Max(j1, -maxImpulse);
+            j1 = System.Math.Min(j1, maxImpulse);
+            j1 = System.Math.Max(j1, -maxImpulse);
 
             return j1;
         }
 
+        Vector3 blue = new Vector3(0, 0, 1);
+        Vector3 magenta = new Vector3(1, 0, 1);
         public void DebugDraw(IDebugDraw debugDrawer)
         {
             for (int v = 0; v < NumWheels; v++)
             {
                 WheelInfo wheelInfo = GetWheelInfo(v);
 
-                Color wheelColor;
+                Vector3 wheelColor;
                 if (wheelInfo.RaycastInfo.IsInContact)
                 {
-                    wheelColor = Color.Blue;
+                    wheelColor = blue;
                 }
                 else
                 {
-                    wheelColor = Color.Magenta;
+                    wheelColor = magenta;
                 }
 
                 Matrix transform = wheelInfo.WorldTransform;
@@ -191,8 +191,8 @@ namespace VehicleDemo
                 Vector3 to2 = GetWheelInfo(v).RaycastInfo.ContactPointWS;
 
                 //debug wheels (cylinders)
-                debugDrawer.DrawLine(ref wheelPosWS, ref to1, ref to1);
-                debugDrawer.DrawLine(ref wheelPosWS, ref to2, ref to1);
+                debugDrawer.DrawLine(ref wheelPosWS, ref to1, ref wheelColor);
+                debugDrawer.DrawLine(ref wheelPosWS, ref to2, ref wheelColor);
 
             }
         }
@@ -287,7 +287,7 @@ namespace VehicleDemo
         private void ResolveSingleBilateral(RigidBody body1, Vector3 pos1, RigidBody body2, Vector3 pos2, float distance, Vector3 normal, ref float impulse, float timeStep)
         {
             float normalLenSqr = normal.LengthSquared;
-            Debug.Assert(Math.Abs(normalLenSqr) < 1.1f);
+            Debug.Assert(System.Math.Abs(normalLenSqr) < 1.1f);
             if (normalLenSqr > 1.1f)
             {
                 impulse = 0;
@@ -306,10 +306,10 @@ namespace VehicleDemo
             Vector3 m_bJ = Vector3.TransformCoordinate(Vector3.Cross(rel_pos2, -normal), world2B);
             Vector3 m_0MinvJt = body1.InvInertiaDiagLocal * m_aJ;
             Vector3 m_1MinvJt = body2.InvInertiaDiagLocal * m_bJ;
-            float jacDiagAB = body1.InvMass + Vector3.Dot(m_0MinvJt, m_aJ) + body2.InvMass + Vector3.Dot(m_1MinvJt, m_bJ);
+            float jacDiagAB = body1.InvMass + Vector3.Dot(ref m_0MinvJt, ref m_aJ) + body2.InvMass + Vector3.Dot(ref m_1MinvJt, ref m_bJ);
             float jacDiagABInv = 1.0f / jacDiagAB;
 
-            float rel_vel = Vector3.Dot(normal, vel);
+            float rel_vel = Vector3.Dot(ref normal, ref vel);
 
             //todo: move this into proper structure
             const float contactDamping = 0.2f;
@@ -368,7 +368,7 @@ namespace VehicleDemo
                         wheelTrans[2, indexRightAxis]);
 
                     Vector3 surfNormalWS = wheel.RaycastInfo.ContactNormalWS;
-                    float proj = Vector3.Dot(axle[i], surfNormalWS);
+                    float proj = Vector3.Dot(ref axle[i], ref surfNormalWS);
                     axle[i] -= surfNormalWS * proj;
                     axle[i].Normalize();
 
@@ -435,7 +435,7 @@ namespace VehicleDemo
                     {
                         sliding = true;
 
-                        float factor = maximp / (float)Math.Sqrt(impulseSquared);
+                        float factor = maximp / (float)System.Math.Sqrt(impulseSquared);
 
                         wheelInfo[i].SkidInfo *= factor;
                     }
@@ -480,9 +480,14 @@ namespace VehicleDemo
                     Vector3 sideImp = axle[i] * sideImpulse[i];
 
 #if ROLLING_INFLUENCE_FIX // fix. It only worked if car's up was along Y - VT.
-                    Vector4 vChassisWorldUp = RigidBody.CenterOfMassTransform.get_Columns(indexUpAxis);
+                    //Vector4 vChassisWorldUp = RigidBody.CenterOfMassTransform.get_Columns(indexUpAxis);
+                    Vector4 vChassisWorldUp = new Vector4(
+                        RigidBody.CenterOfMassTransform.Row1[indexUpAxis],
+                        RigidBody.CenterOfMassTransform.Row2[indexUpAxis],
+                        RigidBody.CenterOfMassTransform.Row3[indexUpAxis],
+                        RigidBody.CenterOfMassTransform.Row4[indexUpAxis]);
                     Vector3 vChassisWorldUp3 = new Vector3(vChassisWorldUp.X, vChassisWorldUp.Y, vChassisWorldUp.Z);
-                    rel_pos -= vChassisWorldUp3 * (Vector3.Dot(vChassisWorldUp3, rel_pos) * (1.0f - wheel.RollInfluence));
+                    rel_pos -= vChassisWorldUp3 * (Vector3.Dot(ref vChassisWorldUp3, ref rel_pos) * (1.0f - wheel.RollInfluence));
 #else
                     rel_pos[indexUpAxis] *= wheel.RollInfluence;
 #endif
@@ -615,7 +620,7 @@ namespace VehicleDemo
                     float proj = Vector3.Dot(fwd, wheel.RaycastInfo.ContactNormalWS);
                     fwd -= wheel.RaycastInfo.ContactNormalWS * proj;
 
-                    float proj2 = Vector3.Dot(fwd, vel);
+                    float proj2 = Vector3.Dot(ref fwd, ref vel);
 
                     wheel.DeltaRotation = (proj2 * step) / (wheel.WheelsRadius);
                     wheel.Rotation += wheel.DeltaRotation;
@@ -629,7 +634,7 @@ namespace VehicleDemo
             }
         }
 
-        void UpdateWheelTransform(int wheelIndex, bool interpolatedTransform)
+        public void UpdateWheelTransform(int wheelIndex, bool interpolatedTransform)
         {
             WheelInfo wheel = wheelInfo[wheelIndex];
             UpdateWheelTransformsWS(wheel, interpolatedTransform);

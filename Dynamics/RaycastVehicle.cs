@@ -69,7 +69,7 @@ namespace BulletSharp
             get { return chassisBody; }
         }
 
-        VehicleRaycaster vehicleRaycaster;
+        IVehicleRaycaster vehicleRaycaster;
 
         static RigidBody fixedBody;
 
@@ -113,7 +113,7 @@ namespace BulletSharp
             ci.Dispose();
         }
 
-        public RaycastVehicle(VehicleTuning tuning, RigidBody chassis, VehicleRaycaster raycaster)
+        public RaycastVehicle(VehicleTuning tuning, RigidBody chassis, IVehicleRaycaster raycaster)
         {
             chassisBody = chassis;
             vehicleRaycaster = raycaster;
@@ -699,7 +699,7 @@ namespace BulletSharp
         }
 	}
 
-    public class DefaultVehicleRaycaster : VehicleRaycaster
+    public class DefaultVehicleRaycaster : IVehicleRaycaster
     {
         private DynamicsWorld m_dynamicsWorld;
 
@@ -708,7 +708,7 @@ namespace BulletSharp
             m_dynamicsWorld = world;
         }
 
-        public override Object CastRay(ref Vector3 from, ref Vector3 to, VehicleRaycasterResult result)
+        public Object CastRay(ref Vector3 from, ref Vector3 to, VehicleRaycasterResult result)
         {
             //	RayResultCallback& resultCallback;
             ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref from, ref to);

@@ -5,6 +5,12 @@ using System.Security;
 
 namespace BulletSharp
 {
+    public enum DispatchFunc
+    {
+        Discrete = 1,
+        Continuous
+    }
+
 	public class DispatcherInfo : IDisposable
 	{
 		internal IntPtr _native;
@@ -39,7 +45,7 @@ namespace BulletSharp
             set { btDispatcherInfo_setDebugDraw(_native, BulletSharp.DebugDraw.GetUnmanaged(value)); }
 		}
 
-		public int DispatchFunc
+        public DispatchFunc DispatchFunc
 		{
 			get { return btDispatcherInfo_getDispatchFunc(_native); }
 			set { btDispatcherInfo_setDispatchFunc(_native, value); }
@@ -125,7 +131,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btDispatcherInfo_getDebugDraw(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern int btDispatcherInfo_getDispatchFunc(IntPtr obj);
+        static extern DispatchFunc btDispatcherInfo_getDispatchFunc(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btDispatcherInfo_getEnableSatConvex(IntPtr obj);
@@ -154,7 +160,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcherInfo_setDebugDraw(IntPtr obj, IntPtr value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDispatcherInfo_setDispatchFunc(IntPtr obj, int value);
+        static extern void btDispatcherInfo_setDispatchFunc(IntPtr obj, DispatchFunc value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDispatcherInfo_setEnableSatConvex(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
