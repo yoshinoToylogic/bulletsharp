@@ -1,4 +1,6 @@
+#include <BulletCollision/CollisionShapes/btConvexShape.h>
 #include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
+#include <LinearMath/btIDebugDraw.h>
 
 #include "conversion.h"
 #include "btConvexPenetrationDepthSolver_wrap.h"

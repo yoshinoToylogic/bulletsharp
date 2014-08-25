@@ -1,3 +1,6 @@
+#include <BulletCollision/BroadphaseCollision/btDbvtBroadphase.h>
+#include <BulletCollision/BroadphaseCollision/btDispatcher.h>
+
 #include "conversion.h"
 #include "btDbvtBroadphase_wrap.h"
 

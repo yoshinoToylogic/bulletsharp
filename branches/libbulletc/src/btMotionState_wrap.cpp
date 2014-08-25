@@ -1,3 +1,5 @@
+#include <LinearMath/btMotionState.h>
+
 #include "conversion.h"
 #include "btMotionState_wrap.h"
 
@@ -8,10 +10,10 @@ void btMotionState_getWorldTransform(btMotionState* obj, btScalar* worldTrans)
 	TRANSFORM_DEF_OUT(worldTrans);
 }
 
-void btMotionState_setWorldTransform(btMotionState* obj, const btScalar* transform)
+void btMotionState_setWorldTransform(btMotionState* obj, const btScalar* worldTrans)
 {
-	TRANSFORM_CONV(transform);
-	obj->setWorldTransform(TRANSFORM_USE(transform));
+	TRANSFORM_CONV(worldTrans);
+	obj->setWorldTransform(TRANSFORM_USE(worldTrans));
 }
 
 void btMotionState_delete(btMotionState* obj)

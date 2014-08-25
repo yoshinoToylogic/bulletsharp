@@ -1,4 +1,7 @@
-#include "conversion.h"
+#include <BulletDynamics/ConstraintSolver/btConstraintSolver.h>
+#include <BulletDynamics/ConstraintSolver/btContactSolverInfo.h>
+#include <LinearMath/btIDebugDraw.h>
+
 #include "btConstraintSolver_wrap.h"
 
 void btConstraintSolver_allSolved(btConstraintSolver* obj, const btContactSolverInfo* __unnamed0, btIDebugDraw* __unnamed1)

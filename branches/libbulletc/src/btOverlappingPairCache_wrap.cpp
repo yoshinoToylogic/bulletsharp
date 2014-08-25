@@ -1,4 +1,6 @@
-#include "conversion.h"
+#include <BulletCollision/BroadphaseCollision/btDispatcher.h>
+#include <BulletCollision/BroadphaseCollision/btOverlappingPairCache.h>
+
 #include "btOverlappingPairCache_wrap.h"
 
 bool btOverlapCallback_processOverlap(btOverlapCallback* obj, btBroadphasePair* pair)

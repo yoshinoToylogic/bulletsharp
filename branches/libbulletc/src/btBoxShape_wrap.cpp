@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btBoxShape.h>
+
 #include "conversion.h"
 #include "btBoxShape_wrap.h"
 

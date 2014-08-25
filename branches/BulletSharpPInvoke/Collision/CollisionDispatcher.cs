@@ -16,9 +16,14 @@ namespace BulletSharp
 
 	public class CollisionDispatcher : Dispatcher
 	{
-        internal NearCallback _nearCallback;
+        [UnmanagedFunctionPointer(Native.Conv)]
+        private delegate void NearCallbackUnmanagedDelegate(IntPtr collisionPair, IntPtr dispatcher, IntPtr dispatchInfo);
+
         protected CollisionConfiguration _collisionConfiguration;
         private List<CollisionAlgorithmCreateFunc> _collisionCreateFuncs;
+        private NearCallback _nearCallback;
+        private NearCallbackUnmanagedDelegate _nearCallbackUnmanaged;
+        private IntPtr _nearCallbackUnmanagedPtr;
 
 		internal CollisionDispatcher(IntPtr native)
 			: base(native)
@@ -35,6 +40,13 @@ namespace BulletSharp
 		{
 			btCollisionDispatcher_defaultNearCallback(collisionPair._native, dispatcher._native, dispatchInfo._native);
 		}
+
+        public void NearCallbackUnmanaged(IntPtr collisionPair, IntPtr dispatcher, IntPtr dispatchInfo)
+        {
+            System.Diagnostics.Debug.Assert(dispatcher == _native);
+
+            _nearCallback(new BroadphasePair(collisionPair, true), this, new DispatcherInfo(dispatchInfo, true));
+        }
 
         public void RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc createFunc)
 		{
@@ -69,8 +81,19 @@ namespace BulletSharp
             set
             {
                 _nearCallback = value;
-                throw new NotImplementedException();
-                //btCollisionDispatcher_setNearCallback(_native, value._native);
+
+                if (value == null)
+                {
+                    btCollisionDispatcher_setNearCallback(_native, IntPtr.Zero);
+                    return;
+                }
+
+                if (_nearCallbackUnmanaged == null)
+                {
+                    _nearCallbackUnmanaged = new NearCallbackUnmanagedDelegate(NearCallbackUnmanaged);
+                    _nearCallbackUnmanagedPtr = Marshal.GetFunctionPointerForDelegate(_nearCallbackUnmanaged);
+                }
+                btCollisionDispatcher_setNearCallback(_native, _nearCallbackUnmanagedPtr);
             }
 		}
 

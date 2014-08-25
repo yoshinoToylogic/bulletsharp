@@ -1,6 +1,7 @@
 #include <BulletCollision/NarrowPhaseCollision/btPersistentManifold.h>
 #include <BulletCollision/CollisionDispatch/btConvexConcaveCollisionAlgorithm.h>
 #include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
+#include <BulletCollision/CollisionDispatch/btManifoldResult.h>
 
 #include "conversion.h"
 #include "btConvexConcaveCollisionAlgorithm_wrap.h"

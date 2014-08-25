@@ -1,4 +1,5 @@
-#include "conversion.h"
+#include <BulletCollision/CollisionShapes/btCapsuleShape.h>
+
 #include "btCapsuleShape_wrap.h"
 
 btCapsuleShape* btCapsuleShape_new(btScalar radius, btScalar height)

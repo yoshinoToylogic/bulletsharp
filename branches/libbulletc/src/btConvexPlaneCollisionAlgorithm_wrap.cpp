@@ -1,5 +1,4 @@
 #include <BulletCollision/CollisionDispatch/btConvexPlaneCollisionAlgorithm.h>
-#include <BulletCollision/NarrowPhaseCollision/btPersistentManifold.h>
 
 #include "conversion.h"
 #include "btConvexPlaneCollisionAlgorithm_wrap.h"

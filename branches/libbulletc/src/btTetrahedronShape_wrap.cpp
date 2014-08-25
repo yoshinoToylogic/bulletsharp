@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btTetrahedronShape.h>
+
 #include "conversion.h"
 #include "btTetrahedronShape_wrap.h"
 

@@ -1,3 +1,6 @@
+#include <BulletCollision/BroadphaseCollision/btBroadphaseProxy.h>
+#include <BulletCollision/BroadphaseCollision/btCollisionAlgorithm.h>
+
 #include "conversion.h"
 #include "btBroadphaseProxy_wrap.h"
 

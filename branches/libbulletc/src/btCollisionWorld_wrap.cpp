@@ -1,3 +1,9 @@
+#include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
+#include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
+#include <BulletCollision/CollisionShapes/btConvexShape.h>
+#include <LinearMath/btIDebugDraw.h>
+#include <LinearMath/btSerializer.h>
+
 #include "conversion.h"
 #include "btCollisionWorld_wrap.h"
 

@@ -1,4 +1,5 @@
-#include "conversion.h"
+#include <BulletDynamics/ConstraintSolver/btContactSolverInfo.h>
+
 #include "btContactSolverInfo_wrap.h"
 
 btContactSolverInfoData* btContactSolverInfoData_new()

@@ -1,3 +1,6 @@
+#include <BulletCollision/BroadphaseCollision/btBroadphaseInterface.h>
+#include <BulletCollision/BroadphaseCollision/btDispatcher.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObjectWrapper.h>
 #include <BulletSoftBody/btSoftBody.h>
 #include <BulletSoftBody/btSoftBodySolvers.h>
 

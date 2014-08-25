@@ -1,4 +1,4 @@
-#include <BulletCollision/CollisionShapes/btHeightFieldTerrainShape.h>
+#include <BulletCollision/CollisionShapes/btHeightfieldTerrainShape.h>
 
 #include "btHeightfieldTerrainShape_wrap.h"
 

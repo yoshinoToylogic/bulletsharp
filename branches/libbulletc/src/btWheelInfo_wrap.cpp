@@ -1,9 +1,10 @@
+#include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <BulletDynamics/Vehicle/btWheelInfo.h>
 
 #include "conversion.h"
 #include "btWheelInfo_wrap.h"
 
-#ifndef DISABLE_VEHICLE
+#ifndef BULLETC_DISABLE_IACTION_CLASSES
 
 btWheelInfoConstructionInfo* btWheelInfoConstructionInfo_new()
 {

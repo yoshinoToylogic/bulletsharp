@@ -1,5 +1,7 @@
-#include <BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h>
+#include <BulletCollision/CollisionShapes/btConvexShape.h>
 #include <BulletCollision/NarrowPhaseCollision/btConvexPenetrationDepthSolver.h>
+#include <BulletCollision/NarrowPhaseCollision/btGjkPairDetector.h>
+#include <LinearMath/btIDebugDraw.h>
 
 #include "conversion.h"
 #include "btGjkPairDetector_wrap.h"

@@ -1,5 +1,7 @@
-#include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
+#include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
+#include <BulletDynamics/ConstraintSolver/btConstraintSolver.h>
 #include <BulletSoftBody/btSoftBodySolvers.h>
+#include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 
 #include "conversion.h"
 #include "btSoftRigidDynamicsWorld_wrap.h"

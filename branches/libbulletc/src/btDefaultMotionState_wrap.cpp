@@ -1,3 +1,5 @@
+#include <LinearMath/btDefaultMotionState.h>
+
 #include "conversion.h"
 #include "btDefaultMotionState_wrap.h"
 

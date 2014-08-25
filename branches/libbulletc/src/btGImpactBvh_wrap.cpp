@@ -75,7 +75,7 @@ int GIM_BVH_DATA_getData(GIM_BVH_DATA* obj)
 	return obj->m_data;
 }
 
-void GIM_BVH_DATA_setBound(GIM_BVH_DATA* obj, btAABB* value)
+void GIM_BVH_DATA_setBound(GIM_BVH_DATA* obj, const btAABB* value)
 {
 	obj->m_bound = *value;
 }
@@ -116,7 +116,7 @@ bool GIM_BVH_TREE_NODE_isLeafNode(GIM_BVH_TREE_NODE* obj)
 	return obj->isLeafNode();
 }
 
-void GIM_BVH_TREE_NODE_setBound(GIM_BVH_TREE_NODE* obj, btAABB* value)
+void GIM_BVH_TREE_NODE_setBound(GIM_BVH_TREE_NODE* obj, const btAABB* value)
 {
 	obj->m_bound = *value;
 }
@@ -296,7 +296,9 @@ int btGImpactBvh_getEscapeNodeIndex(btGImpactBvh* obj, int nodeindex)
 
 btAABB* btGImpactBvh_getGlobalBox(btGImpactBvh* obj)
 {
-	return &obj->getGlobalBox();
+	btAABB* box = new btAABB;
+	*box = obj->getGlobalBox();
+	return box;
 }
 
 int btGImpactBvh_getLeftNode(btGImpactBvh* obj, int nodeindex)

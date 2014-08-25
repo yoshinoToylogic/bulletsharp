@@ -829,6 +829,14 @@ namespace BulletSharpGen
                 // C++ source file
                 var sourceFile = new FileStream(outDirectoryC + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
                 sourceWriter = new StreamWriter(sourceFile);
+                sourceWriter.Write("#include <");
+                sourceWriter.Write(header.Filename);
+                sourceWriter.WriteLine('>');
+                sourceWriter.WriteLine();
+                if (RequiresConversionHeader(header))
+                {
+                    sourceWriter.WriteLine("#include \"conversion.h\"");
+                }
                 sourceWriter.Write("#include \"");
                 sourceWriter.Write(headerFilename);
                 sourceWriter.WriteLine("\"");
@@ -871,6 +879,37 @@ namespace BulletSharpGen
             includeFile.Dispose();
 
             Console.WriteLine("Write complete");
+        }
+
+        private static bool RequiresConversionHeader(HeaderDefinition header)
+        {
+            return header.Classes.Any(RequiresConversionHeader);
+        }
+
+        private static bool RequiresConversionHeader(ClassDefinition cl)
+        {
+            if (cl.Classes.Any(RequiresConversionHeader))
+            {
+                return true;
+            }
+
+            foreach (var method in cl.Methods)
+            {
+                if (BulletParser.TypeRequiresMarshal(method.ReturnType))
+                {
+                    return true;
+                }
+
+                foreach (var param in method.Parameters)
+                {
+                    if (BulletParser.TypeRequiresMarshal(param.Type))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

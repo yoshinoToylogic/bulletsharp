@@ -1,3 +1,5 @@
+#include <LinearMath/btIDebugDraw.h>
+
 #include "conversion.h"
 #include "btIDebugDraw_wrap.h"
 
@@ -45,7 +47,7 @@ void btIDebugDrawWrapper::drawArc(const btVector3& center, const btVector3& norm
 	btScalar radiusA, btScalar radiusB, btScalar minAngle, btScalar maxAngle,
 	const btVector3& color, bool drawSect)
 {
-	_cb(3);
+	_cb(1);
 	//_debugDraw->DrawArc(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&normal), Math::BtVector3ToVector3(&axis),
 		//radiusA, radiusB, minAngle, maxAngle, BtVectorToBtColor(color), drawSect);
 }
@@ -59,7 +61,7 @@ void btIDebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax
 
 void btIDebugDrawWrapper::drawBox(const btVector3& bbMin, const btVector3& bbMax, const btVector3& color)
 {
-	_cb(4);
+	_cb(2);
 	//_debugDraw->DrawBox(
 		//Math::BtVector3ToVector3(&bbMin), Math::BtVector3ToVector3(&bbMax),	BtVectorToBtColor(color));
 }
@@ -104,7 +106,7 @@ void btIDebugDrawWrapper::drawPlane(const btVector3& planeNormal, btScalar plane
 
 void btIDebugDrawWrapper::drawSphere(const btVector3& p, btScalar radius, const btVector3& color)
 {
-	_cb(10);
+	_cb(3);
 	//_debugDraw->DrawSphere(Math::BtVector3ToVector3(&p), radius, BtVectorToBtColor(color));
 }
 
@@ -124,7 +126,7 @@ void btIDebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVecto
 void btIDebugDrawWrapper::drawSpherePatch(const btVector3& center, const btVector3& up, const btVector3& axis, btScalar radius,
 	btScalar minTh, btScalar maxTh, btScalar minPs, btScalar maxPs, const btVector3& color)
 {
-	_cb(12);
+	_cb(4);
 	//_debugDraw->DrawSpherePatch(Math::BtVector3ToVector3(&center), Math::BtVector3ToVector3(&up), Math::BtVector3ToVector3(&axis),
 		//radius, minTh, maxTh, minPs, maxPs, BtVectorToBtColor(color));
 }
@@ -144,7 +146,7 @@ void btIDebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1,
 void btIDebugDrawWrapper::drawTriangle(const btVector3& v0, const btVector3& v1, const btVector3& v2,
 	const btVector3& n0, const btVector3& n1, const btVector3& n2, const btVector3& color, btScalar alpha)
 {
-	_cb(14);
+	_cb(5);
 	//_debugDraw->DrawTriangle(Math::BtVector3ToVector3(&v0), Math::BtVector3ToVector3(&v1), Math::BtVector3ToVector3(&v2),
 		//Math::BtVector3ToVector3(&n0), Math::BtVector3ToVector3(&n1), Math::BtVector3ToVector3(&n2), BtVectorToBtColor(color), alpha);
 }
@@ -187,7 +189,7 @@ void btIDebugDrawWrapper::reportErrorWarning(const char* warningString)
 
 void btIDebugDrawWrapper::setDebugMode(int debugMode)
 {
-	_cb(15);
+	_cb(6);
 	//_debugDraw->DebugMode = (BulletSharp::DebugDrawModes)debugMode;
 }
 int	btIDebugDrawWrapper::getDebugMode() const

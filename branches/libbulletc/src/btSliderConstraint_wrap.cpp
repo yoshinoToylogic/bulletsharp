@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btSliderConstraint.h>
+
 #include "conversion.h"
 #include "btSliderConstraint_wrap.h"
 

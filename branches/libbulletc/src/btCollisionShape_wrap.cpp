@@ -1,3 +1,6 @@
+#include <BulletCollision/CollisionShapes/btCollisionShape.h>
+#include <LinearMath/btSerializer.h>
+
 #include "conversion.h"
 #include "btCollisionShape_wrap.h"
 

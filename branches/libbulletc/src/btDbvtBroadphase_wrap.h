@@ -51,7 +51,6 @@ extern "C"
 	EXPORT void btDbvtBroadphase_setPid(btDbvtBroadphase* obj, int value);
 	EXPORT void btDbvtBroadphase_setPrediction(btDbvtBroadphase* obj, btScalar value);
 	EXPORT void btDbvtBroadphase_setReleasepaircache(btDbvtBroadphase* obj, bool value);
-	EXPORT void btDbvtBroadphase_setSets(btDbvtBroadphase* obj, btDbvt* value);
 	EXPORT void btDbvtBroadphase_setStageCurrent(btDbvtBroadphase* obj, int value);
 	EXPORT void btDbvtBroadphase_setUpdates_call(btDbvtBroadphase* obj, unsigned int value);
 	EXPORT void btDbvtBroadphase_setUpdates_done(btDbvtBroadphase* obj, unsigned int value);

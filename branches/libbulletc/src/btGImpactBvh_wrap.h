@@ -18,7 +18,7 @@ extern "C"
 	EXPORT GIM_BVH_DATA* GIM_BVH_DATA_new();
 	EXPORT btAABB* GIM_BVH_DATA_getBound(GIM_BVH_DATA* obj);
 	EXPORT int GIM_BVH_DATA_getData(GIM_BVH_DATA* obj);
-	EXPORT void GIM_BVH_DATA_setBound(GIM_BVH_DATA* obj, btAABB* value);
+	EXPORT void GIM_BVH_DATA_setBound(GIM_BVH_DATA* obj, const btAABB* value);
 	EXPORT void GIM_BVH_DATA_setData(GIM_BVH_DATA* obj, int value);
 	EXPORT void GIM_BVH_DATA_delete(GIM_BVH_DATA* obj);
 
@@ -27,7 +27,7 @@ extern "C"
 	EXPORT int GIM_BVH_TREE_NODE_getDataIndex(GIM_BVH_TREE_NODE* obj);
 	EXPORT int GIM_BVH_TREE_NODE_getEscapeIndex(GIM_BVH_TREE_NODE* obj);
 	EXPORT bool GIM_BVH_TREE_NODE_isLeafNode(GIM_BVH_TREE_NODE* obj);
-	EXPORT void GIM_BVH_TREE_NODE_setBound(GIM_BVH_TREE_NODE* obj, btAABB* value);
+	EXPORT void GIM_BVH_TREE_NODE_setBound(GIM_BVH_TREE_NODE* obj, const btAABB* value);
 	EXPORT void GIM_BVH_TREE_NODE_setDataIndex(GIM_BVH_TREE_NODE* obj, int index);
 	EXPORT void GIM_BVH_TREE_NODE_setEscapeIndex(GIM_BVH_TREE_NODE* obj, int index);
 	EXPORT void GIM_BVH_TREE_NODE_delete(GIM_BVH_TREE_NODE* obj);

@@ -3,7 +3,7 @@
 #include "conversion.h"
 #include "btVehicleRaycaster_wrap.h"
 
-#ifndef DISABLE_VEHICLE
+#ifndef BULLETC_DISABLE_IACTION_CLASSES
 
 btVehicleRaycaster::btVehicleRaycasterResult* btVehicleRaycaster_btVehicleRaycasterResult_new()
 {

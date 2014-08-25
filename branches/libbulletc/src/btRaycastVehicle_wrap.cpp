@@ -1,9 +1,10 @@
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 #include <BulletDynamics/Vehicle/btRaycastVehicle.h>
 
 #include "conversion.h"
 #include "btRaycastVehicle_wrap.h"
 
-#ifndef DISABLE_VEHICLE
+#ifndef BULLETC_DISABLE_IACTION_CLASSES
 
 btRaycastVehicle::btVehicleTuning* btRaycastVehicle_btVehicleTuning_new()
 {

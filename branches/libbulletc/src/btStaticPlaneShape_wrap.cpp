@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btStaticPlaneShape.h>
+
 #include "conversion.h"
 #include "btStaticPlaneShape_wrap.h"
 

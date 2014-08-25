@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btGeneric6DofSpringConstraint.h>
+
 #include "conversion.h"
 #include "btGeneric6DofSpringConstraint_wrap.h"
 

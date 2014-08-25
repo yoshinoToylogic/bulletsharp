@@ -1,7 +1,7 @@
 #include <../Extras/Serialize/BulletWorldImporter/btBulletWorldImporter.h>
 #include <../Extras/Serialize/BulletFileLoader/btBulletFile.h>
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
 
-#include "conversion.h"
 #include "btBulletWorldImporter_wrap.h"
 
 btBulletWorldImporter* btBulletWorldImporter_new()

@@ -903,6 +903,16 @@ namespace BulletSharpGen
 
         public static bool IsExcludedClass(ClassDefinition cl)
         {
+            switch (cl.Name)
+            {
+                case "btBroadphasePairSortPredicate":
+                case "btGeneric6DofConstraintDoubleData2":
+                case "btGeneric6DofSpringConstraintDoubleData2":
+                case "btHingeConstraintDoubleData2":
+                case "btPoint2PointConstraintDoubleData2":
+                    return true;
+            }
+
             // Exclude all "FloatData/DoubleData" serialization classes
             return cl.Name.EndsWith("Data") && !cl.ManagedName.Equals("ContactSolverInfoData");
         }

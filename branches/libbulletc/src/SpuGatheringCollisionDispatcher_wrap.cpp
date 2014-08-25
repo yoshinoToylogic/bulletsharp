@@ -1,3 +1,4 @@
+#include <BulletCollision/CollisionDispatch/btCollisionConfiguration.h>
 #include <BulletMultiThreaded/SpuGatheringCollisionDispatcher.h>
 #include <BulletMultiThreaded/btThreadSupportInterface.h>
 

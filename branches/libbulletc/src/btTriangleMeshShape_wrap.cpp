@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btTriangleMeshShape.h>
+
 #include "conversion.h"
 #include "btTriangleMeshShape_wrap.h"
 

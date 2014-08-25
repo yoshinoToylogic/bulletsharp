@@ -1,3 +1,5 @@
+#include <BulletCollision/CollisionShapes/btTriangleCallback.h>
+
 #include "conversion.h"
 #include "btTriangleCallback_wrap.h"
 

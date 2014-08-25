@@ -1,3 +1,5 @@
+#include <LinearMath/btSerializer.h>
+
 #include "conversion.h"
 #include "btSerializer_wrap.h"
 

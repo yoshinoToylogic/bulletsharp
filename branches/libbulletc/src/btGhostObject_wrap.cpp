@@ -1,4 +1,5 @@
 #include <BulletCollision/CollisionDispatch/btGhostObject.h>
+#include <BulletCollision/CollisionShapes/btConvexShape.h>
 
 #include "conversion.h"
 #include "btGhostObject_wrap.h"

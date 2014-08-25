@@ -1,3 +1,8 @@
+#include <BulletCollision/BroadphaseCollision/btBroadphaseProxy.h>
+#include <BulletCollision/CollisionDispatch/btCollisionObject.h>
+#include <BulletCollision/CollisionShapes/btCollisionShape.h>
+#include <LinearMath/btSerializer.h>
+
 #include "conversion.h"
 #include "btCollisionObject_wrap.h"
 

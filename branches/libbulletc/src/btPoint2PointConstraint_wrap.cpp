@@ -1,3 +1,5 @@
+#include <BulletDynamics/ConstraintSolver/btPoint2PointConstraint.h>
+
 #include "conversion.h"
 #include "btPoint2PointConstraint_wrap.h"
 

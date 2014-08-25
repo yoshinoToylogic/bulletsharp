@@ -1,3 +1,8 @@
+#include <BulletCollision/CollisionShapes/btBvhTriangleMeshShape.h>
+#include <BulletCollision/CollisionShapes/btOptimizedBvh.h>
+#include <BulletCollision/CollisionShapes/btStridingMeshInterface.h>
+#include <BulletDynamics/Dynamics/btDynamicsWorld.h>
+#include <BulletDynamics/Dynamics/btRigidBody.h>
 #include <../Extras/Serialize/BulletWorldImporter/btWorldImporter.h>
 
 #include "conversion.h"
