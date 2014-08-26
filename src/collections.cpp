@@ -1,3 +1,4 @@
+#include <BulletCollision/CollisionShapes/btCompoundShape.h>
 #include <BulletSoftBody/btSoftBody.h>
 
 #include "conversion.h"
