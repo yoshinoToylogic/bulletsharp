@@ -1,21 +1,23 @@
 #include "main.h"
 
 #ifndef BT_COLLISION_WORLD_H
-#define pNeedsCollision void*
-#define pContactResultCallback_AddSingleResult void*
-#define pConvexResultCallback_AddSingleResult void*
-#define pRayResultCallback_AddSingleResult void*
+typedef bool (*pNeedsCollision)(btBroadphaseProxy* proxy0);
+typedef btScalar (*pContactResultCallback_AddSingleResult)(btManifoldPoint* cp,
+		const btCollisionObjectWrapper* colObj0, int partId0, int index0,
+		const btCollisionObjectWrapper* colObj1, int partId1, int index1);
+typedef btScalar (*pConvexResultCallback_AddSingleResult)(btCollisionWorld_LocalConvexResult* rayResult, bool normalInWorldSpace);
+typedef btScalar (*pRayResultCallback_AddSingleResult)(btCollisionWorld_LocalRayResult* rayResult, bool normalInWorldSpace);
 
 #define btCollisionWorld_ContactResultCallbackWrapper void
 #define btCollisionWorld_ConvexResultCallbackWrapper void
 #define btCollisionWorld_RayResultCallbackWrapper void
 #else
 typedef bool (*pNeedsCollision)(btBroadphaseProxy* proxy0);
-typedef bool (*pContactResultCallback_AddSingleResult)(btManifoldPoint& cp,
+typedef btScalar (*pContactResultCallback_AddSingleResult)(btManifoldPoint& cp,
 		const btCollisionObjectWrapper* colObj0, int partId0, int index0,
 		const btCollisionObjectWrapper* colObj1, int partId1, int index1);
-typedef bool (*pConvexResultCallback_AddSingleResult)(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace);
-typedef bool (*pRayResultCallback_AddSingleResult)(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace);
+typedef btScalar (*pConvexResultCallback_AddSingleResult)(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace);
+typedef btScalar (*pRayResultCallback_AddSingleResult)(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace);
 
 class btCollisionWorld_ContactResultCallbackWrapper : public btCollisionWorld_ContactResultCallback
 {

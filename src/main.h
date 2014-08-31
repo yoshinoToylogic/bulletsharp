@@ -126,6 +126,7 @@
 
 #ifndef BT_COLLISION__DISPATCHER_H
 #define btCollisionDispatcher void
+#define btNearCallback void*
 #endif
 
 #ifndef BT_COLLISION_OBJECT_H
