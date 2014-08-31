@@ -161,8 +161,15 @@ namespace BulletSharp
 
         public OverlappingPairCache PairCache
 		{
-            get { return new OverlappingPairCache(btDbvtBroadphase_getPaircache(_native)); }
-			set { btDbvtBroadphase_setPaircache(_native, value._native); }
+            get
+            {
+                return OverlappingPairCache;
+            }
+            set
+            {
+                _pairCache = value;
+                btDbvtBroadphase_setPaircache(_native, value._native);
+            }
 		}
 
         public int PId
@@ -251,8 +258,8 @@ namespace BulletSharp
 		static extern bool btDbvtBroadphase_getNeedcleanup(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDbvtBroadphase_getNewpairs(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDbvtBroadphase_getPaircache(IntPtr obj);
+		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		//static extern IntPtr btDbvtBroadphase_getPaircache(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDbvtBroadphase_getPid(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

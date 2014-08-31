@@ -224,7 +224,14 @@ namespace BulletSharp
             {
                 if (_pairCache == null)
                 {
-                    _pairCache = new OverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
+                    if (this is DbvtBroadphase)
+                    {
+                        _pairCache = new HashedOverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
+                    }
+                    else
+                    {
+                        _pairCache = new OverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
+                    }
                 }
                 return _pairCache;
             }

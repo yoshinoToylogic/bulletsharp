@@ -73,20 +73,25 @@ namespace DemoFramework.OpenTK
 
             // Generate Array Buffer Id
             GL.GenBuffers(1, out bufferId);
+            OpenTKGraphics.CheckGLError("GenBuffers");
 
             // Bind current context to Array Buffer ID
             GL.BindBuffer(BufferTarget.ArrayBuffer, bufferId);
+            OpenTKGraphics.CheckGLError("BindBuffer");
 
             // Send data to buffer
             GL.BufferData(BufferTarget.ArrayBuffer, (IntPtr)(vertices.Length * Vector3.SizeInBytes), vertices, usage);
+            OpenTKGraphics.CheckGLError("BufferData");
 
             // Validate that the buffer is the correct size
             GL.GetBufferParameter(BufferTarget.ArrayBuffer, BufferParameterName.BufferSize, out bufferSize);
+            OpenTKGraphics.CheckGLError("GetBufferParameter");
             if (vertices.Length * Vector3.SizeInBytes != bufferSize)
                 throw new ApplicationException("Buffer data not uploaded correctly");
 
             // Clear the buffer Binding
             GL.BindBuffer(BufferTarget.ArrayBuffer, 0);
+            OpenTKGraphics.CheckGLError("BindBuffer");
         }
 
         static void UpdateBuffer<T>(T[] vertices, int bufferId) where T : struct
