@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<bullet_physics version="281" itemcount = "9">
+<bullet_physics version="281" itemcount="9">
  <btDynamicsWorldFloatData pointer="2">
   <m_solverInfo type="btContactSolverInfoFloatData">
     <m_tau type="float"> 0.600000 </m_tau>
