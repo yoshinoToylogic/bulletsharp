@@ -39,7 +39,12 @@
 
 #ifndef BT_AXIS_SWEEP_3_H
 #define bt32BitAxisSweep3 void
+#define bt32BitAxisSweep3_Handle void
 #define btAxisSweep3 void
+#define btAxisSweep3_Handle void
+#else
+#define bt32BitAxisSweep3_Handle bt32BitAxisSweep3::Handle
+#define btAxisSweep3_Handle btAxisSweep3::Handle
 #endif
 
 #ifndef BT_BOX_2D_BOX_2D__COLLISION_ALGORITHM_H
