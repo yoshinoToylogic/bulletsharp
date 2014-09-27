@@ -199,12 +199,7 @@ namespace BulletSharp
 
         public override bool Equals(object obj)
         {
-            CollisionShape shape = obj as CollisionShape;
-            if (shape == null)
-            {
-                return false;
-            }
-            return _native == shape._native;
+            return object.ReferenceEquals(this, obj);
         }
 
         public override int GetHashCode()

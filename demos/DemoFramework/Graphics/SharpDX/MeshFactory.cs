@@ -436,7 +436,7 @@ namespace DemoFramework.SharpDX
             // Probably uses more memory though.
             softBody.GetVertexNormalData(ref shapeData.SoftBodyData);
             shapeData.SetDynamicVertexBuffer(device, shapeData.SoftBodyData);
-            
+
             if (softBody.Faces.Count == 0 && softBody.Tetras.Count == 0)
             {
                 shapeData.PrimitiveTopology = PrimitiveTopology.LineList;
