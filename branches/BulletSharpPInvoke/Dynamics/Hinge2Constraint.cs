@@ -7,9 +7,6 @@ namespace BulletSharp
 {
 	public class Hinge2Constraint : Generic6DofSpringConstraint
 	{
-        private RigidBody _rigidBodyA;
-        private RigidBody _rigidBodyB;
-
         public Hinge2Constraint(RigidBody rbA, RigidBody rbB, ref Vector3 anchor, ref Vector3 axis1, ref Vector3 axis2)
             : base(btHinge2Constraint_new(rbA._native, rbB._native, ref anchor, ref axis1, ref axis2))
         {

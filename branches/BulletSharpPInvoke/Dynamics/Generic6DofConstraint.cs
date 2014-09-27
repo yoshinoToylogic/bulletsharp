@@ -536,8 +536,8 @@ namespace BulletSharp
 
 	public class Generic6DofConstraint : TypedConstraint
 	{
-        private RigidBody _rigidBodyA;
-        private RigidBody _rigidBodyB;
+        protected RigidBody _rigidBodyA;
+        protected RigidBody _rigidBodyB;
         private RotationalLimitMotor[] _angularLimits = new RotationalLimitMotor[3];
         private TranslationalLimitMotor _linearLimits;
 

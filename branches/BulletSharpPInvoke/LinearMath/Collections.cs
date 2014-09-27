@@ -270,7 +270,7 @@ namespace BulletSharp
         {
             get
             {
-                if (index < 0 || index >= Count)
+                if ((uint)index >= (uint)Count)
                 {
                     throw new ArgumentOutOfRangeException("index");
                 }
@@ -334,7 +334,7 @@ namespace BulletSharp
         {
             get
             {
-                if (index < 0 || index >= Count)
+                if ((uint)index >= (uint)Count)
                 {
                     throw new ArgumentOutOfRangeException("index");
                 }

@@ -34,9 +34,9 @@ namespace BulletSharp
     {
         int _i;
         readonly int _count;
-        readonly AlignedCollisionObjectArray _array;
+        readonly IList<CollisionObject> _array;
 
-        public AlignedCollisionObjectArrayEnumerator(AlignedCollisionObjectArray array)
+        public AlignedCollisionObjectArrayEnumerator(IList<CollisionObject> array)
         {
             _array = array;
             _count = array.Count;
@@ -74,7 +74,7 @@ namespace BulletSharp
     {
         private IntPtr _native;
         private IntPtr _collisionWorld;
-        private List<CollisionObject> _backingArray;
+        private List<CollisionObject> _backingList;
 
         internal AlignedCollisionObjectArray(IntPtr native)
         {
@@ -87,7 +87,7 @@ namespace BulletSharp
             if (collisionWorld != null)
             {
                 _collisionWorld = collisionWorld;
-                _backingArray = new List<CollisionObject>();
+                _backingList = new List<CollisionObject>();
             }
         }
 
@@ -110,9 +110,9 @@ namespace BulletSharp
         {
             get
             {
-                if (_backingArray != null)
+                if (_backingList != null)
                 {
-                    return _backingArray[index];
+                    return _backingList[index];
                 }
                 if ((uint)index >= (uint)Count)
                 {
@@ -147,7 +147,7 @@ namespace BulletSharp
                     btCollisionWorld_addCollisionObject(_collisionWorld, item._native);
                 }
 
-                _backingArray.Add(item);
+                _backingList.Add(item);
             }
             else
             {
@@ -174,26 +174,41 @@ namespace BulletSharp
                 btCollisionWorld_addCollisionObject3(_collisionWorld, item._native, group, mask);
             }
 
-            _backingArray.Add(item);
+            _backingList.Add(item);
         }
 
         public void Clear()
         {
-            if (_backingArray != null)
+            if (_backingList != null)
             {
-                _backingArray.Clear();
+                _backingList.Clear();
             }
             btAlignedCollisionObjectArray_resizeNoInitialize(_native, 0);
         }
 
         public bool Contains(CollisionObject item)
         {
+            //return btAlignedCollisionObjectArray_findLinearSearch(_native, item._native) != Count;
             throw new NotImplementedException();
         }
 
         public void CopyTo(CollisionObject[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+		        throw new ArgumentNullException("array");
+
+	        if (arrayIndex < 0)
+		        throw new ArgumentOutOfRangeException("array");
+
+	        int count = Count;
+            if (arrayIndex + count > array.Length)
+		        throw new ArgumentException("Array too small.", "array");
+
+	        int i;
+            for (i = 0; i < count; i++)
+	        {
+                array[arrayIndex + i] = this[i];
+	        }
         }
 
         public int Count
@@ -210,16 +225,16 @@ namespace BulletSharp
         {
             IntPtr itemPtr = item._native;
 
-            if (_backingArray == null)
+            if (_backingList == null)
             {
                 throw new NotImplementedException();
                 //btAlignedCollisionObjectArray_remove(itemPtr);
             }
 
-            int count = _backingArray.Count;
+            int count = _backingList.Count;
             for (int i = 0; i < count; i++)
             {
-                if (_backingArray[i]._native == itemPtr)
+                if (_backingList[i]._native == itemPtr)
                 {
                     if (item is BulletSharp.SoftBody.SoftBody)
                     {
@@ -227,20 +242,20 @@ namespace BulletSharp
                     }
                     else if (item is RigidBody)
                     {
-                        btDynamicsWorld_removeRigidBody(_collisionWorld, item._native);
+                        btDynamicsWorld_removeRigidBody(_collisionWorld, itemPtr);
                     }
                     else
                     {
-                        btCollisionWorld_removeCollisionObject(_collisionWorld, item._native);
+                        btCollisionWorld_removeCollisionObject(_collisionWorld, itemPtr);
                     }
                     count--;
 
                     // Swap the last item with the item to be removed like Bullet does.
                     if (i != count)
                     {
-                        _backingArray[i] = _backingArray[count];
+                        _backingList[i] = _backingList[count];
                     }
-                    _backingArray.RemoveAt(count);
+                    _backingList.RemoveAt(count);
                     return true;
                 }
             }
@@ -249,12 +264,26 @@ namespace BulletSharp
 
         public IEnumerator<CollisionObject> GetEnumerator()
         {
-            return new AlignedCollisionObjectArrayEnumerator(this);
+            if (_backingList != null)
+            {
+                return new AlignedCollisionObjectArrayEnumerator(_backingList);
+            }
+            else
+            {
+                return new AlignedCollisionObjectArrayEnumerator(this);
+            }
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
         {
-            return new AlignedCollisionObjectArrayEnumerator(this);
+            if (_backingList != null)
+            {
+                return new AlignedCollisionObjectArrayEnumerator(_backingList);
+            }
+            else
+            {
+                return new AlignedCollisionObjectArrayEnumerator(this);
+            }
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

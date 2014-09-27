@@ -132,7 +132,20 @@ namespace BulletSharp
 
         public void CopyTo(PersistentManifold[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+                throw new ArgumentNullException("array");
+
+            if (arrayIndex < 0)
+                throw new ArgumentOutOfRangeException("array");
+
+            int count = Count;
+            if (arrayIndex + count > array.Length)
+                throw new ArgumentException("Array too small.", "array");
+
+            for (int i = 0; i < count; i++)
+            {
+                array[arrayIndex + i] = this[i];
+            }
         }
 
         public int Count
