@@ -574,6 +574,7 @@ void CollisionWorld::AllHitsRayResultCallback::RayToWorld::set(Vector3 value)
 CollisionWorld::CollisionWorld(btCollisionWorld* native)
 {
 	_native = native;
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), native);
 }
 
 CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseInterface^ broadphasePairCache,
@@ -581,6 +582,7 @@ CollisionWorld::CollisionWorld(BulletSharp::Dispatcher^ dispatcher, BroadphaseIn
 {
 	_native = new btCollisionWorld(dispatcher->_native, broadphasePairCache->_native,
 		collisionConfiguration->_native);
+	_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray(), _native);
 	_dispatcher = dispatcher;
 	_broadphase = broadphasePairCache;
 }
@@ -648,17 +650,17 @@ CollisionWorld::!CollisionWorld()
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
 	CollisionFilterGroups collisionFilterMask)
 {
-	_native->addCollisionObject(collisionObject->_native, (short int)collisionFilterGroup, (short int)collisionFilterMask);
+	_collisionObjectArray->Add(collisionObject, (short)collisionFilterGroup, (short)collisionFilterMask);
 }
 
-void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup)
+void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject, short collisionFilterGroup, short collisionFilterMask)
 {
-	_native->addCollisionObject(collisionObject->_native, (short int)collisionFilterGroup);
+	_collisionObjectArray->Add(collisionObject, collisionFilterGroup, collisionFilterMask);
 }
 
 void CollisionWorld::AddCollisionObject(CollisionObject^ collisionObject)
 {
-	_native->addCollisionObject(collisionObject->_native);
+	_collisionObjectArray->Add(collisionObject);
 }
 
 void CollisionWorld::ComputeOverlappingPairs()
@@ -769,7 +771,7 @@ void CollisionWorld::RayTestSingle(Matrix rayFromTrans, Matrix rayToTrans, Colli
 
 void CollisionWorld::RemoveCollisionObject(CollisionObject^ collisionObject)
 {
-	_native->removeCollisionObject(collisionObject->_native);
+	_collisionObjectArray->Remove(collisionObject);
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -801,10 +803,6 @@ void CollisionWorld::Broadphase::set(BroadphaseInterface^ pairCache)
 
 AlignedCollisionObjectArray^ CollisionWorld::CollisionObjectArray::get()
 {
-	if (_collisionObjectArray == nullptr)
-	{
-		_collisionObjectArray = gcnew AlignedCollisionObjectArray(&_native->getCollisionObjectArray());
-	}
 	return _collisionObjectArray;
 }
 

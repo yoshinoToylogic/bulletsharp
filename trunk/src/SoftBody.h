@@ -1685,9 +1685,9 @@ namespace BulletSharp
 
 		private:
 #ifndef DISABLE_DBVT
-			DbvtNode^ _clusterDbvt;
-			DbvtNode^ _faceDbvt;
-			DbvtNode^ _nodeDbvt;
+			Dbvt^ _clusterDbvt;
+			Dbvt^ _faceDbvt;
+			Dbvt^ _nodeDbvt;
 #endif
 			AlignedCollisionObjectArray^ _collisionDisabledObjects;
 			Config^ _config;
@@ -1883,9 +1883,9 @@ namespace BulletSharp
 				int get();
 			}
 #ifndef DISABLE_DBVT
-			property Dbvt ClusterDbvt
+			property Dbvt^ ClusterDbvt
 			{
-				Dbvt get();
+				Dbvt^ get();
 			}
 #endif
 			property AlignedClusterArray^ Clusters
@@ -1903,9 +1903,9 @@ namespace BulletSharp
 				AlignedFaceArray^ get();
 			}
 #ifndef DISABLE_DBVT
-			property Dbvt FaceDbvt
+			property Dbvt^ FaceDbvt
 			{
-				Dbvt get();
+				Dbvt^ get();
 			}
 #endif
 			property Matrix InitialWorldTransform
@@ -1929,9 +1929,9 @@ namespace BulletSharp
 				AlignedMaterialArray^ get();
 			}
 #ifndef DISABLE_DBVT
-			property Dbvt NodeDbvt
+			property Dbvt^ NodeDbvt
 			{
-				Dbvt get();
+				Dbvt^ get();
 			}
 #endif
 			property AlignedNodeArray^ Nodes

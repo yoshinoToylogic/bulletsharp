@@ -56,25 +56,23 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
 	CollisionFilterGroups collisionFilterGroup,	CollisionFilterGroups collisionFilterMask)
 {
-	Native->addSoftBody((btSoftBody*)body->_native,
-		(short int)collisionFilterGroup, (short int)collisionFilterMask);
+	_collisionObjectArray->Add(body, (short)collisionFilterGroup, (short)collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body,
-	CollisionFilterGroups collisionFilterGroup)
+	short collisionFilterGroup, short collisionFilterMask)
 {
-	Native->addSoftBody((btSoftBody*)body->_native,
-		(short int)collisionFilterGroup);
+	_collisionObjectArray->Add(body, collisionFilterGroup, collisionFilterMask);
 }
 
 void SoftRigidDynamicsWorld::AddSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	Native->addSoftBody((btSoftBody*)body->_native);
+	_collisionObjectArray->Add(body);
 }
 
 void SoftRigidDynamicsWorld::RemoveSoftBody(BulletSharp::SoftBody::SoftBody^ body)
 {
-	Native->removeSoftBody((btSoftBody*)body->_native);
+	_collisionObjectArray->Remove(body);
 }
 
 BulletSharp::SoftBody::DrawFlags SoftRigidDynamicsWorld::DrawFlags::get()

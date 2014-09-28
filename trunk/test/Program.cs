@@ -43,7 +43,7 @@ namespace BulletSharpTest
             broadphase = null;
             world.OnDisposing += onDisposing;
             world.OnDisposed += onDisposed;
-            world.SetInternalTickCallback(WorldPreTickCallback);
+            world.SetInternalTickCallback(new DynamicsWorld.InternalTickCallback(WorldPreTickCallback));
             world.StepSimulation(1.0f/60.0f);
             //world.SetInternalTickCallback(null);
             //world.Dispose();

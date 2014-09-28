@@ -56,9 +56,6 @@ namespace DemoFramework.SharpDX11
         DepthStencilState lightDepthStencilState;
         bool shadowsEnabled = false;
 
-        VertexBufferBinding quadBinding;
-        InputLayout quadBufferLayout;
-
         Effect effect;
         Effect effect2;
         EffectPass shadowGenPass;
@@ -209,7 +206,7 @@ namespace DemoFramework.SharpDX11
             };
 
             // Create Device and SwapChain
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
+            SharpDX.Direct3D11.Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, desc, out _device, out _swapChain);
             _immediateContext = _device.ImmediateContext;
             outputMerger = _immediateContext.OutputMerger;
             inputAssembler = _immediateContext.InputAssembler;
@@ -220,7 +217,6 @@ namespace DemoFramework.SharpDX11
 
             var blendStateDesc = new BlendStateDescription();
             blendStateDesc.RenderTarget[0].IsBlendEnabled = true;
-            blendStateDesc.RenderTarget[0].SourceBlend = BlendOption.SourceAlpha;
             blendStateDesc.RenderTarget[0].SourceBlend = BlendOption.SourceAlpha;
             blendStateDesc.RenderTarget[0].DestinationBlend = BlendOption.InverseSourceAlpha;
             blendStateDesc.RenderTarget[0].BlendOperation = BlendOperation.Add;
@@ -371,7 +367,7 @@ namespace DemoFramework.SharpDX11
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.ToString(), "Could not create DirectX 10 device.");
+                MessageBox.Show(e.ToString(), "Could not create DirectX 11 device.");
                 return;
             }
 
@@ -441,19 +437,6 @@ namespace DemoFramework.SharpDX11
             gBufferRenderPass = technique.GetPassByIndex(0);
             gBufferOverlayPass = technique.GetPassByIndex(1);
 
-            Buffer quad = DemoFramework.SharpDX11.MeshFactory.CreateScreenQuad(_device);
-            quadBinding = new VertexBufferBinding(quad, 20, 0);
-            Matrix quadProjection = Matrix.OrthoLH(1, 1, 0.1f, 1.0f);
-            effect2.GetVariableByName("ViewProjection").AsMatrix().SetMatrix(quadProjection);
-
-            InputElement[] elements = new[]
-            {
-                new InputElement("POSITION", 0, Format.R32G32B32_Float, 0, 0, InputClassification.PerVertexData, 0),
-                new InputElement("TEXCOORD", 0, Format.R32G32_Float, 12, 0, InputClassification.PerVertexData, 0),
-            };
-            quadBufferLayout = new InputLayout(_device, gBufferRenderPass.Description.Signature, elements);
-
-
             info = new InfoText(_device);
             _meshFactory = new MeshFactory(this);
             MeshFactory = _meshFactory;
@@ -497,7 +480,7 @@ namespace DemoFramework.SharpDX11
             effect2.GetVariableByName("ProjectionA").AsScalar().Set(projectionA);
             effect2.GetVariableByName("ProjectionB").AsScalar().Set(projectionB);
 
-            Matrix overlayMatrix = Matrix.Scaling(2 * info.Width / _width, 2 * info.Height / _height, 1.0f);
+            Matrix overlayMatrix = Matrix.Scaling(info.Width / _width, info.Height / _height, 1.0f);
             overlayMatrix *= Matrix.Translation(-(_width - info.Width) / _width, (_height - info.Height) / _height, 0.0f);
             effect2.GetVariableByName("OverlayViewProjection").AsMatrix().SetMatrix(overlayMatrix);
         }
@@ -524,7 +507,7 @@ namespace DemoFramework.SharpDX11
                 lightDepthMapVar.SetResource(lightDepthRes);
             }
 
-            // Render pass
+            // Render to G-buffer
             lightBufferVar.SetResource(null);
             normalBufferVar.SetResource(null);
             diffuseBufferVar.SetResource(null);
@@ -545,23 +528,21 @@ namespace DemoFramework.SharpDX11
             outputMerger.SetDepthStencilState(null);
             info.OnRender(Demo.FramesPerSecond);
 
-            // G-buffer render pass
+
+            outputMerger.SetTargets(renderView);
+            inputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+
+            // Render G-buffer
             lightBufferVar.SetResource(lightBufferRes);
             normalBufferVar.SetResource(normalBufferRes);
             diffuseBufferVar.SetResource(diffuseBufferRes);
             depthMapVar.SetResource(depthRes);
             lightDepthMapVar.SetResource(lightDepthRes);
-
-            outputMerger.SetTargets(renderView);
             gBufferRenderPass.Apply(_immediateContext);
-
-            inputAssembler.SetVertexBuffers(0, quadBinding);
-            inputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-            inputAssembler.InputLayout = quadBufferLayout;
-            _immediateContext.Draw(4, 0);
+            _immediateContext.Draw(3, 0);
 
 
-            // G-buffer overlay pass
+            // Render overlay
             outputMerger.SetBlendState(alphaBlendState);
             diffuseBufferVar.SetResource(info.OverlayBufferRes);
             gBufferOverlayPass.Apply(_immediateContext);

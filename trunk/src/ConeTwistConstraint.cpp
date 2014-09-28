@@ -23,6 +23,9 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, RigidBody^ rigid
 		TRANSFORM_USE(rigidBodyBFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
 	TRANSFORM_DEL(rigidBodyBFrame);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBodyAFrame)
@@ -31,6 +34,8 @@ ConeTwistConstraint::ConeTwistConstraint(RigidBody^ rigidBodyA, Matrix rigidBody
 	TRANSFORM_CONV(rigidBodyAFrame);
 	UnmanagedPointer = new btConeTwistConstraint(*(btRigidBody*)rigidBodyA->_native, TRANSFORM_USE(rigidBodyAFrame));
 	TRANSFORM_DEL(rigidBodyAFrame);
+
+	_rigidBodyA = rigidBodyA;
 }
 
 void ConeTwistConstraint::CalcAngleInfo()

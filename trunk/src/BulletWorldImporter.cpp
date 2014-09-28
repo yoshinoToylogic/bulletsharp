@@ -32,6 +32,7 @@
 
 Serialize::BulletWorldImporter::BulletWorldImporter(DynamicsWorld^ world)
 {
+	_world = world;
 	_native = new BulletWorldImporterWrapper((btDynamicsWorld*)GetUnmanagedNullable(world), this);
 }
 
@@ -70,16 +71,33 @@ CollisionObject^ Serialize::BulletWorldImporter::CreateCollisionObject(Matrix st
 
 RigidBody^ Serialize::BulletWorldImporter::CreateRigidBody(bool isDynamic, btScalar mass, Matrix startTransform, CollisionShape^ shape, String^ bodyName)
 {
-	btTransform* startTransformTemp = Math::MatrixToBtTransform(startTransform);
-	const char* bodyNameTemp = StringConv::ManagedToUnmanaged(bodyName);
+	Vector3 localInertia;
+	if (mass)
+	{
+		shape->CalculateLocalInertia(mass, localInertia);
+	}
+	else
+	{
+		localInertia = Vector3::Zero;
+	}
 
-	RigidBody^ ret = (RigidBody^)CollisionObject::GetManaged(
-		_native->baseCreateRigidBody(isDynamic, mass, *startTransformTemp, shape->_native, bodyNameTemp));
+	RigidBodyConstructionInfo^ info = gcnew RigidBodyConstructionInfo(mass, nullptr, shape, localInertia);
+	RigidBody^ body = gcnew RigidBody(info);
+	delete info;
+	body->WorldTransform = startTransform;
 
-	ALIGNED_FREE(startTransformTemp);
-	StringConv::FreeUnmanagedString(bodyNameTemp);
-
-	return ret;
+	if (_world)
+	{
+		_world->AddRigidBody(body);
+	}
+        
+	if (bodyName)
+	{
+		//_objectNameMap.insert(body, newname);
+		//_nameBodyMap.insert(newname, body);
+	}
+	//_allocatedRigidBodies.Add(body);
+	return body;
 }
 
 CollisionShape^ Serialize::BulletWorldImporter::CreatePlaneShape(Vector3 planeNormal, btScalar planeConstant)

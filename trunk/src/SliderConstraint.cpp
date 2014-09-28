@@ -22,6 +22,9 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA)
@@ -31,6 +34,8 @@ SliderConstraint::SliderConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool 
 	UnmanagedPointer = new btSliderConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
 		useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyB = rigidBodyB;
 }
 
 void SliderConstraint::CalculateTransforms(Matrix transA, Matrix transB)

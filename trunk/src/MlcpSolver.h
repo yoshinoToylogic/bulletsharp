@@ -11,6 +11,9 @@ namespace BulletSharp
 	internal:
 		MlcpSolver(btMLCPSolver* native);
 
+	private:
+		MlcpSolverInterface^ _mlcpSolver;
+
 	public:
 		MlcpSolver(MlcpSolverInterface^ solver);
 

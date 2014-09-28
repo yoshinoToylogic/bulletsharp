@@ -50,14 +50,6 @@ DbvtAabbMm::DbvtAabbMm()
 	_native = new btDbvtAabbMm();
 }
 */
-Vector3 DbvtAabbMm::Center()
-{
-	btVector3* center = ALIGNED_NEW(btVector3);
-	DbvtAabbMm_Center(_native, center);
-	Vector3 v = Math::BtVector3ToVector3(center);
-	ALIGNED_FREE(center);
-	return v;
-}
 
 int DbvtAabbMm::Classify(Vector3 n, btScalar o, int s)
 {
@@ -77,15 +69,6 @@ void DbvtAabbMm::Expand(Vector3 e)
 	VECTOR3_CONV(e);
 	_native->Expand(VECTOR3_USE(e));
 	VECTOR3_DEL(e);
-}
-
-Vector3 DbvtAabbMm::Extents()
-{
-	btVector3* extents = ALIGNED_NEW(btVector3);
-	DbvtAabbMm_Extents(_native, extents);
-	Vector3 v = Math::BtVector3ToVector3(extents);
-	ALIGNED_FREE(extents);
-	return v;
 }
 
 DbvtAabbMm^ DbvtAabbMm::FromCE(Vector3 c, Vector3 e)
@@ -140,25 +123,6 @@ DbvtAabbMm^ DbvtAabbMm::FromPoints(array<Vector3>^ pts)
 	return gcnew DbvtAabbMm(aabbMm);
 }
 
-Vector3 DbvtAabbMm::Lengths()
-{
-	btVector3* lengths = ALIGNED_NEW(btVector3);
-	DbvtAabbMm_Lengths(_native, lengths);
-	Vector3 v = Math::BtVector3ToVector3(lengths);
-	ALIGNED_FREE(lengths);
-	return v;
-}
-
-Vector3 DbvtAabbMm::Maxs()
-{
-	return Math::BtVector3ToVector3(&_native->Maxs());
-}
-
-Vector3 DbvtAabbMm::Mins()
-{
-	return Math::BtVector3ToVector3(&_native->Mins());
-}
-
 btScalar DbvtAabbMm::ProjectMinimum(Vector3 v, unsigned int signs)
 {
 	VECTOR3_CONV(v);
@@ -174,12 +138,49 @@ void DbvtAabbMm::SignedExpand(Vector3 e)
 	VECTOR3_DEL(e);
 }
 
-Vector3 DbvtAabbMm::TMaxs()
+Vector3 DbvtAabbMm::Center::get()
+{
+	btVector3* center = ALIGNED_NEW(btVector3);
+	DbvtAabbMm_Center(_native, center);
+	Vector3 v = Math::BtVector3ToVector3(center);
+	ALIGNED_FREE(center);
+	return v;
+}
+
+Vector3 DbvtAabbMm::Extents::get()
+{
+	btVector3* extents = ALIGNED_NEW(btVector3);
+	DbvtAabbMm_Extents(_native, extents);
+	Vector3 v = Math::BtVector3ToVector3(extents);
+	ALIGNED_FREE(extents);
+	return v;
+}
+
+Vector3 DbvtAabbMm::Lengths::get()
+{
+	btVector3* lengths = ALIGNED_NEW(btVector3);
+	DbvtAabbMm_Lengths(_native, lengths);
+	Vector3 v = Math::BtVector3ToVector3(lengths);
+	ALIGNED_FREE(lengths);
+	return v;
+}
+
+Vector3 DbvtAabbMm::Maxs::get()
+{
+	return Math::BtVector3ToVector3(&_native->Maxs());
+}
+
+Vector3 DbvtAabbMm::Mins::get()
+{
+	return Math::BtVector3ToVector3(&_native->Mins());
+}
+
+Vector3 DbvtAabbMm::TMaxs::get()
 {
 	return Math::BtVector3ToVector3(&_native->tMaxs());
 }
 
-Vector3 DbvtAabbMm::TMins()
+Vector3 DbvtAabbMm::TMins::get()
 {
 	return Math::BtVector3ToVector3(&_native->tMins());
 }
@@ -236,9 +237,7 @@ bool DbvtNode::IsLeaf::get()
 
 DbvtNode^ DbvtNode::Parent::get()
 {
-	if (_native->parent != 0)
-		return nullptr;
-	return gcnew DbvtNode(_native->parent);
+	ReturnCachedObjectGcnewNullable(DbvtNode, _parent, _native->parent);
 }
 void DbvtNode::Parent::set(DbvtNode^ value)
 {
@@ -683,11 +682,7 @@ void Dbvt::RayTest(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, ICollide^ pol
 void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vector3 rayDirectionInverse,
 	array<unsigned int>^ signs, btScalar lambda_max, Vector3 aabbMin, Vector3 aabbMax, ICollide^ policy)
 {
-	unsigned int* btSigns = new unsigned int[3];
-	btSigns[0] = signs[0];
-	btSigns[1] = signs[1];
-	btSigns[2] = signs[2];
-
+	pin_ptr<unsigned int> btSigns = &signs[0];
 	VECTOR3_CONV(rayFrom);
 	VECTOR3_CONV(rayTo);
 	VECTOR3_CONV(rayDirectionInverse);
@@ -696,7 +691,6 @@ void Dbvt::RayTestInternal(DbvtNode^ root, Vector3 rayFrom, Vector3 rayTo, Vecto
 	_native->rayTestInternal(root->_native, VECTOR3_USE(rayFrom), VECTOR3_USE(rayTo),
 		VECTOR3_USE(rayDirectionInverse), btSigns, lambda_max, VECTOR3_USE(aabbMin),
 		VECTOR3_USE(aabbMax), *policy->_native);
-	delete[] btSigns;
 	VECTOR3_DEL(rayFrom);
 	VECTOR3_DEL(rayTo);
 	VECTOR3_DEL(rayDirectionInverse);
@@ -813,10 +807,6 @@ void Dbvt::Root::set(DbvtNode^ value)
 AlignedStkNNArray^ Dbvt::StkStack::get()
 {
 	return gcnew AlignedStkNNArray(&_native->m_stkStack);
-}
-void Dbvt::StkStack::set(AlignedStkNNArray^ value)
-{
-	_native->m_stkStack = *(btAlignedObjectArray<btDbvt::sStkNN>*)value->_native;
 }
 
 #endif

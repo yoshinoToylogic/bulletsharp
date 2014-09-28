@@ -376,10 +376,8 @@ namespace BulletSharp
 		btCollisionWorld* _native;
 		CollisionWorld(btCollisionWorld* native);
 
-	private:
-		AlignedCollisionObjectArray^ _collisionObjectArray;
-
 	protected:
+		AlignedCollisionObjectArray^ _collisionObjectArray;
 		Dispatcher^ _dispatcher;
 		BroadphaseInterface^ _broadphase;
 
@@ -394,7 +392,7 @@ namespace BulletSharp
 
 		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup,
 			CollisionFilterGroups collisionFilterMask);
-		void AddCollisionObject(CollisionObject^ collisionObject, CollisionFilterGroups collisionFilterGroup);
+		void AddCollisionObject(CollisionObject^ collisionObject, short collisionFilterGroup, short collisionFilterMask);
 		void AddCollisionObject(CollisionObject^ collisionObject);
 		void ComputeOverlappingPairs();
 		void ContactPairTest(CollisionObject^ colObjA, CollisionObject^ colObjB, ContactResultCallback^ resultCallback);

@@ -23,6 +23,8 @@ MultiBodyPoint2Point::MultiBodyPoint2Point(MultiBody^ body, int link, RigidBody^
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
+
+	_multiBodyA = body;
 }
 
 MultiBodyPoint2Point::MultiBodyPoint2Point(MultiBody^ bodyA, int linkA, MultiBody^ bodyB,
@@ -35,6 +37,9 @@ MultiBodyPoint2Point::MultiBodyPoint2Point(MultiBody^ bodyA, int linkA, MultiBod
 		VECTOR3_USE(pivotInA), VECTOR3_USE(pivotInB));
 	VECTOR3_DEL(pivotInA);
 	VECTOR3_DEL(pivotInB);
+
+	_multiBodyA = bodyA;
+	_multiBodyB = bodyB;
 }
 
 Vector3 MultiBodyPoint2Point::PivotInB::get()

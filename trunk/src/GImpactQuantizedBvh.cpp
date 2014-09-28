@@ -339,11 +339,11 @@ int GImpactQuantizedBvh::NodeCount::get()
 
 PrimitiveManagerBase^ GImpactQuantizedBvh::PrimitiveManager::get()
 {
-	return _primitiveManagerBase;
+	return _primitiveManager;
 }
 void GImpactQuantizedBvh::PrimitiveManager::set(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitiveManager;
+	_primitiveManager = primitiveManager;
 	_native->setPrimitiveManager(primitiveManager->_native);
 }
 

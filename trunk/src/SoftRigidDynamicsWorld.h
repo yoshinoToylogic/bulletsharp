@@ -39,7 +39,8 @@ namespace BulletSharp
 				CollisionFilterGroups collisionFilterGroup,
 				CollisionFilterGroups collisionFilterMask);
 			void AddSoftBody(SoftBody^ body,
-				CollisionFilterGroups collisionFilterGroup);
+				short collisionFilterGroup,
+				short collisionFilterMask);
 			void AddSoftBody(SoftBody^ body);
 			void RemoveSoftBody(SoftBody^ body);
 

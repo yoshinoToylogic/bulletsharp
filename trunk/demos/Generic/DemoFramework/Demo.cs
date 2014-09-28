@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using BulletSharp;
@@ -54,7 +55,7 @@ namespace DemoFramework
         protected CollisionDispatcher Dispatcher;
         protected BroadphaseInterface Broadphase;
         protected ConstraintSolver Solver;
-        public AlignedCollisionShapeArray CollisionShapes { get; private set; }
+        public List<CollisionShape> CollisionShapes { get; private set; }
 
         protected BoxShape shootBoxShape;
         protected float shootBoxInitialSpeed = 40;
@@ -111,7 +112,7 @@ namespace DemoFramework
 
         public Demo()
         {
-            CollisionShapes = new AlignedCollisionShapeArray();
+            CollisionShapes = new List<CollisionShape>();
         }
 
         public void Run()

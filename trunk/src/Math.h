@@ -109,9 +109,8 @@ namespace BulletSharp
 			vectorOut.Z = vector->m_floats[2];
 #endif
 		}
-		static btVector3* Vector3ToBtVector3(Vector3);
-		static btVector3* Vector3ToBtVector3Ref(Vector3%);
-		static void Vector3ToBtVector3(Vector3, btVector3*);
+		static btVector3* Vector3ToBtVector3(Vector3%);
+		static void Vector3ToBtVector3(Vector3%, btVector3*);
 		static btVector3* Vector3ArrayToUnmanaged(array<Vector3>^);
 		static array<Vector3>^ Vector3ArrayToManaged(btVector3*, int);
 

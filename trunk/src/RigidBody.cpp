@@ -220,11 +220,13 @@ void RigidBodyConstructionInfo::StartWorldTransform::set(Matrix value)
 RigidBody::RigidBody(btRigidBody* native)
 	: CollisionObject(native)
 {
+	_collisionShape = BulletSharp::CollisionShape::GetManaged(native->getCollisionShape());
 }
 
 RigidBody::RigidBody(RigidBodyConstructionInfo^ constructionInfo)
 	: CollisionObject(ALIGNED_NEW(btRigidBody) (*constructionInfo->_native))
 {
+	_collisionShape = constructionInfo->CollisionShape;
 	_motionState = constructionInfo->_motionState;
 }
 

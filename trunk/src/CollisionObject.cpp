@@ -43,14 +43,14 @@ CollisionObject::!CollisionObject()
 			VoidPtrToGCHandle(userObj).Free();
 		delete _native;
 	}
-	_native = NULL;
+	_isDisposed = true;
 	
 	OnDisposed(this, nullptr);
 }
 
 bool CollisionObject::IsDisposed::get()
 {
-	return (_native == NULL);
+	return _isDisposed;
 }
 
 void CollisionObject::Activate(bool forceActivation)
@@ -78,6 +78,11 @@ bool CollisionObject::CheckCollideWith(CollisionObject^ collisionObject)
 void CollisionObject::ForceActivationState(BulletSharp::ActivationState newState)
 {
 	_native->forceActivationState((int)newState);
+}
+
+int CollisionObject::GetHashCode()
+{
+	return (int)_native;
 }
 
 void CollisionObject::GetWorldTransform([Out] Matrix% outTransform)
@@ -230,11 +235,12 @@ void CollisionObject::CollisionFlags::set(BulletSharp::CollisionFlags flags)
 
 CollisionShape^ CollisionObject::CollisionShape::get()
 {
-	return BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
+	return _collisionShape;
 }
 void CollisionObject::CollisionShape::set(BulletSharp::CollisionShape^ collisionShape)
 {
 	_native->setCollisionShape(collisionShape->_native);
+	_collisionShape = collisionShape;
 }
 
 int CollisionObject::CompanionId::get()
@@ -422,7 +428,7 @@ void CollisionObject::UnmanagedPointer::set(btCollisionObject* value)
 
 	if (_native->getUserPointer() == 0)
 	{
-		GCHandle handle = GCHandle::Alloc(this);
+		GCHandle handle = GCHandle::Alloc(this, GCHandleType::Weak);
 		void* obj = GCHandleToVoidPtr(handle);
 		_native->setUserPointer(obj);
 	}

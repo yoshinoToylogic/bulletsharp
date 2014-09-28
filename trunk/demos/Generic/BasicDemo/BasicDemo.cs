@@ -55,11 +55,12 @@ namespace BasicDemo
             CollisionShapes.Add(colShape);
             Vector3 localInertia = colShape.CalculateLocalInertia(mass);
 
-            RigidBodyConstructionInfo rbInfo = new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
-
             const float start_x = StartPosX - ArraySizeX / 2;
             const float start_y = StartPosY;
             const float start_z = StartPosZ - ArraySizeZ / 2;
+
+            RigidBodyConstructionInfo rbInfo =
+                new RigidBodyConstructionInfo(mass, null, colShape, localInertia);
 
             int k, i, j;
             for (k = 0; k < ArraySizeY; k++)
@@ -86,6 +87,7 @@ namespace BasicDemo
                     }
                 }
             }
+
             rbInfo.Dispose();
         }
     }
