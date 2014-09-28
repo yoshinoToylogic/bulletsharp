@@ -279,6 +279,11 @@ void CollisionShape::CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vect
 	ALIGNED_FREE(temporalAabbMaxTemp);
 }
 
+bool CollisionShape::Equals(Object^ obj)
+{
+	return Object::ReferenceEquals(this, obj);
+}
+
 void CollisionShape::GetAabb(Matrix% t, [Out] Vector3% aabbMin, [Out] Vector3% aabbMax)
 {
 	TRANSFORM_CONV(t);
@@ -309,7 +314,9 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 {
 	btVector3* centerTemp = ALIGNED_NEW(btVector3);
 	btScalar radiusTemp;
+	
 	_native->getBoundingSphere(*centerTemp, radiusTemp);
+	
 	center = Math::BtVector3ToVector3(centerTemp);
 	radius = radiusTemp;
 	ALIGNED_FREE(centerTemp);
@@ -318,6 +325,11 @@ void CollisionShape::GetBoundingSphere([Out] Vector3% center, [Out] btScalar% ra
 btScalar CollisionShape::GetContactBreakingThreshold(btScalar defaultContactThresholdFactor)
 {
 	return _native->getContactBreakingThreshold(defaultContactThresholdFactor);
+}
+
+int CollisionShape::GetHashCode()
+{
+	return (int)_native;
 }
 
 #ifndef DISABLE_SERIALIZE
@@ -447,7 +459,7 @@ void CollisionShape::UnmanagedPointer::set(btCollisionShape* value)
 
 	if (_native->getUserPointer() == 0)
 	{
-		GCHandle handle = GCHandle::Alloc(this);
+		GCHandle handle = GCHandle::Alloc(this, GCHandleType::Weak);
 		void* obj = GCHandleToVoidPtr(handle);
 		_native->setUserPointer(obj);
 	}

@@ -31,6 +31,7 @@ namespace BulletSharp
 		{
 		private:
 			BulletWorldImporterWrapper* _native;
+			DynamicsWorld^ _world;
 
 		public:
 			!BulletWorldImporter();

@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 
+#include "AlignedObjectArray.h"
 #include "IActionInterface.h"
 #include "ConstraintSOlver.h"
 #include "ContactSolverInfo.h"
@@ -20,6 +21,7 @@
 DynamicsWorld::DynamicsWorld(btDynamicsWorld* native)
 	: CollisionWorld(native)
 {
+	_constraints = gcnew System::Collections::Generic::List<TypedConstraint^>();
 }
 
 void DynamicsWorld::AddAction(IActionInterface^ action)
@@ -51,23 +53,30 @@ void DynamicsWorld::AddAction(IActionInterface^ action)
 #ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint, bool disableCollisionsBetweenLinkedBodies)
 {
+	_constraints->Add(constraint);
 	Native->addConstraint(constraint->_native, disableCollisionsBetweenLinkedBodies);
 }
 
 void DynamicsWorld::AddConstraint(TypedConstraint^ constraint)
 {
+	_constraints->Add(constraint);
 	Native->addConstraint(constraint->_native);
 }
 #endif
 
 void DynamicsWorld::AddRigidBody(RigidBody^ body)
 {
-	Native->addRigidBody((btRigidBody*)body->_native);
+	_collisionObjectArray->Add(body);
 }
 
 void DynamicsWorld::AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)
 {
-	Native->addRigidBody((btRigidBody*)body->_native, (short)group, (short)mask);
+	_collisionObjectArray->Add(body, (short)group, (short)mask);
+}
+
+void DynamicsWorld::AddRigidBody(RigidBody^ body, short group, short mask)
+{
+	_collisionObjectArray->Add(body, group, mask);
 }
 
 void DynamicsWorld::ClearForces()
@@ -77,6 +86,9 @@ void DynamicsWorld::ClearForces()
 #ifndef DISABLE_CONSTRAINTS
 TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 {
+	//TODO: Enable this once deserialization of constraints is handled.
+	//System::Diagnostics::Debug::Assert(((btDynamicsWorld*)_native)->getConstraint(index) == _constraints[index]->_native);
+    //return _constraints[index];
 	return TypedConstraint::GetManaged(Native->getConstraint(index));
 }
 #endif
@@ -116,7 +128,7 @@ void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 #endif
 void DynamicsWorld::RemoveRigidBody(RigidBody^ body)
 {
-	Native->removeRigidBody((btRigidBody*)body->_native);
+	_collisionObjectArray->Remove(body);
 }
 
 void callback(btDynamicsWorld* world, btScalar timeStep)

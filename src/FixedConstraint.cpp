@@ -5,6 +5,8 @@
 #include "FixedConstraint.h"
 #include "RigidBody.h"
 
+#define Native static_cast<btFixedConstraint*>(_native)
+
 FixedConstraint::FixedConstraint(btFixedConstraint* native)
 	: TypedConstraint(native)
 {
@@ -20,6 +22,9 @@ FixedConstraint::FixedConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, M
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB));
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 #endif

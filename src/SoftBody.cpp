@@ -6,6 +6,7 @@
 #include "BroadphaseInterface.h"
 #include "Collections.h"
 #include "CollisionObjectWrapper.h"
+#include "CollisionShape.h"
 #include "Dispatcher.h"
 #include "RigidBody.h"
 #include "SoftBody.h"
@@ -2412,6 +2413,7 @@ void Tetra::RestVolume::set(btScalar value)
 BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* native)
 	: CollisionObject(native)
 {
+	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m)
@@ -2447,6 +2449,8 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 		m_ptr = nullptr;
 
 	UnmanagedPointer = new btSoftBody(worldInfo->_native, length, (btVector3*)x_ptr, m_ptr);
+
+	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m)
@@ -2471,11 +2475,14 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 
 	UnmanagedPointer = new btSoftBody(worldInfo->_native, length,
 		(btVector3*)GetUnmanagedNullable(x), (btScalar*)GetUnmanagedNullable(m));
+
+	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
 	: CollisionObject(new btSoftBody(worldInfo->_native))
 {
+	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
 }
 
 void BulletSharp::SoftBody::SoftBody::AddAeroForceToFace(Vector3 windVelocity, int faceIndex)
@@ -3681,7 +3688,7 @@ Dbvt^ BulletSharp::SoftBody::SoftBody::ClusterDbvt::get()
 {
 	if (_clusterDbvt == nullptr)
 	{
-		_clusterDbvt = gcnew Dbvt(Native->m_cdbvt, true);
+		_clusterDbvt = gcnew Dbvt(&Native->m_cdbvt, true);
 	}
 	return _clusterDbvt;
 }
@@ -3722,11 +3729,11 @@ AlignedFaceArray^ BulletSharp::SoftBody::SoftBody::Faces::get()
 #ifndef DISABLE_DBVT
 Dbvt^ BulletSharp::SoftBody::SoftBody::FaceDbvt::get()
 {
-	if (_clusterDbvt == nullptr)
+	if (_faceDbvt == nullptr)
 	{
-		_clusterDbvt = gcnew Dbvt(Native->m_fdbvt, true);
+		_faceDbvt = gcnew Dbvt(&Native->m_fdbvt, true);
 	}
-	return _clusterDbvt;
+	return _faceDbvt;
 }
 #endif
 
@@ -3771,7 +3778,7 @@ Dbvt^ BulletSharp::SoftBody::SoftBody::NodeDbvt::get()
 {
 	if (_clusterDbvt == nullptr)
 	{
-		_clusterDbvt = gcnew Dbvt(Native->m_ndbvt, true);
+		_clusterDbvt = gcnew Dbvt(&Native->m_ndbvt, true);
 	}
 	return _clusterDbvt;
 }

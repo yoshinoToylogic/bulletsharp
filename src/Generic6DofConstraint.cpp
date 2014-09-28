@@ -408,6 +408,9 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyA, RigidBody^ r
 		TRANSFORM_USE(frameInA), TRANSFORM_USE(frameInB), useLinearReferenceFrameA);
 	TRANSFORM_DEL(frameInA);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB)
@@ -417,6 +420,8 @@ Generic6DofConstraint::Generic6DofConstraint(RigidBody^ rigidBodyB, Matrix frame
 	UnmanagedPointer = new btGeneric6DofConstraint(*(btRigidBody*)rigidBodyB->_native, TRANSFORM_USE(frameInB),
 		useLinearReferenceFrameB);
 	TRANSFORM_DEL(frameInB);
+
+	_rigidBodyB = rigidBodyB;
 }
 
 void Generic6DofConstraint::CalcAnchorPos()

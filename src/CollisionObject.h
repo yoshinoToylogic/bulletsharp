@@ -18,9 +18,13 @@ namespace BulletSharp
 
 	private:
 		bool _preventDelete;
+		bool _isDisposed;
 		
 		BroadphaseProxy^ _broadphaseHandle;
 		Object^ _userObject;
+
+	protected:
+		CollisionShape^ _collisionShape;
 
 	public:
 		!CollisionObject();
@@ -37,6 +41,7 @@ namespace BulletSharp
 #endif
 		bool CheckCollideWith(CollisionObject^ collisionObject);
 		void ForceActivationState(BulletSharp::ActivationState newState);
+		virtual int GetHashCode() override;
 		void GetWorldTransform([Out] Matrix% transform);
 		bool HasAnisotropicFriction(AnisotropicFrictionFlags frictionMode);
 		bool HasAnisotropicFriction();

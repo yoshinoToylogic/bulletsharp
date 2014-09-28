@@ -508,6 +508,10 @@ int MultiBody::NumLinks::get()
 void MultiBody::NumLinks::set(int numLinks)
 {
 	_native->setNumLinks(numLinks);
+	if (_links != nullptr)
+	{
+		Array::Resize(_links, numLinks);
+	}
 }
 
 bool MultiBody::UseGyroTerm::get()

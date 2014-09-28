@@ -325,9 +325,9 @@ btScalar VoronoiSimplexSolver::EqualVertexThreshold::get()
 {
 	return _native->getEqualVertexThreshold();
 }
-void VoronoiSimplexSolver::EqualVertexThreshold::set(btScalar value)
+void VoronoiSimplexSolver::EqualVertexThreshold::set(btScalar threshold)
 {
-	_native->setEqualVertexThreshold(value);
+	_native->setEqualVertexThreshold(threshold);
 }
 
 Vector3 VoronoiSimplexSolver::LastW::get()

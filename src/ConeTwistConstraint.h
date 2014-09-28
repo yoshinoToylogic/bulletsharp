@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class ConeTwistConstraint : TypedConstraint
 	{
+	private:
+		RigidBody^ _rigidBodyA;
+        RigidBody^ _rigidBodyB;
+
 	internal:
 		ConeTwistConstraint(btConeTwistConstraint* native);
 

@@ -8,7 +8,7 @@ namespace BulletSharp
 	ref class CollisionObjectWrapper;
 	ref class PersistentManifold;
 
-	public ref class ManifoldResult : DiscreteCollisionDetectorInterface::Result
+	public ref class ManifoldResult abstract : DiscreteCollisionDetectorInterface::Result
 	{
 	public:
 		ManifoldResult();

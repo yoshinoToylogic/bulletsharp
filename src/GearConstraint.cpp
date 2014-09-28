@@ -22,6 +22,9 @@ GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vec
 		VECTOR3_USE(axisInB), ratio);
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vector3 axisInA, Vector3 axisInB)
@@ -33,6 +36,9 @@ GearConstraint::GearConstraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB, Vec
 		VECTOR3_USE(axisInB));
 	VECTOR3_DEL(axisInA);
 	VECTOR3_DEL(axisInB);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 Vector3 GearConstraint::AxisA::get()

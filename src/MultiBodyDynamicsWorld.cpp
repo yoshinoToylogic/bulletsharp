@@ -32,15 +32,15 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_constraints = gcnew System::Collections::Generic::List<MultiBodyConstraint^>();
 }
 
-void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, short group, short mask)
+void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)
 {
-	Native->addMultiBody(body->_native, group, mask);
+	Native->addMultiBody(body->_native, (short)group, (short)mask);
 	_bodies->Add(body);
 }
 
-void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, short group)
+void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, CollisionFilterGroups group)
 {
-	Native->addMultiBody(body->_native, group);
+	Native->addMultiBody(body->_native, (short)group);
 	_bodies->Add(body);
 }
 

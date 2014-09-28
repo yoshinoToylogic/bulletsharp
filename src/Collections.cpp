@@ -223,7 +223,7 @@ int BoolArray::IndexOf(bool item)
 
 bool BoolArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
@@ -231,7 +231,7 @@ void BoolArray::default::set(int index, bool value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -272,7 +272,7 @@ void SoftBody::BodyArray::CopyTo(array<Body^>^ array, int arrayIndex)
 
 SoftBody::Body^ SoftBody::BodyArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew Body(&Native[index]);
 }
@@ -281,7 +281,7 @@ void SoftBody::BodyArray::default::set(int index, Body^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = *value->_native;
 }
@@ -321,7 +321,7 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 
 CompoundShapeChild^ CompoundShapeChildArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return gcnew CompoundShapeChild(&Native[index]);
 }
@@ -337,7 +337,7 @@ void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	CompoundShapeChildArray_SetDefault(Native, index, value->_native);
 }
@@ -378,7 +378,7 @@ void DbvtArray::CopyTo(array<Dbvt^>^ array, int arrayIndex)
 
 Dbvt^ DbvtArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	return gcnew Dbvt(&Native[index]);
@@ -387,7 +387,7 @@ void DbvtArray::default::set(int index, Dbvt^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = *value->_native;
 }
@@ -426,7 +426,7 @@ void DbvtNodePtrArray::CopyTo(array<DbvtNode^>^ array, int arrayIndex)
 
 DbvtNode^ DbvtNodePtrArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	btDbvtNode* nodePtr = Native[index];
@@ -439,7 +439,7 @@ void DbvtNodePtrArray::default::set(int index, DbvtNode^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	Native[index] = GetUnmanagedNullable(value);
@@ -479,7 +479,7 @@ void DbvtProxyPtrArray::CopyTo(array<DbvtProxy^>^ array, int arrayIndex)
 
 DbvtProxy^ DbvtProxyPtrArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	btDbvtProxy* proxyPtr = Native[index];
@@ -492,7 +492,7 @@ void DbvtProxyPtrArray::default::set(int index, DbvtProxy^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 
 	Native[index] = (btDbvtProxy*)GetUnmanagedNullable(value);
@@ -564,7 +564,7 @@ int FloatArray::IndexOf(float item)
 
 float FloatArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
@@ -572,7 +572,7 @@ void FloatArray::default::set(int index, float value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -642,7 +642,7 @@ int IntArray::IndexOf(int item)
 
 int IntArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
@@ -650,7 +650,7 @@ void IntArray::default::set(int index, int value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -700,7 +700,7 @@ void SoftBody::NodePtrArray::default::set(int index, Node^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = (btSoftBody::Node*)GetUnmanagedNullable(value);
 }
@@ -771,7 +771,7 @@ int ScalarArray::IndexOf(btScalar item)
 
 btScalar ScalarArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
@@ -779,7 +779,7 @@ void ScalarArray::default::set(int index, btScalar value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -844,7 +844,7 @@ int UIntArray::IndexOf(unsigned int item)
 
 unsigned int UIntArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
@@ -852,7 +852,7 @@ void UIntArray::default::set(int index, unsigned int value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -917,7 +917,7 @@ int UShortArray::IndexOf(unsigned short item)
 
 unsigned short UShortArray::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	return Native[index];
 }
@@ -925,7 +925,7 @@ void UShortArray::default::set(int index, unsigned short value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	Native[index] = value;
 }
@@ -995,7 +995,7 @@ int Vector3Array::IndexOf(Vector3 item)
 
 Vector3 Vector3Array::default::get(int index)
 {
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	btVector3* p = (btVector3*)(((char*)&Native[0]) + index * _vectorStride);
 	return Math::BtVector3ToVector3(p);
@@ -1004,7 +1004,7 @@ void Vector3Array::default::set(int index, Vector3 value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if (index < 0 || index >= _length)
+	if ((unsigned int)index >= (unsigned int)_length)
 		throw gcnew ArgumentOutOfRangeException("index");
 	btVector3* p = (btVector3*)(((char*)&Native[0]) + index * _vectorStride);
 	Math::Vector3ToBtVector3(value, p);

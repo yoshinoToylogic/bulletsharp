@@ -24,6 +24,9 @@ Hinge2Constraint::Hinge2Constraint(RigidBody^ rigidBodyA, RigidBody^ rigidBodyB,
 	VECTOR3_DEL(anchor);
 	VECTOR3_DEL(axis1);
 	VECTOR3_DEL(axis2);
+
+	_rigidBodyA = rigidBodyA;
+	_rigidBodyB = rigidBodyB;
 }
 
 void Hinge2Constraint::SetLowerLimit(btScalar ang1min)

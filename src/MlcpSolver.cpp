@@ -15,11 +15,13 @@ MlcpSolver::MlcpSolver(btMLCPSolver* native)
 MlcpSolver::MlcpSolver(MlcpSolverInterface^ solver)
 	: SequentialImpulseConstraintSolver(new btMLCPSolver(solver->_native))
 {
+	_mlcpSolver = solver;
 }
 
 void MlcpSolver::SetMLCPSolver(MlcpSolverInterface^ solver)
 {
 	Native->setMLCPSolver(solver->_native);
+	_mlcpSolver = solver;
 }
 
 btScalar MlcpSolver::Cfm::get()

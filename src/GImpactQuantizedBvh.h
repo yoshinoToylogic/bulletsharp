@@ -110,7 +110,7 @@ namespace BulletSharp
 		GImpactQuantizedBvh(btGImpactQuantizedBvh* native);
 
 	private:
-		PrimitiveManagerBase^ _primitiveManagerBase;
+		PrimitiveManagerBase^ _primitiveManager;
 
 	public:
 		!GImpactQuantizedBvh();

@@ -8,6 +8,10 @@ namespace BulletSharp
 
 	public ref class HingeConstraint : TypedConstraint
 	{
+	private:
+		RigidBody^ _rigidBodyA;
+        RigidBody^ _rigidBodyB;
+
 	internal:
 		HingeConstraint(btHingeConstraint* native);
 

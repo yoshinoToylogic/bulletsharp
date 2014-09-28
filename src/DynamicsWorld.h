@@ -20,6 +20,7 @@ namespace BulletSharp
 	internal:
 		InternalTickCallback^ _callback;
 		System::Collections::Generic::List<IActionInterface^>^ _actions;
+		System::Collections::Generic::List<TypedConstraint^>^ _constraints;
 		ConstraintSolver^ _constraintSolver;
 		DynamicsWorld(btDynamicsWorld* native);
 
@@ -31,6 +32,7 @@ namespace BulletSharp
 #endif
 		void AddRigidBody(RigidBody^ body);
 		void AddRigidBody(RigidBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask);
+		void AddRigidBody(RigidBody^ body, short group, short mask);
 		void ClearForces();
 #ifndef DISABLE_CONSTRAINTS
 		TypedConstraint^ GetConstraint(int index);

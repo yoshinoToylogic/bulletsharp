@@ -88,44 +88,44 @@ BroadphaseProxy^ BroadphaseProxy::GetManaged(btBroadphaseProxy* broadphaseProxy)
 	return proxy;
 }
 
-bool BroadphaseProxy::IsCompound(int proxyType)
+bool BroadphaseProxy::IsCompound(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isCompound(proxyType);
+	return btBroadphaseProxy::isCompound((int)proxyType);
 }
 
-bool BroadphaseProxy::IsConcave(int proxyType)
+bool BroadphaseProxy::IsConcave(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isConcave(proxyType);
+	return btBroadphaseProxy::isConcave((int)proxyType);
 }
 
-bool BroadphaseProxy::IsConvex(int proxyType)
+bool BroadphaseProxy::IsConvex(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isConvex(proxyType);
+	return btBroadphaseProxy::isConvex((int)proxyType);
 }
 
-bool BroadphaseProxy::IsConvex2D(int proxyType)
+bool BroadphaseProxy::IsConvex2D(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isConvex2d(proxyType);
+	return btBroadphaseProxy::isConvex2d((int)proxyType);
 }
 
-bool BroadphaseProxy::IsInfinite(int proxyType)
+bool BroadphaseProxy::IsInfinite(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isInfinite(proxyType);
+	return btBroadphaseProxy::isInfinite((int)proxyType);
 }
 
-bool BroadphaseProxy::IsNonMoving(int proxyType)
+bool BroadphaseProxy::IsNonMoving(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isNonMoving(proxyType);
+	return btBroadphaseProxy::isNonMoving((int)proxyType);
 }
 
-bool BroadphaseProxy::IsPolyhedral(int proxyType)
+bool BroadphaseProxy::IsPolyhedral(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isPolyhedral(proxyType);
+	return btBroadphaseProxy::isPolyhedral((int)proxyType);
 }
 
-bool BroadphaseProxy::IsSoftBody(int proxyType)
+bool BroadphaseProxy::IsSoftBody(BroadphaseNativeType proxyType)
 {
-	return btBroadphaseProxy::isSoftBody(proxyType);
+	return btBroadphaseProxy::isSoftBody((int)proxyType);
 }
 
 Vector3 BroadphaseProxy::AabbMax::get()

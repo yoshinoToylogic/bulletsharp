@@ -156,7 +156,7 @@ CompoundShapeChildArray^ CompoundShape::ChildList::get()
 #ifndef DISABLE_DBVT
 Dbvt^ CompoundShape::DynamicAabbTree::get()
 {
-	return gcnew Dbvt(Native->getDynamicAabbTree());
+	return gcnew Dbvt(Native->getDynamicAabbTree(), true);
 }
 #endif
 
