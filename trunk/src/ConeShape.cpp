@@ -34,8 +34,19 @@ btScalar ConeShape::Radius::get()
 }
 
 
+ConeShapeX::ConeShapeX(btConeShapeX* native)
+	: ConeShape(native)
+{
+}
+
 ConeShapeX::ConeShapeX(btScalar radius, btScalar height)
 	: ConeShape(new btConeShapeX(radius, height))
+{
+}
+
+
+ConeShapeZ::ConeShapeZ(btConeShapeZ* native)
+	: ConeShape(native)
 {
 }
 

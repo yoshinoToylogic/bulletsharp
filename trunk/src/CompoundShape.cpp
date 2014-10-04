@@ -6,9 +6,10 @@
 #include "Dbvt.h"
 #endif
 
-CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* native)
+CompoundShapeChild::CompoundShapeChild(btCompoundShapeChild* native, CollisionShape^ shape)
 {
 	_native = native;
+	_childShape = shape;
 }
 
 btScalar CompoundShapeChild::ChildMargin::get()
@@ -22,10 +23,11 @@ void CompoundShapeChild::ChildMargin::set(btScalar value)
 
 CollisionShape^ CompoundShapeChild::ChildShape::get()
 {
-	return CollisionShape::GetManaged(_native->m_childShape);
+	return _childShape;
 }
 void CompoundShapeChild::ChildShape::set(CollisionShape^ value)
 {
+	_childShape = value;
 	_native->m_childShape = value->_native;
 }
 
@@ -66,23 +68,29 @@ void CompoundShapeChild::Transform::set(Matrix value)
 CompoundShape::CompoundShape(btCompoundShape* native)
 	: CollisionShape(native)
 {
+	_childList = gcnew CompoundShapeChildArray(Native);
 }
 
 CompoundShape::CompoundShape(bool enableDynamicAabbTree)
 	: CollisionShape(new btCompoundShape(enableDynamicAabbTree))
 {
+	_childList = gcnew CompoundShapeChildArray(Native);
 }
 
 CompoundShape::CompoundShape()
 	: CollisionShape(new btCompoundShape())
 {
+	_childList = gcnew CompoundShapeChildArray(Native);
+}
+
+void CompoundShape::AddChildShape(Matrix% localTransform, CollisionShape^ shape)
+{
+	_childList->AddChildShape(localTransform, shape);
 }
 
 void CompoundShape::AddChildShape(Matrix localTransform, CollisionShape^ shape)
 {
-	TRANSFORM_CONV(localTransform);
-	Native->addChildShape(TRANSFORM_USE(localTransform), shape->_native);
-	TRANSFORM_DEL(localTransform);
+	_childList->AddChildShape(localTransform, shape);
 }
 
 void CompoundShape::CalculatePrincipalAxisTransform(array<btScalar>^ masses, Matrix% principal,
@@ -122,12 +130,12 @@ void CompoundShape::RecalculateLocalAabb()
 
 void CompoundShape::RemoveChildShape(CollisionShape^ shape)
 {
-	Native->removeChildShape(shape->_native);
+	_childList->RemoveChildShape(shape);
 }
 
 void CompoundShape::RemoveChildShapeByIndex(int childShapeindex)
 {
-	Native->removeChildShapeByIndex(childShapeindex);
+	_childList->RemoveChildShapeByIndex(childShapeindex);
 }
 
 void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransform,
@@ -147,9 +155,6 @@ void CompoundShape::UpdateChildTransform(int childIndex, Matrix newChildTransfor
 
 CompoundShapeChildArray^ CompoundShape::ChildList::get()
 {
-	if (_childList == nullptr) {
-		_childList = gcnew CompoundShapeChildArray(Native->getChildList(), Native->getNumChildShapes());
-	}
 	return _childList;
 }
 

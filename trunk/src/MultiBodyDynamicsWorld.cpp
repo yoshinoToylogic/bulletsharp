@@ -38,9 +38,9 @@ void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, CollisionFilterGroups
 	_bodies->Add(body);
 }
 
-void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, CollisionFilterGroups group)
+void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, short group, short mask)
 {
-	Native->addMultiBody(body->_native, (short)group);
+	Native->addMultiBody(body->_native, group, mask);
 	_bodies->Add(body);
 }
 

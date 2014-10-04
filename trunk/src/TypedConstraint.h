@@ -191,13 +191,13 @@ namespace BulletSharp
 		virtual event EventHandler^ OnDisposed;
 
 	private:
-		bool _preventDelete;
 		Object^ _userObject;
 		JointFeedback^ _jointFeedback;
 
 	internal:
 		btTypedConstraint* _native;
-		TypedConstraint(btTypedConstraint* typedConstraint, bool preventDelete);
+		bool _preventDelete;
+
 		TypedConstraint(btTypedConstraint* typedConstraint);
 		static TypedConstraint^ GetManaged(btTypedConstraint* native);
 
