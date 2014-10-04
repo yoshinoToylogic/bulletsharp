@@ -29,7 +29,9 @@ MultiBodyDynamicsWorld::MultiBodyDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 	_broadphase = pairCache;
 
 	_bodies = gcnew System::Collections::Generic::List<MultiBody^>();
+#ifndef DISABLE_CONSTRAINTS
 	_constraints = gcnew System::Collections::Generic::List<MultiBodyConstraint^>();
+#endif
 }
 
 void MultiBodyDynamicsWorld::AddMultiBody(MultiBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask)

@@ -24,7 +24,12 @@ SoftRigidDynamicsWorld::SoftRigidDynamicsWorld(BulletSharp::Dispatcher^ dispatch
 #endif
 	CollisionConfiguration^ collisionConfiguration, SoftBodySolver^ softBodySolver)
 	: DiscreteDynamicsWorld(new btSoftRigidDynamicsWorld(dispatcher->_native, pairCache->_native,
-		constraintSolver->_native, collisionConfiguration->_native, softBodySolver->_native))
+#ifndef DISABLE_CONSTRAINTS
+		GetUnmanagedNullable(constraintSolver),
+#else
+		nullptr,
+#endif
+		collisionConfiguration->_native, softBodySolver->_native))
 {
 #ifndef DISABLE_CONSTRAINTS
 	_constraintSolver = constraintSolver;
