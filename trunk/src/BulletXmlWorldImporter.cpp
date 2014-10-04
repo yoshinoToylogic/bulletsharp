@@ -44,7 +44,11 @@ Serialize::BulletXmlWorldImporter::BulletXmlWorldImporter(DynamicsWorld^ world)
 	_world = world;
 	_allocatedRigidBodies = gcnew System::Collections::Generic::List<CollisionObject^>();
 	_allocatedCollisionShapes = gcnew System::Collections::Generic::List<CollisionShape^>();
+#ifndef DISABLE_CONSTRAINTS
 	_allocatedConstraints = gcnew System::Collections::Generic::List<TypedConstraint^>();
+#endif
+	_objectNameMap = gcnew System::Collections::Generic::Dictionary<Object^, String^>();
+	_nameBodyMap = gcnew System::Collections::Generic::Dictionary<String^, RigidBody^>();
 	_native = new BulletXmlWorldImporterWrapper((btDynamicsWorld*)GetUnmanagedNullable(world), this);
 }
 
@@ -106,8 +110,8 @@ RigidBody^ Serialize::BulletXmlWorldImporter::CreateRigidBody(bool isDynamic, bt
         
 	if (bodyName)
 	{
-		//_objectNameMap.insert(body, newname);
-		//_nameBodyMap.insert(newname, body);
+		_objectNameMap->Add(body, bodyName);
+		_nameBodyMap->Add(bodyName, body);
 	}
 	return body;
 }
@@ -431,6 +435,7 @@ GearConstraint^ Serialize::BulletXmlWorldImporter::CreateGearConstraint(RigidBod
 
 void Serialize::BulletXmlWorldImporter::DeleteAllData()
 {
+#ifndef DISABLE_CONSTRAINTS
 	for (int i = 0; i < _allocatedConstraints->Count; i++)
 	{
 		if (_world)
@@ -439,7 +444,7 @@ void Serialize::BulletXmlWorldImporter::DeleteAllData()
 		}
 		delete _allocatedConstraints[i]; // Only frees the weak reference, doesn't delete the native object again
 	}
-
+#endif
 	for (int i = 0; i < _allocatedRigidBodies->Count; i++)
 	{
 		if (_world)
@@ -473,7 +478,8 @@ CollisionShape^ Serialize::BulletXmlWorldImporter::GetCollisionShapeByIndex(int 
 
 CollisionObject^ Serialize::BulletXmlWorldImporter::GetRigidBodyByIndex(int index)
 {
-	return CollisionObject::GetManaged(_native->getRigidBodyByIndex(index));
+	return _allocatedRigidBodies[index];
+	//return CollisionObject::GetManaged(_native->getRigidBodyByIndex(index));
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -514,16 +520,16 @@ CollisionShape^ Serialize::BulletXmlWorldImporter::GetCollisionShapeByName(Strin
 
 RigidBody^ Serialize::BulletXmlWorldImporter::GetRigidBodyByName(String^ name)
 {
-	btRigidBody* body;
 	RigidBody^ ret;
+	if (_nameBodyMap->TryGetValue(name, ret))
+	{
+		return ret;
+	}
 
 	const char* nameTemp = StringConv::ManagedToUnmanaged(name);
-
-	body = _native->getRigidBodyByName(nameTemp);
-	ret = (RigidBody^)CollisionObject::GetManaged(body);
-
+	btRigidBody* body = _native->getRigidBodyByName(nameTemp);
 	StringConv::FreeUnmanagedString(nameTemp);
-	return ret;
+	return (RigidBody^)CollisionObject::GetManaged(body);
 }
 
 #ifndef DISABLE_CONSTRAINTS
@@ -546,22 +552,27 @@ String^	Serialize::BulletXmlWorldImporter::GetNameForObject(Object^ obj)
 {
 	const void* pointer = 0;
 
-	CollisionShape^ shape = static_cast<CollisionShape^>(obj);
+	CollisionShape^ shape = dynamic_cast<CollisionShape^>(obj);
 	if (shape != nullptr)
 	{
 		pointer = shape->_native;
 		goto returnName;
 	}
 
-	CollisionObject^ body = static_cast<CollisionObject^>(obj);
+	CollisionObject^ body = dynamic_cast<CollisionObject^>(obj);
 	if (body != nullptr)
 	{
+		String^ name;
+		if (_objectNameMap->TryGetValue(obj, name))
+		{
+			return name;
+		}
 		pointer = body->_native;
 		goto returnName;
 	}
 
 #ifndef DISABLE_CONSTRAINTS
-	TypedConstraint^ constraint = static_cast<TypedConstraint^>(obj);
+	TypedConstraint^ constraint = dynamic_cast<TypedConstraint^>(obj);
 	if (constraint != nullptr)
 	{
 		pointer = constraint->_native;
