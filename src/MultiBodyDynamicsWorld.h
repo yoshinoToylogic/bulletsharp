@@ -25,7 +25,7 @@ namespace BulletSharp
 			MultiBodyConstraintSolver^ constraintSolver, CollisionConfiguration^ collisionConfiguration);
 
 		void AddMultiBody(MultiBody^ body, CollisionFilterGroups group, CollisionFilterGroups mask);
-		void AddMultiBody(MultiBody^ body, CollisionFilterGroups group);
+		void AddMultiBody(MultiBody^ body, short group, short mask);
 		void AddMultiBody(MultiBody^ body);
 #ifndef DISABLE_CONSTRAINTS
 		void AddMultiBodyConstraint(MultiBodyConstraint^ constraint);

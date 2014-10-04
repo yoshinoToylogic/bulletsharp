@@ -123,7 +123,12 @@ void DynamicsWorld::RemoveAction(IActionInterface^ action)
 #ifndef DISABLE_CONSTRAINTS
 void DynamicsWorld::RemoveConstraint(TypedConstraint^ constraint)
 {
+	//int itemIndex = _constraints->IndexOf(constraint);
+    //int lastIndex = _constraints->Count - 1;
+    //_constraints[itemIndex] = _constraints[lastIndex];
+    //_constraints->RemoveAt(lastIndex);
 	Native->removeConstraint(constraint->_native);
+	_constraints->Remove(constraint);
 }
 #endif
 void DynamicsWorld::RemoveRigidBody(RigidBody^ body)

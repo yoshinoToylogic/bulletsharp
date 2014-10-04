@@ -271,14 +271,6 @@ void TypedConstraint::ConstraintInfo2::UpperLimit::set(float^ value)
 */
 
 
-TypedConstraint::TypedConstraint(btTypedConstraint* native, bool preventDelete)
-{
-	_preventDelete = preventDelete;
-
-	if (native)
-		UnmanagedPointer = native;
-}
-
 TypedConstraint::TypedConstraint(btTypedConstraint* native)
 {
 	if (native)
@@ -307,11 +299,14 @@ TypedConstraint::!TypedConstraint()
 		return;
 	
 	OnDisposing(this, nullptr);
-	
+
+	if (_native->getUserConstraintId() != -1)
+	{
+		VoidPtrToGCHandle(_native->getUserConstraintPtr()).Free();
+	}
+
 	if (!_preventDelete)
 	{
-		if (_native->getUserConstraintId() != -1)
-			VoidPtrToGCHandle(_native->getUserConstraintPtr()).Free();
 		delete _native;
 	}
 	_native = NULL;

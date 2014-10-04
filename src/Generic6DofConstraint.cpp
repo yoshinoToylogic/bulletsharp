@@ -216,7 +216,10 @@ TranslationalLimitMotor::~TranslationalLimitMotor()
 
 TranslationalLimitMotor::!TranslationalLimitMotor()
 {
-	delete _native;
+	if (!_preventDelete)
+	{
+		delete _native;
+	}
 	_native = NULL;
 }
 

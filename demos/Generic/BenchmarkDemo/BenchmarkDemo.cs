@@ -48,9 +48,11 @@ namespace BenchmarkDemo
         protected override void OnInitializePhysics()
         {
             // collision configuration contains default setup for memory, collision setup
-            DefaultCollisionConstructionInfo cci = new DefaultCollisionConstructionInfo();
-            cci.DefaultMaxPersistentManifoldPoolSize = 32768;
-            CollisionConf = new DefaultCollisionConfiguration(cci);
+            using (var cci = new DefaultCollisionConstructionInfo())
+            {
+                cci.DefaultMaxPersistentManifoldPoolSize = 32768;
+                CollisionConf = new DefaultCollisionConfiguration(cci);
+            }
 
             if (UseParallelDispatcherBenchmark)
             {

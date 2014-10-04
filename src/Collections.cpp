@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "Collections.h"
+#include "CollisionShape.h"
 #include "CompoundShape.h"
 
 #ifndef DISABLE_DBVT
@@ -289,16 +290,59 @@ void SoftBody::BodyArray::default::set(int index, Body^ value)
 
 
 #undef Native
-#define Native static_cast<btCompoundShapeChild*>(_native)
+#define Native static_cast<btCompoundShape*>(_native)
 
-CompoundShapeChildArray::CompoundShapeChildArray(btCompoundShapeChild* shapeArray, int length)
-: GenericList<CompoundShapeChild^>(shapeArray, length)
+CompoundShapeChildArray::CompoundShapeChildArray(btCompoundShape* compoundShape)
+	: GenericList<CompoundShapeChild^>(compoundShape, compoundShape->getNumChildShapes())
 {
+	_backingList = gcnew System::Collections::Generic::List<CompoundShapeChild^>();
+	BuildBackingList();
 }
 
-CompoundShapeChildArray::CompoundShapeChildArray(const btCompoundShapeChild* shapeArray, int length)
-: GenericList<CompoundShapeChild^>(shapeArray, length)
+void CompoundShapeChildArray::BuildBackingList()
 {
+	// Assume that children have not been removed by Bullet internally (e.g. by the world importer).
+	int count = Native->getNumChildShapes();
+	if (count != 0)
+	{
+		btCompoundShapeChild* childList = Native->getChildList();
+		for (int i = 0; i < count; i++)
+		{
+			if (i >= _backingList->Count)
+			{
+				CollisionShape^ shape = CollisionShape::GetManaged(childList[i].m_childShape);
+				_backingList->Add(gcnew CompoundShapeChild(&childList[i], shape));
+			}
+		}
+	}
+	_updateRevision = Native->getUpdateRevision();
+}
+
+void CompoundShapeChildArray::AddChildShape(Matrix% localTransform, CollisionShape^ shape)
+{
+	if (Native->getUpdateRevision() != _updateRevision)
+	{
+		BuildBackingList();
+	}
+
+	btCompoundShapeChild* childListOld = Native->getChildList();
+	TRANSFORM_CONV(localTransform);
+	Native->addChildShape(TRANSFORM_USE(localTransform), shape->_native);
+	TRANSFORM_DEL(localTransform);
+	btCompoundShapeChild* childList = Native->getChildList();
+	
+    // Adjust the native pointer of existing children if the array was reallocated.
+	int count = _backingList->Count;
+    if (childListOld != childList)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            _backingList[i]->_native = &childList[i];
+        }
+    }
+
+	_backingList->Add(gcnew CompoundShapeChild(&childList[count], shape));
+	_updateRevision = Native->getUpdateRevision();
 }
 
 void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arrayIndex)
@@ -312,18 +356,63 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
 
+	btCompoundShapeChild* childList = Native->getChildList();
 	int i;
 	for (i=0; i<_length; i++)
 	{
-		array[arrayIndex+i] = gcnew CompoundShapeChild(&Native[i]);
+		array[arrayIndex+i] = this[i];
 	}
+}
+
+void CompoundShapeChildArray::RemoveChildShape(CollisionShape^ shape)
+{
+	if (Native->getUpdateRevision() != _updateRevision)
+	{
+		BuildBackingList();
+	}
+	
+    btCollisionShape* shapePtr = shape->_native;
+	int count = Native->getNumChildShapes();
+    for (int i = 0; i < count; i++)
+    {
+        if (_backingList[i]->ChildShape->_native == shapePtr)
+        {
+            RemoveChildShapeByIndex(i);
+            break;
+        }
+    }
+}
+
+void CompoundShapeChildArray::RemoveChildShapeByIndex(int childShapeIndex)
+{
+	if (Native->getUpdateRevision() != _updateRevision)
+	{
+		BuildBackingList();
+	}
+	Native->removeChildShapeByIndex(childShapeIndex);
+
+	// Swap the last item with the item to be removed like Bullet does.
+	int count = Native->getNumChildShapes();
+    if (childShapeIndex != count)
+    {
+        CompoundShapeChild^ lastItem = _backingList[count];
+        lastItem->_native = _backingList[childShapeIndex]->_native;
+        _backingList[childShapeIndex] = lastItem;
+    }
+	_backingList->RemoveAt(count);
+
+	_updateRevision = Native->getUpdateRevision();
 }
 
 CompoundShapeChild^ CompoundShapeChildArray::default::get(int index)
 {
-	if ((unsigned int)index >= (unsigned int)_length)
+	if ((unsigned int)index >= (unsigned int)Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	return gcnew CompoundShapeChild(&Native[index]);
+	if (Native->getUpdateRevision() != _updateRevision)
+	{
+		BuildBackingList();
+	}
+	return _backingList[index];
 }
 
 #pragma managed(push, off)
@@ -337,11 +426,16 @@ void CompoundShapeChildArray::default::set(int index, CompoundShapeChild^ value)
 {
 	if (_isReadOnly)
 		throw gcnew InvalidOperationException("List is read-only.");
-	if ((unsigned int)index >= (unsigned int)_length)
+	if ((unsigned int)index >= (unsigned int)Count)
 		throw gcnew ArgumentOutOfRangeException("index");
-	CompoundShapeChildArray_SetDefault(Native, index, value->_native);
+	btCompoundShapeChild* childList = Native->getChildList();
+	CompoundShapeChildArray_SetDefault(childList, index, value->_native);
 }
 
+int CompoundShapeChildArray::Count::get()
+{
+	return Native->getNumChildShapes();
+}
 
 #ifndef DISABLE_DBVT
 

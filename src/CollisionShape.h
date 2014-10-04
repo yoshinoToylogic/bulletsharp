@@ -13,11 +13,11 @@ namespace BulletSharp
 	private:
 		Object^ _userObject;
 		BroadphaseNativeType _shapeType;
-
-		// 1 = is disposed; 2 = does not own object (can't delete btCollisionShape ourselves)
-		int _flags;
+		bool _isDisposed;
 
 	internal:
+		bool _preventDelete;
+
 		btCollisionShape* _native;
 		CollisionShape(btCollisionShape* native);
 		static CollisionShape^ GetManaged(btCollisionShape* collisionShape);

@@ -14,10 +14,11 @@ namespace BulletSharp
 
 	internal:
 		btCollisionObject* _native;
+		bool _preventDelete;
+
 		CollisionObject(btCollisionObject* native);
 
 	private:
-		bool _preventDelete;
 		bool _isDisposed;
 		
 		BroadphaseProxy^ _broadphaseHandle;

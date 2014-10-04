@@ -211,7 +211,7 @@ GImpactQuantizedBvh::GImpactQuantizedBvh()
 
 GImpactQuantizedBvh::GImpactQuantizedBvh(PrimitiveManagerBase^ primitiveManager)
 {
-	_primitiveManagerBase = primitiveManager;
+	_primitiveManager = primitiveManager;
 	_native = new btGImpactQuantizedBvh(primitiveManager->_native);
 }
 

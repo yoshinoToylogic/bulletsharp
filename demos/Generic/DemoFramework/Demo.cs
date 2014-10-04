@@ -158,7 +158,7 @@ namespace DemoFramework
                 {
                     TypedConstraint constraint = _world.GetConstraint(i);
                     _world.RemoveConstraint(constraint);
-                    constraint.Dispose(); ;
+                    constraint.Dispose();
                 }
 
                 //remove the rigidbodies from the dynamics world and delete them
