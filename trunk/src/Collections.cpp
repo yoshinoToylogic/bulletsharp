@@ -325,7 +325,8 @@ void CompoundShapeChildArray::AddChildShape(Matrix% localTransform, CollisionSha
 		BuildBackingList();
 	}
 
-	btCompoundShapeChild* childListOld = Native->getChildList();
+	// getChildList asserts and crashes if count = 0
+	btCompoundShapeChild* childListOld = Native->getNumChildShapes() ? Native->getChildList() : 0;
 	TRANSFORM_CONV(localTransform);
 	Native->addChildShape(TRANSFORM_USE(localTransform), shape->_native);
 	TRANSFORM_DEL(localTransform);
@@ -355,6 +356,9 @@ void CompoundShapeChildArray::CopyTo(array<CompoundShapeChild^>^ array, int arra
 
 	if (arrayIndex + _length > array->Length)
 		throw gcnew ArgumentException("Array too small.");
+
+	if (_length == 0)
+		return;
 
 	btCompoundShapeChild* childList = Native->getChildList();
 	int i;
