@@ -2413,7 +2413,8 @@ void Tetra::RestVolume::set(btScalar value)
 BulletSharp::SoftBody::SoftBody::SoftBody(btSoftBody* native)
 	: CollisionObject(native)
 {
-	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
+	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape->_preventDelete = true;
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m)
@@ -2450,7 +2451,8 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, array<Ve
 
 	UnmanagedPointer = new btSoftBody(worldInfo->_native, length, (btVector3*)x_ptr, m_ptr);
 
-	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
+	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape->_preventDelete = true;
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m)
@@ -2476,13 +2478,27 @@ BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3A
 	UnmanagedPointer = new btSoftBody(worldInfo->_native, length,
 		(btVector3*)GetUnmanagedNullable(x), (btScalar*)GetUnmanagedNullable(m));
 
-	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
+	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape->_preventDelete = true;
 }
 
 BulletSharp::SoftBody::SoftBody::SoftBody(SoftBodyWorldInfo^ worldInfo)
 	: CollisionObject(new btSoftBody(worldInfo->_native))
 {
-	_collisionShape = BulletSharp::CollisionShape::GetManaged(_native->getCollisionShape());
+	_collisionShape = gcnew BulletSharp::CollisionShape(_native->getCollisionShape());
+	_collisionShape->_preventDelete = true;
+}
+
+BulletSharp::SoftBody::SoftBody::~SoftBody()
+{
+	this->!SoftBody();
+}
+
+BulletSharp::SoftBody::SoftBody::!SoftBody()
+{
+	if (this->IsDisposed)
+		return;
+	delete _collisionShape;
 }
 
 void BulletSharp::SoftBody::SoftBody::AddAeroForceToFace(Vector3 windVelocity, int faceIndex)

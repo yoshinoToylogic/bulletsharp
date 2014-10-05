@@ -1710,6 +1710,11 @@ namespace BulletSharp
 			AlignedIntArray^ _userIndexMapping;
 
 		public:
+			!SoftBody();
+		protected:
+			~SoftBody();
+
+		public:
 			SoftBody(SoftBodyWorldInfo^ worldInfo, array<Vector3>^ x, array<btScalar>^ m);
 			SoftBody(SoftBodyWorldInfo^ worldInfo, Vector3Array^ x, ScalarArray^ m);
 			SoftBody(SoftBodyWorldInfo^ worldInfo);
