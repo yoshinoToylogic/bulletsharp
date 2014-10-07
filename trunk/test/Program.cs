@@ -9,12 +9,12 @@ namespace BulletSharpTest
         {
             if (wr.IsAlive)
             {
-                Console.WriteLine(name + " GC collection failed!");
-                Console.WriteLine("Generation: " + GC.GetGeneration(wr.Target));
+                Console.Write(name + " GC collection FAILED! ");
+                Console.WriteLine("Gen: " + GC.GetGeneration(wr.Target));
             }
             else
             {
-                Console.WriteLine(name + " OK");
+                Console.WriteLine(name + " GC collection OK");
             }
         }
 
@@ -30,6 +30,9 @@ namespace BulletSharpTest
             var dispatcher_wr = new WeakReference(dispatcher);
             var broadphase_wr = new WeakReference(broadphase);
             var world_wr = new WeakReference(broadphase);
+
+            dispatcher.NearCallback = DispatcherNearCallback;
+            dispatcher.NearCallback = null;
 
             //conf.Dispose();
             conf = null;
@@ -49,8 +52,9 @@ namespace BulletSharpTest
             //world.Dispose();
             world = null;
 
-            GC.Collect();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
+
             TestWeakRef("CollisionConfiguration", conf_wr);
             TestWeakRef("CollisionDispatcher", dispatcher_wr);
             TestWeakRef("DbvtBroadphase", broadphase_wr);
@@ -70,6 +74,12 @@ namespace BulletSharpTest
         static void WorldPreTickCallback(DynamicsWorld world, float timeStep)
         {
             Console.WriteLine("WorldPreTickCallback");
+        }
+
+        static void DispatcherNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher,
+			DispatcherInfo dispatchInfo)
+        {
+            Console.WriteLine("DispatcherNearCallback");
         }
 
         static void Main(string[] args)
