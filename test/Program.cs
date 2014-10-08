@@ -18,18 +18,40 @@ namespace BulletSharpTest
             }
         }
 
+        static DiscreteDynamicsWorld world;
+
         static public void TestGCCollection()
         {
             var conf = new DefaultCollisionConfiguration();
             var dispatcher = new CollisionDispatcher(conf);
             var broadphase = new DbvtBroadphase();
-            var world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
+            world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
             world.Gravity = new Vector3(0, -10, 0);
+
+            var groundShape = new BoxShape(50, 1, 50);
+            var localInertia = groundShape.CalculateLocalInertia(0.0f);
+            var motionState = new DefaultMotionState();
+            var constInfo = new RigidBodyConstructionInfo(0.0f, motionState, groundShape, localInertia);
+            var groundObject = new RigidBody(constInfo);
+
+            float mass = 1.0f;
+            var dynamicShape = new SphereShape(mass);
+            localInertia = dynamicShape.CalculateLocalInertia(0.0f);
+            var motionState2 = new DefaultMotionState();
+            var constInfo2 = new RigidBodyConstructionInfo(mass, motionState2, dynamicShape, localInertia);
+            var dynamicObject = new RigidBody(constInfo);
+            world.AddRigidBody(dynamicObject);
 
             var conf_wr = new WeakReference(conf);
             var dispatcher_wr = new WeakReference(dispatcher);
             var broadphase_wr = new WeakReference(broadphase);
             var world_wr = new WeakReference(broadphase);
+            var groundShape_wr = new WeakReference(groundShape);
+            var constInfo_wr = new WeakReference(constInfo);
+            var groundObject_wr = new WeakReference(groundObject);
+            var dynamicShape_wr = new WeakReference(dynamicShape);
+            var constInfo2_wr = new WeakReference(constInfo2);
+            var dynamicObject_wr = new WeakReference(dynamicObject);
 
             dispatcher.NearCallback = DispatcherNearCallback;
             dispatcher.NearCallback = null;
@@ -47,10 +69,17 @@ namespace BulletSharpTest
             world.OnDisposing += onDisposing;
             world.OnDisposed += onDisposed;
             world.SetInternalTickCallback(new DynamicsWorld.InternalTickCallback(WorldPreTickCallback));
-            world.StepSimulation(1.0f/60.0f);
+            world.StepSimulation(1.0f / 60.0f);
             //world.SetInternalTickCallback(null);
             //world.Dispose();
             world = null;
+
+            groundShape = null;
+            constInfo = null;
+            groundObject = null;
+            dynamicShape = null;
+            constInfo2 = null;
+            dynamicObject = null;
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
@@ -59,6 +88,12 @@ namespace BulletSharpTest
             TestWeakRef("CollisionDispatcher", dispatcher_wr);
             TestWeakRef("DbvtBroadphase", broadphase_wr);
             TestWeakRef("DiscreteDynamicsWorld", world_wr);
+            TestWeakRef("BoxShape", groundShape_wr);
+            TestWeakRef("RigidBodyConstructionInfo", constInfo_wr);
+            TestWeakRef("RigidBody", groundObject_wr);
+            TestWeakRef("SphereShape", dynamicShape_wr);
+            TestWeakRef("RigidBodyConstructionInfo", constInfo2_wr);
+            TestWeakRef("RigidBody", dynamicObject_wr);
         }
 
         static void onDisposed(object sender, EventArgs e)
@@ -71,9 +106,13 @@ namespace BulletSharpTest
             Console.WriteLine("OnDisposing: " + sender.ToString());
         }
 
-        static void WorldPreTickCallback(DynamicsWorld world, float timeStep)
+        static void WorldPreTickCallback(DynamicsWorld world2, float timeStep)
         {
             Console.WriteLine("WorldPreTickCallback");
+            if (object.ReferenceEquals(world, world2))
+            {
+                Console.WriteLine("World reference lost!");
+            }
         }
 
         static void DispatcherNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher,

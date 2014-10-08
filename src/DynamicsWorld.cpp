@@ -92,6 +92,12 @@ TypedConstraint^ DynamicsWorld::GetConstraint(int index)
 	return TypedConstraint::GetManaged(Native->getConstraint(index));
 }
 #endif
+
+void DynamicsWorld::InternalTickCallbackUnmanaged(IntPtr world, btScalar timeStep)
+{
+    _callback(this, timeStep);
+}
+
 void DynamicsWorld::RemoveAction(IActionInterface^ action)
 {
 	if (!_actions) {
@@ -136,32 +142,27 @@ void DynamicsWorld::RemoveRigidBody(RigidBody^ body)
 	_collisionObjectArray->Remove(body);
 }
 
-void callback(btDynamicsWorld* world, btScalar timeStep)
-{
-	void* userInfo = world->getWorldUserInfo();
-	DynamicsWorld^ dynamicsWorld = static_cast<DynamicsWorld^>(VoidPtrToGCHandle(userInfo).Target);
-	dynamicsWorld->_callback(dynamicsWorld, timeStep);
-}
-
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo,
 	bool isPreTick)
 {
-	_callback = cb;
-	_userObject = worldUserInfo;
-
-	void* nativeUserInfo = Native->getWorldUserInfo();
-	if (cb != nullptr) {
-		if (!nativeUserInfo) {
-			GCHandle handle = GCHandle::Alloc(this, GCHandleType::Weak);
-			nativeUserInfo = GCHandleToVoidPtr(handle);
+	if (_callback != cb)
+	{
+		_callback = cb;
+		if (cb != nullptr)
+		{
+			if (_callbackUnmanaged == nullptr)
+			{
+				_callbackUnmanaged = gcnew InternalTickCallbackUnmanagedDelegate(this, &DynamicsWorld::InternalTickCallbackUnmanaged);
+			}
+			Native->setInternalTickCallback((btInternalTickCallback)Marshal::GetFunctionPointerForDelegate(_callbackUnmanaged).ToPointer(), 0, isPreTick);
 		}
-		Native->setInternalTickCallback(callback, nativeUserInfo, isPreTick);
-	} else {
-		if (nativeUserInfo) {
-			VoidPtrToGCHandle(nativeUserInfo).Free();
+		else
+		{
+			_callbackUnmanaged = nullptr;
+			Native->setInternalTickCallback(0, 0, isPreTick);
 		}
-		Native->setInternalTickCallback(0, 0, isPreTick);
 	}
+	_userObject = worldUserInfo;
 }
 
 void DynamicsWorld::SetInternalTickCallback(InternalTickCallback^ cb, Object^ worldUserInfo)

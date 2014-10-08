@@ -16,9 +16,14 @@ namespace BulletSharp
 		delegate void InternalTickCallback(DynamicsWorld^ world, btScalar timeStep);
 
 	private:
+		[UnmanagedFunctionPointerAttribute(CallingConvention::Cdecl)]
+        delegate void InternalTickCallbackUnmanagedDelegate(IntPtr world, btScalar timeStep);
+
+	private:
 		Object^ _userObject;
 	internal:
 		InternalTickCallback^ _callback;
+		InternalTickCallbackUnmanagedDelegate^ _callbackUnmanaged;
 		System::Collections::Generic::List<IActionInterface^>^ _actions;
 		System::Collections::Generic::List<TypedConstraint^>^ _constraints;
 		ConstraintSolver^ _constraintSolver;
@@ -37,6 +42,7 @@ namespace BulletSharp
 #ifndef DISABLE_CONSTRAINTS
 		TypedConstraint^ GetConstraint(int index);
 #endif
+		void InternalTickCallbackUnmanaged(IntPtr world, btScalar timeStep);
 		void RemoveAction(IActionInterface^ action);
 #ifndef DISABLE_CONSTRAINTS
 		void RemoveConstraint(TypedConstraint^ constraint);
