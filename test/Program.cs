@@ -1,60 +1,44 @@
-﻿using BulletSharp;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using BulletSharp;
 
 namespace BulletSharpTest
 {
     class Program
     {
-        static public void TestWeakRef(string name, WeakReference wr)
-        {
-            if (wr.IsAlive)
-            {
-                Console.Write(name + " GC collection FAILED! ");
-                Console.WriteLine("Gen: " + GC.GetGeneration(wr.Target));
-            }
-            else
-            {
-                Console.WriteLine(name + " GC collection OK");
-            }
-        }
-
         static DiscreteDynamicsWorld world;
 
-        static public void TestGCCollection()
+        static void TestGCCollection()
         {
             var conf = new DefaultCollisionConfiguration();
             var dispatcher = new CollisionDispatcher(conf);
             var broadphase = new DbvtBroadphase();
             world = new DiscreteDynamicsWorld(dispatcher, broadphase, null, conf);
             world.Gravity = new Vector3(0, -10, 0);
+            dispatcher.NearCallback = DispatcherNearCallback;
 
             var groundShape = new BoxShape(50, 1, 50);
-            var localInertia = groundShape.CalculateLocalInertia(0.0f);
-            var motionState = new DefaultMotionState();
-            var constInfo = new RigidBodyConstructionInfo(0.0f, motionState, groundShape, localInertia);
+            var constInfo = new RigidBodyConstructionInfo(0.0f, new DefaultMotionState(), groundShape, Vector3.Zero);
             var groundObject = new RigidBody(constInfo);
+            world.AddRigidBody(groundObject);
 
-            float mass = 1.0f;
-            var dynamicShape = new SphereShape(mass);
-            localInertia = dynamicShape.CalculateLocalInertia(0.0f);
-            var motionState2 = new DefaultMotionState();
-            var constInfo2 = new RigidBodyConstructionInfo(mass, motionState2, dynamicShape, localInertia);
+            constInfo.Mass = 1.0f;
+            constInfo.CollisionShape = new SphereShape(1.0f);
+            constInfo.LocalInertia = constInfo.CollisionShape.CalculateLocalInertia(constInfo.Mass);
+            constInfo.MotionState = new DefaultMotionState();
             var dynamicObject = new RigidBody(constInfo);
+            dynamicObject.Translate(new Vector3(0, 2, 0));
             world.AddRigidBody(dynamicObject);
 
-            var conf_wr = new WeakReference(conf);
-            var dispatcher_wr = new WeakReference(dispatcher);
-            var broadphase_wr = new WeakReference(broadphase);
-            var world_wr = new WeakReference(broadphase);
-            var groundShape_wr = new WeakReference(groundShape);
-            var constInfo_wr = new WeakReference(constInfo);
-            var groundObject_wr = new WeakReference(groundObject);
-            var dynamicShape_wr = new WeakReference(dynamicShape);
-            var constInfo2_wr = new WeakReference(constInfo2);
-            var dynamicObject_wr = new WeakReference(dynamicObject);
-
-            dispatcher.NearCallback = DispatcherNearCallback;
-            dispatcher.NearCallback = null;
+            AddToDisposeQueue(conf);
+            AddToDisposeQueue(dispatcher);
+            AddToDisposeQueue(broadphase);
+            AddToDisposeQueue(world);
+            AddToDisposeQueue(groundShape);
+            AddToDisposeQueue(constInfo);
+            AddToDisposeQueue(groundObject);
+            AddToDisposeQueue(constInfo.CollisionShape);
+            AddToDisposeQueue(dynamicObject);
 
             //conf.Dispose();
             conf = null;
@@ -68,8 +52,11 @@ namespace BulletSharpTest
             broadphase = null;
             world.OnDisposing += onDisposing;
             world.OnDisposed += onDisposed;
-            world.SetInternalTickCallback(new DynamicsWorld.InternalTickCallback(WorldPreTickCallback));
-            world.StepSimulation(1.0f / 60.0f);
+            world.SetInternalTickCallback(WorldPreTickCallback);
+            for (int i = 0; i < 60; i++)
+            {
+                world.StepSimulation(1.0f / 60.0f);
+            }
             //world.SetInternalTickCallback(null);
             //world.Dispose();
             world = null;
@@ -77,23 +64,52 @@ namespace BulletSharpTest
             groundShape = null;
             constInfo = null;
             groundObject = null;
-            dynamicShape = null;
-            constInfo2 = null;
             dynamicObject = null;
 
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
 
-            TestWeakRef("CollisionConfiguration", conf_wr);
-            TestWeakRef("CollisionDispatcher", dispatcher_wr);
-            TestWeakRef("DbvtBroadphase", broadphase_wr);
-            TestWeakRef("DiscreteDynamicsWorld", world_wr);
-            TestWeakRef("BoxShape", groundShape_wr);
-            TestWeakRef("RigidBodyConstructionInfo", constInfo_wr);
-            TestWeakRef("RigidBody", groundObject_wr);
-            TestWeakRef("SphereShape", dynamicShape_wr);
-            TestWeakRef("RigidBodyConstructionInfo", constInfo2_wr);
-            TestWeakRef("RigidBody", dynamicObject_wr);
+            TestWeakRefs();
+        }
+
+        static void TestWeakRefs()
+        {
+            foreach (var r in disposeQueue)
+            {
+                TestWeakRef(r.Key, r.Value);
+            }
+        }
+
+        static void TestWeakRef(string name, WeakReference wr)
+        {
+            if (wr.IsAlive)
+            {
+                Console.Write(name + " GC collection FAILED! ");
+                Console.WriteLine("Gen: " + GC.GetGeneration(wr.Target));
+            }
+            else
+            {
+                Console.WriteLine(name + " GC collection OK");
+            }
+        }
+
+        static Dictionary<string, WeakReference> disposeQueue = new Dictionary<string, WeakReference>();
+        static void AddToDisposeQueue(object obj)
+        {
+            var r = new WeakReference(obj);
+            string name = obj.GetType().Name;
+            if (disposeQueue.ContainsKey(name))
+            {
+                int i = 2;
+                var name2 = name + i.ToString();
+                while (disposeQueue.ContainsKey(name2))
+                {
+                    i++;
+                    name2 = name + i.ToString();
+                }
+                name = name2;
+            }
+            disposeQueue.Add(name, r);
         }
 
         static void onDisposed(object sender, EventArgs e)
@@ -108,17 +124,17 @@ namespace BulletSharpTest
 
         static void WorldPreTickCallback(DynamicsWorld world2, float timeStep)
         {
-            Console.WriteLine("WorldPreTickCallback");
-            if (object.ReferenceEquals(world, world2))
+            //Console.WriteLine("WorldPreTickCallback");
+            if (!object.ReferenceEquals(world, world2))
             {
-                Console.WriteLine("World reference lost!");
+                Console.WriteLine("WorldPreTickCallback: World reference lost!");
             }
         }
 
         static void DispatcherNearCallback(BroadphasePair collisionPair, CollisionDispatcher dispatcher,
 			DispatcherInfo dispatchInfo)
         {
-            Console.WriteLine("DispatcherNearCallback");
+            //Console.WriteLine("DispatcherNearCallback");
         }
 
         static void Main(string[] args)
