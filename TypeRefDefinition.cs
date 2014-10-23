@@ -103,9 +103,14 @@ namespace BulletSharpGen
                     {
                         return ManagedName + '*';
                     }
-                    if (ManagedName.Equals("void"))
+                    switch (ManagedName)
                     {
-                        return "IntPtr";
+                        case "void":
+                            return "IntPtr";
+                        case "char":
+                            return "String^";
+                        case "float":
+                            return string.Format("array<{0}>^", Referenced.Name);
                     }
                     return ManagedName + '^';
                 }

@@ -13,13 +13,13 @@ namespace BulletSharpGen
         {
             // If true, outputs C++/CLI wrapper,
             // if false, outputs C wrapper with C# code.
-            bool cppCliMode = false;
+            bool cppCliMode = true;
 
             //var subset = new AssemblySubset();
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\BasicDemo.exe", "BulletSharp");
             //subset.LoadAssembly("..\\..\\..\\bulletsharp\\demos\\Generic\\bin\\Release\\DemoFramework.dll", "BulletSharp");
 
-            string sourceFolder = "D:\\src\\bullet\\src\\";
+            string sourceFolder = "D:\\src\\bullet3\\src\\";
             //sourceFolder = "..\\..\\..\\bullet\\src\\";
 
             if (!Directory.Exists(sourceFolder))
@@ -93,19 +93,29 @@ namespace BulletSharpGen
                 confs.Add(new ProjectConfiguration("MonoGame", true, "GRAPHICS_MONOGAME", "$(ProgramFiles)\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\;$(ProgramFiles(x86))\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\"));
                 confs.Add(new ProjectConfiguration("MonoGame", false, "GRAPHICS_MONOGAME", "$(ProgramFiles)\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\;$(ProgramFiles(x86))\\MonoGame\\v3.0\\Assemblies\\WindowsGL\\"));
             }
-            confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.1\\Binaries\\OpenTK\\Release"));
-            confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.1\\Binaries\\OpenTK\\Release"));
             if (targetVS == TargetVS.VS2008)
             {
-                confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net20Debug"));
-                confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net20Release"));
+                confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.1\\Binaries\\OpenTK\\Release"));
+                confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK", "$(USERPROFILE)\\My Documents\\OpenTK\\1.1\\Binaries\\OpenTK\\Release"));
+                confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\SharpDX\\Bin\\DirectX11-net20"));
+                confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\SharpDX\\Bin\\DirectX11-net20"));
                 confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net20\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net20\\"));
                 confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net20\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net20\\"));
             }
             else
             {
-                confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Debug"));
-                confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\sharpdx\\Source\\SharpDX\\bin\\Net40Release"));
+                confs.Add(new ProjectConfiguration("OpenTK", true, "GRAPHICS_OPENTK")
+                {
+                    ConditionalRef = "OpenTK",
+                    ConditionalRefAssembly = "OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4"
+                });
+                confs.Add(new ProjectConfiguration("OpenTK", false, "GRAPHICS_OPENTK")
+                {
+                    ConditionalRef = "OpenTK",
+                    ConditionalRefAssembly = "OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4"
+                });
+                confs.Add(new ProjectConfiguration("SharpDX", true, "GRAPHICS_SHARPDX", slnRelDir + "..\\SharpDX\\Bin\\DirectX11-net40"));
+                confs.Add(new ProjectConfiguration("SharpDX", false, "GRAPHICS_SHARPDX", slnRelDir + "..\\SharpDX\\Bin\\DirectX11-net40"));
                 confs.Add(new ProjectConfiguration("SlimDX", true, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
                 confs.Add(new ProjectConfiguration("SlimDX", false, "GRAPHICS_SLIMDX", "$(PROGRAMFILES)\\SlimDX SDK (January 2012)\\Bin\\net40\\;$(PROGRAMFILES(x86))\\SlimDX SDK (June 2010)\\Bin\\net40\\"));
             }
@@ -212,20 +222,22 @@ namespace BulletSharpGen
 
             filterWriter.RootFilter.Sort();
 
+            string bulletRoot = "..\\bullet3";
+
             var slnWriter = new SlnWriter(filterWriter, NamespaceName)
             {
-                IncludeDirectories = slnRelDir + "..\\bullet\\src;" + slnRelDir + "..\\bullet\\Extras\\HACD;" + slnRelDir + "..\\bullet\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;",
+                IncludeDirectories = string.Format("{0}\\src;{0}\\Extras\\HACD;{0}\\Extras\\Serialize\\BulletWorldImporter;$(CUDA_INC_PATH);$(AMDAPPSDKROOT)include;", slnRelDir + bulletRoot),
                 FilterWriter = filterWriter
             };
             if (targetVS == TargetVS.VS2008)
             {
-                slnWriter.LibraryDirectoriesRelease = slnRelDir + "..\\bullet\\msvc\\2008\\lib\\MinSizeRel";
-                slnWriter.LibraryDirectoriesDebug = slnRelDir + "..\\bullet\\msvc\\2008\\lib\\Debug";
+                slnWriter.LibraryDirectoriesRelease = slnRelDir + bulletRoot + "\\msvc\\2008\\lib\\MinSizeRel";
+                slnWriter.LibraryDirectoriesDebug = slnRelDir + bulletRoot + "\\msvc\\2008\\lib\\Debug";
             }
             else
             {
-                slnWriter.LibraryDirectoriesRelease = slnRelDir + "..\\bullet\\msvc\\" + targetVersionString + "\\lib\\MinSizeRel;$(AMDAPPSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);";
-                slnWriter.LibraryDirectoriesDebug = slnRelDir + "..\\bullet\\msvc\\" + targetVersionString + "\\lib\\Debug;$(AMDAPPSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);";
+                slnWriter.LibraryDirectoriesRelease = slnRelDir + bulletRoot + "\\msvc\\" + targetVersionString + "\\lib\\MinSizeRel;$(AMDAPPSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);";
+                slnWriter.LibraryDirectoriesDebug = slnRelDir + bulletRoot + "\\msvc\\" + targetVersionString + "\\lib\\Debug;$(AMDAPPSDKROOT)lib\\x86\\;$(CUDA_LIB_PATH);";
             }
             slnWriter.Output(targetVS, confs, "sln" + targetVersionString);
         }

@@ -201,9 +201,7 @@ namespace BulletSharpGen
                             param.Type.Referenced.Target.BaseClass != null)
                         {
                             // Cast native pointer from base class
-                            SourceWrite('(');
-                            SourceWrite(param.Type.Referenced.FullName);
-                            SourceWrite("*)");
+                            SourceWrite(string.Format("({0}*)", param.Type.Referenced.FullName));
                         }
                     }
                     SourceWrite(param.ManagedName);
@@ -443,10 +441,7 @@ namespace BulletSharpGen
                         }
                         else
                         {
-                            SourceWrite(nativePointer);
-                            SourceWrite("->");
-                            SourceWrite(method.Field.Name);
-                            SourceWrite(" = ");
+                            SourceWrite(string.Format("{0}->{1} = ", nativePointer, method.Field.Name));
                             if (param.Type.IsPointer || param.Type.IsReference)
                             {
                                 if (param.Type.IsReference)
@@ -459,9 +454,7 @@ namespace BulletSharpGen
                                     param.Type.Referenced.Target.BaseClass != null)
                                 {
                                     // Cast native pointer from base class
-                                    SourceWrite('(');
-                                    SourceWrite(param.Type.Referenced.FullName);
-                                    SourceWrite("*)");
+                                    SourceWrite(string.Format("({0}*)", param.Type.Referenced.FullName));
                                 }
                             }
                             SourceWrite(param.ManagedName);
@@ -525,13 +518,35 @@ namespace BulletSharpGen
             }
         }
 
+        void OutputClasses(IList<ClassDefinition> classes, ref RefAccessSpecifier currentAccess, int level)
+        {
+            int i = 0;
+            foreach (var cl in classes)
+            {
+                if (IsExcludedClass(cl))
+                {
+                    continue;
+                }
+                if (i != 0)
+                {
+                    SourceWriteLine();
+                }
+                if (level != 0)
+                {
+                    EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
+                }
+                OutputClass(cl, level + 1);
+                i++;
+            }
+        }
+
+        bool IsExcludedClass(ClassDefinition c)
+        {
+            return c.IsTypedef || c.IsPureEnum || BulletParser.IsExcludedClass(c);
+        }
+
         void OutputClass(ClassDefinition c, int level)
         {
-            if (c.IsTypedef || c.IsPureEnum)
-            {
-                return;
-            }
-
             EnsureHeaderWhiteSpace();
             EnsureSourceWhiteSpace();
 
@@ -556,11 +571,11 @@ namespace BulletSharpGen
             }
             else
             {
-                HeaderWriteLine(" : IDisposable");
+                HeaderWriteLine(c.IsTrackingDisposable ? " : ITrackingDisposable" : " : IDisposable");
             }
             WriteTabs(level);
             HeaderWriteLine("{");
-            hasHeaderWhiteSpace = true;
+            //hasHeaderWhiteSpace = false;
 
             // Default access for ref class
             var currentAccess = RefAccessSpecifier.Private;
@@ -568,24 +583,17 @@ namespace BulletSharpGen
             // Write child classes
             if (c.Classes.Count != 0)
             {
-                foreach (ClassDefinition cl in c.Classes)
-                {
-                    if (level != 0)
-                    {
-                        EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
-                    }
-                    OutputClass(cl, level + 1);
-                }
+                OutputClasses(c.Classes, ref currentAccess, level);
                 currentAccess = RefAccessSpecifier.Public;
+                SourceWriteLine();
             }
 
             // Downcast native pointer if any methods in a derived class use it
             if (c.BaseClass != null && c.Methods.Any(m => !m.IsConstructor && !m.IsStatic))
             {
-                SourceWrite("#define Native static_cast<");
-                SourceWrite(c.FullName);
-                SourceWriteLine("*>(_native)");
-                SourceWriteLine();
+                EnsureSourceWhiteSpace();
+                SourceWriteLine(string.Format("#define Native static_cast<{0}*>(_native)", c.FullName));
+                hasSourceWhiteSpace = false;
             }
 
             // Write the unmanaged pointer to the base class
@@ -595,81 +603,126 @@ namespace BulletSharpGen
                 {
                     HeaderWriteLine();
                 }
+                if (c.IsTrackingDisposable)
+                {
+                    EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
+                    WriteTabs(level + 1);
+                    HeaderWriteLine("virtual event EventHandler^ OnDisposing;");
+                    WriteTabs(level + 1);
+                    HeaderWriteLine("virtual event EventHandler^ OnDisposed;");
+                    hasHeaderWhiteSpace = false;
+                }
                 EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
                 WriteTabs(level + 1);
                 HeaderWrite(c.FullName);
                 HeaderWriteLine("* _native;");
+                hasHeaderWhiteSpace = false;
             }
 
-            // TODO: Write constructor from unmanaged pointer only if the class is ever instantiated in this way.
+            EnsureHeaderWhiteSpace();
+            EnsureSourceWhiteSpace();
+
+            // Private fields
+            // _isDisposed flag
+            if (c.IsTrackingDisposable)
+            {
+                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Private);
+                WriteTabs(level + 1);
+                HeaderWriteLine("bool _isDisposed;");
+                hasHeaderWhiteSpace = false;
+            }
+            // _preventDelete flag
+            if (c.HasPreventDelete)
+            {
+                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Private);
+                WriteTabs(level + 1);
+                HeaderWriteLine("bool _preventDelete;");
+                hasHeaderWhiteSpace = false;
+            }
 
             // Write unmanaged constructor
-            EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
+            // TODO: Write constructor from unmanaged pointer only if the class is ever instantiated in this way.
+            if (!c.NoInternalConstructor)
+            {
+                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Internal);
 
-            WriteTabs(level + 1);
-            SourceWrite(c.FullNameManaged);
-            SourceWrite("::");
-            Write(c.ManagedName);
-            Write('(');
-            Write(c.FullName);
-            Write("* native)");
-            HeaderWriteLine(';');
-            SourceWriteLine();
-            if (c.BaseClass != null)
-            {
-                WriteTabs(1, true);
-                SourceWrite(": ");
-                SourceWrite(c.BaseClass.ManagedName);
-                SourceWriteLine("(native)");
+                WriteTabs(level + 1);
+                SourceWrite(c.FullNameManaged);
+                SourceWrite("::");
+                Write(c.ManagedName);
+                Write('(');
+                Write(c.FullName);
+                Write("* native)");
+                HeaderWriteLine(';');
+                SourceWriteLine();
+                if (c.BaseClass != null)
+                {
+                    WriteTabs(1, true);
+                    SourceWrite(": ");
+                    SourceWrite(c.BaseClass.ManagedName);
+                    SourceWriteLine("(native)");
+                }
+                SourceWriteLine('{');
+                if (c.BaseClass == null)
+                {
+                    WriteTabs(1, true);
+                    SourceWriteLine("_native = native;");
+                }
+                SourceWriteLine('}');
+                hasHeaderWhiteSpace = false;
+                hasSourceWhiteSpace = false;
             }
-            SourceWriteLine('{');
-            if (c.BaseClass == null)
-            {
-                WriteTabs(1, true);
-                SourceWriteLine("_native = native;");
-            }
-            SourceWriteLine('}');
-            hasHeaderWhiteSpace = false;
-            hasSourceWhiteSpace = false;
 
             // Write destructor & finalizer
             if (c.BaseClass == null)
             {
                 EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
                 WriteTabs(level + 1);
-                HeaderWrite("!");
-                HeaderWrite(c.ManagedName);
-                HeaderWriteLine("();");
+                HeaderWriteLine(string.Format("!{0}();", c.ManagedName));
                 EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Protected);
                 WriteTabs(level + 1);
-                HeaderWrite("~");
-                HeaderWrite(c.ManagedName);
-                HeaderWriteLine("();");
+                HeaderWriteLine(string.Format("~{0}();", c.ManagedName));
                 hasHeaderWhiteSpace = false;
 
                 EnsureSourceWhiteSpace();
-                SourceWrite(c.FullNameManaged);
-                SourceWrite("::~");
-                SourceWrite(c.ManagedName);
-                SourceWriteLine("()");
+                SourceWriteLine(string.Format("{0}::~{1}()", c.FullNameManaged, c.ManagedName));
                 SourceWriteLine('{');
-                WriteTabs(1, true);
-                SourceWrite("this->!");
-                SourceWrite(c.ManagedName);
-                SourceWriteLine("();");
+                SourceWriteLine(string.Format("\tthis->!{0}();", c.ManagedName));
                 SourceWriteLine('}');
                 SourceWriteLine();
 
-                SourceWrite(c.FullNameManaged);
-                SourceWrite("::!");
-                SourceWrite(c.ManagedName);
-                SourceWriteLine("()");
+                SourceWriteLine(string.Format("{0}::!{1}()", c.FullNameManaged, c.ManagedName));
                 SourceWriteLine('{');
-                WriteTabs(1, true);
-                SourceWriteLine("delete _native;");
-                WriteTabs(1, true);
-                SourceWriteLine("_native = NULL;");
+                if (c.IsTrackingDisposable)
+                {
+                    SourceWriteLine("\tif (this->IsDisposed)");
+                    SourceWriteLine("\t\treturn;");
+                    SourceWriteLine();
+                    SourceWriteLine("\tOnDisposing(this, nullptr);");
+                    SourceWriteLine();
+                }
+                if (c.HasPreventDelete)
+                {
+                    SourceWriteLine("\tif (!_preventDelete)");
+                    SourceWriteLine("\t{");
+                    SourceWriteLine("\t\tdelete _native;");
+                    SourceWriteLine("\t}");
+                }
+                else
+                {
+                    SourceWriteLine("\tdelete _native;");
+                }
+                if (c.IsTrackingDisposable)
+                {
+                    SourceWriteLine("\t_isDisposed = true;");
+                    SourceWriteLine();
+                    SourceWriteLine("\tOnDisposed(this, nullptr);");
+                }
+                else
+                {
+                    SourceWriteLine("\t_native = NULL;");
+                }
                 SourceWriteLine('}');
                 hasSourceWhiteSpace = false;
             }
@@ -922,10 +975,7 @@ namespace BulletSharpGen
                 var forwardRefHeaders = new List<HeaderDefinition>();
                 foreach (ClassDefinition c in forwardRefs)
                 {
-                    WriteTabs(1);
-                    HeaderWrite("ref class ");
-                    HeaderWrite(c.ManagedName);
-                    HeaderWriteLine(";");
+                    HeaderWriteLine(string.Format("\tref class {0};", c.ManagedName));
                     if (!forwardRefHeaders.Contains(c.Header))
                     {
                         forwardRefHeaders.Add(c.Header);
@@ -940,17 +990,14 @@ namespace BulletSharpGen
                 {
                     foreach (HeaderDefinition h in forwardRefHeaders)
                     {
-                        SourceWrite("#include \"");
-                        SourceWrite(h.ManagedName);
-                        SourceWriteLine(".h\"");
+                        SourceWriteLine(string.Format("#include \"{0}.h\"", h.ManagedName));
                     }
+                    hasSourceWhiteSpace = false;
                 }
 
                 // Write classes
-                foreach (ClassDefinition c in header.Classes)
-                {
-                    OutputClass(c, 1);
-                }
+                var currentAccess = RefAccessSpecifier.Public;
+                OutputClasses(header.Classes, ref currentAccess, 0);
 
                 if (headerConditional.ContainsKey(header.ManagedName))
                 {
@@ -989,6 +1036,10 @@ namespace BulletSharpGen
                 return;
             }
             if (forwardRefs.Contains(type.Target) || PrecompiledHeaderReferences.Contains(type.Target.ManagedName))
+            {
+                return;
+            }
+            if (BulletParser.IsExcludedClass(type.Target))
             {
                 return;
             }
