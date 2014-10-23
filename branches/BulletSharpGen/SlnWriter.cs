@@ -426,6 +426,27 @@ namespace BulletSharpGen
             }
         }
 
+        void OutputItemGroupReferenceConditional(string condition, string referenceName, string assemblyName)
+        {
+            if (targetVS == TargetVS.VS2008)
+            {
+                WriteLine("\t<References>");
+            }
+            else
+            {
+                WriteLine("  <ItemGroup>");
+            }
+            OutputItemGroupReference(referenceName, assemblyName);
+            if (targetVS == TargetVS.VS2008)
+            {
+                WriteLine("\t</References>");
+            }
+            else
+            {
+                WriteLine("  </ItemGroup>");
+            }
+        }
+
         public void Output(TargetVS targetVS, IList<ProjectConfiguration> confs, string outDirectory)
         {
             Directory.CreateDirectory(outDirectory);
@@ -721,6 +742,20 @@ namespace BulletSharpGen
             else
             {
                 WriteLine("  </ItemGroup>");
+            }
+
+            foreach (var conf in confs)
+            {
+                if (conf.ConditionalRef != null && conf.ConditionalRefAssembly != null)
+                {
+                    if (targetVS != TargetVS.VS2008)
+                    {
+                        WriteLine(string.Format("  <ItemGroup Condition=\"'$(Configuration)'=='{0} {1}'\">", conf.IsDebug ? "Debug" : "Release", conf.Name));
+                        WriteLine(string.Format("    <Reference Include=\"{0}\">", conf.ConditionalRefAssembly));
+                        WriteLine("    </Reference>");
+                        WriteLine("  </ItemGroup>");
+                    }
+                }
             }
 
             

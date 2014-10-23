@@ -14,5 +14,7 @@
         public bool IsDebug { get; set; }
         public string Definitions { get; set; }
         public string UsingDirectories { get; set; }
+        public string ConditionalRef { get; set; }
+        public string ConditionalRefAssembly { get; set; }
     }
 }
