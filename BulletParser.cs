@@ -112,29 +112,6 @@ namespace BulletSharpGen
                 }
             }
 
-            /*
-            // Turn fields into getters/setters
-            foreach (ClassDefinition c in classDefinitions.Values)
-            {
-                foreach (FieldDefinition field in c.Fields)
-                {
-                    ResolveTypeRef(field.Type);
-
-                    // Resolve native and managed name
-                    string name = field.Name;
-                    string managedName = name;
-                    if (managedName.StartsWith("m_"))
-                    {
-                        managedName = managedName.Substring(2);
-                    }
-                    managedName = name.Substring(0, 1).ToUpper() + name.Substring(1);
-
-                    MethodDefinition getter = new MethodDefinition("get" + name, field.Parent, 0);
-                    getter.ReturnType = field.Type;
-                    getter.Field = field;
-                }
-            }*/
-
             // Exclude duplicate methods
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -313,15 +290,16 @@ namespace BulletSharpGen
 
             // Get managed header names
             var headerNameMapping = new Dictionary<string, string>();
-            headerNameMapping.Add("btSparseSDF", "SparseSdf");
-            headerNameMapping.Add("btCompoundFromGimpact", "CompoundFromGImpact");
-            headerNameMapping.Add("btNNCGConstraintSolver", "NncgConstraintSolver");
+            headerNameMapping.Add("btActionInterface", "IAction");
             headerNameMapping.Add("btBox2dBox2dCollisionAlgorithm", "Box2DBox2DCollisionAlgorithm");
             headerNameMapping.Add("btBox2dShape", "Box2DShape");
+            headerNameMapping.Add("btCompoundFromGimpact", "CompoundFromGImpact");
             headerNameMapping.Add("btConvex2dConvex2dAlgorithm", "Convex2DConvex2DAlgorithm");
             headerNameMapping.Add("btConvex2dShape", "Convex2DShape");
             headerNameMapping.Add("btMLCPSolver", "MlcpSolver");
             headerNameMapping.Add("btMLCPSolverInterface", "MlcpSolverInterface");
+            headerNameMapping.Add("btNNCGConstraintSolver", "NncgConstraintSolver");
+            headerNameMapping.Add("btSparseSDF", "SparseSdf");
             headerNameMapping.Add("hacdHACD", "Hacd");
 
             foreach (HeaderDefinition header in HeaderDefinitions.Values)
@@ -346,6 +324,7 @@ namespace BulletSharpGen
             var classNameMapping = new Dictionary<string, string>();
             classNameMapping.Add("btAABB", "Aabb");
             classNameMapping.Add("bt32BitAxisSweep3", "AxisSweep3_32Bit");
+            classNameMapping.Add("btActionInterface", "IAction");
             classNameMapping.Add("btBox2dBox2dCollisionAlgorithm", "Box2DBox2DCollisionAlgorithm");
             classNameMapping.Add("btBox2dShape", "Box2DShape");
             classNameMapping.Add("btConvex2dConvex2dAlgorithm", "Convex2DConvex2DAlgorithm");
@@ -355,6 +334,11 @@ namespace BulletSharpGen
             classNameMapping.Add("btMultibodyLink", "MultiBodyLink");
             classNameMapping.Add("btNNCGConstraintSolver", "NncgConstraintSolver");
             classNameMapping.Add("HACD", "Hacd");
+            classNameMapping.Add("GIM_BVH_DATA", "GimBvhData");
+            classNameMapping.Add("GIM_BVH_DATA_ARRAY", "GimBvhDataArray");
+            classNameMapping.Add("GIM_BVH_TREE_NODE", "GimBvhTreeNode");
+            classNameMapping.Add("GIM_BVH_TREE_NODE_ARRAY", "GimBvhTreeNodeArray");
+            classNameMapping.Add("GIM_PAIR", "GimPair");
             classNameMapping.Add("GIM_TRIANGLE_CONTACT", "GimTriangleContact");
             classNameMapping.Add("BT_QUANTIZED_BVH_NODE", "GImpactQuantizedBvhNode");
             classNameMapping.Add("GIM_QUANTIZED_BVH_NODE_ARRAY", "GimGImpactQuantizedBvhNodeArray");
@@ -365,8 +349,7 @@ namespace BulletSharpGen
             List<string> hideInternalConstructor = new List<string>() {
                 "btBox2dBox2dCollisionAlgorithm", "btBox2dBox2dCollisionAlgorithm::CreateFunc",
                 "btBoxBoxCollisionAlgorithm", "btBoxBoxCollisionAlgorithm::CreateFunc",
-                "btBoxBoxDetector", "btCollisionAlgorithmConstructionInfo",
-                "btDefaultCollisionConfiguration", "btDefaultCollisionConstructionInfo",
+                "btBoxBoxDetector", "btCollisionAlgorithmConstructionInfo", "btDefaultCollisionConstructionInfo",
                 "btCompoundCollisionAlgorithm::CreateFunc", "btCompoundCollisionAlgorithm::SwappedCreateFunc",
                 "btCompoundCompoundCollisionAlgorithm::CreateFunc", "btCompoundCompoundCollisionAlgorithm::SwappedCreateFunc", "btCompoundCompoundCollisionAlgorithm",
                 "btContinuousConvexCollision",
@@ -388,7 +371,19 @@ namespace BulletSharpGen
                 "btSphereTriangleCollisionAlgorithm::CreateFunc", "btSphereTriangleCollisionAlgorithm",
                 "SpuGatheringCollisionDispatcher", "btConvexSeparatingDistanceUtil",
                 "btVehicleRaycaster::btVehicleRaycasterResult", "btOverlapCallback",
-                "btRaycastVehicle::btVehicleTuning"};
+                "btRaycastVehicle::btVehicleTuning",
+                "btBox2dShape", "btBoxShape", "btCapsuleShapeX", "btCapsuleShapeZ",
+                "btCylinderShapeX", "btCylinderShapeZ", "btCompoundShape",
+                "btConeShapeX", "btConeShapeZ", "btConvex2dShape", "btConvexHullShape",
+                "btConvexPointCloudShape", "btEmptyShape", "btHeightfieldTerrainShape", "btMinkowskiSumShape",
+                "btMultiSphereShape", "btMultimaterialTriangleMeshShape", "btScaledBvhTriangleMeshShape",
+                "btSphereShape", "btStaticPlaneShape", "btUniformScalingShape",
+                "btCollisionWorld::ClosestConvexResultCallback",
+                "HACD", "btRigidBody::btRigidBodyConstructionInfo",
+                "btSoftBody::ImplicitFn", "btTriangleBuffer", "btMaterialProperties",
+                "btCollisionWorld::LocalShapeInfo", "btCollisionWorld::LocalConvexResult", "btCollisionWorld::LocalRayResult",
+                "btCollisionWorld::AllHitsRayResultCallback", "btCollisionWorld::ContactResultCallback",
+                "btCollisionWorld::ClosestRayResultCallback"};
 
             // Classes that might be cleaned up by Bullet and not us (use preventDelete to indicate this)
             List<string> preventDelete = new List<string>() {
@@ -396,6 +391,7 @@ namespace BulletSharpGen
                 "btCollisionObject", "btCollisionObjectWrapper", "btCollisionShape",
                 "btConstraintSolver", "btContactSolverInfoData", "btDbvt",
                 "btRotationalLimitMotor", "btTranslationalLimitMotor",
+                "btRotationalLimitMotor2", "btTranslationalLimitMotor2",
                 "btConstraintSetting", "btSimulationIslandManager",
                 "btSolve2LinearConstraint", "btIndexedMesh", "btTriangleInfoMap",
                 "btJointFeedback", "btTypedConstraint", "btAngularLimit",
@@ -407,6 +403,26 @@ namespace BulletSharpGen
                 "btCollisionObject", "btCollisionShape", "btCollisionWorld",
                 "btConstraintSolver", "btDbvt", "btDispatcher", "btRaycastVehicle",
                 "btTypedConstraint"};
+
+            Dictionary<string, string> parameterNameMapping = new Dictionary<string, string>();
+            parameterNameMapping.Add("i_dataBufferSize", "dataBufferSize");
+            parameterNameMapping.Add("i_swapEndian", "swapEndian");
+            parameterNameMapping.Add("i_alignedDataBuffer", "alignedDataBuffer");
+            parameterNameMapping.Add("o_alignedDataBuffer", "alignedDataBuffer");
+            parameterNameMapping.Add("drawflags", "dataBufferSize");
+            parameterNameMapping.Add("idraw", "iDraw");
+            parameterNameMapping.Add("maxdepth", "maxDepth");
+            parameterNameMapping.Add("mindepth", "minDepth");
+            parameterNameMapping.Add("limot", "limitMotor");
+            parameterNameMapping.Add("nodeindex", "nodeIndex");
+            parameterNameMapping.Add("numindices", "numIndices");
+            parameterNameMapping.Add("numverts", "numVerts");
+            parameterNameMapping.Add("rbA", "rigidBodyA");
+            parameterNameMapping.Add("rbB", "rigidBodyB");
+            parameterNameMapping.Add("rbAFrame", "rigidBodyAFrame");
+            parameterNameMapping.Add("rbBFrame", "rigidBodyBFrame");
+            parameterNameMapping.Add("use32bitIndices", "use32BitIndices");
+            parameterNameMapping.Add("use4componentVertices", "use4ComponentVertices");
 
             foreach (ClassDefinition c in classDefinitions.Values)
             {
@@ -437,12 +453,41 @@ namespace BulletSharpGen
                 {
                     c.IsTrackingDisposable = true;
                 }
+
+                // Adjust parameter names
+                foreach (var method in c.Methods)
+                {
+                    foreach (var param in method.Parameters)
+                    {
+                        if (parameterNameMapping.ContainsKey(param.ManagedName))
+                        {
+                            param.ManagedName = parameterNameMapping[param.ManagedName];
+                        }
+                    }
+                }
             }
 
             // Sort methods and properties alphabetically
             foreach (ClassDefinition c in classDefinitions.Values)
             {
+                // Order by name, then fix inheritance, parent classes must appear first
                 c.Classes.Sort((c1, c2) => c1.Name.CompareTo(c2.Name));
+                var classesOrdered = c.Classes;
+                for (int i = 0; i < classesOrdered.Count; i++)
+                {
+                    var thisClass = classesOrdered[i];
+                    var baseClass = thisClass.BaseClass;
+                    if (baseClass != null && classesOrdered.Contains(baseClass.Target))
+                    {
+                        int thisIndex = classesOrdered.IndexOf(thisClass);
+                        if (thisIndex < classesOrdered.IndexOf(baseClass.Target))
+                        {
+                            classesOrdered.Remove(baseClass.Target);
+                            classesOrdered.Insert(thisIndex, baseClass.Target);
+                        }
+                    }
+                }
+
                 c.Methods.Sort((m1, m2) => m1.Name.CompareTo(m2.Name));
                 c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
             }
@@ -452,38 +497,39 @@ namespace BulletSharpGen
 
         void ResolveTypeRef(TypeRefDefinition typeRef)
         {
-            if (!typeRef.IsBasic && !typeRef.HasTemplateTypeParameter)
+            if (typeRef.IsBasic || typeRef.HasTemplateTypeParameter)
             {
-                if (typeRef.IsPointer || typeRef.IsReference || typeRef.IsConstantArray)
+                return;
+            }
+            if (typeRef.IsPointer || typeRef.IsReference || typeRef.IsConstantArray)
+            {
+                ResolveTypeRef(typeRef.Referenced);
+            }
+            else if (!classDefinitions.ContainsKey(typeRef.Name))
+            {
+                // Search for unscoped enums
+                bool resolvedEnum = false;
+                foreach (var c in classDefinitions.Values.Where(c => c.Enum != null))
                 {
-                    ResolveTypeRef(typeRef.Referenced);
-                }
-                else if (!classDefinitions.ContainsKey(typeRef.Name))
-                {
-                    // Search for unscoped enums
-                    bool resolvedEnum = false;
-                    foreach (var c in classDefinitions.Values.Where(c => c.Enum != null))
+                    if (typeRef.Name.Equals(c.FullName + "::" + c.Enum.Name))
                     {
-                        if (typeRef.Name.Equals(c.FullName + "::" + c.Enum.Name))
-                        {
-                            typeRef.Target = c;
-                            resolvedEnum = true;
-                        }
-                    }
-                    if (!resolvedEnum)
-                    {
-                        Console.WriteLine("Class " + typeRef.Name + " not found!");
+                        typeRef.Target = c;
+                        resolvedEnum = true;
                     }
                 }
-                else
+                if (!resolvedEnum)
                 {
-                    typeRef.Target = classDefinitions[typeRef.Name];
+                    Console.WriteLine("Class " + typeRef.Name + " not found!");
                 }
+            }
+            else
+            {
+                typeRef.Target = classDefinitions[typeRef.Name];
+            }
 
-                if (typeRef.SpecializedTemplateType != null)
-                {
-                    ResolveTypeRef(typeRef.SpecializedTemplateType);
-                }
+            if (typeRef.SpecializedTemplateType != null)
+            {
+                ResolveTypeRef(typeRef.SpecializedTemplateType);
             }
         }
 
@@ -974,7 +1020,6 @@ namespace BulletSharpGen
                     return true;
             }
 
-            // Exclude all "FloatData/DoubleData" serialization classes
             switch (cl.FullName)
             {
                 case "btAxisSweep3Internal::Edge":
@@ -982,6 +1027,7 @@ namespace BulletSharpGen
                 case "BT_BOX_BOX_TRANSFORM_CACHE":
                 case "btGeneric6DofConstraintDoubleData2":
                 case "btGeneric6DofSpringConstraintDoubleData2":
+                case "btGeneric6DofSpring2ConstraintDoubleData2":
                 case "btHingeConstraintDoubleData2":
                 case "btPoint2PointConstraintDoubleData2":
                 case "btChunk":
@@ -1007,8 +1053,12 @@ namespace BulletSharpGen
                 case "ConstraintSolverIO":
                 case "btBvhSubtreeInfo":
                 case "btInfMaskConverter":
+                case "btRaycastVehicle":
+                case "btDefaultVehicleRaycaster":
                     return true;
             }
+
+            // Exclude all "FloatData/DoubleData" serialization classes
             return cl.Name.EndsWith("Data") && !cl.ManagedName.Equals("ContactSolverInfoData");
         }
     }

@@ -5,7 +5,7 @@
         public string Name { get; private set; }
         public TypeRefDefinition Type { get; private set; }
         public bool IsOptional { get; set; }
-        public string ManagedName { get; private set; }
+        public string ManagedName { get; set; }
 
         public ParameterDefinition(string name, TypeRefDefinition type, bool isOptional = false)
         {
