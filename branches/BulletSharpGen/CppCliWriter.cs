@@ -27,6 +27,117 @@ namespace BulletSharpGen
         const int TabWidth = 4;
         const int LineBreakWidth = 80;
 
+        // Conditional compilation (#ifndef DISABLE_FEATURE)
+        Dictionary<string, string> headerConditional = new Dictionary<string, string>
+        {
+            {"ActivatingCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"Box2DBox2DCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"BoxBoxCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"Box2DShape", "DISABLE_UNCOMMON"},
+            {"BoxBoxDetector", "DISABLE_UNCOMMON"},
+            {"BoxCollision", "DISABLE_GIMPACT"},
+            {"BulletWorldImporter", "DISABLE_SERIALIZE"},
+            {"CharacterControllerInterface", "DISABLE_UNCOMMON"},
+            {"CompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"CompoundCompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"CompoundFromGImpact", "DISABLE_GIMPACT"},
+            {"ConeTwistConstraint", "DISABLE_CONSTRAINTS"},
+            {"ContactConstraint", "DISABLE_CONSTRAINTS"},
+            {"ContactSolverInfo", "DISABLE_CONSTRAINTS"},
+            {"ContinuousConvexCollision", "DISABLE_UNCOMMON"},
+            {"Convex2DConvex2DAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"Convex2DShape", "DISABLE_UNCOMMON"},
+            {"ConvexCast", "DISABLE_UNCOMMON"},
+            {"ConvexConcaveCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"ConvexConvexAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"ConvexPlaneCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"ConvexPenetrationDepthSolver", "DISABLE_UNCOMMON"},
+            {"ConvexPointCloudShape", "DISABLE_UNCOMMON"},
+            {"ConvexPolyhedron", "DISABLE_UNCOMMON"},
+            {"DantzigSolver", "DISABLE_MLCP"},
+            {"Dbvt", "DISABLE_DBVT"},
+            {"DbvtNode", "DISABLE_DBVT"},
+            {"DefaultSoftBodySolver", "DISABLE_SOFTBODY"},
+            {"EmptyCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"FixedConstraint", "DISABLE_CONSTRAINTS"},
+            {"GearConstraint", "DISABLE_CONSTRAINTS"},
+            {"Generic6DofConstraint", "DISABLE_CONSTRAINTS"},
+            {"Generic6DofSpringConstraint", "DISABLE_CONSTRAINTS"},
+            {"Generic6DofSpring2Constraint", "DISABLE_CONSTRAINTS"},
+            {"GeometryUtil", "DISABLE_GEOMETRY_UTIL"},
+            {"GhostObject", "DISABLE_UNCOMMON"},
+            {"GImpactBvh", "DISABLE_GIMPACT"},
+            {"GImpactCollisionAlgorithm", "DISABLE_GIMPACT"},
+            {"GImpactQuantizedBvh", "DISABLE_GIMPACT"},
+            {"GImpactShape", "DISABLE_GIMPACT"},
+            {"GjkConvexCast", "DISABLE_UNCOMMON"},
+            {"GjkEpaPenetrationDepthSolver", "DISABLE_UNCOMMON"},
+            {"GjkPairDetector", "DISABLE_UNCOMMON"},
+            {"Hacd", "DISABLE_HACD"},
+            {"HeightfieldTerrainShape", "DISABLE_UNCOMMON"},
+            {"Hinge2Constraint", "DISABLE_CONSTRAINTS"},
+            {"HingeConstraint", "DISABLE_CONSTRAINTS"},
+            {"IDebugDraw", "DISABLE_DEBUGDRAW"},
+            {"KinematicCharacterController", "DISABLE_UNCOMMON"},
+            {"LemkeSolver", "DISABLE_UNCOMMON"},
+            {"Material", "DISABLE_UNCOMMON"},
+            {"MinkowskiPenetrationDepthSolver", "DISABLE_UNCOMMON"},
+            {"MinkowskiSumShape", "DISABLE_UNCOMMON"},
+            {"MlcpSolver", "DISABLE_MLCP"},
+            {"MlcpSolverInterface", "DISABLE_MLCP"},
+            {"MultiBody", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyConstraint", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyConstraintSolver", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyDynamicsWorld", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyJointLimitConstraint", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyJointMotor", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyLink", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyLinkCollider", "DISABLE_FEATHERSTONE"},
+            {"MultiBodyPoint2Point", "DISABLE_FEATHERSTONE"},
+            {"MultiBodySolverConstraint", "DISABLE_FEATHERSTONE"},
+            {"MultimaterialTriangleMeshShape", "DISABLE_UNCOMMON"},
+            {"NncgConstraintSolver", "DISABLE_CONSTRAINTS"},
+            {"OptimizedBvh", "DISABLE_BVH"},
+            {"ParallelConstraintSolver", "DISABLE_MULTITHREADED"},
+            {"Point2PointConstraint", "DISABLE_CONSTRAINTS"},
+            {"PointCollector", "DISABLE_UNCOMMON"},
+            {"PoolAllocator", "DISABLE_UNCOMMON"},
+            {"QuantizedBvh", "DISABLE_BVH"},
+            {"RaycastVehicle", "DISABLE_VEHICLE"},
+            {"ScaledBvhTriangleMeshShape", "DISABLE_UNCOMMON"},
+            {"Serializer", "DISABLE_SERIALIZE"},
+            {"ShapeHull", "DISABLE_UNCOMMON"},
+            {"SimulationIslandManager", "DISABLE_UNCOMMON"},
+            {"SliderConstraint", "DISABLE_CONSTRAINTS"},
+            {"SoftBody", "DISABLE_SOFTBODY"},
+            {"SoftBodyConcaveCollisionAlgorithm", "DISABLE_SOFTBODY"},
+            {"SoftBodyHelpers", "DISABLE_SOFTBODY"},
+            {"SoftBodyRigidBodyCollisionConfiguration", "DISABLE_SOFTBODY"},
+            {"SoftBodySolver", "DISABLE_SOFTBODY"},
+            {"SoftBodySolverVertexBuffer", "DISABLE_SOFTBODY"},
+            {"SoftRigidDynamicsWorld", "DISABLE_SOFTBODY"},
+            {"Solve2LinearConstraint", "DISABLE_CONSTRAINTS"},
+            {"SparseSdf", "DISABLE_SOFTBODY"},
+            {"SphereBoxCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"SphereSphereCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"SphereTriangleCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
+            {"SphereTriangleDetector", "DISABLE_UNCOMMON"},
+            {"SpuGatheringCollisionDispatcher", "DISABLE_MULTITHREADED"},
+            {"ThreadSupportInterface", "DISABLE_MULTITHREADED"},
+            {"TriangleBuffer", "DISABLE_UNCOMMON"},
+            {"TriangleIndexVertexMaterialArray", "DISABLE_UNCOMMON"},
+            {"TriangleShape", "DISABLE_UNCOMMON"},
+            {"TriangleShapeEx", "DISABLE_GIMPACT"},
+            {"TypedConstraint", "DISABLE_CONSTRAINTS"},
+            {"UnionFind", "DISABLE_UNCOMMON"},
+            {"UniversalConstraint", "DISABLE_CONSTRAINTS"},
+            {"VehicleRaycaster", "DISABLE_VEHICLE"},
+            {"VoronoiSimplexSolver", "DISABLE_UNCOMMON"},
+            {"WheelInfo", "DISABLE_VEHICLE"},
+            {"Win32ThreadSupport", "DISABLE_MULTITHREADED"},
+            {"WorldImporter", "DISABLE_SERIALIZE"}
+        };
+
         public CppCliWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
         {
             this.headerDefinitions = headerDefinitions;
@@ -242,6 +353,23 @@ namespace BulletSharpGen
                 hasHeaderWhiteSpace = false;
             }
 
+            // #ifndef DISABLE_FEATURE
+            bool hasConditional = false;
+            if (method.Property == null)
+            {
+                foreach (var param in method.Parameters)
+                {
+                    string typeConditional = GetTypeConditional(param.Type, method.Parent.Header);
+                    if (typeConditional != null)
+                    {
+                        Write("#ifndef ");
+                        WriteLine(typeConditional);
+                        hasSourceWhiteSpace = true;
+                        hasConditional = true;
+                    }
+                }
+            }
+
             WriteTabs(level + 1);
 
             // "static"
@@ -253,6 +381,16 @@ namespace BulletSharpGen
             // Definition: return type
             if (!method.IsConstructor)
             {
+                if (method.Property != null)
+                {
+                    // If property name matches type name, resolve ambiguity
+                    if (method.Equals(method.Property.Getter) &&
+                        method.Property.Name.Equals(method.Property.Type.ManagedName))
+                    {
+                        HeaderWrite(namespaceName + "::");
+                    }
+                }
+
                 var returnType = method.ReturnType;
                 Write(BulletParser.GetTypeRefName(returnType));
                 Write(' ');
@@ -511,6 +649,20 @@ namespace BulletSharpGen
             SourceWriteLine('}');
             hasSourceWhiteSpace = false;
 
+            // #endif // DISABLE_FEATURE
+            if (hasConditional)
+            {
+                foreach (var param in method.Parameters)
+                {
+                    string typeConditional = GetTypeConditional(param.Type, method.Parent.Header);
+                    if (typeConditional != null)
+                    {
+                        WriteLine("#endif");
+                        hasHeaderWhiteSpace = true;
+                    }
+                }
+            }
+
             // If there are optional parameters, then output all possible combinations of calls
             if (hasOptionalParam)
             {
@@ -520,14 +672,14 @@ namespace BulletSharpGen
 
         void OutputClasses(IList<ClassDefinition> classes, ref RefAccessSpecifier currentAccess, int level)
         {
-            int i = 0;
+            int classCount = 0;
             foreach (var cl in classes)
             {
                 if (IsExcludedClass(cl))
                 {
                     continue;
                 }
-                if (i != 0)
+                if (classCount != 0)
                 {
                     SourceWriteLine();
                 }
@@ -536,7 +688,7 @@ namespace BulletSharpGen
                     EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
                 }
                 OutputClass(cl, level + 1);
-                i++;
+                classCount++;
             }
         }
 
@@ -768,17 +920,19 @@ namespace BulletSharpGen
             // Write properties (includes unmanaged fields and getters/setters)
             foreach (PropertyDefinition prop in c.Properties)
             {
-                EnsureHeaderWhiteSpace();
+                string typeConditional = GetTypeConditional(prop.Type, c.Header);
+                if (typeConditional != null)
+                {
+                    Write("#ifndef ");
+                    WriteLine(typeConditional);
+                    hasSourceWhiteSpace = true;
+                }
+                else
+                {
+                    EnsureHeaderWhiteSpace();
+                }
 
                 string typeRefName = BulletParser.GetTypeRefName(prop.Type);
-
-                /*
-                // If property name matches type name, resolve ambiguity
-                if (prop.Name.Equals(prop.Type.ManagedName))
-                {
-                    typeRefName = namespaceName + "::" + typeRefName;
-                }
-                */
 
                 WriteTabs(level + 1);
                 HeaderWrite("property ");
@@ -787,7 +941,7 @@ namespace BulletSharpGen
                 HeaderWriteLine(prop.Name);
                 WriteTabs(level + 1);
                 HeaderWriteLine("{");
-                
+
                 // Getter/Setter
                 OutputMethod(prop.Getter, level + 1);
                 if (prop.Setter != null)
@@ -797,6 +951,12 @@ namespace BulletSharpGen
 
                 WriteTabs(level + 1);
                 HeaderWriteLine("}");
+
+                if (typeConditional != null)
+                {
+                    WriteLine("#endif");
+                    hasSourceWhiteSpace = false;
+                }
 
                 hasHeaderWhiteSpace = false;
             }
@@ -810,116 +970,9 @@ namespace BulletSharpGen
         {
             string outDirectory = namespaceName + "_cppcli";
 
-            // Conditional compilation (#ifndef DISABLE_FEATURE)
-            var headerConditional = new Dictionary<string, string>
-            {
-                {"ActivatingCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"Box2DBox2DCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"BoxBoxCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"Box2DShape", "DISABLE_UNCOMMON"},
-                {"BoxBoxDetector", "DISABLE_UNCOMMON"},
-                {"BoxCollision", "DISABLE_GIMPACT"},
-                {"BulletWorldImporter", "DISABLE_SERIALIZE"},
-                {"CharacterControllerInterface", "DISABLE_UNCOMMON"},
-                {"CompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"CompoundCompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"CompoundFromGImpact", "DISABLE_GIMPACT"},
-                {"ConeTwistConstraint", "DISABLE_CONSTRAINTS"},
-                {"ContactConstraint", "DISABLE_CONSTRAINTS"},
-                {"ContactSolverInfo", "DISABLE_CONSTRAINTS"},
-                {"ContinuousConvexCollision", "DISABLE_UNCOMMON"},
-                {"Convex2DConvex2DAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"Convex2DShape", "DISABLE_UNCOMMON"},
-                {"ConvexCast", "DISABLE_UNCOMMON"},
-                {"ConvexConcaveCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"ConvexConvexAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"ConvexPlaneCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"ConvexPointCloudShape", "DISABLE_UNCOMMON"},
-                {"ConvexPolyhedron", "DISABLE_UNCOMMON"},
-                {"DantzigSolver", "DISABLE_MLCP"},
-                {"Dbvt", "DISABLE_DBVT"},
-                {"DefaultSoftBodySolver", "DISABLE_SOFTBODY"},
-                {"EmptyCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"FixedConstraint", "DISABLE_CONSTRAINTS"},
-                {"GearConstraint", "DISABLE_CONSTRAINTS"},
-                {"Generic6DofConstraint", "DISABLE_CONSTRAINTS"},
-                {"Generic6DofSpringConstraint", "DISABLE_CONSTRAINTS"},
-                {"GeometryUtil", "DISABLE_GEOMETRY_UTIL"},
-                {"GhostObject", "DISABLE_UNCOMMON"},
-                {"GImpactBvh", "DISABLE_GIMPACT"},
-                {"GImpactCollisionAlgorithm", "DISABLE_GIMPACT"},
-                {"GImpactQuantizedBvh", "DISABLE_GIMPACT"},
-                {"GImpactShape", "DISABLE_GIMPACT"},
-                {"GjkConvexCast", "DISABLE_UNCOMMON"},
-                {"GjkEpaPenetrationDepthSolver", "DISABLE_UNCOMMON"},
-                {"GjkPairDetector", "DISABLE_UNCOMMON"},
-                {"Hacd", "DISABLE_HACD"},
-                {"HeightfieldTerrainShape", "DISABLE_UNCOMMON"},
-                {"Hinge2Constraint", "DISABLE_CONSTRAINTS"},
-                {"HingeConstraint", "DISABLE_CONSTRAINTS"},
-                {"KinematicCharacterController", "DISABLE_UNCOMMON"},
-                {"LemkeSolver", "DISABLE_UNCOMMON"},
-                {"Material", "DISABLE_UNCOMMON"},
-                {"MinkowskiPenetrationDepthSolver", "DISABLE_UNCOMMON"},
-                {"MinkowskiSumShape", "DISABLE_UNCOMMON"},
-                {"MlcpSolver", "DISABLE_MLCP"},
-                {"MlcpSolverInterface", "DISABLE_MLCP"},
-                {"MultiBody", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyConstraint", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyConstraintSolver", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyDynamicsWorld", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyJointLimitConstraint", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyJointMotor", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyLink", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyLinkCollider", "DISABLE_FEATHERSTONE"},
-                {"MultiBodyPoint2Point", "DISABLE_FEATHERSTONE"},
-                {"MultiBodySolverConstraint", "DISABLE_FEATHERSTONE"},
-                {"MultimaterialTriangleMeshShape", "DISABLE_UNCOMMON"},
-                {"NncgConstraintSolver", "DISABLE_CONSTRAINTS"},
-                {"OptimizedBvh", "DISABLE_BVH"},
-                {"ParallelConstraintSolver", "DISABLE_MULTITHREADED"},
-                {"Point2PointConstraint", "DISABLE_CONSTRAINTS"},
-                {"PointCollector", "DISABLE_UNCOMMON"},
-                {"PoolAllocator", "DISABLE_UNCOMMON"},
-                {"QuantizedBvh", "DISABLE_BVH"},
-                {"RaycastVehicle", "DISABLE_VEHICLE"},
-                {"ScaledBvhTriangleMeshShape", "DISABLE_UNCOMMON"},
-                {"Serializer", "DISABLE_SERIALIZE"},
-                {"ShapeHull", "DISABLE_UNCOMMON"},
-                {"SimulationIslandManager", "DISABLE_UNCOMMON"},
-                {"SliderConstraint", "DISABLE_CONSTRAINTS"},
-                {"SoftBody", "DISABLE_SOFTBODY"},
-                {"SoftBodyConcaveCollisionAlgorithm", "DISABLE_SOFTBODY"},
-                {"SoftBodyHelpers", "DISABLE_SOFTBODY"},
-                {"SoftBodyRigidBodyCollisionConfiguration", "DISABLE_SOFTBODY"},
-                {"SoftBodySolver", "DISABLE_SOFTBODY"},
-                {"SoftBodySolverVertexBuffer", "DISABLE_SOFTBODY"},
-                {"SoftRigidDynamicsWorld", "DISABLE_SOFTBODY"},
-                {"Solve2LinearConstraint", "DISABLE_CONSTRAINTS"},
-                {"SparseSdf", "DISABLE_SOFTBODY"},
-                {"SphereBoxCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"SphereSphereCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"SphereTriangleCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
-                {"SphereTriangleDetector", "DISABLE_UNCOMMON"},
-                {"SpuGatheringCollisionDispatcher", "DISABLE_MULTITHREADED"},
-                {"ThreadSupportInterface", "DISABLE_MULTITHREADED"},
-                {"TriangleBuffer", "DISABLE_UNCOMMON"},
-                {"TriangleIndexVertexMaterialArray", "DISABLE_UNCOMMON"},
-                {"TriangleShape", "DISABLE_UNCOMMON"},
-                {"TriangleShapeEx", "DISABLE_GIMPACT"},
-                {"TypedConstraint", "DISABLE_CONSTRAINTS"},
-                {"UnionFind", "DISABLE_UNCOMMON"},
-                {"UniversalConstraint", "DISABLE_CONSTRAINTS"},
-                {"VehicleRaycaster", "DISABLE_VEHICLE"},
-                {"VoronoiSimplexSolver", "DISABLE_UNCOMMON"},
-                {"WheelInfo", "DISABLE_VEHICLE"},
-                {"Win32ThreadSupport", "DISABLE_MULTITHREADED"},
-                {"WorldImporter", "DISABLE_SERIALIZE"}
-            };
-
             foreach (HeaderDefinition header in headerDefinitions.Values)
             {
-                if (header.Classes.Count == 0)
+                if (header.Classes.Count(x => !IsExcludedClass(x)) == 0)
                 {
                     continue;
                 }
@@ -947,9 +1000,7 @@ namespace BulletSharpGen
                 {
                     foreach (HeaderDefinition include in header.Includes)
                     {
-                        HeaderWrite("#include \"");
-                        HeaderWrite(include.ManagedName);
-                        HeaderWriteLine(".h\"");
+                        HeaderWriteLine(string.Format("#include \"{0}.h\"", include.ManagedName));
                     }
                     HeaderWriteLine();
                 }
@@ -988,9 +1039,28 @@ namespace BulletSharpGen
                 // Write statements to include forward referenced types
                 if (forwardRefHeaders.Count != 0)
                 {
-                    foreach (HeaderDefinition h in forwardRefHeaders)
+                    foreach (HeaderDefinition refHeader in forwardRefHeaders)
                     {
-                        SourceWriteLine(string.Format("#include \"{0}.h\"", h.ManagedName));
+                        bool hasHeaderConditional = false;
+                        if (headerConditional.ContainsKey(refHeader.ManagedName))
+                        {
+                            hasHeaderConditional = true;
+                            if (headerConditional.ContainsKey(header.ManagedName) &&
+                                headerConditional[refHeader.ManagedName] == headerConditional[header.ManagedName])
+                            {
+                                hasHeaderConditional = false;
+                            }
+                        }
+                        if (hasHeaderConditional)
+                        {
+                            SourceWrite("#ifndef ");
+                            SourceWriteLine(headerConditional[refHeader.ManagedName]);
+                        }
+                        SourceWriteLine(string.Format("#include \"{0}.h\"", refHeader.ManagedName));
+                        if (hasHeaderConditional)
+                        {
+                            SourceWriteLine("#endif");
+                        }
                     }
                     hasSourceWhiteSpace = false;
                 }
@@ -1072,6 +1142,37 @@ namespace BulletSharpGen
             {
                 FindForwardReferences(forwardRefs, cl);
             }
+        }
+
+        // If the type is defined in a conditionally compiled header, return the condition string.
+        string GetTypeConditional(TypeRefDefinition type)
+        {
+            var target = type.Target;
+            if (target == null && type.Referenced != null)
+            {
+                target = type.Referenced.Target;
+            }
+
+            if (target != null && headerConditional.ContainsKey(target.Header.ManagedName))
+            {
+                return headerConditional[target.Header.ManagedName];
+            }
+
+            return null;
+        }
+
+        // Return condition unless type is already used under the same condition.
+        string GetTypeConditional(TypeRefDefinition type, HeaderDefinition header)
+        {
+            string typeConditional = GetTypeConditional(type);
+            if (typeConditional != null && headerConditional.ContainsKey(header.ManagedName))
+            {
+                if (headerConditional[header.ManagedName].Equals(typeConditional))
+                {
+                    return null;
+                }
+            }
+            return typeConditional;
         }
     }
 }

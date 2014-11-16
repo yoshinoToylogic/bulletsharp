@@ -203,7 +203,7 @@ namespace BulletSharpGen
             sourceFilter.AddFile("BulletCollision/CollisionDispatch/", rootFolder + "InternalEdgeUtility");
             sourceFilter.AddFile("BulletCollision/CollisionShapes/", rootFolder + "BulletMaterial");
             sourceFilter.AddFile("BulletCollision/NarrowPhaseCollision/", rootFolder + "SimplexSolverInterface");
-            sourceFilter.AddFile("BulletDynamics/Dynamics/", rootFolder + "IActionInterface");
+            sourceFilter.AddFile("BulletDynamics/Dynamics/", rootFolder + "IAction");
             sourceFilter.AddFile("LinearMath/", rootFolder + "DebugDraw");
             sourceFilter.AddFile("MultiThreaded/GpuSoftBodySolvers/OpenCL/", rootFolder + "SoftBodySolverOpenCL");
             sourceFilter.AddFile("OpenCL/", rootFolder + "OpenCL");
@@ -212,7 +212,7 @@ namespace BulletSharpGen
             headerFilter.AddFile("BulletCollision/CollisionShapes/", rootFolder + "BulletMaterial");
             headerFilter.AddFile("BulletCollision/NarrowPhaseCollision/", rootFolder + "SimplexSolverInterface");
             headerFilter.AddFile("LinearMath/", rootFolder + "DebugDraw");
-            headerFilter.AddFile("BulletDynamics/Dynamics/", rootFolder + "IActionInterface");
+            headerFilter.AddFile("BulletDynamics/Dynamics/", rootFolder + "IAction");
             headerFilter.AddFile("LinearMath/", rootFolder + "IDebugDraw");
             headerFilter.AddFile("MultiThreaded/GpuSoftBodySolvers/OpenCL/", rootFolder + "SoftBodySolverOpenCL");
             headerFilter.AddFile("OpenCL/", rootFolder + "OpenCL");
