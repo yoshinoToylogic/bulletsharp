@@ -1,12 +1,13 @@
 ﻿using BulletSharp;
 using SlimDX;
+using System.Collections.Generic;
 
 namespace SimplestDemo
 {
     class Physics
     {
         public DiscreteDynamicsWorld World { get; private set; }
-        AlignedCollisionShapeArray collisionShapes = new AlignedCollisionShapeArray();
+        List<CollisionShape> collisionShapes = new List<CollisionShape>();
 
         public Physics()
         {
