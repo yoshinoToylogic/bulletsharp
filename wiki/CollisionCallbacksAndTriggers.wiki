@@ -89,7 +89,7 @@ An advantage of this method is that you can perform collision tests at a reduced
 Usage example:
 
 {{{
-class ContactSensorCallback : CollisionWorld.ContactResultCallback
+class ContactSensorCallback : ContactResultCallback
 {
     //! Constructor, pass whatever context you want to have available when processing contacts
     /*! You may also want to set CollisionFilterGroups and CollisionFilterMask
