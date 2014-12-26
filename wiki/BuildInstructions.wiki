@@ -8,21 +8,21 @@
 
 = Instructions =
 
-1. Fetch Bullet and !BulletSharp from SVN trunk:
-  * svn checkout *`http://bullet.googlecode.com/svn/trunk/`* bullet
-  * svn checkout *`http://bulletsharp.googlecode.com/svn/trunk/`* bulletsharp
+1. Fetch Bullet and !BulletSharp from the git repository:
+  * git clone *`https://github.com/AndresTraks/BulletSharp.git/`* bulletsharp
+  * git clone *`https://github.com/erwincoumans/bullet3/`* bullet3
 
 2. Use CMake-gui to generate VS solution files into:<br>
-bullet/msvc/2008 for "Visual Studio 9 2008"<br>
-bullet/msvc/2010 for "Visual Studio 10"<br>
-bullet/msvc/2012 for "Visual Studio 11"<br>
-bullet/msvc/2013 for "Visual Studio 12"<br>
+bullet3/msvc/2008 for "Visual Studio 9 2008"<br>
+bullet3/msvc/2010 for "Visual Studio 10 2010"<br>
+bullet3/msvc/2012 for "Visual Studio 11 2012"<br>
+bullet3/msvc/2013 for "Visual Studio 12 2013"<br>
 Set the *USE_MSVC_RUNTIME_LIBRARY_DLL* option.
 
 If you want to use double precision, select USE_DOUBLE_PRECISION in CMake, then go to bulletsharp/src/Stdaxh.h and uncomment the following line:
   `//#define BT_USE_DOUBLE_PRECISION`
 
-3. Open *`bullet/msvc/20xx/BULLET_PHYSICS.sln`* and build the *`MinSizeRel`* configuration.
+3. Open *`bullet3/msvc/20xx/BULLET_PHYSICS.sln`* and build the *`MinSizeRel`* configuration.
 
 4. Open *`bulletsharp/BulletSharp.sln`* (or `bulletsharp/(vs20xx/)BulletSharp.sln`) and select the build configuration for your graphics framework. !BulletSharp will use the Vector and Matrix classes from it. If the framework is not listed or you do not need one, then select the Generic configuration, which includes its own Vector/Matrix classes. Build the solution.
 
