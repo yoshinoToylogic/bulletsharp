@@ -37,7 +37,6 @@ namespace BulletSharpGen
             {"BoxBoxDetector", "DISABLE_UNCOMMON"},
             {"BoxCollision", "DISABLE_GIMPACT"},
             {"BulletWorldImporter", "DISABLE_SERIALIZE"},
-            {"CharacterControllerInterface", "DISABLE_UNCOMMON"},
             {"CompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
             {"CompoundCompoundCollisionAlgorithm", "DISABLE_COLLISION_ALGORITHMS"},
             {"CompoundFromGImpact", "DISABLE_GIMPACT"},
@@ -723,7 +722,16 @@ namespace BulletSharpGen
             }
             else
             {
-                HeaderWriteLine(c.IsTrackingDisposable ? " : ITrackingDisposable" : " : IDisposable");
+                if (c.IsTrackingDisposable)
+                {
+                    HeaderWriteLine(" : ITrackingDisposable");
+                }
+                else
+                {
+                    // In C++/CLI, IDisposable is inherited automatically if the destructor and finalizer are defined
+                    //HeaderWriteLine(" : IDisposable");
+                    HeaderWriteLine();
+                }
             }
             WriteTabs(level);
             HeaderWriteLine("{");
@@ -881,15 +889,14 @@ namespace BulletSharpGen
 
             // Write constructors
             int constructorCount = 0;
-            foreach (MethodDefinition method in c.Methods)
+            foreach (MethodDefinition method in c.Methods.Where(m => m.IsConstructor))
             {
-                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
-
-                if (method.IsConstructor)
+                if (!c.HidePublicConstructors)
                 {
+                    EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
                     OutputMethod(method, level);
-                    constructorCount++;
                 }
+                constructorCount++;
             }
 
             // Write default constructor
@@ -912,6 +919,7 @@ namespace BulletSharpGen
                 {
                     if (!method.IsConstructor && method.Property == null)
                     {
+                        EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
                         OutputMethod(method, level);
                     }
                 }
@@ -931,6 +939,8 @@ namespace BulletSharpGen
                 {
                     EnsureHeaderWhiteSpace();
                 }
+
+                EnsureAccess(level, ref currentAccess, RefAccessSpecifier.Public);
 
                 string typeRefName = BulletParser.GetTypeRefName(prop.Type);
 
@@ -1130,6 +1140,11 @@ namespace BulletSharpGen
 
             foreach (MethodDefinition method in c.Methods)
             {
+                if (method.IsConstructor && c.HidePublicConstructors)
+                {
+                    continue;
+                }
+
                 AddForwardReference(forwardRefs, method.ReturnType, c.Header);
 
                 foreach (ParameterDefinition param in method.Parameters)

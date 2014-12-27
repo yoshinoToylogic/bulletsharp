@@ -144,7 +144,10 @@ namespace BulletSharpGen
                 {
                     Write(';');
                 }
-                Write("WIN32;");
+                //if (!x64)
+                {
+                    Write("WIN32;");
+                }
                 Write(conf.IsDebug ? "_DEBUG;" : "NDEBUG;");
                 WriteLine("\"");
                 if (conf.IsDebug)
@@ -344,7 +347,10 @@ namespace BulletSharpGen
             {
                 Write(';');
             }
-            Write("WIN32;");
+            //if (!x64)
+            {
+                Write("WIN32;");
+            }
             Write(conf.IsDebug ? "_DEBUG;" : "NDEBUG;");
             WriteLine("%(PreprocessorDefinitions)</PreprocessorDefinitions>");
             if (conf.IsDebug)
