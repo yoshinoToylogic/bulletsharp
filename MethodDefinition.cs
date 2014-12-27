@@ -3,6 +3,7 @@
     class MethodDefinition
     {
         public string Name { get; private set; }
+        public string ManagedName { get; set; }
         public ClassDefinition Parent { get; private set; }
         public TypeRefDefinition ReturnType { get; set; }
         public ParameterDefinition[] Parameters { get; set; }
@@ -15,21 +16,6 @@
         public bool IsVoid
         {
             get { return ReturnType != null && ReturnType.IsBasic && ReturnType.Name.Equals("void"); }
-        }
-
-        public string ManagedName
-        {
-            get
-            {
-                string managedName = Name;
-                while (managedName.Contains("_"))
-                {
-                    int pos = managedName.IndexOf('_');
-                    managedName = managedName.Substring(0, pos) + managedName.Substring(pos + 1, 1).ToUpper() + managedName.Substring(pos + 2);
-                }
-
-                return managedName.Substring(0, 1).ToUpper() + managedName.Substring(1);
-            }
         }
 
         public int NumOptionalParameters

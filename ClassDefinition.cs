@@ -15,7 +15,8 @@ namespace BulletSharpGen
         public bool IsAbstract { get; set; }
         public bool IsStruct { get; set; }
         public bool IsTemplate { get; set; }
-        
+
+        public bool HidePublicConstructors { get; set; }
         public bool NoInternalConstructor { get; set; }
         public bool IsTrackingDisposable { get; set; }
         public bool HasPreventDelete { get; set; }
