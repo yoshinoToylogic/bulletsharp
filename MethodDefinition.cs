@@ -50,11 +50,16 @@
         public MethodDefinition Copy()
         {
             var m = new MethodDefinition(Name, Parent, Parameters.Length);
+            for (int i = 0; i < Parameters.Length; i++)
+            {
+                m.Parameters[i] = Parameters[i].Copy();
+            }
             Parameters.CopyTo(m.Parameters, 0);
             m.Field = Field;
             m.Property = Property;
             m.IsAbstract = IsAbstract;
             m.IsConstructor = IsConstructor;
+            m.ManagedName = ManagedName;
             m.IsStatic = IsStatic;
             m.ReturnType = ReturnType;
             return m;

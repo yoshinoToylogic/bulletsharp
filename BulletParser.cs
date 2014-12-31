@@ -8,15 +8,36 @@ namespace BulletSharpGen
     class BulletParser
     {
         Dictionary<string, ClassDefinition> classDefinitions = new Dictionary<string, ClassDefinition>();
-        public Dictionary<string, HeaderDefinition> HeaderDefinitions = new Dictionary<string, HeaderDefinition>();
+        public Dictionary<string, HeaderDefinition> ExternalHeaders = new Dictionary<string, HeaderDefinition>();
 
         Dictionary<string, string> methodNameMapping = new Dictionary<string, string>();
         Dictionary<string, string> parameterNameMapping = new Dictionary<string, string>();
+        Dictionary<string, string> excludedClassNames;
 
         public BulletParser(Dictionary<string, ClassDefinition> classDefinitions, Dictionary<string, HeaderDefinition> headerDefinitions)
         {
             this.classDefinitions = classDefinitions;
-            this.HeaderDefinitions = headerDefinitions;
+            ExternalHeaders = headerDefinitions;
+
+            // Excluded classes
+            string[] excludedClassArray = new string[] { "ActionInterface", "AlignedAllocator", "bChunk", "bCommon",
+            "bFile", "Box", "BulletFile", "cl_MiniCL_Defs", "cl_platform", "ContactProcessing", "ConvexHull",
+            "ConvexHullComputer", "DantzigLCP", "GenericPoolAllocator",
+            "gim_array", "gim_bitset", "gim_box_collision", "gim_box_set", "gim_clip_polygon", "gim_contact",
+            "gim_geom_types", "gim_hash_table", "gim_memory", "gim_radixsort", "gim_tri_collision", "GjkEpa2",
+            "Gpu3DGridBroadphase", "Gpu3DGridBroadphaseSharedTypes", "GpuDefines", "GrahamScan2dConvexHull",
+            "HashedSimplePairCache", "HashMap", "HeapManager", "IDebugDraw", "JacobianEntry", "List", "Material",
+            "Matrix3x3", "MatrixX", "MiniCLTask", "MiniCLTaskScheduler", "MultiSapBroadphase", "PlatformDefinitions",
+            "PolarDecomposition", "PolyhedralContactClipping", "PosixThreadSupport", "PpuAddressSpace", "QuadWord",
+            "RaycastCallback", "SequentialThreadSupport", "SimpleDynamicsWorld", "SoftBodyData", "SoftBodyInternals",
+            "SoftBodySolvers", "SoftRigidCollisionAlgorithm", "SoftSoftCollisionAlgorithm", "SolveProjectedGaussSeidel",
+            "SolverBody", "SolverConstraint", "SpuCollisionObjectWrapper", "SpuCollisionShapes",
+            "SpuCollisionTaskProcess", "SpuContactManifoldCollisionAlgorithm", "SpuContactResult",
+            "SpuConvexPenetrationDepthSolver", "SpuDoubleBuffer", "SpuGatheringCollisionTask",
+            "SpuMinkowskiPenetrationDepthSolver", "SpuSampleTask", "SpuSampleTaskProcess", "SpuSync", "StackAlloc",
+            "SubSimplexConvexCast", "Transform", "TrbDynBody", "TrbStateVec", "vectormath_aos", "vmInclude",
+            "HacdCircularList", "HacdGraph", "HacdICHull", "HacdManifoldMesh", "HacdVector",
+            "Quaternion", "Vector3", "LemkeAlgorithm", "CharacterControllerInterface" };
 
             // Managed method names
             methodNameMapping.Add("gimpact_vs_compoundshape", "GImpactVsCompoundshape");
@@ -31,10 +52,13 @@ namespace BulletSharpGen
             parameterNameMapping.Add("o_alignedDataBuffer", "alignedDataBuffer");
             parameterNameMapping.Add("drawflags", "dataBufferSize");
             parameterNameMapping.Add("idraw", "iDraw");
+            parameterNameMapping.Add("indexstride", "indexStride");
+            parameterNameMapping.Add("indicestype", "indicesType");
             parameterNameMapping.Add("maxdepth", "maxDepth");
             parameterNameMapping.Add("mindepth", "minDepth");
             parameterNameMapping.Add("limot", "limitMotor");
             parameterNameMapping.Add("nodeindex", "nodeIndex");
+            parameterNameMapping.Add("numfaces", "numFaces");
             parameterNameMapping.Add("numindices", "numIndices");
             parameterNameMapping.Add("numverts", "numVerts");
             parameterNameMapping.Add("rbA", "rigidBodyA");
@@ -43,6 +67,7 @@ namespace BulletSharpGen
             parameterNameMapping.Add("rbBFrame", "rigidBodyBFrame");
             parameterNameMapping.Add("use32bitIndices", "use32BitIndices");
             parameterNameMapping.Add("use4componentVertices", "use4ComponentVertices");
+            parameterNameMapping.Add("vertexbase", "vertexBase");
 
             // Managed header names
             var headerNameMapping = new Dictionary<string, string>();
@@ -148,6 +173,12 @@ namespace BulletSharpGen
                 "btCollisionObject", "btCollisionShape", "btCollisionWorld",
                 "btConstraintSolver", "btDbvt", "btDispatcher", "btRaycastVehicle",
                 "btTypedConstraint"};
+
+            excludedClassNames = new Dictionary<string, string>();
+            foreach (string c in excludedClassArray)
+            {
+                excludedClassNames.Add(c, c);
+            }
 
             // Resolve references (match TypeRefDefinitions to ClassDefinitions)
             foreach (ClassDefinition c in classDefinitions.Values)
@@ -295,10 +326,7 @@ namespace BulletSharpGen
 
                     foreach (var param in method.Parameters)
                     {
-                        if (parameterNameMapping.ContainsKey(param.ManagedName))
-                        {
-                            param.ManagedName = parameterNameMapping[param.ManagedName];
-                        }
+                        param.ManagedName = GetManagedParameterName(param);
                     }
                 }
             }
@@ -394,6 +422,7 @@ namespace BulletSharpGen
                             constType = field.Type;
                         }
                         setter.Parameters[0] = new ParameterDefinition("value", constType);
+                        setter.Parameters[0].ManagedName = "value";
 
                         prop.Setter = setter;
                         prop.Setter.Property = prop;
@@ -443,7 +472,7 @@ namespace BulletSharpGen
             }
 
             // Get managed header names
-            foreach (HeaderDefinition header in HeaderDefinitions.Values)
+            foreach (HeaderDefinition header in ExternalHeaders.Values)
             {
                 string name = header.Name;
                 string mapping;
@@ -522,6 +551,15 @@ namespace BulletSharpGen
 
                 c.Methods.Sort((m1, m2) => m1.Name.CompareTo(m2.Name));
                 c.Properties.Sort((p1, p2) => p1.Name.CompareTo(p2.Name));
+            }
+
+            // Mark excluded classes
+            foreach (ClassDefinition c in classDefinitions.Values)
+            {
+                if (IsExcludedClass(c))
+                {
+                    c.IsExcluded = true;
+                }
             }
 
             Console.WriteLine("Parsing complete");
@@ -759,6 +797,41 @@ namespace BulletSharpGen
             }
 
             return managedName.Substring(0, 1).ToUpper() + managedName.Substring(1);
+        }
+
+        public string GetManagedParameterName(ParameterDefinition param)
+        {
+            if (parameterNameMapping.ContainsKey(param.Name))
+            {
+                return parameterNameMapping[param.Name];
+            }
+
+            string managedName = param.Name;
+            if (managedName.StartsWith("__unnamed"))
+            {
+                return managedName;
+            }
+
+            // Remove underscores
+            // one_two_three -> oneTwoThree
+            while (managedName.Contains("_"))
+            {
+                int pos = managedName.IndexOf('_');
+                if (pos == 0)
+                {
+                    managedName = managedName.Substring(1);
+                }
+                else if (pos >= managedName.Length - 1)
+                {
+                    managedName = managedName.Substring(0, pos);
+                    break;
+                }
+                else
+                {
+                    managedName = managedName.Substring(0, pos) + managedName.Substring(pos + 1, 1).ToUpper() + managedName.Substring(pos + 2);
+                }
+            }
+            return managedName;
         }
 
         public static string GetTypeMarshalPrologue(ParameterDefinition parameter, MethodDefinition method)
@@ -1057,15 +1130,21 @@ namespace BulletSharpGen
             return "value";
         }
 
-        public static bool IsExcludedClass(ClassDefinition cl)
+        private bool IsExcludedClass(ClassDefinition cl)
         {
+            if (excludedClassNames.ContainsKey(cl.ManagedName))
+            {
+                return true;
+            }
+
+            if (cl.Name.StartsWith("b3"))
+            {
+                return true;
+            }
+
             switch (cl.Name)
             {
                 case "btBroadphasePairSortPredicate":
-                case "btGeneric6DofConstraintDoubleData2":
-                case "btGeneric6DofSpringConstraintDoubleData2":
-                case "btHingeConstraintDoubleData2":
-                case "btPoint2PointConstraintDoubleData2":
                     return true;
             }
 
@@ -1074,11 +1153,6 @@ namespace BulletSharpGen
                 case "btAxisSweep3Internal::Edge":
                 case "btAxisSweep3Internal::Handle":
                 case "BT_BOX_BOX_TRANSFORM_CACHE":
-                case "btGeneric6DofConstraintDoubleData2":
-                case "btGeneric6DofSpringConstraintDoubleData2":
-                case "btGeneric6DofSpring2ConstraintDoubleData2":
-                case "btHingeConstraintDoubleData2":
-                case "btPoint2PointConstraintDoubleData2":
                 case "btChunk":
                 case "btPointerUid":
                 case "btSoftBodyTriangleCallback":
@@ -1108,7 +1182,9 @@ namespace BulletSharpGen
             }
 
             // Exclude all "FloatData/DoubleData" serialization classes
-            return cl.Name.EndsWith("Data") && !cl.ManagedName.Equals("ContactSolverInfoData");
+            return (cl.Name.EndsWith("Data")
+                ||cl.Name.EndsWith("Data2"))
+                && !cl.ManagedName.Equals("ContactSolverInfoData");
         }
     }
 }

@@ -9,7 +9,7 @@ namespace BulletSharpGen
     {
         bool hasClassSeparatingWhitespace;
 
-        public PInvokeWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public PInvokeWriter(IEnumerable<HeaderDefinition> headerDefinitions, string namespaceName)
             : base(headerDefinitions, namespaceName)
         {
         }
@@ -558,6 +558,7 @@ namespace BulletSharpGen
                     Referenced = method2.ReturnType
                 };
                 paras[paras.Length - 1] = new ParameterDefinition(paramName, valueType);
+                paras[paras.Length - 1].ManagedName = paramName;
                 method2.Parameters = paras;
                 method2.ReturnType = new TypeRefDefinition();
                 WriteMethod(method2, level, ref overloadIndex, numOptionalParams, method);
@@ -653,7 +654,7 @@ namespace BulletSharpGen
 
         void WriteClass(ClassDefinition c, int level)
         {
-            if (BulletParser.IsExcludedClass(c) || c.IsTypedef || c.IsPureEnum)
+            if (c.IsExcluded || c.IsTypedef || c.IsPureEnum)
             {
                 return;
             }
@@ -707,26 +708,29 @@ namespace BulletSharpGen
             bufferBuilder.Clear();
 
             // Write C# internal constructor
-            EnsureWhiteSpace(WriteTo.CS);
-            WriteTabs(level + 1, WriteTo.CS);
-            Write("internal ", WriteTo.CS);
-            Write(c.ManagedName, WriteTo.CS);
-            WriteLine("(IntPtr native)", WriteTo.CS);
-            if (c.BaseClass != null)
+            if (!c.NoInternalConstructor)
             {
-                WriteTabs(level + 2, WriteTo.CS);
-                WriteLine(": base(native)", WriteTo.CS);
+                EnsureWhiteSpace(WriteTo.CS);
+                WriteTabs(level + 1, WriteTo.CS);
+                Write("internal ", WriteTo.CS);
+                Write(c.ManagedName, WriteTo.CS);
+                WriteLine("(IntPtr native)", WriteTo.CS);
+                if (c.BaseClass != null)
+                {
+                    WriteTabs(level + 2, WriteTo.CS);
+                    WriteLine(": base(native)", WriteTo.CS);
+                }
+                WriteTabs(level + 1, WriteTo.CS);
+                WriteLine('{', WriteTo.CS);
+                if (c.BaseClass == null)
+                {
+                    WriteTabs(level + 2, WriteTo.CS);
+                    WriteLine("_native = native;", WriteTo.CS);
+                }
+                WriteTabs(level + 1, WriteTo.CS);
+                WriteLine('}', WriteTo.CS);
+                hasCSWhiteSpace = false;
             }
-            WriteTabs(level + 1, WriteTo.CS);
-            WriteLine('{', WriteTo.CS);
-            if (c.BaseClass == null)
-            {
-                WriteTabs(level + 2, WriteTo.CS);
-                WriteLine("_native = native;", WriteTo.CS);
-            }
-            WriteTabs(level + 1, WriteTo.CS);
-            WriteLine('}', WriteTo.CS);
-            hasCSWhiteSpace = false;
 
             // Write constructors
             bool hasConstructors = false;
@@ -809,7 +813,7 @@ namespace BulletSharpGen
             var includeFile = new FileStream(outDirectoryC + "\\" + includeFilename, FileMode.Create, FileAccess.Write);
             var includeWriter = new StreamWriter(includeFile);
 
-            foreach (var header in headerDefinitions.Values.OrderBy(p => p.Name))
+            foreach (var header in headerDefinitions.OrderBy(p => p.Name))
             {
                 if (header.Classes.Count == 0)
                 {

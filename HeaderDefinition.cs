@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace BulletSharpGen
 {
@@ -10,6 +11,11 @@ namespace BulletSharpGen
         public List<ClassDefinition> Classes { get; set; }
         public List<HeaderDefinition> Includes { get; set; }
         public List<EnumDefinition> Enums { get; set; }
+
+        public bool IsExcluded
+        {
+            get { return Classes.All(x => x.IsExcluded); }
+        }
 
         string _managedName;
         public string ManagedName

@@ -32,32 +32,35 @@ namespace BulletSharpGen
 
             var reader = new CppReader(sourceFolder);
             var parser = new BulletParser(reader.ClassDefinitions, reader.HeaderDefinitions);
+            var externalHeaders = parser.ExternalHeaders.Values;
             if (cppCliMode)
             {
-                var writer = new CppCliWriter(parser.HeaderDefinitions, NamespaceName);
+                var writer = new CppCliWriter(externalHeaders, NamespaceName);
                 writer.Output();
             }
             else
             {
-                var writer = new PInvokeWriter(parser.HeaderDefinitions, NamespaceName);
+                var writer = new PInvokeWriter(externalHeaders, NamespaceName);
                 writer.Output();
 
-                var extensionWriter = new ExtensionsWriter(parser.HeaderDefinitions, NamespaceName);
+                var extensionWriter = new ExtensionsWriter(externalHeaders, NamespaceName);
                 extensionWriter.Output();
             }
 
 
-            OutputSolution(TargetVS.VS2008, parser.HeaderDefinitions);
-            OutputSolution(TargetVS.VS2010, parser.HeaderDefinitions);
-            OutputSolution(TargetVS.VS2012, parser.HeaderDefinitions);
-            OutputSolution(TargetVS.VS2013, parser.HeaderDefinitions);
+            OutputSolution(TargetVS.VS2008, externalHeaders);
+            OutputSolution(TargetVS.VS2010, externalHeaders);
+            OutputSolution(TargetVS.VS2012, externalHeaders);
+            OutputSolution(TargetVS.VS2013, externalHeaders);
 
+            CMakeWriter cmake = new CMakeWriter(parser.ExternalHeaders, NamespaceName);
+            cmake.Output();
 
             Console.Write("Press any key to continue...");
             Console.ReadKey();
         }
 
-        static void OutputSolution(TargetVS targetVS, Dictionary<string, HeaderDefinition> headerDefinitions)
+        static void OutputSolution(TargetVS targetVS, IEnumerable<HeaderDefinition> headerDefinitions)
         {
             string targetVersionString;
             switch (targetVS)
@@ -134,25 +137,6 @@ namespace BulletSharpGen
                 confs.Add(new ProjectConfiguration("XNA 4.0", false, "GRAPHICS_XNA40", "$(ProgramFiles)\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\;$(ProgramFiles(x86))\\Microsoft XNA\\XNA Game Studio\\v4.0\\References\\Windows\\x86\\"));
             }
 
-            string[] excludedClasses = new string[] { "ActionInterface", "AlignedAllocator", "bChunk", "bCommon",
-            "bFile", "Box", "BulletFile", "cl_MiniCL_Defs", "cl_platform", "ContactProcessing", "ConvexHull",
-            "ConvexHullComputer", "DantzigLCP", "GenericPoolAllocator",
-            "gim_array", "gim_bitset", "gim_box_collision", "gim_box_set", "gim_clip_polygon", "gim_contact",
-            "gim_geom_types", "gim_hash_table", "gim_memory", "gim_radixsort", "gim_tri_collision", "GjkEpa2",
-            "Gpu3DGridBroadphase", "Gpu3DGridBroadphaseSharedTypes", "GpuDefines", "GrahamScan2dConvexHull",
-            "HashedSimplePairCache", "HashMap", "HeapManager", "IDebugDraw", "JacobianEntry", "List", "Material",
-            "Matrix3x3", "MatrixX", "MiniCLTask", "MiniCLTaskScheduler", "MultiSapBroadphase", "PlatformDefinitions",
-            "PolarDecomposition", "PolyhedralContactClipping", "PosixThreadSupport", "PpuAddressSpace", "QuadWord",
-            "RaycastCallback", "SequentialThreadSupport", "SimpleDynamicsWorld", "SoftBodyData", "SoftBodyInternals",
-            "SoftBodySolvers", "SoftRigidCollisionAlgorithm", "SoftSoftCollisionAlgorithm", "SolveProjectedGaussSeidel",
-            "SolverBody", "SolverConstraint", "SpuCollisionObjectWrapper", "SpuCollisionShapes",
-            "SpuCollisionTaskProcess", "SpuContactManifoldCollisionAlgorithm", "SpuContactResult",
-            "SpuConvexPenetrationDepthSolver", "SpuDoubleBuffer", "SpuGatheringCollisionTask",
-            "SpuMinkowskiPenetrationDepthSolver", "SpuSampleTask", "SpuSampleTaskProcess", "SpuSync", "StackAlloc",
-            "SubSimplexConvexCast", "Transform", "TrbDynBody", "TrbStateVec", "vectormath_aos", "vmInclude",
-            "HacdCircularList", "HacdGraph", "HacdICHull", "HacdManifoldMesh", "HacdVector",
-            "Quaternion", "Vector3", "LemkeAlgorithm", "CharacterControllerInterface" };
-
             var filterWriter = new FilterWriter(NamespaceName);
             var sourceFilter = new Filter("Source Files", "4FC737F1-C7A5-4376-A066-2A32D752A2FF", "cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx");
             var headerFilter = new Filter("Header Files", "93995380-89BD-4b04-88EB-625FBE52EBFB", "h;hh;hpp;hxx;hm;inl;inc;xsd");
@@ -189,9 +173,9 @@ namespace BulletSharpGen
             headerFilter.AddFile("", rootFolder + "Vector3");
             headerFilter.AddFile("", rootFolder + "Vector4");
 
-            foreach (HeaderDefinition header in headerDefinitions.Values)
+            foreach (HeaderDefinition header in headerDefinitions)
             {
-                if (header.Classes.Count == 0 || excludedClasses.Contains(header.ManagedName))
+                if (header.Classes.Count == 0)
                 {
                     continue;
                 }
