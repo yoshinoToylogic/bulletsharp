@@ -1,6 +1,5 @@
 #include <BulletDynamics/ConstraintSolver/btSequentialImpulseConstraintSolver.h>
 
-#include "conversion.h"
 #include "btSequentialImpulseConstraintSolver_wrap.h"
 
 btSequentialImpulseConstraintSolver* btSequentialImpulseConstraintSolver_new()

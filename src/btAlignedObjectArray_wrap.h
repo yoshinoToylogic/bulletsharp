@@ -20,12 +20,12 @@ extern "C"
 	EXPORT int btAlignedIndexedMeshArray_size(btAlignedIndexedMeshArray* obj);
 	EXPORT void btAlignedIndexedMeshArray_delete(btAlignedIndexedMeshArray* obj);
 
-	EXPORT btAlignedManifoldArray* btManifoldArray_new();
-	EXPORT btPersistentManifold* btManifoldArray_at(btAlignedManifoldArray* obj, int n);
-	EXPORT void btManifoldArray_push_back(btAlignedManifoldArray* obj, btPersistentManifold* val);
-	EXPORT void btManifoldArray_resizeNoInitialize(btAlignedManifoldArray* obj, int newSize);
-	EXPORT int btManifoldArray_size(btAlignedManifoldArray* obj);
-	EXPORT void btManifoldArray_delete(btAlignedManifoldArray* obj);
+	EXPORT btAlignedManifoldArray* btAlignedManifoldArray_new();
+	EXPORT btPersistentManifold* btAlignedManifoldArray_at(btAlignedManifoldArray* obj, int n);
+	EXPORT void btAlignedManifoldArray_push_back(btAlignedManifoldArray* obj, btPersistentManifold* val);
+	EXPORT void btAlignedManifoldArray_resizeNoInitialize(btAlignedManifoldArray* obj, int newSize);
+	EXPORT int btAlignedManifoldArray_size(btAlignedManifoldArray* obj);
+	EXPORT void btAlignedManifoldArray_delete(btAlignedManifoldArray* obj);
 
 	EXPORT btSoftBody* btAlignedSoftBodyArray_at(btAlignedSoftBodyArray* obj, int n);
 	EXPORT void btAlignedSoftBodyArray_push_back(btAlignedSoftBodyArray* obj, btSoftBody* val);

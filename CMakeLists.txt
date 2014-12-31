@@ -2,15 +2,15 @@ CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
 PROJECT (libbulletc)
 
 IF (APPLE OR MSVC)
-	OPTION(BUILD_MULTITHREADING "Use BulletMultiThreading" ON)
+    OPTION(BUILD_MULTITHREADING "Use BulletMultiThreading" ON)
 ELSE()
-	OPTION(BUILD_MULTITHREADING "Use BulletMultiThreading" OFF)
+    OPTION(BUILD_MULTITHREADING "Use BulletMultiThreading" OFF)
 ENDIF()
 
 IF (NOT CMAKE_BUILD_TYPE)
 # SET(CMAKE_BUILD_TYPE "Debug")
  SET(CMAKE_BUILD_TYPE "MinSizeRel")
-ENDIF (NOT CMAKE_BUILD_TYPE) 
+ENDIF (NOT CMAKE_BUILD_TYPE)
 
 FIND_PATH(BULLET_INCLUDE_DIR NAMES btBulletCollisionCommon.h
   PATHS
@@ -28,29 +28,29 @@ INCLUDE_DIRECTORIES(${BULLET_INCLUDE_DIR})
 INCLUDE_DIRECTORIES(${BULLET_INCLUDE_DIR}/../Extras/Serialize/BulletWorldImporter/)
 
 IF(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
-	SET(BULLET_LIB_DIR ${BULLET_INCLUDE_DIR}/..)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletCollision)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletDynamics)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletMultiThreaded)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletSoftBody)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/LinearMath)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletFileLoader)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletWorldImporter)
-	LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletXmlWorldImporter)
-	SET(BULLETC_LIB bulletc)
+    SET(BULLET_LIB_DIR ${BULLET_INCLUDE_DIR}/..)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletCollision)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletDynamics)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletMultiThreaded)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletSoftBody)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/LinearMath)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletFileLoader)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletWorldImporter)
+    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletXmlWorldImporter)
+    SET(BULLETC_LIB bulletc)
 ELSE()
-	IF(${CMAKE_GENERATOR} MATCHES "Visual Studio 9 2008")
-	    SET(REL_LIB_DIR msvc/2008)
-	ELSEIF(${CMAKE_GENERATOR} MATCHES "Visual Studio 10")
-	    SET(REL_LIB_DIR msvc/2010)
-	ELSEIF(${CMAKE_GENERATOR} MATCHES "Visual Studio 11")
-	    SET(REL_LIB_DIR msvc/2012)
-	ELSEIF(${CMAKE_GENERATOR} MATCHES "Visual Studio 12")
-	    SET(REL_LIB_DIR msvc/2013)
-	ENDIF()
-	LINK_DIRECTORIES(${BULLET_INCLUDE_DIR}/../${REL_LIB_DIR}/lib/${CMAKE_CFG_INTDIR})
-	SET(BULLETC_LIB libbulletc)
-	SET(LIB_SUFFIX _${CMAKE_CFG_INTDIR}.lib)
+    IF(${CMAKE_GENERATOR} MATCHES "Visual Studio 9 2008")
+        SET(REL_LIB_DIR msvc/2008)
+    ELSEIF(${CMAKE_GENERATOR} MATCHES "Visual Studio 10")
+        SET(REL_LIB_DIR msvc/2010)
+    ELSEIF(${CMAKE_GENERATOR} MATCHES "Visual Studio 11")
+        SET(REL_LIB_DIR msvc/2012)
+    ELSEIF(${CMAKE_GENERATOR} MATCHES "Visual Studio 12")
+        SET(REL_LIB_DIR msvc/2013)
+    ENDIF()
+    LINK_DIRECTORIES(${BULLET_INCLUDE_DIR}/../${REL_LIB_DIR}/lib/${CMAKE_CFG_INTDIR})
+    SET(BULLETC_LIB libbulletc)
+    SET(LIB_SUFFIX _${CMAKE_CFG_INTDIR}.lib)
 ENDIF()
 
 IF(BUILD_MULTITHREADING)
@@ -194,12 +194,12 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btDiscreteDynamicsWorld_wrap.h
     src/btDispatcher_wrap.cpp
     src/btDispatcher_wrap.h
+    src/btDynamicsWorld_wrap.cpp
+    src/btDynamicsWorld_wrap.h
     src/btEmptyCollisionAlgorithm_wrap.cpp
     src/btEmptyCollisionAlgorithm_wrap.h
     src/btEmptyShape_wrap.cpp
     src/btEmptyShape_wrap.h
-    src/btDynamicsWorld_wrap.cpp
-    src/btDynamicsWorld_wrap.h
     src/btFixedConstraint_wrap.cpp
     src/btFixedConstraint_wrap.h
     src/btGearConstraint_wrap.cpp
@@ -310,10 +310,10 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSimulationIslandManager_wrap.h
     src/btSliderConstraint_wrap.cpp
     src/btSliderConstraint_wrap.h
-    src/btSoftBodyConcaveCollisionAlgorithm_wrap.cpp
-    src/btSoftBodyConcaveCollisionAlgorithm_wrap.h
     src/btSoftBody_wrap.cpp
     src/btSoftBody_wrap.h
+    src/btSoftBodyConcaveCollisionAlgorithm_wrap.cpp
+    src/btSoftBodyConcaveCollisionAlgorithm_wrap.h
     src/btSoftBodyHelpers_wrap.cpp
     src/btSoftBodyHelpers_wrap.h
     src/btSoftBodyRigidBodyCollisionConfiguration_wrap.cpp

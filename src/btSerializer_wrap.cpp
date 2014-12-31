@@ -66,7 +66,8 @@ void btChunk_delete(btChunk* obj)
 
 btSerializerWrapper::btSerializerWrapper(void* serializerGCHandle, pAllocate allocateCallback, pFinalizeChunk finalizeChunkCallback,
 	pFindNameForPointer findNameForPointerCallback, pFindPointer findPointerCallback, pFinishSerialization finishSerializationCallback,
-	pGetBufferPointer getBufferPointerCallback, pGetCurrentBufferSize getCurrentBufferSizeCallback,
+	pGetBufferPointer getBufferPointerCallback, pGetChunk getChunkCallback,
+	pGetCurrentBufferSize getCurrentBufferSizeCallback, pGetNumChunks getNumChunksCallback,
 	pGetSerializationFlags getSerializationFlagsCallback, pGetUniquePointer getUniquePointerCallback,
 	pRegisterNameForPointer registerNameForPointerCallback, pSerializeName serializeNameCallback,
 	pSetSerializationFlags setSerializationFlagsCallback, pStartSerialization startSerializationCallback)
@@ -117,9 +118,19 @@ const unsigned char* btSerializerWrapper::getBufferPointer() const
 	return _getBufferPointerCallback();
 }
 
+btChunk* btSerializerWrapper::getChunk(int chunkIndex) const
+{
+	return _getChunkCallback(chunkIndex);
+}
+
 int btSerializerWrapper::getCurrentBufferSize() const
 {
 	return _getCurrentBufferSizeCallback();
+}
+
+int btSerializerWrapper::getNumChunks() const
+{
+	return _getNumChunksCallback();
 }
 
 int btSerializerWrapper::getSerializationFlags() const
@@ -155,14 +166,15 @@ void btSerializerWrapper::startSerialization()
 
 btSerializerWrapper* btSerializerWrapper_new(void* serializerGCHandle, pAllocate allocateCallback, pFinalizeChunk finalizeChunkCallback,
 	pFindNameForPointer findNameForPointerCallback, pFindPointer findPointerCallback, pFinishSerialization finishSerializationCallback,
-	pGetBufferPointer getBufferPointerCallback, pGetCurrentBufferSize getCurrentBufferSizeCallback,
-	pGetSerializationFlags getSerializationFlagsCallback, pGetUniquePointer getUniquePointerCallback,
+	pGetBufferPointer getBufferPointerCallback, pGetChunk getChunkCallback, pGetCurrentBufferSize getCurrentBufferSizeCallback,
+	pGetNumChunks getNumChunksCallback, pGetSerializationFlags getSerializationFlagsCallback, pGetUniquePointer getUniquePointerCallback,
 	pRegisterNameForPointer registerNameForPointerCallback, pSerializeName serializeNameCallback,
 	pSetSerializationFlags setSerializationFlagsCallback, pStartSerialization startSerializationCallback)
 {
 	return new btSerializerWrapper(serializerGCHandle, allocateCallback, finalizeChunkCallback, findNameForPointerCallback,
-		findPointerCallback, finishSerializationCallback, getBufferPointerCallback, getCurrentBufferSizeCallback,
-		getSerializationFlagsCallback, getUniquePointerCallback, registerNameForPointerCallback, serializeNameCallback,
+		findPointerCallback, finishSerializationCallback, getBufferPointerCallback, getChunkCallback,
+		getCurrentBufferSizeCallback, getNumChunksCallback, getSerializationFlagsCallback, getUniquePointerCallback,
+		registerNameForPointerCallback, serializeNameCallback,
 		setSerializationFlagsCallback, startSerializationCallback);
 }
 
