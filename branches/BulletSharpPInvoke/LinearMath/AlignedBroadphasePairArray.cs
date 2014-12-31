@@ -102,7 +102,7 @@ namespace BulletSharp
 
                     throw new ArgumentOutOfRangeException("index");
 
-                return new BroadphasePair(btAlignedBroadphasePairArray_at(_native, index), true);
+                return new BroadphasePair(btAlignedBroadphasePairArray_at(_native, index));
             }
             set
             {

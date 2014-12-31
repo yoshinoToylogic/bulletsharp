@@ -713,11 +713,12 @@ namespace BulletSharp
 		protected Dispatcher _dispatcher;
 		protected BroadphaseInterface _broadphase;
         private DispatcherInfo _dispatchInfo;
+        internal IDebugDraw _debugDrawer;
 
 		internal CollisionWorld(IntPtr native)
 		{
 			_native = native;
-            _collisionObjectArray = new AlignedCollisionObjectArray(btCollisionWorld_getCollisionObjectArray(native), native);
+            _collisionObjectArray = new AlignedCollisionObjectArray(btCollisionWorld_getCollisionObjectArray(native), this);
 		}
 
 		public CollisionWorld(Dispatcher dispatcher, BroadphaseInterface broadphasePairCache, CollisionConfiguration collisionConfiguration)
@@ -918,8 +919,36 @@ namespace BulletSharp
 
 		public IDebugDraw DebugDrawer
 		{
-	        get { return DebugDraw.GetManaged(btCollisionWorld_getDebugDrawer(_native)); }
-	        set { btCollisionWorld_setDebugDrawer(_native, DebugDraw.GetUnmanaged(value)); }
+            get { return _debugDrawer; }
+            set
+            {
+                if (_debugDrawer != null)
+                {
+                    if (_debugDrawer == value) {
+                        return;
+                    }
+
+                    // Clear IDebugDraw wrapper
+                    if (!(_debugDrawer is DebugDraw)) {
+                        //btIDebugDrawer_delete(btCollisionWorld_getDebugDrawer(_native));
+                    }
+                }
+
+                _debugDrawer = value;
+                if (value == null) {
+                    btCollisionWorld_setDebugDrawer(_native, IntPtr.Zero);
+                    return;
+                }
+
+                DebugDraw cast = value as DebugDraw;
+                if (cast != null) {
+                    btCollisionWorld_setDebugDrawer(_native, cast._native);
+                } else {
+                    // Create IDebugDraw wrapper, remember to delete it
+                    IntPtr wrapper = DebugDraw.CreateWrapper(value, false);
+                    btCollisionWorld_setDebugDrawer(_native, wrapper);
+                }
+            }
 		}
 
 		public Dispatcher Dispatcher

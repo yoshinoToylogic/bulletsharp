@@ -261,11 +261,6 @@ void btRigidBody_applyTorqueImpulse(btRigidBody* obj, const btScalar* torque)
 	obj->applyTorqueImpulse(VECTOR3_USE(torque));
 }
 
-bool btRigidBody_checkCollideWithOverride(btRigidBody* obj, const btCollisionObject* co)
-{
-	return obj->checkCollideWithOverride(co);
-}
-
 void btRigidBody_clearForces(btRigidBody* obj)
 {
 	obj->clearForces();

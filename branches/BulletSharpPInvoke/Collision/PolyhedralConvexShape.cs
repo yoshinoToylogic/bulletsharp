@@ -106,7 +106,7 @@ namespace BulletSharp
 		static extern bool btPolyhedralConvexShape_isInside(IntPtr obj, [In] ref Vector3 pt, float tolerance);
 	}
 
-	public class PolyhedralConvexAabbCachingShape : PolyhedralConvexShape
+	public abstract class PolyhedralConvexAabbCachingShape : PolyhedralConvexShape
 	{
 		internal PolyhedralConvexAabbCachingShape(IntPtr native)
 			: base(native)

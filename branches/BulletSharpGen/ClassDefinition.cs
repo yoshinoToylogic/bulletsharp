@@ -20,6 +20,7 @@ namespace BulletSharpGen
         public bool NoInternalConstructor { get; set; }
         public bool IsTrackingDisposable { get; set; }
         public bool HasPreventDelete { get; set; }
+        public bool IsExcluded { get; set; }
 
         // For function prototypes IsTypeDef == true, but TypedefUnderlyingType == null
         public bool IsTypedef { get; set; }

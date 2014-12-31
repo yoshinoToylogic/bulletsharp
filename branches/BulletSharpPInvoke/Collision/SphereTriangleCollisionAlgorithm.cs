@@ -8,11 +8,6 @@ namespace BulletSharp
 	{
 		public class CreateFunc : CollisionAlgorithmCreateFunc
 		{
-			internal CreateFunc(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public CreateFunc()
 				: base(btSphereTriangleCollisionAlgorithm_CreateFunc_new())
 			{
@@ -20,11 +15,6 @@ namespace BulletSharp
 
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern IntPtr btSphereTriangleCollisionAlgorithm_CreateFunc_new();
-		}
-
-		internal SphereTriangleCollisionAlgorithm(IntPtr native)
-			: base(native)
-		{
 		}
 
 		public SphereTriangleCollisionAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo ci, CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, bool swapped)

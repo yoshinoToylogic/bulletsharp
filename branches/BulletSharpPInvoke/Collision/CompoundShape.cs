@@ -41,12 +41,12 @@ namespace BulletSharp
 
 		public DbvtNode Node
 		{
-	        get
-	        {
-	            IntPtr ptr = btCompoundShapeChild_getNode(_native);
-	            return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
-	        }
-	        set { btCompoundShapeChild_setNode(_native, (value != null) ? value._native : IntPtr.Zero); }
+            get
+            {
+                IntPtr ptr = btCompoundShapeChild_getNode(_native);
+                return (ptr != IntPtr.Zero) ? new DbvtNode(ptr) : null;
+            }
+            set { btCompoundShapeChild_setNode(_native, (value != null) ? value._native : IntPtr.Zero); }
 		}
 
 		public Matrix Transform
@@ -137,9 +137,9 @@ namespace BulletSharp
 
 		public Matrix GetChildTransform(int index)
 		{
-            Matrix value;
+			Matrix value;
 			btCompoundShape_getChildTransform(_native, index, out value);
-            return value;
+			return value;
 		}
 
 		public void RecalculateLocalAabb()

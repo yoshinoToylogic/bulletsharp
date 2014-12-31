@@ -13,14 +13,8 @@ namespace BulletSharpGen
         Internal
     }
 
-    class CppCliWriter
+    class CppCliWriter : WrapperWriter
     {
-        Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
-        StreamWriter _headerWriter, _sourceWriter;
-        bool hasHeaderWhiteSpace;
-        bool hasSourceWhiteSpace;
-        string namespaceName;
-
         int _headerLineLength;
         int _sourceLineLength;
         
@@ -137,10 +131,9 @@ namespace BulletSharpGen
             {"WorldImporter", "DISABLE_SERIALIZE"}
         };
 
-        public CppCliWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public CppCliWriter(IEnumerable<HeaderDefinition> headerDefinitions, string namespaceName)
+            : base(headerDefinitions, namespaceName)
         {
-            this.headerDefinitions = headerDefinitions;
-            this.namespaceName = namespaceName;
         }
 
         void WriteTabs(int n, bool source = false)
@@ -149,12 +142,12 @@ namespace BulletSharpGen
             {
                 if (source)
                 {
-                    _sourceWriter.Write('\t');
+                    sourceWriter.Write('\t');
                     _sourceLineLength += TabWidth;
                 }
                 else
                 {
-                    _headerWriter.Write('\t');
+                    headerWriter.Write('\t');
                     _headerLineLength += TabWidth;
                 }
             }
@@ -162,44 +155,44 @@ namespace BulletSharpGen
 
         void HeaderWrite(string s)
         {
-            _headerWriter.Write(s);
+            headerWriter.Write(s);
             _headerLineLength += s.Length;
         }
 
         void HeaderWriteLine(string s = "")
         {
             HeaderWrite(s);
-            _headerWriter.WriteLine();
+            headerWriter.WriteLine();
             _headerLineLength = 0;
         }
 
         void HeaderWriteLine(char c)
         {
-            _headerWriter.WriteLine(c);
+            headerWriter.WriteLine(c);
             _headerLineLength = 0;
         }
 
         void SourceWrite(string s)
         {
-            _sourceWriter.Write(s);
+            sourceWriter.Write(s);
             _sourceLineLength += s.Length;
         }
 
         void SourceWrite(char c)
         {
-            _sourceWriter.Write(c);
+            sourceWriter.Write(c);
             _sourceLineLength += c.Equals('\t') ? TabWidth : 1;
         }
 
         void SourceWriteLine(string s = "")
         {
-            _sourceWriter.WriteLine(s);
+            sourceWriter.WriteLine(s);
             _sourceLineLength = 0;
         }
 
         void SourceWriteLine(char c)
         {
-            _sourceWriter.WriteLine(c);
+            sourceWriter.WriteLine(c);
             _sourceLineLength = 0;
         }
 
@@ -211,11 +204,11 @@ namespace BulletSharpGen
 
         void Write(char c, bool source = true)
         {
-            _headerWriter.Write(c);
+            headerWriter.Write(c);
             _headerLineLength += 1;
             if (source)
             {
-                _sourceWriter.Write(c);
+                sourceWriter.Write(c);
                 _sourceLineLength += 1;
             }
         }
@@ -386,7 +379,7 @@ namespace BulletSharpGen
                     if (method.Equals(method.Property.Getter) &&
                         method.Property.Name.Equals(method.Property.Type.ManagedName))
                     {
-                        HeaderWrite(namespaceName + "::");
+                        HeaderWrite(NamespaceName + "::");
                     }
                 }
 
@@ -693,7 +686,7 @@ namespace BulletSharpGen
 
         bool IsExcludedClass(ClassDefinition c)
         {
-            return c.IsTypedef || c.IsPureEnum || BulletParser.IsExcludedClass(c);
+            return c.IsTypedef || c.IsPureEnum || c.IsExcluded;
         }
 
         void OutputClass(ClassDefinition c, int level)
@@ -978,9 +971,9 @@ namespace BulletSharpGen
 
         public void Output()
         {
-            string outDirectory = namespaceName + "_cppcli";
+            string outDirectory = NamespaceName + "_cppcli";
 
-            foreach (HeaderDefinition header in headerDefinitions.Values)
+            foreach (HeaderDefinition header in headerDefinitions)
             {
                 if (header.Classes.Count(x => !IsExcludedClass(x)) == 0)
                 {
@@ -989,12 +982,12 @@ namespace BulletSharpGen
 
                 Directory.CreateDirectory(outDirectory);
                 var headerFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".h", FileMode.Create, FileAccess.Write);
-                _headerWriter = new StreamWriter(headerFile);
+                headerWriter = new StreamWriter(headerFile);
                 HeaderWriteLine("#pragma once");
                 HeaderWriteLine();
 
                 var sourceFile = new FileStream(outDirectory + "\\" + header.ManagedName + ".cpp", FileMode.Create, FileAccess.Write);
-                _sourceWriter = new StreamWriter(sourceFile);
+                sourceWriter = new StreamWriter(sourceFile);
                 SourceWriteLine("#include \"StdAfx.h\"");
                 SourceWriteLine();
 
@@ -1017,7 +1010,7 @@ namespace BulletSharpGen
 
                 // Write namespace
                 HeaderWrite("namespace ");
-                HeaderWriteLine(namespaceName);
+                HeaderWriteLine(NamespaceName);
                 HeaderWriteLine("{");
                 hasHeaderWhiteSpace = true;
 
@@ -1086,9 +1079,9 @@ namespace BulletSharpGen
                 }
 
                 HeaderWriteLine("};");
-                _headerWriter.Dispose();
+                headerWriter.Dispose();
                 headerFile.Dispose();
-                _sourceWriter.Dispose();
+                sourceWriter.Dispose();
                 sourceFile.Dispose();
             }
 
@@ -1115,11 +1108,9 @@ namespace BulletSharpGen
             {
                 return;
             }
-            if (forwardRefs.Contains(type.Target) || PrecompiledHeaderReferences.Contains(type.Target.ManagedName))
-            {
-                return;
-            }
-            if (BulletParser.IsExcludedClass(type.Target))
+            if (type.Target.IsExcluded || 
+                forwardRefs.Contains(type.Target) ||
+                PrecompiledHeaderReferences.Contains(type.Target.ManagedName))
             {
                 return;
             }

@@ -40,24 +40,23 @@ namespace BulletSharp
 
 	public class SimpleBroadphase : BroadphaseInterface
 	{
-		internal SimpleBroadphase(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public SimpleBroadphase()
 			: base(btSimpleBroadphase_new())
 		{
+            _pairCache = new HashedOverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
 		}
 
 		public SimpleBroadphase(int maxProxies)
 			: base(btSimpleBroadphase_new2(maxProxies))
 		{
+            _pairCache = new HashedOverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
 		}
 
 		public SimpleBroadphase(int maxProxies, OverlappingPairCache overlappingPairCache)
 			: base(btSimpleBroadphase_new3(maxProxies, overlappingPairCache._native))
 		{
+            _pairCache = (overlappingPairCache != null) ? overlappingPairCache : new HashedOverlappingPairCache(
+                btBroadphaseInterface_getOverlappingPairCache(_native), true);
 		}
 
 		public static bool AabbOverlap(SimpleBroadphaseProxy proxy0, SimpleBroadphaseProxy proxy1)

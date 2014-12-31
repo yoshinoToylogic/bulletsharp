@@ -59,20 +59,17 @@ namespace BulletSharp
 
 	public class DbvtBroadphase : BroadphaseInterface
 	{
-		internal DbvtBroadphase(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public DbvtBroadphase()
 			: base(btDbvtBroadphase_new())
 		{
+            _pairCache = new HashedOverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
 		}
 
-		public DbvtBroadphase(OverlappingPairCache paircache)
-			: base(btDbvtBroadphase_new2(paircache._native))
+		public DbvtBroadphase(OverlappingPairCache pairCache)
+            : base(btDbvtBroadphase_new2(pairCache._native))
 		{
-            _pairCache = paircache;
+            _pairCache = (pairCache != null) ? pairCache : new HashedOverlappingPairCache(
+                btBroadphaseInterface_getOverlappingPairCache(_native), true);
 		}
 
 		public static void Benchmark(BroadphaseInterface broadphase)

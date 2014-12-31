@@ -7,30 +7,27 @@ namespace BulletSharp
 {
 	public class GearConstraint : TypedConstraint
 	{
-        private RigidBody _rigidBodyA;
-        private RigidBody _rigidBodyB;
-
-        public GearConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 axisInA, ref Vector3 axisInB)
-            : base(btGearConstraint_new(rbA._native, rbB._native, ref axisInA, ref axisInB))
+        public GearConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, ref Vector3 axisInA, ref Vector3 axisInB)
+            : base(btGearConstraint_new(rigidBodyA._native, rigidBodyB._native, ref axisInA, ref axisInB))
         {
-            _rigidBodyA = rbA;
-            _rigidBodyB = rbB;
+            _rigidBodyA = rigidBodyA;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public GearConstraint(RigidBody rbA, RigidBody rbB, Vector3 axisInA, Vector3 axisInB)
-			: this(rbA, rbB, ref axisInA, ref axisInB)
+		public GearConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, Vector3 axisInA, Vector3 axisInB)
+			: this(rigidBodyA, rigidBodyB, ref axisInA, ref axisInB)
 		{
 		}
 
-        public GearConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 axisInA, ref Vector3 axisInB, float ratio)
-            : base(btGearConstraint_new2(rbA._native, rbB._native, ref axisInA, ref axisInB, ratio))
+        public GearConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, ref Vector3 axisInA, ref Vector3 axisInB, float ratio)
+            : base(btGearConstraint_new2(rigidBodyA._native, rigidBodyB._native, ref axisInA, ref axisInB, ratio))
         {
-            _rigidBodyA = rbA;
-            _rigidBodyB = rbB;
+            _rigidBodyA = rigidBodyA;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public GearConstraint(RigidBody rbA, RigidBody rbB, Vector3 axisInA, Vector3 axisInB, float ratio)
-			: this(rbA, rbB, ref axisInA, ref axisInB, ratio)
+		public GearConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, Vector3 axisInA, Vector3 axisInB, float ratio)
+			: this(rigidBodyA, rigidBodyB, ref axisInA, ref axisInB, ratio)
 		{
 		}
 

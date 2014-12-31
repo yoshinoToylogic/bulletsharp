@@ -43,10 +43,10 @@ namespace BulletSharp
 		{
 			get
 			{
-			    if (_vertices == null)
-			    {
+                if (_vertices == null)
+                {
                     _vertices = new Vector3Array(btTriangleShape_getVertices1(_native), 3);
-			    }
+                }
                 return _vertices;
 			}
 		}

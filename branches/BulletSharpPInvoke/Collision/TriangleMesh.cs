@@ -18,7 +18,7 @@ namespace BulletSharp
 		}
 
 		public TriangleMesh(bool use32BitIndices)
-            : base(btTriangleMesh_new2(use32BitIndices))
+			: base(btTriangleMesh_new2(use32BitIndices))
 		{
 		}
 

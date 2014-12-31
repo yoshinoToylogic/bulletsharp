@@ -54,7 +54,6 @@ extern "C"
 	EXPORT void btRigidBody_applyImpulse(btRigidBody* obj, const btScalar* impulse, const btScalar* rel_pos);
 	EXPORT void btRigidBody_applyTorque(btRigidBody* obj, const btScalar* torque);
 	EXPORT void btRigidBody_applyTorqueImpulse(btRigidBody* obj, const btScalar* torque);
-	EXPORT bool btRigidBody_checkCollideWithOverride(btRigidBody* obj, const btCollisionObject* co);
 	EXPORT void btRigidBody_clearForces(btRigidBody* obj);
 	EXPORT btScalar btRigidBody_computeAngularImpulseDenominator(btRigidBody* obj, const btScalar* axis);
 	EXPORT void btRigidBody_computeGyroscopicForce(btRigidBody* obj, btScalar maxGyroscopicForce, btScalar* value);

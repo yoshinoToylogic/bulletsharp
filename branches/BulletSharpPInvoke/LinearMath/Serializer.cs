@@ -123,7 +123,11 @@ namespace BulletSharp
         [UnmanagedFunctionPointer(Native.Conv)]
         delegate IntPtr GetBufferPointerUnmanagedDelegate();
         [UnmanagedFunctionPointer(Native.Conv)]
+        delegate IntPtr GetChunkUnmanagedDelegate(int chunkIndex);
+        [UnmanagedFunctionPointer(Native.Conv)]
         delegate int GetCurrentBufferSizeUnmanagedDelegate();
+        [UnmanagedFunctionPointer(Native.Conv)]
+        delegate int GetNumChunksUnmanagedDelegate();
         [UnmanagedFunctionPointer(Native.Conv)]
         delegate int GetSerializationFlagsUnmanagedDelegate();
         [UnmanagedFunctionPointer(Native.Conv)]
@@ -143,7 +147,9 @@ namespace BulletSharp
         FindPointerUnmanagedDelegate _findPointer;
         FinishSerializationUnmanagedDelegate _finishSerialization;
         GetBufferPointerUnmanagedDelegate _getBufferPointer;
+        GetChunkUnmanagedDelegate _getChunk;
         GetCurrentBufferSizeUnmanagedDelegate _getCurrentBufferSize;
+        GetNumChunksUnmanagedDelegate _getNumChunks;
         GetSerializationFlagsUnmanagedDelegate _getSerializationFlags;
         GetUniquePointerUnmanagedDelegate _getuniquePointer;
         RegisterNameForPointerUnmanagedDelegate _registernameForPointer;
@@ -161,7 +167,9 @@ namespace BulletSharp
             _findPointer = new FindPointerUnmanagedDelegate(FindPointer);
             _finishSerialization = new FinishSerializationUnmanagedDelegate(FinishSerialization);
             _getBufferPointer = new GetBufferPointerUnmanagedDelegate(GetBufferPointer);
+            _getChunk = new GetChunkUnmanagedDelegate(GetChunk);
             _getCurrentBufferSize = new GetCurrentBufferSizeUnmanagedDelegate(GetCurrentBufferSize);
+            _getNumChunks = new GetNumChunksUnmanagedDelegate(GetNumChunks);
             _getSerializationFlags = new GetSerializationFlagsUnmanagedDelegate(GetSerializationFlags);
             _getuniquePointer = new GetUniquePointerUnmanagedDelegate(GetUniquePointer);
             _registernameForPointer = new RegisterNameForPointerUnmanagedDelegate(RegisterNameForPointer);
@@ -177,7 +185,9 @@ namespace BulletSharp
                 Marshal.GetFunctionPointerForDelegate(_findPointer),
                 Marshal.GetFunctionPointerForDelegate(_finishSerialization),
                 Marshal.GetFunctionPointerForDelegate(_getBufferPointer),
+                Marshal.GetFunctionPointerForDelegate(_getChunk),
                 Marshal.GetFunctionPointerForDelegate(_getCurrentBufferSize),
+                Marshal.GetFunctionPointerForDelegate(_getNumChunks),
                 Marshal.GetFunctionPointerForDelegate(_getSerializationFlags),
                 Marshal.GetFunctionPointerForDelegate(_getuniquePointer),
                 Marshal.GetFunctionPointerForDelegate(_registernameForPointer),
@@ -226,7 +236,9 @@ namespace BulletSharp
         public abstract IntPtr FindNameForPointer(IntPtr ptr);
         public abstract IntPtr FindPointer(IntPtr oldPtr);
 		public abstract void FinishSerialization();
+        public abstract IntPtr GetChunk(int chunkIndex);
         public abstract IntPtr GetUniquePointer(IntPtr oldPtr);
+        public abstract int GetNumChunks();
         public abstract void RegisterNameForObject(Object obj, string name);
         public abstract void SerializeName(IntPtr ptr);
         public abstract void StartSerialization();
@@ -259,9 +271,12 @@ namespace BulletSharp
 		}
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btSerializerWrapper_new(IntPtr serializerGCHandle, IntPtr drawAabbCallback,
-            IntPtr drawArcCallback, IntPtr drawBoxCallback, IntPtr drawCapsuleCallback, IntPtr drawContactPointCallback,
-            IntPtr drawCylinderCallback, IntPtr drawLineCallback, IntPtr drawPlaneCallback, IntPtr drawSphereCallback, IntPtr drawSpherePatchCallback, IntPtr drawTransformCallback, IntPtr drawTriangleCallback, IntPtr getDebugModeCallback);
+        static extern IntPtr btSerializerWrapper_new(IntPtr serializerGCHandle, IntPtr allocateCallback,
+            IntPtr finalizeChunkCallback, IntPtr findNameForPointerCallback, IntPtr findPointerCallback,
+            IntPtr finishSerializationCallback, IntPtr getBufferPointerCallback, IntPtr getChunkCallback,
+            IntPtr getCurrentBufferSizeCallback, IntPtr getNumChunksCallback, IntPtr getSerializationFlagsCallback,
+            IntPtr getUniquePointerCallback, IntPtr registerNameForPointerCallback, IntPtr serializeNameCallback,
+            IntPtr setSerializationFlagsCallback, IntPtr startSerializationCallback);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSerializerWrapper_getSerializerGCHandle(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -423,6 +438,16 @@ namespace BulletSharp
 			_uniquePointers.Clear();
 			_chunkPtrs.Clear();
 		}
+
+        public override IntPtr GetChunk(int chunkIndex)
+        {
+            return _chunkPtrs[chunkIndex]._native;
+        }
+
+        public override int GetNumChunks()
+        {
+            return _chunkPtrs.Count;
+        }
 
         public Dna.StructDecl GetReverseType(string typeName)
         {

@@ -98,11 +98,6 @@ namespace BulletSharp
 			btRigidBody_applyTorqueImpulse(_native, ref torque);
 		}
 
-		public bool CheckCollideWithOverride(CollisionObject co)
-		{
-			return btRigidBody_checkCollideWithOverride(_native, co._native);
-		}
-
 		public void ClearForces()
 		{
 			btRigidBody_clearForces(_native);
@@ -120,9 +115,9 @@ namespace BulletSharp
 
 		public Vector3 ComputeGyroscopicForce(float maxGyroscopicForce)
 		{
-		    Vector3 value;
+			Vector3 value;
 			btRigidBody_computeGyroscopicForce(_native, maxGyroscopicForce, out value);
-		    return value;
+			return value;
 		}
 
         public float ComputeImpulseDenominator(ref Vector3 pos, ref Vector3 normal)
@@ -137,7 +132,7 @@ namespace BulletSharp
 
 		public void GetAabb(out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-            btRigidBody_getAabb(_native, out aabbMin, out aabbMax);
+			btRigidBody_getAabb(_native, out aabbMin, out aabbMax);
 		}
 
 		public TypedConstraint GetConstraintRef(int index)
@@ -147,17 +142,17 @@ namespace BulletSharp
 
         public Vector3 GetVelocityInLocalPoint(ref Vector3 relPos)
         {
-            Vector3 velocity;
-            btRigidBody_getVelocityInLocalPoint(_native, ref relPos, out velocity);
-            return velocity;
+            Vector3 value;
+            btRigidBody_getVelocityInLocalPoint(_native, ref relPos, out value);
+            return value;
         }
 
-        public Vector3 GetVelocityInLocalPoint(Vector3 relPos)
-        {
-            Vector3 velocity;
-            btRigidBody_getVelocityInLocalPoint(_native, ref relPos, out velocity);
-            return velocity;
-        }
+		public Vector3 GetVelocityInLocalPoint(Vector3 relPos)
+		{
+			Vector3 value;
+			btRigidBody_getVelocityInLocalPoint(_native, ref relPos, out value);
+			return value;
+		}
 
 		public void IntegrateVelocities(float step)
 		{
@@ -459,9 +454,6 @@ namespace BulletSharp
 		static extern void btRigidBody_applyTorque(IntPtr obj, [In] ref Vector3 torque);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_applyTorqueImpulse(IntPtr obj, [In] ref Vector3 torque);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
-		static extern bool btRigidBody_checkCollideWithOverride(IntPtr obj, IntPtr co);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRigidBody_clearForces(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

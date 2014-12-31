@@ -9,34 +9,54 @@ btMultibodyLink* btMultibodyLink_new()
 	return new btMultibodyLink();
 }
 
-void btMultibodyLink_getApplied_force(btMultibodyLink* obj, btScalar* value)
+btSpatialMotionVector* btMultibodyLink_getAbsFrameLocVelocity(btMultibodyLink* obj)
 {
-	VECTOR3_OUT(&obj->applied_force, value);
+	return &obj->m_absFrameLocVelocity;
 }
 
-void btMultibodyLink_getApplied_torque(btMultibodyLink* obj, btScalar* value)
+btSpatialMotionVector* btMultibodyLink_getAbsFrameTotVelocity(btMultibodyLink* obj)
 {
-	VECTOR3_OUT(&obj->applied_torque, value);
+	return &obj->m_absFrameTotVelocity;
 }
 
-void btMultibodyLink_getAxis_bottom(btMultibodyLink* obj, btScalar* value)
+void btMultibodyLink_getAppliedForce(btMultibodyLink* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->axis_bottom, value);
+	VECTOR3_OUT(&obj->m_appliedForce, value);
 }
 
-void btMultibodyLink_getAxis_top(btMultibodyLink* obj, btScalar* value)
+void btMultibodyLink_getAppliedTorque(btMultibodyLink* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->axis_top, value);
+	VECTOR3_OUT(&obj->m_appliedTorque, value);
 }
 
-void btMultibodyLink_getCached_r_vector(btMultibodyLink* obj, btScalar* value)
+btSpatialMotionVector* btMultibodyLink_getAxes(btMultibodyLink* obj)
 {
-	VECTOR3_OUT(&obj->cached_r_vector, value);
+	return obj->m_axes;
 }
 
-void btMultibodyLink_getCached_rot_parent_to_this(btMultibodyLink* obj, btScalar* value)
+void btMultibodyLink_getAxisBottom(btMultibodyLink* obj, int dof, btScalar* value)
 {
-	QUATERNION_OUT(&obj->cached_rot_parent_to_this, value);
+	VECTOR3_OUT(&obj->getAxisBottom(dof), value);
+}
+
+void btMultibodyLink_getAxisTop(btMultibodyLink* obj, int dof, btScalar* value)
+{
+	VECTOR3_OUT(&obj->getAxisTop(dof), value);
+}
+
+void btMultibodyLink_getCachedRotParentToThis(btMultibodyLink* obj, btScalar* value)
+{
+	QUATERNION_OUT(&obj->m_cachedRotParentToThis, value);
+}
+
+void btMultibodyLink_getCachedRVector(btMultibodyLink* obj, btScalar* value)
+{
+	VECTOR3_OUT(&obj->m_cachedRVector, value);
+}
+
+int btMultibodyLink_getCfgOffset(btMultibodyLink* obj)
+{
+	return obj->m_cfgOffset;
 }
 
 btMultiBodyLinkCollider* btMultibodyLink_getCollider(btMultibodyLink* obj)
@@ -44,14 +64,24 @@ btMultiBodyLinkCollider* btMultibodyLink_getCollider(btMultibodyLink* obj)
 	return obj->m_collider;
 }
 
-void btMultibodyLink_getD_vector(btMultibodyLink* obj, btScalar* value)
+int btMultibodyLink_getDofCount(btMultibodyLink* obj)
 {
-	VECTOR3_OUT(&obj->d_vector, value);
+	return obj->m_dofCount;
 }
 
-void btMultibodyLink_getE_vector(btMultibodyLink* obj, btScalar* value)
+int btMultibodyLink_getDofOffset(btMultibodyLink* obj)
 {
-	VECTOR3_OUT(&obj->e_vector, value);
+	return obj->m_dofOffset;
+}
+
+void btMultibodyLink_getDVector(btMultibodyLink* obj, btScalar* value)
+{
+	VECTOR3_OUT(&obj->m_dVector, value);
+}
+
+void btMultibodyLink_getEVector(btMultibodyLink* obj, btScalar* value)
+{
+	VECTOR3_OUT(&obj->m_eVector, value);
 }
 
 int btMultibodyLink_getFlags(btMultibodyLink* obj)
@@ -61,67 +91,99 @@ int btMultibodyLink_getFlags(btMultibodyLink* obj)
 
 void btMultibodyLink_getInertia(btMultibodyLink* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->inertia, value);
+	VECTOR3_OUT(&obj->m_inertia, value);
 }
 
-bool btMultibodyLink_getIs_revolute(btMultibodyLink* obj)
+btScalar* btMultibodyLink_getJointPos(btMultibodyLink* obj)
 {
-	return obj->is_revolute;
+	return obj->m_jointPos;
 }
 
-btScalar btMultibodyLink_getJoint_pos(btMultibodyLink* obj)
+btScalar* btMultibodyLink_getJointTorque(btMultibodyLink* obj)
 {
-	return obj->joint_pos;
+	return obj->m_jointTorque;
 }
-
-btScalar btMultibodyLink_getJoint_torque(btMultibodyLink* obj)
+/*
+eFeatherstoneJointType btMultibodyLink_getJointType(btMultibodyLink* obj)
 {
-	return obj->joint_torque;
+	return obj->m_jointType;
 }
-
+*/
 btScalar btMultibodyLink_getMass(btMultibodyLink* obj)
 {
-	return obj->mass;
+	return obj->m_mass;
 }
 
 int btMultibodyLink_getParent(btMultibodyLink* obj)
 {
-	return obj->parent;
+	return obj->m_parent;
 }
 
-void btMultibodyLink_getZero_rot_parent_to_this(btMultibodyLink* obj, btScalar* value)
+int btMultibodyLink_getPosVarCount(btMultibodyLink* obj)
 {
-	QUATERNION_OUT(&obj->zero_rot_parent_to_this, value);
+	return obj->m_posVarCount;
 }
 
-void btMultibodyLink_setApplied_force(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_getZeroRotParentToThis(btMultibodyLink* obj, btScalar* value)
 {
-	VECTOR3_IN(value, &obj->applied_force);
+	QUATERNION_OUT(&obj->m_zeroRotParentToThis, value);
+}
+/*
+void btMultibodyLink_setAbsFrameLocVelocity(btMultibodyLink* obj, const btSpatialMotionVector* value)
+{
+	obj->m_absFrameLocVelocity = value;
 }
 
-void btMultibodyLink_setApplied_torque(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setAbsFrameTotVelocity(btMultibodyLink* obj, const btSpatialMotionVector* value)
 {
-	VECTOR3_IN(value, &obj->applied_torque);
+	obj->m_absFrameTotVelocity = value;
+}
+*/
+void btMultibodyLink_setAppliedForce(btMultibodyLink* obj, const btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_appliedForce);
 }
 
-void btMultibodyLink_setAxis_bottom(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setAppliedTorque(btMultibodyLink* obj, const btScalar* value)
 {
-	VECTOR3_IN(value, &obj->axis_bottom);
+	VECTOR3_IN(value, &obj->m_appliedTorque);
 }
 
-void btMultibodyLink_setAxis_top(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setAxisBottom(btMultibodyLink* obj, int dof, const btScalar* x, const btScalar* y, const btScalar* z)
 {
-	VECTOR3_IN(value, &obj->axis_top);
+	obj->setAxisBottom(dof, *x, *y, *z);
 }
 
-void btMultibodyLink_setCached_r_vector(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setAxisBottom2(btMultibodyLink* obj, int dof, const btScalar* axis)
 {
-	VECTOR3_IN(value, &obj->cached_r_vector);
+	VECTOR3_CONV(axis);
+	obj->setAxisBottom(dof, VECTOR3_USE(axis));
 }
 
-void btMultibodyLink_setCached_rot_parent_to_this(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setAxisTop(btMultibodyLink* obj, int dof, const btScalar* axis)
 {
-	QUATERNION_IN(value, &obj->cached_rot_parent_to_this);
+	VECTOR3_CONV(axis);
+	obj->setAxisTop(dof, VECTOR3_USE(axis));
+}
+
+void btMultibodyLink_setAxisTop2(btMultibodyLink* obj, int dof, const btScalar* x, const btScalar* y, const btScalar* z)
+{
+	obj->setAxisTop(dof, *x, *y, *z);
+}
+
+void btMultibodyLink_setCachedRotParentToThis(btMultibodyLink* obj, const btScalar* value)
+{
+	QUATERNION_IN(value, &obj->m_cachedRotParentToThis);
+}
+
+void btMultibodyLink_setCachedRVector(btMultibodyLink* obj, const btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_cachedRVector);
+}
+
+void btMultibodyLink_setCfgOffset(btMultibodyLink* obj, int value)
+{
+	obj->m_cfgOffset = value;
 }
 
 void btMultibodyLink_setCollider(btMultibodyLink* obj, btMultiBodyLinkCollider* value)
@@ -129,14 +191,24 @@ void btMultibodyLink_setCollider(btMultibodyLink* obj, btMultiBodyLinkCollider* 
 	obj->m_collider = value;
 }
 
-void btMultibodyLink_setD_vector(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setDofCount(btMultibodyLink* obj, int value)
 {
-	VECTOR3_IN(value, &obj->d_vector);
+	obj->m_dofCount = value;
 }
 
-void btMultibodyLink_setE_vector(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setDofOffset(btMultibodyLink* obj, int value)
 {
-	VECTOR3_IN(value, &obj->e_vector);
+	obj->m_dofOffset = value;
+}
+
+void btMultibodyLink_setDVector(btMultibodyLink* obj, const btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_dVector);
+}
+
+void btMultibodyLink_setEVector(btMultibodyLink* obj, const btScalar* value)
+{
+	VECTOR3_IN(value, &obj->m_eVector);
 }
 
 void btMultibodyLink_setFlags(btMultibodyLink* obj, int value)
@@ -146,42 +218,47 @@ void btMultibodyLink_setFlags(btMultibodyLink* obj, int value)
 
 void btMultibodyLink_setInertia(btMultibodyLink* obj, const btScalar* value)
 {
-	VECTOR3_IN(value, &obj->inertia);
+	VECTOR3_IN(value, &obj->m_inertia);
 }
-
-void btMultibodyLink_setIs_revolute(btMultibodyLink* obj, bool value)
+/*
+void btMultibodyLink_setJointType(btMultibodyLink* obj, eFeatherstoneJointType value)
 {
-	obj->is_revolute = value;
+	obj->m_jointType = value;
 }
-
-void btMultibodyLink_setJoint_pos(btMultibodyLink* obj, btScalar value)
-{
-	obj->joint_pos = value;
-}
-
-void btMultibodyLink_setJoint_torque(btMultibodyLink* obj, btScalar value)
-{
-	obj->joint_torque = value;
-}
-
+*/
 void btMultibodyLink_setMass(btMultibodyLink* obj, btScalar value)
 {
-	obj->mass = value;
+	obj->m_mass = value;
 }
 
 void btMultibodyLink_setParent(btMultibodyLink* obj, int value)
 {
-	obj->parent = value;
+	obj->m_parent = value;
 }
 
-void btMultibodyLink_setZero_rot_parent_to_this(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setPosVarCount(btMultibodyLink* obj, int value)
 {
-	QUATERNION_IN(value, &obj->zero_rot_parent_to_this);
+	obj->m_posVarCount = value;
+}
+
+void btMultibodyLink_setZeroRotParentToThis(btMultibodyLink* obj, const btScalar* value)
+{
+	QUATERNION_IN(value, &obj->m_zeroRotParentToThis);
 }
 
 void btMultibodyLink_updateCache(btMultibodyLink* obj)
 {
 	obj->updateCache();
+}
+
+void btMultibodyLink_updateCacheMultiDof(btMultibodyLink* obj)
+{
+	obj->updateCacheMultiDof();
+}
+
+void btMultibodyLink_updateCacheMultiDof2(btMultibodyLink* obj, btScalar* pq)
+{
+	obj->updateCacheMultiDof(pq);
 }
 
 void btMultibodyLink_delete(btMultibodyLink* obj)

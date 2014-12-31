@@ -18,15 +18,16 @@ namespace BulletSharpGen
 
     class WrapperWriter
     {
-        protected Dictionary<string, HeaderDefinition> headerDefinitions = new Dictionary<string, HeaderDefinition>();
+        protected IEnumerable<HeaderDefinition> headerDefinitions;
         protected string NamespaceName { get; private set; }
 
         protected StreamWriter headerWriter, sourceWriter, csWriter;
         protected StringBuilder bufferBuilder = new StringBuilder();
+        protected bool hasHeaderWhiteSpace;
         protected bool hasSourceWhiteSpace;
         protected bool hasCSWhiteSpace;
 
-        public WrapperWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public WrapperWriter(IEnumerable<HeaderDefinition> headerDefinitions, string namespaceName)
         {
             this.headerDefinitions = headerDefinitions;
             this.NamespaceName = namespaceName;

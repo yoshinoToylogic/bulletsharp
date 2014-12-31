@@ -7,7 +7,9 @@
 #define pFindPointer void*
 #define pFinishSerialization void*
 #define pGetBufferPointer void*
+#define pGetChunk void*
 #define pGetCurrentBufferSize void*
+#define pGetNumChunks void*
 #define pGetSerializationFlags void*
 #define pGetUniquePointer void*
 #define pRegisterNameForPointer void*
@@ -23,7 +25,9 @@ typedef const char*(*pFindNameForPointer)(const void* ptr);
 typedef void*(*pFindPointer)(void* oldPtr);
 typedef void(*pFinishSerialization)();
 typedef const unsigned char*(*pGetBufferPointer)();
+typedef btChunk*(*pGetChunk)(int chunkIndex);
 typedef int(*pGetCurrentBufferSize)();
+typedef int(*pGetNumChunks)();
 typedef int(*pGetSerializationFlags)();
 typedef void*(*pGetUniquePointer)(void*oldPtr);
 typedef void(*pRegisterNameForPointer)(const void* ptr, const char* name);
@@ -40,7 +44,9 @@ private:
 	pFindPointer _findPointerCallback;
 	pFinishSerialization _finishSerializationCallback;
 	pGetBufferPointer _getBufferPointerCallback;
+	pGetChunk _getChunkCallback;
 	pGetCurrentBufferSize _getCurrentBufferSizeCallback;
+	pGetNumChunks _getNumChunksCallback;
 	pGetSerializationFlags _getSerializationFlagsCallback;
 	pGetUniquePointer _getUniquePointerCallback;
 	pRegisterNameForPointer _registerNameForPointerCallback;
@@ -53,7 +59,8 @@ public:
 
 	btSerializerWrapper(void* serializerGCHandle, pAllocate allocateCallback, pFinalizeChunk finalizeChunkCallback,
 		pFindNameForPointer findNameForPointerCallback, pFindPointer findPointerCallback, pFinishSerialization finishSerializationCallback,
-		pGetBufferPointer getBufferPointerCallback, pGetCurrentBufferSize getCurrentBufferSizeCallback,
+		pGetBufferPointer getBufferPointerCallback, pGetChunk getChunkCallback,
+		pGetCurrentBufferSize getCurrentBufferSizeCallback, pGetNumChunks getNumChunksCallback,
 		pGetSerializationFlags getSerializationFlagsCallback, pGetUniquePointer getUniquePointerCallback,
 		pRegisterNameForPointer registerNameForPointerCallback, pSerializeName serializeNameCallback,
 		pSetSerializationFlags setSerializationFlagsCallback, pStartSerialization startSerializationCallback);
@@ -64,7 +71,9 @@ public:
 	virtual void* findPointer(void* oldPtr);
 	virtual void finishSerialization();
 	virtual const unsigned char* getBufferPointer() const;
+	virtual btChunk* getChunk(int chunkIndex) const;
 	virtual int getCurrentBufferSize() const;
+	virtual int getNumChunks() const;
 	virtual int getSerializationFlags() const;
 	virtual void* getUniquePointer(void*oldPtr);
 	virtual void registerNameForPointer(const void* ptr, const char* name);

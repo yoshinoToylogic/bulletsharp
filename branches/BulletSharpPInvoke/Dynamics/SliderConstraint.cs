@@ -7,29 +7,26 @@ namespace BulletSharp
 {
 	public class SliderConstraint : TypedConstraint
 	{
-        private RigidBody _rigidBodyA;
-        private RigidBody _rigidBodyB;
-
-        public SliderConstraint(RigidBody rbA, RigidBody rbB, ref Matrix frameInA, ref Matrix frameInB, bool useLinearReferenceFrameA)
-            : base(btSliderConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+        public SliderConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, ref Matrix frameInA, ref Matrix frameInB, bool useLinearReferenceFrameA)
+            : base(btSliderConstraint_new(rigidBodyA._native, rigidBodyB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
         {
-            _rigidBodyA = rbA;
-            _rigidBodyB = rbB;
+            _rigidBodyA = rigidBodyA;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public SliderConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
-			: this(rbA, rbB, ref frameInA, ref frameInB, useLinearReferenceFrameA)
+		public SliderConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
+			: this(rigidBodyA, rigidBodyB, ref frameInA, ref frameInB, useLinearReferenceFrameA)
 		{
 		}
 
-        public SliderConstraint(RigidBody rbB, ref Matrix frameInB, bool useLinearReferenceFrameA)
-            : base(btSliderConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameA))
+        public SliderConstraint(RigidBody rigidBodyB, ref Matrix frameInB, bool useLinearReferenceFrameA)
+            : base(btSliderConstraint_new2(rigidBodyB._native, ref frameInB, useLinearReferenceFrameA))
         {
-            _rigidBodyB = rbB;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public SliderConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameA)
-			: this(rbB, ref frameInB, useLinearReferenceFrameA)
+		public SliderConstraint(RigidBody rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameA)
+			: this(rigidBodyB, ref frameInB, useLinearReferenceFrameA)
 		{
 		}
 

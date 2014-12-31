@@ -731,24 +731,6 @@
     <ClCompile Include="src\btCollisionAlgorithm_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Win32ThreadSupport_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpuGatheringCollisionTask_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpuGatheringCollisionDispatcher_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btThreadSupportInterface_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\btParallelConstraintSolver_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\SpuCollisionTaskProcess_wrap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\btVehicleRaycaster_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

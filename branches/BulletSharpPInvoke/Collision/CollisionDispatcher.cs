@@ -45,7 +45,7 @@ namespace BulletSharp
         {
             System.Diagnostics.Debug.Assert(dispatcher == _native);
 
-            _nearCallback(new BroadphasePair(collisionPair, true), this, new DispatcherInfo(dispatchInfo, true));
+            _nearCallback(new BroadphasePair(collisionPair), this, new DispatcherInfo(dispatchInfo, true));
         }
 
         public void RegisterCollisionCreateFunc(BroadphaseNativeType proxyType0, BroadphaseNativeType proxyType1, CollisionAlgorithmCreateFunc createFunc)

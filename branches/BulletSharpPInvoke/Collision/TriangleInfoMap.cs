@@ -86,11 +86,13 @@ namespace BulletSharp
 
 	public class TriangleInfoMap : IDisposable
 	{
-	    internal IntPtr _native;
+        internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal TriangleInfoMap(IntPtr native)
+		internal TriangleInfoMap(IntPtr native, bool preventDelete)
 		{
-		    _native = native;
+            _native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public TriangleInfoMap()
@@ -159,7 +161,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-                btTriangleInfoMap_delete(_native);
+                if (!_preventDelete)
+                {
+                    btTriangleInfoMap_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

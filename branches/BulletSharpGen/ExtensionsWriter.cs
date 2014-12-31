@@ -13,7 +13,7 @@ namespace BulletSharpGen
 
         List<KeyValuePair<string, string>> _extensionMethods = new List<KeyValuePair<string, string>>();
 
-        public ExtensionsWriter(Dictionary<string, HeaderDefinition> headerDefinitions, string namespaceName)
+        public ExtensionsWriter(IEnumerable<HeaderDefinition> headerDefinitions, string namespaceName)
             : base(headerDefinitions, namespaceName)
         {
             _extensionClassesInternal.Add("Matrix3x3", "BulletSharp.Math.Matrix");
@@ -74,7 +74,7 @@ namespace BulletSharpGen
         {
             string outDirectory = NamespaceName + "_extensions";
 
-            foreach (HeaderDefinition header in headerDefinitions.Values)
+            foreach (HeaderDefinition header in headerDefinitions)
             {
                 bool headerNeedsExtensions = false;
                 foreach (var c in header.Classes)
