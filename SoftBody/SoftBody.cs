@@ -6,11 +6,12 @@ using BulletSharp.Math;
 
 namespace BulletSharp.SoftBody
 {
-	public class SoftBodyWorldInfo
+	public class SoftBodyWorldInfo : IDisposable
 	{
 		internal IntPtr _native;
         private bool _preventDelete;
 
+        private BroadphaseInterface _broadphase;
         private Dispatcher _dispatcher;
         private SparseSdf _sparseSdf;
 
@@ -33,8 +34,12 @@ namespace BulletSharp.SoftBody
 
 		public BroadphaseInterface Broadphase
 		{
-            get { return BroadphaseInterface.GetManaged(btSoftBodyWorldInfo_getBroadphase(_native)); }
-			set { btSoftBodyWorldInfo_setBroadphase(_native, (value != null) ? value._native : IntPtr.Zero); }
+            get { return _broadphase; }
+            set
+            {
+                _broadphase = value;
+                btSoftBodyWorldInfo_setBroadphase(_native, (value != null) ? value._native : IntPtr.Zero); 
+            }
 		}
 
 		public Dispatcher Dispatcher
@@ -109,7 +114,10 @@ namespace BulletSharp.SoftBody
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btSoftBodyWorldInfo_delete(_native);
+                if (!_preventDelete)
+                {
+                    btSoftBodyWorldInfo_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}
@@ -394,8 +402,8 @@ namespace BulletSharp.SoftBody
 
         private IControl _iControl;
 
-        internal AJoint(IntPtr native)
-            : base(native)
+		internal AJoint(IntPtr native)
+			: base(native)
 		{
 		}
 
@@ -763,8 +771,8 @@ namespace BulletSharp.SoftBody
 	{
         private Vector3Array _rPos;
 
-        internal CJoint(IntPtr native)
-            : base(native)
+		internal CJoint(IntPtr native)
+			: base(native)
 		{
 		}
 
@@ -2126,10 +2134,10 @@ namespace BulletSharp.SoftBody
 			static extern void btSoftBody_LJoint_Specs_setPosition(IntPtr obj, [In] ref Vector3 value);
 		}
 
-	    private Vector3Array _rPos;
+        private Vector3Array _rPos;
 
-        internal LJoint(IntPtr native)
-            : base(native)
+		internal LJoint(IntPtr native)
+			: base(native)
 		{
 		}
 
@@ -4330,14 +4338,7 @@ namespace BulletSharp.SoftBody
 
 		public SoftBodyWorldInfo WorldInfo
 		{
-            get
-            {
-                if (_worldInfo == null)
-                {
-                    _worldInfo = new SoftBodyWorldInfo(btSoftBody_getWorldInfo(_native), true);
-                }
-                return _worldInfo;
-            }
+            get { return _worldInfo; }
             set
             {
                 _worldInfo = value;

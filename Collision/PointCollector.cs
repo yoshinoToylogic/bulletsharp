@@ -7,11 +7,6 @@ namespace BulletSharp
 {
 	public class PointCollector : DiscreteCollisionDetectorInterface.Result
 	{
-		internal PointCollector(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public PointCollector()
 			: base(btPointCollector_new())
 		{

@@ -52,29 +52,26 @@ namespace BulletSharp
 
 	public class Point2PointConstraint : TypedConstraint
 	{
-        private RigidBody _rigidBodyA;
-        private RigidBody _rigidBodyB;
-
-        public Point2PointConstraint(RigidBody rbA, RigidBody rbB, ref Vector3 pivotInA, ref Vector3 pivotInB)
-            : base(btPoint2PointConstraint_new(rbA._native, rbB._native, ref pivotInA, ref pivotInB))
+        public Point2PointConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, ref Vector3 pivotInA, ref Vector3 pivotInB)
+            : base(btPoint2PointConstraint_new(rigidBodyA._native, rigidBodyB._native, ref pivotInA, ref pivotInB))
         {
-            _rigidBodyA = rbA;
-            _rigidBodyB = rbB;
+            _rigidBodyA = rigidBodyA;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public Point2PointConstraint(RigidBody rbA, RigidBody rbB, Vector3 pivotInA, Vector3 pivotInB)
-			: this(rbA, rbB, ref pivotInA, ref pivotInB)
+		public Point2PointConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, Vector3 pivotInA, Vector3 pivotInB)
+			: this(rigidBodyA, rigidBodyB, ref pivotInA, ref pivotInB)
 		{
 		}
 
-        public Point2PointConstraint(RigidBody rbA, ref Vector3 pivotInA)
-            : base(btPoint2PointConstraint_new2(rbA._native, ref pivotInA))
+        public Point2PointConstraint(RigidBody rigidBodyA, ref Vector3 pivotInA)
+            : base(btPoint2PointConstraint_new2(rigidBodyA._native, ref pivotInA))
         {
-            _rigidBodyA = rbA;
+            _rigidBodyA = rigidBodyA;
         }
 
-		public Point2PointConstraint(RigidBody rbA, Vector3 pivotInA)
-			: this(rbA, ref pivotInA)
+		public Point2PointConstraint(RigidBody rigidBodyA, Vector3 pivotInA)
+			: this(rigidBodyA, ref pivotInA)
 		{
 		}
 

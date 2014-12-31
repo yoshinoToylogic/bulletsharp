@@ -48,8 +48,9 @@ namespace BulletSharp
 
 	public class CollisionObject : IDisposable
 	{
-		internal readonly IntPtr _native;
+		internal IntPtr _native;
         private bool _isDisposed;
+        private BroadphaseProxy _broadphaseHandle;
         protected CollisionShape _collisionShape;
 
         internal static CollisionObject GetManaged(IntPtr obj)
@@ -65,15 +66,15 @@ namespace BulletSharp
                 return GCHandle.FromIntPtr(userPtr).Target as CollisionObject;
             }
 
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Unknown collision object!");
         }
 
-        internal CollisionObject(IntPtr obj)
-        {
-            _native = obj;
+		internal CollisionObject(IntPtr native)
+		{
+			_native = native;
             GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
             btCollisionObject_setUserPointer(_native, GCHandle.ToIntPtr(handle));
-        }
+		}
 
 		public CollisionObject()
             : this(btCollisionObject_new())
@@ -184,8 +185,12 @@ namespace BulletSharp
 
 		public BroadphaseProxy BroadphaseHandle
 		{
-            get { return BroadphaseProxy.GetManaged(btCollisionObject_getBroadphaseHandle(_native)); }
-            set { btCollisionObject_setBroadphaseHandle(_native, value != null ? value._native : IntPtr.Zero); }
+            get { return _broadphaseHandle; }
+            set
+            {
+                _broadphaseHandle = value;
+                btCollisionObject_setBroadphaseHandle(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
 		}
 
 		public float CcdMotionThreshold
@@ -334,6 +339,12 @@ namespace BulletSharp
 
         public object UserObject { get; set; }
 
+		public int UserIndex
+		{
+			get { return btCollisionObject_getUserIndex(_native); }
+			set { btCollisionObject_setUserIndex(_native, value); }
+		}
+
 		public Matrix WorldTransform
 		{
 			get
@@ -445,6 +456,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btCollisionObject_getRollingFriction(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btCollisionObject_getUserIndex(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionObject_getUserPointer(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_getWorldTransform(IntPtr obj, [Out] out Matrix worldTrans);
@@ -518,6 +531,8 @@ namespace BulletSharp
 		static extern void btCollisionObject_setRestitution(IntPtr obj, float rest);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_setRollingFriction(IntPtr obj, float frict);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCollisionObject_setUserIndex(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionObject_setUserPointer(IntPtr obj, IntPtr userPointer);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

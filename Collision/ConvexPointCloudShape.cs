@@ -7,12 +7,7 @@ namespace BulletSharp
 {
 	public class ConvexPointCloudShape : PolyhedralConvexAabbCachingShape
 	{
-	    private Vector3Array _unscaledPoints;
-
-		internal ConvexPointCloudShape(IntPtr native)
-			: base(native)
-		{
-		}
+        private Vector3Array _unscaledPoints;
 
 		public ConvexPointCloudShape()
 			: base(btConvexPointCloudShape_new())

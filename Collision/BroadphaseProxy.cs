@@ -37,11 +37,11 @@ namespace BulletSharp
         ///used for demo integration FAST/Swift collision library and Bullet
         FAST_CONCAVE_MESH_PROXYTYPE,
         //terrain
-        TERRAIN_SHAPE_PROXYTYPE,
+        TerrainShape,
         ///Used for GIMPACT Trimesh integration
         GImpactShape,
         ///Multimaterial mesh
-        MULTIMATERIAL_TRIANGLE_MESH_PROXYTYPE,
+        MultiMaterialTriangleMesh,
 
         EmptyShape,
         StaticPlane,
@@ -71,15 +71,14 @@ namespace BulletSharp
         AllFilter = -1
     }
 
-	public class BroadphaseProxy : IDisposable
+	public class BroadphaseProxy
 	{
 		internal IntPtr _native;
-	    private readonly bool _preventDelete;
+        private Object _clientObject;
 
-		internal BroadphaseProxy(IntPtr native, bool preventDelete = false)
+		internal BroadphaseProxy(IntPtr native)
 		{
 			_native = native;
-            _preventDelete = preventDelete;
 		}
 
         internal static BroadphaseProxy GetManaged(IntPtr native)
@@ -88,9 +87,17 @@ namespace BulletSharp
             {
                 return null;
             }
-            return new BroadphaseProxy(native, true);
-        }
 
+            IntPtr clientObjectPtr = btBroadphaseProxy_getClientObject(native);
+            if (clientObjectPtr != IntPtr.Zero) {
+                CollisionObject clientObject = CollisionObject.GetManaged(clientObjectPtr);
+                return clientObject.BroadphaseHandle;
+            }
+
+            throw new InvalidOperationException("Unknown broadphase proxy!");
+            //return new BroadphaseProxy(native);
+        }
+/*
 		public BroadphaseProxy()
 		{
 			_native = btBroadphaseProxy_new();
@@ -115,7 +122,7 @@ namespace BulletSharp
             : this(ref aabbMin, ref aabbMax, userPtr, collisionFilterGroup, collisionFilterMask, multiSapParentProxy)
         {
         }
-
+*/
         public static bool IsCompound(BroadphaseNativeType proxyType)
 		{
 			return btBroadphaseProxy_isCompound(proxyType);
@@ -178,20 +185,29 @@ namespace BulletSharp
 			set { btBroadphaseProxy_setAabbMin(_native, ref value); }
 		}
 
-		public Object ClientObject
+        public Object ClientObject
 		{
-			get { return CollisionObject.GetManaged(btBroadphaseProxy_getClientObject(_native)); }
-		    set
-		    {
-		        if (value != null)
-		        {
-		            btBroadphaseProxy_setClientObject(_native, (value as CollisionObject)._native);
-		        }
-		        else
-		        {
+            get
+            {
+                IntPtr clientObjectPtr = btBroadphaseProxy_getClientObject(_native);
+                if (clientObjectPtr != IntPtr.Zero)
+                {
+                    _clientObject = CollisionObject.GetManaged(clientObjectPtr);
+                }
+                return _clientObject;
+            }
+            set
+            {
+                if (value is CollisionObject)
+                {
+                    btBroadphaseProxy_setClientObject(_native, (value as CollisionObject)._native);
+                }
+                else if (value == null)
+                {
                     btBroadphaseProxy_setClientObject(_native, IntPtr.Zero);
-		        }
-		    }
+                }
+                _clientObject = value;
+            }
 		}
 
         public CollisionFilterGroups CollisionFilterGroup
@@ -221,29 +237,6 @@ namespace BulletSharp
 		{
 			get { return btBroadphaseProxy_getUniqueId(_native); }
 			set { btBroadphaseProxy_setUniqueId(_native, value); }
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-                if (!_preventDelete)
-                {
-                    btBroadphaseProxy_delete(_native);
-                }
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~BroadphaseProxy()
-		{
-			Dispose(false);
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -310,17 +303,15 @@ namespace BulletSharp
 		static extern void btBroadphaseProxy_delete(IntPtr obj);
 	}
 
-	public class BroadphasePair : IDisposable
+	public class BroadphasePair
 	{
 		internal IntPtr _native;
-        bool _preventDelete;
 
-		internal BroadphasePair(IntPtr native, bool preventDelete = false)
+		internal BroadphasePair(IntPtr native)
 		{
 			_native = native;
-            _preventDelete = preventDelete;
 		}
-
+/*
 		public BroadphasePair()
 		{
 			_native = btBroadphasePair_new();
@@ -335,7 +326,7 @@ namespace BulletSharp
 		{
 			_native = btBroadphasePair_new3(proxy0._native, proxy1._native);
 		}
-
+*/
 		public CollisionAlgorithm Algorithm
 		{
             get
@@ -343,42 +334,19 @@ namespace BulletSharp
                 IntPtr valuePtr = btBroadphasePair_getAlgorithm(_native);
                 return (valuePtr == IntPtr.Zero) ? null : new CollisionAlgorithm(valuePtr, true);
             }
-			set { btBroadphasePair_setAlgorithm(_native, (value._native == IntPtr.Zero) ? IntPtr.Zero : value._native); }
+            set { btBroadphasePair_setAlgorithm(_native, (value._native == IntPtr.Zero) ? IntPtr.Zero : value._native); }
 		}
 
-		public BroadphaseProxy Proxy0
+        public BroadphaseProxy Proxy0
 		{
             get { return BroadphaseProxy.GetManaged(btBroadphasePair_getPProxy0(_native)); }
 			set { btBroadphasePair_setPProxy0(_native, value._native); }
 		}
 
-		public BroadphaseProxy Proxy1
+        public BroadphaseProxy Proxy1
 		{
             get { return BroadphaseProxy.GetManaged(btBroadphasePair_getPProxy1(_native)); }
 			set { btBroadphasePair_setPProxy1(_native, value._native); }
-		}
-
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-                if (!_preventDelete)
-                {
-                    btBroadphasePair_delete(_native);
-                }
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~BroadphasePair()
-		{
-			Dispose(false);
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

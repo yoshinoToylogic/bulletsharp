@@ -11,11 +11,6 @@ namespace BulletSharp
 		{
 			internal IntPtr _native;
 
-			internal ClosestPointInput(IntPtr native)
-			{
-				_native = native;
-			}
-
 			public ClosestPointInput()
 			{
 				_native = btDiscreteCollisionDetectorInterface_ClosestPointInput_new();

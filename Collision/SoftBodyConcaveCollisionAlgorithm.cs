@@ -153,11 +153,6 @@ namespace BulletSharp
 	{
 		public class CreateFunc : CollisionAlgorithmCreateFunc
 		{
-			internal CreateFunc(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public CreateFunc()
 				: base(btSoftBodyConcaveCollisionAlgorithm_CreateFunc_new())
 			{
@@ -169,11 +164,6 @@ namespace BulletSharp
 
 		public class SwappedCreateFunc : CollisionAlgorithmCreateFunc
 		{
-			internal SwappedCreateFunc(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public SwappedCreateFunc()
 				: base(btSoftBodyConcaveCollisionAlgorithm_SwappedCreateFunc_new())
 			{

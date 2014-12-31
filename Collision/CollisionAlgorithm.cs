@@ -8,13 +8,8 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-	    private Dispatcher _dispatcher;
+        private Dispatcher _dispatcher;
         private PersistentManifold _manifold;
-
-		internal CollisionAlgorithmConstructionInfo(IntPtr native)
-		{
-			_native = native;
-		}
 
 		public CollisionAlgorithmConstructionInfo()
 		{
@@ -23,28 +18,28 @@ namespace BulletSharp
 
 		public CollisionAlgorithmConstructionInfo(Dispatcher dispatcher, int temp)
 		{
-		    _dispatcher = dispatcher;
+            _dispatcher = dispatcher;
             _native = btCollisionAlgorithmConstructionInfo_new2((dispatcher != null) ? dispatcher._native : IntPtr.Zero, temp);
 		}
 
-		public Dispatcher Dispatcher1
+        public Dispatcher Dispatcher
 		{
             get { return _dispatcher; }
-		    set
-		    {
-		        _dispatcher = value;
+            set
+            {
+                _dispatcher = value;
                 btCollisionAlgorithmConstructionInfo_setDispatcher1(_native, (value != null) ? value._native : IntPtr.Zero);
-		    }
+            }
 		}
 
 		public PersistentManifold Manifold
 		{
             get { return _manifold; }
-		    set
-		    {
-		        _manifold = value;
-		        btCollisionAlgorithmConstructionInfo_setManifold(_native, (value != null) ? value._native : IntPtr.Zero);
-		    }
+            set
+            {
+                _manifold = value;
+                btCollisionAlgorithmConstructionInfo_setManifold(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
 		}
 
 		public void Dispose()
@@ -86,7 +81,7 @@ namespace BulletSharp
 	public class CollisionAlgorithm : IDisposable
 	{
 		internal IntPtr _native;
-	    private readonly bool _preventDelete;
+        private readonly bool _preventDelete;
 
 		internal CollisionAlgorithm(IntPtr native, bool preventDelete = false)
 		{
@@ -100,9 +95,9 @@ namespace BulletSharp
 		}
 
         public void GetAllContactManifolds(AlignedManifoldArray manifoldArray)
-        {
-            btCollisionAlgorithm_getAllContactManifolds(_native, manifoldArray._native);
-        }
+		{
+			btCollisionAlgorithm_getAllContactManifolds(_native, manifoldArray._native);
+		}
 
 		public void ProcessCollision(CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, DispatcherInfo dispatchInfo, ManifoldResult resultOut)
 		{

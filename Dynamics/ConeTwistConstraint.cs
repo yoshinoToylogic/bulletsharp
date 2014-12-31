@@ -7,29 +7,26 @@ namespace BulletSharp
 {
 	public class ConeTwistConstraint : TypedConstraint
 	{
-        private RigidBody _rigidBodyA;
-        private RigidBody _rigidBodyB;
-
-        public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, ref Matrix rbAFrame, ref Matrix rbBFrame)
-            : base(btConeTwistConstraint_new(rbA._native, rbB._native, ref rbAFrame, ref rbBFrame))
+        public ConeTwistConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, ref Matrix rigidBodyAFrame, ref Matrix rigidBodyBFrame)
+            : base(btConeTwistConstraint_new(rigidBodyA._native, rigidBodyB._native, ref rigidBodyAFrame, ref rigidBodyBFrame))
         {
-            _rigidBodyA = rbA;
-            _rigidBodyB = rbB;
+            _rigidBodyA = rigidBodyA;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public ConeTwistConstraint(RigidBody rbA, RigidBody rbB, Matrix rbAFrame, Matrix rbBFrame)
-			: this(rbA, rbB, ref rbAFrame, ref rbBFrame)
+		public ConeTwistConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, Matrix rigidBodyAFrame, Matrix rigidBodyBFrame)
+			: this(rigidBodyA, rigidBodyB, ref rigidBodyAFrame, ref rigidBodyBFrame)
 		{
 		}
 
-        public ConeTwistConstraint(RigidBody rbA, ref Matrix rbAFrame)
-            : base(btConeTwistConstraint_new2(rbA._native, ref rbAFrame))
+        public ConeTwistConstraint(RigidBody rigidBodyA, ref Matrix rigidBodyAFrame)
+            : base(btConeTwistConstraint_new2(rigidBodyA._native, ref rigidBodyAFrame))
         {
-            _rigidBodyA = rbA;
+            _rigidBodyA = rigidBodyA;
         }
 
-		public ConeTwistConstraint(RigidBody rbA, Matrix rbAFrame)
-			: this(rbA, ref rbAFrame)
+		public ConeTwistConstraint(RigidBody rigidBodyA, Matrix rigidBodyAFrame)
+            : this(rigidBodyA, ref rigidBodyAFrame)
 		{
 		}
 

@@ -73,7 +73,7 @@ namespace BulletSharp
     public class AlignedCollisionObjectArray : IList<CollisionObject>
     {
         private IntPtr _native;
-        private IntPtr _collisionWorld;
+        private CollisionWorld _collisionWorld;
         private List<CollisionObject> _backingList;
 
         internal AlignedCollisionObjectArray(IntPtr native)
@@ -81,7 +81,7 @@ namespace BulletSharp
             _native = native;
         }
 
-        internal AlignedCollisionObjectArray(IntPtr native, IntPtr collisionWorld)
+        internal AlignedCollisionObjectArray(IntPtr native, CollisionWorld collisionWorld)
         {
             _native = native;
             if (collisionWorld != null)
@@ -136,17 +136,17 @@ namespace BulletSharp
                     {
                         return;
                     }
-                    btDynamicsWorld_addRigidBody(_collisionWorld, item._native);
+                    btDynamicsWorld_addRigidBody(_collisionWorld._native, item._native);
                 }
                 else if (item is BulletSharp.SoftBody.SoftBody)
                 {
-                    btSoftRigidDynamicsWorld_addSoftBody(_collisionWorld, item._native);
+                    btSoftRigidDynamicsWorld_addSoftBody(_collisionWorld._native, item._native);
                 }
                 else
                 {
-                    btCollisionWorld_addCollisionObject(_collisionWorld, item._native);
+                    btCollisionWorld_addCollisionObject(_collisionWorld._native, item._native);
                 }
-
+                SetBodyBroadphaseHandle(item, _collisionWorld.Broadphase);
                 _backingList.Add(item);
             }
             else
@@ -163,17 +163,17 @@ namespace BulletSharp
                 {
                     return;
                 }
-                btDynamicsWorld_addRigidBody2(_collisionWorld, item._native, group, mask);
+                btDynamicsWorld_addRigidBody2(_collisionWorld._native, item._native, group, mask);
             }
             else if (item is BulletSharp.SoftBody.SoftBody)
             {
-                btSoftRigidDynamicsWorld_addSoftBody3(_collisionWorld, item._native, group, mask);
+                btSoftRigidDynamicsWorld_addSoftBody3(_collisionWorld._native, item._native, group, mask);
             }
             else
             {
-                btCollisionWorld_addCollisionObject3(_collisionWorld, item._native, group, mask);
+                btCollisionWorld_addCollisionObject3(_collisionWorld._native, item._native, group, mask);
             }
-
+            SetBodyBroadphaseHandle(item, _collisionWorld.Broadphase);
             _backingList.Add(item);
         }
 
@@ -238,16 +238,17 @@ namespace BulletSharp
                 {
                     if (item is BulletSharp.SoftBody.SoftBody)
                     {
-                        btSoftRigidDynamicsWorld_removeSoftBody(_collisionWorld, itemPtr);
+                        btSoftRigidDynamicsWorld_removeSoftBody(_collisionWorld._native, itemPtr);
                     }
                     else if (item is RigidBody)
                     {
-                        btDynamicsWorld_removeRigidBody(_collisionWorld, itemPtr);
+                        btDynamicsWorld_removeRigidBody(_collisionWorld._native, itemPtr);
                     }
                     else
                     {
-                        btCollisionWorld_removeCollisionObject(_collisionWorld, itemPtr);
+                        btCollisionWorld_removeCollisionObject(_collisionWorld._native, itemPtr);
                     }
+                    _backingList[i].BroadphaseHandle = null;
                     count--;
 
                     // Swap the last item with the item to be removed like Bullet does.
@@ -262,11 +263,46 @@ namespace BulletSharp
             return false;
         }
 
+        private void SetBodyBroadphaseHandle(CollisionObject item, BroadphaseInterface broadphase)
+        {
+            if (broadphase is DbvtBroadphase)
+            {
+                item.BroadphaseHandle = new DbvtProxy(btCollisionObject_getBroadphaseHandle(item._native));
+            }
+            // TODO: implement AxisSweep3::Handle
+            /*
+	        else if (broadphase is AxisSweep3)
+            {
+		        item.BroadphaseHandle = new BroadphaseProxy(btCollisionObject_getBroadphaseHandle(item._native));
+	        }
+            else if (broadphase is AxisSweep3_32Bit)
+            {
+		        item.BroadphaseHandle = new BroadphaseProxy(btCollisionObject_getBroadphaseHandle(item._native));
+	        }
+            */
+	        // TODO: implement AxisSweep3::Handle
+	        /*
+	        if (dynamic_cast<btAxisSweep3*>(broadphase)) {
+		        item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+	        }
+	        else if (dynamic_cast<bt32BitAxisSweep3*>(broadphase)) {
+		        item->BroadphaseHandle = gcnew BroadphaseProxy(item->_native->getBroadphaseHandle());
+	        }*/
+	        else if (broadphase is SimpleBroadphase)
+            {
+                item.BroadphaseHandle = new SimpleBroadphaseProxy(btCollisionObject_getBroadphaseHandle(item._native));
+	        }
+            else
+            {
+                item.BroadphaseHandle = new BroadphaseProxy(btCollisionObject_getBroadphaseHandle(item._native));
+	        }
+        }
+
         public IEnumerator<CollisionObject> GetEnumerator()
         {
             if (_backingList != null)
             {
-                return new AlignedCollisionObjectArrayEnumerator(_backingList);
+                return _backingList.GetEnumerator();
             }
             else
             {
@@ -278,7 +314,7 @@ namespace BulletSharp
         {
             if (_backingList != null)
             {
-                return new AlignedCollisionObjectArrayEnumerator(_backingList);
+                return _backingList.GetEnumerator();
             }
             else
             {
@@ -298,11 +334,16 @@ namespace BulletSharp
         protected static extern void btAlignedCollisionObjectArray_delete(IntPtr obj);
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCollisionObject_getBroadphaseHandle(IntPtr obj);
+
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_addCollisionObject(IntPtr obj, IntPtr collisionObject);
         //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         //static extern void btCollisionWorld_addCollisionObject2(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_addCollisionObject3(IntPtr obj, IntPtr collisionObject, short collisionFilterGroup, short collisionFilterMask);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btCollisionWorld_getBroadphase(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_removeCollisionObject(IntPtr obj, IntPtr collisionObject);
 

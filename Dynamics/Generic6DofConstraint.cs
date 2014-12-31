@@ -21,9 +21,9 @@ namespace BulletSharp
 			_native = btRotationalLimitMotor_new();
 		}
 
-		public RotationalLimitMotor(RotationalLimitMotor limot)
+		public RotationalLimitMotor(RotationalLimitMotor limitMotor)
 		{
-			_native = btRotationalLimitMotor_new2(limot._native);
+			_native = btRotationalLimitMotor_new2(limitMotor._native);
 		}
 
 		public bool NeedApplyTorques()
@@ -536,8 +536,6 @@ namespace BulletSharp
 
 	public class Generic6DofConstraint : TypedConstraint
 	{
-        protected RigidBody _rigidBodyA;
-        protected RigidBody _rigidBodyB;
         private RotationalLimitMotor[] _angularLimits = new RotationalLimitMotor[3];
         private TranslationalLimitMotor _linearLimits;
 
@@ -546,26 +544,26 @@ namespace BulletSharp
 		{
 		}
 
-        public Generic6DofConstraint(RigidBody rbA, RigidBody rbB, ref Matrix frameInA, ref Matrix frameInB, bool useLinearReferenceFrameA)
-            : base(btGeneric6DofConstraint_new(rbA._native, rbB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
+        public Generic6DofConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, ref Matrix frameInA, ref Matrix frameInB, bool useLinearReferenceFrameA)
+            : base(btGeneric6DofConstraint_new(rigidBodyA._native, rigidBodyB._native, ref frameInA, ref frameInB, useLinearReferenceFrameA))
         {
-            _rigidBodyA = rbA;
-            _rigidBodyB = rbB;
+            _rigidBodyA = rigidBodyA;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public Generic6DofConstraint(RigidBody rbA, RigidBody rbB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
-			: this(rbA, rbB, ref frameInA, ref frameInB, useLinearReferenceFrameA)
+		public Generic6DofConstraint(RigidBody rigidBodyA, RigidBody rigidBodyB, Matrix frameInA, Matrix frameInB, bool useLinearReferenceFrameA)
+			: this(rigidBodyA, rigidBodyB, ref frameInA, ref frameInB, useLinearReferenceFrameA)
 		{
 		}
 
-        public Generic6DofConstraint(RigidBody rbB, ref Matrix frameInB, bool useLinearReferenceFrameB)
-            : base(btGeneric6DofConstraint_new2(rbB._native, ref frameInB, useLinearReferenceFrameB))
+        public Generic6DofConstraint(RigidBody rigidBodyB, ref Matrix frameInB, bool useLinearReferenceFrameB)
+            : base(btGeneric6DofConstraint_new2(rigidBodyB._native, ref frameInB, useLinearReferenceFrameB))
         {
-            _rigidBodyB = rbB;
+            _rigidBodyB = rigidBodyB;
         }
 
-		public Generic6DofConstraint(RigidBody rbB, Matrix frameInB, bool useLinearReferenceFrameB)
-			: this(rbB, ref frameInB, useLinearReferenceFrameB)
+		public Generic6DofConstraint(RigidBody rigidBodyB, Matrix frameInB, bool useLinearReferenceFrameB)
+			: this(rigidBodyB, ref frameInB, useLinearReferenceFrameB)
 		{
 		}
 
@@ -589,14 +587,14 @@ namespace BulletSharp
 			btGeneric6DofConstraint_calculateTransforms2(_native);
 		}
 
-		public int GetLimitMotorInfo2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, out Vector3 ax1, int rotational)
+		public int GetLimitMotorInfo2(RotationalLimitMotor limitMotor, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, out Vector3 ax1, int rotational)
 		{
-			return btGeneric6DofConstraint_get_limit_motor_info2(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, out ax1, rotational);
+			return btGeneric6DofConstraint_get_limit_motor_info2(_native, limitMotor._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, out ax1, rotational);
 		}
 
-		public int GetLimitMotorInfo2(RotationalLimitMotor limot, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, out Vector3 ax1, int rotational, int rotAllowed)
+		public int GetLimitMotorInfo2(RotationalLimitMotor limitMotor, Matrix transA, Matrix transB, Vector3 linVelA, Vector3 linVelB, Vector3 angVelA, Vector3 angVelB, ConstraintInfo2 info, int row, out Vector3 ax1, int rotational, int rotAllowed)
 		{
-			return btGeneric6DofConstraint_get_limit_motor_info22(_native, limot._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, out ax1, rotational, rotAllowed);
+			return btGeneric6DofConstraint_get_limit_motor_info22(_native, limitMotor._native, ref transA, ref transB, ref linVelA, ref linVelB, ref angVelA, ref angVelB, info._native, row, out ax1, rotational, rotAllowed);
 		}
 
 		public float GetAngle(int axisIndex)

@@ -89,11 +89,6 @@ namespace BulletSharp
 	{
 		public class CreateFunc : CollisionAlgorithmCreateFunc
 		{
-			internal CreateFunc(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public CreateFunc()
 				: base(btConvexConcaveCollisionAlgorithm_CreateFunc_new())
 			{
@@ -105,11 +100,6 @@ namespace BulletSharp
 
 		public class SwappedCreateFunc : CollisionAlgorithmCreateFunc
 		{
-			internal SwappedCreateFunc(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public SwappedCreateFunc()
 				: base(btConvexConcaveCollisionAlgorithm_SwappedCreateFunc_new())
 			{
@@ -117,11 +107,6 @@ namespace BulletSharp
 
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern IntPtr btConvexConcaveCollisionAlgorithm_SwappedCreateFunc_new();
-		}
-
-		internal ConvexConcaveCollisionAlgorithm(IntPtr native)
-			: base(native)
-		{
 		}
 
 		public ConvexConcaveCollisionAlgorithm(CollisionAlgorithmConstructionInfo ci, CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, bool isSwapped)

@@ -8,11 +8,6 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		internal OverlapCallback(IntPtr native)
-		{
-			_native = native;
-		}
-
 		public bool ProcessOverlap(BroadphasePair pair)
 		{
 			return btOverlapCallback_processOverlap(_native, pair._native);
@@ -91,7 +86,7 @@ namespace BulletSharp
         OverlappingPairCallback _ghostPairCallback;
         AlignedBroadphasePairArray _overlappingPairArray;
 
-		internal OverlappingPairCache(IntPtr native, bool preventDelete = false)
+		internal OverlappingPairCache(IntPtr native, bool preventDelete)
             : base(native, preventDelete)
 		{
 		}
@@ -108,14 +103,14 @@ namespace BulletSharp
 
 		public BroadphasePair FindPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
 		{
-            return new BroadphasePair(btOverlappingPairCache_findPair(_native, proxy0._native, proxy1._native), true);
+            return new BroadphasePair(btOverlappingPairCache_findPair(_native, proxy0._native, proxy1._native));
 		}
-
+        /*
 		public void ProcessAllOverlappingPairs(OverlapCallback __unnamed0, Dispatcher dispatcher)
 		{
 			btOverlappingPairCache_processAllOverlappingPairs(_native, __unnamed0._native, dispatcher._native);
 		}
-
+        */
 		public void SetInternalGhostPairCallback(OverlappingPairCallback ghostPairCallback)
 		{
             _ghostPairCallback = ghostPairCallback;
@@ -154,7 +149,6 @@ namespace BulletSharp
                 return _overlappingPairArray;
             }
 		}
-        
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOverlappingPairCache_cleanOverlappingPair(IntPtr obj, IntPtr pair, IntPtr dispatcher);
@@ -183,13 +177,13 @@ namespace BulletSharp
 
 	public class HashedOverlappingPairCache : OverlappingPairCache
 	{
-		internal HashedOverlappingPairCache(IntPtr native, bool preventDelete = false)
+		internal HashedOverlappingPairCache(IntPtr native, bool preventDelete)
 			: base(native, preventDelete)
 		{
 		}
 
 		public HashedOverlappingPairCache()
-			: base(btHashedOverlappingPairCache_new())
+			: base(btHashedOverlappingPairCache_new(), false)
 		{
 		}
 
@@ -222,12 +216,12 @@ namespace BulletSharp
 	public class SortedOverlappingPairCache : OverlappingPairCache
 	{
 		internal SortedOverlappingPairCache(IntPtr native)
-			: base(native)
+			: base(native, true)
 		{
 		}
 
 		public SortedOverlappingPairCache()
-			: base(btSortedOverlappingPairCache_new())
+			: base(btSortedOverlappingPairCache_new(), false)
 		{
 		}
 
@@ -253,12 +247,12 @@ namespace BulletSharp
 	public class NullPairCache : OverlappingPairCache
 	{
 		internal NullPairCache(IntPtr native)
-			: base(native)
+			: base(native, true)
 		{
 		}
 
 		public NullPairCache()
-			: base(btNullPairCache_new())
+			: base(btNullPairCache_new(), false)
 		{
 		}
 

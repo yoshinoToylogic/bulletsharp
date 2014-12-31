@@ -26,7 +26,7 @@ namespace BulletSharp
         StopCfm
     }
 
-	public class JointFeedback
+	public class JointFeedback : IDisposable
 	{
 		internal IntPtr _native;
 
@@ -370,6 +370,9 @@ namespace BulletSharp
 
         internal IntPtr _native;
 
+        protected RigidBody _rigidBodyA;
+        protected RigidBody _rigidBodyB;
+
         internal static TypedConstraint GetManaged(IntPtr native)
         {
             if (native == IntPtr.Zero)
@@ -381,8 +384,8 @@ namespace BulletSharp
             return GCHandle.FromIntPtr(handlePtr).Target as TypedConstraint;
         }
 
-        internal TypedConstraint(IntPtr native)
-        {
+		internal TypedConstraint(IntPtr native)
+		{
             _native = native;
 
             if (btTypedConstraint_getUserConstraintId(_native) != -1)
@@ -392,7 +395,7 @@ namespace BulletSharp
 
             GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
             btTypedConstraint_setUserConstraintPtr(_native, GCHandle.ToIntPtr(handle));
-        }
+		}
 
 		public void BuildJacobian()
 		{

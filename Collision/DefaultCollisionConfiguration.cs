@@ -8,11 +8,6 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
 
-		internal DefaultCollisionConstructionInfo(IntPtr native)
-		{
-			_native = native;
-		}
-
 		public DefaultCollisionConstructionInfo()
 		{
 			_native = btDefaultCollisionConstructionInfo_new();
@@ -106,6 +101,8 @@ namespace BulletSharp
 
 	public class DefaultCollisionConfiguration : CollisionConfiguration
 	{
+        private VoronoiSimplexSolver _simplexSolver;
+
 		internal DefaultCollisionConfiguration(IntPtr native)
 			: base(native)
 		{
@@ -153,7 +150,14 @@ namespace BulletSharp
 
 		public VoronoiSimplexSolver SimplexSolver
 		{
-			get { return new VoronoiSimplexSolver(btDefaultCollisionConfiguration_getSimplexSolver(_native)); }
+            get
+            {
+                if (_simplexSolver == null)
+                {
+                    _simplexSolver = new VoronoiSimplexSolver(btDefaultCollisionConfiguration_getSimplexSolver(_native));
+                }
+                return _simplexSolver;
+            }
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -7,6 +7,9 @@ namespace BulletSharp
 {
 	public class BvhTriangleMeshShape : TriangleMeshShape
 	{
+        private OptimizedBvh _optimizedBvh;
+        private TriangleInfoMap _triangleInfoMap;
+
 		internal BvhTriangleMeshShape(IntPtr native)
 			: base(native)
 		{
@@ -83,13 +86,28 @@ namespace BulletSharp
 
 		public void SetOptimizedBvh(OptimizedBvh bvh, Vector3 localScaling)
 		{
-			btBvhTriangleMeshShape_setOptimizedBvh2(_native, bvh._native, ref localScaling);
+            btBvhTriangleMeshShape_setOptimizedBvh2(_native, (bvh != null) ? bvh._native : IntPtr.Zero, ref localScaling);
+            _optimizedBvh = bvh;
 		}
 
 		public OptimizedBvh OptimizedBvh
 		{
-			get { return new OptimizedBvh(btBvhTriangleMeshShape_getOptimizedBvh(_native)); }
-		    set { btBvhTriangleMeshShape_setOptimizedBvh(_native, value._native); }
+            get
+            {
+                if (_optimizedBvh == null)
+                {
+                    IntPtr optimizedBvhPtr = btBvhTriangleMeshShape_getOptimizedBvh(_native);
+                    if (optimizedBvhPtr != IntPtr.Zero)
+                    {
+                        _optimizedBvh = new OptimizedBvh(optimizedBvhPtr);
+                    }
+                }
+                return _optimizedBvh;
+            }
+            set
+            {
+                btBvhTriangleMeshShape_setOptimizedBvh(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
 		}
 
 		public bool OwnsBvh
@@ -99,8 +117,23 @@ namespace BulletSharp
 
 		public TriangleInfoMap TriangleInfoMap
 		{
-            get { return new TriangleInfoMap(btBvhTriangleMeshShape_getTriangleInfoMap(_native)); }
-			set { btBvhTriangleMeshShape_setTriangleInfoMap(_native, value._native); }
+            get
+            {
+                if (_triangleInfoMap == null)
+                {
+                    IntPtr triangleInfoMap = btBvhTriangleMeshShape_getTriangleInfoMap(_native);
+                    if (triangleInfoMap != IntPtr.Zero)
+                    {
+                        _triangleInfoMap = new TriangleInfoMap(triangleInfoMap, true);
+                    }
+                }
+                return _triangleInfoMap;
+            }
+            set
+            {
+                _triangleInfoMap = value;
+                btBvhTriangleMeshShape_setTriangleInfoMap(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
 		}
 
         public bool UsesQuantizedAabbCompression

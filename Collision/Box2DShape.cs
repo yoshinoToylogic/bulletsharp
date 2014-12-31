@@ -69,10 +69,10 @@ namespace BulletSharp
 		{
 			get
 			{
-			    if (_normals == null)
-			    {
+                if (_normals == null)
+                {
                     _normals = new Vector3Array(btBox2dShape_getNormals(_native), 4);
-			    }
+                }
                 return _normals;
 			}
 		}
@@ -86,9 +86,9 @@ namespace BulletSharp
 		{
 			get
 			{
-                if (_vertices == null || _vertices.Count != VertexCount)
+                if (_vertices == null)
                 {
-                    _vertices = new Vector3Array(btBox2dShape_getVertices(_native), VertexCount);
+                    _vertices = new Vector3Array(btBox2dShape_getVertices(_native), 4);
                 }
                 return _vertices;
 			}

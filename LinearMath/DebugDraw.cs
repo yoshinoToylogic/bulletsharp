@@ -81,6 +81,46 @@ namespace BulletSharp
         GetDebugModeUnmanagedDelegate _getDebugMode;
         SimpleCallback _cb;
 
+        internal static IntPtr CreateWrapper(IDebugDraw value, bool weakReference)
+        {
+            DrawAabbUnmanagedDelegate a = new DrawAabbUnmanagedDelegate(value.DrawAabb);
+            /*
+            _drawArc = new DrawArcUnmanagedDelegate(DrawArc);
+            _drawBox = new DrawBoxUnmanagedDelegate(DrawBox);
+            _drawCapsule = new DrawCapsuleUnmanagedDelegate(DrawCapsule);
+            _drawCone = new DrawConeUnmanagedDelegate(DrawCone);
+            _drawContactPoint = new DrawContactPointUnmanagedDelegate(DrawContactPoint);
+            _drawCylinder = new DrawCylinderUnmanagedDelegate(DrawCylinder);
+            _drawLine = new DrawLineUnmanagedDelegate(DrawLine);
+            _drawPlane = new DrawPlaneUnmanagedDelegate(DrawPlane);
+            _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphere);
+            _drawSpherePatch = new DrawSpherePatchUnmanagedDelegate(DrawSpherePatch);
+            _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransform);
+            _drawTriangle = new DrawTriangleUnmanagedDelegate(DrawTriangle);
+            _getDebugMode = new GetDebugModeUnmanagedDelegate(GetDebugModeUnmanaged);
+            _cb = new SimpleCallback(SimpleCallbackUnmanaged);
+
+            _native = btIDebugDrawWrapper_new(
+                GCHandle.ToIntPtr(GCHandle.Alloc(this)),
+                Marshal.GetFunctionPointerForDelegate(_drawAabb),
+                Marshal.GetFunctionPointerForDelegate(_drawArc),
+                Marshal.GetFunctionPointerForDelegate(_drawBox),
+                Marshal.GetFunctionPointerForDelegate(_drawCapsule),
+                Marshal.GetFunctionPointerForDelegate(_drawCone),
+                Marshal.GetFunctionPointerForDelegate(_drawContactPoint),
+                Marshal.GetFunctionPointerForDelegate(_drawCylinder),
+                Marshal.GetFunctionPointerForDelegate(_drawLine),
+                Marshal.GetFunctionPointerForDelegate(_drawPlane),
+                Marshal.GetFunctionPointerForDelegate(_drawSphere),
+                Marshal.GetFunctionPointerForDelegate(_drawSpherePatch),
+                Marshal.GetFunctionPointerForDelegate(_drawTransform),
+                Marshal.GetFunctionPointerForDelegate(_drawTriangle),
+                Marshal.GetFunctionPointerForDelegate(_getDebugMode),
+                Marshal.GetFunctionPointerForDelegate(_cb));
+            */
+            return IntPtr.Zero;
+        }
+
         internal static IntPtr GetUnmanaged(IDebugDraw debugDrawer)
         {
             if (debugDrawer == null)
@@ -127,21 +167,21 @@ namespace BulletSharp
             return DebugMode;
         }
 
-        public DebugDraw()
+        internal void InitTarget(IDebugDraw target)
         {
-            _drawAabb = new DrawAabbUnmanagedDelegate(DrawAabb);
-            _drawArc = new DrawArcUnmanagedDelegate(DrawArc);
-            _drawBox = new DrawBoxUnmanagedDelegate(DrawBox);
-            _drawCapsule = new DrawCapsuleUnmanagedDelegate(DrawCapsule);
-            _drawCone = new DrawConeUnmanagedDelegate(DrawCone);
-            _drawContactPoint = new DrawContactPointUnmanagedDelegate(DrawContactPoint);
-            _drawCylinder = new DrawCylinderUnmanagedDelegate(DrawCylinder);
-            _drawLine = new DrawLineUnmanagedDelegate(DrawLine);
-            _drawPlane = new DrawPlaneUnmanagedDelegate(DrawPlane);
-            _drawSphere = new DrawSphereUnmanagedDelegate(DrawSphere);
-            _drawSpherePatch = new DrawSpherePatchUnmanagedDelegate(DrawSpherePatch);
-            _drawTransform = new DrawTransformUnmanagedDelegate(DrawTransform);
-            _drawTriangle = new DrawTriangleUnmanagedDelegate(DrawTriangle);
+            _drawAabb = new DrawAabbUnmanagedDelegate(target.DrawAabb);
+            _drawArc = new DrawArcUnmanagedDelegate(target.DrawArc);
+            _drawBox = new DrawBoxUnmanagedDelegate(target.DrawBox);
+            _drawCapsule = new DrawCapsuleUnmanagedDelegate(target.DrawCapsule);
+            _drawCone = new DrawConeUnmanagedDelegate(target.DrawCone);
+            _drawContactPoint = new DrawContactPointUnmanagedDelegate(target.DrawContactPoint);
+            _drawCylinder = new DrawCylinderUnmanagedDelegate(target.DrawCylinder);
+            _drawLine = new DrawLineUnmanagedDelegate(target.DrawLine);
+            _drawPlane = new DrawPlaneUnmanagedDelegate(target.DrawPlane);
+            _drawSphere = new DrawSphereUnmanagedDelegate(target.DrawSphere);
+            _drawSpherePatch = new DrawSpherePatchUnmanagedDelegate(target.DrawSpherePatch);
+            _drawTransform = new DrawTransformUnmanagedDelegate(target.DrawTransform);
+            _drawTriangle = new DrawTriangleUnmanagedDelegate(target.DrawTriangle);
             _getDebugMode = new GetDebugModeUnmanagedDelegate(GetDebugModeUnmanaged);
             _cb = new SimpleCallback(SimpleCallbackUnmanaged);
 
@@ -162,6 +202,16 @@ namespace BulletSharp
                 Marshal.GetFunctionPointerForDelegate(_drawTriangle),
                 Marshal.GetFunctionPointerForDelegate(_getDebugMode),
                 Marshal.GetFunctionPointerForDelegate(_cb));
+        }
+
+        internal DebugDraw(IDebugDraw target)
+        {
+            InitTarget(target);
+        }
+
+        public DebugDraw()
+        {
+            InitTarget(this);
         }
 
         public abstract void DrawLine(ref Vector3 from, ref Vector3 to, ref Vector3 color);

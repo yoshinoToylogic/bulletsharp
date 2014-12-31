@@ -442,7 +442,9 @@ namespace BulletSharp
         /*
 		public Vector3 UnQuantize(unsigned short vecIn)
 		{
-			btQuantizedBvh_unQuantize(_native, vecIn._native);
+			Vector3 value;
+			btQuantizedBvh_unQuantize(_native, vecIn._native, out value);
+			return value;
 		}
         */
 		public static uint AlignmentSerializationPadding

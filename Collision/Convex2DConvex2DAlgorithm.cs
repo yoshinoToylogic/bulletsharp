@@ -11,11 +11,6 @@ namespace BulletSharp
             VoronoiSimplexSolver _simplexSolver;
             ConvexPenetrationDepthSolver _pdSolver;
 
-			internal CreateFunc(IntPtr native)
-				: base(native)
-			{
-			}
-
 			public CreateFunc(VoronoiSimplexSolver simplexSolver, ConvexPenetrationDepthSolver pdSolver)
 				: base(btConvex2dConvex2dAlgorithm_CreateFunc_new(simplexSolver._native, pdSolver._native))
 			{
@@ -73,11 +68,6 @@ namespace BulletSharp
 			static extern void btConvex2dConvex2dAlgorithm_CreateFunc_setPdSolver(IntPtr obj, IntPtr value);
 			[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 			static extern void btConvex2dConvex2dAlgorithm_CreateFunc_setSimplexSolver(IntPtr obj, IntPtr value);
-		}
-
-		internal Convex2DConvex2DAlgorithm(IntPtr native)
-			: base(native)
-		{
 		}
 
 		public Convex2DConvex2DAlgorithm(PersistentManifold mf, CollisionAlgorithmConstructionInfo ci, CollisionObjectWrapper body0Wrap, CollisionObjectWrapper body1Wrap, VoronoiSimplexSolver simplexSolver, ConvexPenetrationDepthSolver pdSolver, int numPerturbationIterations, int minimumPointsPerturbationThreshold)

@@ -15,23 +15,23 @@ namespace BulletSharp
 
         internal ProcessUnmanagedDelegate _process;
 
-        internal BroadphaseAabbCallback(IntPtr native)
-        {
-            _native = native;
-            _process = ProcessUnmanaged;
-        }
-
-	    protected BroadphaseAabbCallback()
+		internal BroadphaseAabbCallback(IntPtr native)
 		{
+			_native = native;
             _process = ProcessUnmanaged;
-		    _native = btBroadphaseAabbCallbackWrapper_new(
-		        Marshal.GetFunctionPointerForDelegate(_process));
 		}
 
-	    private bool ProcessUnmanaged(IntPtr proxy)
-	    {
-	        return Process(BroadphaseProxy.GetManaged(proxy));
-	    }
+        protected BroadphaseAabbCallback()
+        {
+            _process = ProcessUnmanaged;
+            _native = btBroadphaseAabbCallbackWrapper_new(
+                Marshal.GetFunctionPointerForDelegate(_process));
+        }
+
+        private bool ProcessUnmanaged(IntPtr proxy)
+        {
+            return Process(BroadphaseProxy.GetManaged(proxy));
+        }
 
 		public abstract bool Process(BroadphaseProxy proxy);
 
@@ -63,14 +63,14 @@ namespace BulletSharp
 
 	public abstract class BroadphaseRayCallback : BroadphaseAabbCallback
 	{
-	    private UIntArray _signs;
+        private UIntArray _signs;
 
-	    protected BroadphaseRayCallback()
+        protected BroadphaseRayCallback()
             : base(IntPtr.Zero)
-	    {
+        {
             _native = btBroadphaseRayCallbackWrapper_new(
                 Marshal.GetFunctionPointerForDelegate(_process));
-	    }
+        }
 
 		public float LambdaMax
 		{
@@ -123,16 +123,6 @@ namespace BulletSharp
         internal List<CollisionWorld> _worldRefs = new List<CollisionWorld>(1);
         internal bool _worldDeferredCleanup;
 
-        internal static BroadphaseInterface GetManaged(IntPtr obj)
-        {
-            if (obj == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            return new BroadphaseInterface(obj);
-        }
-
 		internal BroadphaseInterface(IntPtr native)
 		{
 			_native = native;
@@ -168,12 +158,12 @@ namespace BulletSharp
 			btBroadphaseInterface_destroyProxy(_native, proxy._native, dispatcher._native);
 		}
 
-        public void GetAabb(BroadphaseProxy proxy, out Vector3 aabbMin, out Vector3 aabbMax)
+		public void GetAabb(BroadphaseProxy proxy, out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-            btBroadphaseInterface_getAabb(_native, proxy._native, out aabbMin, out aabbMax);
+			btBroadphaseInterface_getAabb(_native, proxy._native, out aabbMin, out aabbMax);
 		}
 
-        public void GetBroadphaseAabb(out Vector3 aabbMin, out Vector3 aabbMax)
+		public void GetBroadphaseAabb(out Vector3 aabbMin, out Vector3 aabbMax)
 		{
 			btBroadphaseInterface_getBroadphaseAabb(_native, out aabbMin, out aabbMax);
 		}
@@ -220,21 +210,7 @@ namespace BulletSharp
 
 		public OverlappingPairCache OverlappingPairCache
 		{
-            get
-            {
-                if (_pairCache == null)
-                {
-                    if (this is DbvtBroadphase)
-                    {
-                        _pairCache = new HashedOverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
-                    }
-                    else
-                    {
-                        _pairCache = new OverlappingPairCache(btBroadphaseInterface_getOverlappingPairCache(_native), true);
-                    }
-                }
-                return _pairCache;
-            }
+            get { return _pairCache; }
 		}
 
 		public void Dispose()
@@ -279,7 +255,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseInterface_getBroadphaseAabb(IntPtr obj, [Out] out Vector3 aabbMin, [Out] out Vector3 aabbMax);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btBroadphaseInterface_getOverlappingPairCache(IntPtr obj);
+		internal static extern IntPtr btBroadphaseInterface_getOverlappingPairCache(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btBroadphaseInterface_printStats(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

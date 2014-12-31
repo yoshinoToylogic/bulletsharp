@@ -43,11 +43,10 @@ namespace BulletSharp
             return inertia;
         }
 
-        public void CalculateLocalInertia(float mass, out Vector3 inertia)
-        {
-            btCollisionShape_calculateLocalInertia(_native, mass, out inertia);
-        }
-
+		public void CalculateLocalInertia(float mass, out Vector3 inertia)
+		{
+			btCollisionShape_calculateLocalInertia(_native, mass, out inertia);
+		}
 		public int CalculateSerializeBufferSize()
 		{
 			return btCollisionShape_calculateSerializeBufferSize(_native);
@@ -58,9 +57,9 @@ namespace BulletSharp
             btCollisionShape_calculateTemporalAabb(_native, ref curTrans, ref linvel, ref angvel, timeStep, out temporalAabbMin, out temporalAabbMax);
         }
 
-        public void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel, float timeStep, out Vector3 temporalAabbMin, out Vector3 temporalAabbMax)
+		public void CalculateTemporalAabb(Matrix curTrans, Vector3 linvel, Vector3 angvel, float timeStep, out Vector3 temporalAabbMin, out Vector3 temporalAabbMax)
 		{
-            btCollisionShape_calculateTemporalAabb(_native, ref curTrans, ref linvel, ref angvel, timeStep, out temporalAabbMin, out temporalAabbMax);
+			btCollisionShape_calculateTemporalAabb(_native, ref curTrans, ref linvel, ref angvel, timeStep, out temporalAabbMin, out temporalAabbMax);
 		}
 
         public void GetAabb(ref Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
@@ -68,11 +67,11 @@ namespace BulletSharp
             btCollisionShape_getAabb(_native, ref t, out aabbMin, out aabbMax);
         }
 
-        public void GetAabb(Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
+		public void GetAabb(Matrix t, out Vector3 aabbMin, out Vector3 aabbMax)
 		{
-            btCollisionShape_getAabb(_native, ref t, out aabbMin, out aabbMax);
+			btCollisionShape_getAabb(_native, ref t, out aabbMin, out aabbMax);
 		}
-        
+
 		public void GetBoundingSphere(out Vector3 center, out float radius)
 		{
 			btCollisionShape_getBoundingSphere(_native, out center, out radius);
@@ -197,6 +196,12 @@ namespace BulletSharp
 
         public Object UserObject { get; set; }
 
+		public int UserIndex
+		{
+			get { return btCollisionShape_getUserIndex(_native); }
+			set { btCollisionShape_setUserIndex(_native, value); }
+		}
+
         public override bool Equals(object obj)
         {
             return object.ReferenceEquals(this, obj);
@@ -259,6 +264,8 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern BroadphaseNativeType btCollisionShape_getShapeType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern int btCollisionShape_getUserIndex(IntPtr obj);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionShape_getUserPointer(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.I1)]
@@ -292,6 +299,8 @@ namespace BulletSharp
 		static extern void btCollisionShape_setLocalScaling(IntPtr obj, [In] ref Vector3 scaling);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionShape_setMargin(IntPtr obj, float margin);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btCollisionShape_setUserIndex(IntPtr obj, int index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionShape_setUserPointer(IntPtr obj, IntPtr userPtr);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
