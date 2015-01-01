@@ -7,11 +7,6 @@ btMultiBodyLinkCollider* btMultiBodyLinkCollider_new(btMultiBody* multiBody, int
 	return new btMultiBodyLinkCollider(multiBody, link);
 }
 
-bool btMultiBodyLinkCollider_checkCollideWithOverride(btMultiBodyLinkCollider* obj, const btCollisionObject* co)
-{
-	return obj->checkCollideWithOverride(co);
-}
-
 int btMultiBodyLinkCollider_getLink(btMultiBodyLinkCollider* obj)
 {
 	return obj->m_link;

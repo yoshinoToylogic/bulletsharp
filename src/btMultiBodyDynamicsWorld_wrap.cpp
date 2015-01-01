@@ -30,6 +30,11 @@ void btMultiBodyDynamicsWorld_addMultiBodyConstraint(btMultiBodyDynamicsWorld* o
 	obj->addMultiBodyConstraint(constraint);
 }
 
+void btMultiBodyDynamicsWorld_integrateTransforms(btMultiBodyDynamicsWorld* obj, btScalar timeStep)
+{
+	obj->integrateTransforms(timeStep);
+}
+
 void btMultiBodyDynamicsWorld_removeMultiBody(btMultiBodyDynamicsWorld* obj, btMultiBody* body)
 {
 	obj->removeMultiBody(body);
