@@ -11,12 +11,7 @@ namespace BulletSharp
 		public MultiBodyLinkCollider(MultiBody multiBody, int link)
 			: base(btMultiBodyLinkCollider_new(multiBody._native, link))
 		{
-		    _multiBody = multiBody;
-		}
-
-		public bool CheckCollideWithOverride(CollisionObject co)
-		{
-			return btMultiBodyLinkCollider_checkCollideWithOverride(_native, co._native);
+            _multiBody = multiBody;
 		}
 
 		public static MultiBodyLinkCollider Upcast(CollisionObject colObj)
@@ -33,18 +28,15 @@ namespace BulletSharp
 		public MultiBody MultiBody
 		{
             get { return _multiBody; }
-		    set
-		    {
-		        btMultiBodyLinkCollider_setMultiBody(_native, value._native);
-		        _multiBody = value;
-		    }
+            set
+            {
+                btMultiBodyLinkCollider_setMultiBody(_native, value._native);
+                _multiBody = value;
+            }
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btMultiBodyLinkCollider_new(IntPtr multiBody, int link);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
-		static extern bool btMultiBodyLinkCollider_checkCollideWithOverride(IntPtr obj, IntPtr co);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btMultiBodyLinkCollider_getLink(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

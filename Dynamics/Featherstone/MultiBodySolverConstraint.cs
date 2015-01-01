@@ -10,7 +10,7 @@ namespace BulletSharp
 		internal IntPtr _native;
 
         protected MultiBody _multiBodyA;
-		protected MultiBody _multiBodyB;
+        protected MultiBody _multiBodyB;
 
 		internal MultiBodySolverConstraint(IntPtr native)
 		{

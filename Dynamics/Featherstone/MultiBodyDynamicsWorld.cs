@@ -14,11 +14,11 @@ namespace BulletSharp
 			: base(btMultiBodyDynamicsWorld_new(dispatcher._native, pairCache._native, constraintSolver._native, collisionConfiguration._native))
 		{
             _constraintSolver = constraintSolver;
-	        _dispatcher = dispatcher;
-	        _broadphase = pairCache;
+            _dispatcher = dispatcher;
+            _broadphase = pairCache;
 
-	        _bodies = new List<MultiBody>();
-	        _constraints = new List<MultiBodyConstraint>();
+            _bodies = new List<MultiBody>();
+            _constraints = new List<MultiBodyConstraint>();
 		}
 
 		public void AddMultiBody(MultiBody body)
@@ -37,6 +37,11 @@ namespace BulletSharp
 		{
 			btMultiBodyDynamicsWorld_addMultiBodyConstraint(_native, constraint._native);
             _constraints.Add(constraint);
+		}
+
+		public void IntegrateTransforms(float timeStep)
+		{
+			btMultiBodyDynamicsWorld_integrateTransforms(_native, timeStep);
 		}
 
 		public void RemoveMultiBody(MultiBody body)
@@ -61,6 +66,8 @@ namespace BulletSharp
         static extern void btMultiBodyDynamicsWorld_addMultiBody3(IntPtr obj, IntPtr body, short group, short mask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyDynamicsWorld_addMultiBodyConstraint(IntPtr obj, IntPtr constraint);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btMultiBodyDynamicsWorld_integrateTransforms(IntPtr obj, float timeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyDynamicsWorld_removeMultiBody(IntPtr obj, IntPtr body);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

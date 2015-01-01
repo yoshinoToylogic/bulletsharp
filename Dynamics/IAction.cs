@@ -12,7 +12,7 @@ namespace BulletSharp
 
     internal class ActionInterfaceWrapper
 	{
-    	internal IntPtr _native;
+		internal IntPtr _native;
         internal IAction _actionInterface;
         internal DynamicsWorld _world;
 

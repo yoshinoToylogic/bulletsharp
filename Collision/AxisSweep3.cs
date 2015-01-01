@@ -32,7 +32,8 @@ namespace BulletSharp
 		}
 
         public AxisSweep3(ref Vector3 worldAabbMin, ref Vector3 worldAabbMax, ushort maxHandles, OverlappingPairCache pairCache)
-            : base(btAxisSweep3_new3(ref worldAabbMin, ref worldAabbMax, maxHandles, pairCache._native))
+            : base(btAxisSweep3_new3(ref worldAabbMin, ref worldAabbMax, maxHandles,
+            (pairCache != null) ? pairCache._native : IntPtr.Zero))
         {
             _pairCache = (pairCache != null) ? pairCache : new HashedOverlappingPairCache(
                 btBroadphaseInterface_getOverlappingPairCache(_native), true);
@@ -44,7 +45,8 @@ namespace BulletSharp
 		}
 
         public AxisSweep3(ref Vector3 worldAabbMin, ref Vector3 worldAabbMax, ushort maxHandles, OverlappingPairCache pairCache, bool disableRaycastAccelerator)
-            : base(btAxisSweep3_new4(ref worldAabbMin, ref worldAabbMax, maxHandles, pairCache._native, disableRaycastAccelerator))
+            : base(btAxisSweep3_new4(ref worldAabbMin, ref worldAabbMax, maxHandles,
+            (pairCache != null) ? pairCache._native : IntPtr.Zero, disableRaycastAccelerator))
         {
             _pairCache = (pairCache != null) ? pairCache : new HashedOverlappingPairCache(
                 btBroadphaseInterface_getOverlappingPairCache(_native), true);
@@ -180,7 +182,8 @@ namespace BulletSharp
 		}
 
         public AxisSweep3_32Bit(ref Vector3 worldAabbMin, ref Vector3 worldAabbMax, uint maxHandles, OverlappingPairCache pairCache)
-            : base(bt32BitAxisSweep3_new3(ref worldAabbMin, ref worldAabbMax, maxHandles, pairCache._native))
+            : base(bt32BitAxisSweep3_new3(ref worldAabbMin, ref worldAabbMax, maxHandles,
+            (pairCache != null) ? pairCache._native : IntPtr.Zero))
         {
             _pairCache = (pairCache != null) ? pairCache : new HashedOverlappingPairCache(
                 btBroadphaseInterface_getOverlappingPairCache(_native), true);
@@ -192,7 +195,8 @@ namespace BulletSharp
 		}
 
 		public AxisSweep3_32Bit(ref Vector3 worldAabbMin, ref Vector3 worldAabbMax, uint maxHandles, OverlappingPairCache pairCache, bool disableRaycastAccelerator)
-			: base(bt32BitAxisSweep3_new4(ref worldAabbMin, ref worldAabbMax, maxHandles, pairCache._native, disableRaycastAccelerator))
+			: base(bt32BitAxisSweep3_new4(ref worldAabbMin, ref worldAabbMax, maxHandles,
+            (pairCache != null) ? pairCache._native : IntPtr.Zero, disableRaycastAccelerator))
 		{
             _pairCache = (pairCache != null) ? pairCache : new HashedOverlappingPairCache(
                 btBroadphaseInterface_getOverlappingPairCache(_native), true);

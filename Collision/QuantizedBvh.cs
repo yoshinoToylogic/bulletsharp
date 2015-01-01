@@ -90,7 +90,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btQuantizedBvhNode_getTriangleIndex(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btQuantizedBvhNode_isLeafNode(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btQuantizedBvhNode_setEscapeIndexOrTriangleIndex(IntPtr obj, int value);
@@ -385,9 +385,9 @@ namespace BulletSharp
 			btQuantizedBvh_deSerializeFloat(_native, quantizedBvhFloatData._native);
 		}
 
-		public static QuantizedBvh DeSerializeInPlace(IntPtr iAlignedDataBuffer, uint iDataBufferSize, bool iSwapEndian)
+		public static QuantizedBvh DeSerializeInPlace(IntPtr alignedDataBuffer, uint dataBufferSize, bool swapEndian)
 		{
-			return btQuantizedBvh_deSerializeInPlace(iAlignedDataBuffer, iDataBufferSize, iSwapEndian);
+			return btQuantizedBvh_deSerializeInPlace(alignedDataBuffer, dataBufferSize, swapEndian);
 		}
 
         static public void Quantize(unsigned short out, Vector3 point, int isMax)
@@ -415,9 +415,9 @@ namespace BulletSharp
 			btQuantizedBvh_reportRayOverlappingNodex(_native, nodeCallback._native, ref raySource, ref rayTarget);
 		}
 
-		public bool Serialize(IntPtr oAlignedDataBuffer, uint iDataBufferSize, bool iSwapEndian)
+		public bool Serialize(IntPtr alignedDataBuffer, uint dataBufferSize, bool swapEndian)
 		{
-			return btQuantizedBvh_serialize(_native, oAlignedDataBuffer, iDataBufferSize, iSwapEndian);
+			return btQuantizedBvh_serialize(_native, alignedDataBuffer, dataBufferSize, swapEndian);
 		}
 
 		public string Serialize(IntPtr dataBuffer, Serializer serializer)
@@ -515,7 +515,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btQuantizedBvh_getSubtreeInfoArray(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btQuantizedBvh_isQuantized(IntPtr obj);
 		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		//static extern void btQuantizedBvh_quantize(IntPtr obj, IntPtr out, [In] ref Vector3 point, int isMax);
@@ -528,7 +528,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btQuantizedBvh_reportRayOverlappingNodex(IntPtr obj, IntPtr nodeCallback, [In] ref Vector3 raySource, [In] ref Vector3 rayTarget);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btQuantizedBvh_serialize(IntPtr obj, IntPtr o_alignedDataBuffer, uint i_dataBufferSize, bool i_swapEndian);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btQuantizedBvh_serialize2(IntPtr obj, IntPtr dataBuffer, IntPtr serializer);
