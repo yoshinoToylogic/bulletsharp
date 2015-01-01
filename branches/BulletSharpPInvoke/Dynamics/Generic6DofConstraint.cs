@@ -187,7 +187,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRotationalLimitMotor_getDamping(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btRotationalLimitMotor_getEnableMotor(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRotationalLimitMotor_getHiLimit(IntPtr obj);
@@ -208,10 +208,10 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btRotationalLimitMotor_getTargetVelocity(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btRotationalLimitMotor_isLimited(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btRotationalLimitMotor_needApplyTorques(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btRotationalLimitMotor_setAccumulatedImpulse(IntPtr obj, float value);
@@ -495,10 +495,10 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTranslationalLimitMotor_getUpperLimit(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btTranslationalLimitMotor_isLimited(IntPtr obj, int limitIndex);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btTranslationalLimitMotor_needApplyForce(IntPtr obj, int limitIndex);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTranslationalLimitMotor_setAccumulatedImpulse(IntPtr obj, [In] ref Vector3 value);
@@ -826,13 +826,13 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btGeneric6DofConstraint_getTranslationalLimitMotor(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btGeneric6DofConstraint_getUseFrameOffset(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btGeneric6DofConstraint_getUseSolveConstraintObsolete(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btGeneric6DofConstraint_isLimited(IntPtr obj, int limitIndex);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_setAngularLowerLimit(IntPtr obj, [In] ref Vector3 angularLower);
@@ -853,7 +853,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_setUseSolveConstraintObsolete(IntPtr obj, bool value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btGeneric6DofConstraint_testAngularLimitMotor(IntPtr obj, int axis_index);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btGeneric6DofConstraint_updateRHS(IntPtr obj, float timeStep);

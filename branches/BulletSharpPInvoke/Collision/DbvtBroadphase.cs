@@ -66,7 +66,7 @@ namespace BulletSharp
 		}
 
 		public DbvtBroadphase(OverlappingPairCache pairCache)
-            : base(btDbvtBroadphase_new2(pairCache._native))
+            : base(btDbvtBroadphase_new2((pairCache != null) ? pairCache._native : IntPtr.Zero))
 		{
             _pairCache = (pairCache != null) ? pairCache : new HashedOverlappingPairCache(
                 btBroadphaseInterface_getOverlappingPairCache(_native), true);

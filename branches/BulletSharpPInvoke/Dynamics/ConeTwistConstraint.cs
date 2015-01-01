@@ -274,7 +274,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btConeTwistConstraint_getTwistSpan(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btConeTwistConstraint_isPastSwingLimit(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_setAngularOnly(IntPtr obj, bool angularOnly);

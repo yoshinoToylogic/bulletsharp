@@ -3,7 +3,6 @@
 extern "C"
 {
 	EXPORT btMultiBodyLinkCollider* btMultiBodyLinkCollider_new(btMultiBody* multiBody, int link);
-	EXPORT bool btMultiBodyLinkCollider_checkCollideWithOverride(btMultiBodyLinkCollider* obj, const btCollisionObject* co);
 	EXPORT int btMultiBodyLinkCollider_getLink(btMultiBodyLinkCollider* obj);
 	EXPORT btMultiBody* btMultiBodyLinkCollider_getMultiBody(btMultiBodyLinkCollider* obj);
 	EXPORT void btMultiBodyLinkCollider_setLink(btMultiBodyLinkCollider* obj, int value);

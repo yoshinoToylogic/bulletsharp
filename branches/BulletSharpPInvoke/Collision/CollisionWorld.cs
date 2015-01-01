@@ -683,7 +683,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern uint btCollisionWorld_RayResultCallback_getFlags(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionWorld_RayResultCallback_hasHit(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btCollisionWorld_RayResultCallback_setClosestHitFraction(IntPtr obj, float value);
@@ -1048,7 +1048,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionWorld_getDispatchInfo(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        [return: MarshalAs(UnmanagedType.I1)]
+		[return: MarshalAs(UnmanagedType.I1)]
 		static extern bool btCollisionWorld_getForceUpdateAllAabbs(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btCollisionWorld_getNumCollisionObjects(IntPtr obj);
