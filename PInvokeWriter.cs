@@ -147,6 +147,11 @@ namespace BulletSharpGen
             // DllImport clause
             WriteTabs(level + 1, WriteTo.Buffer);
             WriteLine("[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]", WriteTo.Buffer);
+            if (method.ReturnType != null && method.ReturnType.ManagedName.Equals("bool"))
+            {
+                WriteTabs(level + 1, WriteTo.Buffer);
+                WriteLine("[return: MarshalAs(UnmanagedType.I1)]", WriteTo.Buffer);
+            }
             WriteTabs(level + 1, WriteTo.Buffer);
             Write("static extern ", WriteTo.Buffer);
 
