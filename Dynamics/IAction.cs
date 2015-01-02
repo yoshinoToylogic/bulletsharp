@@ -21,12 +21,7 @@ namespace BulletSharp
 
         DebugDrawUnmanagedDelegate _debugDraw;
         UpdateActionUnmanagedDelegate _updateAction;
-        /*
-		internal ActionInterface(IntPtr native)
-		{
-			_native = native;
-		}
-        */
+
         public ActionInterfaceWrapper(IAction actionInterface, DynamicsWorld world)
         {
             _actionInterface = actionInterface;
@@ -38,17 +33,6 @@ namespace BulletSharp
             _native = btActionInterfaceWrapper_new(GCHandle.ToIntPtr(GCHandle.Alloc(this)),
                 Marshal.GetFunctionPointerForDelegate(_debugDraw),
                 Marshal.GetFunctionPointerForDelegate(_updateAction));
-        }
-
-        internal static IAction GetManaged(IntPtr native)
-        {
-            if (native == IntPtr.Zero)
-            {
-                return null;
-            }
-
-            IntPtr handle = btActionInterfaceWrapper_getGCHandle(native);
-            return GCHandle.FromIntPtr(handle).Target as IAction;
         }
 
         private void DebugDrawUnmanaged(IntPtr debugDrawer)
@@ -71,8 +55,6 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-                IntPtr handle = btActionInterfaceWrapper_getGCHandle(_native);
-                GCHandle.FromIntPtr(handle).Free();
 				btActionInterface_delete(_native);
 				_native = IntPtr.Zero;
 			}
@@ -85,9 +67,6 @@ namespace BulletSharp
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btActionInterfaceWrapper_new(IntPtr actionInterfaceGCHandle, IntPtr debugDrawCallback, IntPtr updateActionCallback);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btActionInterfaceWrapper_getGCHandle(IntPtr obj);
-
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btActionInterface_delete(IntPtr obj);
     }
