@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BulletSharpGen
 {
@@ -34,6 +35,20 @@ namespace BulletSharpGen
         }
 
         public string ManagedName { get; set; }
+
+        public IEnumerable<ClassDefinition> AllSubClasses
+        {
+            get
+            {
+                List<ClassDefinition> subClasses = new List<ClassDefinition>();
+                foreach (ClassDefinition cl in Classes)
+                {
+                    subClasses.AddRange(cl.AllSubClasses);
+                    subClasses.Add(cl);
+                }
+                return subClasses;
+            }
+        }
 
         public string FullName
         {

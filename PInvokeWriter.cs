@@ -8,18 +8,32 @@ namespace BulletSharpGen
     class PInvokeWriter : WrapperWriter
     {
         bool hasClassSeparatingWhitespace;
+        Dictionary<string, string> wrapperHeaderGuards = new Dictionary<string, string>();
 
         public PInvokeWriter(IEnumerable<HeaderDefinition> headerDefinitions, string namespaceName)
             : base(headerDefinitions, namespaceName)
         {
+            wrapperHeaderGuards.Add("btActionInterface", "_BT_ACTION_INTERFACE_H");
+            wrapperHeaderGuards.Add("btBroadphaseAabbCallback", "BT_BROADPHASE_INTERFACE_H");
+            wrapperHeaderGuards.Add("btBroadphaseRayCallback", "BT_BROADPHASE_INTERFACE_H");
+            wrapperHeaderGuards.Add("ContactResultCallback", "BT_COLLISION_WORLD_H");
+            wrapperHeaderGuards.Add("ConvexResultCallback", "BT_COLLISION_WORLD_H");
+            wrapperHeaderGuards.Add("RayResultCallback", "BT_COLLISION_WORLD_H");
+            wrapperHeaderGuards.Add("btIDebugDraw", "BT_IDEBUG_DRAW__H");
+            wrapperHeaderGuards.Add("btMotionState", "BT_MOTIONSTATE_H");
+            wrapperHeaderGuards.Add("btSerializer", "BT_SERIALIZER_H");
+            wrapperHeaderGuards.Add("btInternalTriangleIndexCallback", "BT_TRIANGLE_CALLBACK_H");
+            wrapperHeaderGuards.Add("btTriangleCallback", "BT_TRIANGLE_CALLBACK_H");
+            wrapperHeaderGuards.Add("IControl", "_BT_SOFT_BODY_H");
+            wrapperHeaderGuards.Add("ImplicitFn", "_BT_SOFT_BODY_H");
         }
 
-        void WriteType(TypeRefDefinition type)
+        void WriteType(TypeRefDefinition type, WriteTo writeTo)
         {
             if (type.IsBasic)
             {
-                Write(type.Name.Replace("::", "_"), WriteTo.Header);
-                Write(type.Name, WriteTo.Source);
+                Write(type.Name.Replace("::", "_"), writeTo & WriteTo.Header);
+                Write(type.Name, writeTo & WriteTo.Source);
             }
             else if (type.HasTemplateTypeParameter)
             {
@@ -32,7 +46,7 @@ namespace BulletSharpGen
                 {
                     if (type.Referenced.IsConst) // || type.IsConst
                     {
-                        Write("const ", WriteTo.Header | WriteTo.Source);
+                        Write("const ", writeTo);
                     }
 
                     typeName = BulletParser.GetTypeName(type.Referenced) ?? string.Empty;
@@ -41,20 +55,20 @@ namespace BulletSharpGen
                 {
                     if (type.IsConst)
                     {
-                        Write("const ", WriteTo.Header | WriteTo.Source);
+                        Write("const ", writeTo);
                     }
 
                     typeName = BulletParser.GetTypeName(type);
                 }
                 if (type.Target != null && type.Target.IsPureEnum)
                 {
-                    Write(typeName + "::" + type.Target.Enum.Name, WriteTo.Source);
-                    Write(typeName.Replace("::", "_"), WriteTo.Header);
+                    Write(typeName + "::" + type.Target.Enum.Name, writeTo & WriteTo.Source);
+                    Write(typeName.Replace("::", "_"), writeTo & WriteTo.Header);
                 }
                 else
                 {
-                    Write(typeName + '*', WriteTo.Source);
-                    Write(typeName.Replace("::", "_") + '*', WriteTo.Header);
+                    Write(typeName + '*', writeTo & WriteTo.Source);
+                    Write(typeName.Replace("::", "_") + '*', writeTo & WriteTo.Header);
                 }
             }
         }
@@ -169,7 +183,7 @@ namespace BulletSharpGen
                 {
                     Write("static ", cs);
                 }
-                WriteType(method.ReturnType);
+                WriteType(method.ReturnType, WriteTo.Header | WriteTo.Source);
                 if (cs != 0)
                 {
                     WriteTypeCS((returnParamMethod != null) ? returnParamMethod.ReturnType : method.ReturnType);
@@ -259,7 +273,7 @@ namespace BulletSharpGen
                         Write("out ", cs);
                     }
                 }
-                WriteType(param.Type);
+                WriteType(param.Type, WriteTo.Header | WriteTo.Source);
                 if (cs != 0 && !isCsFinalParameter)
                 {
                     WriteTypeCS(param.Type);
@@ -664,6 +678,11 @@ namespace BulletSharpGen
                 return;
             }
 
+            if (wrapperHeaderGuards.ContainsKey(c.Name))
+            {
+                WriteClassWrapper(c);
+            }
+
             EnsureWhiteSpace(WriteTo.Source | WriteTo.CS);
 
             // Write class definition
@@ -686,7 +705,7 @@ namespace BulletSharpGen
             // Write child classes
             if (c.Classes.Count != 0)
             {
-                foreach (ClassDefinition cl in c.Classes)
+                foreach (ClassDefinition cl in c.Classes.OrderBy(x => x.FullNameManaged))
                 {
                     WriteClass(cl, level + 1);
                 }
@@ -694,8 +713,7 @@ namespace BulletSharpGen
 
             if (!hasClassSeparatingWhitespace)
             {
-                headerWriter.WriteLine();
-                sourceWriter.WriteLine();
+                WriteLine(WriteTo.Header | WriteTo.Source);
                 hasClassSeparatingWhitespace = true;
             }
 
@@ -805,6 +823,257 @@ namespace BulletSharpGen
             hasClassSeparatingWhitespace = false;
         }
 
+        public void WriteClassWrapperMethodPointers(ClassDefinition cl)
+        {
+            List<MethodDefinition> baseAbstractMethods;
+            List<MethodDefinition> thisAbstractMethods = cl.Methods.Where(x => x.IsVirtual).ToList();
+            List<MethodDefinition> abstractMethods = thisAbstractMethods.ToList();
+            if (cl.BaseClass != null)
+            {
+                baseAbstractMethods = cl.BaseClass.Target.Methods.Where(x => x.IsVirtual).ToList();
+                abstractMethods.AddRange(baseAbstractMethods);
+            }
+            else
+            {
+                baseAbstractMethods = new List<MethodDefinition>();
+            }
+
+            foreach (MethodDefinition method in thisAbstractMethods)
+            {
+                WriteLine(string.Format("#define p{0}_{1} void*", cl.ManagedName, method.ManagedName), WriteTo.Header);
+            }
+        }
+
+        public void WriteClassWrapperMethodDeclarations(ClassDefinition cl)
+        {
+            List<MethodDefinition> baseAbstractMethods;
+            List<MethodDefinition> thisAbstractMethods = cl.Methods.Where(x => x.IsVirtual).ToList();
+            List<MethodDefinition> abstractMethods = thisAbstractMethods.ToList();
+            if (cl.BaseClass != null)
+            {
+                baseAbstractMethods = cl.BaseClass.Target.Methods.Where(x => x.IsVirtual).ToList();
+                abstractMethods.AddRange(baseAbstractMethods);
+            }
+            else
+            {
+                baseAbstractMethods = new List<MethodDefinition>();
+            }
+
+            if (!hasClassSeparatingWhitespace)
+            {
+                WriteLine(WriteTo.Header);
+                hasClassSeparatingWhitespace = true;
+            }
+
+            string headerGuard = wrapperHeaderGuards[cl.Name];
+            foreach (MethodDefinition method in thisAbstractMethods)
+            {
+                Write(string.Format("typedef {0} (*p{1}_{2})(", method.ReturnType.Name, cl.ManagedName, method.ManagedName), WriteTo.Header);
+                int numParameters = method.Parameters.Length;
+                for (int i = 0; i < numParameters; i++)
+                {
+                    var param = method.Parameters[i];
+                    WriteType(param.Type, WriteTo.Header);
+                    Write(" ", WriteTo.Header);
+                    Write(param.Name, WriteTo.Header);
+
+                    if (i != numParameters - 1)
+                    {
+                        Write(", ", WriteTo.Header);
+                    }
+                }
+                WriteLine(");", WriteTo.Header);
+            }
+            if (thisAbstractMethods.Count != 0)
+            {
+                WriteLine(WriteTo.Header);
+            }
+            WriteLine(string.Format("class {0}Wrapper : public {0}", cl.FullNameCS), WriteTo.Header);
+            WriteLine("{", WriteTo.Header);
+            WriteLine("private:", WriteTo.Header);
+            foreach (MethodDefinition method in abstractMethods)
+            {
+                string className = baseAbstractMethods.Contains(method) ? cl.BaseClass.ManagedName : cl.ManagedName;
+                WriteLine(string.Format("\tp{0}_{1} _{2}Callback;", className, method.ManagedName, method.Name), WriteTo.Header);
+            }
+            WriteLine(WriteTo.Header);
+            WriteLine("public:", WriteTo.Header);
+
+            // Wrapper constructor
+            Write(string.Format("\t{0}Wrapper(", cl.FullNameCS), WriteTo.Header);
+            int numMethods = abstractMethods.Count;
+            for (int i = 0; i < numMethods; i++)
+            {
+                var method = abstractMethods[i];
+                string className = baseAbstractMethods.Contains(method) ? cl.BaseClass.ManagedName : cl.ManagedName;
+                Write(string.Format("p{0}_{1} {2}Callback", className, method.ManagedName, method.Name), WriteTo.Header);
+                if (i != numMethods - 1)
+                {
+                    Write(", ", WriteTo.Header);
+                }
+            }
+            WriteLine(");", WriteTo.Header);
+            WriteLine(WriteTo.Header);
+
+            foreach (MethodDefinition method in abstractMethods)
+            {
+                Write(string.Format("\tvirtual {0} {1}(", method.ReturnType.Name, method.Name), WriteTo.Header);
+                int numParameters = method.Parameters.Length;
+                for (int i = 0; i < numParameters; i++)
+                {
+                    var param = method.Parameters[i];
+                    WriteType(param.Type, WriteTo.Header);
+                    Write(" ", WriteTo.Header);
+                    Write(param.Name, WriteTo.Header);
+
+                    if (i != numParameters - 1)
+                    {
+                        Write(", ", WriteTo.Header);
+                    }
+                }
+                WriteLine(");", WriteTo.Header);
+            }
+
+            WriteLine("};", WriteTo.Header);
+            hasClassSeparatingWhitespace = false;
+        }
+
+        public void WriteClassWrapperDefinition(ClassDefinition cl)
+        {
+            List<MethodDefinition> baseAbstractMethods;
+            List<MethodDefinition> thisAbstractMethods = cl.Methods.Where(x => x.IsVirtual).ToList();
+            List<MethodDefinition> abstractMethods = thisAbstractMethods.ToList();
+            if (cl.BaseClass != null)
+            {
+                baseAbstractMethods = cl.BaseClass.Target.Methods.Where(x => x.IsVirtual).ToList();
+                abstractMethods.AddRange(baseAbstractMethods);
+            }
+            else
+            {
+                baseAbstractMethods = new List<MethodDefinition>();
+            }
+
+            EnsureWhiteSpace(WriteTo.Source);
+
+            // Wrapper C++ Constructor
+            Write(string.Format("{0}Wrapper::{0}Wrapper(", cl.Name), WriteTo.Source);
+            int numMethods = abstractMethods.Count;
+            for (int i = 0; i < numMethods; i++)
+            {
+                var method = abstractMethods[i];
+                string className = baseAbstractMethods.Contains(method) ? cl.BaseClass.ManagedName : cl.ManagedName;
+                Write(string.Format("p{0}_{1} {2}Callback", className, method.ManagedName, method.Name), WriteTo.Source);
+                if (i != numMethods - 1)
+                {
+                    Write(", ", WriteTo.Source);
+                }
+            }
+            WriteLine(')', WriteTo.Source);
+            WriteLine('{', WriteTo.Source);
+            foreach (MethodDefinition method in abstractMethods)
+            {
+                WriteLine(string.Format("\t_{0}Callback = {0}Callback;", method.Name), WriteTo.Source);
+            }
+            WriteLine('}', WriteTo.Source);
+            WriteLine(WriteTo.Source);
+
+            // Wrapper C++ methods
+            foreach (MethodDefinition method in abstractMethods)
+            {
+                Write(string.Format("{0} {1}Wrapper::{2}(", method.ReturnType.Name, cl.Name, method.Name), WriteTo.Source);
+                int numParameters = method.Parameters.Length;
+                for (int i = 0; i < numParameters; i++)
+                {
+                    var param = method.Parameters[i];
+                    WriteType(param.Type, WriteTo.Source);
+                    Write(" ", WriteTo.Source);
+                    Write(param.Name, WriteTo.Source);
+
+                    if (i != numParameters - 1)
+                    {
+                        Write(", ", WriteTo.Source);
+                    }
+                }
+                WriteLine(')', WriteTo.Source);
+                WriteLine('{', WriteTo.Source);
+                Write("\t", WriteTo.Source);
+                if (!method.IsVoid)
+                {
+                    Write("return ", WriteTo.Source);
+                }
+                Write(string.Format("_{0}Callback(", method.Name), WriteTo.Source);
+                for (int i = 0; i < numParameters; i++)
+                {
+                    var param = method.Parameters[i];
+                    Write(param.Name, WriteTo.Source);
+
+                    if (i != numParameters - 1)
+                    {
+                        Write(", ", WriteTo.Source);
+                    }
+                }
+                WriteLine(");", WriteTo.Source);
+                WriteLine('}', WriteTo.Source);
+                WriteLine(WriteTo.Source);
+            }
+            WriteLine(WriteTo.Source);
+        }
+
+        public void WriteClassWrapper(ClassDefinition cl)
+        {
+            List<MethodDefinition> baseAbstractMethods;
+            List<MethodDefinition> thisAbstractMethods = cl.Methods.Where(x => x.IsVirtual).ToList();
+            List<MethodDefinition> abstractMethods = thisAbstractMethods.ToList();
+            if (cl.BaseClass != null)
+            {
+                baseAbstractMethods = cl.BaseClass.Target.Methods.Where(x => x.IsVirtual).ToList();
+                abstractMethods.AddRange(baseAbstractMethods);
+            }
+            else
+            {
+                baseAbstractMethods = new List<MethodDefinition>();
+            }
+
+            if (!hasClassSeparatingWhitespace)
+            {
+                WriteLine(WriteTo.Header | WriteTo.Source);
+                hasClassSeparatingWhitespace = true;
+            }
+            EnsureWhiteSpace(WriteTo.Source);
+
+            // Wrapper C Constructor
+            Write("\tEXPORT ", WriteTo.Header);
+            Write(string.Format("{0}Wrapper* {0}Wrapper_new(", cl.Name), WriteTo.Header | WriteTo.Source);
+            int numMethods = abstractMethods.Count;
+            for (int i = 0; i < numMethods; i++)
+            {
+                var method = abstractMethods[i];
+                string className = baseAbstractMethods.Contains(method) ? cl.BaseClass.ManagedName : cl.ManagedName;
+                Write(string.Format("p{0}_{1} {2}Callback", className, method.ManagedName, method.Name), WriteTo.Header | WriteTo.Source);
+                if (i != numMethods - 1)
+                {
+                    Write(", ", WriteTo.Header | WriteTo.Source);
+                }
+            }
+            WriteLine(");", WriteTo.Header);
+            WriteLine(')', WriteTo.Source);
+            WriteLine('{', WriteTo.Source);
+            Write(string.Format("\treturn new {0}Wrapper(", cl.Name), WriteTo.Source);
+            for (int i = 0; i < numMethods; i++)
+            {
+                var method = abstractMethods[i];
+                Write(string.Format("{0}Callback", method.Name), WriteTo.Source);
+                if (i != numMethods - 1)
+                {
+                    Write(", ", WriteTo.Source);
+                }
+            }
+            WriteLine(");", WriteTo.Source);
+            WriteLine('}', WriteTo.Source);
+            hasClassSeparatingWhitespace = false;
+            hasSourceWhiteSpace = false;
+        }
+
         public void Output()
         {
             string outDirectoryPInvoke = NamespaceName + "_pinvoke";
@@ -831,9 +1100,6 @@ namespace BulletSharpGen
                 headerWriter = new StreamWriter(headerFile);
                 headerWriter.WriteLine("#include \"main.h\"");
                 headerWriter.WriteLine();
-                headerWriter.Write("extern \"C\"");
-                headerWriter.WriteLine();
-                headerWriter.WriteLine("{");
 
                 // C++ source file
                 var sourceFile = new FileStream(outDirectoryC + "\\" + header.Name + "_wrap.cpp", FileMode.Create, FileAccess.Write);
@@ -857,17 +1123,47 @@ namespace BulletSharpGen
                 csWriter.WriteLine("using System.Runtime.InteropServices;");
                 csWriter.WriteLine("using System.Security;");
                 csWriter.WriteLine();
+
+                // Write wrapper class headers
+                hasClassSeparatingWhitespace = true;
+                var wrappedClasses = header.AllSubClasses.Where(x => wrapperHeaderGuards.ContainsKey(x.Name)).OrderBy(x => x.FullNameCS).ToList();
+                if (wrappedClasses.Count != 0)
+                {
+                    string headerGuard = wrapperHeaderGuards[wrappedClasses[0].Name];
+                    WriteLine("#ifndef " + headerGuard, WriteTo.Header);
+                    foreach (ClassDefinition c in wrappedClasses)
+                    {
+                        WriteClassWrapperMethodPointers(c);
+                    }
+                    foreach (ClassDefinition c in wrappedClasses)
+                    {
+                        WriteLine(string.Format("#define {0}Wrapper void", c.FullNameCS), WriteTo.Header);
+                    }
+                    WriteLine("#else", WriteTo.Header);
+                    foreach (ClassDefinition c in wrappedClasses)
+                    {
+                        WriteClassWrapperMethodDeclarations(c);
+                        WriteClassWrapperDefinition(c);
+                    }
+                    WriteLine("#endif", WriteTo.Header);
+                    WriteLine(WriteTo.Header);
+                }
+
+                // Write classes
+                headerWriter.Write("extern \"C\"");
+                headerWriter.WriteLine();
+                headerWriter.WriteLine("{");
                 csWriter.Write("namespace ");
                 csWriter.WriteLine(NamespaceName);
                 csWriter.WriteLine("{");
                 hasCSWhiteSpace = true;
-
-                // Write classes
                 hasClassSeparatingWhitespace = true;
+
                 foreach (ClassDefinition c in header.Classes)
                 {
                     WriteClass(c, 1);
                 }
+
                 headerWriter.WriteLine('}');
                 csWriter.WriteLine('}');
 

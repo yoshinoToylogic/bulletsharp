@@ -357,10 +357,14 @@ namespace BulletSharpGen
                 currentMethod.IsStatic = cursor.IsStaticCxxMethod;
                 currentMethod.IsConstructor = cursor.Kind == CursorKind.Constructor;
 
-                if (cursor.IsPureVirtualCxxMethod)
+                if (cursor.IsVirtualCxxMethod)
                 {
-                    currentMethod.IsAbstract = true;
-                    currentClass.IsAbstract = true;
+                    currentMethod.IsVirtual = true;
+                    if (cursor.IsPureVirtualCxxMethod)
+                    {
+                        currentMethod.IsAbstract = true;
+                        currentClass.IsAbstract = true;
+                    }
                 }
 
                 // Check if the return type is a template
