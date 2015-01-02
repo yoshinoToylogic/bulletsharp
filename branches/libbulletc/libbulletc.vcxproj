@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGUID>{B9D4AA79-5B44-47B4-9AAC-5631428661CE}</ProjectGUID>
+    <ProjectGUID>{B238EB7B-C040-4F99-AB7C-B979F4D0309A}</ProjectGUID>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
     <ProjectName>libbulletc</ProjectName>
@@ -904,7 +904,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="ZERO_CHECK.vcxproj">
-      <Project>74B81DB7-038C-4873-93F4-C64EB3FFA2B9</Project>
+      <Project>95BE22A6-52DB-4E3E-963B-27F5C38B36B5</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
