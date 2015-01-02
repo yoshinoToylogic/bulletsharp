@@ -918,10 +918,10 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{34CE12A8-5AB2-4E19-AA9B-4B78C87055AE}</UniqueIdentifier>
+      <UniqueIdentifier>{A5F55DAB-1550-4DE3-A0DB-B1100D42E93B}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{8B65EC8A-157F-478B-9B22-E2E7E4A27E20}</UniqueIdentifier>
+      <UniqueIdentifier>{64B8DA80-383F-42F0-85BD-5FE56A8AD912}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
