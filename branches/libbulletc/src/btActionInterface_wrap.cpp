@@ -2,12 +2,10 @@
 #include <BulletDynamics/Dynamics/btActionInterface.h>
 #include <LinearMath/btIDebugDraw.h>
 
-#include "conversion.h"
 #include "btActionInterface_wrap.h"
 
-btActionInterfaceWrapper::btActionInterfaceWrapper(void* actionInterfaceGCHandle, pActionInterface_DebugDraw debugDrawCallback, pActionInterface_UpdateAction updateActionCallback)
+btActionInterfaceWrapper::btActionInterfaceWrapper(pIAction_DebugDraw debugDrawCallback, pIAction_UpdateAction updateActionCallback)
 {
-	_actionInterfaceGCHandle = actionInterfaceGCHandle;
 	_debugDrawCallback = debugDrawCallback;
 	_updateActionCallback = updateActionCallback;
 }
@@ -23,14 +21,9 @@ void btActionInterfaceWrapper::updateAction(btCollisionWorld* collisionWorld, bt
 }
 
 
-btActionInterfaceWrapper* btActionInterfaceWrapper_new(void* actionInterfaceGCHandle, pActionInterface_DebugDraw debugDrawCallback, pActionInterface_UpdateAction updateActionCallback)
+btActionInterfaceWrapper* btActionInterfaceWrapper_new(pIAction_DebugDraw debugDrawCallback, pIAction_UpdateAction updateActionCallback)
 {
-	return new btActionInterfaceWrapper(actionInterfaceGCHandle, debugDrawCallback, updateActionCallback);
-}
-
-void* btActionInterfaceWrapper_getGCHandle(btActionInterfaceWrapper* obj)
-{
-	return obj->_actionInterfaceGCHandle;
+	return new btActionInterfaceWrapper(debugDrawCallback, updateActionCallback);
 }
 
 

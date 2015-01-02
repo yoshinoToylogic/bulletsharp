@@ -7,6 +7,44 @@
 #include "conversion.h"
 #include "btSoftBody_wrap.h"
 
+btSoftBody_AJoint_IControlWrapper::btSoftBody_AJoint_IControlWrapper(pIControl_Prepare PrepareCallback, pIControl_Speed SpeedCallback)
+{
+	_prepareCallback = PrepareCallback;
+	_speedCallback = SpeedCallback;
+}
+
+void btSoftBody_AJoint_IControlWrapper::Prepare(btSoftBody::AJoint* aJoint)
+{
+	_prepareCallback(aJoint);
+}
+
+btScalar btSoftBody_AJoint_IControlWrapper::Speed(btSoftBody::AJoint* aJoint, btScalar current)
+{
+	return _speedCallback(aJoint, current);
+}
+
+void* btSoftBody_AJoint_IControlWrapper::getWrapperData()
+{
+	return _wrapperData;
+}
+
+void btSoftBody_AJoint_IControlWrapper::setWrapperData(void* data)
+{
+	_wrapperData = data;
+}
+
+
+btSoftBody_ImplicitFnWrapper::btSoftBody_ImplicitFnWrapper(pImplicitFn_Eval evalCallback)
+{
+	_evalCallback = evalCallback;
+}
+
+btScalar btSoftBody_ImplicitFnWrapper::Eval(const btVector3& x)
+{
+	return _evalCallback(x);
+}
+
+
 btSoftBodyWorldInfo* btSoftBodyWorldInfo_new()
 {
 	return new btSoftBodyWorldInfo();
@@ -103,34 +141,7 @@ void btSoftBodyWorldInfo_delete(btSoftBodyWorldInfo* obj)
 }
 
 
-btSoftBody_AJoint_IControlWrapper::btSoftBody_AJoint_IControlWrapper(pPrepare prepareCallback, pSpeed speedCallback)
-{
-	_prepareCallback = prepareCallback;
-	_speedCallback = speedCallback;
-}
-
-void btSoftBody_AJoint_IControlWrapper::Prepare(btSoftBody::AJoint* aJoint)
-{
-	return _prepareCallback(aJoint);
-}
-
-btScalar btSoftBody_AJoint_IControlWrapper::Speed(btSoftBody::AJoint* aJoint, btScalar current)
-{
-	return _speedCallback(aJoint, current);
-}
-
-void* btSoftBody_AJoint_IControlWrapper::getWrapperData()
-{
-	return _wrapperData;
-}
-
-void btSoftBody_AJoint_IControlWrapper::setWrapperData(void* data)
-{
-	_wrapperData = data;
-}
-
-
-btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pPrepare prepareCallback, pSpeed speedCallback)
+btSoftBody_AJoint_IControl* btSoftBody_AJoint_IControlWrapper_new(pIControl_Prepare prepareCallback, pIControl_Speed speedCallback)
 {
 	return ALIGNED_NEW(btSoftBody_AJoint_IControlWrapper)(prepareCallback, speedCallback);
 }
@@ -1087,20 +1098,9 @@ void btSoftBody_Feature_setMaterial(btSoftBody::Feature* obj, btSoftBody::Materi
 }
 
 
-btSoftBody_ImplicitFnWrapper::btSoftBody_ImplicitFnWrapper(pEval evalCallback)
+btSoftBody_ImplicitFn* btSoftBody_ImplicitFnWrapper_new(pImplicitFn_Eval EvalCallback)
 {
-	_evalCallback = evalCallback;
-}
-
-btScalar btSoftBody_ImplicitFnWrapper::Eval(const btVector3& x)
-{
-	return _evalCallback(x);
-}
-
-
-btSoftBody_ImplicitFn* btSoftBody_ImplicitFnWrapper_new(pEval evalCallback)
-{
-	return new btSoftBody_ImplicitFnWrapper(evalCallback);
+	return new btSoftBody_ImplicitFnWrapper(EvalCallback);
 }
 
 

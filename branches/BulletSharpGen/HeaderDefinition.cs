@@ -12,16 +12,30 @@ namespace BulletSharpGen
         public List<HeaderDefinition> Includes { get; set; }
         public List<EnumDefinition> Enums { get; set; }
 
-        public bool IsExcluded
-        {
-            get { return Classes.All(x => x.IsExcluded); }
-        }
-
         string _managedName;
         public string ManagedName
         {
             get { return _managedName ?? Name; }
             set { _managedName = value; }
+        }
+
+        public IEnumerable<ClassDefinition> AllSubClasses
+        {
+            get
+            {
+                List<ClassDefinition> subClasses = new List<ClassDefinition>();
+                foreach (ClassDefinition cl in Classes)
+                {
+                    subClasses.AddRange(cl.AllSubClasses);
+                    subClasses.Add(cl);
+                }
+                return subClasses;
+            }
+        }
+
+        public bool IsExcluded
+        {
+            get { return Classes.All(x => x.IsExcluded); }
         }
 
         public HeaderDefinition(string filename)

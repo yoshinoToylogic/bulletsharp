@@ -31,6 +31,11 @@ bool btCollisionObject_checkCollideWith(btCollisionObject* obj, const btCollisio
 	return obj->checkCollideWith(co);
 }
 
+bool btCollisionObject_checkCollideWithOverride(btCollisionObject* obj, const btCollisionObject* co)
+{
+	return obj->checkCollideWithOverride(co);
+}
+
 void btCollisionObject_forceActivationState(btCollisionObject* obj, int newState)
 {
 	obj->forceActivationState(newState);
@@ -134,6 +139,11 @@ btScalar btCollisionObject_getRestitution(btCollisionObject* obj)
 btScalar btCollisionObject_getRollingFriction(btCollisionObject* obj)
 {
 	return obj->getRollingFriction();
+}
+
+int btCollisionObject_getUserIndex(btCollisionObject* obj)
+{
+	return obj->getUserIndex();
 }
 
 void* btCollisionObject_getUserPointer(btCollisionObject* obj)
@@ -271,6 +281,11 @@ void btCollisionObject_setFriction(btCollisionObject* obj, btScalar frict)
 void btCollisionObject_setHitFraction(btCollisionObject* obj, btScalar hitFraction)
 {
 	obj->setHitFraction(hitFraction);
+}
+
+void btCollisionObject_setIgnoreCollisionCheck(btCollisionObject* obj, const btCollisionObject* co, bool ignoreCollisionCheck)
+{
+	obj->setIgnoreCollisionCheck(co, ignoreCollisionCheck);
 }
 
 void btCollisionObject_setInterpolationAngularVelocity(btCollisionObject* obj, const btScalar* angvel)

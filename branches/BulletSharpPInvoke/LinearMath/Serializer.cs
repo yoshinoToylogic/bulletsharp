@@ -108,7 +108,7 @@ namespace BulletSharp
         NoDuplicateAssert = 4
     }
 
-	public abstract class Serializer
+	public abstract class Serializer : IDisposable
 	{
         [UnmanagedFunctionPointer(Native.Conv)]
         delegate IntPtr AllocateUnmanagedDelegate(uint size, int numElements);
@@ -178,7 +178,6 @@ namespace BulletSharp
             _startSerialization = new StartSerializationUnmanagedDelegate(StartSerialization);
 
             _native = btSerializerWrapper_new(
-                GCHandle.ToIntPtr(GCHandle.Alloc(this)),
                 Marshal.GetFunctionPointerForDelegate(_allocate),
                 Marshal.GetFunctionPointerForDelegate(_finalizeChunk),
                 Marshal.GetFunctionPointerForDelegate(_findNameForPointer),
@@ -257,9 +256,6 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-                IntPtr handlePtr = btSerializerWrapper_getSerializerGCHandle(_native);
-                GCHandle.FromIntPtr(handlePtr).Free();
-
 				btSerializer_delete(_native);
 				_native = IntPtr.Zero;
 			}
@@ -271,14 +267,12 @@ namespace BulletSharp
 		}
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btSerializerWrapper_new(IntPtr serializerGCHandle, IntPtr allocateCallback,
-            IntPtr finalizeChunkCallback, IntPtr findNameForPointerCallback, IntPtr findPointerCallback,
-            IntPtr finishSerializationCallback, IntPtr getBufferPointerCallback, IntPtr getChunkCallback,
-            IntPtr getCurrentBufferSizeCallback, IntPtr getNumChunksCallback, IntPtr getSerializationFlagsCallback,
-            IntPtr getUniquePointerCallback, IntPtr registerNameForPointerCallback, IntPtr serializeNameCallback,
-            IntPtr setSerializationFlagsCallback, IntPtr startSerializationCallback);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btSerializerWrapper_getSerializerGCHandle(IntPtr obj);
+        static extern IntPtr btSerializerWrapper_new(IntPtr allocateCallback, IntPtr finalizeChunkCallback,
+            IntPtr findNameForPointerCallback, IntPtr findPointerCallback, IntPtr finishSerializationCallback,
+            IntPtr getBufferPointerCallback, IntPtr getChunkCallback, IntPtr getCurrentBufferSizeCallback,
+            IntPtr getNumChunksCallback, IntPtr getSerializationFlagsCallback, IntPtr getUniquePointerCallback,
+            IntPtr registerNameForPointerCallback, IntPtr serializeNameCallback, IntPtr setSerializationFlagsCallback,
+            IntPtr startSerializationCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSerializer_delete(IntPtr obj);
 	}
