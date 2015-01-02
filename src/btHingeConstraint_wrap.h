@@ -31,6 +31,7 @@ extern "C"
 	EXPORT int btHingeConstraint_getSolveLimit(btHingeConstraint* obj);
 	EXPORT btScalar btHingeConstraint_getUpperLimit(btHingeConstraint* obj);
 	EXPORT bool btHingeConstraint_getUseFrameOffset(btHingeConstraint* obj);
+	EXPORT bool btHingeConstraint_hasLimit(btHingeConstraint* obj);
 	EXPORT void btHingeConstraint_setAngularOnly(btHingeConstraint* obj, bool angularOnly);
 	EXPORT void btHingeConstraint_setAxis(btHingeConstraint* obj, btScalar* axisInA);
 	EXPORT void btHingeConstraint_setFrames(btHingeConstraint* obj, const btScalar* frameA, const btScalar* frameB);
@@ -44,4 +45,15 @@ extern "C"
 	EXPORT void btHingeConstraint_setUseFrameOffset(btHingeConstraint* obj, bool frameOffsetOnOff);
 	EXPORT void btHingeConstraint_testLimit(btHingeConstraint* obj, const btScalar* transA, const btScalar* transB);
 	EXPORT void btHingeConstraint_updateRHS(btHingeConstraint* obj, btScalar timeStep);
+
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new(btRigidBody* rbA, btRigidBody* rbB, const btScalar* pivotInA, const btScalar* pivotInB, const btScalar* axisInA, const btScalar* axisInB);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new2(btRigidBody* rbA, btRigidBody* rbB, const btScalar* pivotInA, const btScalar* pivotInB, const btScalar* axisInA, const btScalar* axisInB, bool useReferenceFrameA);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new3(btRigidBody* rbA, const btScalar* pivotInA, const btScalar* axisInA);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new4(btRigidBody* rbA, const btScalar* pivotInA, const btScalar* axisInA, bool useReferenceFrameA);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new5(btRigidBody* rbA, btRigidBody* rbB, const btScalar* rbAFrame, const btScalar* rbBFrame);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new6(btRigidBody* rbA, btRigidBody* rbB, const btScalar* rbAFrame, const btScalar* rbBFrame, bool useReferenceFrameA);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new7(btRigidBody* rbA, const btScalar* rbAFrame);
+	EXPORT btHingeAccumulatedAngleConstraint* btHingeAccumulatedAngleConstraint_new8(btRigidBody* rbA, const btScalar* rbAFrame, bool useReferenceFrameA);
+	EXPORT btScalar btHingeAccumulatedAngleConstraint_getAccumulatedHingeAngle(btHingeAccumulatedAngleConstraint* obj);
+	EXPORT void btHingeAccumulatedAngleConstraint_setAccumulatedHingeAngle(btHingeAccumulatedAngleConstraint* obj, btScalar accAngle);
 }

@@ -14,6 +14,7 @@ extern "C"
 	EXPORT btScalar btCollisionShape_getMargin(btCollisionShape* obj);
 	EXPORT const char* btCollisionShape_getName(btCollisionShape* obj);
 	EXPORT int btCollisionShape_getShapeType(btCollisionShape* obj);
+	EXPORT int btCollisionShape_getUserIndex(btCollisionShape* obj);
 	EXPORT void* btCollisionShape_getUserPointer(btCollisionShape* obj);
 	EXPORT bool btCollisionShape_isCompound(btCollisionShape* obj);
 	EXPORT bool btCollisionShape_isConcave(btCollisionShape* obj);
@@ -27,6 +28,7 @@ extern "C"
 	EXPORT void btCollisionShape_serializeSingleShape(btCollisionShape* obj, btSerializer* serializer);
 	EXPORT void btCollisionShape_setLocalScaling(btCollisionShape* obj, const btScalar* scaling);
 	EXPORT void btCollisionShape_setMargin(btCollisionShape* obj, btScalar margin);
+	EXPORT void btCollisionShape_setUserIndex(btCollisionShape* obj, int index);
 	EXPORT void btCollisionShape_setUserPointer(btCollisionShape* obj, void* userPtr);
 	EXPORT void btCollisionShape_delete(btCollisionShape* obj);
 }

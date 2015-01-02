@@ -64,6 +64,7 @@
 #include "btFixedConstraint_wrap.h"
 #include "btGearConstraint_wrap.h"
 #include "btGeneric6DofConstraint_wrap.h"
+#include "btGeneric6DofSpring2Constraint_wrap.h"
 #include "btGeneric6DofSpringConstraint_wrap.h"
 #include "btGeometryUtil_wrap.h"
 #include "btGhostObject_wrap.h"

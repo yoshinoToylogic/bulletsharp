@@ -7,15 +7,10 @@
 #include "conversion.h"
 #include "btCollisionWorld_wrap.h"
 
-btCollisionWorld_ContactResultCallbackWrapper::btCollisionWorld_ContactResultCallbackWrapper(pContactResultCallback_AddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
+btCollisionWorld_ContactResultCallbackWrapper::btCollisionWorld_ContactResultCallbackWrapper(pContactResultCallback_AddSingleResult addSingleResultCallback, pContactResultCallback_NeedsCollision needsCollisionCallback)
 {
 	_addSingleResultCallback = addSingleResultCallback;
 	_needsCollisionCallback = needsCollisionCallback;
-}
-
-bool btCollisionWorld_ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
-{
-	return _needsCollisionCallback(proxy0);
 }
 
 btScalar btCollisionWorld_ContactResultCallbackWrapper::addSingleResult(btManifoldPoint& cp,
@@ -25,38 +20,26 @@ btScalar btCollisionWorld_ContactResultCallbackWrapper::addSingleResult(btManifo
 	return _addSingleResultCallback(cp, colObj0Wrap, partId0, index0, colObj1Wrap, partId1, index1);
 }
 
+bool btCollisionWorld_ContactResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
+{
+	return _needsCollisionCallback(proxy0);
+}
+
 bool btCollisionWorld_ContactResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
 {
 	return btCollisionWorld_ContactResultCallback::needsCollision(proxy0);
 }
 
 
-btCollisionWorld_RayResultCallbackWrapper::btCollisionWorld_RayResultCallbackWrapper(pRayResultCallback_AddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
+btCollisionWorld_ConvexResultCallbackWrapper::btCollisionWorld_ConvexResultCallbackWrapper(pConvexResultCallback_AddSingleResult addSingleResultCallback, pConvexResultCallback_NeedsCollision needsCollisionCallback)
 {
 	_addSingleResultCallback = addSingleResultCallback;
 	_needsCollisionCallback = needsCollisionCallback;
 }
 
-bool btCollisionWorld_RayResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
+btScalar btCollisionWorld_ConvexResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalConvexResult& convexResult, bool normalInWorldSpace)
 {
-	return _needsCollisionCallback(proxy0);
-}
-
-btScalar btCollisionWorld_RayResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
-{
-	return _addSingleResultCallback(rayResult, normalInWorldSpace);
-}
-
-bool btCollisionWorld_RayResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
-{
-	return btCollisionWorld_RayResultCallback::needsCollision(proxy0);
-}
-
-
-btCollisionWorld_ConvexResultCallbackWrapper::btCollisionWorld_ConvexResultCallbackWrapper(pConvexResultCallback_AddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
-{
-	_addSingleResultCallback = addSingleResultCallback;
-	_needsCollisionCallback = needsCollisionCallback;
+	return _addSingleResultCallback(convexResult, normalInWorldSpace);
 }
 
 bool btCollisionWorld_ConvexResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
@@ -64,14 +47,31 @@ bool btCollisionWorld_ConvexResultCallbackWrapper::needsCollision(btBroadphasePr
 	return _needsCollisionCallback(proxy0);
 }
 
-btScalar btCollisionWorld_ConvexResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalConvexResult& rayResult, bool normalInWorldSpace)
+bool btCollisionWorld_ConvexResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
+{
+	return btCollisionWorld_ConvexResultCallback::needsCollision(proxy0);
+}
+
+
+btCollisionWorld_RayResultCallbackWrapper::btCollisionWorld_RayResultCallbackWrapper(pRayResultCallback_AddSingleResult addSingleResultCallback, pRayResultCallback_NeedsCollision needsCollisionCallback)
+{
+	_addSingleResultCallback = addSingleResultCallback;
+	_needsCollisionCallback = needsCollisionCallback;
+}
+
+btScalar btCollisionWorld_RayResultCallbackWrapper::addSingleResult(btCollisionWorld::LocalRayResult& rayResult, bool normalInWorldSpace)
 {
 	return _addSingleResultCallback(rayResult, normalInWorldSpace);
 }
 
-bool btCollisionWorld_ConvexResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
+bool btCollisionWorld_RayResultCallbackWrapper::needsCollision(btBroadphaseProxy* proxy0) const
 {
-	return btCollisionWorld_ConvexResultCallback::needsCollision(proxy0);
+	return _needsCollisionCallback(proxy0);
+}
+
+bool btCollisionWorld_RayResultCallbackWrapper::baseNeedsCollision(btBroadphaseProxy* proxy0) const
+{
+	return btCollisionWorld_RayResultCallback::needsCollision(proxy0);
 }
 
 
@@ -181,17 +181,6 @@ void btCollisionWorld_ClosestConvexResultCallback_setHitPointWorld(btCollisionWo
 }
 
 
-btCollisionWorld_ConvexResultCallbackWrapper* btCollisionWorld_ConvexResultCallbackWrapper_new(pConvexResultCallback_AddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
-{
-	return ALIGNED_NEW(btCollisionWorld_ConvexResultCallbackWrapper) (addSingleResultCallback, needsCollisionCallback);
-}
-
-bool btCollisionWorld_ConvexResultCallbackWrapper_needsCollision(btCollisionWorld_ConvexResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
-{
-	return obj->baseNeedsCollision(proxy0);
-}
-
-
 btCollisionWorld::ClosestRayResultCallback* btCollisionWorld_ClosestRayResultCallback_new(const btScalar* rayFromWorld, const btScalar* rayToWorld)
 {
 	VECTOR3_CONV(rayFromWorld);
@@ -240,6 +229,17 @@ void btCollisionWorld_ClosestRayResultCallback_setRayToWorld(btCollisionWorld::C
 }
 
 
+btCollisionWorld_ContactResultCallbackWrapper* btCollisionWorld_ContactResultCallbackWrapper_new(pContactResultCallback_AddSingleResult addSingleResultCallback, pContactResultCallback_NeedsCollision needsCollisionCallback)
+{
+	return new btCollisionWorld_ContactResultCallbackWrapper(addSingleResultCallback, needsCollisionCallback);
+}
+
+bool btCollisionWorld_ContactResultCallbackWrapper_needsCollision(btCollisionWorld_ContactResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
+{
+	return obj->baseNeedsCollision(proxy0);
+}
+
+
 btScalar btCollisionWorld_ContactResultCallback_addSingleResult(btCollisionWorld::ContactResultCallback* obj, btManifoldPoint* cp, const btCollisionObjectWrapper* colObj0Wrap, int partId0, int index0, const btCollisionObjectWrapper* colObj1Wrap, int partId1, int index1)
 {
 	return obj->addSingleResult(*cp, colObj0Wrap, partId0, index0, colObj1Wrap, partId1, index1);
@@ -276,12 +276,12 @@ void btCollisionWorld_ContactResultCallback_delete(btCollisionWorld::ContactResu
 }
 
 
-btCollisionWorld_ContactResultCallbackWrapper* btCollisionWorld_ContactResultCallbackWrapper_new(pContactResultCallback_AddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
+btCollisionWorld_ConvexResultCallbackWrapper* btCollisionWorld_ConvexResultCallbackWrapper_new(pConvexResultCallback_AddSingleResult addSingleResultCallback, pConvexResultCallback_NeedsCollision needsCollisionCallback)
 {
-	return new btCollisionWorld_ContactResultCallbackWrapper(addSingleResultCallback, needsCollisionCallback);
+	return ALIGNED_NEW(btCollisionWorld_ConvexResultCallbackWrapper) (addSingleResultCallback, needsCollisionCallback);
 }
 
-bool btCollisionWorld_ContactResultCallbackWrapper_needsCollision(btCollisionWorld_ContactResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
+bool btCollisionWorld_ConvexResultCallbackWrapper_needsCollision(btCollisionWorld_ConvexResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
 {
 	return obj->baseNeedsCollision(proxy0);
 }
@@ -484,6 +484,17 @@ void btCollisionWorld_LocalShapeInfo_delete(btCollisionWorld::LocalShapeInfo* ob
 }
 
 
+btCollisionWorld_RayResultCallbackWrapper* btCollisionWorld_RayResultCallbackWrapper_new(pRayResultCallback_AddSingleResult addSingleResultCallback, pRayResultCallback_NeedsCollision needsCollisionCallback)
+{
+	return ALIGNED_NEW(btCollisionWorld_RayResultCallbackWrapper) (addSingleResultCallback, needsCollisionCallback);
+}
+
+bool btCollisionWorld_RayResultCallbackWrapper_needsCollision(btCollisionWorld_RayResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
+{
+	return obj->baseNeedsCollision(proxy0);
+}
+
+
 btScalar btCollisionWorld_RayResultCallback_addSingleResult(btCollisionWorld::RayResultCallback* obj, btCollisionWorld::LocalRayResult* rayResult, bool normalInWorldSpace)
 {
 	return obj->addSingleResult(*rayResult, normalInWorldSpace);
@@ -552,17 +563,6 @@ void btCollisionWorld_RayResultCallback_setFlags(btCollisionWorld::RayResultCall
 void btCollisionWorld_RayResultCallback_delete(btCollisionWorld::RayResultCallback* obj)
 {
 	ALIGNED_FREE(obj);
-}
-
-
-btCollisionWorld_RayResultCallbackWrapper* btCollisionWorld_RayResultCallbackWrapper_new(pRayResultCallback_AddSingleResult addSingleResultCallback, pNeedsCollision needsCollisionCallback)
-{
-	return ALIGNED_NEW(btCollisionWorld_RayResultCallbackWrapper) (addSingleResultCallback, needsCollisionCallback);
-}
-
-bool btCollisionWorld_RayResultCallbackWrapper_needsCollision(btCollisionWorld_RayResultCallbackWrapper* obj, btBroadphaseProxy* proxy0)
-{
-	return obj->baseNeedsCollision(proxy0);
 }
 
 

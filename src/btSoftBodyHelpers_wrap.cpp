@@ -144,3 +144,8 @@ void btSoftBodyHelpers_DrawNodeTree3(btSoftBody* psb, btIDebugDraw* idraw, int m
 {
 	btSoftBodyHelpers::DrawNodeTree(psb, idraw, mindepth, maxdepth);
 }
+
+void btSoftBodyHelpers_ReoptimizeLinkOrder(btSoftBody* psb)
+{
+	btSoftBodyHelpers::ReoptimizeLinkOrder(psb);
+}

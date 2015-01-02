@@ -2,7 +2,6 @@
 #include <BulletCollision/CollisionDispatch/btCollisionWorld.h>
 #include <BulletCollision/CollisionDispatch/btSimulationIslandManager.h>
 
-#include "conversion.h"
 #include "btSimulationIslandManager_wrap.h"
 /*
 void btSimulationIslandManager_IslandCallback_processIsland(btSimulationIslandManager::IslandCallback* obj, * bodies, int numBodies, * manifolds, int numManifolds, int islandId)

@@ -2,7 +2,6 @@
 
 #ifndef BT_BROADPHASE_INTERFACE_H
 #define pBroadphaseAabbCallback_Process void*
-
 #define btBroadphaseAabbCallbackWrapper void
 #define btBroadphaseRayCallbackWrapper void
 #else
@@ -12,45 +11,33 @@ class btBroadphaseAabbCallbackWrapper : public btBroadphaseAabbCallback
 {
 private:
 	pBroadphaseAabbCallback_Process _processCallback;
-	void* _userInfo;
 
 public:
 	btBroadphaseAabbCallbackWrapper(pBroadphaseAabbCallback_Process processCallback);
 
 	virtual bool process(const btBroadphaseProxy* proxy);
-
-	void* getUserInfo();
-	void setUserInfo(void* userinfo);
 };
 
 class btBroadphaseRayCallbackWrapper : public btBroadphaseRayCallback
 {
 private:
 	pBroadphaseAabbCallback_Process _processCallback;
-	void* _userInfo;
 
 public:
 	btBroadphaseRayCallbackWrapper(pBroadphaseAabbCallback_Process processCallback);
 
 	virtual bool process(const btBroadphaseProxy* proxy);
-
-	void* getUserInfo();
-	void setUserInfo(void* userInfo);
 };
 #endif
 
 extern "C"
 {
 	EXPORT btBroadphaseAabbCallbackWrapper* btBroadphaseAabbCallbackWrapper_new(pBroadphaseAabbCallback_Process processCallback);
-	EXPORT void* btBroadphaseAabbCallbackWrapper_getUserInfo(btBroadphaseAabbCallbackWrapper* obj);
-	EXPORT void btBroadphaseAabbCallbackWrapper_setUserInfo(btBroadphaseAabbCallbackWrapper* obj, void* userInfo);
 
 	EXPORT bool btBroadphaseAabbCallback_process(btBroadphaseAabbCallback* obj, const btBroadphaseProxy* proxy);
 	EXPORT void btBroadphaseAabbCallback_delete(btBroadphaseAabbCallback* obj);
 
 	EXPORT btBroadphaseRayCallbackWrapper* btBroadphaseRayCallbackWrapper_new(pBroadphaseAabbCallback_Process processCallback);
-	EXPORT void* btBroadphaseRayCallbackWrapper_getUserInfo(btBroadphaseRayCallbackWrapper* obj);
-	EXPORT void btBroadphaseRayCallbackWrapper_setUserInfo(btBroadphaseRayCallbackWrapper* obj, void* userInfo);
 
 	EXPORT btScalar btBroadphaseRayCallback_getLambda_max(btBroadphaseRayCallback* obj);
 	EXPORT void btBroadphaseRayCallback_getRayDirectionInverse(btBroadphaseRayCallback* obj, btScalar* value);

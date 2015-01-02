@@ -14,16 +14,6 @@ bool btBroadphaseAabbCallbackWrapper::process(const btBroadphaseProxy* proxy)
 	return _processCallback(proxy);
 }
 
-void* btBroadphaseAabbCallbackWrapper::getUserInfo()
-{
-	return _userInfo;
-}
-
-void btBroadphaseAabbCallbackWrapper::setUserInfo(void* userInfo)
-{
-	_userInfo = userInfo;
-}
-
 
 btBroadphaseRayCallbackWrapper::btBroadphaseRayCallbackWrapper(pBroadphaseAabbCallback_Process processCallback)
 {
@@ -35,30 +25,10 @@ bool btBroadphaseRayCallbackWrapper::process(const btBroadphaseProxy* proxy)
 	return _processCallback(proxy);
 }
 
-void* btBroadphaseRayCallbackWrapper::getUserInfo()
-{
-	return _userInfo;
-}
-
-void btBroadphaseRayCallbackWrapper::setUserInfo(void* userInfo)
-{
-	_userInfo = userInfo;
-}
-
 
 btBroadphaseAabbCallbackWrapper* btBroadphaseAabbCallbackWrapper_new(pBroadphaseAabbCallback_Process processCallback)
 {
 	return new btBroadphaseAabbCallbackWrapper(processCallback);
-}
-
-void* btBroadphaseAabbCallbackWrapper_getUserInfo(btBroadphaseAabbCallbackWrapper* obj)
-{
-	return obj->getUserInfo();
-}
-
-void btBroadphaseAabbCallbackWrapper_setUserInfo(btBroadphaseAabbCallbackWrapper* obj, void* userInfo)
-{
-	obj->setUserInfo(userInfo);
 }
 
 
@@ -76,16 +46,6 @@ void btBroadphaseAabbCallback_delete(btBroadphaseAabbCallback* obj)
 btBroadphaseRayCallbackWrapper* btBroadphaseRayCallbackWrapper_new(pBroadphaseAabbCallback_Process processCallback)
 {
 	return new btBroadphaseRayCallbackWrapper(processCallback);
-}
-
-void* btBroadphaseRayCallbackWrapper_getUserInfo(btBroadphaseRayCallbackWrapper* obj)
-{
-	return obj->getUserInfo();
-}
-
-void btBroadphaseRayCallbackWrapper_setUserInfo(btBroadphaseRayCallbackWrapper* obj, void* userInfo)
-{
-	obj->setUserInfo(userInfo);
 }
 
 

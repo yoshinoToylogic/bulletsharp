@@ -3,18 +3,7 @@
 #include "conversion.h"
 #include "btTriangleCallback_wrap.h"
 
-btTriangleCallbackWrapper::btTriangleCallbackWrapper(pProcessTriangle processTriangleCallback)
-{
-	_processTriangleCallback = processTriangleCallback;
-}
-
-void btTriangleCallbackWrapper::processTriangle(btVector3* triangle, int partId, int triangleIndex)
-{
-	_processTriangleCallback(triangle, partId, triangleIndex);
-}
-
-
-btInternalTriangleIndexCallbackWrapper::btInternalTriangleIndexCallbackWrapper(pInternalProcessTriangleIndex internalProcessTriangleIndexCallback)
+btInternalTriangleIndexCallbackWrapper::btInternalTriangleIndexCallbackWrapper(pInternalTriangleIndexCallback_InternalProcessTriangleIndex internalProcessTriangleIndexCallback)
 {
 	_internalProcessTriangleIndexCallback = internalProcessTriangleIndexCallback;
 }
@@ -25,7 +14,18 @@ void btInternalTriangleIndexCallbackWrapper::internalProcessTriangleIndex(btVect
 }
 
 
-btTriangleCallbackWrapper* btTriangleCallbackWrapper_new(pProcessTriangle processTriangleCallback)
+btTriangleCallbackWrapper::btTriangleCallbackWrapper(pTriangleCallback_ProcessTriangle processTriangleCallback)
+{
+	_processTriangleCallback = processTriangleCallback;
+}
+
+void btTriangleCallbackWrapper::processTriangle(btVector3* triangle, int partId, int triangleIndex)
+{
+	_processTriangleCallback(triangle, partId, triangleIndex);
+}
+
+
+btTriangleCallbackWrapper* btTriangleCallbackWrapper_new(pTriangleCallback_ProcessTriangle processTriangleCallback)
 {
 	return new btTriangleCallbackWrapper(processTriangleCallback);
 }
@@ -36,7 +36,7 @@ void btTriangleCallback_delete(btTriangleCallback* obj)
 }
 
 
-btInternalTriangleIndexCallbackWrapper* btInternalTriangleIndexCallbackWrapper_new(pInternalProcessTriangleIndex internalProcessTriangleIndexCallback)
+btInternalTriangleIndexCallbackWrapper* btInternalTriangleIndexCallbackWrapper_new(pInternalTriangleIndexCallback_InternalProcessTriangleIndex internalProcessTriangleIndexCallback)
 {
 	return new btInternalTriangleIndexCallbackWrapper(internalProcessTriangleIndexCallback);
 }

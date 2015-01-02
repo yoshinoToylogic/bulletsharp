@@ -3,7 +3,6 @@
 #include <BulletSoftBody/btSoftBodySolvers.h>
 #include <BulletSoftBody/btSoftRigidDynamicsWorld.h>
 
-#include "conversion.h"
 #include "btSoftRigidDynamicsWorld_wrap.h"
 
 btSoftRigidDynamicsWorld* btSoftRigidDynamicsWorld_new(btDispatcher* dispatcher, btBroadphaseInterface* pairCache, btConstraintSolver* constraintSolver, btCollisionConfiguration* collisionConfiguration)

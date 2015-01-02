@@ -80,6 +80,11 @@ int btCollisionShape_getShapeType(btCollisionShape* obj)
 	return obj->getShapeType();
 }
 
+int btCollisionShape_getUserIndex(btCollisionShape* obj)
+{
+	return obj->getUserIndex();
+}
+
 void* btCollisionShape_getUserPointer(btCollisionShape* obj)
 {
 	return obj->getUserPointer();
@@ -144,6 +149,11 @@ void btCollisionShape_setLocalScaling(btCollisionShape* obj, const btScalar* sca
 void btCollisionShape_setMargin(btCollisionShape* obj, btScalar margin)
 {
 	obj->setMargin(margin);
+}
+
+void btCollisionShape_setUserIndex(btCollisionShape* obj, int index)
+{
+	obj->setUserIndex(index);
 }
 
 void btCollisionShape_setUserPointer(btCollisionShape* obj, void* userPtr)
