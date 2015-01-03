@@ -225,9 +225,11 @@
     <Compile Include="SoftBody\AlignedTetraArray.cs" />
     <Compile Include="SoftBody\AlignedFaceArray.cs" />
     <Compile Include="SoftBody\AlignedLinkArray.cs" />
+    <Compile Include="SoftBody\DefaultSoftBodySolver.cs" />
     <Compile Include="SoftBody\SoftBody.cs" />
     <Compile Include="SoftBody\SoftBodyHelpers.cs" />
     <Compile Include="SoftBody\SoftBodyRigidBodyCollisionConfiguration.cs" />
+    <Compile Include="SoftBody\SoftBodySolver.cs" />
     <Compile Include="SoftBody\SoftRigidDynamicsWorld.cs" />
     <Compile Include="SoftBody\SparseSdf.cs" />
     <Compile Include="Utilities.cs">

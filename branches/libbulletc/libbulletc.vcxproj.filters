@@ -376,6 +376,9 @@
     <ClCompile Include="src\btSoftRigidCollisionAlgorithm_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\btSoftBodySolvers_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\btSoftRigidDynamicsWorld_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -832,6 +835,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btSoftRigidCollisionAlgorithm_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btSoftBodySolvers_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btSoftRigidDynamicsWorld_wrap.h">

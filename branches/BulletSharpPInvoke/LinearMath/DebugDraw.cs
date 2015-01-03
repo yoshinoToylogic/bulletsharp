@@ -465,12 +465,6 @@ namespace BulletSharp
             DrawLine(start - zoffs, start - yoffs, color);
         }
 
-        public virtual void DrawSphere(Vector3 p, float radius, Vector3 color)
-        {
-            Matrix tr = Matrix.Translation(p);
-            DrawSphere(radius, ref tr, ref color);
-        }
-
         public virtual void DrawSphere(ref Vector3 p, float radius, ref Vector3 color)
         {
             Matrix tr = Matrix.Translation(p);

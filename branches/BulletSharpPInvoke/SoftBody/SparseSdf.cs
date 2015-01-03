@@ -8,17 +8,9 @@ namespace BulletSharp.SoftBody
 	{
 		internal IntPtr _native;
 
-        private bool _preventDelete;
-
-		internal SparseSdf(IntPtr native, bool preventDelete)
+		internal SparseSdf(IntPtr native)
 		{
 			_native = native;
-            _preventDelete = preventDelete;
-		}
-
-		public SparseSdf()
-		{
-			_native = btSparseSdf_new();
 		}
 
         public void GarbageCollect(int lifetime)
@@ -56,29 +48,6 @@ namespace BulletSharp.SoftBody
             btSparseSdf3_Reset(_native);
         }
 
-		public void Dispose()
-		{
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
-
-		protected virtual void Dispose(bool disposing)
-		{
-			if (_native != IntPtr.Zero)
-			{
-                if (!_preventDelete)
-                {
-                    btSparseSdf_delete(_native);
-                }
-				_native = IntPtr.Zero;
-			}
-		}
-
-		~SparseSdf()
-		{
-			Dispose(false);
-		}
-
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSparseSdf_new();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -95,7 +64,5 @@ namespace BulletSharp.SoftBody
         static extern int btSparseSdf3_RemoveReferences(IntPtr obj, IntPtr pcs);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btSparseSdf3_Reset(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSparseSdf_delete(IntPtr obj);
 	}
 }

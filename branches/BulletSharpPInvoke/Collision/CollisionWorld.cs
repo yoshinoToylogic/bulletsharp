@@ -717,6 +717,10 @@ namespace BulletSharp
 
 		internal CollisionWorld(IntPtr native)
 		{
+            if (native == IntPtr.Zero)
+            {
+                return;
+            }
 			_native = native;
             _collisionObjectArray = new AlignedCollisionObjectArray(btCollisionWorld_getCollisionObjectArray(native), this);
 		}
@@ -1040,7 +1044,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionWorld_getBroadphase(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btCollisionWorld_getCollisionObjectArray(IntPtr obj);
+		internal static extern IntPtr btCollisionWorld_getCollisionObjectArray(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btCollisionWorld_getDebugDrawer(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

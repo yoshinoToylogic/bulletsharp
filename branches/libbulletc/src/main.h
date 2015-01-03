@@ -404,6 +404,13 @@
 #define btTranslationalLimitMotor void
 #endif
 
+#ifndef BT_GENERIC_6DOF_CONSTRAINT2_H
+#define btGeneric6DofSpring2Constraint void
+#define btRotationalLimitMotor2 void
+#define btTranslationalLimitMotor2 void
+#define RotateOrder int
+#endif
+
 #ifndef BT_GENERIC_6DOF_SPRING_CONSTRAINT_H
 #define btGeneric6DofSpringConstraint void
 #endif
@@ -443,6 +450,7 @@
 
 #ifndef BT_HINGECONSTRAINT_H
 #define btHingeConstraint void
+#define btHingeAccumulatedAngleConstraint void
 #endif
 
 #ifndef BT_IDEBUG_DRAW__H
@@ -525,6 +533,7 @@
 
 #ifndef BT_MULTIBODY_LINK_H
 #define btMultibodyLink void
+#define btSpatialMotionVector void
 #endif
 
 #ifndef BT_MULTIBODY_POINT2POINT_H
@@ -812,6 +821,7 @@
 
 #ifndef BT_SOFT_BODY_SOLVERS_H
 #define btSoftBodySolver void
+#define btSoftBodySolverOutput void
 #endif
 
 #ifndef BT_SOFT_RIGID_COLLISION_ALGORITHM_H
