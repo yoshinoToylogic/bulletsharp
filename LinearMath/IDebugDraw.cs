@@ -32,7 +32,6 @@ namespace BulletSharp
         void DrawLine(ref Vector3 from, ref Vector3 to, ref Vector3 fromColor, ref Vector3 toColor);
         void DrawBox(ref Vector3 bbMin, ref Vector3 bbMax, ref Vector3 color);
         void DrawBox(ref Vector3 bbMin, ref Vector3 bbMax, ref Matrix trans, ref Vector3 color);
-        void DrawSphere(Vector3 p, float radius, Vector3 color);
         void DrawSphere(ref Vector3 p, float radius, ref Vector3 color);
         void DrawSphere(float radius, ref Matrix transform, ref Vector3 color);
         void DrawTriangle(ref Vector3 v0, ref Vector3 v1, ref Vector3 v2, ref Vector3 n0, ref Vector3 n1, ref Vector3 n2, ref Vector3 color, float alpha);

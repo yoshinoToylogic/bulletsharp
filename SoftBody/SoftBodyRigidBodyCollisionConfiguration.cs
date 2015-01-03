@@ -6,11 +6,6 @@ namespace BulletSharp
 {
 	public class SoftBodyRigidBodyCollisionConfiguration : DefaultCollisionConfiguration
 	{
-		internal SoftBodyRigidBodyCollisionConfiguration(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public SoftBodyRigidBodyCollisionConfiguration()
 			: base(btSoftBodyRigidBodyCollisionConfiguration_new())
 		{

@@ -30,18 +30,9 @@ namespace BulletSharp
         private Dictionary<IAction, ActionInterfaceWrapper> _actions;
         private List<TypedConstraint> _constraints = new List<TypedConstraint>();
 
-        internal static DynamicsWorld GetManagedDynamicsWorld(IntPtr collisionWorld)
-        {
-            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(collisionWorld);
-            return GCHandle.FromIntPtr(nativeUserInfo).Target as DynamicsWorld;
-        }
-
 		internal DynamicsWorld(IntPtr native)
 			: base(native)
 		{
-            // Store GC handle in user info (not available for btCollisionWorld)
-            GCHandle handle = GCHandle.Alloc(this, GCHandleType.Weak);
-            btDynamicsWorld_setWorldUserInfo(native, GCHandle.ToIntPtr(handle));
 		}
 
 		public void AddAction(IAction action)
@@ -143,9 +134,7 @@ namespace BulletSharp
 
         private void InternalTickCallbackNative(IntPtr world, float timeStep)
         {
-            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
-            DynamicsWorld worldManaged = GCHandle.FromIntPtr(nativeUserInfo).Target as DynamicsWorld;
-            worldManaged._callback(worldManaged, timeStep);
+            _callback(this, timeStep);
         }
 
 		public void SetInternalTickCallback(InternalTickCallback cb)
@@ -162,20 +151,21 @@ namespace BulletSharp
         {
             if (_callback != cb)
             {
-                IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
                 if (cb != null)
                 {
                     _callback = cb;
-                    _callbackUnmanaged = new InternalTickCallbackUnmanaged(InternalTickCallbackNative);
+                    if (_callbackUnmanaged == null)
+                    {
+                        _callbackUnmanaged = new InternalTickCallbackUnmanaged(InternalTickCallbackNative);
+                    }
                     btDynamicsWorld_setInternalTickCallback3(_native,
-                        Marshal.GetFunctionPointerForDelegate(_callbackUnmanaged),
-                        nativeUserInfo, isPreTick);
+                        Marshal.GetFunctionPointerForDelegate(_callbackUnmanaged), IntPtr.Zero, isPreTick);
                 }
                 else
                 {
                     _callback = null;
                     _callbackUnmanaged = null;
-                    btDynamicsWorld_setInternalTickCallback3(_native, IntPtr.Zero, nativeUserInfo, isPreTick);
+                    btDynamicsWorld_setInternalTickCallback3(_native, IntPtr.Zero, IntPtr.Zero, isPreTick);
                 }
             }
 
@@ -256,9 +246,6 @@ namespace BulletSharp
 
         protected override void Dispose(bool disposing)
         {
-            IntPtr nativeUserInfo = btDynamicsWorld_getWorldUserInfo(_native);
-            GCHandle.FromIntPtr(nativeUserInfo).Free();
-
             if (_actions != null)
             {
                 foreach (ActionInterfaceWrapper wrapper in _actions.Values)
@@ -291,8 +278,6 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern DynamicsWorldType btDynamicsWorld_getWorldType(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btDynamicsWorld_getWorldUserInfo(IntPtr obj);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_removeAction(IntPtr obj, IntPtr action);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_removeConstraint(IntPtr obj, IntPtr constraint);
@@ -306,8 +291,6 @@ namespace BulletSharp
 		static extern void btDynamicsWorld_setInternalTickCallback2(IntPtr obj, IntPtr cb, IntPtr worldUserInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btDynamicsWorld_setInternalTickCallback3(IntPtr obj, IntPtr cb, IntPtr worldUserInfo, bool isPreTick);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btDynamicsWorld_setWorldUserInfo(IntPtr obj, IntPtr worldUserInfo);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btDynamicsWorld_stepSimulation(IntPtr obj, float timeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
