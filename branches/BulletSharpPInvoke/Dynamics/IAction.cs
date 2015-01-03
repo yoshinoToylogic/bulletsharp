@@ -16,7 +16,9 @@ namespace BulletSharp
         internal IAction _actionInterface;
         internal DynamicsWorld _world;
 
+        [UnmanagedFunctionPointerAttribute(Native.Conv)]
         delegate void DebugDrawUnmanagedDelegate(IntPtr debugDrawer);
+        [UnmanagedFunctionPointerAttribute(Native.Conv)]
         delegate void UpdateActionUnmanagedDelegate(IntPtr collisionWorld, float deltaTimeStep);
 
         DebugDrawUnmanagedDelegate _debugDraw;
@@ -30,7 +32,7 @@ namespace BulletSharp
             _debugDraw = new DebugDrawUnmanagedDelegate(DebugDrawUnmanaged);
             _updateAction = new UpdateActionUnmanagedDelegate(UpdateActionUnmanaged);
 
-            _native = btActionInterfaceWrapper_new(GCHandle.ToIntPtr(GCHandle.Alloc(this)),
+            _native = btActionInterfaceWrapper_new(
                 Marshal.GetFunctionPointerForDelegate(_debugDraw),
                 Marshal.GetFunctionPointerForDelegate(_updateAction));
         }
@@ -66,7 +68,7 @@ namespace BulletSharp
 		}
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btActionInterfaceWrapper_new(IntPtr actionInterfaceGCHandle, IntPtr debugDrawCallback, IntPtr updateActionCallback);
+        static extern IntPtr btActionInterfaceWrapper_new(IntPtr debugDrawCallback, IntPtr updateActionCallback);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btActionInterface_delete(IntPtr obj);
     }
