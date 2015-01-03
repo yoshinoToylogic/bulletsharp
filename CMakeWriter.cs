@@ -46,12 +46,6 @@ namespace BulletSharpGen
             WriteLine("CMAKE_MINIMUM_REQUIRED (VERSION 2.6)");
             WriteLine("PROJECT (libbulletc)");
             WriteLine();
-            WriteLine("IF (APPLE OR MSVC)");
-            WriteLine("    OPTION(BUILD_MULTITHREADING \"Use BulletMultiThreading\" ON)");
-            WriteLine("ELSE()");
-            WriteLine("    OPTION(BUILD_MULTITHREADING \"Use BulletMultiThreading\" OFF)");
-            WriteLine("ENDIF()");
-            WriteLine();
             WriteLine("IF (NOT CMAKE_BUILD_TYPE)");
             WriteLine("# SET(CMAKE_BUILD_TYPE \"Debug\")");
             WriteLine(" SET(CMAKE_BUILD_TYPE \"MinSizeRel\")");
@@ -77,7 +71,6 @@ namespace BulletSharpGen
 	        WriteLine("    SET(BULLET_LIB_DIR ${BULLET_INCLUDE_DIR}/..)");
 	        WriteLine("    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletCollision)");
 	        WriteLine("    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletDynamics)");
-	        WriteLine("    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletMultiThreaded)");
 	        WriteLine("    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletSoftBody)");
 	        WriteLine("    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/LinearMath)");
 	        WriteLine("    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletFileLoader)");
@@ -99,8 +92,6 @@ namespace BulletSharpGen
             WriteLine("    SET(LIB_SUFFIX _${CMAKE_CFG_INTDIR}.lib)");
             WriteLine("ENDIF()");
             WriteLine();
-            AddMultithreading();
-            WriteLine();
 
             AddLibrary();
             WriteLine();
@@ -112,9 +103,6 @@ namespace BulletSharpGen
             WriteLine("TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletSoftBody${LIB_SUFFIX})");
             WriteLine("TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletWorldImporter${LIB_SUFFIX})");
             WriteLine("TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletXmlWorldImporter${LIB_SUFFIX})");
-            WriteLine("IF(BUILD_MULTITHREADING)");
-            WriteLine("    TARGET_LINK_LIBRARIES(${BULLETC_LIB} BulletMultiThreaded${LIB_SUFFIX})");
-            WriteLine("ENDIF(BUILD_MULTITHREADING)");
 
             cmakeWriter.Dispose();
             cmakeFile.Dispose();
@@ -143,30 +131,7 @@ namespace BulletSharpGen
                 "collections.h",
             }, "src");
             WriteSources(sources, "src");
-            WriteLine("    ${MULTITHREADED_SOURCE}");
             WriteLine(")");
-        }
-
-        void AddMultithreading()
-        {
-            WriteLine("IF(BUILD_MULTITHREADING)");
-            WriteLine("SET(MULTITHREADED_SOURCE");
-            WriteSources(new string[] {
-                "btParallelConstraintSolver_wrap.cpp",
-                "btParallelConstraintSolver_wrap.h",
-                "btThreadSupportInterface_wrap.cpp",
-                "btThreadSupportInterface_wrap.h",
-                "SpuCollisionTaskProcess_wrap.cpp",
-                "SpuCollisionTaskProcess_wrap.h",
-                "SpuGatheringCollisionDispatcher_wrap.cpp",
-                "SpuGatheringCollisionDispatcher_wrap.h",
-                "SpuGatheringCollisionTask_wrap.cpp",
-                "SpuGatheringCollisionTask_wrap.h",
-                "Win32ThreadSupport_wrap.cpp",
-                "Win32ThreadSupport_wrap.h"
-            }, "src");
-            WriteLine(")");
-            WriteLine("ENDIF(BUILD_MULTITHREADING)");
         }
 
         void WriteSources(IEnumerable<string> files, string directory)
