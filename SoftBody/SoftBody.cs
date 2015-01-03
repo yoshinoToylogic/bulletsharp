@@ -2903,7 +2903,7 @@ namespace BulletSharp.SoftBody
 		public CollisionObject ColObj
 		{
             get { return CollisionObject.GetManaged(btSoftBody_sCti_getColObj(_native)); }
-			set { btSoftBody_sCti_setColObj(_native, value._native); }
+			set { btSoftBody_sCti_setColObj(_native, (value != null) ? value._native : IntPtr.Zero); }
 		}
 
 		public Vector3 Normal
@@ -3109,7 +3109,7 @@ namespace BulletSharp.SoftBody
 		public SoftBody Body
 		{
             get { return SoftBody.GetManaged(btSoftBody_sRayCast_getBody(_native)) as SoftBody; }
-			set { btSoftBody_sRayCast_setBody(_native, value._native); }
+			set { btSoftBody_sRayCast_setBody(_native, (value != null) ? value._native : IntPtr.Zero); }
 		}
 
 		public EFeature Feature
@@ -3794,12 +3794,12 @@ namespace BulletSharp.SoftBody
 
         public bool RayTest(ref Vector3 rayFrom, ref Vector3 rayTo, SRayCast results)
         {
-            return btSoftBody_rayTest(_native, rayFrom, rayTo, results._native);
+            return btSoftBody_rayTest(_native, ref rayFrom, ref rayTo, results._native);
         }
 
 		public bool RayTest(Vector3 rayFrom, Vector3 rayTo, SRayCast results)
 		{
-			return btSoftBody_rayTest(_native, rayFrom, rayTo, results._native);
+			return btSoftBody_rayTest(_native, ref rayFrom, ref rayTo, results._native);
 		}
         /*
 		public int RayTest(Vector3 rayFrom, Vector3 rayTo, float mint, EFeature feature, int index, bool bcountonly)
@@ -4664,7 +4664,7 @@ namespace BulletSharp.SoftBody
 		static extern void btSoftBody_randomizeConstraints(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.I1)]
-		static extern bool btSoftBody_rayTest(IntPtr obj, [In] Vector3 rayFrom, [In] Vector3 rayTo, IntPtr results);
+		static extern bool btSoftBody_rayTest(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr results);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btSoftBody_rayTest2(IntPtr obj, [In] ref Vector3 rayFrom, [In] ref Vector3 rayTo, IntPtr mint, IntPtr feature, IntPtr index, bool bcountonly);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

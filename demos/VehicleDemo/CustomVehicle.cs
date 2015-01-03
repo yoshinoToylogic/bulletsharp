@@ -91,10 +91,11 @@ namespace VehicleDemo
 
         static CustomVehicle()
         {
-            var ci = new RigidBodyConstructionInfo(0, null, null);
-            fixedBody = new RigidBody(ci);
-            fixedBody.SetMassProps(0, Vector3.Zero);
-            ci.Dispose();
+            using (var ci = new RigidBodyConstructionInfo(0, null, null))
+            {
+                fixedBody = new RigidBody(ci);
+                fixedBody.SetMassProps(0, Vector3.Zero);
+            }
         }
 
         public CustomVehicle(VehicleTuning tuning, RigidBody chassis, IVehicleRaycaster raycaster)
@@ -284,6 +285,20 @@ namespace VehicleDemo
             return depth;
         }
 
+        void ResetSuspension()
+        {
+            for (int i = 0; i < NumWheels; i++)
+            {
+                WheelInfo wheel = GetWheelInfo(i);
+                wheel.RaycastInfo.SuspensionLength = wheel.SuspensionRestLength;
+                wheel.SuspensionRelativeVelocity = 0;
+
+                wheel.RaycastInfo.ContactNormalWS = -wheel.RaycastInfo.WheelDirectionWS;
+                //wheel.ContactFriction = 0;
+                wheel.ClippedInvContactDotSuspension = 1;
+            }
+        }
+
         private void ResolveSingleBilateral(RigidBody body1, Vector3 pos1, RigidBody body2, Vector3 pos2, float distance, Vector3 normal, ref float impulse, float timeStep)
         {
             float normalLenSqr = normal.LengthSquared;
@@ -372,7 +387,7 @@ namespace VehicleDemo
                     axle[i] -= surfNormalWS * proj;
                     axle[i].Normalize();
 
-                    forwardWS[i] = Vector3.Cross(surfNormalWS, axle[i]);
+                    Vector3.Cross(ref surfNormalWS, ref axle[i], out forwardWS[i]);
                     forwardWS[i].Normalize();
 
                     ResolveSingleBilateral(chassisBody, wheel.RaycastInfo.ContactPointWS,
@@ -481,13 +496,11 @@ namespace VehicleDemo
 
 #if ROLLING_INFLUENCE_FIX // fix. It only worked if car's up was along Y - VT.
                     //Vector4 vChassisWorldUp = RigidBody.CenterOfMassTransform.get_Columns(indexUpAxis);
-                    Vector4 vChassisWorldUp = new Vector4(
+                    Vector3 vChassisWorldUp = new Vector3(
                         RigidBody.CenterOfMassTransform.Row1[indexUpAxis],
                         RigidBody.CenterOfMassTransform.Row2[indexUpAxis],
-                        RigidBody.CenterOfMassTransform.Row3[indexUpAxis],
-                        RigidBody.CenterOfMassTransform.Row4[indexUpAxis]);
-                    Vector3 vChassisWorldUp3 = new Vector3(vChassisWorldUp.X, vChassisWorldUp.Y, vChassisWorldUp.Z);
-                    rel_pos -= vChassisWorldUp3 * (Vector3.Dot(ref vChassisWorldUp3, ref rel_pos) * (1.0f - wheel.RollInfluence));
+                        RigidBody.CenterOfMassTransform.Row3[indexUpAxis]);
+                    rel_pos -= vChassisWorldUp * (Vector3.Dot(ref vChassisWorldUp, ref rel_pos) * (1.0f - wheel.RollInfluence));
 #else
                     rel_pos[indexUpAxis] *= wheel.RollInfluence;
 #endif

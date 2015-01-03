@@ -328,6 +328,7 @@ namespace BulletSharp
     {
         internal IntPtr _native;
         private readonly bool _preventDelete;
+        private LocalShapeInfo _localShapeInfo;
 
         internal LocalConvexResult(IntPtr native, bool preventDelete)
         {
@@ -338,12 +339,13 @@ namespace BulletSharp
         public LocalConvexResult(CollisionObject hitCollisionObject, LocalShapeInfo localShapeInfo, Vector3 hitNormalLocal, Vector3 hitPointLocal, float hitFraction)
         {
             _native = btCollisionWorld_LocalConvexResult_new(hitCollisionObject._native, localShapeInfo._native, ref hitNormalLocal, ref hitPointLocal, hitFraction);
+            _localShapeInfo = localShapeInfo;
         }
 
         public CollisionObject HitCollisionObject
         {
             get { return CollisionObject.GetManaged(btCollisionWorld_LocalConvexResult_getHitCollisionObject(_native)); }
-            set { btCollisionWorld_LocalConvexResult_setHitCollisionObject(_native, value._native); }
+            set { btCollisionWorld_LocalConvexResult_setHitCollisionObject(_native, (value != null) ? value._native : IntPtr.Zero); }
         }
 
         public float HitFraction
@@ -376,8 +378,12 @@ namespace BulletSharp
 
         public LocalShapeInfo LocalShapeInfo
         {
-            get { return new LocalShapeInfo(btCollisionWorld_LocalConvexResult_getLocalShapeInfo(_native)); }
-            set { btCollisionWorld_LocalConvexResult_setLocalShapeInfo(_native, value._native); }
+            get { return _localShapeInfo; }
+            set
+            {
+                _localShapeInfo = value;
+                btCollisionWorld_LocalConvexResult_setLocalShapeInfo(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
         }
 
         public void Dispose()
@@ -413,8 +419,8 @@ namespace BulletSharp
         static extern void btCollisionWorld_LocalConvexResult_getHitNormalLocal(IntPtr obj, [Out] out Vector3 value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_LocalConvexResult_getHitPointLocal(IntPtr obj, [Out] out Vector3 value);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btCollisionWorld_LocalConvexResult_getLocalShapeInfo(IntPtr obj);
+        //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        //static extern IntPtr btCollisionWorld_LocalConvexResult_getLocalShapeInfo(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_LocalConvexResult_setHitCollisionObject(IntPtr obj, IntPtr value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -433,6 +439,7 @@ namespace BulletSharp
     {
         internal IntPtr _native;
         private readonly bool _preventDelete;
+        private LocalShapeInfo _localShapeInfo;
 
         internal LocalRayResult(IntPtr native, bool preventDelete)
         {
@@ -443,12 +450,13 @@ namespace BulletSharp
         public LocalRayResult(CollisionObject collisionObject, LocalShapeInfo localShapeInfo, Vector3 hitNormalLocal, float hitFraction)
         {
             _native = btCollisionWorld_LocalRayResult_new(collisionObject._native, localShapeInfo._native, ref hitNormalLocal, hitFraction);
+            _localShapeInfo = localShapeInfo;
         }
 
         public CollisionObject CollisionObject
         {
             get { return CollisionObject.GetManaged(btCollisionWorld_LocalRayResult_getCollisionObject(_native)); }
-            set { btCollisionWorld_LocalRayResult_setCollisionObject(_native, value._native); }
+            set { btCollisionWorld_LocalRayResult_setCollisionObject(_native, (value != null) ? value._native : IntPtr.Zero); }
         }
 
         public float HitFraction
@@ -470,8 +478,12 @@ namespace BulletSharp
 
         public LocalShapeInfo LocalShapeInfo
         {
-            get { return new LocalShapeInfo(btCollisionWorld_LocalRayResult_getLocalShapeInfo(_native)); }
-            set { btCollisionWorld_LocalRayResult_setLocalShapeInfo(_native, value._native); }
+            get { return _localShapeInfo; }
+            set
+            {
+                _localShapeInfo = value;
+                btCollisionWorld_LocalRayResult_setLocalShapeInfo(_native, (value != null) ? value._native : IntPtr.Zero);
+            }
         }
 
         public void Dispose()
@@ -505,8 +517,8 @@ namespace BulletSharp
         static extern float btCollisionWorld_LocalRayResult_getHitFraction(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_LocalRayResult_getHitNormalLocal(IntPtr obj, [Out] out Vector3 value);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btCollisionWorld_LocalRayResult_getLocalShapeInfo(IntPtr obj);
+        //[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        //static extern IntPtr btCollisionWorld_LocalRayResult_getLocalShapeInfo(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCollisionWorld_LocalRayResult_setCollisionObject(IntPtr obj, IntPtr value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -522,11 +534,6 @@ namespace BulletSharp
 	public class LocalShapeInfo : IDisposable
 	{
 		internal IntPtr _native;
-
-		internal LocalShapeInfo(IntPtr native)
-		{
-			_native = native;
-		}
 
 		public LocalShapeInfo()
 		{

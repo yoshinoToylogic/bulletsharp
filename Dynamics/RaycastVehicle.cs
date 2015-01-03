@@ -107,10 +107,11 @@ namespace BulletSharp
 
         static RaycastVehicle()
         {
-            var ci = new RigidBodyConstructionInfo(0, null, null);
-            fixedBody = new RigidBody(ci);
-            fixedBody.SetMassProps(0, Vector3.Zero);
-            ci.Dispose();
+            using (var ci = new RigidBodyConstructionInfo(0, null, null))
+            {
+                fixedBody = new RigidBody(ci);
+                fixedBody.SetMassProps(0, Vector3.Zero);
+            }
         }
 
         public RaycastVehicle(VehicleTuning tuning, RigidBody chassis, IVehicleRaycaster raycaster)
@@ -301,6 +302,20 @@ namespace BulletSharp
             return depth;
         }
 
+        void ResetSuspension()
+        {
+	        for (int i = 0; i < NumWheels; i++)
+	        {
+		        WheelInfo wheel = GetWheelInfo(i);
+		        wheel.RaycastInfo.SuspensionLength = wheel.SuspensionRestLength;
+		        wheel.SuspensionRelativeVelocity = 0;
+
+		        wheel.RaycastInfo.ContactNormalWS = -wheel.RaycastInfo.WheelDirectionWS;
+		        //wheel.ContactFriction = 0;
+		        wheel.ClippedInvContactDotSuspension = 1;
+	        }
+        }
+
         private void ResolveSingleBilateral(RigidBody body1, Vector3 pos1, RigidBody body2, Vector3 pos2, float distance, Vector3 normal, ref float impulse, float timeStep)
         {
             float normalLenSqr = normal.LengthSquared;
@@ -389,7 +404,7 @@ namespace BulletSharp
                     axle[i] -= surfNormalWS * proj;
                     axle[i].Normalize();
 
-                    forwardWS[i] = Vector3.Cross(surfNormalWS, axle[i]);
+                    Vector3.Cross(ref surfNormalWS, ref axle[i], out forwardWS[i]);
                     forwardWS[i].Normalize();
 
                     ResolveSingleBilateral(chassisBody, wheel.RaycastInfo.ContactPointWS,
@@ -498,13 +513,11 @@ namespace BulletSharp
 
 #if ROLLING_INFLUENCE_FIX // fix. It only worked if car's up was along Y - VT.
                     //Vector4 vChassisWorldUp = RigidBody.CenterOfMassTransform.get_Columns(indexUpAxis);
-                    Vector4 vChassisWorldUp = new Vector4(
+                    Vector3 vChassisWorldUp = new Vector3(
                         RigidBody.CenterOfMassTransform.Row1[indexUpAxis],
                         RigidBody.CenterOfMassTransform.Row2[indexUpAxis],
-                        RigidBody.CenterOfMassTransform.Row3[indexUpAxis],
-                        RigidBody.CenterOfMassTransform.Row4[indexUpAxis]);
-                    Vector3 vChassisWorldUp3 = new Vector3(vChassisWorldUp.X, vChassisWorldUp.Y, vChassisWorldUp.Z);
-                    rel_pos -= vChassisWorldUp3 * (Vector3.Dot(ref vChassisWorldUp3, ref rel_pos) * (1.0f - wheel.RollInfluence));
+                        RigidBody.CenterOfMassTransform.Row3[indexUpAxis]);
+                    rel_pos -= vChassisWorldUp * (Vector3.Dot(ref vChassisWorldUp, ref rel_pos) * (1.0f - wheel.RollInfluence));
 #else
                     rel_pos[indexUpAxis] *= wheel.RollInfluence;
 #endif
@@ -593,7 +606,8 @@ namespace BulletSharp
             // Simulate suspension
             for (int i = 0; i < wheelInfo.Length; i++)
             {
-                float depth = RayCast(wheelInfo[i]);
+                //float depth = 
+                RayCast(wheelInfo[i]);
             }
 
 
@@ -711,29 +725,29 @@ namespace BulletSharp
         public Object CastRay(ref Vector3 from, ref Vector3 to, VehicleRaycasterResult result)
         {
             //	RayResultCallback& resultCallback;
-            ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref from, ref to);
-
-            m_dynamicsWorld.RayTest(ref from, ref to, rayCallback);
-
-            if (rayCallback.HasHit)
+            using (ClosestRayResultCallback rayCallback = new ClosestRayResultCallback(ref from, ref to))
             {
+                m_dynamicsWorld.RayTest(ref from, ref to, rayCallback);
 
-                RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
-                if (body != null && body.HasContactResponse)
+                if (rayCallback.HasHit)
                 {
-                    result.HitPointInWorld = rayCallback.HitPointWorld;
-                    result.HitNormalInWorld = rayCallback.HitNormalWorld;
-                    result.HitNormalInWorld.Normalize();
-                    result.DistFraction = rayCallback.ClosestHitFraction;
-                    return body;
+                    RigidBody body = RigidBody.Upcast(rayCallback.CollisionObject);
+                    if (body != null && body.HasContactResponse)
+                    {
+                        result.HitPointInWorld = rayCallback.HitPointWorld;
+                        result.HitNormalInWorld = rayCallback.HitNormalWorld;
+                        result.HitNormalInWorld.Normalize();
+                        result.DistFraction = rayCallback.ClosestHitFraction;
+                        return body;
+                    }
                 }
-            }
-            else
-            {
-                ClosestRayResultCallback rayCallback2 = new ClosestRayResultCallback(ref from, ref to);
-
-                m_dynamicsWorld.RayTest(ref from, ref to, rayCallback2);
-
+                else
+                {
+                    using (ClosestRayResultCallback rayCallback2 = new ClosestRayResultCallback(ref from, ref to))
+                    {
+                        m_dynamicsWorld.RayTest(ref from, ref to, rayCallback2);
+                    }
+                }
             }
             return null;
         }
