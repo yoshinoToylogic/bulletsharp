@@ -282,6 +282,8 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define QUATERNION_OUT(from, to) btQuaternionToQuaternion(from, to)
 #define QUATERNION_OUT_VAL(from, to) btQuaternionToQuaternion(from, to)
 #else
+// Cant use a pinned pointer to a Vector3 in case sizeof(Vector3) != sizeof(btVector3)
+#if VECTOR3_16B
 #define VECTOR3_DEF(vec)
 #define VECTOR3_IN(from, to) *to = *(btVector3*)from
 #define VECTOR3_CONV(vec)
@@ -289,6 +291,15 @@ inline void MatrixTobtMatrix3x3(const btScalar* m, btMatrix3x3* t)
 #define VECTOR3_OUT(from, to) *(btVector3*)to = *from
 #define VECTOR3_OUT_VAL(from, to) *(btVector3*)to = from
 #define VECTOR3_DEF_OUT(vec)
+#else
+#define VECTOR3_DEF(vec) ATTRIBUTE_ALIGNED16(btVector3) TEMP(vec)
+#define VECTOR3_IN(from, to) Vector3TobtVector3(from, to)
+#define VECTOR3_CONV(vec) VECTOR3_DEF(vec); VECTOR3_IN(vec, &TEMP(vec))
+#define VECTOR3_USE(vec) TEMP(vec)
+#define VECTOR3_OUT(from, to) btVector3ToVector3(from, to)
+#define VECTOR3_OUT_VAL(from, to) btVector3ToVector3(from, to)
+#define VECTOR3_DEF_OUT(vec) VECTOR3_OUT(&TEMP(vec), vec)
+#endif
 #define VECTOR4_DEF(vec)
 #define VECTOR4_IN(from, to) *to = *(btVector4*)from
 #define VECTOR4_CONV(vec)
