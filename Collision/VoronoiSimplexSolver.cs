@@ -250,10 +250,12 @@ namespace BulletSharp
 	public class VoronoiSimplexSolver : IDisposable
 	{
 		internal IntPtr _native;
+        private bool _preventDelete;
 
-		internal VoronoiSimplexSolver(IntPtr native)
+        internal VoronoiSimplexSolver(IntPtr native, bool preventDelete)
 		{
 			_native = native;
+            _preventDelete = preventDelete;
 		}
 
 		public VoronoiSimplexSolver()
@@ -458,7 +460,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btVoronoiSimplexSolver_delete(_native);
+                if (!_preventDelete)
+                {
+                    btVoronoiSimplexSolver_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

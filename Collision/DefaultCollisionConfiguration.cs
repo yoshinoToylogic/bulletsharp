@@ -154,7 +154,7 @@ namespace BulletSharp
             {
                 if (_simplexSolver == null)
                 {
-                    _simplexSolver = new VoronoiSimplexSolver(btDefaultCollisionConfiguration_getSimplexSolver(_native));
+                    _simplexSolver = new VoronoiSimplexSolver(btDefaultCollisionConfiguration_getSimplexSolver(_native), true);
                 }
                 return _simplexSolver;
             }

@@ -166,6 +166,21 @@ namespace BulletSharp
 		{
 		}
 
+        public override BroadphasePair AddOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
+        {
+            return new BroadphasePair(btOverlappingPairCallback_addOverlappingPair(_native, proxy0._native, proxy1._native));
+        }
+
+        public override IntPtr RemoveOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1, Dispatcher dispatcher)
+        {
+            return btOverlappingPairCallback_removeOverlappingPair(_native, proxy0._native, proxy1._native, dispatcher._native);
+        }
+
+        public override void RemoveOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher dispatcher)
+        {
+            btOverlappingPairCallback_removeOverlappingPairsContainingProxy(_native, proxy0._native, dispatcher._native);
+        }
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btGhostPairCallback_new();
 	}

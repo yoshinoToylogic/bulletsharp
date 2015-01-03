@@ -1,11 +1,23 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using BulletSharp;
 using BulletSharp.Math;
 using BulletSharp.SoftBody;
 
 namespace BulletSharpTest
 {
+    [StructLayout(LayoutKind.Explicit)]
+    struct Vector3WriteTest
+    {
+        [FieldOffset(0)]
+        public float Value1;
+        [FieldOffset(4)]
+        public Vector3 Vector;
+        [FieldOffset(16)]
+        public float Value2;
+    }
+
     class Program
     {
         static DiscreteDynamicsWorld world;
@@ -27,6 +39,22 @@ namespace BulletSharpTest
             AddToDisposeQueue(shape);
 
             return collisionObject;
+        }
+
+        static void TestAlignment()
+        {
+            const float mass = 1.0f;
+            Vector3WriteTest vTest = new Vector3WriteTest();
+            vTest.Value1 = 2.0f;
+            vTest.Value2 = 3.0f;
+            using (BoxShape shape = new BoxShape(1))
+            {
+                shape.CalculateLocalInertia(mass, out vTest.Vector);
+            }
+            if (vTest.Value1 != 2.0f || vTest.Value2 != 3.0f)
+            {
+                Console.WriteLine("Vector3 value was overwritten with padding!");
+            }
         }
 
         static void TestAxisSweepOverlapCallback()
@@ -335,6 +363,7 @@ namespace BulletSharpTest
 
         static void Main(string[] args)
         {
+            TestAlignment();
             TestAxisSweepOverlapCallback();
             TestGCCollection();
             TestSoftBody();

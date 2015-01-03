@@ -4,7 +4,7 @@ using System.Security;
 
 namespace BulletSharp
 {
-	public class OverlappingPairCallback : IDisposable
+	public abstract class OverlappingPairCallback : IDisposable
 	{
 		internal IntPtr _native;
         private readonly bool _preventDelete;
@@ -14,21 +14,15 @@ namespace BulletSharp
 			_native = native;
             _preventDelete = preventDelete;
 		}
-
-		public BroadphasePair AddOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1)
-		{
-			return new BroadphasePair(btOverlappingPairCallback_addOverlappingPair(_native, proxy0._native, proxy1._native));
-		}
-
-		public IntPtr RemoveOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1, Dispatcher dispatcher)
-		{
-			return btOverlappingPairCallback_removeOverlappingPair(_native, proxy0._native, proxy1._native, dispatcher._native);
-		}
-
-		public void RemoveOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher dispatcher)
-		{
-			btOverlappingPairCallback_removeOverlappingPairsContainingProxy(_native, proxy0._native, dispatcher._native);
-		}
+        /*
+        protected OverlappingPairCallback()
+        {
+            _native = btOverlappingPairCallbackWrapper_new();
+        }
+        */
+        public abstract BroadphasePair AddOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1);
+        public abstract IntPtr RemoveOverlappingPair(BroadphaseProxy proxy0, BroadphaseProxy proxy1, Dispatcher dispatcher);
+        public abstract void RemoveOverlappingPairsContainingProxy(BroadphaseProxy proxy0, Dispatcher dispatcher);
 
 		public void Dispose()
 		{
@@ -54,11 +48,11 @@ namespace BulletSharp
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btOverlappingPairCallback_addOverlappingPair(IntPtr obj, IntPtr proxy0, IntPtr proxy1);
+		internal static extern IntPtr btOverlappingPairCallback_addOverlappingPair(IntPtr obj, IntPtr proxy0, IntPtr proxy1);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btOverlappingPairCallback_removeOverlappingPair(IntPtr obj, IntPtr proxy0, IntPtr proxy1, IntPtr dispatcher);
+		internal static extern IntPtr btOverlappingPairCallback_removeOverlappingPair(IntPtr obj, IntPtr proxy0, IntPtr proxy1, IntPtr dispatcher);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btOverlappingPairCallback_removeOverlappingPairsContainingProxy(IntPtr obj, IntPtr proxy0, IntPtr dispatcher);
+		internal static extern void btOverlappingPairCallback_removeOverlappingPairsContainingProxy(IntPtr obj, IntPtr proxy0, IntPtr dispatcher);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btOverlappingPairCallback_delete(IntPtr obj);
 	}

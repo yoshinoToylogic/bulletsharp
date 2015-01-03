@@ -33,7 +33,7 @@ namespace BulletSharp
 
 			public VoronoiSimplexSolver SimplexSolver
 			{
-                get { return new VoronoiSimplexSolver(btConvexConvexAlgorithm_CreateFunc_getSimplexSolver(_native)); }
+                get { return new VoronoiSimplexSolver(btConvexConvexAlgorithm_CreateFunc_getSimplexSolver(_native), true); }
 				set { btConvexConvexAlgorithm_CreateFunc_setSimplexSolver(_native, value._native); }
 			}
 
