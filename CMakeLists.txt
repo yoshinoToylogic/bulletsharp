@@ -25,7 +25,6 @@ IF(${CMAKE_GENERATOR} MATCHES "Unix Makefiles")
     SET(BULLET_LIB_DIR ${BULLET_INCLUDE_DIR}/..)
     LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletCollision)
     LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletDynamics)
-    LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletMultiThreaded)
     LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/BulletSoftBody)
     LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/src/LinearMath)
     LINK_DIRECTORIES(${BULLET_LIB_DIR}/build/Extras/Serialize/BulletFileLoader)
@@ -299,6 +298,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btSoftBodyRigidBodyCollisionConfiguration_wrap.h
     src/btSoftRigidCollisionAlgorithm_wrap.cpp
     src/btSoftRigidCollisionAlgorithm_wrap.h
+    src/btSoftBodySolvers_wrap.cpp
+    src/btSoftBodySolvers_wrap.h
     src/btSoftRigidDynamicsWorld_wrap.cpp
     src/btSoftRigidDynamicsWorld_wrap.h
     src/btSoftSoftCollisionAlgorithm_wrap.cpp
