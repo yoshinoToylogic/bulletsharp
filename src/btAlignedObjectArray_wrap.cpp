@@ -53,11 +53,6 @@ int btAlignedCollisionObjectArray_size(btAlignedCollisionObjectArray* obj)
 	return obj->size();
 }
 
-void btAlignedCollisionObjectArray_delete(btAlignedCollisionObjectArray* obj)
-{
-	delete obj;
-}
-
 
 btSoftBody* btAlignedSoftBodyArray_at(btSoftBody::tSoftBodyArray* obj, int n)
 {
@@ -79,11 +74,6 @@ int btAlignedSoftBodyArray_size(btSoftBody::tSoftBodyArray* obj)
 	return obj->size();
 }
 
-void btAlignedSoftBodyArray_delete(btSoftBody::tSoftBodyArray* obj)
-{
-	delete obj;
-}
-
 
 btIndexedMesh* btAlignedIndexedMeshArray_at(btAlignedIndexedMeshArray* obj, int n)
 {
@@ -103,11 +93,6 @@ void btAlignedIndexedMeshArray_resizeNoInitialize(btAlignedIndexedMeshArray* obj
 int btAlignedIndexedMeshArray_size(btAlignedIndexedMeshArray* obj)
 {
 	return obj->size();
-}
-
-void btAlignedIndexedMeshArray_delete(btAlignedIndexedMeshArray* obj)
-{
-	delete obj;
 }
 
 
@@ -162,11 +147,6 @@ int btAlignedSoftBodyClusterArray_size(btSoftBody::tClusterArray* obj)
 	return obj->size();
 }
 
-void btAlignedSoftBodyClusterArray_delete(btSoftBody::tClusterArray* obj)
-{
-	delete obj;
-}
-
 
 btSoftBody::Face* btAlignedSoftBodyFaceArray_at(btSoftBody::tFaceArray* obj, int n)
 {
@@ -186,11 +166,6 @@ void btAlignedSoftBodyFaceArray_resizeNoInitialize(btSoftBody::tFaceArray* obj, 
 int btAlignedSoftBodyFaceArray_size(btSoftBody::tFaceArray* obj)
 {
 	return obj->size();
-}
-
-void btAlignedSoftBodyFaceArray_delete(btSoftBody::tFaceArray* obj)
-{
-	delete obj;
 }
 
 
@@ -214,11 +189,6 @@ int btAlignedSoftBodyJointArray_size(btSoftBody::tJointArray* obj)
 	return obj->size();
 }
 
-void btAlignedSoftBodyJointArray_delete(btSoftBody::tJointArray* obj)
-{
-	delete obj;
-}
-
 
 btSoftBody::Link* btAlignedSoftBodyLinkArray_at(btSoftBody::tLinkArray* obj, int n)
 {
@@ -238,11 +208,6 @@ void btAlignedSoftBodyLinkArray_resizeNoInitialize(btSoftBody::tLinkArray* obj, 
 int btAlignedSoftBodyLinkArray_size(btSoftBody::tLinkArray* obj)
 {
 	return obj->size();
-}
-
-void btAlignedSoftBodyLinkArray_delete(btSoftBody::tLinkArray* obj)
-{
-	delete obj;
 }
 
 
@@ -266,11 +231,6 @@ int btAlignedSoftBodyMaterialArray_size(btSoftBody::tMaterialArray* obj)
 	return obj->size();
 }
 
-void btAlignedSoftBodyMaterialArray_delete(btSoftBody::tMaterialArray* obj)
-{
-	delete obj;
-}
-
 
 btSoftBody::Node* btAlignedSoftBodyNodeArray_at(btSoftBody::tNodeArray* obj, int n)
 {
@@ -290,11 +250,6 @@ void btAlignedSoftBodyNodeArray_resizeNoInitialize(btSoftBody::tNodeArray* obj, 
 int btAlignedSoftBodyNodeArray_size(btSoftBody::tNodeArray* obj)
 {
 	return obj->size();
-}
-
-void btAlignedSoftBodyNodeArray_delete(btSoftBody::tNodeArray* obj)
-{
-	delete obj;
 }
 
 
