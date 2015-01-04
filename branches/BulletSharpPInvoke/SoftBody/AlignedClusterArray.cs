@@ -157,14 +157,12 @@ namespace BulletSharp.SoftBody
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedSoftBodyClusterArray_at(IntPtr obj, int n);
+        static extern IntPtr btAlignedSoftBodyClusterArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyClusterArray_push_back(IntPtr obj, IntPtr val);
+        static extern void btAlignedSoftBodyClusterArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyClusterArray_resizeNoInitialize(IntPtr obj, int newSize);
+        static extern void btAlignedSoftBodyClusterArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedSoftBodyClusterArray_size(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedSoftBodyClusterArray_delete(IntPtr obj);
+        static extern int btAlignedSoftBodyClusterArray_size(IntPtr obj);
     }
 }

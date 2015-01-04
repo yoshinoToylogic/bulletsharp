@@ -90,6 +90,6 @@ namespace BulletSharp.SoftBody
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btSoftBodyNodePtrArray_at(IntPtr obj, int n);
+        static extern IntPtr btSoftBodyNodePtrArray_at(IntPtr obj, int n);
     }
 }

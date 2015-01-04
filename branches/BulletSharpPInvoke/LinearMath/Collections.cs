@@ -246,7 +246,7 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btCompoundShape_removeChildShapeByIndex(IntPtr obj, int childShapeindex);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btCompoundShapeChild_array_at(IntPtr obj, int n);
+        static extern IntPtr btCompoundShapeChild_array_at(IntPtr obj, int n);
     }
 
     public class UIntArray : FixedSizeArray, IList<uint>
@@ -376,8 +376,8 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btVector3_array_at(IntPtr obj, int n, [Out] out Vector3 value);
+        static extern IntPtr btVector3_array_at(IntPtr obj, int n, [Out] out Vector3 value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btVector3_array_set(IntPtr obj, int n, [In] ref Vector3 value);
+        static extern IntPtr btVector3_array_set(IntPtr obj, int n, [In] ref Vector3 value);
     }
 }

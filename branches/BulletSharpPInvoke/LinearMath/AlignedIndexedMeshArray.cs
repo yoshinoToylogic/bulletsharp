@@ -169,14 +169,12 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedIndexedMeshArray_at(IntPtr obj, int n);
+        static extern IntPtr btAlignedIndexedMeshArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedIndexedMeshArray_push_back(IntPtr obj, IntPtr val);
+        static extern void btAlignedIndexedMeshArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedIndexedMeshArray_resizeNoInitialize(IntPtr obj, int newSize);
+        static extern void btAlignedIndexedMeshArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedIndexedMeshArray_size(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedIndexedMeshArray_delete(IntPtr obj);
+        static extern int btAlignedIndexedMeshArray_size(IntPtr obj);
     }
 }

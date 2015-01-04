@@ -141,18 +141,18 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedVector3Array_new();
+        static extern IntPtr btAlignedVector3Array_new();
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedVector3Array_at(IntPtr obj, int n, [Out] out Vector3 value);
+        static extern void btAlignedVector3Array_at(IntPtr obj, int n, [Out] out Vector3 value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedVector3Array_push_back(IntPtr obj, [In] ref Vector3 value);
+        static extern void btAlignedVector3Array_push_back(IntPtr obj, [In] ref Vector3 value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedVector3Array_push_back2(IntPtr obj, [In] ref Vector4 value);
+        static extern void btAlignedVector3Array_push_back2(IntPtr obj, [In] ref Vector4 value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedVector3Array_set(IntPtr obj, int n, [In] ref Vector3 value);
+        static extern void btAlignedVector3Array_set(IntPtr obj, int n, [In] ref Vector3 value);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedVector3Array_size(IntPtr obj);
+        static extern int btAlignedVector3Array_size(IntPtr obj);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedVector3Array_delete(IntPtr obj);
+        static extern void btAlignedVector3Array_delete(IntPtr obj);
     }
 }
