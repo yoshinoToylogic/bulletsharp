@@ -31,38 +31,50 @@ namespace BulletSharp.SoftBody
 	{
 		public static float CalculateUV(int resx, int resy, int ix, int iy, int id)
 		{
-			return btSoftBodyHelpers_CalculateUV(resx, resy, ix, iy, id);
+            switch (id)
+            {
+                case 0:
+                    return 1.0f / ((resx - 1)) * ix;
+                case 1:
+                    return 1.0f / ((resy - 1)) * (resy - 1 - iy);
+                case 2:
+                    return 1.0f / ((resy - 1)) * (resy - 1 - iy - 1);
+                case 3:
+                    return 1.0f / ((resx - 1)) * (ix + 1);
+                default:
+                    return 0;
+            }
 		}
 
 		public static SoftBody CreateEllipsoid(SoftBodyWorldInfo worldInfo, Vector3 center, Vector3 radius, int res)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateEllipsoid(worldInfo._native, ref center, ref radius, res));
-            body.WorldInfo = worldInfo;
-            return body;
+            int numVertices = res + 3;
+            Vector3[] vtx = new Vector3[numVertices];
+            for (int i = 0; i < numVertices; i++)
+            {
+                float p = 0.5f, t = 0;
+                for (int j = i; j > 0; j >>= 1)
+                {
+                    if ((j & 1) != 0)
+                        t += p;
+                    p *= 0.5f;
+                }
+                float w = 2 * t - 1;
+                float a = ((1 + 2 * i) * (float)System.Math.PI) / numVertices;
+                float s = (float)System.Math.Sqrt(1 - w * w);
+                vtx[i] = new Vector3(s * (float)System.Math.Cos(a), s * (float)System.Math.Sin(a), w) * radius + center;
+            }
+            return CreateFromConvexHull(worldInfo, vtx);
 		}
 
-		public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nVertices)
-		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, nVertices));
-            body.WorldInfo = worldInfo;
-            return body;
-		}
-
-        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices)
-        {
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull(worldInfo._native, vertices, vertices.Length));
-            body.WorldInfo = worldInfo;
-            return body;
-        }
-
-        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nVertices, bool randomizeConstraints)
+        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int nVertices, bool randomizeConstraints = true)
 		{
             SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, nVertices, randomizeConstraints));
             body.WorldInfo = worldInfo;
             return body;
         }
 
-        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, bool randomizeConstraints)
+        public static SoftBody CreateFromConvexHull(SoftBodyWorldInfo worldInfo, Vector3[] vertices, bool randomizeConstraints = true)
         {
             SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromConvexHull2(worldInfo._native, vertices, vertices.Length, randomizeConstraints));
             body.WorldInfo = worldInfo;
@@ -147,25 +159,136 @@ namespace BulletSharp.SoftBody
             return CreateFromTetGenData(worldInfo, ele, face, File.ReadAllText(nodeFilename), faceLinks, tetraLinks, facesFromTetras);
         }
 
-		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles)
+		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles, bool randomizeConstraints = true)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh(worldInfo._native, vertices, triangles, triangles.Length / 3));
-            body.WorldInfo = worldInfo;
-            return body;
+            int numVertices = vertices.Length / 3;
+            Vector3[] vtx = new Vector3[numVertices];
+            for (int i = 0, j = 0; j < numVertices; j++, i += 3)
+            {
+                vtx[j] = new Vector3(vertices[i], vertices[i + 1], vertices[i + 2]);
+            }
+            return CreateFromTriMesh(worldInfo, vtx, triangles, randomizeConstraints);
         }
 
-		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles, bool randomizeConstraints)
-		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTriMesh2(worldInfo._native, vertices, triangles, triangles.Length / 3, randomizeConstraints));
-            body.WorldInfo = worldInfo;
-            return body;
-		}
+        public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, Vector3[] vertices, int[] triangles, bool randomizeConstraints = true)
+        {
+            int numTriangleIndices = triangles.Length;
+            int numTriangles = numTriangleIndices / 3;
+
+            int maxIndex = 0; // triangles.Max() + 1;
+            for (int i = 0; i < numTriangleIndices; i++)
+            {
+                if (triangles[i] > maxIndex)
+                {
+                    maxIndex = triangles[i];
+                }
+            }
+            maxIndex++;
+
+            SoftBody psb = new SoftBody(worldInfo, maxIndex, vertices, null);
+
+            bool[] chks = new bool[maxIndex * maxIndex];
+            for (int i = 0; i < numTriangleIndices; i += 3)
+            {
+                int[] idx = new int[] { triangles[i], triangles[i + 1], triangles[i + 2] };
+                for (int j = 2, k = 0; k < 3; j = k++)
+                {
+                    int chkIndex = maxIndex * idx[k] + idx[j];
+                    if (!chks[chkIndex])
+                    {
+                        chks[chkIndex] = true;
+                        chks[maxIndex * idx[j] + idx[k]] = true;
+                        psb.AppendLink(idx[j], idx[k]);
+                    }
+                }
+                psb.AppendFace(idx[0], idx[1], idx[2]);
+            }
+
+            if (randomizeConstraints)
+            {
+                psb.RandomizeConstraints();
+            }
+            return psb;
+        }
 
 		public static SoftBody CreatePatch(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
 		{
-			SoftBody body = new SoftBody(btSoftBodyHelpers_CreatePatch(worldInfo._native, ref corner00, ref corner10, ref corner01, ref corner11, resx, resy, fixeds, gendiags));
-            body.WorldInfo = worldInfo;
-            return body;
+            // Create nodes
+            if ((resx < 2) || (resy < 2))
+                return null;
+
+            int rx = resx;
+            int ry = resy;
+            int tot = rx * ry;
+            Vector3[] x = new Vector3[tot];
+            float[] m = new float[tot];
+
+            for (int iy = 0; iy < ry; iy++)
+            {
+                float ty = iy / (float)(ry - 1);
+                Vector3 py0 = Vector3.Lerp(corner00, corner01, ty);
+                Vector3 py1 = Vector3.Lerp(corner10, corner11, ty);
+                for (int ix = 0; ix < rx; ix++)
+                {
+                    float tx = ix / (float)(rx - 1);
+                    int index = rx * iy + ix;
+                    Vector3.Lerp(ref py0, ref py1, tx, out x[index]);
+                    m[index] = 1;
+                }
+            }
+
+            SoftBody psb = new SoftBody(worldInfo, tot, x, m);
+
+            if ((fixeds & 1) != 0)
+                psb.SetMass(0, 0);
+            if ((fixeds & 2) != 0)
+                psb.SetMass(rx - 1, 0);
+            if ((fixeds & 4) != 0)
+                psb.SetMass(rx * (ry - 1), 0);
+            if ((fixeds & 8) != 0)
+                psb.SetMass(rx * (ry - 1) + rx - 1, 0);
+
+            // Create links and faces
+            for (int iy = 0; iy < ry; ++iy)
+            {
+                for (int ix = 0; ix < rx; ++ix)
+                {
+                    int ixy = rx * iy + ix;
+                    int ix1y = ixy + 1;
+                    int ixy1 = rx * (iy + 1) + ix;
+
+                    bool mdx = (ix + 1) < rx;
+                    bool mdy = (iy + 1) < ry;
+                    if (mdx)
+                        psb.AppendLink(ixy, ix1y);
+                    if (mdy)
+                        psb.AppendLink(ixy, ixy1);
+                    if (mdx && mdy)
+                    {
+                        int ix1y1 = ixy1 + 1;
+                        if (((ix + iy) & 1) != 0)
+                        {
+                            psb.AppendFace(ixy, ix1y, ix1y1);
+                            psb.AppendFace(ixy, ix1y1, ixy1);
+                            if (gendiags)
+                            {
+                                psb.AppendLink(ixy, ix1y1);
+                            }
+                        }
+                        else
+                        {
+                            psb.AppendFace(ixy1, ixy, ix1y);
+                            psb.AppendFace(ixy1, ix1y, ix1y1);
+                            if (gendiags)
+                            {
+                                psb.AppendLink(ix1y, ixy1);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return psb;
 		}
 
 		public static SoftBody CreatePatchUV(SoftBodyWorldInfo worldInfo, Vector3 corner00, Vector3 corner10, Vector3 corner01, Vector3 corner11, int resx, int resy, int fixeds, bool gendiags)
@@ -184,9 +307,30 @@ namespace BulletSharp.SoftBody
 
 		public static SoftBody CreateRope(SoftBodyWorldInfo worldInfo, Vector3 from, Vector3 to, int res, int fixeds)
 		{
-			SoftBody body = new SoftBody(btSoftBodyHelpers_CreateRope(worldInfo._native, ref from, ref to, res, fixeds));
-            body.WorldInfo = worldInfo;
-            return body;
+            // Create nodes
+            int r = res + 2;
+            Vector3[] x = new Vector3[r];
+            float[] m = new float[r];
+
+            for (int i = 0; i < r; i++)
+            {
+                Vector3.Lerp(ref from, ref to, i / (float)(r - 1), out x[i]);
+                m[i] = 1;
+            }
+
+            SoftBody psb = new SoftBody(worldInfo, r, x, m);
+            if ((fixeds & 1) != 0)
+                psb.SetMass(0, 0);
+            if ((fixeds & 2) != 0)
+                psb.SetMass(r - 1, 0);
+
+            // Create links
+            for (int i = 1; i < r; i++)
+            {
+                psb.AppendLink(i - 1, i);
+            }
+
+            return psb;
 		}
 
 		public static void Draw(SoftBody psb, IDebugDraw iDraw)
@@ -255,27 +399,13 @@ namespace BulletSharp.SoftBody
 		}
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern float btSoftBodyHelpers_CalculateUV(int resx, int resy, int ix, int iy, int id);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateEllipsoid(IntPtr worldInfo, [In] ref Vector3 center, [In] ref Vector3 radius, int res);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull2(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices, bool randomizeConstraints);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btSoftBodyHelpers_CreateFromTetGenData(IntPtr worldInfo, string ele, string face, string node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        static extern IntPtr btSoftBodyHelpers_CreateFromTriMesh2(IntPtr worldInfo, [In] float[] vertices, [In] int[] triangles, int ntriangles, bool randomizeConstraints);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreatePatch(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBodyHelpers_CreatePatchUV(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreatePatchUV2(IntPtr worldInfo, [In] ref Vector3 corner00, [In] ref Vector3 corner10, [In] ref Vector3 corner01, [In] ref Vector3 corner11, int resx, int resy, int fixeds, bool gendiags, float[] tex_coords);
-		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern IntPtr btSoftBodyHelpers_CreateRope(IntPtr worldInfo, [In] ref Vector3 from, [In] ref Vector3 to, int res, int fixeds);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_Draw(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
