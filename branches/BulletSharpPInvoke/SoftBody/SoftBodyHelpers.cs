@@ -1,7 +1,8 @@
 using System;
+using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Security;
-using System.IO;
 using BulletSharp.Math;
 
 namespace BulletSharp.SoftBody
@@ -70,18 +71,80 @@ namespace BulletSharp.SoftBody
 
         public static SoftBody CreateFromTetGenData(SoftBodyWorldInfo worldInfo, string ele, string face, string node, bool faceLinks, bool tetraLinks, bool facesFromTetras)
 		{
-            SoftBody body = new SoftBody(btSoftBodyHelpers_CreateFromTetGenData(worldInfo._native, ele, face, node, faceLinks, tetraLinks, facesFromTetras));
-            body.WorldInfo = worldInfo;
-            return body;
+            CultureInfo culture = CultureInfo.InvariantCulture;
+            char[] separator = new[] { ' ' };
+            Vector3[] pos;
+
+            using (StringReader nodeReader = new StringReader(node))
+            {
+                string[] nodeHeader = nodeReader.ReadLine().Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                int numNodes = int.Parse(nodeHeader[0]);
+                //int numDims = int.Parse(nodeHeader[1]);
+                //int numAttrs = int.Parse(nodeHeader[2]);
+                //bool hasBounds = !nodeHeader[3].Equals("0");
+
+                pos = new Vector3[numNodes];
+                for (int n = 0; n < numNodes; n++)
+                {
+                    string[] nodeLine = nodeReader.ReadLine().Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                    pos[int.Parse(nodeLine[0])] = new Vector3(
+                        float.Parse(nodeLine[1], culture),
+                        float.Parse(nodeLine[2], culture),
+                        float.Parse(nodeLine[3], culture));
+                }
+            }
+            SoftBody psb = new SoftBody(worldInfo, pos.Length, pos, null);
+            /*
+            if (!string.IsNullOrEmpty(face))
+            {
+                throw new NotImplementedException();
+            }
+            */
+            if (!string.IsNullOrEmpty(ele))
+            {
+                using (StringReader eleReader = new StringReader(ele))
+                {
+                    string[] eleHeader = eleReader.ReadLine().Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                    int numTetras = int.Parse(eleHeader[0]);
+                    //int numCorners = int.Parse(eleHeader[1]);
+                    //int numAttrs = int.Parse(eleHeader[2]);
+
+                    for (int n = 0; n < numTetras; n++)
+                    {
+                        string[] eleLine = eleReader.ReadLine().Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                        //int index = int.Parse(eleLine[0], culture);
+                        int ni0 = int.Parse(eleLine[1], culture);
+                        int ni1 = int.Parse(eleLine[2], culture);
+                        int ni2 = int.Parse(eleLine[3], culture);
+                        int ni3 = int.Parse(eleLine[4], culture);
+                        psb.AppendTetra(ni0, ni1, ni2, ni3);
+                        if (tetraLinks)
+                        {
+                            psb.AppendLink(ni0, ni1, null, true);
+                            psb.AppendLink(ni1, ni2, null, true);
+                            psb.AppendLink(ni2, ni0, null, true);
+                            psb.AppendLink(ni0, ni3, null, true);
+                            psb.AppendLink(ni1, ni3, null, true);
+                            psb.AppendLink(ni2, ni3, null, true);
+                        }
+                    }
+                }
+            }
+
+            //Console.WriteLine("Nodes: {0}", psb.Nodes.Count);
+            //Console.WriteLine("Links: {0}", psb.Links.Count);
+            //Console.WriteLine("Faces: {0}", psb.Faces.Count);
+            //Console.WriteLine("Tetras: {0}", psb.Tetras.Count);
+
+            return psb;
 		}
 
         public static SoftBody CreateFromTetGenFile(SoftBodyWorldInfo worldInfo, string elementFilename, string faceFilename, string nodeFilename, bool faceLinks, bool tetraLinks, bool facesFromTetras)
         {
             string ele = (elementFilename != null) ? File.ReadAllText(elementFilename) : null;
             string face = (faceFilename != null) ? File.ReadAllText(faceFilename) : null;
-            string node = (nodeFilename != null) ? File.ReadAllText(nodeFilename) : null;
 
-            return CreateFromTetGenData(worldInfo, ele, face, node, faceLinks, tetraLinks, facesFromTetras);
+            return CreateFromTetGenData(worldInfo, ele, face, File.ReadAllText(nodeFilename), faceLinks, tetraLinks, facesFromTetras);
         }
 
 		public static SoftBody CreateFromTriMesh(SoftBodyWorldInfo worldInfo, float[] vertices, int[] triangles)

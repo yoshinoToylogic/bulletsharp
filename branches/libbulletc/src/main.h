@@ -2,6 +2,7 @@
 
 // Omits classes inheriting from btActionInterface
 #define BULLETC_DISABLE_IACTION_CLASSES
+#define BULLETC_DISABLE_SOFTBODY_HELPERS
 
 #ifdef _MSC_VER
 #define EXPORT __declspec(dllexport)

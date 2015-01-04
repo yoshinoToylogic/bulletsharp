@@ -68,6 +68,7 @@ namespace BulletSharpGen
             parameterNameMapping.Add("use32bitIndices", "use32BitIndices");
             parameterNameMapping.Add("use4componentVertices", "use4ComponentVertices");
             parameterNameMapping.Add("vertexbase", "vertexBase");
+            parameterNameMapping.Add("bcheckexist", "checkExist");
 
             // Managed header names
             var headerNameMapping = new Dictionary<string, string>();
