@@ -30,12 +30,12 @@ btSoftBody* btSoftBodyHelpers_CreateFromConvexHull2(btSoftBodyWorldInfo* worldIn
 	delete[] verticesTemp;
 	return ret;
 }
-
+#ifndef BULLETC_DISABLE_SOFTBODY_HELPERS
 btSoftBody* btSoftBodyHelpers_CreateFromTetGenData(btSoftBodyWorldInfo* worldInfo, const char* ele, const char* face, const char* node, bool bfacelinks, bool btetralinks, bool bfacesfromtetras)
 {
 	return btSoftBodyHelpers::CreateFromTetGenData(*worldInfo, ele, face, node, bfacelinks, btetralinks, bfacesfromtetras);
 }
-
+#endif
 btSoftBody* btSoftBodyHelpers_CreateFromTriMesh(btSoftBodyWorldInfo* worldInfo, const btScalar* vertices, const int* triangles, int ntriangles)
 {
 	return btSoftBodyHelpers::CreateFromTriMesh(*worldInfo, vertices, triangles, ntriangles);
