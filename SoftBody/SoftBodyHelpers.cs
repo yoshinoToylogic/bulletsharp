@@ -27,8 +27,12 @@ namespace BulletSharp.SoftBody
         StdTetra = Std - Faces - Tetras
     }
 
-	public class SoftBodyHelpers
+	public sealed class SoftBodyHelpers
 	{
+        private SoftBodyHelpers()
+        {
+        }
+
 		public static float CalculateUV(int resx, int resy, int ix, int iy, int id)
 		{
             switch (id)

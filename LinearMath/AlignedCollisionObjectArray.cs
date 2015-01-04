@@ -323,15 +323,13 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern IntPtr btAlignedCollisionObjectArray_at(IntPtr obj, int n);
+        static extern IntPtr btAlignedCollisionObjectArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedCollisionObjectArray_push_back(IntPtr obj, IntPtr val);
+        static extern void btAlignedCollisionObjectArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedCollisionObjectArray_resizeNoInitialize(IntPtr obj, int newSize);
+        static extern void btAlignedCollisionObjectArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        protected static extern void btAlignedCollisionObjectArray_delete(IntPtr obj);
+        static extern int btAlignedCollisionObjectArray_size(IntPtr obj);
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btCollisionObject_getBroadphaseHandle(IntPtr obj);
