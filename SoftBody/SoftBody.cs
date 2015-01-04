@@ -3292,12 +3292,14 @@ namespace BulletSharp.SoftBody
 		public SoftBody(SoftBodyWorldInfo worldInfo, int nodeCount, Vector3[] x, float[] m)
 			: base(btSoftBody_new(worldInfo._native, nodeCount, x, m))
 		{
+            _collisionShape = new CollisionShape(btCollisionObject_getCollisionShape(_native), true);
             _worldInfo = worldInfo;
 		}
 
 		public SoftBody(SoftBodyWorldInfo worldInfo)
 			: base(btSoftBody_new2(worldInfo._native))
 		{
+            _collisionShape = new CollisionShape(btCollisionObject_getCollisionShape(_native), true);
             _worldInfo = worldInfo;
 		}
 
@@ -3445,12 +3447,12 @@ namespace BulletSharp.SoftBody
 
 		public void AppendLink(int node0, int node1, Material mat)
 		{
-			btSoftBody_appendLink2(_native, node0, node1, mat._native);
+			btSoftBody_appendLink2(_native, node0, node1, (mat != null) ? mat._native : IntPtr.Zero);
 		}
 
-		public void AppendLink(int node0, int node1, Material mat, bool bcheckexist)
+		public void AppendLink(int node0, int node1, Material mat, bool checkExist)
 		{
-			btSoftBody_appendLink3(_native, node0, node1, mat._native, bcheckexist);
+            btSoftBody_appendLink3(_native, node0, node1, (mat != null) ? mat._native : IntPtr.Zero, checkExist);
 		}
 
 		public void AppendLink()
@@ -3465,7 +3467,7 @@ namespace BulletSharp.SoftBody
 
 		public void AppendLink(int model, Material mat)
 		{
-			btSoftBody_appendLink6(_native, model, mat._native);
+            btSoftBody_appendLink6(_native, model, (mat != null) ? mat._native : IntPtr.Zero);
 		}
 
 		public void AppendLink(Node node0, Node node1)
@@ -3475,12 +3477,12 @@ namespace BulletSharp.SoftBody
 
 		public void AppendLink(Node node0, Node node1, Material mat)
 		{
-			btSoftBody_appendLink8(_native, node0._native, node1._native, mat._native);
+            btSoftBody_appendLink8(_native, node0._native, node1._native, (mat != null) ? mat._native : IntPtr.Zero);
 		}
 
 		public void AppendLink(Node node0, Node node1, Material mat, bool bcheckexist)
 		{
-			btSoftBody_appendLink9(_native, node0._native, node1._native, mat._native, bcheckexist);
+            btSoftBody_appendLink9(_native, node0._native, node1._native, (mat != null) ? mat._native : IntPtr.Zero, bcheckexist);
 		}
 
 		public Material AppendMaterial()
