@@ -101,4 +101,14 @@ namespace BulletSharp
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btCylinderShapeZ_new2(float halfExtentX, float halfExtentY, float halfExtentZ);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct CylinderShapeFloatData
+    {
+        public ConvexInternalShapeFloatData ConvexInternalShapeData;
+        public int UpAxis;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(CylinderShapeFloatData), fieldName).ToInt32(); }
+    }
 }

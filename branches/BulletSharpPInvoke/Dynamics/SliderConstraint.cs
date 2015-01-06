@@ -22,6 +22,7 @@ namespace BulletSharp
         public SliderConstraint(RigidBody rigidBodyB, ref Matrix frameInB, bool useLinearReferenceFrameA)
             : base(btSliderConstraint_new2(rigidBodyB._native, ref frameInB, useLinearReferenceFrameA))
         {
+            _rigidBodyA = FixedBody;
             _rigidBodyB = rigidBodyB;
         }
 

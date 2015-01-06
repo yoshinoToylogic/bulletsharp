@@ -92,4 +92,18 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btTriangleMeshShape_recalcLocalAabb(IntPtr obj);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct TriangleMeshShapeData
+    {
+        public CollisionShapeFloatData CollisionShapeData;
+        public StridingMeshInterfaceData MeshInterface;
+        public IntPtr QuantizedFloatBvh;
+        public IntPtr QuantizedDoubleBvh;
+        public IntPtr TriangleInfoMap;
+        public float CollisionMargin;
+        public int Pad;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(TriangleMeshShapeData), fieldName).ToInt32(); }
+    }
 }

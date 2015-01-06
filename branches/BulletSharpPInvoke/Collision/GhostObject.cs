@@ -126,11 +126,6 @@ namespace BulletSharp
 	{
         HashedOverlappingPairCache _overlappingPairCache;
 
-		internal PairCachingGhostObject(IntPtr native)
-			: base(native)
-		{
-		}
-
 		public PairCachingGhostObject()
 			: base(btPairCachingGhostObject_new())
 		{

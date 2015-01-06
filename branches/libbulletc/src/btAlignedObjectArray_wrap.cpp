@@ -27,11 +27,6 @@ int btAlignedBroadphasePairArray_size(btAlignedBroadphasePairArray* obj)
 	return obj->size();
 }
 
-void btAlignedBroadphasePairArray_delete(btAlignedBroadphasePairArray* obj)
-{
-	delete obj;
-}
-
 
 btCollisionObject* btAlignedCollisionObjectArray_at(btAlignedCollisionObjectArray* obj, int n)
 {
@@ -271,9 +266,4 @@ void btAlignedSoftBodyTetraArray_resizeNoInitialize(btSoftBody::tTetraArray* obj
 int btAlignedSoftBodyTetraArray_size(btSoftBody::tTetraArray* obj)
 {
 	return obj->size();
-}
-
-void btAlignedSoftBodyTetraArray_delete(btSoftBody::tTetraArray* obj)
-{
-	delete obj;
 }

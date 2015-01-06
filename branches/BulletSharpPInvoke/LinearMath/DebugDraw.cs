@@ -28,7 +28,7 @@ using BulletSharp.Math;
 
 namespace BulletSharp
 {
-    public abstract class DebugDraw : IDebugDraw
+    public abstract class DebugDraw : IDebugDraw//, IDisposable
     {
         internal IntPtr _native;
 

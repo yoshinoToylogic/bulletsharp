@@ -69,21 +69,35 @@ namespace BulletSharp
 
                     if (collisionObjectAPtr != 0)
                     {
-                        byte[] coData = file.LibPointers[collisionObjectAPtr];
-                        a = RigidBody.Upcast(_bodyMap[coData]);
-                        if (a == null)
+                        if (!file.LibPointers.ContainsKey(collisionObjectAPtr))
                         {
-                            a = GetFixedBody();
+                            a = TypedConstraint.FixedBody;
+                        }
+                        else
+                        {
+                            byte[] coData = file.LibPointers[collisionObjectAPtr];
+                            a = RigidBody.Upcast(_bodyMap[coData]);
+                            if (a == null)
+                            {
+                                a = TypedConstraint.FixedBody;
+                            }
                         }
                     }
 
                     if (collisionObjectBPtr != 0)
                     {
-                        byte[] coData = file.LibPointers[collisionObjectBPtr];
-                        b = RigidBody.Upcast(_bodyMap[coData]);
-                        if (b == null)
+                        if (!file.LibPointers.ContainsKey(collisionObjectBPtr))
                         {
-                            b = GetFixedBody();
+                            b = TypedConstraint.FixedBody;
+                        }
+                        else
+                        {
+                            byte[] coData = file.LibPointers[collisionObjectBPtr];
+                            b = RigidBody.Upcast(_bodyMap[coData]);
+                            if (b == null)
+                            {
+                                b = TypedConstraint.FixedBody;
+                            }
                         }
                     }
 
@@ -107,16 +121,6 @@ namespace BulletSharp
 
             return true;
 		}
-
-        private static RigidBody _fixedBody;
-        private RigidBody GetFixedBody()
-        {
-            if (_fixedBody == null)
-            {
-                _fixedBody = new RigidBody(new RigidBodyConstructionInfo(0.0f, null, null));
-            }
-            return _fixedBody;
-        }
 
         public bool LoadFile(string fileName, string preSwapFilenameOut)
 		{

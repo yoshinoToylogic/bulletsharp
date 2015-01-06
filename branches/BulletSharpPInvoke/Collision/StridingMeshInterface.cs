@@ -185,4 +185,30 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btStridingMeshInterface_delete(IntPtr obj);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct MeshPartData
+    {
+        public IntPtr Vertices3F;
+        public IntPtr Vertices3D;
+        public IntPtr Indices32;
+        public IntPtr Indices16;
+        public IntPtr Indices8;
+        public IntPtr Indices16_2;
+        public int NumTriangles;
+        public int NumVertices;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(MeshPartData), fieldName).ToInt32(); }
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct StridingMeshInterfaceData
+    {
+        public IntPtr MeshPartsPtr;
+        public Vector3FloatData Scaling;
+        public int NumMeshParts;
+        public int Padding;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(StridingMeshInterfaceData), fieldName).ToInt32(); }
+    }
 }

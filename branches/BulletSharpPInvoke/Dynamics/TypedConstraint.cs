@@ -370,6 +370,8 @@ namespace BulletSharp
 
         internal IntPtr _native;
 
+        private static RigidBody _fixedBody;
+
         protected RigidBody _rigidBodyA;
         protected RigidBody _rigidBodyB;
 
@@ -494,9 +496,17 @@ namespace BulletSharp
 			set { btTypedConstraint_setDbgDrawSize(_native, value); }
 		}
 
-		public RigidBody FixedBody
+		public static RigidBody FixedBody
 		{
-            get { return CollisionObject.GetManaged(btTypedConstraint_getFixedBody()) as RigidBody; }
+            get
+            {
+                if (_fixedBody == null)
+                {
+                    _fixedBody = new RigidBody(btTypedConstraint_getFixedBody());
+                    _fixedBody._preventDelete = true;
+                }
+                return _fixedBody;
+            }
 		}
 
 		public bool IsEnabled
