@@ -6,7 +6,6 @@ extern "C"
 	EXPORT void btAlignedBroadphasePairArray_push_back(btAlignedBroadphasePairArray* obj, btBroadphasePair* val);
 	EXPORT void btAlignedBroadphasePairArray_resizeNoInitialize(btAlignedBroadphasePairArray* obj, int newSize);
 	EXPORT int btAlignedBroadphasePairArray_size(btAlignedBroadphasePairArray* obj);
-	EXPORT void btAlignedBroadphasePairArray_delete(btAlignedBroadphasePairArray* obj);
 
 	EXPORT btCollisionObject* btAlignedCollisionObjectArray_at(btAlignedCollisionObjectArray* obj, int n);
 	EXPORT void btAlignedCollisionObjectArray_push_back(btAlignedCollisionObjectArray* obj, btCollisionObject* val);
