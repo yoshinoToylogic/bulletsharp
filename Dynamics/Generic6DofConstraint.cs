@@ -559,6 +559,7 @@ namespace BulletSharp
         public Generic6DofConstraint(RigidBody rigidBodyB, ref Matrix frameInB, bool useLinearReferenceFrameB)
             : base(btGeneric6DofConstraint_new2(rigidBodyB._native, ref frameInB, useLinearReferenceFrameB))
         {
+            _rigidBodyA = FixedBody;
             _rigidBodyB = rigidBodyB;
         }
 

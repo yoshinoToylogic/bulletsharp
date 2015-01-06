@@ -23,6 +23,7 @@ namespace BulletSharp
             : base(btConeTwistConstraint_new2(rigidBodyA._native, ref rigidBodyAFrame))
         {
             _rigidBodyA = rigidBodyA;
+            _rigidBodyB = FixedBody;
         }
 
 		public ConeTwistConstraint(RigidBody rigidBodyA, Matrix rigidBodyAFrame)
@@ -305,4 +306,22 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btConeTwistConstraint_updateRHS(IntPtr obj, float timeStep);
 	}
+
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct ConeTwistConstraintFloatData
+    {
+        public TypedConstraintFloatData TypedConstraintData;
+        public TransformFloatData RigidBodyAFrame;
+        public TransformFloatData RigidBodyBFrame;
+        public float SwingSpan1;
+        public float SwingSpan2;
+        public float TwistSpan;
+        public float LimitSoftness;
+        public float BiasFactor;
+        public float RelaxationFactor;
+        public float Damping;
+        public int Pad;
+
+        public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(ConeTwistConstraintFloatData), fieldName).ToInt32(); }
+    }
 }

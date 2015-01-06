@@ -16,6 +16,11 @@ namespace BulletSharp
 	{
         private MotionState _motionState;
 
+        public RigidBody(IntPtr native)
+            : base(native)
+        {
+        }
+
 		public RigidBody(RigidBodyConstructionInfo constructionInfo)
 			: base(btRigidBody_new(constructionInfo._native))
 		{
@@ -596,7 +601,7 @@ namespace BulletSharp
         public float LinearSleepingThreshold;
         public float AngularSleepingThreshold;
         public int AdditionalDamping;
-        public int Padding;
+        //public int Padding;
 
         public static int Offset(string fieldName) { return Marshal.OffsetOf(typeof(RigidBodyFloatData), fieldName).ToInt32(); }
     }

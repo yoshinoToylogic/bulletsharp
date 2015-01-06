@@ -169,14 +169,12 @@ namespace BulletSharp
         }
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        internal static extern IntPtr btAlignedBroadphasePairArray_at(IntPtr obj, int n);
+        static extern IntPtr btAlignedBroadphasePairArray_at(IntPtr obj, int n);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        internal static extern void btAlignedBroadphasePairArray_push_back(IntPtr obj, IntPtr val);
+        static extern void btAlignedBroadphasePairArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        internal static extern void btAlignedBroadphasePairArray_resizeNoInitialize(IntPtr obj, int newSize);
+        static extern void btAlignedBroadphasePairArray_resizeNoInitialize(IntPtr obj, int newSize);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        internal static extern int btAlignedBroadphasePairArray_size(IntPtr obj);
-        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-        internal static extern void btAlignedBroadphasePairArray_delete(IntPtr obj);
+        static extern int btAlignedBroadphasePairArray_size(IntPtr obj);
     }
 }

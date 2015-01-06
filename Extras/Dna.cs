@@ -194,7 +194,7 @@ namespace BulletSharp
         private NameInfo[] _names;
         private StructDecl[] _structs;
         private TypeDecl[] _types;
-        private Dictionary<string, StructDecl> _structReverse;
+        private Dictionary<string, int> _structReverse;
 
         private int _ptrLen;
 
@@ -223,11 +223,14 @@ namespace BulletSharp
             return _structs[i];
         }
 
-        public StructDecl GetReverseType(string typeName)
+        public int GetReverseType(string typeName)
         {
-            StructDecl s;
-            _structReverse.TryGetValue(typeName, out s);
-            return s;
+            int s;
+            if (_structReverse.TryGetValue(typeName, out s))
+            {
+                return s;
+            }
+            return -1;
         }
 
         public void Init(BinaryReader reader, bool swap)
@@ -330,14 +333,15 @@ namespace BulletSharp
             }
 
             // build reverse lookups
-            _structReverse = new Dictionary<string, StructDecl>(_structs.Length);
-            foreach (StructDecl s in _structs)
+            _structReverse = new Dictionary<string, int>(_structs.Length);
+            for (int i = 0; i < _structs.Length; i++)
             {
+                StructDecl s = _structs[i];
                 if (_ptrLen == 0 && s.Type.Name.Equals("ListBase"))
                 {
                     _ptrLen = s.Type.Length / 2;
                 }
-                _structReverse.Add(s.Type.Name, s);
+                _structReverse.Add(s.Type.Name, i);
             }
         }
 
@@ -352,9 +356,19 @@ namespace BulletSharp
             for (int i = 0; i < _structs.Length; i++)
             {
                 Dna.StructDecl oldStruct = _structs[i];
-                Dna.StructDecl curStruct = memoryDna.GetReverseType(oldStruct.Type.Name);
-                
-                _cmpFlags[i] = oldStruct.Equals(curStruct) ? FileDnaFlags.StructEqual : FileDnaFlags.StructNotEqual;
+                int oldLookup = GetReverseType(oldStruct.Type.Name);
+                if (oldLookup == -1)
+                {
+                    _cmpFlags[i] = FileDnaFlags.None;
+                    continue;
+                }
+
+                if (oldLookup < memoryDna._structs.Length)
+                {
+                    Dna.StructDecl curStruct = memoryDna.GetStruct(oldLookup);
+
+                    _cmpFlags[i] = oldStruct.Equals(curStruct) ? FileDnaFlags.StructEqual : FileDnaFlags.StructNotEqual;
+                }
             }
 
             // Recurse in

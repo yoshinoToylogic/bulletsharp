@@ -49,6 +49,7 @@ namespace BulletSharp
 	public class CollisionObject : IDisposable
 	{
 		internal IntPtr _native;
+        internal bool _preventDelete;
         private bool _isDisposed;
         private BroadphaseProxy _broadphaseHandle;
         protected CollisionShape _collisionShape;
@@ -391,12 +392,15 @@ namespace BulletSharp
 		{
             if (!_isDisposed)
 			{
-                // Is the object added to a world?
-                if (btCollisionObject_getBroadphaseHandle(_native) != IntPtr.Zero)
+                if (!_preventDelete)
                 {
-                    BroadphaseHandle = null;
-                    //System.Diagnostics.Debugger.Break();
-                    return;
+                    // Is the object added to a world?
+                    if (btCollisionObject_getBroadphaseHandle(_native) != IntPtr.Zero)
+                    {
+                        BroadphaseHandle = null;
+                        //System.Diagnostics.Debugger.Break();
+                        return;
+                    }
                 }
 
                 _isDisposed = true;

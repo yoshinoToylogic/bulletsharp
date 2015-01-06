@@ -457,15 +457,16 @@ namespace BulletSharp
 
             foreach (Dna.ElementDecl element in memoryStruct.Elements)
             {
-                if (element.Type.Struct != null && element.Name.Name[0] != '*')
+                int revType = _fileDna.GetReverseType(element.Type.Name);
+                if (revType != -1 && element.Name.Name[0] != '*')
                 {
                     Dna.ElementDecl elementOld;
                     long cpo = GetFileElement(fileStruct, element, dtPtr, out elementOld);
                     if (cpo != 0)
                     {
+                        Dna.StructDecl oldStruct = _fileDna.GetStruct(revType);
                         dt.BaseStream.Position = cpo;
                         int arrayLen = elementOld.Name.ArraySizeNew;
-                        Dna.StructDecl oldStruct = _fileDna.GetReverseType(element.Type.Name);
                         if (arrayLen == 1)
                         {
                             ParseStruct(strc, dt, oldStruct, element.Type.Struct, fixupPointers);
@@ -519,10 +520,11 @@ namespace BulletSharp
                 }
                 else
                 {
-                    Dna.StructDecl reverseOld = _memoryDna.GetReverseType(oldStruct.Type.Name);
-                    if (reverseOld != null)
+                    int reverseOld = _memoryDna.GetReverseType(oldStruct.Type.Name);
+                    if (reverseOld != -1)
                     {
-                        byte[] structAlloc = new byte[dataChunk.NR * reverseOld.Type.Length];
+                        Dna.StructDecl curStruct = _memoryDna.GetStruct(reverseOld);
+                        byte[] structAlloc = new byte[dataChunk.NR * curStruct.Type.Length];
                         AddDataBlock(structAlloc);
                         using (MemoryStream stream = new MemoryStream(structAlloc))
                         {
@@ -530,7 +532,7 @@ namespace BulletSharp
                             {
                                 for (int block = 0; block < dataChunk.NR; block++)
                                 {
-                                    ParseStruct(writer, head, oldStruct, reverseOld, true);
+                                    ParseStruct(writer, head, oldStruct, curStruct, true);
                                     //_libPointers.Add(old, cur);
                                 }
                             }
@@ -635,10 +637,23 @@ namespace BulletSharp
                     }
                     else
                     {
-                        throw new NotImplementedException();
+                        long ptr = (IntPtr.Size == 8) ? reader.ReadInt64() : reader.ReadInt32();
                         if ((verboseMode & FileVerboseMode.ExportXml) != 0)
                         {
-                            throw new NotImplementedException();
+                            for (int i = 0; i < recursion; i++)
+                            {
+                                Console.Write("  ");
+                            }
+                            Console.WriteLine("<{0} type=\"pointer\"> {1} </{0}>", element.Name.Name.Substring(1), ptr);
+                        }
+                        byte[] ptrChunk = FindLibPointer(ptr);
+                        if (ptrChunk != null)
+                        {
+                            //throw new NotImplementedException();
+                        }
+                        else
+                        {
+                            //Console.WriteLine("Cannot fixup pointer at {0} from {1} to {2}!", ptrptr, *ptrptr, ptr);
                         }
                     }
                 }
@@ -646,10 +661,37 @@ namespace BulletSharp
                 {
                     if (element.Type.Struct != null)
                     {
+                        if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                        {
+                            for (int i = 0; i < recursion; i++)
+                            {
+                                Console.Write("  ");
+                            }
+
+                            if (arrayLen > 1)
+                            {
+                                Console.WriteLine("<{0} type=\"{1}\" count={2}>", element.Name.CleanName, element.Type.Name, arrayLen);
+                            }
+                            else
+                            {
+                                Console.WriteLine("<{0} type=\"{1}\">", element.Name.CleanName, element.Type.Name);
+                            }
+                        }
+
                         for (int i = 0; i < arrayLen; i++)
                         {
-                            throw new NotImplementedException();
-                            //byteOffset += ResolvePointersStructRecursive(elemPtr + byteOffset, revType, verboseMode, recursion + 1);
+                            int revType = _fileDna.GetReverseType(element.Type.Name);
+                            ResolvePointersStructRecursive(reader, revType, verboseMode, recursion + 1);
+                            //throw new NotImplementedException();
+                        }
+
+                        if ((verboseMode & FileVerboseMode.ExportXml) != 0)
+                        {
+                            for (int i = 0; i < recursion; i++)
+                            {
+                                Console.Write("  ");
+                            }
+                            Console.WriteLine("</{0}>", element.Name.CleanName);
                         }
                     }
                     else

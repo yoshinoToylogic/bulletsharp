@@ -11,6 +11,7 @@ namespace BulletSharp
 	{
 		internal IntPtr _native;
         private bool _preventDelete;
+        private bool _ownsData;
 
 		internal IndexedMesh(IntPtr native, bool preventDelete)
 		{
@@ -22,6 +23,50 @@ namespace BulletSharp
 		{
 			_native = btIndexedMesh_new();
 		}
+
+        public void Allocate(int numTriangles, int numVertices, int triangleIndexStride = sizeof(int) * 3, int vertexStride = sizeof(float) * 3)
+        {
+            if (_ownsData)
+            {
+                Free();
+            }
+            else
+            {
+                _ownsData = true;
+            }
+
+            switch (triangleIndexStride)
+            {
+                case sizeof(byte) * 3:
+                    IndexType = PhyScalarType.UChar;
+                    break;
+                case sizeof(short) * 3:
+                    IndexType = PhyScalarType.Short;
+                    break;
+                case sizeof(int) * 3:
+                default:
+                    IndexType = PhyScalarType.Integer;
+                    break;
+            }
+            VertexType = PhyScalarType.Float;
+
+            NumTriangles = numTriangles;
+            TriangleIndexBase = Marshal.AllocHGlobal(numTriangles * triangleIndexStride / 3);
+            TriangleIndexStride = triangleIndexStride;
+            NumVertices = numVertices;
+            VertexBase = Marshal.AllocHGlobal(numVertices * vertexStride);
+            VertexStride = vertexStride;
+        }
+
+        public void Free()
+        {
+            if (_ownsData)
+            {
+                Marshal.FreeHGlobal(TriangleIndexBase);
+                Marshal.FreeHGlobal(VertexBase);
+                _ownsData = false;
+            }
+        }
 
         public unsafe UnmanagedMemoryStream GetTriangleStream()
         {
@@ -93,6 +138,7 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
+                Free();
                 if (!_preventDelete)
                 {
                     btIndexedMesh_delete(_native);
@@ -163,15 +209,8 @@ namespace BulletSharp
         public TriangleIndexVertexArray(int[] triangles, float[] vertices)
             : base(btTriangleIndexVertexArray_new())
         {
-            _initialMesh = new IndexedMesh
-            {
-                NumTriangles = triangles.Length / 3,
-                TriangleIndexBase = Marshal.AllocHGlobal(triangles.Length * sizeof(int)),
-                TriangleIndexStride = 3 * sizeof(int),
-                NumVertices = vertices.Length / 3,
-                VertexBase = Marshal.AllocHGlobal(vertices.Length * sizeof(float)),
-                VertexStride = sizeof(float) * 3
-            };
+            _initialMesh = new IndexedMesh();
+            _initialMesh.Allocate(triangles.Length / 3, vertices.Length / 3);
             Marshal.Copy(triangles, 0, _initialMesh.TriangleIndexBase, triangles.Length);
             Marshal.Copy(vertices, 0, _initialMesh.VertexBase, vertices.Length);
             AddIndexedMesh(_initialMesh);
@@ -180,15 +219,8 @@ namespace BulletSharp
         public TriangleIndexVertexArray(ICollection<int> triangles, ICollection<float> vertices)
             : base(btTriangleIndexVertexArray_new())
         {
-            _initialMesh = new IndexedMesh
-            {
-                NumTriangles = triangles.Count / 3,
-                TriangleIndexBase = Marshal.AllocHGlobal(triangles.Count * sizeof(int)),
-                TriangleIndexStride = 3 * sizeof(int),
-                NumVertices = vertices.Count / 3,
-                VertexBase = Marshal.AllocHGlobal(vertices.Count * sizeof(float)),
-                VertexStride = sizeof(float) * 3
-            };
+            _initialMesh = new IndexedMesh();
+            _initialMesh.Allocate(triangles.Count / 3, vertices.Count / 3);
             int[] triangleArray = new int[triangles.Count];
             triangles.CopyTo(triangleArray, 0);
             Marshal.Copy(triangleArray, 0, _initialMesh.TriangleIndexBase, triangles.Count);
@@ -201,15 +233,8 @@ namespace BulletSharp
         public TriangleIndexVertexArray(ICollection<int> triangles, ICollection<Vector3> vertices)
             : base(btTriangleIndexVertexArray_new())
         {
-            _initialMesh = new IndexedMesh
-            {
-                NumTriangles = triangles.Count / 3,
-                TriangleIndexBase = Marshal.AllocHGlobal(triangles.Count * sizeof(int)),
-                TriangleIndexStride = 3 * sizeof(int),
-                NumVertices = vertices.Count,
-                VertexBase = Marshal.AllocHGlobal(vertices.Count * Vector3.SizeInBytes),
-                VertexStride = Vector3.SizeInBytes
-            };
+            _initialMesh = new IndexedMesh();
+            _initialMesh.Allocate(triangles.Count / 3, vertices.Count);
             int[] triangleArray = new int[triangles.Count];
             triangles.CopyTo(triangleArray, 0);
             Marshal.Copy(triangleArray, 0, _initialMesh.TriangleIndexBase, triangles.Count);
@@ -258,11 +283,13 @@ namespace BulletSharp
 
         protected override void Dispose(bool disposing)
         {
-            if (_initialMesh != null && _initialMesh._native != IntPtr.Zero)
+            if (disposing)
             {
-                Marshal.FreeHGlobal(_initialMesh.TriangleIndexBase);
-                Marshal.FreeHGlobal(_initialMesh.VertexBase);
-                _initialMesh = null;
+                if (_initialMesh != null)
+                {
+                    _initialMesh.Dispose();
+                    _initialMesh = null;
+                }
             }
             base.Dispose(disposing);
         }

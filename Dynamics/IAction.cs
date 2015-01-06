@@ -10,7 +10,7 @@ namespace BulletSharp
         void UpdateAction(CollisionWorld collisionWorld, float deltaTimeStep);
     }
 
-    internal class ActionInterfaceWrapper
+    internal class ActionInterfaceWrapper : IDisposable
 	{
 		internal IntPtr _native;
         internal IAction _actionInterface;
