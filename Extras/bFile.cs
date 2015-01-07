@@ -142,14 +142,9 @@ namespace BulletSharp
             // to the file being loaded. Fill the
             // memory with the file data...
 
-            MemoryStream dataStream = new MemoryStream(_fileBuffer, false);
-            dataStream.Position = data;
-            BinaryReader dataReader = new BinaryReader(dataStream);
-
             foreach (Dna.ElementDecl element in dna.Elements)
             {
                 int eleLen = _fileDna.GetElementSize(element);
-
                 if ((_flags & FileFlags.BrokenDna) != 0)
                 {
                     if (element.Type.Name.Equals("short") && element.Name.Name.Equals("int"))
@@ -161,6 +156,10 @@ namespace BulletSharp
                 if (lookupElement.Name.Equals(element.Name))
                 {
                     int arrayLen = element.Name.ArraySizeNew;
+
+                    MemoryStream dataStream = new MemoryStream(_fileBuffer, false);
+                    dataStream.Position = data;
+                    BinaryReader dataReader = new BinaryReader(dataStream);
 
                     if (element.Name.Name[0] == '*')
                     {
@@ -201,13 +200,13 @@ namespace BulletSharp
                         //GetElement(arrayLen, lookupType, type, data, strcData);
                     }
 
+                    dataReader.Dispose();
+                    dataStream.Dispose();
+
                     break;
                 }
-                dataStream.Position += eleLen;
+                data += eleLen;
             }
-
-            dataReader.Dispose();
-            dataStream.Dispose();
         }
 
         // buffer offset util
@@ -448,43 +447,51 @@ namespace BulletSharp
             memory.Dispose();
         }
 
-        protected void ParseStruct(BinaryWriter strc, BinaryReader dt, Dna.StructDecl fileStruct, Dna.StructDecl memoryStruct, bool fixupPointers)
+        protected void ParseStruct(BinaryWriter strc, BinaryReader data, Dna.StructDecl fileStruct, Dna.StructDecl memoryStruct, bool fixupPointers)
         {
             if (fileStruct == null) return;
             if (memoryStruct == null) return;
 
-            long dtPtr = dt.BaseStream.Position;
+            long dataPtr = data.BaseStream.Position;
+            long strcPtr = strc.BaseStream.Position;
 
             foreach (Dna.ElementDecl element in memoryStruct.Elements)
             {
-                int revType = _fileDna.GetReverseType(element.Type.Name);
-                if (revType != -1 && element.Name.Name[0] != '*')
+                int memorySize = _memoryDna.GetElementSize(element);
+                if (element.Type.Struct != null && element.Name.Name[0] != '*')
                 {
                     Dna.ElementDecl elementOld;
-                    long cpo = GetFileElement(fileStruct, element, dtPtr, out elementOld);
-                    if (cpo != 0)
+                    long elementOffset = GetFileElement(fileStruct, element, dataPtr, out elementOld);
+                    if (elementOffset != 0)
                     {
-                        Dna.StructDecl oldStruct = _fileDna.GetStruct(revType);
-                        dt.BaseStream.Position = cpo;
+                        Dna.StructDecl oldStruct = _fileDna.GetStruct(_fileDna.GetReverseType(element.Type.Name));
+                        data.BaseStream.Position = elementOffset;
                         int arrayLen = elementOld.Name.ArraySizeNew;
                         if (arrayLen == 1)
                         {
-                            ParseStruct(strc, dt, oldStruct, element.Type.Struct, fixupPointers);
+                            strc.BaseStream.Position = strcPtr;
+                            ParseStruct(strc, data, oldStruct, element.Type.Struct, fixupPointers);
+                            strcPtr += memorySize;
                         }
                         else
                         {
-                            int fpLen = _fileDna.GetElementSize(element) / arrayLen;
+                            int fileSize = _fileDna.GetElementSize(elementOld) / arrayLen;
+                            memorySize /= arrayLen;
                             for (int i = 0; i < arrayLen; i++)
                             {
-                                ParseStruct(strc, dt, oldStruct, element.Type.Struct, fixupPointers);
-                                dt.BaseStream.Position += fpLen;
+                                strc.BaseStream.Position = strcPtr;
+                                ParseStruct(strc, data, oldStruct, element.Type.Struct, fixupPointers);
+                                data.BaseStream.Position += fileSize;
+                                strcPtr += memorySize;
                             }
                         }
                     }
                 }
                 else
                 {
-                    GetMatchingFileDna(fileStruct, element, strc, dtPtr, fixupPointers);
+                    strc.BaseStream.Position = strcPtr;
+                    GetMatchingFileDna(fileStruct, element, strc, dataPtr, fixupPointers);
+                    strcPtr += memorySize;
                 }
             }
         }

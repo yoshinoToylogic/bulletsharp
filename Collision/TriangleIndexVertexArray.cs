@@ -51,7 +51,7 @@ namespace BulletSharp
             VertexType = PhyScalarType.Float;
 
             NumTriangles = numTriangles;
-            TriangleIndexBase = Marshal.AllocHGlobal(numTriangles * triangleIndexStride / 3);
+            TriangleIndexBase = Marshal.AllocHGlobal(numTriangles * triangleIndexStride);
             TriangleIndexStride = triangleIndexStride;
             NumVertices = numVertices;
             VertexBase = Marshal.AllocHGlobal(numVertices * vertexStride);

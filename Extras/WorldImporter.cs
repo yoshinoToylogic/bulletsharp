@@ -613,16 +613,15 @@ namespace BulletSharp
                         long indices32 = meshReader.ReadPtr(meshOffset + MeshPartData.Offset("Indices32"));
                         meshPart.NumTriangles = meshReader.ReadInt32(meshOffset + MeshPartData.Offset("NumTriangles"));
                         meshPart.NumVertices = meshReader.ReadInt32(meshOffset + MeshPartData.Offset("NumVertices"));
-                        meshPart.Allocate(meshPart.NumTriangles, meshPart.NumVertices);
-                        if (meshPart.NumVertices == 0)
-                        {
-                            continue;
-                        }
+                        meshPart.Allocate(meshPart.NumTriangles, meshPart.NumVertices, sizeof(int) * 3, sizeof(float) * 4);
+
                         if (indices32 != 0)
                         {
-                            meshPart.IndexType = PhyScalarType.Integer;
-                            
-                            throw new NotImplementedException();
+                            using (Stream triangleStream = meshPart.GetTriangleStream())
+                            {
+                                byte[] indices = libPointers[indices32];
+                                triangleStream.Write(indices, 0, indices.Length);
+                            }
                         }
                         else
                         {
@@ -632,7 +631,11 @@ namespace BulletSharp
 
                         if (vertices3f != 0)
                         {
-                            throw new NotImplementedException();
+                            using (Stream vertexStream = meshPart.GetVertexStream())
+                            {
+                                byte[] vertices = libPointers[vertices3f];
+                                vertexStream.Write(vertices, 0, vertices.Length);
+                            }
                         }
                         else
                         {
@@ -642,7 +645,7 @@ namespace BulletSharp
                         {
                             meshInterface.AddIndexedMesh(meshPart, meshPart.IndexType);
                         }
-                        meshPart.Dispose();
+                        //meshPart.Dispose();
                     }
                 }
             }

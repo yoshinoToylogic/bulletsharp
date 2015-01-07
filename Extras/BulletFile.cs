@@ -111,8 +111,8 @@ namespace BulletSharp
             //Console.WriteLine("Chunk size = {0}", CHUNK_HEADER_LEN);
             //Console.WriteLine("File chunk size = {0}", ChunkUtils.GetOffset(_flags));
 
-            bool brokenDna = (_flags & FileFlags.BrokenDna) == FileFlags.BrokenDna;
-            bool swap = (_flags & FileFlags.EndianSwap) == FileFlags.EndianSwap;
+            bool brokenDna = (_flags & FileFlags.BrokenDna) != 0;
+            bool swap = (_flags & FileFlags.EndianSwap) != 0;
 
             MemoryStream memory = new MemoryStream(_fileBuffer, false);
             BinaryReader reader = new BinaryReader(memory);

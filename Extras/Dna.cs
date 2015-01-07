@@ -213,9 +213,9 @@ namespace BulletSharp
             return element.Name.ArraySizeNew * (element.Name.IsPointer ? _ptrLen : element.Type.Length);
 		}
 
-        public object GetName(int i)
+        public string GetName(int i)
         {
-            return _names[i];
+            return _names[i].Name;
         }
 
         public StructDecl GetStruct(int i)
