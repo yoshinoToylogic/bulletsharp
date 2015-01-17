@@ -337,6 +337,9 @@
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\btQuantizedBvh_wrap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="src\btRaycastVehicle_wrap.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -796,6 +799,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\btQuantizedBvh_wrap.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\btRaycastVehicle_wrap.h">

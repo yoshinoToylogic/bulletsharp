@@ -109,6 +109,7 @@
 #include "btPointCollector_wrap.h"
 #include "btPolarDecomposition_wrap.h"
 #include "btPolyhedralConvexShape_wrap.h"
+#include "btQuantizedBvh_wrap.h"
 #include "btRaycastVehicle_wrap.h"
 #include "btRigidBody_wrap.h"
 #include "btScaledBvhTriangleMeshShape_wrap.h"

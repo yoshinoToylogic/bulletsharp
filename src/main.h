@@ -633,6 +633,20 @@
 #define btAlignedFaceArray btAlignedObjectArray<btFace>
 #endif
 
+#ifndef BT_QUANTIZED_BVH_H
+#define btNodeOverlapCallback void
+#define btOptimizedBvhNode void
+#define btQuantizedBvh void
+#define btQuantizedBvh_btTraversalMode int
+#define btQuantizedBvhDoubleData void
+#define btQuantizedBvhFloatData void
+#define btQuantizedBvhNode void
+#define BvhSubtreeInfoArray void
+#define QuantizedNodeArray void
+#else
+#define btQuantizedBvh_btTraversalMode btQuantizedBvh::btTraversalMode
+#endif
+
 #ifndef BT_SIMD__QUATERNION_H_
 #define btQuaternion void
 #endif

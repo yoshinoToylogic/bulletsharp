@@ -272,6 +272,8 @@ ADD_LIBRARY(${BULLETC_LIB} SHARED
     src/btPolarDecomposition_wrap.h
     src/btPolyhedralConvexShape_wrap.cpp
     src/btPolyhedralConvexShape_wrap.h
+    src/btQuantizedBvh_wrap.cpp
+    src/btQuantizedBvh_wrap.h
     src/btRaycastVehicle_wrap.cpp
     src/btRaycastVehicle_wrap.h
     src/btRigidBody_wrap.cpp
