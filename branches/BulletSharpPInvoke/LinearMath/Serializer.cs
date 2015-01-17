@@ -64,7 +64,10 @@ namespace BulletSharp
 		{
 			if (_native != IntPtr.Zero)
 			{
-				btChunk_delete(_native);
+                if (!_preventDelete)
+                {
+                    btChunk_delete(_native);
+                }
 				_native = IntPtr.Zero;
 			}
 		}

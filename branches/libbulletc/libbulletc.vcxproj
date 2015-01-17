@@ -711,6 +711,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="src\btPointCollector_wrap.h" />
     <ClInclude Include="src\btPolarDecomposition_wrap.h" />
     <ClInclude Include="src\btPolyhedralConvexShape_wrap.h" />
+    <ClInclude Include="src\btQuantizedBvh_wrap.h" />
     <ClInclude Include="src\btRaycastVehicle_wrap.h" />
     <ClInclude Include="src\btRigidBody_wrap.h" />
     <ClInclude Include="src\btScaledBvhTriangleMeshShape_wrap.h" />
@@ -863,6 +864,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClCompile Include="src\btPointCollector_wrap.cpp" />
     <ClCompile Include="src\btPolarDecomposition_wrap.cpp" />
     <ClCompile Include="src\btPolyhedralConvexShape_wrap.cpp" />
+    <ClCompile Include="src\btQuantizedBvh_wrap.cpp"  />
     <ClCompile Include="src\btRaycastVehicle_wrap.cpp" />
     <ClCompile Include="src\btRigidBody_wrap.cpp" />
     <ClCompile Include="src\btScaledBvhTriangleMeshShape_wrap.cpp" />

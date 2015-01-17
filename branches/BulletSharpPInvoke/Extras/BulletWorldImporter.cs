@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.InteropServices;
 
 namespace BulletSharp
 {
@@ -20,6 +21,31 @@ namespace BulletSharp
 		{
             _shapeMap.Clear();
             _bodyMap.Clear();
+
+            foreach (byte[] bvhData in file._bvhs)
+            {
+                OptimizedBvh bvh = CreateOptimizedBvh();
+
+                if ((file.Flags & FileFlags.DoublePrecision) != 0)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    GCHandle bvhDataHandle = GCHandle.Alloc(bvhData, GCHandleType.Pinned);
+                    bvh.DeSerializeFloat(bvhDataHandle.AddrOfPinnedObject());
+                    bvhDataHandle.Free();
+                }
+
+                foreach (KeyValuePair<long, byte[]> lib in file.LibPointers)
+                {
+                    if (lib.Value == bvhData)
+                    {
+                        _bvhMap.Add(lib.Key, bvh);
+                        break;
+                    }
+                }
+            }
 
             foreach (byte[] shapeData in file._collisionShapes)
             {
@@ -54,6 +80,33 @@ namespace BulletSharp
                 else
                 {
                     ConvertRigidBodyFloat(bodyData);
+                }
+            }
+
+            foreach (byte[] colObjData in file._collisionObjects)
+            {
+                if ((file.Flags & FileFlags.DoublePrecision) != 0)
+                {
+                    throw new NotImplementedException();
+                }
+                else
+                {
+                    using (MemoryStream colObjStream = new MemoryStream(colObjData, false))
+                    {
+                        using (BulletReader colObjReader = new BulletReader(colObjStream))
+                        {
+                            long shapePtr = colObjReader.ReadPtr(CollisionObjectFloatData.Offset("CollisionShape"));
+                            CollisionShape shape = _shapeMap[shapePtr];
+                            Math.Matrix startTransform = colObjReader.ReadMatrix(CollisionObjectFloatData.Offset("WorldTransform"));
+                            long namePtr = colObjReader.ReadPtr(CollisionObjectFloatData.Offset("Name"));
+                            if (namePtr != 0)
+                            {
+                                throw new NotImplementedException();
+                            }
+                            CollisionObject colObj = CreateCollisionObject(ref startTransform, shape, "n");
+                            _bodyMap.Add(colObjData, colObj);
+                        }
+                    }
                 }
             }
 
