@@ -374,17 +374,17 @@ namespace BulletSharp
 		{
 			return btQuantizedBvh_calculateSerializeBufferSizeNew(_native);
 		}
+
+        public void DeSerializeDouble(IntPtr quantizedBvhDoubleData)
+		{
+			btQuantizedBvh_deSerializeDouble(_native, quantizedBvhDoubleData);
+		}
+
+        public void DeSerializeFloat(IntPtr quantizedBvhFloatData)
+		{
+			btQuantizedBvh_deSerializeFloat(_native, quantizedBvhFloatData);
+		}
         /*
-		public void DeSerializeDouble(QuantizedBvhDoubleData quantizedBvhDoubleData)
-		{
-			btQuantizedBvh_deSerializeDouble(_native, quantizedBvhDoubleData._native);
-		}
-
-		public void DeSerializeFloat(QuantizedBvhFloatData quantizedBvhFloatData)
-		{
-			btQuantizedBvh_deSerializeFloat(_native, quantizedBvhFloatData._native);
-		}
-
 		public static QuantizedBvh DeSerializeInPlace(IntPtr alignedDataBuffer, uint dataBufferSize, bool swapEndian)
 		{
 			return btQuantizedBvh_deSerializeInPlace(alignedDataBuffer, dataBufferSize, swapEndian);

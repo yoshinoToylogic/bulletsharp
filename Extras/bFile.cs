@@ -537,9 +537,12 @@ namespace BulletSharp
                         {
                             using (BinaryWriter writer = new BinaryWriter(stream))
                             {
+                                long headerPtr = head.BaseStream.Position;
                                 for (int block = 0; block < dataChunk.NR; block++)
                                 {
+                                    head.BaseStream.Position = headerPtr;
                                     ParseStruct(writer, head, oldStruct, curStruct, true);
+                                    headerPtr += oldStruct.Type.Length;
                                     //_libPointers.Add(old, cur);
                                 }
                             }

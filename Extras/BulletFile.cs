@@ -54,6 +54,8 @@ namespace BulletSharp
 	{
         protected byte[] _dnaCopy;
 
+        public List<byte[]> _bvhs = new List<byte[]>();
+        public List<byte[]> _collisionObjects = new List<byte[]>();
         public List<byte[]> _collisionShapes = new List<byte[]>();
         public List<byte[]> _constraints = new List<byte[]>();
         public List<byte[]> _rigidBodies = new List<byte[]>();
@@ -150,17 +152,27 @@ namespace BulletSharp
                         _libPointers.Add(dataChunk.OldPtr, id);
                         _chunks.Add(dataChunk);
 
-                        if (dataChunk.Code == DnaID.Constraint)
+                        switch(dataChunk.Code)
                         {
-                            _constraints.Add(id);
-                        }
-                        else if (dataChunk.Code == DnaID.RigidBody)
-                        {
-                            _rigidBodies.Add(id);
-                        }
-                        else if (dataChunk.Code == DnaID.Shape)
-                        {
-                            _collisionShapes.Add(id);
+                            case DnaID.DynamicsWorld:
+                            case DnaID.SoftBody:
+                            case DnaID.TriangleInfoMap:
+                                throw new NotImplementedException();
+                            case DnaID.CollisionObject:
+                                _collisionObjects.Add(id);
+                                break;
+                            case DnaID.Constraint:
+                                _constraints.Add(id);
+                                break;
+                            case DnaID.QuantizedBvh:
+                                _bvhs.Add(id);
+                                break;
+                            case DnaID.RigidBody:
+                                _rigidBodies.Add(id);
+                                break;
+                            case DnaID.Shape:
+                                _collisionShapes.Add(id);
+                                break;
                         }
                     }
                     else

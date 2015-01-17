@@ -18,6 +18,7 @@ namespace BulletSharp
         protected List<TriangleInfoMap> _allocatedTriangleInfoMaps = new List<TriangleInfoMap>();
 
         protected Dictionary<byte[], CollisionObject> _bodyMap = new Dictionary<byte[], CollisionObject>();
+        protected Dictionary<long, OptimizedBvh> _bvhMap = new Dictionary<long, OptimizedBvh>();
         protected Dictionary<long, CollisionShape> _shapeMap = new Dictionary<long, CollisionShape>();
         protected FileVerboseMode _verboseMode;
 
@@ -214,6 +215,25 @@ namespace BulletSharp
                             return null;
                         }
                         OptimizedBvh bvh = null;
+                        long bvhPtr = reader.ReadPtr(TriangleMeshShapeData.Offset("QuantizedFloatBvh"));
+                        if (bvhPtr != 0)
+                        {
+                            if (_bvhMap.ContainsKey(bvhPtr))
+                            {
+                                bvh = _bvhMap[bvhPtr];
+                            }
+                            else
+                            {
+                                bvh = CreateOptimizedBvh();
+                                throw new NotImplementedException();
+                                //bvh.DeserializeFloat(bvhPtr);
+                            }
+                        }
+                        bvhPtr = reader.ReadPtr(TriangleMeshShapeData.Offset("QuantizedDoubleBvh"));
+                        if (bvhPtr != 0)
+                        {
+                            throw new NotImplementedException();
+                        }
                         BvhTriangleMeshShape trimeshShape = CreateBvhTriangleMeshShape(meshInterface, bvh);
                         trimeshShape.Margin = reader.ReadSingle(TriangleMeshShapeData.Offset("CollisionMargin"));
                         shape = trimeshShape;
@@ -239,7 +259,7 @@ namespace BulletSharp
             {
                 case TypedConstraintType.ConeTwist:
                     {
-                        ConeTwistConstraint coneTwist = null;
+                        ConeTwistConstraint coneTwist;
                         Matrix rbaFrame = reader.ReadMatrix(ConeTwistConstraintFloatData.Offset("RigidBodyAFrame"));
                         if (rigidBodyA != null && rigidBodyB != null)
                         {
@@ -298,7 +318,7 @@ namespace BulletSharp
                     }
                 case TypedConstraintType.Hinge:
                     {
-                        HingeConstraint hinge = null;
+                        HingeConstraint hinge;
                         Matrix rbaFrame = reader.ReadMatrix(HingeConstraintFloatData.Offset("RigidBodyAFrame"));
                         int useReferenceFrameA = reader.ReadInt32(HingeConstraintFloatData.Offset("UseReferenceFrameA"));
                         if (rigidBodyA != null && rigidBodyB != null)
@@ -323,6 +343,7 @@ namespace BulletSharp
                             reader.ReadSingle(HingeConstraintFloatData.Offset("LimitSoftness")),
                             reader.ReadSingle(HingeConstraintFloatData.Offset("BiasFactor")),
                             reader.ReadSingle(HingeConstraintFloatData.Offset("RelaxationFactor")));
+                        constraint = hinge;
                         break;
                     }
                 default:
