@@ -55,7 +55,7 @@ namespace BulletSharp.SoftBody
             }
             set
             {
-                throw new NotImplementedException();
+                btSoftBodyNodePtrArray_set(_native, value._native, index);
             }
         }
 
@@ -91,5 +91,7 @@ namespace BulletSharp.SoftBody
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyNodePtrArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btSoftBodyNodePtrArray_set(IntPtr obj, IntPtr value, int index);
     }
 }

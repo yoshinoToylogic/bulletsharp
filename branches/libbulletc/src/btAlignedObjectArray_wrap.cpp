@@ -200,6 +200,11 @@ void btAlignedSoftBodyLinkArray_resizeNoInitialize(btSoftBody::tLinkArray* obj, 
 	return obj->resizeNoInitialize(newSize);
 }
 
+void btAlignedSoftBodyLinkArray_set(btSoftBody::tLinkArray* obj, btSoftBody::Link* val, int index)
+{
+	obj->at(index) = *val;
+}
+
 int btAlignedSoftBodyLinkArray_size(btSoftBody::tLinkArray* obj)
 {
 	return obj->size();
@@ -230,6 +235,14 @@ int btAlignedSoftBodyMaterialArray_size(btSoftBody::tMaterialArray* obj)
 btSoftBody::Node* btAlignedSoftBodyNodeArray_at(btSoftBody::tNodeArray* obj, int n)
 {
 	return &obj->at(n);
+}
+
+int btAlignedSoftBodyNodeArray_index_of(btSoftBody::tNodeArray* obj, btSoftBody::Node* val)
+{
+	if (val < &obj->at(0) || val > &obj->at(obj->size() - 1)) {
+		return -1;
+	}
+	return val - &obj->at(0);
 }
 
 void btAlignedSoftBodyNodeArray_push_back(btSoftBody::tNodeArray* obj, btSoftBody::Node* val)

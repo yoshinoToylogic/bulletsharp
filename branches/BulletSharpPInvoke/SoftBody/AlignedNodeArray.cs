@@ -82,7 +82,7 @@ namespace BulletSharp.SoftBody
 
         public int IndexOf(Node item)
         {
-            throw new NotImplementedException();
+            return btAlignedSoftBodyNodeArray_index_of(_native, item._native);
         }
 
         public void Insert(int index, Node item)
@@ -158,6 +158,8 @@ namespace BulletSharp.SoftBody
 
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btAlignedSoftBodyNodeArray_at(IntPtr obj, int n);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern int btAlignedSoftBodyNodeArray_index_of(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btAlignedSoftBodyNodeArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

@@ -47,6 +47,7 @@ extern "C"
 	EXPORT btSoftBody_Link* btAlignedSoftBodyLinkArray_at(btAlignedSoftBodyLinkArray* obj, int n);
 	EXPORT void btAlignedSoftBodyLinkArray_push_back(btAlignedSoftBodyLinkArray* obj, btSoftBody_Link* val);
 	EXPORT void btAlignedSoftBodyLinkArray_resizeNoInitialize(btAlignedSoftBodyLinkArray* obj, int newSize);
+	EXPORT void btAlignedSoftBodyLinkArray_set(btAlignedSoftBodyLinkArray* obj, btSoftBody_Link* val, int index);
 	EXPORT int btAlignedSoftBodyLinkArray_size(btAlignedSoftBodyLinkArray* obj);
 
 	EXPORT btSoftBody_Material* btAlignedSoftBodyMaterialArray_at(btAlignedSoftBodyMaterialArray* obj, int n);
@@ -55,6 +56,7 @@ extern "C"
 	EXPORT int btAlignedSoftBodyMaterialArray_size(btAlignedSoftBodyMaterialArray* obj);
 
 	EXPORT btSoftBody_Node* btAlignedSoftBodyNodeArray_at(btAlignedSoftBodyNodeArray* obj, int n);
+	EXPORT int btAlignedSoftBodyNodeArray_index_of(btAlignedSoftBodyNodeArray* obj, btSoftBody_Node* val);
 	EXPORT void btAlignedSoftBodyNodeArray_push_back(btAlignedSoftBodyNodeArray* obj, btSoftBody_Node* val);
 	EXPORT void btAlignedSoftBodyNodeArray_resizeNoInitialize(btAlignedSoftBodyNodeArray* obj, int newSize);
 	EXPORT int btAlignedSoftBodyNodeArray_size(btAlignedSoftBodyNodeArray* obj);

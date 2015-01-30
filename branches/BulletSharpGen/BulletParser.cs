@@ -50,7 +50,7 @@ namespace BulletSharpGen
             parameterNameMapping.Add("i_swapEndian", "swapEndian");
             parameterNameMapping.Add("i_alignedDataBuffer", "alignedDataBuffer");
             parameterNameMapping.Add("o_alignedDataBuffer", "alignedDataBuffer");
-            parameterNameMapping.Add("drawflags", "dataBufferSize");
+            parameterNameMapping.Add("drawflags", "drawFlags");
             parameterNameMapping.Add("idraw", "iDraw");
             parameterNameMapping.Add("indexstride", "indexStride");
             parameterNameMapping.Add("indicestype", "indicesType");

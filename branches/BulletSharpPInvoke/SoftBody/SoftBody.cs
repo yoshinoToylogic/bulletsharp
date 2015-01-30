@@ -1470,7 +1470,7 @@ namespace BulletSharp.SoftBody
 
 	public class Element : IDisposable
 	{
-		internal IntPtr _native;
+		internal readonly IntPtr _native;
         private bool _preventDelete;
 
         internal Element(IntPtr native, bool preventDelete)
@@ -1499,7 +1499,6 @@ namespace BulletSharp.SoftBody
                 {
                     btSoftBody_Element_delete(_native);
                 }
-				_native = IntPtr.Zero;
 			}
 		}
 
@@ -2023,6 +2022,26 @@ namespace BulletSharp.SoftBody
 		{
 		}
 
+        public Link(Link link)
+            : base(btSoftBody_Link_new2(link._native), false)
+        {
+        }
+
+        public override bool Equals(object obj)
+        {
+            Link link = obj as Link;
+            if (link == null)
+            {
+                return false;
+            }
+            return _native == link._native;
+        }
+
+        public override int GetHashCode()
+        {
+            return _native.ToInt32();
+        }
+
 		public float C0
 		{
 			get { return btSoftBody_Link_getC0(_native); }
@@ -2078,6 +2097,8 @@ namespace BulletSharp.SoftBody
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern IntPtr btSoftBody_Link_new();
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern IntPtr btSoftBody_Link_new2(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btSoftBody_Link_getBbending(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -2224,6 +2245,21 @@ namespace BulletSharp.SoftBody
 			: base(btSoftBody_Node_new(), false)
 		{
 		}
+
+        public override bool Equals(object obj)
+        {
+            Node node = obj as Node;
+            if (node == null)
+            {
+                return false;
+            }
+            return _native == node._native;
+        }
+
+        public override int GetHashCode()
+        {
+            return _native.ToInt32();
+        }
 
 		public float Area
 		{

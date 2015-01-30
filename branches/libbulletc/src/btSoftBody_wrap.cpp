@@ -1333,6 +1333,11 @@ btSoftBody::Link* btSoftBody_Link_new()
 	return new btSoftBody::Link();
 }
 
+btSoftBody::Link* btSoftBody_Link_new2(btSoftBody::Link* obj)
+{
+	return new btSoftBody::Link(*obj);
+}
+
 int btSoftBody_Link_getBbending(btSoftBody::Link* obj)
 {
 	return obj->m_bbending;

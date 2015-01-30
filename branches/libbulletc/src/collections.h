@@ -4,6 +4,7 @@ extern "C"
 {
 	EXPORT btCompoundShapeChild* btCompoundShapeChild_array_at(btCompoundShapeChild* a, int n);
 	EXPORT btSoftBody_Node* btSoftBodyNodePtrArray_at(btSoftBodyNodePtrArray* obj, int n);
+	EXPORT void btSoftBodyNodePtrArray_set(btSoftBodyNodePtrArray* obj, btSoftBody_Node* value, int index);
 	EXPORT void btVector3_array_at(const btVector3* a, int n, btScalar* value);
 	EXPORT void btVector3_array_set(btVector3* obj, int n, const btScalar* value);
 	EXPORT btAlignedVector3Array* btAlignedVector3Array_new();
