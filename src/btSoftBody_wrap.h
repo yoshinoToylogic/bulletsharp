@@ -312,6 +312,7 @@ extern "C"
 	EXPORT void btSoftBody_Joint_delete(btSoftBody_Joint* obj);
 
 	EXPORT btSoftBody_Link* btSoftBody_Link_new();
+	EXPORT btSoftBody_Link* btSoftBody_Link_new2(btSoftBody_Link* obj);
 	EXPORT int btSoftBody_Link_getBbending(btSoftBody_Link* obj);
 	EXPORT btScalar btSoftBody_Link_getC0(btSoftBody_Link* obj);
 	EXPORT btScalar btSoftBody_Link_getC1(btSoftBody_Link* obj);

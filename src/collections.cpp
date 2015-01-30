@@ -14,6 +14,11 @@ btSoftBody::Node* btSoftBodyNodePtrArray_at(btSoftBody::Node** obj, int n)
 	return obj[n];
 }
 
+void btSoftBodyNodePtrArray_set(btSoftBodyNodePtrArray* obj, btSoftBody_Node* value, int index)
+{
+	obj[index] = value;
+}
+
 void btVector3_array_at(const btVector3* a, int n, btScalar* value)
 {
 	VECTOR3_OUT(&a[n], value);
