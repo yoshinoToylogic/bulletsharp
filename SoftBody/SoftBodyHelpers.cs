@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -402,6 +403,92 @@ namespace BulletSharp.SoftBody
 			btSoftBodyHelpers_DrawNodeTree3(psb._native, DebugDraw.GetUnmanaged(iDraw), minDepth, maxDepth);
 		}
 
+        private class LinkDep
+        {
+            public bool LinkB { get; set; }
+            public LinkDep Next { get; set; }
+            public Link Value { get; set; }
+        }
+
+        // ReoptimizeLinkOrder minimizes the cases where links L and L+1 share a common node.
+		public static void ReoptimizeLinkOrder(SoftBody psb)
+		{
+            AlignedLinkArray links = psb.Links;
+            AlignedNodeArray nodes = psb.Nodes;
+            int nLinks = links.Count;
+            int nNodes = nodes.Count;
+
+            List<Link> readyList = new List<Link>();
+            Dictionary<Link, Link> linkBuffer = new Dictionary<Link, Link>();
+            Dictionary<Link, LinkDep> linkDeps = new Dictionary<Link, LinkDep>();
+            Dictionary<Node, Link> nodeWrittenAt = new Dictionary<Node, Link>();
+
+            Dictionary<Link, Link> linkDepA = new Dictionary<Link, Link>(); // Link calculation input is dependent upon prior calculation #N
+            Dictionary<Link, Link> linkDepB = new Dictionary<Link, Link>();
+
+            foreach (Link link in links)
+            {
+                Node ar = link.N[0];
+                Node br = link.N[1];
+                linkBuffer.Add(link, new Link(link));
+
+                LinkDep linkDep;
+                if (nodeWrittenAt.ContainsKey(ar))
+                {
+                    linkDepA[link] = nodeWrittenAt[ar];
+                    linkDeps.TryGetValue(nodeWrittenAt[ar], out linkDep);
+                    linkDeps[nodeWrittenAt[ar]] = new LinkDep() { Next = linkDep, Value = link};
+                }
+
+                if (nodeWrittenAt.ContainsKey(br))
+                {
+                    linkDepB[link] = nodeWrittenAt[br];
+                    linkDeps.TryGetValue(nodeWrittenAt[br], out linkDep);
+                    linkDeps[nodeWrittenAt[br]] = new LinkDep() { Next = linkDep, Value = link, LinkB = true };
+                }
+
+                if (!linkDepA.ContainsKey(link) && !linkDepB.ContainsKey(link))
+                {
+                    readyList.Add(link);
+                }
+
+                // Update the nodes to mark which ones are calculated by this link
+                nodeWrittenAt[ar] = link;
+                nodeWrittenAt[br] = link;
+            }
+
+            int i = 0;
+            while (readyList.Count != 0)
+            {
+                Link link = readyList[0];
+                links[i++] = linkBuffer[link];
+                readyList.RemoveAt(0);
+
+                LinkDep linkDep;
+                linkDeps.TryGetValue(link, out linkDep);
+                while (linkDep != null)
+                {
+                    link = linkDep.Value;
+
+                    if (linkDep.LinkB)
+                    {
+                        linkDepB.Remove(link);
+                    }
+                    else
+                    {
+                        linkDepA.Remove(link);
+                    }
+
+                    // Add this dependent link calculation to the ready list if *both* inputs are clear
+                    if (!linkDepA.ContainsKey(link) && !linkDepB.ContainsKey(link))
+                    {
+                        readyList.Add(link);
+                    }
+                    linkDep = linkDep.Next;
+                }
+            }
+		}
+
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern IntPtr btSoftBodyHelpers_CreateFromConvexHull(IntPtr worldInfo, [In] Vector3[] vertices, int nvertices);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -419,13 +506,13 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawClusterTree2(IntPtr psb, IntPtr idraw, int minDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawClusterTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxdepth);
+		static extern void btSoftBodyHelpers_DrawClusterTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawFaceTree(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawFaceTree2(IntPtr psb, IntPtr idraw, int minDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawFaceTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxdepth);
+		static extern void btSoftBodyHelpers_DrawFaceTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawFrame(IntPtr psb, IntPtr idraw);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -435,6 +522,6 @@ namespace BulletSharp.SoftBody
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btSoftBodyHelpers_DrawNodeTree2(IntPtr psb, IntPtr idraw, int minDepth);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btSoftBodyHelpers_DrawNodeTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxdepth);
+		static extern void btSoftBodyHelpers_DrawNodeTree3(IntPtr psb, IntPtr idraw, int minDepth, int maxDepth);
 	}
 }

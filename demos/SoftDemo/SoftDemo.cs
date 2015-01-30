@@ -480,6 +480,8 @@ namespace SoftDemo
                 psb.Transform(trs);
                 psb.TotalMass = 2.0f;
 
+                SoftBodyHelpers.ReoptimizeLinkOrder(psb);
+
                 SoftWorld.AddSoftBody(psb);
             }
         }

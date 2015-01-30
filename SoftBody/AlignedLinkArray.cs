@@ -107,7 +107,7 @@ namespace BulletSharp.SoftBody
             }
             set
             {
-                throw new NotImplementedException();
+                btAlignedSoftBodyLinkArray_set(_native, value._native, index);
             }
         }
 
@@ -128,7 +128,24 @@ namespace BulletSharp.SoftBody
 
         public void CopyTo(Link[] array, int arrayIndex)
         {
-            throw new NotImplementedException();
+            if (array == null)
+            {
+                throw new ArgumentNullException("array");
+            }
+            if (arrayIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException("arrayIndex");
+            }
+            int count = Count;
+            if (array.Length - arrayIndex < count)
+            {
+                throw new ArgumentException("The number of elements in the source is greater than the available space from arrayIndex to the end of the destination array.");
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                array.SetValue(new Link(btAlignedSoftBodyLinkArray_at(_native, i), true), i + arrayIndex);
+            }
         }
 
         public int Count
@@ -162,6 +179,8 @@ namespace BulletSharp.SoftBody
         static extern void btAlignedSoftBodyLinkArray_push_back(IntPtr obj, IntPtr val);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern void btAlignedSoftBodyLinkArray_resizeNoInitialize(IntPtr obj, int newSize);
+        [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+        static extern void btAlignedSoftBodyLinkArray_set(IntPtr obj, IntPtr val, int index);
         [DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
         static extern int btAlignedSoftBodyLinkArray_size(IntPtr obj);
     }
