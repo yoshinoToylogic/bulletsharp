@@ -88,7 +88,7 @@ extern "C"
 	EXPORT void btMultiBody_setMaxCoordinateVelocity(btMultiBody* obj, btScalar maxVel);
 	EXPORT void btMultiBody_setNumLinks(btMultiBody* obj, int numLinks);
 	EXPORT void btMultiBody_setPosUpdated(btMultiBody* obj, bool updated);
-	EXPORT void btMultiBody_setupFixed(btMultiBody* obj, int linkIndex, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* parentComToThisComOffset, bool disableParentCollision);
+	EXPORT void btMultiBody_setupFixed(btMultiBody* obj, int linkIndex, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* parentComToThisPivotOffset, const btScalar* thisPivotToThisComOffset, bool disableParentCollision);
 	EXPORT void btMultiBody_setupPlanar(btMultiBody* obj, int i, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* rotationAxis, const btScalar* parentComToThisComOffset);
 	EXPORT void btMultiBody_setupPlanar2(btMultiBody* obj, int i, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* rotationAxis, const btScalar* parentComToThisComOffset, bool disableParentCollision);
 	EXPORT void btMultiBody_setupPrismatic(btMultiBody* obj, int linkIndex, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* jointAxis, const btScalar* parentComToThisComOffset);

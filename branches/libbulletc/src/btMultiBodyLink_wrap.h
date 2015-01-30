@@ -19,7 +19,7 @@ extern "C"
 	EXPORT void btMultibodyLink_getDVector(btMultibodyLink* obj, btScalar* value);
 	EXPORT void btMultibodyLink_getEVector(btMultibodyLink* obj, btScalar* value);
 	EXPORT int btMultibodyLink_getFlags(btMultibodyLink* obj);
-	EXPORT void btMultibodyLink_getInertia(btMultibodyLink* obj, btScalar* value);
+	EXPORT void btMultibodyLink_getInertiaLocal(btMultibodyLink* obj, btScalar* value);
 	EXPORT btScalar* btMultibodyLink_getJointPos(btMultibodyLink* obj);
 	EXPORT btScalar* btMultibodyLink_getJointTorque(btMultibodyLink* obj);
 	//EXPORT eFeatherstoneJointType btMultibodyLink_getJointType(btMultibodyLink* obj);
@@ -44,7 +44,7 @@ extern "C"
 	EXPORT void btMultibodyLink_setDVector(btMultibodyLink* obj, const btScalar* value);
 	EXPORT void btMultibodyLink_setEVector(btMultibodyLink* obj, const btScalar* value);
 	EXPORT void btMultibodyLink_setFlags(btMultibodyLink* obj, int value);
-	EXPORT void btMultibodyLink_setInertia(btMultibodyLink* obj, const btScalar* value);
+	EXPORT void btMultibodyLink_setInertiaLocal(btMultibodyLink* obj, const btScalar* value);
 	//EXPORT void btMultibodyLink_setJointType(btMultibodyLink* obj, eFeatherstoneJointType value);
 	EXPORT void btMultibodyLink_setMass(btMultibodyLink* obj, btScalar value);
 	EXPORT void btMultibodyLink_setParent(btMultibodyLink* obj, int value);

@@ -39,6 +39,11 @@ namespace BulletSharp
             _constraints.Add(constraint);
 		}
 
+		public void DebugDrawMultiBodyConstraint(MultiBodyConstraint constraint)
+		{
+			btMultiBodyDynamicsWorld_debugDrawMultiBodyConstraint(_native, constraint._native);
+		}
+
 		public void IntegrateTransforms(float timeStep)
 		{
 			btMultiBodyDynamicsWorld_integrateTransforms(_native, timeStep);
@@ -66,6 +71,8 @@ namespace BulletSharp
         static extern void btMultiBodyDynamicsWorld_addMultiBody3(IntPtr obj, IntPtr body, short group, short mask);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyDynamicsWorld_addMultiBodyConstraint(IntPtr obj, IntPtr constraint);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btMultiBodyDynamicsWorld_debugDrawMultiBodyConstraint(IntPtr obj, IntPtr constraint);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyDynamicsWorld_integrateTransforms(IntPtr obj, float timeStep);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

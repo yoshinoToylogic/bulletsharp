@@ -144,7 +144,7 @@ namespace BulletSharp
 
         public void AddChildShape(ref Matrix localTransform, CollisionShape shape)
         {
-            IntPtr childListOld = btCompoundShape_getChildList(_native);
+            IntPtr childListOld = (_count != 0) ? btCompoundShape_getChildList(_native) : IntPtr.Zero;
             btCompoundShape_addChildShape(_native, ref localTransform, shape._native);
             IntPtr childList = btCompoundShape_getChildList(_native);
 
