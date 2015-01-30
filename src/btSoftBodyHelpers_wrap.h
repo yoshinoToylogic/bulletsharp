@@ -32,5 +32,7 @@ extern "C"
 	EXPORT void btSoftBodyHelpers_DrawNodeTree(btSoftBody* psb, btIDebugDraw* idraw);
 	EXPORT void btSoftBodyHelpers_DrawNodeTree2(btSoftBody* psb, btIDebugDraw* idraw, int mindepth);
 	EXPORT void btSoftBodyHelpers_DrawNodeTree3(btSoftBody* psb, btIDebugDraw* idraw, int mindepth, int maxdepth);
+#ifndef BULLETC_DISABLE_SOFTBODY_HELPERS
 	EXPORT void btSoftBodyHelpers_ReoptimizeLinkOrder(btSoftBody* psb);
+#endif
 }

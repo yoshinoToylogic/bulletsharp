@@ -89,9 +89,9 @@ int btMultibodyLink_getFlags(btMultibodyLink* obj)
 	return obj->m_flags;
 }
 
-void btMultibodyLink_getInertia(btMultibodyLink* obj, btScalar* value)
+void btMultibodyLink_getInertiaLocal(btMultibodyLink* obj, btScalar* value)
 {
-	VECTOR3_OUT(&obj->m_inertia, value);
+	VECTOR3_OUT(&obj->m_inertiaLocal, value);
 }
 
 btScalar* btMultibodyLink_getJointPos(btMultibodyLink* obj)
@@ -216,9 +216,9 @@ void btMultibodyLink_setFlags(btMultibodyLink* obj, int value)
 	obj->m_flags = value;
 }
 
-void btMultibodyLink_setInertia(btMultibodyLink* obj, const btScalar* value)
+void btMultibodyLink_setInertiaLocal(btMultibodyLink* obj, const btScalar* value)
 {
-	VECTOR3_IN(value, &obj->m_inertia);
+	VECTOR3_IN(value, &obj->m_inertiaLocal);
 }
 /*
 void btMultibodyLink_setJointType(btMultibodyLink* obj, eFeatherstoneJointType value)

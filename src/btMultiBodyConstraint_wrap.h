@@ -3,6 +3,7 @@
 extern "C"
 {
 	EXPORT void btMultiBodyConstraint_createConstraintRows(btMultiBodyConstraint* obj, btMultiBodyConstraintArray* constraintRows, btMultiBodyJacobianData* data, const btContactSolverInfo* infoGlobal);
+	EXPORT void btMultiBodyConstraint_debugDraw(btMultiBodyConstraint* obj, btIDebugDraw* drawer);
 	EXPORT int btMultiBodyConstraint_getIslandIdA(btMultiBodyConstraint* obj);
 	EXPORT int btMultiBodyConstraint_getIslandIdB(btMultiBodyConstraint* obj);
 	EXPORT btScalar btMultiBodyConstraint_getMaxAppliedImpulse(btMultiBodyConstraint* obj);

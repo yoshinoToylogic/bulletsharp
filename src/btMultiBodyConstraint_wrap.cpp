@@ -1,10 +1,16 @@
 #include <BulletDynamics/Featherstone/btMultiBodyConstraint.h>
+#include <LinearMath/btIDebugDraw.h>
 
 #include "btMultiBodyConstraint_wrap.h"
 
 void btMultiBodyConstraint_createConstraintRows(btMultiBodyConstraint* obj, btMultiBodyConstraintArray* constraintRows, btMultiBodyJacobianData* data, const btContactSolverInfo* infoGlobal)
 {
 	obj->createConstraintRows(*constraintRows, *data, *infoGlobal);
+}
+
+void btMultiBodyConstraint_debugDraw(btMultiBodyConstraint* obj, btIDebugDraw* drawer)
+{
+	obj->debugDraw(drawer);
 }
 
 int btMultiBodyConstraint_getIslandIdA(btMultiBodyConstraint* obj)

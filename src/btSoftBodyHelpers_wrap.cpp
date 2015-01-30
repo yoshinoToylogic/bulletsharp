@@ -145,8 +145,9 @@ void btSoftBodyHelpers_DrawNodeTree3(btSoftBody* psb, btIDebugDraw* idraw, int m
 {
 	btSoftBodyHelpers::DrawNodeTree(psb, idraw, mindepth, maxdepth);
 }
-
+#ifndef BULLETC_DISABLE_SOFTBODY_HELPERS
 void btSoftBodyHelpers_ReoptimizeLinkOrder(btSoftBody* psb)
 {
 	btSoftBodyHelpers::ReoptimizeLinkOrder(psb);
 }
+#endif
