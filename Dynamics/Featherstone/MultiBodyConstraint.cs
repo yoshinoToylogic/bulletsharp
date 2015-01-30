@@ -21,6 +21,11 @@ namespace BulletSharp
 			btMultiBodyConstraint_createConstraintRows(_native, constraintRows._native, data._native, infoGlobal._native);
 		}
         */
+		public void DebugDraw(IDebugDraw drawer)
+		{
+			btMultiBodyConstraint_debugDraw(_native, BulletSharp.DebugDraw.GetUnmanaged(drawer));
+		}
+
 		public float GetPosition(int row)
 		{
 			return btMultiBodyConstraint_getPosition(_native, row);
@@ -99,6 +104,8 @@ namespace BulletSharp
 
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultiBodyConstraint_createConstraintRows(IntPtr obj, IntPtr constraintRows, IntPtr data, IntPtr infoGlobal);
+		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
+		static extern void btMultiBodyConstraint_debugDraw(IntPtr obj, IntPtr drawer);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btMultiBodyConstraint_getIslandIdA(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]

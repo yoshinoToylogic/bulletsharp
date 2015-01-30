@@ -125,15 +125,15 @@ namespace BulletSharp
 			set { btMultibodyLink_setFlags(_native, value); }
 		}
 
-		public Vector3 Inertia
+		public Vector3 InertiaLocal
 		{
 			get
 			{
 				Vector3 value;
-				btMultibodyLink_getInertia(_native, out value);
+				btMultibodyLink_getInertiaLocal(_native, out value);
 				return value;
 			}
-			set { btMultibodyLink_setInertia(_native, ref value); }
+			set { btMultibodyLink_setInertiaLocal(_native, ref value); }
 		}
 
 		public float JointPos
@@ -216,7 +216,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern int btMultibodyLink_getFlags(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btMultibodyLink_getInertia(IntPtr obj, [Out] out Vector3 value);
+		static extern void btMultibodyLink_getInertiaLocal(IntPtr obj, [Out] out Vector3 value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern float btMultibodyLink_getJointPos(IntPtr obj);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
@@ -262,7 +262,7 @@ namespace BulletSharp
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		static extern void btMultibodyLink_setFlags(IntPtr obj, int value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
-		static extern void btMultibodyLink_setInertia(IntPtr obj, [In] ref Vector3 value);
+		static extern void btMultibodyLink_setInertiaLocal(IntPtr obj, [In] ref Vector3 value);
 		//[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
 		//static extern void btMultibodyLink_setJointType(IntPtr obj, eFeatherstoneJointType value);
 		[DllImport(Native.Dll, CallingConvention = Native.Conv), SuppressUnmanagedCodeSecurity]
