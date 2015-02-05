@@ -27,7 +27,7 @@ If you want to use double precision, select USE_DOUBLE_PRECISION in CMake, then 
 4. Open *`BulletSharp/BulletSharp.sln`* (or `BulletSharp/(vs20xx/)BulletSharp.sln`) and select the build configuration for your graphics framework. !BulletSharp will use the Vector and Matrix classes from it. If the framework is not listed or you do not need one, then select the Generic configuration, which includes its own Vector/Matrix classes. Build the solution.
 
 
-See also build instructions for OpenTK and SharpDX with screenshots by savegeri:
+See also build instructions for OpenTK and SharpDX with screenshots by savageri:
 [http://savageri.com/2015/01/building-bullet-physics-for-c-bulletsharp/]
 
 
