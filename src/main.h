@@ -1,8 +1,8 @@
 #pragma once
 
-// Omits classes inheriting from btActionInterface
-#define BULLETC_DISABLE_IACTION_CLASSES
+#define BULLETC_DISABLE_IACTION_CLASSES // omits classes inheriting from btActionInterface
 #define BULLETC_DISABLE_SOFTBODY_HELPERS
+#define BULLETC_DISABLE_WORLD_IMPORTERS
 
 #ifdef _MSC_VER
 #define EXPORT __declspec(dllexport)

@@ -4,6 +4,8 @@
 
 #include "btBulletWorldImporter_wrap.h"
 
+#ifndef BULLETC_DISABLE_WORLD_IMPORTERS
+
 btBulletWorldImporter* btBulletWorldImporter_new()
 {
 	return new btBulletWorldImporter();
@@ -38,3 +40,5 @@ bool btBulletWorldImporter_loadFileFromMemory2(btBulletWorldImporter* obj, bPars
 {
 	return obj->loadFileFromMemory(file);
 }
+
+#endif
