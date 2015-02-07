@@ -8,6 +8,8 @@
 #include "conversion.h"
 #include "btWorldImporter_wrap.h"
 
+#ifndef BULLETC_DISABLE_WORLD_IMPORTERS
+
 btWorldImporter* btWorldImporter_new(btDynamicsWorld* world)
 {
 	return new btWorldImporter(world);
@@ -336,3 +338,5 @@ void btWorldImporter_delete(btWorldImporter* obj)
 {
 	delete obj;
 }
+
+#endif

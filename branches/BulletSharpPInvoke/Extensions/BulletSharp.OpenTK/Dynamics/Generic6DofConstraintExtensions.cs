@@ -96,7 +96,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				*(BulletSharp.Math.Vector3*)valuePtr = obj.NormalCFM;
+				*(BulletSharp.Math.Vector3*)valuePtr = obj.NormalCfm;
 			}
 		}
 
@@ -111,7 +111,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				*(BulletSharp.Math.Vector3*)valuePtr = obj.StopCFM;
+				*(BulletSharp.Math.Vector3*)valuePtr = obj.StopCfm;
 			}
 		}
 
@@ -126,7 +126,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				*(BulletSharp.Math.Vector3*)valuePtr = obj.StopERP;
+				*(BulletSharp.Math.Vector3*)valuePtr = obj.StopErp;
 			}
 		}
 
@@ -236,7 +236,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				obj.NormalCFM = *(BulletSharp.Math.Vector3*)valuePtr;
+				obj.NormalCfm = *(BulletSharp.Math.Vector3*)valuePtr;
 			}
 		}
 
@@ -249,7 +249,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				obj.StopCFM = *(BulletSharp.Math.Vector3*)valuePtr;
+				obj.StopCfm = *(BulletSharp.Math.Vector3*)valuePtr;
 			}
 		}
 
@@ -262,7 +262,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* valuePtr = &value)
 			{
-				obj.StopERP = *(BulletSharp.Math.Vector3*)valuePtr;
+				obj.StopErp = *(BulletSharp.Math.Vector3*)valuePtr;
 			}
 		}
 

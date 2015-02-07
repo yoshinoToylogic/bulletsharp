@@ -60,7 +60,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Matrix4* newChildTransformPtr = &newChildTransform)
 			{
-				obj.UpdateChildTransform(childIndex, ref *(BulletSharp.Math.Matrix*)newChildTransformPtr, shouldRecalculateLocalAabb);
+				obj.UpdateChildTransform(childIndex, *(BulletSharp.Math.Matrix*)newChildTransformPtr, shouldRecalculateLocalAabb);
 			}
 		}
 
@@ -68,7 +68,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Matrix4* newChildTransformPtr = &newChildTransform)
 			{
-				obj.UpdateChildTransform(childIndex, ref *(BulletSharp.Math.Matrix*)newChildTransformPtr);
+				obj.UpdateChildTransform(childIndex, *(BulletSharp.Math.Matrix*)newChildTransformPtr);
 			}
 		}
 	}
