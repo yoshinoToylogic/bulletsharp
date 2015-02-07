@@ -238,7 +238,7 @@ namespace BulletSharp
 		{
 			fixed (OpenTK.Vector3* wPtr = &w)
 			{
-				return obj.InSimplex(ref *(BulletSharp.Math.Vector3*)wPtr);
+				return obj.InSimplex(*(BulletSharp.Math.Vector3*)wPtr);
 			}
 		}
 
@@ -254,7 +254,7 @@ namespace BulletSharp
 						{
 							fixed (OpenTK.Vector3* dPtr = &d)
 							{
-								return obj.PointOutsideOfPlane(ref *(BulletSharp.Math.Vector3*)pPtr, ref *(BulletSharp.Math.Vector3*)aPtr, ref *(BulletSharp.Math.Vector3*)bPtr, ref *(BulletSharp.Math.Vector3*)cPtr, ref *(BulletSharp.Math.Vector3*)dPtr);
+								return obj.PointOutsideOfPlane(*(BulletSharp.Math.Vector3*)pPtr, *(BulletSharp.Math.Vector3*)aPtr, *(BulletSharp.Math.Vector3*)bPtr, *(BulletSharp.Math.Vector3*)cPtr, *(BulletSharp.Math.Vector3*)dPtr);
 							}
 						}
 					}

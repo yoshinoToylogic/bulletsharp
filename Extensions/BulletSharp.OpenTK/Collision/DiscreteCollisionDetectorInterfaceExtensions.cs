@@ -11,7 +11,7 @@ namespace BulletSharp
 			{
 				fixed (OpenTK.Vector3* pointInWorldPtr = &pointInWorld)
 				{
-					obj.AddContactPoint(ref *(BulletSharp.Math.Vector3*)normalOnBInWorldPtr, ref *(BulletSharp.Math.Vector3*)pointInWorldPtr, depth);
+					obj.AddContactPoint(*(BulletSharp.Math.Vector3*)normalOnBInWorldPtr, *(BulletSharp.Math.Vector3*)pointInWorldPtr, depth);
 				}
 			}
 		}
