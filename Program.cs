@@ -149,7 +149,6 @@ namespace BulletSharpGen
             sourceFilter.AddFile("", rootFolder + "AssemblyInfo");
             sourceFilter.AddFile("", rootFolder + "Collections");
             sourceFilter.AddFile("", rootFolder + "Math");
-            sourceFilter.AddFile("", rootFolder + "ObjectTable");
             sourceFilter.AddFile("", rootFolder + "StringConv");
             sourceFilter.AddFile("", rootFolder + "DataStream");
             sourceFilter.AddFile("", rootFolder + "Matrix");
@@ -163,7 +162,6 @@ namespace BulletSharpGen
             headerFilter.AddFile("", rootFolder + "Enums");
             headerFilter.AddFile("", rootFolder + "ITrackingDisposable");
             headerFilter.AddFile("", rootFolder + "Math");
-            headerFilter.AddFile("", rootFolder + "ObjectTable");
             headerFilter.AddFile("", rootFolder + "StringConv");
             headerFilter.AddFile("", rootFolder + "Version");
             headerFilter.AddFile("", rootFolder + "DataStream");
