@@ -480,22 +480,14 @@ void btMultiBody_setupPlanar2(btMultiBody* obj, int i, btScalar mass, const btSc
 	obj->setupPlanar(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis), VECTOR3_USE(rotationAxis), VECTOR3_USE(parentComToThisComOffset), disableParentCollision);
 }
 
-void btMultiBody_setupPrismatic(btMultiBody* obj, int linkIndex, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* jointAxis, const btScalar* parentComToThisComOffset)
+void btMultiBody_setupPrismatic(btMultiBody* obj, int i, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* jointAxis, const btScalar* parentComToThisComOffset, const btScalar* thisPivotToThisComOffset, bool disableParentCollision)
 {
 	VECTOR3_CONV(inertia);
 	QUATERNION_CONV(rotParentToThis);
 	VECTOR3_CONV(jointAxis);
 	VECTOR3_CONV(parentComToThisComOffset);
-	obj->setupPrismatic(linkIndex, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis), VECTOR3_USE(jointAxis), VECTOR3_USE(parentComToThisComOffset));
-}
-
-void btMultiBody_setupPrismatic2(btMultiBody* obj, int linkIndex, btScalar mass, const btScalar* inertia, int parent, const btScalar* rotParentToThis, const btScalar* jointAxis, const btScalar* parentComToThisComOffset, bool disableParentCollision)
-{
-	VECTOR3_CONV(inertia);
-	QUATERNION_CONV(rotParentToThis);
-	VECTOR3_CONV(jointAxis);
-	VECTOR3_CONV(parentComToThisComOffset);
-	obj->setupPrismatic(linkIndex, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis), VECTOR3_USE(jointAxis), VECTOR3_USE(parentComToThisComOffset), disableParentCollision);
+	VECTOR3_CONV(thisPivotToThisComOffset);
+	obj->setupPrismatic(i, mass, VECTOR3_USE(inertia), parent, QUATERNION_USE(rotParentToThis), VECTOR3_USE(jointAxis), VECTOR3_USE(parentComToThisComOffset), VECTOR3_USE(thisPivotToThisComOffset), disableParentCollision);
 }
 
 void btMultiBody_setupRevolute(btMultiBody* obj, int linkIndex, btScalar mass, const btScalar* inertia, int parentIndex, const btScalar* rotParentToThis, const btScalar* jointAxis, const btScalar* parentComToThisPivotOffset, const btScalar* thisPivotToThisComOffset)
