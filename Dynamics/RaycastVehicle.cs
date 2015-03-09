@@ -735,17 +735,11 @@ namespace BulletSharp
                     if (body != null && body.HasContactResponse)
                     {
                         result.HitPointInWorld = rayCallback.HitPointWorld;
-                        result.HitNormalInWorld = rayCallback.HitNormalWorld;
-                        result.HitNormalInWorld.Normalize();
+                        Vector3 hitNormalInWorld = rayCallback.HitNormalWorld;
+                        hitNormalInWorld.Normalize();
+                        result.HitNormalInWorld = hitNormalInWorld;
                         result.DistFraction = rayCallback.ClosestHitFraction;
                         return body;
-                    }
-                }
-                else
-                {
-                    using (ClosestRayResultCallback rayCallback2 = new ClosestRayResultCallback(ref from, ref to))
-                    {
-                        m_dynamicsWorld.RayTest(ref from, ref to, rayCallback2);
                     }
                 }
             }

@@ -57,13 +57,12 @@ namespace BulletSharp
             IsFrontWheel = ci.IsFrontWheel;
             MaxSuspensionForce = ci.MaxSuspensionForce;
 
-            ClientInfo = IntPtr.Zero;
-            ClippedInvContactDotSuspension = 0;
+            //ClientInfo = IntPtr.Zero;
+            //ClippedInvContactDotSuspension = 0;
             WorldTransform = Matrix.Identity;
-            WheelsSuspensionForce = 0;
-            SuspensionRestLength = 0;
-            SuspensionRelativeVelocity = 0;
-            SkidInfo = 0;
+            //WheelsSuspensionForce = 0;
+            //SuspensionRelativeVelocity = 0;
+            //SkidInfo = 0;
             RaycastInfo = new RaycastInfo();
         }
 
@@ -99,6 +98,11 @@ namespace BulletSharp
             }
         }
 
+        public float SuspensionRestLength
+        {
+            get { return SuspensionRestLength1; }
+        }
+
         public bool IsFrontWheel;
         public float Brake;
         public Vector3 ChassisConnectionPointCS;
@@ -115,7 +119,6 @@ namespace BulletSharp
         public float SkidInfo;
         public float Steering;
         public float SuspensionRelativeVelocity;
-        public float SuspensionRestLength;
         public float SuspensionRestLength1;
         public float SuspensionStiffness;
         public Vector3 WheelAxleCS;
