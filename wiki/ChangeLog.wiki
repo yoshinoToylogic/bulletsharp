@@ -1,16 +1,2 @@
 #labels Featured
-#New in 2.83
-
-*2.83*
-  * Cleaned up the entire codebase by generating most of the wrapper code automatically from C++ headers. This fixed a number of typos and inconsistencies.
-  * Reduced memory leaks. Implemented destructors on all relevant classes. Reduced creation of managed wrapper objects by caching them. Now using weak self-references to allow for more implicit garbage collection.
-  * Reduced the use of the !ObjectTable.
-  * Added !ContactDestroyed & !ContactProcessed callbacks to the !PersistentManifold class.
-  * Added specialized backing lists to make enumeration faster for world collision objects and compound shape children.
-  * Collision objects can now be added to the world with arbitrary collision flags (short type instead of only !CollisionFilterGroups).
-  * Removed !AlignedCollisionShapeArray. Use `List<CollisionShape>` instead.
-  * Link against SharpDX 2.6.3 and OpenTK 1.1.4.
-  * Renamed IActionInterface to IAction and !CharacterControllerInterface to ICharacterController.
-  * Rewrote !RaycastVehicle and !KinematicCharacterController in managed code to make them more extensible.
-  * Made !RayResultCallback and !ConvexResultCallback inheritable and moved them outside of !CollisionWorld.
-  * Added !DirectX11 renderer to demos.
+Moved to [https://github.com/AndresTraks/BulletSharp/wiki/Changelog]
